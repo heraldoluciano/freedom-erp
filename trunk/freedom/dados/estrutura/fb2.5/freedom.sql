@@ -295,6 +295,14 @@ CREATE DOMAIN NUMERICDN AS NUMERIC(15, 5);
 CREATE DOMAIN NUMERICDN2 AS NUMERIC(15, 9);
 CREATE DOMAIN TIMEDN AS TIME;
 
+/* Tabela utilizada no controle da recursividade em triggers e stored procedures */
+
+CREATE GLOBAL TEMPORARY TABLE GTT_RECURSIVO (
+  ID    BIGINT            NOT NULL,
+  CONTA INTEGER DEFAULT 0 NOT NULL,
+  CONSTRAINT PK_GTT_RECURSIVO PRIMARY KEY (ID)
+) ON COMMIT DELETE ROWS;
+
 /* Table: ATAGENDA, Owner: SYSDBA */
 CREATE TABLE ATAGENDA (CODEMP INTEGER NOT NULL,
         CODFILIAL SMALLINT NOT NULL,
@@ -429,9 +437,9 @@ CONSTRAINT ATATENDIMENTOPK PRIMARY KEY (CODATENDO, CODFILIAL, CODEMP));
 
 /* Table: ATATENDOAGENDA, Owner: SYSDBA */
 CREATE TABLE ATATENDOAGENDA (CODEMP INTEGER NOT NULL,
-		CODFILIAL SMALLINT NOT NULL,
-		CODATENDO INTEGER NOT NULL,
-		CODEMPAG INTEGER NOT NULL,
+        CODFILIAL SMALLINT NOT NULL,
+        CODATENDO INTEGER NOT NULL,
+        CODEMPAG INTEGER NOT NULL,
         CODFILIALAG SMALLINT NOT NULL,
         TIPOAGE CHAR(5) NOT NULL,
         CODAGE INTEGER NOT NULL,
@@ -2788,28 +2796,28 @@ CREATE TABLE EQMOVSERIE (CODEMP INTEGER NOT NULL,
 CONSTRAINT EQMOVSERIEPK PRIMARY KEY (CODMOVSERIE, CODFILIAL, CODEMP));
 
 CREATE TABLE EQPREVESTOQLOG( ID BIGINT NOT NULL,
-		CODEMP INTEGER,
-		CODFILIAL SMALLINT,
-		DTINI DATE NOT NULL,
-		DTFIM DATE NOT NULL,
-		CODEMPGP INTEGER,
-		CODFILIALGP SMALLINT,
-		CODGRUP CHAR(14),
-		CODEMPPD INTEGER,
-		CODFILIALPD SMALLINT,
-		CODPROD INTEGER,
-		ORDEM CHAR(1) DEFAULT 'V' NOT NULL,
-		MERCADORIA_REVENDA CHAR(1) DEFAULT 'S' NOT NULL,
-		MATERIA_PRIMA CHAR(1) DEFAULT 'S' NOT NULL,
-		EM_PROCESSO CHAR(1) DEFAULT 'S' NOT NULL,
-		OUTROS CHAR(1) DEFAULT 'S' NOT NULL,
-		SUB_PRODUTO CHAR(1) DEFAULT 'S' NOT NULL,
-		EQUIPAMENTO CHAR(1) DEFAULT 'S' NOT NULL,
-		MATERIAL_CONSUMO CHAR(1) DEFAULT 'S' NOT NULL,
-		PRODUTO_INTERMED CHAR(1) DEFAULT 'S' NOT NULL,
-		PRODUTO_ACABADO CHAR(1) DEFAULT 'S' NOT NULL,
-		EMBALAGEM CHAR(1) DEFAULT 'S' NOT NULL,
-		OUTROS_INSUMOS CHAR(1) DEFAULT 'S' NOT NULL,
+        CODEMP INTEGER,
+        CODFILIAL SMALLINT,
+        DTINI DATE NOT NULL,
+        DTFIM DATE NOT NULL,
+        CODEMPGP INTEGER,
+        CODFILIALGP SMALLINT,
+        CODGRUP CHAR(14),
+        CODEMPPD INTEGER,
+        CODFILIALPD SMALLINT,
+        CODPROD INTEGER,
+        ORDEM CHAR(1) DEFAULT 'V' NOT NULL,
+        MERCADORIA_REVENDA CHAR(1) DEFAULT 'S' NOT NULL,
+        MATERIA_PRIMA CHAR(1) DEFAULT 'S' NOT NULL,
+        EM_PROCESSO CHAR(1) DEFAULT 'S' NOT NULL,
+        OUTROS CHAR(1) DEFAULT 'S' NOT NULL,
+        SUB_PRODUTO CHAR(1) DEFAULT 'S' NOT NULL,
+        EQUIPAMENTO CHAR(1) DEFAULT 'S' NOT NULL,
+        MATERIAL_CONSUMO CHAR(1) DEFAULT 'S' NOT NULL,
+        PRODUTO_INTERMED CHAR(1) DEFAULT 'S' NOT NULL,
+        PRODUTO_ACABADO CHAR(1) DEFAULT 'S' NOT NULL,
+        EMBALAGEM CHAR(1) DEFAULT 'S' NOT NULL,
+        OUTROS_INSUMOS CHAR(1) DEFAULT 'S' NOT NULL,
         DTINS DATE DEFAULT 'today' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS VARCHAR(128) DEFAULT USER NOT NULL,
@@ -4593,7 +4601,7 @@ CREATE TABLE LFCLFISCAL (CODEMP INTEGER NOT NULL,
         EXTIPI CHAR(2),
         CODSERV CHAR(5),
         CST CHAR(2),
-     	CODIGO VARCHAR(10),
+         CODIGO VARCHAR(10),
         DTINS DATE DEFAULT 'now' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
@@ -13555,6 +13563,47 @@ SET AUTODDL OFF;
 SET TERM ^ ;
 
 /* Stored procedures */
+
+/* Stored Procedure utilizada no controle da recursividade em triggers e stored procedures */
+CREATE OR ALTER PROCEDURE PRO_RECURSIVO
+(
+    IN_CHAVE VARCHAR(500)
+)
+RETURNS
+(
+    OUT_CONTA INTEGER
+)
+AS
+DECLARE VARIABLE V_ID BIGINT;
+BEGIN
+
+    V_ID = HASH(IN_CHAVE || '_' || CAST(CURRENT_TRANSACTION AS VARCHAR(1000)));
+
+    SELECT CONTA FROM GTT_RECURSIVO WHERE ID = :V_ID INTO :OUT_CONTA;
+
+    IF (OUT_CONTA IS NULL) THEN
+    BEGIN
+        OUT_CONTA = 0;
+    END
+    ELSE
+    BEGIN
+        OUT_CONTA = OUT_CONTA + 1;
+    END
+
+    UPDATE OR INSERT INTO GTT_RECURSIVO
+    (
+        ID,
+        CONTA
+    ) VALUES (
+        :V_ID,
+        :OUT_CONTA
+    ) MATCHING (
+        ID
+    );
+
+   SUSPEND;
+END^
+
 CREATE PROCEDURE ARREDDOUBLE (DEVALOR NUMERIC(15, 5),
 ICASASDEC INTEGER)
 RETURNS (DERETORNO DOUBLE PRECISION)
@@ -21950,12 +21999,12 @@ declare variable vlrfreteit numeric(15,5);
 declare variable vlrdescit numeric(15,5);
 begin
 
-	vlrbasencm = 0;
-	aliqnacncm = 0;
-	aliqimpncm = 0;
-	vlrnacncm = 0;
-	vlrimpncm = 0;
-	
+    vlrbasencm = 0;
+    aliqnacncm = 0;
+    aliqimpncm = 0;
+    vlrnacncm = 0;
+    vlrimpncm = 0;
+    
     -- Busca de regra de classificação fiscal da venda
     if(codvenda is not null and codcompra is null) then
     begin
@@ -22036,7 +22085,7 @@ begin
     begin
        -- Cálculo estimativo para lei de transparência
        if (:origfisc in ('1','2','6','7')) then 
-       	  vlrimpncm = :vlrbasencm * :aliqimpncm / 100;
+             vlrimpncm = :vlrbasencm * :aliqimpncm / 100;
        else
           vlrnacncm = :vlrbasencm * :aliqnacncm / 100;
     end 
@@ -38815,8 +38864,23 @@ as
     declare variable codfilialtm smallint;
     declare variable codtipomov integer;
 
+  DECLARE VARIABLE V_CHAVE VARCHAR(500);
+  DECLARE VARIABLE V_RECURSIVO INTEGER;
+BEGIN
 
-    begin
+  V_CHAVE = 'VDITVENDATGBI'; -- Nome do objeto (trigger ou procedure) a controlar recursiviade
+  V_CHAVE = V_CHAVE || '_' || IIF(INSERTING, 'INS', IIF(UPDATING, 'UPD', 'DEL')); -- tipo de evento
+  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODITVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  V_CHAVE = V_CHAVE || '_' || CAST(NEW.TIPOVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODFILIAL AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODEMP AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+
+  EXECUTE PROCEDURE PRO_RECURSIVO(:V_CHAVE) RETURNING_VALUES (:V_RECURSIVO);
+
+  /* Verifica se é uma chamada recursiva ou não, se não for continua */
+  IF (V_RECURSIVO = 0) THEN
+  BEGIN
 
         -- Inicializando campos nulos.
         if (new.vlrdescitvenda is null) then new.vlrdescitvenda = 0;
@@ -39063,6 +39127,7 @@ as
             vd.codemp=new.codemp and vd.codfilial=new.codfilial;
 
 
+  END
 
 end^
 
@@ -39084,7 +39149,24 @@ as
     declare variable subtipovenda char(2);
     declare variable estoqtipomovpd char(1);
 
-begin
+  DECLARE VARIABLE V_CHAVE VARCHAR(500);
+  DECLARE VARIABLE V_RECURSIVO INTEGER;
+BEGIN
+
+  V_CHAVE = 'VDITVENDATGAI'; -- Nome do objeto (trigger ou procedure) a controlar recursiviade
+  V_CHAVE = V_CHAVE || '_' || IIF(INSERTING, 'INS', IIF(UPDATING, 'UPD', 'DEL')); -- tipo de evento
+  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODITVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  V_CHAVE = V_CHAVE || '_' || CAST(NEW.TIPOVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODFILIAL AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODEMP AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+
+  EXECUTE PROCEDURE PRO_RECURSIVO(:V_CHAVE) RETURNING_VALUES (:V_RECURSIVO);
+
+  /* Verifica se é uma chamada recursiva ou não, se não for continua */
+  IF (V_RECURSIVO = 0) THEN
+  BEGIN
+
     estoqtipomovpd = 'S';
     
     -- Carregamento de preferencias
@@ -39164,6 +39246,8 @@ begin
     new.codempcp,new.codfilialcp, new.codcompra, new.coditcompra, new.codemp, new.codfilial,
     new.codvenda, new.coditvenda, new.tipovenda, new.qtditvenda);
 
+  END
+  
 end ^
  
 CREATE TRIGGER VDITVENDATGBU FOR VDITVENDA
@@ -39183,8 +39267,24 @@ as
     declare variable fatorcparc char(1);
     declare variable percicmscm numeric(9,2);
 
+  DECLARE VARIABLE V_CHAVE VARCHAR(500);
+  DECLARE VARIABLE V_RECURSIVO INTEGER;
+BEGIN
 
-    begin
+  V_CHAVE = 'VDITVENDATGBU'; -- Nome do objeto (trigger ou procedure) a controlar recursiviade
+  V_CHAVE = V_CHAVE || '_' || IIF(INSERTING, 'INS', IIF(UPDATING, 'UPD', 'DEL')); -- tipo de evento
+  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODITVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  V_CHAVE = V_CHAVE || '_' || CAST(NEW.TIPOVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODFILIAL AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODEMP AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+
+  EXECUTE PROCEDURE PRO_RECURSIVO(:V_CHAVE) RETURNING_VALUES (:V_RECURSIVO);
+
+  /* Verifica se é uma chamada recursiva ou não, se não for continua */
+  IF (V_RECURSIVO = 0) THEN
+  BEGIN
+
         percicmscm = 0.00;
 
 
@@ -39433,6 +39533,8 @@ as
 
        end
 
+  END
+
 end ^
 
  
@@ -39455,20 +39557,38 @@ AS
   declare variable subtipovenda char(2);
   declare variable estoqtipomovpd char(1);
 
+  DECLARE VARIABLE V_CHAVE VARCHAR(500);
+  DECLARE VARIABLE V_RECURSIVO INTEGER;
 BEGIN
-  
-  estoqtipomovpd = 'S';
-  select visualizalucr from sgprefere1 where codemp=new.codemp and codfilial = new.codfilial
-    into :visualizalucr;
 
-  IF ( not ( (new.EMMANUT='S') or ( (old.EMMANUT='S') and (old.EMMANUT IS NOT NULL) ) ) ) THEN
+  V_CHAVE = 'VDITVENDATGAU'; -- Nome do objeto (trigger ou procedure) a controlar recursiviade
+  V_CHAVE = V_CHAVE || '_' || IIF(INSERTING, 'INS', IIF(UPDATING, 'UPD', 'DEL')); -- tipo de evento
+  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODITVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  V_CHAVE = V_CHAVE || '_' || CAST(NEW.TIPOVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODFILIAL AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODEMP AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+
+  EXECUTE PROCEDURE PRO_RECURSIVO(:V_CHAVE) RETURNING_VALUES (:V_RECURSIVO);
+
+  /* Verifica se é uma chamada recursiva ou não, se não for continua */
+  IF (V_RECURSIVO = 0) THEN
   BEGIN
+  
+    estoqtipomovpd = 'S';
+  
+    select visualizalucr from sgprefere1 where codemp=new.codemp and codfilial = new.codfilial
+      into :visualizalucr;
+
+    IF ( not ( (new.EMMANUT='S') or ( (old.EMMANUT='S') and (old.EMMANUT IS NOT NULL) ) ) ) THEN
+    BEGIN
+    
       SELECT VD.DTEMITVENDA,VD.DOCVENDA,VD.STATUSVENDA,VD.FLAG,
              VD.CODEMPTM, VD.CODFILIALTM, VD.CODTIPOMOV, VD.SUBTIPOVENDA
-        FROM VDVENDA VD
-        WHERE VD.CODVENDA = new.CODVENDA AND VD.TIPOVENDA = new.TIPOVENDA
+      FROM VDVENDA VD
+      WHERE VD.CODVENDA = new.CODVENDA AND VD.TIPOVENDA = new.TIPOVENDA
             AND VD.CODEMP=new.CODEMP AND VD.CODFILIAL = new.CODFILIAL
-        INTO :DDTVENDA, :IDOCVENDA, :CSTATUS, :CFLAG, :ICODEMPTM,
+      INTO :DDTVENDA, :IDOCVENDA, :CSTATUS, :CFLAG, :ICODEMPTM,
           :SCODFILIALTM, :ICODTIPOMOV, :SUBTIPOVENDA;
           
       if ( (subtipovenda is not null) and (subtipovenda='NC') ) then
@@ -39559,7 +39679,10 @@ BEGIN
         new.codvenda, new.coditvenda, new.tipovenda, new.qtditvenda);
 
 
-   END
+    END
+
+  END
+  
 END ^
  
 CREATE TRIGGER VDITVENDATGBD FOR VDITVENDA 
@@ -39567,7 +39690,24 @@ ACTIVE BEFORE DELETE POSITION 0
 AS
     declare variable codfilial smallint;
     declare variable fatorcparc char(1);
-begin
+
+  DECLARE VARIABLE V_CHAVE VARCHAR(500);
+  DECLARE VARIABLE V_RECURSIVO INTEGER;
+BEGIN
+
+  V_CHAVE = 'VDITVENDATGBD'; -- Nome do objeto (trigger ou procedure) a controlar recursiviade
+  V_CHAVE = V_CHAVE || '_' || IIF(INSERTING, 'INS', IIF(UPDATING, 'UPD', 'DEL')); -- tipo de evento
+  V_CHAVE = V_CHAVE || '_' || CAST(OLD.CODVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  V_CHAVE = V_CHAVE || '_' || CAST(OLD.CODITVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  V_CHAVE = V_CHAVE || '_' || CAST(OLD.TIPOVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  V_CHAVE = V_CHAVE || '_' || CAST(OLD.CODFILIAL AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  V_CHAVE = V_CHAVE || '_' || CAST(OLD.CODEMP AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+
+  EXECUTE PROCEDURE PRO_RECURSIVO(:V_CHAVE) RETURNING_VALUES (:V_RECURSIVO);
+
+  /* Verifica se é uma chamada recursiva ou não, se não for continua */
+  IF (V_RECURSIVO = 0) THEN
+  BEGIN
 
     select icodfilial from sgretfilial(old.codemp,'SGPREFERE1') into :codfilial; 
     select fatorcparc from sgprefere1 p 
@@ -39584,6 +39724,8 @@ begin
     -- Executa procedure para exclusão de tabela de vinculo para numeros de serie
     execute procedure vditvendaseriesp('D', old.codemp, old.codfilial, old.codvenda, old.tipovenda, old.coditvenda, old.codemppd, old.codfilialpd, old.codprod, null, old.qtditvenda);
 
+  END
+  
 end ^
  
 CREATE TRIGGER VDITVENDATGAD FOR VDITVENDA 
@@ -39597,9 +39739,28 @@ AS
   DECLARE VARIABLE ICODTIPOMOV INTEGER;
   declare variable subtipovenda char(2);
   declare variable estoqtipomovpd char(1);
+
+  DECLARE VARIABLE V_CHAVE VARCHAR(500);
+  DECLARE VARIABLE V_RECURSIVO INTEGER;
 BEGIN
-  IF ( not ( (old.EMMANUT='S') and (old.EMMANUT IS NOT NULL) ) ) THEN
+
+  V_CHAVE = 'VDITVENDATGAD'; -- Nome do objeto (trigger ou procedure) a controlar recursiviade
+  V_CHAVE = V_CHAVE || '_' || IIF(INSERTING, 'INS', IIF(UPDATING, 'UPD', 'DEL')); -- tipo de evento
+  V_CHAVE = V_CHAVE || '_' || CAST(OLD.CODVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  V_CHAVE = V_CHAVE || '_' || CAST(OLD.CODITVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  V_CHAVE = V_CHAVE || '_' || CAST(OLD.TIPOVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  V_CHAVE = V_CHAVE || '_' || CAST(OLD.CODFILIAL AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  V_CHAVE = V_CHAVE || '_' || CAST(OLD.CODEMP AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+
+  EXECUTE PROCEDURE PRO_RECURSIVO(:V_CHAVE) RETURNING_VALUES (:V_RECURSIVO);
+
+  /* Verifica se é uma chamada recursiva ou não, se não for continua */
+  IF (V_RECURSIVO = 0) THEN
   BEGIN
+
+    IF ( not ( (old.EMMANUT='S') and (old.EMMANUT IS NOT NULL) ) ) THEN
+    BEGIN
+    
       estoqtipomovpd = 'S';
       
       UPDATE VDVENDA SET
@@ -39641,7 +39802,10 @@ BEGIN
          :IDOCVENDA, :CFLAG, old.QTDITVENDA, old.PRECOITVENDA,
          old.CODEMPAX, old.CODFILIALAX, old.CODALMOX, null, :estoqtipomovpd, 'N');
       
+    END
+
   END
+  
 END ^
  
 CREATE TRIGGER VDITVENDASERIETGBIBU FOR VDITVENDASERIE 
@@ -40326,63 +40490,104 @@ CREATE TRIGGER VDVENDATGBI FOR VDVENDA
 ACTIVE BEFORE INSERT POSITION 0 
 AS
   DECLARE VARIABLE sTipoMov CHAR(2);
+  DECLARE VARIABLE V_CHAVE VARCHAR(500);
+  DECLARE VARIABLE V_RECURSIVO INTEGER;
 BEGIN
-  EXECUTE PROCEDURE VDCLIENTEATIVOSP(new.CODEMPCL, new.CODFILIALCL, new.CODCLI);
-/*  EXECUTE PROCEDURE FNLIBCREDSP(new.CODVENDA,new.CODCLI,new.CODEMPCL,new.CODFILIALCL,null); */
-  IF (new.VLRPRODVENDA IS NULL) THEN new.VLRPRODVENDA = 0;
-  IF (new.VLRDESCVENDA IS NULL) THEN new.VLRDESCVENDA = 0;
-  IF (new.VLRDESCITVENDA IS NULL) THEN new.VLRDESCITVENDA = 0;
-  IF (new.VLRVENDA IS NULL) THEN new.VLRVENDA = 0;
-  IF (new.VLRBASEICMSVENDA IS NULL) THEN new.VLRBASEICMSVENDA = 0;
-  IF (new.VLRICMSVENDA IS NULL) THEN new.VLRICMSVENDA = 0;
-  IF (new.VLRPISVENDA IS NULL) THEN new.VLRPISVENDA = 0;
-  IF (new.VLRIRVENDA IS NULL) THEN new.VLRIRVENDA = 0;
-  IF (new.VLRCSOCIALVENDA IS NULL) THEN new.VLRCSOCIALVENDA = 0;
-  IF (new.VLRISENTASVENDA IS NULL) THEN new.VLRISENTASVENDA = 0;
-  IF (new.VLROUTRASVENDA IS NULL) THEN new.VLROUTRASVENDA = 0;
-  IF (new.VLRBASEIPIVENDA IS NULL) THEN new.VLRBASEIPIVENDA = 0;
-  IF (new.VLRIPIVENDA IS NULL) THEN new.VLRIPIVENDA = 0;
-  IF (new.VLRLIQVENDA IS NULL) THEN new.VLRLIQVENDA = 0;
-  IF (new.VLRCOMISVENDA IS NULL) THEN new.VLRCOMISVENDA = 0;
-  IF (new.VLRFRETEVENDA IS NULL) THEN new.VLRFRETEVENDA = 0;
-  IF (new.VLRADICVENDA IS NULL) THEN new.VLRADICVENDA = 0;
-  IF (new.TIPOVENDA IS NULL) THEN new.TIPOVENDA = 'V';
-  IF (new.VLRBASEISSVENDA IS NULL) THEN new.VLRBASEISSVENDA = 0;
-  IF (new.VLRISSVENDA IS NULL) THEN new.VLRISSVENDA = 0;
-  IF (new.VLRPISVENDA IS NULL) THEN new.VLRPISVENDA = 0;
-  IF (new.VLRIRVENDA IS NULL) THEN new.VLRIRVENDA = 0;
-  IF (new.VLRCSOCIALVENDA IS NULL) THEN new.VLRCSOCIALVENDA = 0;
-  IF (new.vlrbasepisvenda IS NULL) THEN new.vlrbasepisvenda = 0;
-  IF (new.vlrbasecofinsvenda IS NULL) THEN new.vlrbasecofinsvenda = 0;
-  IF (new.vlrpisvenda IS NULL) THEN new.vlrpisvenda = 0;
-  IF (new.vlrcofinsvenda IS NULL) THEN new.vlrcofinsvenda = 0;
-  IF (new.vlrbasecomis IS NULL) THEN new.vlrbasecomis = 0;
-  if (new.sitdoc is null) then new.sitdoc='00';
-  if (new.dtcompvenda is null) then new.dtcompvenda=new.dtemitvenda;
 
-  IF (new.CODCAIXA IS NULL) THEN
-    SELECT CODTERM FROM SGRETCAIXA INTO new.CODCAIXA;
-  SELECT ICODFILIAL FROM SGRETFILIAL(new.CODEMP,'PVCAIXA') INTO new.CODFILIALCX;
-  new.CODEMPCX = new.CODEMP;
-  IF (NOT new.tipovenda = 'E') THEN -- Se for ECF não precisa buscar o DOC, porque o DOC é o numero do cupom.
-      SELECT DOC FROM LFNOVODOCSP(new.Serie,new.CODEMPSE,new.CODFILIALSE) INTO new.DocVenda;
-  SELECT TIPOMOV,FISCALTIPOMOV FROM EQTIPOMOV WHERE CODTIPOMOV=new.CODTIPOMOV
+  V_CHAVE = 'VDVENDATGBI'; -- Nome do objeto (trigger ou procedure) a controlar recursividade
+  V_CHAVE = V_CHAVE || '_' || IIF(INSERTING, 'INS', IIF(UPDATING, 'UPD', 'DEL')); -- tipo de evento
+  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  V_CHAVE = V_CHAVE || '_' || CAST(NEW.TIPOVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODFILIAL AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODEMP AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+
+  EXECUTE PROCEDURE PRO_RECURSIVO(:V_CHAVE) RETURNING_VALUES (:V_RECURSIVO);
+
+  /* Verifica se é uma chamada recursiva ou não, se não for continua */
+  IF (V_RECURSIVO = 0) THEN
+  BEGIN
+
+    EXECUTE PROCEDURE VDCLIENTEATIVOSP(new.CODEMPCL, new.CODFILIALCL, new.CODCLI);
+    /*  EXECUTE PROCEDURE FNLIBCREDSP(new.CODVENDA,new.CODCLI,new.CODEMPCL,new.CODFILIALCL,null); */
+    IF (new.VLRPRODVENDA IS NULL) THEN new.VLRPRODVENDA = 0;
+    IF (new.VLRDESCVENDA IS NULL) THEN new.VLRDESCVENDA = 0;
+    IF (new.VLRDESCITVENDA IS NULL) THEN new.VLRDESCITVENDA = 0;
+    IF (new.VLRVENDA IS NULL) THEN new.VLRVENDA = 0;
+    IF (new.VLRBASEICMSVENDA IS NULL) THEN new.VLRBASEICMSVENDA = 0;
+    IF (new.VLRICMSVENDA IS NULL) THEN new.VLRICMSVENDA = 0;
+    IF (new.VLRPISVENDA IS NULL) THEN new.VLRPISVENDA = 0;
+    IF (new.VLRIRVENDA IS NULL) THEN new.VLRIRVENDA = 0;
+    IF (new.VLRCSOCIALVENDA IS NULL) THEN new.VLRCSOCIALVENDA = 0;
+    IF (new.VLRISENTASVENDA IS NULL) THEN new.VLRISENTASVENDA = 0;
+    IF (new.VLROUTRASVENDA IS NULL) THEN new.VLROUTRASVENDA = 0;
+    IF (new.VLRBASEIPIVENDA IS NULL) THEN new.VLRBASEIPIVENDA = 0;
+    IF (new.VLRIPIVENDA IS NULL) THEN new.VLRIPIVENDA = 0;
+    IF (new.VLRLIQVENDA IS NULL) THEN new.VLRLIQVENDA = 0;
+    IF (new.VLRCOMISVENDA IS NULL) THEN new.VLRCOMISVENDA = 0;
+    IF (new.VLRFRETEVENDA IS NULL) THEN new.VLRFRETEVENDA = 0;
+    IF (new.VLRADICVENDA IS NULL) THEN new.VLRADICVENDA = 0;
+    IF (new.TIPOVENDA IS NULL) THEN new.TIPOVENDA = 'V';
+    IF (new.VLRBASEISSVENDA IS NULL) THEN new.VLRBASEISSVENDA = 0;
+    IF (new.VLRISSVENDA IS NULL) THEN new.VLRISSVENDA = 0;
+    IF (new.VLRPISVENDA IS NULL) THEN new.VLRPISVENDA = 0;
+    IF (new.VLRIRVENDA IS NULL) THEN new.VLRIRVENDA = 0;
+    IF (new.VLRCSOCIALVENDA IS NULL) THEN new.VLRCSOCIALVENDA = 0;
+    IF (new.vlrbasepisvenda IS NULL) THEN new.vlrbasepisvenda = 0;
+    IF (new.vlrbasecofinsvenda IS NULL) THEN new.vlrbasecofinsvenda = 0;
+    IF (new.vlrpisvenda IS NULL) THEN new.vlrpisvenda = 0;
+    IF (new.vlrcofinsvenda IS NULL) THEN new.vlrcofinsvenda = 0;
+    IF (new.vlrbasecomis IS NULL) THEN new.vlrbasecomis = 0;
+    if (new.sitdoc is null) then new.sitdoc='00';
+    if (new.dtcompvenda is null) then new.dtcompvenda=new.dtemitvenda;
+
+    IF (new.CODCAIXA IS NULL) THEN
+        SELECT CODTERM FROM SGRETCAIXA INTO new.CODCAIXA;
+
+    SELECT ICODFILIAL FROM SGRETFILIAL(new.CODEMP,'PVCAIXA') INTO new.CODFILIALCX;
+
+    new.CODEMPCX = new.CODEMP;
+
+    IF (NOT new.tipovenda = 'E') THEN -- Se for ECF não precisa buscar o DOC, porque o DOC é o numero do cupom.
+        SELECT DOC FROM LFNOVODOCSP(new.Serie,new.CODEMPSE,new.CODFILIALSE) INTO new.DocVenda;
+
+    SELECT TIPOMOV,FISCALTIPOMOV FROM EQTIPOMOV WHERE CODTIPOMOV=new.CODTIPOMOV
          AND CODEMP=new.CODEMP AND CODFILIAL = new.CODFILIALTM INTO sTipoMov,new.FLAG;
-  IF ( new.FLAG <> 'S') THEN
-  BEGIN
-     new.FLAG = 'N';
+
+    IF ( new.FLAG <> 'S') THEN
+    BEGIN
+        new.FLAG = 'N';
+    END
+
+    if ((new.STATUSVENDA is null) OR (RTRIM(new.STATUSVENDA) = '*')) then
+    BEGIN
+        IF (sTipoMov = 'VD') THEN new.STATUSVENDA = 'V1';
+            ELSE new.STATUSVENDA = 'P1';
+    END
+
   END
-  if ((new.STATUSVENDA is null) OR (RTRIM(new.STATUSVENDA) = '*')) then
-  BEGIN
-     IF (sTipoMov = 'VD') THEN new.STATUSVENDA = 'V1';
-     ELSE new.STATUSVENDA = 'P1';
-  END
+
 END ^
  
 CREATE TRIGGER VDVENDATGAI FOR VDVENDA 
 ACTIVE AFTER INSERT POSITION 0 
 AS
-begin
+  DECLARE VARIABLE V_CHAVE VARCHAR(500);
+  DECLARE VARIABLE V_RECURSIVO INTEGER;
+BEGIN
+
+  V_CHAVE = 'VDVENDATGAI'; -- Nome do objeto (trigger ou procedure) a controlar recursividade
+  V_CHAVE = V_CHAVE || '_' || IIF(INSERTING, 'INS', IIF(UPDATING, 'UPD', 'DEL')); -- tipo de evento
+  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  V_CHAVE = V_CHAVE || '_' || CAST(NEW.TIPOVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODFILIAL AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODEMP AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+
+  EXECUTE PROCEDURE PRO_RECURSIVO(:V_CHAVE) RETURNING_VALUES (:V_RECURSIVO);
+
+  /* Verifica se é uma chamada recursiva ou não, se não for continua */
+  IF (V_RECURSIVO = 0) THEN
+  BEGIN
+
     insert into vdvendacomis
     (codemp,codfilial,codvenda,tipovenda,seqvc,
     codemprc, codfilialrc, codregrcomis, seqitrc,
@@ -40396,6 +40601,9 @@ begin
             and irc.codemp=tm.codemprc and irc.codfilial=tm.codfilialrc and irc.codregrcomis=tm.codregrcomis
             and vd.codemp=NEW.codemp and vd.codfilial=NEW.codfilial and vd.codvenda=NEW.codvenda
             and vd.tipovenda=NEW.tipovenda;
+
+  END
+
 end ^
  
 CREATE TRIGGER VDVENDATGBU FOR VDVENDA 
@@ -40426,31 +40634,50 @@ AS
   DECLARE VARIABLE PERCIT NUMERIC(9,2);
   DECLARE VARIABLE RETENSAOIMP CHAR(1);
 
+  DECLARE VARIABLE V_CHAVE VARCHAR(500);
+  DECLARE VARIABLE V_RECURSIVO INTEGER;
 BEGIN
 
-  retensaoimp = 'N';
+  V_CHAVE = 'VDVENDATGBU'; -- Nome do objeto (trigger ou procedure) a controlar recursividade
+  V_CHAVE = V_CHAVE || '_' || IIF(INSERTING, 'INS', IIF(UPDATING, 'UPD', 'DEL')); -- tipo de evento
+  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  V_CHAVE = V_CHAVE || '_' || CAST(NEW.TIPOVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODFILIAL AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODEMP AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
 
-  IF (new.EMMANUT IS NULL) THEN
-     new.EMMANUT='N';
-  if (new.BLOQVENDA IS NULL) then
-     new.BLOQVENDA='N';
-  IF ( not ( (new.EMMANUT='S') or ( (old.EMMANUT='S') and (old.EMMANUT is not null)) ) ) THEN
+  EXECUTE PROCEDURE PRO_RECURSIVO(:V_CHAVE) RETURNING_VALUES (:V_RECURSIVO);
+
+  /* Verifica se é uma chamada recursiva ou não, se não for continua */
+  IF (V_RECURSIVO = 0) THEN
   BEGIN
+
+    retensaoimp = 'N';
+
+    IF (new.EMMANUT IS NULL) THEN
+      new.EMMANUT='N';
+
+    if (new.BLOQVENDA IS NULL) then
+      new.BLOQVENDA='N';
+
+    IF ( not ( (new.EMMANUT='S') or ( (old.EMMANUT='S') and (old.EMMANUT is not null)) ) ) THEN
+    BEGIN
+
       if ( ( (old.BLOQVENDA IS  NULL) OR (old.BLOQVENDA='N') ) AND (new.BLOQVENDA='S') )  then
       begin
           new.DTALT=cast('now' AS DATE);
           new.IDUSUALT=user;
           new.HALT=cast('now' AS TIME);
       end
+
       IF ( (new.DTCOMPVENDA is null) or (old.DTEMITVENDA<>new.DTEMITVENDA)  ) THEN
          new.DTCOMPVENDA=new.DTEMITVENDA;
 
       SELECT ICODFILIAL FROM SGRETFILIAL(new.CODEMP, 'SGPREFERE1') INTO iCodFilialPref;
+
       EXECUTE PROCEDURE VDCLIENTEATIVOSP(new.CODEMPCL, new.CODFILIALCL, new.CODCLI);
 
       if ( ( (old.BLOQVENDA IS NOT NULL AND old.BLOQVENDA='S') or (new.BLOQVENDA='S') ) and coalesce(old.chavenfevenda,'')=coalesce(new.chavenfevenda,'')) then
          EXCEPTION VDVENDAEX07 'ESTA VENDA ESTÁ BLOQUEADA!!!';
-
 
       new.DTALT=cast('now' AS DATE);
       new.IDUSUALT=user;
@@ -40589,9 +40816,9 @@ BEGIN
           new.vlrbaseicmsstvenda=0;
           new.vlricmsstvenda=0;
       END
-    /**
+      /**
        COMISSAO
-    **/
+      **/
       IF ((NOT NEW.VLRCOMISVENDA IS NULL) AND
           (NEW.VLRLIQVENDA > 0) AND
           ((NOT NEW.VLRDESCVENDA = OLD.VLRDESCVENDA) OR (NOT NEW.PERCMCOMISVENDA = OLD.PERCMCOMISVENDA))) then
@@ -40635,15 +40862,15 @@ BEGIN
       ELSE IF (new.PERCMCOMISVENDA = old.PERCMCOMISVENDA AND new.VLRLIQVENDA > 0) THEN
       begin
         -- new.PERCMCOMISVENDA = (new.VLRCOMISVENDA/new.VLRLIQVENDA)*100.000;
-    -- Modificado, pois causava divergencia em vendas geradas a partir de orçamentos.
-    if ((new.vlrprodvenda-new.vlrdescvenda)>0) then
-    begin
-        new.PERCMCOMISVENDA = (new.VLRCOMISVENDA/(new.vlrprodvenda-new.vlrdescvenda)) * 100;
-    end
-    else
-    begin
-        new.PERCMCOMISVENDA = 0;
-    end
+        -- Modificado, pois causava divergencia em vendas geradas a partir de orçamentos.
+        if ((new.vlrprodvenda-new.vlrdescvenda)>0) then
+        begin
+          new.PERCMCOMISVENDA = (new.VLRCOMISVENDA/(new.vlrprodvenda-new.vlrdescvenda)) * 100;
+        end
+        else
+        begin
+          new.PERCMCOMISVENDA = 0;
+        end
       end
 
       IF (new.STATUSVENDA = 'V4') THEN
@@ -40655,19 +40882,20 @@ BEGIN
       BEGIN
         new.DOCVENDA = old.DOCVENDA;
       END
+    END
+
+    -- Atualizando o status do documento fiscal para 02 - Documento cancelado, quando nota for cancelado pelo sistema.
+    IF (substr(new.STATUSVENDA,1,1) = 'C' and new.sitdoc!='02') THEN
+    begin
+      new.sitdoc = '02';
+    end
+
+    if(old.chavenfevenda is null and new.chavenfevenda is not null) then
+    begin
+      new.emmanut = 'N';
+    end
+
   END
-
-  -- Atualizando o status do documento fiscal para 02 - Documento cancelado, quando nota for cancelado pelo sistema.
-  IF (substr(new.STATUSVENDA,1,1) = 'C' and new.sitdoc!='02') THEN
-  begin
-    new.sitdoc = '02';
-  end
-
-  if(old.chavenfevenda is null and new.chavenfevenda is not null) then
-  begin
-    new.emmanut = 'N';
-  end
-
 
 END ^
  
@@ -40711,7 +40939,22 @@ as
     declare variable vlrretensaoiss numeric(15, 5);
     declare variable icodmodnota integer;
 
-    begin
+  DECLARE VARIABLE V_CHAVE VARCHAR(500);
+  DECLARE VARIABLE V_RECURSIVO INTEGER;
+BEGIN
+
+  V_CHAVE = 'VDVENDATGAU'; -- Nome do objeto (trigger ou procedure) a controlar recursividade
+  V_CHAVE = V_CHAVE || '_' || IIF(INSERTING, 'INS', IIF(UPDATING, 'UPD', 'DEL')); -- tipo de evento
+  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  V_CHAVE = V_CHAVE || '_' || CAST(NEW.TIPOVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODFILIAL AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODEMP AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+
+  EXECUTE PROCEDURE PRO_RECURSIVO(:V_CHAVE) RETURNING_VALUES (:V_RECURSIVO);
+
+  /* Verifica se é uma chamada recursiva ou não, se não for continua */
+  IF (V_RECURSIVO = 0) THEN
+  BEGIN
 
         if ( not ( (new.emmanut='S') or ( (old.emmanut='S') and (old.emmanut is not null) )) ) then
         begin
@@ -41092,21 +41335,43 @@ as
               eqm.tipovenda=new.tipovenda and eqm.codvenda=new.codvenda and eqm.docmovserie<>new.docvenda;
       end
 
-   end
+    end
 
+  END
+  
 end ^
  
 CREATE TRIGGER VDVENDATGBD FOR VDVENDA 
 ACTIVE BEFORE DELETE POSITION 0 
 AS
+  DECLARE VARIABLE V_CHAVE VARCHAR(500);
+  DECLARE VARIABLE V_RECURSIVO INTEGER;
 BEGIN
-  IF ( not ( ( old.EMMANUT='S') and (old.EMMANUT IS NOT NULL) ) ) THEN
+
+  V_CHAVE = 'VDVENDATGBD'; -- Nome do objeto (trigger ou procedure) a controlar recursiviade
+  V_CHAVE = V_CHAVE || '_' || IIF(INSERTING, 'INS', IIF(UPDATING, 'UPD', 'DEL')); -- tipo de evento
+  V_CHAVE = V_CHAVE || '_' || CAST(OLD.CODVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  V_CHAVE = V_CHAVE || '_' || CAST(OLD.TIPOVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  V_CHAVE = V_CHAVE || '_' || CAST(OLD.CODFILIAL AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  V_CHAVE = V_CHAVE || '_' || CAST(OLD.CODEMP AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+
+  EXECUTE PROCEDURE PRO_RECURSIVO(:V_CHAVE) RETURNING_VALUES (:V_RECURSIVO);
+
+  /* Verifica se é uma chamada recursiva ou não, se não for continua */
+  IF (V_RECURSIVO = 0) THEN
   BEGIN
-      if ( (old.BLOQVENDA IS NOT NULL) AND (old.BLOQVENDA='S') ) then
-         EXCEPTION VDVENDAEX05 'ESTA VENDA ESTÁ BLOQUEADA!!!';
-      DELETE FROM VDFRETEVD WHERE CODVENDA=old.CODVENDA  AND TIPOVENDA=old.TIPOVENDA
-             AND CODEMP=old.CODEMP AND CODFILIAL = old.CODFILIAL;
+
+      IF ( not ( ( old.EMMANUT='S') and (old.EMMANUT IS NOT NULL) ) ) THEN
+      BEGIN
+
+        if ( (old.BLOQVENDA IS NOT NULL) AND (old.BLOQVENDA='S') ) then
+          EXCEPTION VDVENDAEX05 'ESTA VENDA ESTÁ BLOQUEADA!!!';
+        DELETE FROM VDFRETEVD WHERE CODVENDA=old.CODVENDA  AND TIPOVENDA=old.TIPOVENDA
+          AND CODEMP=old.CODEMP AND CODFILIAL = old.CODFILIAL;
+    END
+
   END
+
 END ^
  
 CREATE TRIGGER VDVENDACOMISTGBU FOR VDVENDACOMIS 
