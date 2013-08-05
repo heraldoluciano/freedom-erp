@@ -1,6 +1,7 @@
- 
-SET SQL DIALECT 3; 
- 
+SET SQL DIALECT 3;
+
+SET NAMES WIN1252;
+
 /* CREATE DATABASE 'localhost:/opt/firebird/dados/desenv/freedom.fdb' DEFAULT CHARACTER SET NONE */
 
 
