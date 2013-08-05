@@ -1,3 +1,7 @@
+SET SQL DIALECT 3;
+
+SET NAMES WIN1252;
+
 UPDATE RDB$RELATIONS SET RDB$DESCRIPTION='Atendentes.' WHERE RDB$RELATION_NAME='ATATENDENTE';
 UPDATE RDB$RELATIONS SET RDB$DESCRIPTION='Tabela para vinculo entre item de contas a receber e atendimentos, a fim de registrar contatos e atendimentos,
 referentes a cobranças e negociações de títulos.' WHERE RDB$RELATION_NAME='ATATENDIMENTOITREC';
