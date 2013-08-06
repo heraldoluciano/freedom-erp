@@ -27,4 +27,4 @@ begin
 end
 ^
 
-commit;
+commit^

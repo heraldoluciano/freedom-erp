@@ -3,7 +3,7 @@
    Page size: 4096. Cache pages: 75 (300 Kb). Read-only: False. */
 SET SQL DIALECT 3;
 
-CONNECT '/opt/firebird/dados/desenv/1.2.2.2/freedom.fdb' USER 'SYSDBA' PASSWORD 'masterkey';
+--CONNECT '/opt/firebird/dados/desenv/1.2.2.2/freedom.fdb' USER 'SYSDBA' PASSWORD 'masterkey';
 
 SET AUTODDL ON;
 
