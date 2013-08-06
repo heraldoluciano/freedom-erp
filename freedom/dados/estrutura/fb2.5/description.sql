@@ -1252,7 +1252,6 @@ COMMENT ON    COLUMN    FNTIPOCOB.SEQTALAO IS 'Sequencia do talonário.';
 COMMENT ON    COLUMN    FNTIPOCOB.NRODIASCOMP IS 'Numero de dias para compensação do valor.';
 COMMENT ON TABLE        FNTIPORESTR IS 'Tipos de restrições.';
 COMMENT ON    COLUMN    FNTIPORESTR.BLOQTPRESTR IS 'Define se a restrição bloqueia os lançamentos.';
-COMMENT ON TABLE        GTT_RECURSIVO IS 'Tabela utilizada no controle da recursividade em triggers e stored procedures';
 COMMENT ON    COLUMN    LFCLFISCAL.TIPOFISC IS 'Campo inutilizado (mantido por retrocompatibilidade)';
 COMMENT ON    COLUMN    LFCLFISCAL.TPREDICMSFISC IS 'Campo inutilizado (mantido por retrocompatibilidade)';
 COMMENT ON    COLUMN    LFCLFISCAL.ALIQFISC IS 'Campo inutilizado (mantido por retrocompatibilidade)';
@@ -3101,7 +3100,6 @@ COMMENT ON    PARAMETER PPGERAOP.CODPRODENTRADA IS 'Código do produto de entrada
 COMMENT ON    PARAMETER PPGERAOP.QTDENTRADA IS 'Quantidade do produto de entrada (conversão de produtos)';
 COMMENT ON PROCEDURE    PPGERAOPCQ IS 'Procedure disparada após a inserção na tabela PPOP, realiza varredura na estrutura do produto, verificando as análises necessárias
 no controle de qualidade e gerando registros referentes ao controle de qualidade na tabela PPOPCQ.';
-COMMENT ON PROCEDURE    PRO_RECURSIVO IS 'Stored Procedure utilizada no controle da recursividade em triggers e stored procedures';
 COMMENT ON    PARAMETER RHLISTACANDVAGASP.ICODVAGA IS 'Código da vaga';
 COMMENT ON    PARAMETER RHLISTACANDVAGASP.ICODFUNC IS 'Código da função';
 COMMENT ON PROCEDURE    TKGERACAMPANHACTO IS 'Procedure para geração de registros nas tabelas TKCAMPANHACTO e TKSITCAMP.';
