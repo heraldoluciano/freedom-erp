@@ -107,7 +107,7 @@ Update Rdb$Relation_Fields set Rdb$Description =
 where Rdb$Relation_Name='SGPREFERE1' and Rdb$Field_Name='CODPLANPC';
 
 /* Create Foreign Key... */
-CONNECT 'localhost:/opt/firebird/dados/desenv/1.2.3.8/freedom.fdb' USER 'SYSDBA' PASSWORD 'masterkey';
+--CONNECT 'localhost:/opt/firebird/dados/desenv/1.2.3.8/freedom.fdb' USER 'SYSDBA' PASSWORD 'masterkey';
 
 ALTER TABLE CPCOMPRA ADD CONSTRAINT CPCOMPRAFKFNCC FOREIGN KEY (CODCC,ANOCC,CODFILIALCC,CODEMPCC) REFERENCES FNCC(CODCC,ANOCC,CODFILIAL,CODEMP);
 

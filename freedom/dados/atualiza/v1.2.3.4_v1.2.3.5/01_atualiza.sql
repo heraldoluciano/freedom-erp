@@ -135,7 +135,7 @@ ir.sitexpitrma='ET'
 ;
 
 /* Create Foreign Key... */
-CONNECT 'localhost:/opt/firebird/dados/desenv/1.2.3.4/freedom.fdb' USER 'SYSDBA' PASSWORD 'masterkey';
+--CONNECT 'localhost:/opt/firebird/dados/desenv/1.2.3.4/freedom.fdb' USER 'SYSDBA' PASSWORD 'masterkey';
 
 ALTER TABLE FNCHEQUE ADD CONSTRAINT FNCHEQUEFKFNBANCO FOREIGN KEY (CODBANC,CODFILIALBO,CODEMPBO) REFERENCES FNBANCO(CODBANCO,CODFILIAL,CODEMP);
 
