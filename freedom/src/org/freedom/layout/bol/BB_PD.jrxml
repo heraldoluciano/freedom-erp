@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="BB_PD" pageWidth="595" pageHeight="842" columnWidth="539" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="28">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="2.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
@@ -301,7 +301,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
-				<text><![CDATA[Cedente]]></text>
+				<text><![CDATA[Beneficiário]]></text>
 			</staticText>
 			<staticText>
 				<reportElement key="staticText-3" x="1" y="169" width="66" height="8"/>
@@ -330,7 +330,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 				<text><![CDATA[Uso do Banco]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-5" x="1" y="205" width="75" height="8"/>
+				<reportElement key="staticText-5" x="0" y="205" width="347" height="8"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -340,7 +340,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
-				<text><![CDATA[Instruções :]]></text>
+				<text><![CDATA[Instruções de responsabilidade do BENEFICIÁRIO. Qualquer dúvida sobre este boleto, contate o BENEFICIÁRIO.]]></text>
 			</staticText>
 			<staticText>
 				<reportElement key="staticText-6" x="79" y="169" width="66" height="8"/>
@@ -470,7 +470,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
-				<text><![CDATA[Agência / Código Cedente]]></text>
+				<text><![CDATA[Agência / Código Beneficiário]]></text>
 			</staticText>
 			<staticText>
 				<reportElement key="staticText-16" x="357" y="271" width="100" height="8"/>
@@ -564,7 +564,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 				<text><![CDATA[Nosso Número]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-23" x="1" y="290" width="33" height="8"/>
+				<reportElement key="staticText-23" x="1" y="290" width="36" height="8"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -574,7 +574,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
-				<text><![CDATA[Sacado :]]></text>
+				<text><![CDATA[Pagador :]]></text>
 			</staticText>
 			<staticText>
 				<reportElement key="staticText-24" x="1" y="320" width="65" height="8"/>
@@ -964,7 +964,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[Recibo do Sacado]]></text>
+				<text><![CDATA[Recibo do Pagador]]></text>
 			</staticText>
 			<line>
 				<reportElement key="line-27" x="380" y="5" width="1" height="17"/>
@@ -1092,7 +1092,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
-				<text><![CDATA[Agência / Código Cedente]]></text>
+				<text><![CDATA[Agência / Código Beneficiário]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
 				<reportElement key="textField-38" x="53" y="30" width="106" height="9"/>
@@ -1213,7 +1213,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
-				<text><![CDATA[Agência / Código Cedente]]></text>
+				<text><![CDATA[Agência / Código Beneficiário]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
 				<reportElement key="textField-41" x="317" y="30" width="100" height="9"/>
@@ -1462,7 +1462,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="5" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
-				<text><![CDATA[Cedente]]></text>
+				<text><![CDATA[Beneficiário]]></text>
 			</staticText>
 			<line>
 				<reportElement key="line-48" x="266" y="73" width="256" height="1"/>
@@ -1494,7 +1494,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
-				<text><![CDATA[Sacado]]></text>
+				<text><![CDATA[Pagador]]></text>
 			</staticText>
 			<line>
 				<reportElement key="line-49" x="266" y="99" width="256" height="1"/>
@@ -1633,7 +1633,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="5" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
-				<text><![CDATA[Sacado]]></text>
+				<text><![CDATA[Pagador]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
 				<reportElement key="textField-54" x="2" y="76" width="257" height="9"/>

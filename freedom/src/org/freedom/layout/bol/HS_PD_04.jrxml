@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="144"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -354,7 +354,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
-				<text><![CDATA[Cedente]]></text>
+				<text><![CDATA[Beneficiário]]></text>
 			</staticText>
 			<staticText>
 				<reportElement key="staticText-3" x="5" y="519" width="66" height="8"/>
@@ -393,7 +393,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
-				<text><![CDATA[Instruções: (TODAS AS INFORMAÇÕES DESTE BOLETO SÃO DE EXCLUSIVA RESPONSABILIDADE DO CEDENTE)]]></text>
+				<text><![CDATA[Instruções de responsabilidade do BENEFICIÁRIO. Qualquer dúvida sobre este boleto, contate o BENEFICIÁRIO.]]></text>
 			</staticText>
 			<staticText>
 				<reportElement key="staticText-6" x="83" y="519" width="66" height="8"/>
@@ -523,7 +523,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
-				<text><![CDATA[Agência / Código Cedente]]></text>
+				<text><![CDATA[Agência / Código Beneficiário]]></text>
 			</staticText>
 			<staticText>
 				<reportElement key="staticText-16" x="361" y="621" width="100" height="8"/>
@@ -627,7 +627,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
-				<text><![CDATA[Sacado :]]></text>
+				<text><![CDATA[Pagador :]]></text>
 			</staticText>
 			<staticText>
 				<reportElement key="staticText-24" x="5" y="670" width="65" height="8"/>
@@ -1195,7 +1195,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
-				<text><![CDATA[Cedente]]></text>
+				<text><![CDATA[Beneficiário]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
 				<reportElement key="textField-57" x="9" y="314" width="58" height="10">
@@ -1262,7 +1262,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
-				<text><![CDATA[Instruções: (TODAS AS INFORMAÇÕES DESTE BOLETO SÃO DE EXCLUSIVA RESPONSABILIDADE DO CEDENTE)]]></text>
+				<text><![CDATA[Instruções de responsabilidade do BENEFICIÁRIO. Qualquer dúvida sobre este boleto, contate o BENEFICIÁRIO.]]></text>
 			</staticText>
 			<textField isBlankWhenNull="false">
 				<reportElement key="textField" x="415" y="236" width="80" height="9"/>
@@ -1426,7 +1426,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
-				<text><![CDATA[Sacado :]]></text>
+				<text><![CDATA[Pagador :]]></text>
 			</staticText>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
 				<reportElement key="textField-15" x="415" y="202" width="80" height="9"/>
@@ -1638,7 +1638,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
-				<text><![CDATA[Agência / Código Cedente]]></text>
+				<text><![CDATA[Agência / Código Beneficiário]]></text>
 			</staticText>
 			<line>
 				<reportElement key="line-4" x="4" y="211" width="524" height="1"/>
@@ -1851,7 +1851,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
-				<text><![CDATA[Agência / Código Cedente]]></text>
+				<text><![CDATA[Agência / Código Beneficiário]]></text>
 			</staticText>
 			<staticText>
 				<reportElement key="staticText-22" x="361" y="81" width="100" height="8"/>
@@ -2137,7 +2137,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
-				<text><![CDATA[Cedente]]></text>
+				<text><![CDATA[Beneficiário]]></text>
 			</staticText>
 			<image scaleImage="RetainShape" vAlign="Middle" isUsingCache="true">
 				<reportElement key="image-4" x="5" y="17" width="100" height="24"/>
@@ -2340,7 +2340,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="6" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
-				<text><![CDATA[Sacado :]]></text>
+				<text><![CDATA[Pagador :]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
 				<reportElement key="textField-31" x="38" y="119" width="477" height="9"/>
