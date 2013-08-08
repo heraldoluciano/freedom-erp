@@ -36,6 +36,6 @@ SET ISC_PASSWORD=masterkey
 echo on
 del FREEDOM_T.FDB
 copy /y FREEDOM.FDB FREEDOM_T.FDB
-fbclone25.exe -v -ic -ics -f -po -e -rd erros.log -s FREEDOM_25_NONE.FDB -t FREEDOM_T.FDB -tc ISO8859_1 -rc ISO8859_1 -wc ISO8859_1
+fbclone25.exe -v -ic -ics -ci 10000 -po -e -rd erros.log -s FREEDOM_25_NONE.FDB -t FREEDOM_T.FDB -tc ISO8859_1 -rc ISO8859_1 -wc ISO8859_1
 pause
 
