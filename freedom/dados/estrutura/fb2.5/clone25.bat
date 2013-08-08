@@ -34,7 +34,7 @@ echo off
 SET ISC_USER=SYSDBA
 SET ISC_PASSWORD=masterkey
 echo on
-del FREEDOM_T.FDB
-copy /y FREEDOM.FDB FREEDOM_T.FDB
-fbclone25.exe -v -ic -ics -ci 10000 -po -e -rd erros.log -s localhost/3050:c:/opt/firebird/dados/desenv/FREEDOM_25_NONE.FDB -t localhost/3050:c:/opt/firebird/dados/desenv/FREEDOM_T.FDB -tc ISO8859_1 -rc ISO8859_1 -wc ISO8859_1
+del c:\opt\firebird\dados\desenv\FREEDOM_TABELAS_T.FDB
+copy /y c:\opt\firebird\dados\desenv\FREEDOM_TABELAS.FDB c:\opt\firebird\dados\desenv\FREEDOM_TABELAS_T.FDB
+fbclone25.exe -v -ic -ics -ci 10000 -po -e -rd erros.log -s localhost/3050:c:/opt/firebird/dados/desenv/FREEDOM_25_NONE.FDB -t localhost/3050:c:/opt/firebird/dados/desenv/FREEDOM_TABELAS_T.FDB -tc ISO8859_1 -rc ISO8859_1 -wc ISO8859_1
 pause
