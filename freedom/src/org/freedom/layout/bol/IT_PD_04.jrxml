@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="IT_PD_04" pageWidth="595" pageHeight="842" columnWidth="533" leftMargin="34" rightMargin="28" topMargin="8" bottomMargin="8">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.zoom" value="2.4200000000000004"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="480"/>
+	<property name="ireport.y" value="96"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -27,6 +27,7 @@
 	<parameter name="IMPDOCBOL" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["N"]]></defaultValueExpression>
 	</parameter>
+	<parameter name="CNPJFILIAL" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT IM.DVCONVCOB, ITR.DTVENCITREC,ITR.NPARCITREC,ITR.VLRAPAGITREC, ITR.VLRPARCITREC,
 ITR.VLRDESCITREC, (ITR.VLRJUROSITREC+ITR.VLRMULTAITREC) VLRMULTA, R.DOCREC,ITR.CODBANCO, B.DVBANCO,
@@ -35,7 +36,7 @@ MB.ESPDOCMODBOL ESPDOC, MB.ACEITEMODBOL ACEITE, MB.MDECOB, ITR.dtitrec AS DTEMIT
 C.RAZCLI,C.CPFCLI,C.CNPJCLI, C.ENDCLI,C.NUMCLI,C.COMPLCLI,C.CEPCLI,C.BAIRCLI,
 C.CIDCLI,C.UFCLI, C.ENDCOB,C.NUMCOB,C.COMPLCOB,C.CEPCOB,C.BAIRCOB,C.CIDCOB,C.UFCOB, P.CODMOEDA,
 C.PESSOACLI, (ITR.DTVENCITREC-CAST('07.10.1997' AS DATE)) FATVENC, M.CODFBNMOEDA,
-CT.AGENCIACONTA, MB.NUMCONTA, MB.DESCLPMODBOL, MB.INSTPAGMODBOL, IM.CONVCOB, ITR.DESCPONT,  ITR.SEQNOSSONUMERO, ITR.DOCLANCAITREC, ITR.CODREC
+CT.AGENCIACONTA, MB.NUMCONTA, MB.DESCLPMODBOL, MB.INSTPAGMODBOL, IM.CONVCOB, ITR.DESCPONT,  ITR.SEQNOSSONUMERO, ITR.DOCLANCAITREC, ITR.CODREC, F.ENDFILIAL, F.NUMFILIAL, F.CEPFILIAL, F.UFFILIAL,F.CIDFILIAL
 FROM VDCLIENTE C, FNRECEBER R, SGPREFERE1 P, FNMOEDA M, FNBANCO B, FNMODBOLETO MB,
 FNITMODBOLETO IM, FNITRECEBER ITR, SGFILIAL F, FNCONTA CT
 WHERE
@@ -62,9 +63,9 @@ AND R.CODEMP=60 AND R.CODFILIAL=1 AND R.CODREC = 86 AND ITR.nparcitrec = 1]]>
 	<field name="DOCREC" class="java.lang.Integer"/>
 	<field name="CODBANCO" class="java.lang.String"/>
 	<field name="DVBANCO" class="java.lang.String"/>
-	<field name="LOGOBANCO01" class="java.io.InputStream"/>
-	<field name="LOGOBANCO02" class="java.io.InputStream"/>
-	<field name="LOGOBANCO03" class="java.io.InputStream"/>
+	<field name="LOGOBANCO01" class="java.lang.Object"/>
+	<field name="LOGOBANCO02" class="java.lang.Object"/>
+	<field name="LOGOBANCO03" class="java.lang.Object"/>
 	<field name="CODCARTCOB" class="java.lang.String"/>
 	<field name="ESPDOC" class="java.lang.String"/>
 	<field name="ACEITE" class="java.lang.String"/>
@@ -100,6 +101,11 @@ AND R.CODEMP=60 AND R.CODFILIAL=1 AND R.CODREC = 86 AND ITR.nparcitrec = 1]]>
 	<field name="SEQNOSSONUMERO" class="java.lang.Integer"/>
 	<field name="DOCLANCAITREC" class="java.lang.String"/>
 	<field name="CODREC" class="java.lang.Integer"/>
+	<field name="ENDFILIAL" class="java.lang.String"/>
+	<field name="NUMFILIAL" class="java.lang.Integer"/>
+	<field name="CEPFILIAL" class="java.lang.String"/>
+	<field name="UFFILIAL" class="java.lang.String"/>
+	<field name="CIDFILIAL" class="java.lang.String"/>
 	<variable name="CNPJCLIF" class="java.lang.String" resetType="Page">
 		<variableExpression><![CDATA[( $F{CNPJCLI} != null ?
 $F{CNPJCLI}.substring(0,2) + "." + $F{CNPJCLI}.substring(2,5) + "." + $F{CNPJCLI}.substring(5,8) + "/" +
@@ -687,7 +693,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<textElement verticalAlignment="Bottom">
 					<font fontName="SansSerif" size="7"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{RAZEMP}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{RAZEMP}.trim() + " - " + " CNPJ: " + ( $P{CNPJFILIAL} != null ? $P{CNPJFILIAL}.substring(0,2) + "." + $P{CNPJFILIAL}.substring(2,5) + "." + $P{CNPJFILIAL}.substring(5,8) + "/" + $P{CNPJFILIAL}.substring(8,12) + "-" + $P{CNPJFILIAL}.substring(12) : "" )]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
 				<reportElement key="textField-5" x="9" y="527" width="66" height="9"/>
@@ -912,7 +918,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[($F{CIDCLI}==null?"":$F{CIDCLI}.trim() + "  " ) + ( $F{UFCLI}==null? "" : ( $F{UFCLI}) )]]></textFieldExpression>
 			</textField>
-			<image scaleImage="RetainShape" vAlign="Middle" isUsingCache="true">
+			<image scaleImage="RetainShape" vAlign="Middle" isUsingCache="true" onErrorType="Blank">
 				<reportElement key="image-4" x="5" y="455" width="100" height="24"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1053,7 +1059,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<textElement verticalAlignment="Bottom">
 					<font fontName="SansSerif" size="7"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{RAZEMP}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{RAZEMP}.trim() + " - " + " CNPJ: " + ( $P{CNPJFILIAL} != null ? $P{CNPJFILIAL}.substring(0,2) + "." + $P{CNPJFILIAL}.substring(2,5) + "." + $P{CNPJFILIAL}.substring(5,8) + "/" + $P{CNPJFILIAL}.substring(8,12) + "-" + $P{CNPJFILIAL}.substring(12) : "" )]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement key="staticText-13" x="244" y="245" width="66" height="8"/>
@@ -1069,7 +1075,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<text><![CDATA[Valor]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-				<reportElement key="textField-2" stretchType="RelativeToTallestObject" x="170" y="168" width="360" height="17"/>
+				<reportElement key="textField-2" stretchType="RelativeToTallestObject" x="170" y="171" width="360" height="17"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1152,8 +1158,8 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 					<pen lineWidth="1.0" lineStyle="Solid"/>
 				</graphicElement>
 			</line>
-			<image scaleImage="RetainShape" vAlign="Middle" isUsingCache="true">
-				<reportElement key="image-4" x="5" y="164" width="100" height="24"/>
+			<image scaleImage="RetainShape" vAlign="Middle" isUsingCache="true" onErrorType="Blank">
+				<reportElement key="image-4" x="5" y="166" width="100" height="24"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1281,7 +1287,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				</graphicElement>
 			</line>
 			<line>
-				<reportElement key="line-3" x="166" y="171" width="1" height="17"/>
+				<reportElement key="line-3" x="166" y="174" width="1" height="17"/>
 				<graphicElement>
 					<pen lineWidth="1.0" lineStyle="Solid"/>
 				</graphicElement>
@@ -1319,7 +1325,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				</graphicElement>
 			</line>
 			<textField isBlankWhenNull="true">
-				<reportElement key="textField-1" x="121" y="169" width="42" height="17"/>
+				<reportElement key="textField-1" x="121" y="172" width="42" height="17"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1726,7 +1732,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<text><![CDATA[Local de pagamento]]></text>
 			</staticText>
 			<line>
-				<reportElement key="line-1" x="5" y="188" width="522" height="1"/>
+				<reportElement key="line-1" x="5" y="191" width="522" height="1"/>
 				<graphicElement>
 					<pen lineWidth="1.0" lineStyle="Solid"/>
 				</graphicElement>
@@ -1777,7 +1783,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<textFieldExpression class="java.util.Date"><![CDATA[$F{DTEMITVENDA}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement key="line-3" x="117" y="171" width="1" height="17"/>
+				<reportElement key="line-3" x="117" y="174" width="1" height="17"/>
 				<graphicElement>
 					<pen lineWidth="1.0" lineStyle="Solid"/>
 				</graphicElement>
@@ -1813,13 +1819,13 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<textFieldExpression class="java.util.Date"><![CDATA[$F{DTVENCITREC}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement key="line-20" x="3" y="158" width="524" height="1"/>
+				<reportElement key="line-20" x="3" y="160" width="524" height="1"/>
 				<graphicElement>
 					<pen lineWidth="1.0" lineStyle="Dashed"/>
 				</graphicElement>
 			</line>
 			<staticText>
-				<reportElement key="staticText-15" x="361" y="64" width="100" height="8"/>
+				<reportElement key="staticText-15" x="361" y="63" width="100" height="8"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1832,7 +1838,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<text><![CDATA[Agência / Código Beneficiário]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-22" x="361" y="81" width="100" height="8"/>
+				<reportElement key="staticText-22" x="361" y="91" width="100" height="8"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1845,7 +1851,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<text><![CDATA[Nosso Número]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement key="textField-7" x="159" y="89" width="51" height="9"/>
+				<reportElement key="textField-7" x="159" y="99" width="51" height="9"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1858,7 +1864,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{ESPDOC}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement key="staticText-7" x="159" y="81" width="42" height="8"/>
+				<reportElement key="staticText-7" x="159" y="91" width="42" height="8"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1871,7 +1877,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<text><![CDATA[Espécie Doc.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-14" x="361" y="47" width="100" height="8"/>
+				<reportElement key="staticText-14" x="361" y="44" width="100" height="8"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1884,13 +1890,13 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<text><![CDATA[Vencimento]]></text>
 			</staticText>
 			<line>
-				<reportElement key="line-16" x="128" y="98" width="1" height="17"/>
+				<reportElement key="line-16" x="128" y="108" width="1" height="17"/>
 				<graphicElement>
 					<pen lineWidth="1.0" lineStyle="Solid"/>
 				</graphicElement>
 			</line>
 			<textField isBlankWhenNull="true">
-				<reportElement key="textField-12" x="129" y="106" width="24" height="9"/>
+				<reportElement key="textField-12" x="129" y="116" width="24" height="9"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1903,7 +1909,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{CODMOEDA}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement key="staticText-12" x="159" y="98" width="66" height="8"/>
+				<reportElement key="staticText-12" x="159" y="108" width="66" height="8"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1922,13 +1928,13 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				</graphicElement>
 			</line>
 			<line>
-				<reportElement key="line-18" x="213" y="81" width="1" height="17"/>
+				<reportElement key="line-18" x="213" y="91" width="1" height="17"/>
 				<graphicElement>
 					<pen lineWidth="1.0" lineStyle="Solid"/>
 				</graphicElement>
 			</line>
 			<staticText>
-				<reportElement key="staticText-4" x="5" y="98" width="75" height="8"/>
+				<reportElement key="staticText-4" x="5" y="108" width="75" height="8"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1941,7 +1947,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<text><![CDATA[Uso do Banco]]></text>
 			</staticText>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement key="textField-15" x="415" y="55" width="80" height="9"/>
+				<reportElement key="textField-15" x="415" y="52" width="80" height="9"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1954,7 +1960,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<textFieldExpression class="java.util.Date"><![CDATA[$F{DTVENCITREC}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement key="staticText-6" x="83" y="81" width="66" height="8"/>
+				<reportElement key="staticText-6" x="83" y="91" width="66" height="8"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1973,13 +1979,13 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				</graphicElement>
 			</line>
 			<line>
-				<reportElement key="line-14" x="80" y="81" width="1" height="34"/>
+				<reportElement key="line-14" x="80" y="91" width="1" height="34"/>
 				<graphicElement>
 					<pen lineWidth="1.0" lineStyle="Solid"/>
 				</graphicElement>
 			</line>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField" x="415" y="89" width="80" height="9"/>
+				<reportElement key="textField" x="415" y="99" width="80" height="9"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1992,13 +1998,13 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{CODCARTCOB} + "/" + $V{NOSSONUMERO} + "-" +$V{DIGVERIFNOSSONUMERO}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement key="line-7" x="4" y="115" width="524" height="1"/>
+				<reportElement key="line-7" x="4" y="125" width="524" height="1"/>
 				<graphicElement>
 					<pen lineWidth="1.0" lineStyle="Solid"/>
 				</graphicElement>
 			</line>
 			<staticText>
-				<reportElement key="staticText-8" x="216" y="81" width="22" height="8"/>
+				<reportElement key="staticText-8" x="216" y="91" width="22" height="8"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -2011,7 +2017,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<text><![CDATA[Aceite]]></text>
 			</staticText>
 			<line>
-				<reportElement key="line-6" x="4" y="98" width="524" height="1"/>
+				<reportElement key="line-6" x="4" y="108" width="524" height="1"/>
 				<graphicElement>
 					<pen lineWidth="1.0" lineStyle="Solid"/>
 				</graphicElement>
@@ -2034,7 +2040,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
   "")]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-18" x="415" y="106" width="80" height="9"/>
+				<reportElement key="textField-18" x="415" y="116" width="80" height="9"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -2047,7 +2053,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[($F{VLRPARCITREC}==null?new BigDecimal(0): $F{VLRPARCITREC})]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement key="textField-5" x="9" y="89" width="66" height="9"/>
+				<reportElement key="textField-5" x="9" y="99" width="66" height="9"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -2060,7 +2066,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<textFieldExpression class="java.util.Date"><![CDATA[$F{DTEMITVENDA}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement key="textField-16" x="415" y="73" width="80" height="9"/>
+				<reportElement key="textField-16" x="415" y="72" width="80" height="9"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -2073,7 +2079,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{AGENCIACONTA}.trim() +"/"+ $F{NUMCONTA}.trim()]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement key="textField-9" x="244" y="89" width="88" height="9"/>
+				<reportElement key="textField-9" x="244" y="99" width="88" height="9"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -2086,7 +2092,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<textFieldExpression class="java.util.Date"><![CDATA[$F{DTEMITVENDA}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement key="staticText-13" x="244" y="98" width="66" height="8"/>
+				<reportElement key="staticText-13" x="244" y="108" width="66" height="8"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -2099,13 +2105,13 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<text><![CDATA[Valor]]></text>
 			</staticText>
 			<line>
-				<reportElement key="line-4" x="4" y="64" width="524" height="1"/>
+				<reportElement key="line-4" x="4" y="63" width="524" height="1"/>
 				<graphicElement>
 					<pen lineWidth="1.0" lineStyle="Solid"/>
 				</graphicElement>
 			</line>
 			<staticText>
-				<reportElement key="staticText-2" x="5" y="64" width="66" height="8"/>
+				<reportElement key="staticText-2" x="5" y="63" width="66" height="8"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -2117,8 +2123,8 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				</textElement>
 				<text><![CDATA[Beneficiário]]></text>
 			</staticText>
-			<image scaleImage="RetainShape" vAlign="Middle" isUsingCache="true">
-				<reportElement key="image-4" x="5" y="17" width="100" height="24"/>
+			<image scaleImage="RetainShape" vAlign="Middle" isUsingCache="true" onErrorType="Blank">
+				<reportElement key="image-4" x="5" y="16" width="100" height="24"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -2134,7 +2140,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				</graphicElement>
 			</line>
 			<textField isBlankWhenNull="true">
-				<reportElement key="textField-11" x="83" y="106" width="40" height="9"/>
+				<reportElement key="textField-11" x="83" y="116" width="40" height="9"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -2147,7 +2153,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{CODCARTCOB}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement key="textField-4" x="9" y="72" width="347" height="9"/>
+				<reportElement key="textField-4" x="9" y="71" width="347" height="9"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -2157,10 +2163,10 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<textElement verticalAlignment="Bottom">
 					<font fontName="SansSerif" size="7"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{RAZEMP}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{RAZEMP}.trim() + " - " + " CNPJ: " + ( $P{CNPJFILIAL} != null ? $P{CNPJFILIAL}.substring(0,2) + "." + $P{CNPJFILIAL}.substring(2,5) + "." + $P{CNPJFILIAL}.substring(5,8) + "/" + $P{CNPJFILIAL}.substring(8,12) + "-" + $P{CNPJFILIAL}.substring(12) : "" )]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement key="staticText-3" x="5" y="81" width="66" height="8"/>
+				<reportElement key="staticText-3" x="5" y="91" width="66" height="8"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -2173,7 +2179,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<text><![CDATA[Data do Documento]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-10" x="83" y="98" width="35" height="8"/>
+				<reportElement key="staticText-10" x="83" y="108" width="35" height="8"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -2186,7 +2192,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<text><![CDATA[Carteira]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement key="textField-6" x="83" y="89" width="66" height="9"/>
+				<reportElement key="textField-6" x="83" y="99" width="66" height="9"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -2199,7 +2205,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<textFieldExpression class="java.lang.String"><![CDATA[$V{DOCUMENTOIMP}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement key="line-14" x="156" y="81" width="1" height="34"/>
+				<reportElement key="line-14" x="156" y="91" width="1" height="34"/>
 				<graphicElement>
 					<pen lineWidth="1.0" lineStyle="Solid"/>
 				</graphicElement>
@@ -2218,7 +2224,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<textFieldExpression class="java.lang.String"><![CDATA[$V{LINHADIGEXT}.trim()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement key="staticText-9" x="244" y="81" width="88" height="8"/>
+				<reportElement key="staticText-9" x="244" y="91" width="88" height="8"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -2231,7 +2237,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<text><![CDATA[Data do Processamento]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-21" x="361" y="98" width="100" height="8"/>
+				<reportElement key="staticText-21" x="361" y="108" width="100" height="8"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -2244,19 +2250,19 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<text><![CDATA[(=) Valor do Documento]]></text>
 			</staticText>
 			<line>
-				<reportElement key="line-5" x="4" y="81" width="524" height="1"/>
+				<reportElement key="line-5" x="4" y="91" width="524" height="1"/>
 				<graphicElement>
 					<pen lineWidth="1.0" lineStyle="Solid"/>
 				</graphicElement>
 			</line>
 			<line>
-				<reportElement key="line-17" x="241" y="81" width="1" height="34"/>
+				<reportElement key="line-17" x="241" y="91" width="1" height="34"/>
 				<graphicElement>
 					<pen lineWidth="1.0" lineStyle="Solid"/>
 				</graphicElement>
 			</line>
 			<staticText>
-				<reportElement key="staticText-11" x="130" y="98" width="24" height="8"/>
+				<reportElement key="staticText-11" x="130" y="108" width="24" height="8"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -2269,7 +2275,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<text><![CDATA[Moeda]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement key="textField-32" x="41" y="128" width="477" height="9"/>
+				<reportElement key="textField-32" x="41" y="138" width="477" height="9"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -2282,7 +2288,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<textFieldExpression class="java.lang.String"><![CDATA[($F{ENDCLI}==null?"":$F{ENDCLI}.trim()+", ") + ( $F{NUMCLI}==null? "" : String.valueOf($F{NUMCLI})  )]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement key="textField-34" x="80" y="138" width="438" height="9"/>
+				<reportElement key="textField-34" x="80" y="148" width="438" height="9"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -2295,7 +2301,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<textFieldExpression class="java.lang.String"><![CDATA[($F{CIDCLI}==null?"":$F{CIDCLI}.trim() + "  " ) + ( $F{UFCLI}==null? "" : ( $F{UFCLI}) )]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement key="textField-33" x="41" y="138" width="42" height="9"/>
+				<reportElement key="textField-33" x="41" y="148" width="42" height="9"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -2308,7 +2314,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<textFieldExpression class="java.lang.String"><![CDATA[($F{CEPCLI}.length()<=5?$F{CEPCLI}+"-000":$F{CEPCLI}.substring(0,5)+"-"+$F{CEPCLI}.substring(5))]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement key="staticText-23" x="5" y="119" width="33" height="8"/>
+				<reportElement key="staticText-23" x="5" y="129" width="33" height="8"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -2321,7 +2327,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<text><![CDATA[Pagador :]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement key="textField-31" x="38" y="119" width="477" height="9"/>
+				<reportElement key="textField-31" x="38" y="129" width="477" height="9"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -2334,7 +2340,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{RAZCLI}.trim() + "  " + ($F{PESSOACLI}.equals("F") ? "CPF: " + $V{CPFCLIF} : "CNPJ: " + $V{CNPJCLIF} )]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement key="line-19" x="5" y="148" width="524" height="1"/>
+				<reportElement key="line-19" x="5" y="158" width="524" height="1"/>
 				<graphicElement>
 					<pen lineWidth="1.0" lineStyle="Solid"/>
 				</graphicElement>
@@ -2364,6 +2370,20 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCLPMODBOL}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField-32" x="9" y="81" width="352" height="8"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="5"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[($F{ENDFILIAL}==null?"":$F{ENDFILIAL}.trim()+", ") + ( $F{NUMFILIAL}==null? "" : ((Integer) $F{NUMFILIAL}) + " " ) + " - "
+ + ($F{CIDFILIAL}==null?"":$F{CIDFILIAL}.trim() + " - " ) + ( $F{UFFILIAL}==null? "" : ( $F{UFFILIAL}) + ", " ) + ($F{CEPFILIAL}.length()<=5?$F{CEPFILIAL}+"-000":$F{CEPFILIAL}.substring(0,5)+"-"+$F{CEPFILIAL}.substring(5))]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
