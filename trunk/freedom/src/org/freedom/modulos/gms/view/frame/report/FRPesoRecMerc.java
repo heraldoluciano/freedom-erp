@@ -192,7 +192,7 @@ public class FRPesoRecMerc extends FRelatorio {
 		int param = 1;
 
 		sql.append( "select ");
-		sql.append( "rm.codfor, fr.nomefor, tr.nometran, rm.placaveiculo, rm.dtent, ");
+		sql.append( "rm.codfor, fr.nomefor, tr.nometran, rm.placaveiculo, rm.dtent, rm.desconto, ");
 		sql.append( "br.nomebairro, rm.ticket, br.vlrfrete preco, ");
 		sql.append( "(select first 1 coalesce(ra.pesoamost,0) from eqrecamostragem ra ");
 		sql.append( "where ra.codemp=rm.codemp and ra.codfilial=rm.codfilial and rm.ticket=ra.ticket ");
