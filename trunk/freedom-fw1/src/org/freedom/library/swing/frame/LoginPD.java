@@ -77,7 +77,7 @@ public class LoginPD extends Login implements ActionListener, FocusListener {
 
 			if (rs.next()) {
 				System.out.println("IDGRUP = " + rs.getString("IDGRPUSU"));
-				props.put("sql_role_name", rs.getString("IDGRPUSU"));
+				props.put("sql_role_name", rs.getString("IDGRPUSU").toLowerCase());
 				nrconexao = rs.getInt("nrconexao");
 				if ("N".equals(rs.getString("ATIVOUSU"))) {
 					throw new Exception("O usuário " + rs.getString("IDUSU") + " está inativo!");
