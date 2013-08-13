@@ -15,7 +15,7 @@ CREATE DATABASE 'localhost:c:/opt/firebird/dados/desenv/freedom.fdb'
 
 ALTER CHARACTER SET ISO8859_1 SET DEFAULT COLLATION PT_BR;
 
-INPUT freedom.sql;
+INPUT freedom2.sql;
 
 COMMIT WORK;
 
