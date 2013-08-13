@@ -1,4 +1,22 @@
+SET SQL DIALECT 3;
+
+SET NAMES ISO8859_1;
+
+CONNECT 'localhost:c:/opt/firebird/dados/desenv/freedom.fdb'
+  USER 'SYSDBA'
+  PASSWORD 'masterkey';
+
+DROP DATABASE 'localhost:c:/opt/firebird/dados/desenv/freedom.fdb';
+
+CREATE DATABASE 'localhost:c:/opt/firebird/dados/desenv/freedom.fdb'
+  USER 'SYSDBA' PASSWORD 'masterkey'
+  PAGE_SIZE 16384
+  DEFAULT CHARACTER SET ISO8859_1 COLLATION PT_BR;
+
+ALTER CHARACTER SET ISO8859_1 SET DEFAULT COLLATION PT_BR;
+
 /*  External Function declarations */
+/*
 DECLARE EXTERNAL FUNCTION "ABS"
 DOUBLE PRECISION
 RETURNS DOUBLE PRECISION BY VALUE 
@@ -273,6 +291,7 @@ DECLARE EXTERNAL FUNCTION TRUNCATE
 INTEGER BY DESCRIPTOR, INTEGER BY DESCRIPTOR
 RETURNS PARAMETER 2
 ENTRY_POINT 'fbtruncate' MODULE_NAME 'fbudf';
+*/
 
 /*  Generators or sequences */
 CREATE GENERATOR EQEXPEDAMOSTRAGEMINC;
@@ -13126,7 +13145,7 @@ SELECT P.CODEMP, P.CODFILIAL, P.ATIVOPROD, P.DESCPROD,P.CODPROD,P.REFPROD,P.SLDL
       WHERE IV.CODEMPPD=P.CODEMP AND IV.CODFILIALPD=P.CODFILIAL AND IV.CODPROD=P.CODPROD AND
       V.CODVENDA=IV.CODVENDA AND V.TIPOVENDA=IV.TIPOVENDA AND
       V.CODEMP=IV.CODEMP AND V.CODFILIAL=IV.CODFILIAL AND
-      (NOT SUBSTR(V.STATUSVENDA,1,1)='C') AND TM.CODTIPOMOV=V.CODTIPOMOV AND
+      (NOT SUBSTRING(V.STATUSVENDA FROM 1 FOR 1)='C') AND TM.CODTIPOMOV=V.CODTIPOMOV AND
       TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM  AND TM.ESTOQTIPOMOV='S' ),0) QTDITVENDA,
    COALESCE((SELECT FIRST 1 M.SLDMOVPROD FROM EQMOVPROD M WHERE M.CODEMPPD=P.CODEMP AND
       M.CODFILIALPD=P.CODFILIAL AND  M.CODPROD=P.CODPROD
@@ -13152,7 +13171,7 @@ CREATE VIEW VWCUSTOPROJ01 (CODEMP, CODFILIAL, CODCLI, DATA, DESCCUSTO, CODCONTR,
 
 
 
-select ad.codemp, ad.codfilial, ad.codcli, ad.dataatendo ,cast('Hora trabalhada - ' || rtrim(ae.nomeatend)  as varchar(200)) as desccusto, ad.codcontr,ad.coditcontr, co.tpcontr ,ic.vlritcontr * ic.qtditcontr as vlrreceitaprev,
+select ad.codemp, ad.codfilial, ad.codcli, ad.dataatendo ,cast('Hora trabalhada - ' || TRIM(ae.nomeatend)  as varchar(200)) as desccusto, ad.codcontr,ad.coditcontr, co.tpcontr ,ic.vlritcontr * ic.qtditcontr as vlrreceitaprev,
  ( ad.horaatendofin  - ad.horaatendo ) / 3600 as qtd , sa.custohoratrab as custo, 'M' as tipo
 from
 vditcontrato ic, atatendimento ad, atatendente ae, rhempregado em, rhempregadosal sa, vdcontrato co
@@ -16402,7 +16421,7 @@ begin
       else
       begin
         dtiniac = dtinip;
-        dtiniac = cast( addmonth(dtiniac, -1*acumulo) as date);
+        dtiniac = cast( dateadd((-1 * acumulo) MONTH TO dtiniac) as date); -- cast( addmonth(dtiniac, -1*acumulo) as date);
         if( dtiniac > dtinip ) then
          dtiniac = dtinip;
       end
@@ -20057,9 +20076,9 @@ begin
 
   if (CCODGRUP IS NOT NULL) then
   begin
-     CCODGRUP = rtrim(CCODGRUP);
-     if (strlen(CCODGRUP)<14) then
-        CCODGRUP = CCODGRUP || '%';
+     CCODGRUP = TRIM(CCODGRUP);
+     if (CHARACTER_LENGTH(TRIM(CCODGRUP))<14) then
+        CCODGRUP = TRIM(CCODGRUP) || '%';
   end
   FOR SELECT P.CODPROD, P.REFPROD, P.DESCPROD, P.CODGRUP
     FROM EQPRODUTO P
@@ -20129,8 +20148,8 @@ begin
 
   if (icodempgp is not null) then
   begin
-    if (strlen(rtrim(ccodgrup))<14) then
-       ccodgrup = rtrim(ccodgrup)||'%';
+    if (CHARACTER_LENGTH(TRIM(ccodgrup))<14) then
+       ccodgrup = TRIM(ccodgrup)||'%';
   end
 
   if (ctipocusto is null) then
@@ -21630,7 +21649,7 @@ BEGIN
      dVlrAnt = 0;
   IF (dVlrAtu IS NULL) THEN
      dVlrAtu = 0;
-  IF ((sCodPlanAnt IS NOT NULL) AND (rtrim(sCodPlanAnt) != '')) THEN
+  IF ((sCodPlanAnt IS NOT NULL) AND (TRIM(sCodPlanAnt) != '')) THEN
   BEGIN
     SELECT CODPLAN,DATASL,SALDOSL FROM FNSALDOLANCA WHERE CODPLAN=:sCodPlanAnt
            AND DATASL =: dDataAnt AND CODEMP=:ICODEMPPN AND CODFILIAL=:IFILIALSALDO
@@ -21676,7 +21695,7 @@ BEGIN
       END
     END
   END
-  IF ( (sCodPlanAtu IS NOT NULL) AND (rtrim(sCodPlanAtu) != '')) THEN
+  IF ( (sCodPlanAtu IS NOT NULL) AND (TRIM(sCodPlanAtu) != '')) THEN
   BEGIN
     SELECT CODPLAN,DATASL,SALDOSL FROM FNSALDOLANCA WHERE CODPLAN=:sCodPlanAtu
            AND DATASL =: dDataAtu AND CODEMP=:ICODEMPPN AND CODFILIAL=:IFILIALSALDO
@@ -23785,8 +23804,8 @@ begin
   /* Procedure Text */
   IF (ICODEMPGP IS NOT NULL) THEN
   BEGIN
-    IF (STRLEN(RTRIM(CCODGRUP))<14) THEN
-       CCODGRUP = RTRIM(CCODGRUP)||'%';
+    IF (CHARACTER_LENGTH(TRIM(CCODGRUP))<14) THEN
+       CCODGRUP = TRIM(CCODGRUP)||'%';
   END
   IF (CTIPOCUSTO IS NULL) then
      CTIPOCUSTO = 'P';
@@ -24568,7 +24587,7 @@ begin
         DTVENCRET = DTTEMP;
         if ( DTVENCRET<DTBASE ) then
         begin
-           DTVENCRET = addmonth(DTVENCRET,1);
+           DTVENCRET = DATEADD(1 MONTH TO DTVENCRET); -- addmonth(DTVENCRET,1);
         end
         else
         begin
@@ -24584,7 +24603,7 @@ begin
              ( extract(year from DTVENCRET)<=extract(year from DTBASE ) ) and
              ( DIASVCTO>0 ) ) do
      begin
-        DTVENCRET = addmonth(DTVENCRET,1);
+        DTVENCRET = DATEADD(1 MONTH TO DTVENCRET); -- addmonth(DTVENCRET,1);
      end
      DTTEMP = DTVENCRET + ( 1 - EXTRACT(DAY FROM DTVENCRET) );
      DTVENCRET = DTTEMP;
@@ -24625,7 +24644,7 @@ begin
               while ( ( extract(month from DTVENCRET)<=extract(month from DTBASE) ) and
                   ( extract(year from DTVENCRET)<=extract(year from DTBASE ) ) ) do
               begin
-                 DTVENCRET = addmonth(DTVENCRET,1);
+                 DTVENCRET = DATEADD(1 MONTH TO DTVENCRET); -- addmonth(DTVENCRET,1);
               end
            end
            else
@@ -24637,7 +24656,7 @@ begin
      end
      else
      begin
-        DTTEMP = addmonth(DTVENCRET,1);
+        DTTEMP = DATEADD(1 MONTH TO DTVENCRET); -- addmonth(DTVENCRET,1);
         DTVENCRET = DTTEMP - 1;
      end
   end
@@ -24885,7 +24904,7 @@ begin
   FOR SELECT DISTINCT IDGRPUSU, IDUSU FROM SGUSUARIO
      INTO :CIDGRPUSU, :CIDUSU DO
   BEGIN
-      CSQL = 'GRANT '||RTRIM(CIDGRPUSU)||' TO USER '||RTRIM(CIDUSU);
+      CSQL = 'GRANT '||TRIM(CIDGRPUSU)||' TO USER '||TRIM(CIDUSU);
       EXECUTE STATEMENT CSQL;
   END
   suspend;
@@ -25414,7 +25433,7 @@ AS
 
 begin
   DTRET = DTCALC + ( 1 - EXTRACT(DAY FROM DTCALC) );
-  DTRET = addmonth( DTRET, 1);
+  DTRET = DATEADD(1 MONTH TO DTRET); -- addmonth(DTRET, 1);
   DTRET = DTRET - 1;
   suspend;
 end ^
@@ -27256,16 +27275,16 @@ begin
     begin
 
         -- capturando valor dos centavos
-        centavos = ( cast(:preco as NUMERIC(18,2)) - truncate(preco) ) * 10;
+        centavos = ( cast(:preco as NUMERIC(18,2)) - TRUNC(preco) ) * 10; --  centavos = ( cast(:preco as NUMERIC(18,2)) - truncate(preco) ) * 10;
 
         -- se o valor em centavos é maior ou igual ao parametro de arredondamento (arredondar para cima)
         if(:centavos >= :arredpreco) then
         begin
-            preco = truncate(preco) + 1;
+            preco = TRUNC(preco) + 1; -- truncate(preco) + 1;
         end
         else
         begin
-            preco = truncate(preco);
+            preco = TRUNC(preco); -- truncate(preco);
         end
 
     end
@@ -28646,7 +28665,7 @@ BEGIN
         IF ((sStatusPag = 'PD') AND (new.VLRLIQCOMPRA != :dVlrPagar)) THEN
           EXCEPTION CPCOMPRAEX04;
       END
-       IF ((substr(old.STATUSCOMPRA,1,1) IN ('P','C')) AND (substr(new.STATUSCOMPRA,1,1)='X')) THEN
+       IF ((SUBSTRING(old.STATUSCOMPRA FROM 1 FOR 1) IN ('P','C')) AND (SUBSTRING(new.STATUSCOMPRA FROM 1 FOR 1)='X')) THEN
       BEGIN
            new.vlrdescitcompra = 0;
            new.vlrprodcompra = 0;
@@ -28662,7 +28681,7 @@ BEGIN
 
   END
     -- Atualizando o status do documento fiscal para 02 - Documento cancelado, quando nota for cancelado pelo sistema.
-  IF (substr(new.statuscompra,1,1) = 'X' and new.sitdoc!='02') THEN
+  IF (SUBSTRING(new.statuscompra FROM 1 FOR 1) = 'X' and new.sitdoc!='02') THEN
   begin
     new.sitdoc = '02';
   end
@@ -28808,7 +28827,7 @@ BEGIN
 
               END
         END
-          IF ((substr(new.STATUSCOMPRA,1,1)='X') AND (substr(old.STATUSCOMPRA,1,1) IN ('P','C'))) THEN
+          IF ((SUBSTRING(new.STATUSCOMPRA FROM 1 FOR 1)='X') AND (SUBSTRING(old.STATUSCOMPRA FROM 1 FOR 1) IN ('P','C'))) THEN
           BEGIN
               UPDATE CPITCOMPRA SET QTDITCOMPRACANC=QTDITCOMPRA, QTDITCOMPRA=0 WHERE CODCOMPRA=new.CODCOMPRA AND CODEMP=new.CODEMP
               AND CODFILIAL=new.CODFILIAL;
@@ -29065,7 +29084,7 @@ begin
 
     if(new.codmunic is not null) then
     begin
-        select substr(mun.nomemunic,1,30) from sgmunicipio mun
+        select SUBSTRING(mun.nomemunic FROM 1 FOR 30) from sgmunicipio mun
             where mun.codpais=new.codpais and mun.siglauf=new.siglauf and mun.codmunic=new.codmunic
                 into :nomemunicfor;
         if (nomemunicfor is not null) then new.cidfor = nomemunicfor;
@@ -29112,7 +29131,7 @@ begin
 
     if(old.codmunic != new.codmunic) then
     begin
-        select substr(mun.nomemunic,1,30) from sgmunicipio mun
+        select SUBSTRING(mun.nomemunic FROM 1 FOR 30) from sgmunicipio mun
             where mun.codpais=new.codpais and mun.siglauf=new.siglauf and mun.codmunic=new.codmunic
                 into :nomemunicfor;
         if (nomemunicfor is not null) then new.cidfor = nomemunicfor;
@@ -29509,7 +29528,7 @@ begin
         into :sadicfrete, :sadicadic, :statuscompra;
 
         /* Caso a nota não seja cancelada */
-        if ((substr(:statuscompra,1,1)<>'X')) then
+        if ((SUBSTRING(:statuscompra FROM 1 FOR 1)<>'X')) then
         begin
 
             vlritcusto = new.vlrliqitcompra/new.qtditcompra;
@@ -30853,11 +30872,11 @@ begin
   if ( (old.ESTNEGGRUP IS NULL) OR (old.ESTNEGGRUP!=new.ESTNEGGRUP) ) then
      UPDATE EQGRUPO SET ESTNEGGRUP=new.ESTNEGGRUP
          WHERE CODEMP=new.CODEMP AND CODFILIAL=new.CODFILIAL AND
-           CODGRUP!=new.CODGRUP AND CODGRUP LIKE RTRIM(new.CODGRUP)||'%';
+           CODGRUP!=new.CODGRUP AND CODGRUP LIKE TRIM(new.CODGRUP)||'%';
   if ( (old.ESTLOTNEGGRUP IS NULL) OR (old.ESTLOTNEGGRUP!=new.ESTLOTNEGGRUP) ) then
      UPDATE EQGRUPO SET ESTLOTNEGGRUP=new.ESTLOTNEGGRUP
          WHERE CODEMP=new.CODEMP AND CODFILIAL=new.CODFILIAL AND
-           CODGRUP!=new.CODGRUP AND CODGRUP LIKE RTRIM(new.CODGRUP)||'%';
+           CODGRUP!=new.CODGRUP AND CODGRUP LIKE TRIM(new.CODGRUP)||'%';
   /* Trigger Text */
 end ^
 
@@ -31959,11 +31978,11 @@ begin
         if (cEstLotNegGrup is null) then
            cEstLotNegGrup = 'N';
         if (cEstLotNegGrup='N') then
-           EXCEPTION EQLOTEEX01 'O LOTE '||rtrim(new.CODLOTE)||
+           EXCEPTION EQLOTEEX01 'O LOTE '||TRIM(new.CODLOTE)||
               ' NÃO POSSUI SALDO P/COMPL. A OPERAÇÃO';
      end
      else if (cEstLotNeg='N') then
-           EXCEPTION EQLOTEEX01 'O LOTE '||rtrim(new.CODLOTE)||
+           EXCEPTION EQLOTEEX01 'O LOTE '||TRIM(new.CODLOTE)||
               ' NÃO POSSUI SALDO P/COMPL. A OPERAÇÃO';
   end
 end ^
@@ -32230,12 +32249,12 @@ begin
        if (cEstNegGrup is null) then
           cEstNegGrup = 'N';
        if (cEstNegGrup='N') then
-          EXCEPTION EQPRODUTOEX01 'O PROD. '||rtrim(cast(new.CODPROD as char(10)))
+          EXCEPTION EQPRODUTOEX01 'O PROD. '||TRIM(cast(new.CODPROD as char(10)))
             ||'-'||substring(new.DESCPROD from 1 for 20)||
           ' NÃO POSSUI SALDO P/COMPL. A OPERAÇÃO';
     end
     else if (cEstNeg='N') then
-          EXCEPTION EQPRODUTOEX01 'O PROD. '||rtrim(cast(new.CODPROD as char(10)))
+          EXCEPTION EQPRODUTOEX01 'O PROD. '||TRIM(cast(new.CODPROD as char(10)))
             ||'-'||substring(new.DESCPROD from 1 for 20)||
           ' NÃO POSSUI SALDO P/COMPL. A OPERAÇÃO';
   end
@@ -33038,7 +33057,7 @@ BEGIN
      END
      ELSE IF ( (old.STATUSITPAG='P1') AND ( new.STATUSITPAG='CP' ) ) THEN
      BEGIN
-        IF ( (new.OBSITPAG IS NULL) OR (rtrim(new.OBSITPAG)='') ) THEN
+        IF ( (new.OBSITPAG IS NULL) OR (TRIM(new.OBSITPAG)='') ) THEN
         BEGIN
            EXCEPTION FNITPAGAREX01;
         END
@@ -33255,7 +33274,7 @@ BEGIN
     IF(nrodiascomp IS NOT NULL) THEN
     BEGIN
         datets = CAST (NEW.dtprevitrec AS TIMESTAMP);
-        datets = addday(datets, nrodiascomp);
+        datets = DATEADD(nrodiascomp DAY TO datets); --addday(datets, nrodiascomp);
         NEW.dtprevitrec = CAST(datets AS DATE);
     END
 END ^
@@ -33318,7 +33337,7 @@ BEGIN
      END
      ELSE IF ( (old.STATUSITREC='R1') AND ( new.STATUSITREC='CR' ) ) THEN
      BEGIN
-        IF ( (new.OBSITREC IS NULL) OR (rtrim(new.OBSITREC)='') ) THEN
+        IF ( (new.OBSITREC IS NULL) OR (TRIM(new.OBSITREC)='') ) THEN
         BEGIN
            EXCEPTION FNITRECEBEREX02;
         END
@@ -33918,7 +33937,7 @@ begin
             end
             else
             begin
-                obsitpag = rtrim(obsitpag) || ' / ' || 'PGTO C/CHEQUE NRO:' || :numcheq;
+                obsitpag = TRIM(obsitpag) || ' / ' || 'PGTO C/CHEQUE NRO:' || :numcheq;
             end
 
             -- Realizando a baixa
@@ -33963,7 +33982,7 @@ begin
             into :codemppntransf, :codfilialpntransf, codplantransf;
 
             -- Montando histórico...
-            snumcheque = rtrim(coalesce(cast(:numcheq as char(15)),'0'));
+            snumcheque = TRIM(coalesce(cast(:numcheq as char(15)),'0'));
             histblanca = 'CH CP [' || :snumcheque || '] NF ' || :sdoccompra || ' ' || coalesce(:nomefavcheq,'');
 
             -- Inserir lançamento na primeira passada....
@@ -34222,11 +34241,11 @@ BEGIN
   BEGIN
      IF (NUMRESTR=1) THEN
      BEGIN
-        EXCEPTION FNRECEBEREX02 'Cliente possui '||RTRIM(CAST(NUMRESTR AS CHAR(10)))||' restrição!';
+        EXCEPTION FNRECEBEREX02 'Cliente possui '||TRIM(CAST(NUMRESTR AS CHAR(10)))||' restrição!';
      END
      ELSE
      BEGIN
-        EXCEPTION FNRECEBEREX02 'Cliente possui '||RTRIM(CAST(NUMRESTR AS CHAR(10)))||' restrições!';
+        EXCEPTION FNRECEBEREX02 'Cliente possui '||TRIM(CAST(NUMRESTR AS CHAR(10)))||' restrições!';
      END
   END
   SELECT ICODFILIAL FROM SGRETFILIAL(NEW.CODEMP,'FNPLANOPAG') INTO CODFILIALPP;
@@ -35075,7 +35094,7 @@ begin
         where cp.codcompra = new.codcompra and cp.codemp=new.codemp and cp.codfilial = new.codfilial
         into :cstatus;
 
-        if (substr(:cstatus,1,1)!='X') then
+        if (SUBSTRING(:cstatus FROM 1 FOR 1)!='X') then
         begin
             update cpcompra cp set
             cp.vlrbasepiscompra = cp.vlrbasepiscompra - :ovlrbasepis + :nvlrbasepis,
@@ -35217,7 +35236,7 @@ begin
         and vd.codemp=new.codemp and vd.codfilial = new.codfilial
         into :cstatus;
 
-        if (substr(:cstatus,1,1)!='C') then
+        if (SUBSTRING(:cstatus FROM 1 FOR 1)!='C') then
         begin
             update vdvenda vd set
             vd.vlrbasepisvenda = vd.vlrbasepisvenda - :ovlrbasepis + :nvlrbasepis,
@@ -36374,7 +36393,7 @@ begin
                 and op.seqop=new.seqop
         into :icodempest,:icodfilialest,:icodprodest,:iseqest,:ddtvalidop;
 
-    ddtdescarte = cast(addmonth(:ddtvalidop,:imesesdesccp) as date);
+    ddtdescarte = cast(DATEADD(:ddtvalidop MONTH TO :imesesdesccp) as date); -- cast(addmonth(:ddtvalidop,:imesesdesccp) as date);
 
    -- Buscando o numero de contra provas (Deve haver apenas 1)
    select count(*) from ppretcp rc where rc.codemp=new.codemp and rc.codfilial=new.codfilial and rc.codop=new.codop and rc.seqop=new.seqop
@@ -37823,7 +37842,7 @@ begin
 
     if(new.codmunic is not null) then
     begin
-        select substr(mun.nomemunic,1,30) from sgmunicipio mun
+        select SUBSTRING(mun.nomemunic FROM 1 FOR 30) from sgmunicipio mun
             where mun.codpais=new.codpais and mun.siglauf=new.siglauf and mun.codmunic=new.codmunic
                 into :nomemuniccto;
         if (nomemuniccto is not null) then new.cidcto = nomemuniccto;
@@ -37851,7 +37870,7 @@ begin
 
     if(old.codmunic != new.codmunic) then
     begin
-        select substr(mun.nomemunic,1,30) from sgmunicipio mun
+        select SUBSTRING(mun.nomemunic FROM 1 FOR 30) from sgmunicipio mun
             where mun.codpais=new.codpais and mun.siglauf=new.siglauf and mun.codmunic=new.codmunic
                 into :nomemuniccto;
         if (nomemuniccto is not null) then new.cidcto = nomemuniccto;
@@ -38052,7 +38071,7 @@ begin
 
     if(new.codmunic is not null) then
     begin
-        select substr(mun.nomemunic,1,30) from sgmunicipio mun
+        select SUBSTRING(mun.nomemunic FROM 1 FOR 30) from sgmunicipio mun
             where mun.codpais=new.codpais and mun.siglauf=new.siglauf and mun.codmunic=new.codmunic
                 into :nomemuniccli;
         if (nomemuniccli is not null) then new.cidcli = nomemuniccli;
@@ -38065,7 +38084,7 @@ begin
 
     if(new.codmunicent is not null) then
     begin
-        select substr(mun.nomemunic,1,30) from sgmunicipio mun
+        select SUBSTRING(mun.nomemunic FROM 1 FOR 30) from sgmunicipio mun
             where mun.codpais=new.codpaisent and mun.siglauf=new.siglaufent and mun.codmunic=new.codmunicent
                 into :nomemunicent;
 
@@ -38079,7 +38098,7 @@ begin
 
     if(new.codmuniccob is not null) then
     begin
-        select substr(mun.nomemunic,1,30) from sgmunicipio mun
+        select SUBSTRING(mun.nomemunic FROM 1 FOR 30) from sgmunicipio mun
             where mun.codpais=new.codpaiscob and mun.siglauf=new.siglaufcob and mun.codmunic=new.codmuniccob
                 into :nomemuniccob;
 
@@ -38140,7 +38159,7 @@ begin
     if ( ((old.codmunic is null) and (new.codmunic is not null)) or
          (old.codmunic<>new.codmunic) ) then
     begin
-        select substr(mun.nomemunic,1,30) from sgmunicipio mun
+        select SUBSTRING(mun.nomemunic FROM 1 FOR 30) from sgmunicipio mun
             where mun.codpais=new.codpais and mun.siglauf=new.siglauf and mun.codmunic=new.codmunic
                 into :nomemuniccli;
         if (nomemuniccli is not null) then new.cidcli = nomemuniccli;
@@ -38153,7 +38172,7 @@ begin
 
     if(old.codmunicent != new.codmunicent) then
     begin
-        select substr(mun.nomemunic,1,30) from sgmunicipio mun
+        select SUBSTRING(mun.nomemunic FROM 1 FOR 30) from sgmunicipio mun
             where mun.codpais=new.codpaisent and mun.siglauf=new.siglaufent and mun.codmunic=new.codmunicent
                 into :nomemunicent;
 
@@ -38167,7 +38186,7 @@ begin
 
     if(old.codmuniccob != new.codmuniccob) then
     begin
-        select substr(mun.nomemunic,1,30) from sgmunicipio mun
+        select SUBSTRING(mun.nomemunic FROM 1 FOR 30) from sgmunicipio mun
             where mun.codpais=new.codpaiscob and mun.siglauf=new.siglaufcob and mun.codmunic=new.codmuniccob
                 into :nomemuniccob;
 
@@ -40488,7 +40507,7 @@ begin
 
     if(new.codmunic is not null) then
     begin
-        select substr(mun.nomemunic,1,30) from sgmunicipio mun
+        select SUBSTRING(mun.nomemunic FROM 1 FOR 30) from sgmunicipio mun
             where mun.codpais=new.codpais and mun.siglauf=new.siglauf and mun.codmunic=new.codmunic
                 into :nomemunictran;
         if (nomemunictran is not null) then new.cidtran = nomemunictran;
@@ -40535,7 +40554,7 @@ begin
 
     if(old.codmunic != new.codmunic) then
     begin
-        select substr(mun.nomemunic,1,30) from sgmunicipio mun
+        select SUBSTRING(mun.nomemunic FROM 1 FOR 30) from sgmunicipio mun
             where mun.codpais=new.codpais and mun.siglauf=new.siglauf and mun.codmunic=new.codmunic
                 into :nomemunictran;
         if (nomemunictran is not null) then new.cidtran = nomemunictran;
