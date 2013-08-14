@@ -1,20 +1,3 @@
-SET SQL DIALECT 3;
-
-SET NAMES ISO8859_1;
-
-CONNECT 'localhost:c:/opt/firebird/dados/desenv/freedom.fdb'
-  USER 'SYSDBA'
-  PASSWORD 'masterkey';
-
-DROP DATABASE 'localhost:c:/opt/firebird/dados/desenv/freedom.fdb';
-
-CREATE DATABASE 'localhost:c:/opt/firebird/dados/desenv/freedom.fdb'
-  USER 'SYSDBA' PASSWORD 'masterkey'
-  PAGE_SIZE 16384
-  DEFAULT CHARACTER SET ISO8859_1 COLLATION PT_BR;
-
-ALTER CHARACTER SET ISO8859_1 SET DEFAULT COLLATION PT_BR;
-
 /*  External Function declarations */
 /*
 DECLARE EXTERNAL FUNCTION "ABS"
@@ -36393,7 +36376,7 @@ begin
                 and op.seqop=new.seqop
         into :icodempest,:icodfilialest,:icodprodest,:iseqest,:ddtvalidop;
 
-    ddtdescarte = cast(DATEADD(:ddtvalidop MONTH TO :imesesdesccp) as date); -- cast(addmonth(:ddtvalidop,:imesesdesccp) as date);
+    ddtdescarte = cast(DATEADD(:imesesdesccp MONTH TO :ddtvalidop) as date); -- cast(addmonth(:ddtvalidop,:imesesdesccp) as date);
 
    -- Buscando o numero de contra provas (Deve haver apenas 1)
    select count(*) from ppretcp rc where rc.codemp=new.codemp and rc.codfilial=new.codfilial and rc.codop=new.codop and rc.seqop=new.seqop
