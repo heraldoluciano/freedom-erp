@@ -2,8 +2,8 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ORC005" pageWidth="595" pageHeight="842" columnWidth="536" leftMargin="29" rightMargin="30" topMargin="29" bottomMargin="29">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.6105100000000008"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.zoom" value="2.5937424601000023"/>
+	<property name="ireport.x" value="11"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -1808,7 +1808,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement>
+				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="12"/>
 				</textElement>
 				<text><![CDATA[0 0 1 5 9 7 0]]></text>
@@ -1848,7 +1848,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Justified" lineSpacing="Single">
-					<font fontName="SansSerif" size="12" isBold="false" isStrikeThrough="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="10" isBold="false" isStrikeThrough="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<textFieldExpression class="java.util.Date"><![CDATA[$F{DTNASCCONV}]]></textFieldExpression>
 			</textField>
@@ -1957,20 +1957,20 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{UFCONV}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement key="TXTCNSCONV-6" x="451" y="60" width="84" height="15"/>
+				<reportElement key="TXTCNSCONV-6" x="446" y="64" width="81" height="14"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Justified" lineSpacing="Single">
-					<font fontName="SansSerif" size="12" isBold="false" isStrikeThrough="false" pdfFontName="Helvetica"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" lineSpacing="Single">
+					<font fontName="SansSerif" size="9" isBold="true" isStrikeThrough="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<textFieldExpression class="java.lang.Long"><![CDATA[$F{CODCONV}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement key="TXTIDENTIFICCONV-1" x="331" y="157" width="80" height="15"/>
+				<reportElement key="TXTIDENTIFICCONV-1" x="326" y="157" width="79" height="13"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1978,7 +1978,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font fontName="SansSerif" size="12" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{IDENTIFICCONV}]]></textFieldExpression>
 			</textField>
@@ -2035,15 +2035,15 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{TXT01}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement key="cepconv" x="441" y="156" width="80" height="15"/>
+				<reportElement key="cepconv" x="441" y="156" width="80" height="14"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement>
-					<font fontName="SansSerif" size="12" isBold="false" pdfFontName="Helvetica"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{CEPCONV}==null ? "" : (($F{CEPCONV}.length()>5)? ($F{CEPCONV}.substring( 0,5 ) + "-" + $F{CEPCONV}.substring(5)) : $F{CEPCONV})]]></textFieldExpression>
 			</textField>
@@ -2165,7 +2165,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement>
+				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="12"/>
 				</textElement>
 				<text><![CDATA[0 0 1 5 9 7 0]]></text>
