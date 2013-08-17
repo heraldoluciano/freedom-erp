@@ -1,0 +1,784 @@
+
+/*******************************************************************************
+The next statement causes the following error: 
+
+This column cannot be updated because it is derived from an SQL function or expression.
+attempted update of read-only column.
+*******************************************************************************/
+CREATE TRIGGER EQITRMATGAU FOR EQITRMA 
+ACTIVE AFTER UPDATE POSITION 0 
+as
+    declare variable icodemptm int;
+    declare variable icodfilialtm smallint;
+    declare variable icodtipomov int;
+    declare variable ddtrma date;
+    declare variable baixarmaaprov char(1);
+    declare variable estoque char(1);
+    declare variable qtdmov numeric(15,5);
+
+begin
+    -- Verifica se tabela está em manutenção // caso não esteja inicia procedimentos
+    if ( new.emmanut is null) then -- erro aqui -- (correção: comentar esta linha)
+        new.emmanut='N'; -- erro aqui -- (correção: comentar esta linha)
+
+    if ( not ( (new.emmanut='S') or ( (old.emmanut='S') and (old.emmanut is not null) )) ) then
+    begin
+
+
+        -- Carregando preferências
+        select baixarmaaprov from sgprefere5
+        where codemp=new.codemp and codfilial=new.codfilial
+        into :baixarmaaprov;
+    
+        qtdmov = new.qtdexpitrma;
+    
+        if(:baixarmaaprov='S' and new.sitaprovitrma in ('AT','AP')) then
+        begin
+            estoque = 'S';
+            qtdmov = new.qtdaprovitrma;
+        end
+        else
+        begin
+            estoque = 'N';
+        end
+    
+    
+        -- Carregando informações do cabeçalho (RMA)
+        select r.dtareqrma,r.codemptm,r.codfilialtm,r.codtipomov
+        from eqrma r
+        where r.codrma = new.codrma and r.codemp=new.codemp and r.codfilial = new.codfilial
+        into :ddtrma,:icodemptm,:icodfilialtm,:icodtipomov;
+    
+        -- Movimentação de estoque
+        execute procedure eqmovprodiudsp('U',new.codemppd, new.codfilialpd, new.codprod,
+            new.codemple, new.codfilialle, new.codlote, :icodemptm,:icodfilialtm, :icodtipomov,
+            null, null, null ,null, null,null, null, null, null, null, null, null,
+            new.codemp, new.codfilial, new.codrma, new.coditrma, null, null, null, null,
+            null, null, null, null, :ddtrma, new.codrma, :estoque, :qtdmov, new.precoitrma,
+            new.codempax, new.codfilialax, new.codalmox, null, 'S', 'N' );
+    
+   end
+   
+end ;
+
+/*******************************************************************************
+The next statement causes the following error: 
+
+Column does not belong to referenced table.
+Dynamic SQL Error.
+SQL error code = -206.
+Column FNITRECEBER.NUMCONTA cannot be repeated in UPDATE statement.
+At line 94, column 7.
+*******************************************************************************/
+CREATE TRIGGER FNRECEBERTGAI FOR FNRECEBER 
+ACTIVE AFTER INSERT POSITION 0 
+AS
+  DECLARE VARIABLE NPARCREC INTEGER;
+  DECLARE VARIABLE CODFILIALPP SMALLINT;
+  DECLARE VARIABLE CODFILIALPN SMALLINT;
+  DECLARE VARIABLE CODPLAN CHAR(13);
+  DECLARE VARIABLE CODCC CHAR(19);
+  DECLARE VARIABLE ANOCC SMALLINT;
+  DECLARE VARIABLE CODFILIALCC SMALLINT;
+  DECLARE VARIABLE CODFILIALIR SMALLINT;
+  DECLARE VARIABLE CODFILIALCL SMALLINT;
+  DECLARE VARIABLE ATIVOCLI CHAR(1);
+  DECLARE VARIABLE NUMRESTR INTEGER;
+  DECLARE VARIABLE CODFILIALCA SMALLINT;
+  DECLARE VARIABLE CODEMPCA INTEGER;
+  DECLARE VARIABLE NUMCONTA CHAR(10);
+  declare variable docvenda integer;
+  declare variable serievenda char(4);
+
+BEGIN
+  SELECT ICODFILIAL FROM SGRETFILIAL(NEW.CODEMP,'VDCLIENTE') INTO CODFILIALCL;
+  SELECT C.ATIVOCLI  FROM VDCLIENTE C WHERE C.CODEMP=NEW.CODEMP AND
+     C.CODFILIAL=:CODFILIALCL AND C.CODCLI=NEW.CODCLI INTO :ATIVOCLI;
+  IF (ATIVOCLI<>'S') THEN
+  BEGIN
+     EXCEPTION FNRECEBEREX01;
+  END
+  SELECT COUNT(*) FROM FNRESTRICAO R, FNTIPORESTR TR
+    WHERE R.CODEMP=NEW.CODEMP AND R.CODFILIAL=:CODFILIALCL AND
+      R.CODCLI=NEW.CODCLI AND R.SITRESTR IN ('I') AND
+      TR.CODEMP=R.CODEMPTR AND TR.CODFILIAL=R.CODFILIALTR AND
+      TR.CODTPRESTR=R.CODTPRESTR AND TR.BLOQTPRESTR='S'
+      INTO :NUMRESTR;
+  IF ( (NUMRESTR IS NOT NULL) AND (NUMRESTR>0) ) THEN
+  BEGIN
+     IF (NUMRESTR=1) THEN
+     BEGIN
+        EXCEPTION FNRECEBEREX02 'Cliente possui '||RTRIM(CAST(NUMRESTR AS CHAR(10)))||' restrição!';
+     END
+     ELSE
+     BEGIN
+        EXCEPTION FNRECEBEREX02 'Cliente possui '||RTRIM(CAST(NUMRESTR AS CHAR(10)))||' restrições!';
+     END
+  END
+  SELECT ICODFILIAL FROM SGRETFILIAL(NEW.CODEMP,'FNPLANOPAG') INTO CODFILIALPP;
+  SELECT ICODFILIAL FROM SGRETFILIAL(NEW.CODEMP,'FNPLANEJAMENTO') INTO CODFILIALPN;
+  SELECT ICODFILIAL FROM SGRETFILIAL(NEW.CODEMP,'FNCENTROCUSTO') INTO CODFILIALCC;
+  SELECT ICODFILIAL FROM SGRETFILIAL(NEW.CODEMP,'FNITRECEBER') INTO CODFILIALIR;
+
+  if(new.codvenda is not null and new.numconta is null) then
+  begin
+    select codempca,codfilialca,numconta, vd.docvenda, vd.serie from vdvenda vd
+    where codemp=new.codempva and codfilial=new.codfilialva and codvenda=new.codvenda and tipovenda=new.tipovenda
+    into :codempca, :codfilialca, :numconta, :docvenda, :serievenda;
+  end
+  else
+  begin
+    codempca = new.codempca;
+    codfilialca = new.codfilialca;
+    numconta = new.numconta;
+  end
+
+  if (new.codvenda is not null and :docvenda is null) then
+  begin
+    select vd.docvenda, vd.serie from vdvenda vd
+    where codemp=new.codempva and codfilial=new.codfilialva and codvenda=new.codvenda and tipovenda=new.tipovenda
+    into :docvenda, :serievenda;
+  end
+  
+  SELECT I FROM fngeraitrecebersp01('S',new.CODEMP,
+    new.CODFILIAL, new.CODREC, new.CODEMPPG, new.CODFILIALPG, new.CODPLANOPAG,
+    new.VLRREC, new.DATAREC, new.DTCOMPREC, new.FLAG, new.CODEMPBO, new.CODFILIALBO,
+    new.CODBANCO, new.CODEMPTC, new.CODFILIALTC, new.CODTIPOCOB,
+    new.CODEMPCB, new.CODFILIALCB, new.CODCARTCOB,
+    new.VLRCOMIREC, new.OBSREC, :codempca, :codfilialca, :numconta,
+    new.codemppn, new.codfilialpn, new.codplan, new.codempcc,  new.codfilialcc, new.anocc, new.codcc, new.vlrbasecomis
+    ) INTO :NPARCREC;
+
+/* Se a parcela do plano de pagamento tiver marcado para autobaixa, então é realizada a baixa automática. */
+  FOR SELECT PP.NUMCONTA,PP.CODFILIALCA,PP.CODEMPCA, PP.CODPLAN,PP.CODFILIALPN,PP.CODCC,PP.ANOCC,PP.CODFILIALCC,PC.NROPARCPAG
+      FROM FNPARCPAG PC, FNPLANOPAG PP
+      WHERE
+        PP.CODEMP=NEW.CODEMP AND PP.CODFILIAL=:CODFILIALPP AND PP.CODPLANOPAG=NEW.CODPLANOPAG AND
+        PC.CODEMP=PP.CODEMP AND PC.CODFILIAL=PP.CODFILIAL AND PC.CODPLANOPAG=PP.CODPLANOPAG AND
+        PC.AUTOBAIXAPARC='S'
+      INTO NUMCONTA,CODFILIALCA,CODEMPCA, CODPLAN,CODFILIALPN,CODCC,ANOCC,CODFILIALCC,NPARCREC
+  DO
+  BEGIN
+    UPDATE FNITRECEBER SET
+      NUMCONTA=:NUMCONTA,
+      CODEMPCA=:CODEMPCA,
+      CODFILIALCA=:CODFILIALCA,
+      NUMCONTA=:NUMCONTA, -- erro aqui -- (correção: comentar esta linha)
+      CODPLAN=:CODPLAN,
+      CODEMPPN=NEW.CODEMP,
+      CODFILIALPN=:CODFILIALPN,
+      ANOCC=:ANOCC,
+      CODCC=:CODCC,
+      CODEMPCC=NEW.CODEMP,
+      CODFILIALCC=:CODFILIALCC,
+      DOCLANCAITREC= :docvenda || '/' || :nparcrec,
+--      DOCLANCAITREC='AUTO',
+      DTPAGOITREC=NEW.DATAREC,
+      VLRPAGOITREC=VLRPARCITREC - coalesce(vlrdescitrec,0),
+--      VLRDESCITREC=0,
+      VLRJUROSITREC=0,
+      OBSITREC='BAIXA AUTOMÁTICA' || ' REF. DOC: ' || :serievenda || '-' || :docvenda,
+      STATUSITREC='RP'
+      WHERE CODREC=NEW.CODREC AND CODEMP=NEW.CODEMP AND CODFILIAL=:CODFILIALIR AND
+      NPARCITREC=:NPARCREC;
+  END
+END ;
+
+/*******************************************************************************
+The next statement causes the following error: 
+
+This column cannot be updated because it is derived from an SQL function or expression.
+attempted update of read-only column.
+*******************************************************************************/
+CREATE TRIGGER FNSALDOLANCATGAI FOR FNSALDOLANCA 
+ACTIVE AFTER INSERT POSITION 0 
+AS
+    declare variable fechacaixa char(1);
+    declare variable fechacaixaauto char(1);
+begin
+
+    -- buscando preferências para fechamento de caixas
+
+    select coalesce(p1.fechacaixa,'N'),  coalesce(p1.fechacaixaauto,'N') from sgprefere1 p1
+    where p1.codemp=new.codemp and p1.codfilial=new.codfilial
+    into :fechacaixa, :fechacaixaauto;
+
+    -- carregando valores para saldo...
+    if (new.SALDOSL is null) then -- erro aqui -- (correção: comentar esta linha)
+        new.SALDOSL = 0; -- erro aqui -- (correção: comentar esta linha)
+    if (new.PREVSL is null) then -- erro aqui -- (correção: comentar esta linha)
+        new.PREVSL = 0; -- erro aqui -- (correção: comentar esta linha)
+
+    -- Fechando todos os caixas anteriors...
+
+    if('S' = :fechacaixa and 'S' = :fechacaixaauto) then
+    begin
+        update fnsaldolanca sl
+        set sl.fechado='S'
+        where coalesce(sl.fechado,'N')='N'
+        and sl.codemp=new.codemp and sl.codfilial=new.codfilial
+        and sl.codemppn=new.codemppn and sl.codfilialpn=new.codfilialpn
+        and sl.codplan=new.codplan
+        and sl.datasl < new.datasl;
+    end
+end ;
+
+/*******************************************************************************
+The next statement causes the following error: 
+
+Undefined name.
+Dynamic SQL Error.
+SQL error code = -204.
+Ambiguous field name between table SGFILIAL and table LFITCLFISCAL .
+CODEMP.
+*******************************************************************************/
+CREATE TRIGGER VDITVENDATGBI FOR VDITVENDA 
+ACTIVE BEFORE INSERT POSITION 0 
+as
+    declare variable srefprod VARchar(20);
+    declare variable stipoprod varchar(2);
+    declare variable percicmsst numeric(9,2);
+    declare variable percicms numeric(9,2);
+    declare variable precocomisprod numeric(15,5);
+    declare variable redfisc numeric(9,2);
+    declare variable redbasest char(1);
+    declare variable ufcli char(2);
+    declare variable ufemp char(2);
+    declare variable percicmscm numeric(9,2);
+    declare variable codempcl integer;
+    declare variable codfilialcl smallint;
+    declare variable codcli integer;
+    declare variable codemptm integer;
+    declare variable codfilialtm smallint;
+    declare variable codtipomov integer;
+
+
+    begin
+
+        -- Inicializando campos nulos.
+        if (new.vlrdescitvenda is null) then new.vlrdescitvenda = 0;
+        if (new.vlrbaseicmsitvenda is null) then new.vlrbaseicmsitvenda = 0;
+        if (new.vlricmsitvenda is null) then new.vlricmsitvenda = 0;
+        if (new.vlrbaseipiitvenda is null) then new.vlrbaseipiitvenda = 0;
+        if (new.vlripiitvenda is null) then new.vlripiitvenda = 0;
+        if (new.vlrliqitvenda is null) then new.vlrliqitvenda = 0;
+        if (new.vlrcomisitvenda is null) then new.vlrcomisitvenda = 0;
+        if (new.vlradicitvenda is null) then new.vlradicitvenda = 0;
+        if (new.vlrissitvenda is null) then new.vlrissitvenda = 0;
+        if (new.vlrfreteitvenda is null) then new.vlrfreteitvenda = 0;
+        if (new.tipovenda is null) then new.tipovenda = 'V';
+        if (new.vlrbaseicmsstitvenda is null) then new.vlrbaseicmsstitvenda = 0;
+        if (new.vlrbaseicmsstretitvenda is null) then new.vlrbaseicmsstretitvenda = 0;
+        if (new.vlricmsstitvenda is null) then new.vlricmsstitvenda = 0;
+        if (new.vlricmsstretitvenda is null) then new.vlricmsstretitvenda = 0;
+        if (new.vlrbasecomisitvenda is null) then new.vlrbasecomisitvenda = 0;
+        
+        if (new.tipovenda='E') then
+        begin
+           --Busca código do cliente e tipo de movimento para utilizar na procedure lfbuscafiscal.
+           select vd.codempcl, vd.codfilialcl, vd.codcli, vd.codemptm,  vd.codfilialtm, vd.codtipomov from vdvenda vd
+               where vd.codemp=new.codemp and vd.codfilial=new.codfilial and vd.tipovenda=new.tipovenda and vd.codvenda=new.codvenda
+               into :codempcl, :codfilialcl, :codcli, :codemptm,  :codfilialtm, :codtipomov;
+                
+           select  codempif, codfilialif, codfisc, coditfisc from lfbuscafiscalsp(new.codemppd,new.codfilialpd,new.codprod,:codempcl,:codfilialcl,:codcli,
+               :codemptm,  :codfilialtm, :codtipomov, 'VD',
+               new.codnat, null, null, null, null)  v
+               into new.codempif, new.codfilialif, new.codfisc, new.coditfisc;
+               
+        end 
+        
+
+        -- Calculando valor liquido do ítem quando zerado.
+        if (new.vlrliqitvenda = 0) then
+            new.vlrliqitvenda = (new.qtditvenda * new.precoitvenda) +
+                new.vlradicitvenda + new.vlrfreteitvenda - new.vlrdescitvenda;
+
+        -- Carregando almoxarifado padrão do produto
+        if (new.codalmox is null) then
+            select codempax, codfilialax, codalmox from eqproduto
+                where codemp=new.codemppd and codfilial=new.codfilialpd and codprod=new.codprod
+            into new.codempax, new.codfilialax,new.codalmox;
+
+        -- Acertando o codigo de empresa e filial da mensagem, caso a mensagem seja informada.
+        if (not new.codmens is null) then
+        begin
+            select icodfilial from sgretfilial(new.codemp,'LFMENSAGEM') into new.codfilialme;
+            new.codempme = new.codemp;
+        end
+
+        -- Buscando referência do produto
+        select p.refprod, p.tipoprod, p.precocomisprod from eqproduto p
+            where p.codemp=new.codemppd and p.codfilial = new.codfilialpd and p.codprod=new.codprod
+        into srefprod, stipoprod, precocomisprod;
+
+        -- Acertando referência quando nula
+        if (new.refprod is null) then new.refprod = srefprod;
+
+          
+        -- Se o item vendido seja um SERVIÇO (Calculo do ISS);
+        if (stipoprod = 'S') then
+        begin
+            -- Carregando aliquota do ISS
+            select first 1 coalesce(c.aliqissfisc, f.percissfilial)
+            from sgfilial f
+            left outer join lfitclfiscal c on
+            c.codemp=new.codempif and c.codfilial=new.codfilialif and c.codfisc=new.codfisc and c.coditfisc=new.coditfisc
+            where codemp=new.codemp and codfilial=new.codfilial -- erro aqui -- (correção: qualificar a tabela = where f.codemp=new.codemp and f.codfilial=new.codfilial)
+            into new.percissitvenda;
+
+            -- Calculando e computando base e valor do ISS;
+            if (new.percissitvenda != 0) then
+            begin
+                new.vlrbaseissitvenda = new.vlrliqitvenda;
+                new.vlrissitvenda = new.vlrbaseissitvenda*(new.percissitvenda/100);
+            end
+        end
+        else -- Se o item vendido não for SERVIÇO zera ISS
+            new.vlrbaseissitvenda = 0;
+
+        -- Se produto for isento de ICMS
+        if (new.tipofisc = 'II') then
+        begin
+            new.vlrisentasitvenda = new.vlrliqitvenda;
+            new.vlrbaseicmsitvenda = 0;
+            new.percicmsitvenda = 0;
+            new.vlricmsitvenda = 0;
+            new.vlroutrasitvenda = 0;
+        end
+        -- Se produto for de Substituição Tributária
+        else if (new.tipofisc = 'FF') then
+        begin
+
+           if (new.tipost = 'SI' ) then -- Contribuinte Substituído
+                begin
+                    new.vlroutrasitvenda = new.vlrliqitvenda;
+                    new.vlrbaseicmsitvenda = 0;
+                    new.percicmsitvenda = 0;
+                    new.vlricmsitvenda = 0;
+                    new.vlrisentasitvenda = 0;
+
+                      -- Buscando estado do cliente e da empresa
+
+                    select coalesce(cl.siglauf,cl.ufcli), fi.siglauf from vdcliente cl, vdvenda vd, sgfilial fi
+                    where vd.codemp=new.codemp and vd.codfilial=new.codfilial and vd.codvenda=new.codvenda and vd.tipovenda=new.tipovenda and
+                    cl.codemp=vd.codempcl and cl.codfilial=vd.codfilialcl and cl.codcli=vd.codcli
+                    and fi.codemp=new.codemp and fi.codfilial=new.codfilial
+                    into ufcli, ufemp;
+
+                    -- Buscando aliquota do ICMS ST da tabela de classificação fiscal
+                    select coalesce(ic.aliqfiscintra,0),coalesce(ic.aliqfisc,0), coalesce(ic.redfisc,0), coalesce(ic.redbasest,'S') from lfitclfiscal ic
+                    where ic.codemp=new.codempif and ic.codfilial=new.codfilialif and ic.codfisc=new.codfisc and ic.coditfisc=new.coditfisc
+                    into percicmsst, percicms, redfisc, redbasest;
+
+                    -- Buscando aliquota do ICMS ST da tabela de alíquotas (caso não encontre na busca anterior)
+                    if (percicmsst = 0) then
+                    begin
+                        select coalesce(PERCICMSINTRA,0),coalesce(PERCICMS,0) from lfbuscaicmssp (new.codnat,:ufemp,new.codemp,new.codfilial)
+                        into PERCICMSST, percicms;
+                    end
+
+
+                        if(redfisc>0 and redbasest='S') then
+                        begin
+    
+                            -- Quando há redução na base do icms st , deve usar o valor da base do icms proprio como parametro
+    
+                            new.vlrbaseicmsstretitvenda = ( (new.vlrproditvenda - new.vlrdescitvenda + new.vlripiitvenda )  / (1+(new.margemvlagritvenda / 100.00))) * (1-(redfisc/100.00)) ;
+                            new.vlricmsstretitvenda = ((new.vlrproditvenda - new.vlrdescitvenda + new.vlripiitvenda ) * (:percicmsst / 100.00)) - (new.vlrbaseicmsstretitvenda * (:percicms/100.00));
+    
+                        end
+                        else
+                        begin
+    
+                            -- Quando não há redução na base do icms st deve usar o valor da base bruto (rem redução)
+                            new.vlrbaseicmsstretitvenda = ( (new.vlrproditvenda - new.vlrdescitvenda + new.vlripiitvenda )  / (1+(new.margemvlagritvenda / 100.00))) ;
+                            new.vlricmsstretitvenda = ((new.vlrproditvenda - new.vlrdescitvenda + new.vlripiitvenda ) * (:percicmsst / 100.00)) - (new.vlrbaseicmsstretitvenda * (:percicms/100.00));
+    
+                        end
+                     end
+
+
+
+            
+            else if (new.tipost = 'SU' ) then -- Contribuinte Substituto
+            begin
+                percicmscm = 0.00;
+
+                -- Buscando estado do cliente
+
+                select coalesce(cl.siglauf,cl.ufcli) from vdcliente cl, vdvenda vd
+                where vd.codemp=new.codemp and vd.codfilial=new.codfilial and vd.codvenda=new.codvenda and vd.tipovenda=new.tipovenda and
+                cl.codemp=vd.codempcl and cl.codfilial=vd.codfilialcl and cl.codcli=vd.codcli
+                into ufcli;
+
+                -- Buscando aliquota do ICMS ST da tabela de classificação fiscal
+                select coalesce(ic.aliqfiscintra,0), coalesce(ic.redfisc,0), coalesce(ic.redbasest,'S'), coalesce(ic.aliqicmsstcm,0.00) from lfitclfiscal ic
+                where ic.codemp=new.codempif and ic.codfilial=new.codfilialif and ic.codfisc=new.codfisc and ic.coditfisc=new.coditfisc
+                into percicmsst, redfisc, redbasest, percicmscm  ;
+                -- Buscando aliquota do ICMS ST da tabela de alíquotas (caso não encontre na busca anterior)
+                if (percicmsst = 0) then
+                begin
+                    select coalesce(PERCICMSINTRA,0) from lfbuscaicmssp (new.codnat,:ufcli,new.codemp,new.codfilial)
+                    into PERCICMSST;
+                end
+                if(new.calcstcm = 'N') then
+                begin
+
+                    if(redfisc>0 and redbasest='S') then
+                    begin
+                        -- Quando há redução na base do icms st , deve usar o valor da base do icms proprio como parametro
+                        new.vlrbaseicmsstitvenda = (  (coalesce(new.margemvlagritvenda,0) + 100) / 100 )  * (  (coalesce(new.vlrbaseicmsitvenda,0) ) + (coalesce(new.vlripiitvenda,0)) );
+    
+                    end
+                    else
+                    begin
+                        -- Quando não há redução na base do icms st deve usar o valor da base bruto (rem redução)
+                        new.vlrbaseicmsstitvenda = (  (coalesce(new.margemvlagritvenda,0) + 100) / 100 )  * (  (coalesce(new.vlrbaseicmsbrutitvenda,0) ) + (coalesce(new.vlripiitvenda,0)) );
+                    end
+                    new.vlricmsstitvenda = ( (new.vlrbaseicmsstitvenda * :percicmsst) / 100 ) - (new.vlricmsitvenda) ;
+                 end
+                 else
+                 begin
+                    if(redfisc>0 and redbasest='S') then
+                    begin
+
+                         -- Quando há redução na base do icms st , deve usar o valor da base do icms proprio como parametro
+                         new.vlrbaseicmsstitvenda =   (new.vlricmsitvenda + ( (coalesce(new.vlrbaseicmsitvenda,0) + coalesce(new.vlripiitvenda,0) ) * (coalesce(percicmscm,0)/100) ))/(:PERCICMSST/100);
+                    end
+                    else
+                    begin
+                         new.vlrbaseicmsstitvenda =   (new.vlricmsitvenda + ( (coalesce(new.vlrbaseicmsbrutitvenda,0) + coalesce(new.vlripiitvenda,0) ) * (coalesce(percicmscm,0)/100) ))/(:PERCICMSST/100);
+                    end
+                         new.vlroutrasitvenda = 0;
+                         new.vlrisentasitvenda = 0;
+                         new.vlricmsstitvenda =  ( (coalesce(new.vlrbaseicmsitvenda,0) + coalesce(new.vlripiitvenda,0) ) * (coalesce(percicmscm,0)/100)  );
+                 end
+        end
+        end
+        -- Se produto não for tributado e não isento
+        else if (new.tipofisc = 'NN') then
+        begin
+            new.vlroutrasitvenda = new.vlrliqitvenda;
+            new.vlrbaseicmsitvenda = 0;
+            new.percicmsitvenda = 0;
+            new.vlricmsitvenda = 0;
+            new.vlrisentasitvenda = 0;
+        end
+        -- Se produto for tributado integralmente
+        else if (new.tipofisc = 'TT') then
+        begin
+            new.vlroutrasitvenda = 0;
+            new.vlrisentasitvenda = 0;
+        end
+
+        -- Gerando preço especial para comissionamento
+        if(precocomisprod is not null) then
+        begin
+
+            new.vlrbasecomisitvenda = new.qtditvenda * precocomisprod;
+
+        end
+
+        -- Atualização de totais no cabeçalho da venda
+
+        update vdvenda vd set vd.vlrdescitvenda = vd.vlrdescitvenda + new.vlrdescitvenda,
+            vd.vlrprodvenda = vd.vlrprodvenda + new.vlrproditvenda,
+            vd.vlrbaseicmsvenda = vd.vlrbaseicmsvenda + new.vlrbaseicmsitvenda,
+            vd.vlricmsvenda = vd.VLRICMSVENDA + new.vlricmsitvenda,
+            vd.vlrisentasvenda = vd.VLRISENTASVENDA + new.vlrisentasitvenda,
+            vd.vlroutrasvenda = vd.VLROUTRASVENDA + new.vlroutrasitvenda,
+            vd.vlrbaseipivenda = vd.VLRBASEIPIVENDA + new.vlrbaseipiitvenda,
+            vd.vlripivenda = vd.VLRIPIVENDA + new.vlripiitvenda,
+            vd.vlrliqvenda = vd.VLRLIQVENDA + new.vlrliqitvenda,
+            vd.vlrbaseissvenda = vd.VLRBASEISSVENDA + new.vlrbaseissitvenda,
+            vd.vlrissvenda = vd.VLRISSVENDA + new.vlrissitvenda,
+            vd.vlrcomisvenda = vd.VLRCOMISVENDA + new.vlrcomisitvenda,
+            vd.vlrbaseicmsstvenda = coalesce(vd.vlrbaseicmsstvenda,0) + new.vlrbaseicmsstitvenda,
+            vd.vlricmsstvenda = coalesce(vd.vlricmsstvenda,0) + new.vlricmsstitvenda,
+            vd.vlrbasecomis = coalesce(vd.vlrbasecomis, 0) + new.vlrbasecomisitvenda
+         where vd.codvenda=new.codvenda and vd.tipovenda=new.tipovenda and
+            vd.codemp=new.codemp and vd.codfilial=new.codfilial;
+
+
+
+end ;
+
+/*******************************************************************************
+The next statement causes the following error: 
+
+Undefined name.
+Dynamic SQL Error.
+SQL error code = -204.
+Ambiguous field name between table SGFILIAL and table LFITCLFISCAL .
+CODEMP.
+*******************************************************************************/
+CREATE TRIGGER VDITVENDATGBU FOR VDITVENDA 
+ACTIVE BEFORE UPDATE POSITION 0 
+as
+    declare variable srefprod VARchar(20);
+    declare variable stipoprod varchar(2);
+    declare variable ntmp numeric(15, 5);
+    declare variable precocomisprod numeric(15, 5);
+    declare variable percicmsst numeric(9,2);
+    declare variable percicms numeric(9,2);
+    declare variable ufcli char(2);
+    declare variable ufemp char(2);
+    declare variable redbasest char(1);
+    declare variable redfisc numeric(9,2);
+    declare variable codfilialpf smallint;
+    declare variable fatorcparc char(1);
+    declare variable percicmscm numeric(9,2);
+
+
+    begin
+        percicmscm = 0.00;
+
+
+        -- Verifica se tabela está em manutenção // caso não esteja inicia procedimentos
+        if ( new.emmanut is null) then
+            new.emmanut='N';
+
+        if ( not ( (new.emmanut='S') or ( (old.emmanut='S') and (old.emmanut is not null) )) ) then
+        begin
+
+            -- Computando campos de log
+            new.dtalt=cast('now' as date);
+            new.idusualt=user;
+            new.halt = cast('now' as time);
+
+            -- Verifica se o produto foi alterado
+            if (new.codprod != old.codprod) then
+                exception vditvendaex01;
+
+            -- Verifica se o lote foi alterado
+            if (new.codlote != old.codlote) then
+                exception vditvendaex02;
+
+            -- Verifica se o código do almoxarifa está nuloo, se estiver carrega o almoxarifado padrão do produto
+            if (new.codalmox is null) then
+            begin
+                select codempax,codfilialax,codalmox from eqproduto
+                where codemp=new.codemppd and codfilial=new.codfilialpd and codprod=new.codprod
+                into new.codempax, new.codfilialax,new.codalmox;
+            end
+
+            -- Verifica se o almoxarifado anterior estava nulo, se não informa que não é pode ser trocado
+            if (old.codalmox is not null) then
+            begin
+                if (old.codalmox != new.codalmox) then
+                    exception eqalmox01;
+            end
+
+            -- Carrega a referencia e tipo do produto
+            select refprod, tipoprod, precocomisprod
+            from eqproduto where codprod=new.codprod and codemp=new.codemppd and codfilial=new.codfilialpd
+            into srefprod, stipoprod, precocomisprod;
+
+            if (new.refprod is null) then new.refprod = srefprod;
+
+            -- Caso a nota tenha sido cancelada
+            if ( (new.cancitvenda is not null) and (new.cancitvenda = 'S') ) then
+            begin
+                new.qtditvenda = 0;
+                new.vlrliqitvenda = 0;
+                new.vlrproditvenda = 0;
+                new.vlrbaseicmsitvenda = 0;
+                new.vlrbaseipiitvenda = 0;
+                new.vlrdescitvenda = 0;
+            end
+
+            -- Calculando o valor liquido o ítem
+            if ( (new.vlrliqitvenda = 0) and ( (new.cancitvenda is null) or (new.cancitvenda!='S') ) ) then
+            begin
+                new.vlrliqitvenda = (new.qtditvenda * new.precoitvenda) + new.vlradicitvenda + new.vlrfreteitvenda - new.vlrdescitvenda;
+            end
+            else if (new.vlrdescitvenda > 0 and new.qtditvenda > 0) then
+            begin
+                ntmp = new.vlrliqitvenda/new.qtditvenda;
+                ntmp = ntmp * new.qtditvenda;
+                new.vlrdescitvenda = new.vlrdescitvenda + (new.vlrliqitvenda-ntmp);
+
+                -- Recalculando comissão sobre o ítem
+                new.vlrcomisitvenda = (new.perccomisitvenda * new.vlrliqitvenda ) / 100;
+            end
+            if ( (old.qtditvenda<>new.qtditvenda) and (new.qtditvenda<>0) ) then
+            begin
+               select icodfilial from sgretfilial(old.codemp,'SGPREFERE1') into :codfilialpf; 
+               select fatorcparc from sgprefere1 p 
+                    where p.codemp=old.codemp and p.codfilial=:codfilialpf
+                 into :fatorcparc;
+               if (fatorcparc='S') then
+               begin
+                  exception vditvendaex05;
+               end 
+            end
+            -- Ser for um serviço
+            if (stipoprod = 'S') then
+            begin
+                -- Calculo do ISS
+                select first 1 coalesce(c.aliqissfisc, f.percissfilial)
+                from sgfilial f
+                left outer join lfitclfiscal c on
+                c.codemp=new.codempif and c.codfilial=new.codfilialif and c.codfisc=new.codfisc and c.coditfisc=new.coditfisc
+                where codemp=new.codemp and codfilial=new.codfilial  -- erro aqui -- (correção: qualificar a tabela = where f.codemp=new.codemp and f.codfilial=new.codfilial)
+                into new.percissitvenda;
+
+                if (new.percissitvenda != 0) then
+                begin
+                    new.vlrbaseissitvenda = new.vlrliqitvenda;
+                    new.vlrissitvenda = new.vlrbaseissitvenda * (new.percissitvenda/100);
+                end
+            end
+            else
+                new.vlrbaseissitvenda = 0;
+
+            -- ìtem isento
+            if (new.tipofisc = 'II') then
+            begin
+                new.vlrisentasitvenda = new.vlrliqitvenda;
+                new.vlrbaseicmsitvenda = 0;
+                new.percicmsitvenda = 0;
+                new.vlricmsitvenda = 0;
+                new.vlroutrasitvenda = 0;
+            end
+            -- Item com substituição tributária
+            else if (new.tipofisc = 'FF') then
+            begin
+                if (new.tipost = 'SI' ) then -- Contribuinte Substituído
+                begin
+                    new.vlroutrasitvenda = new.vlrliqitvenda;
+                    new.vlrbaseicmsitvenda = 0;
+                    new.percicmsitvenda = 0;
+                    new.vlricmsitvenda = 0;
+                    new.vlrisentasitvenda = 0;
+
+                      -- Buscando estado do cliente e da empresa
+
+                    select coalesce(cl.siglauf,cl.ufcli), fi.siglauf from vdcliente cl, vdvenda vd, sgfilial fi
+                    where vd.codemp=new.codemp and vd.codfilial=new.codfilial and vd.codvenda=new.codvenda and vd.tipovenda=new.tipovenda and
+                    cl.codemp=vd.codempcl and cl.codfilial=vd.codfilialcl and cl.codcli=vd.codcli
+                    and fi.codemp=new.codemp and fi.codfilial=new.codfilial
+                    into ufcli, ufemp;
+
+                    -- Buscando aliquota do ICMS ST da tabela de classificação fiscal
+                    select coalesce(ic.aliqfiscintra,0),coalesce(ic.aliqfisc,0), coalesce(ic.redfisc,0), coalesce(ic.redbasest,'S') from lfitclfiscal ic
+                    where ic.codemp=new.codempif and ic.codfilial=new.codfilialif and ic.codfisc=new.codfisc and ic.coditfisc=new.coditfisc
+                    into percicmsst, percicms, redfisc, redbasest ;
+
+                    -- Buscando aliquota do ICMS ST da tabela de alíquotas (caso não encontre na busca anterior)
+                    if (percicmsst = 0) then
+                    begin
+                        select coalesce(PERCICMSINTRA,0),coalesce(PERCICMS,0) from lfbuscaicmssp (new.codnat,:ufemp,new.codemp,new.codfilial)
+                        into PERCICMSST, percicms;
+                    end
+
+                    if(redfisc>0 and redbasest='S') then
+                    begin
+
+                        -- Quando há redução na base do icms st , deve usar o valor da base do icms proprio como parametro
+
+                        new.vlrbaseicmsstretitvenda = ( (new.vlrproditvenda - new.vlrdescitvenda + new.vlripiitvenda )  / (1+(new.margemvlagritvenda / 100.00))) * (1-(redfisc/100.00)) ;
+                        new.vlricmsstretitvenda = ((new.vlrproditvenda - new.vlrdescitvenda + new.vlripiitvenda ) * (:percicmsst / 100.00)) - (new.vlrbaseicmsstretitvenda * (:percicms/100.00));
+
+                    end
+                    else
+                    begin
+
+                        -- Quando não há redução na base do icms st deve usar o valor da base bruto (rem redução)
+                        new.vlrbaseicmsstretitvenda = ( (new.vlrproditvenda - new.vlrdescitvenda + new.vlripiitvenda )  / (1+(new.margemvlagritvenda / 100.00))) ;
+                        new.vlricmsstretitvenda = ((new.vlrproditvenda - new.vlrdescitvenda + new.vlripiitvenda ) * (:percicmsst / 100.00)) - (new.vlrbaseicmsstretitvenda * (:percicms/100.00));
+
+                    end
+    
+
+                end
+                else if (new.tipost = 'SU' ) then -- Contribuinte Substituto
+                begin
+                     -- Buscando estado do cliente
+                    select coalesce(cl.siglauf,cl.ufcli) from vdcliente cl, vdvenda vd
+                    where vd.codemp=new.codemp and vd.codfilial=new.codfilial and vd.codvenda=new.codvenda and vd.tipovenda=new.tipovenda and
+                    cl.codemp=vd.codempcl and cl.codfilial=vd.codfilialcl and cl.codcli=vd.codcli
+                    into ufcli;
+
+                   -- Buscando aliquota do ICMS ST da tabela de classificação fiscal
+                    select coalesce(ic.aliqfiscintra,0), ic.redbasest, ic.redfisc, coalesce(ic.aliqicmsstcm,0.00) from lfitclfiscal ic
+                    where ic.codemp=new.codempif and ic.codfilial=new.codfilialif and ic.codfisc=new.codfisc and ic.coditfisc=new.coditfisc
+                    into PERCICMSST,redbasest, redfisc, percicmscm;
+
+                    -- Buscando aliquota do ICMS ST da tabela de alíquotas (caso não encontre na busca naterior)
+                    if (percicmsst = 0) then
+                    begin
+                        select coalesce(PERCICMSINTRA,0) from lfbuscaicmssp (new.codnat,:ufcli,new.codemp,new.codfilial)
+                        into PERCICMSST;
+                    end
+
+                    new.vlroutrasitvenda = 0;
+                    new.VLRISENTASITVENDA = 0;
+
+                   if(new.calcstcm = 'N') then
+                    begin
+                        
+                        if(redfisc>0 and redbasest='S') then
+                        begin
+                            -- Quando há redução na base do icms st , deve usar o valor da base do icms proprio como parametro
+                            new.vlrbaseicmsstitvenda = (  (coalesce(new.margemvlagritvenda,0) + 100) / 100 )  * (  (coalesce(new.vlrbaseicmsitvenda,0) ) + (coalesce(new.vlripiitvenda,0)) );
+        
+                        end
+                        else
+                        begin
+                            -- Quando não há redução na base do icms st deve usar o valor da base bruto (rem redução)
+                            new.vlrbaseicmsstitvenda = (  (coalesce(new.margemvlagritvenda,0) + 100) / 100 )  * (  (coalesce(new.vlrbaseicmsbrutitvenda,0) ) + (coalesce(new.vlripiitvenda,0)) );
+                        end
+        
+                        --new.vlroutrasitvenda = 0;
+                        --new.vlrisentasitvenda = 0;
+                        new.vlricmsstitvenda = ( (new.vlrbaseicmsstitvenda * :percicmsst) / 100 ) - (new.vlricmsitvenda) ;
+                     end
+                     else
+                     begin
+                         
+                        if(redfisc>0 and redbasest='S') then
+                        begin
+    
+                             -- Quando há redução na base do icms st , deve usar o valor da base do icms proprio como parametro
+                             new.vlrbaseicmsstitvenda =   (new.vlricmsitvenda + ( (coalesce(new.vlrbaseicmsitvenda,0) + coalesce(new.vlripiitvenda,0) ) * (coalesce(:percicmscm,0)/100) ))/(:PERCICMSST/100);
+                        end
+                        else
+                        begin
+                             new.vlrbaseicmsstitvenda =   (new.vlricmsitvenda + ( (coalesce(new.vlrbaseicmsbrutitvenda,0) + coalesce(new.vlripiitvenda,0) ) * (coalesce(percicmscm,0)/100) ))/(:PERCICMSST/100);
+                        end
+                        new.vlroutrasitvenda = 0;
+                        new.vlrisentasitvenda = 0;
+                        new.vlricmsstitvenda =  ( (coalesce(new.vlrbaseicmsitvenda,0) + coalesce(new.vlripiitvenda,0) ) * (coalesce(percicmscm,0)/100)  );
+                     end
+                 end
+            end
+            -- Não insidencia
+            else if (new.tipofisc = 'NN') then
+            begin
+                new.vlroutrasitvenda = new.vlrliqitvenda;
+                new.vlrbaseicmsitvenda = 0;
+                new.percicmsitvenda = 0;
+                new.vlricmsitvenda = 0;
+                new.vlrisentasitvenda = 0;
+            end
+            -- Tributado integralmente
+            else if (new.tipofisc = 'TT') then
+            begin
+                new.vlroutrasitvenda = 0;
+                new.vlrisentasitvenda = 0;
+            end
+        end
+
+
+       -- Atualizando preço especial para comissionamento
+       if(precocomisprod is not null) then
+       begin
+
+           new.vlrbasecomisitvenda = new.qtditvenda * precocomisprod;
+
+       end
+
+end ;
+
+
