@@ -39007,23 +39007,23 @@ as
     declare variable codfilialtm smallint;
     declare variable codtipomov integer;
 
-  DECLARE VARIABLE V_CHAVE VARCHAR(500);
-  DECLARE VARIABLE V_RECURSIVO INTEGER;
+  --DECLARE VARIABLE V_CHAVE VARCHAR(500);
+  --DECLARE VARIABLE V_RECURSIVO INTEGER;
 BEGIN
 
-  V_CHAVE = 'VDITVENDATGBI'; -- Nome do objeto (trigger ou procedure) a controlar recursividade
-  V_CHAVE = V_CHAVE || '_' || IIF(INSERTING, 'INS', IIF(UPDATING, 'UPD', 'DEL')); -- tipo de evento
-  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
-  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODITVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
-  V_CHAVE = V_CHAVE || '_' || CAST(NEW.TIPOVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
-  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODFILIAL AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
-  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODEMP AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  --V_CHAVE = 'VDITVENDATGBI'; -- Nome do objeto (trigger ou procedure) a controlar recursividade
+  --V_CHAVE = V_CHAVE || '_' || IIF(INSERTING, 'INS', IIF(UPDATING, 'UPD', 'DEL')); -- tipo de evento
+  --V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  --V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODITVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  --V_CHAVE = V_CHAVE || '_' || CAST(NEW.TIPOVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  --V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODFILIAL AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  --V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODEMP AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
 
-  EXECUTE PROCEDURE PRO_RECURSIVO(:V_CHAVE) RETURNING_VALUES (:V_RECURSIVO);
+  --EXECUTE PROCEDURE PRO_RECURSIVO(:V_CHAVE) RETURNING_VALUES (:V_RECURSIVO);
 
   /* Verifica se é uma chamada recursiva ou não, se não for continua */
-  IF (V_RECURSIVO = 0) THEN
-  BEGIN
+  --IF (V_RECURSIVO = 0) THEN
+  --BEGIN
 
         -- Inicializando campos nulos.
         if (new.vlrdescitvenda is null) then new.vlrdescitvenda = 0;
@@ -39270,7 +39270,7 @@ BEGIN
             vd.codemp=new.codemp and vd.codfilial=new.codfilial;
 
 
-  END
+  --END
 
 end ^
 
@@ -39291,23 +39291,23 @@ as
     declare variable subtipovenda char(2);
     declare variable estoqtipomovpd char(1);
 
-  DECLARE VARIABLE V_CHAVE VARCHAR(500);
-  DECLARE VARIABLE V_RECURSIVO INTEGER;
+  --DECLARE VARIABLE V_CHAVE VARCHAR(500);
+  --DECLARE VARIABLE V_RECURSIVO INTEGER;
 BEGIN
 
-  V_CHAVE = 'VDITVENDATGAI'; -- Nome do objeto (trigger ou procedure) a controlar recursividade
-  V_CHAVE = V_CHAVE || '_' || IIF(INSERTING, 'INS', IIF(UPDATING, 'UPD', 'DEL')); -- tipo de evento
-  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
-  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODITVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
-  V_CHAVE = V_CHAVE || '_' || CAST(NEW.TIPOVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
-  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODFILIAL AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
-  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODEMP AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  --V_CHAVE = 'VDITVENDATGAI'; -- Nome do objeto (trigger ou procedure) a controlar recursividade
+  --V_CHAVE = V_CHAVE || '_' || IIF(INSERTING, 'INS', IIF(UPDATING, 'UPD', 'DEL')); -- tipo de evento
+  --V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  --V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODITVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  --V_CHAVE = V_CHAVE || '_' || CAST(NEW.TIPOVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  --V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODFILIAL AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  --V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODEMP AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
 
-  EXECUTE PROCEDURE PRO_RECURSIVO(:V_CHAVE) RETURNING_VALUES (:V_RECURSIVO);
+  --EXECUTE PROCEDURE PRO_RECURSIVO(:V_CHAVE) RETURNING_VALUES (:V_RECURSIVO);
 
   /* Verifica se é uma chamada recursiva ou não, se não for continua */
-  IF (V_RECURSIVO = 0) THEN
-  BEGIN
+  --IF (V_RECURSIVO = 0) THEN
+  --BEGIN
 
     estoqtipomovpd = 'S';
     
@@ -39388,7 +39388,7 @@ BEGIN
     new.codempcp,new.codfilialcp, new.codcompra, new.coditcompra, new.codemp, new.codfilial,
     new.codvenda, new.coditvenda, new.tipovenda, new.qtditvenda);
 
-  END
+  --END
   
 end ^
 
@@ -39409,23 +39409,23 @@ as
     declare variable fatorcparc char(1);
     declare variable percicmscm numeric(9,2);
 
-  DECLARE VARIABLE V_CHAVE VARCHAR(500);
-  DECLARE VARIABLE V_RECURSIVO INTEGER;
+  --DECLARE VARIABLE V_CHAVE VARCHAR(500);
+  --DECLARE VARIABLE V_RECURSIVO INTEGER;
 BEGIN
 
-  V_CHAVE = 'VDITVENDATGBU'; -- Nome do objeto (trigger ou procedure) a controlar recursividade
-  V_CHAVE = V_CHAVE || '_' || IIF(INSERTING, 'INS', IIF(UPDATING, 'UPD', 'DEL')); -- tipo de evento
-  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
-  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODITVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
-  V_CHAVE = V_CHAVE || '_' || CAST(NEW.TIPOVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
-  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODFILIAL AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
-  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODEMP AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  --V_CHAVE = 'VDITVENDATGBU'; -- Nome do objeto (trigger ou procedure) a controlar recursividade
+  --V_CHAVE = V_CHAVE || '_' || IIF(INSERTING, 'INS', IIF(UPDATING, 'UPD', 'DEL')); -- tipo de evento
+  --V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  --V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODITVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  --V_CHAVE = V_CHAVE || '_' || CAST(NEW.TIPOVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  --V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODFILIAL AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  --V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODEMP AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
 
-  EXECUTE PROCEDURE PRO_RECURSIVO(:V_CHAVE) RETURNING_VALUES (:V_RECURSIVO);
+  --EXECUTE PROCEDURE PRO_RECURSIVO(:V_CHAVE) RETURNING_VALUES (:V_RECURSIVO);
 
   /* Verifica se é uma chamada recursiva ou não, se não for continua */
-  IF (V_RECURSIVO = 0) THEN
-  BEGIN
+  --IF (V_RECURSIVO = 0) THEN
+  --BEGIN
 
         percicmscm = 0.00;
 
@@ -39675,7 +39675,7 @@ BEGIN
 
        end
 
-  END
+  --END
 
 end ^
 
@@ -39698,23 +39698,23 @@ AS
   declare variable subtipovenda char(2);
   declare variable estoqtipomovpd char(1);
 
-  DECLARE VARIABLE V_CHAVE VARCHAR(500);
-  DECLARE VARIABLE V_RECURSIVO INTEGER;
+  --DECLARE VARIABLE V_CHAVE VARCHAR(500);
+  --DECLARE VARIABLE V_RECURSIVO INTEGER;
 BEGIN
 
-  V_CHAVE = 'VDITVENDATGAU'; -- Nome do objeto (trigger ou procedure) a controlar recursividade
-  V_CHAVE = V_CHAVE || '_' || IIF(INSERTING, 'INS', IIF(UPDATING, 'UPD', 'DEL')); -- tipo de evento
-  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
-  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODITVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
-  V_CHAVE = V_CHAVE || '_' || CAST(NEW.TIPOVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
-  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODFILIAL AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
-  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODEMP AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  --V_CHAVE = 'VDITVENDATGAU'; -- Nome do objeto (trigger ou procedure) a controlar recursividade
+  --V_CHAVE = V_CHAVE || '_' || IIF(INSERTING, 'INS', IIF(UPDATING, 'UPD', 'DEL')); -- tipo de evento
+  --V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  --V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODITVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  --V_CHAVE = V_CHAVE || '_' || CAST(NEW.TIPOVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  --V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODFILIAL AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  --V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODEMP AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
 
-  EXECUTE PROCEDURE PRO_RECURSIVO(:V_CHAVE) RETURNING_VALUES (:V_RECURSIVO);
+  --EXECUTE PROCEDURE PRO_RECURSIVO(:V_CHAVE) RETURNING_VALUES (:V_RECURSIVO);
 
   /* Verifica se é uma chamada recursiva ou não, se não for continua */
-  IF (V_RECURSIVO = 0) THEN
-  BEGIN
+  --IF (V_RECURSIVO = 0) THEN
+  --BEGIN
   
     estoqtipomovpd = 'S';
   
@@ -39822,7 +39822,7 @@ BEGIN
 
     END
 
-  END
+  --END
   
 END ^
 
@@ -39832,23 +39832,23 @@ AS
     declare variable codfilial smallint;
     declare variable fatorcparc char(1);
 
-  DECLARE VARIABLE V_CHAVE VARCHAR(500);
-  DECLARE VARIABLE V_RECURSIVO INTEGER;
+--  DECLARE VARIABLE V_CHAVE VARCHAR(500);
+--  DECLARE VARIABLE V_RECURSIVO INTEGER;
 BEGIN
 
-  V_CHAVE = 'VDITVENDATGBD'; -- Nome do objeto (trigger ou procedure) a controlar recursividade
-  V_CHAVE = V_CHAVE || '_' || IIF(INSERTING, 'INS', IIF(UPDATING, 'UPD', 'DEL')); -- tipo de evento
-  V_CHAVE = V_CHAVE || '_' || CAST(OLD.CODVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
-  V_CHAVE = V_CHAVE || '_' || CAST(OLD.CODITVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
-  V_CHAVE = V_CHAVE || '_' || CAST(OLD.TIPOVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
-  V_CHAVE = V_CHAVE || '_' || CAST(OLD.CODFILIAL AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
-  V_CHAVE = V_CHAVE || '_' || CAST(OLD.CODEMP AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+--  V_CHAVE = 'VDITVENDATGBD'; -- Nome do objeto (trigger ou procedure) a controlar recursividade
+--  V_CHAVE = V_CHAVE || '_' || IIF(INSERTING, 'INS', IIF(UPDATING, 'UPD', 'DEL')); -- tipo de evento
+--  V_CHAVE = V_CHAVE || '_' || CAST(OLD.CODVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+--  V_CHAVE = V_CHAVE || '_' || CAST(OLD.CODITVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+--  V_CHAVE = V_CHAVE || '_' || CAST(OLD.TIPOVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+--  V_CHAVE = V_CHAVE || '_' || CAST(OLD.CODFILIAL AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+--  V_CHAVE = V_CHAVE || '_' || CAST(OLD.CODEMP AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
 
-  EXECUTE PROCEDURE PRO_RECURSIVO(:V_CHAVE) RETURNING_VALUES (:V_RECURSIVO);
+--  EXECUTE PROCEDURE PRO_RECURSIVO(:V_CHAVE) RETURNING_VALUES (:V_RECURSIVO);
 
   /* Verifica se é uma chamada recursiva ou não, se não for continua */
-  IF (V_RECURSIVO = 0) THEN
-  BEGIN
+--  IF (V_RECURSIVO = 0) THEN
+--  BEGIN
 
     select icodfilial from sgretfilial(old.codemp,'SGPREFERE1') into :codfilial; 
     select fatorcparc from sgprefere1 p 
@@ -39865,7 +39865,7 @@ BEGIN
     -- Executa procedure para exclusão de tabela de vinculo para numeros de serie
     execute procedure vditvendaseriesp('D', old.codemp, old.codfilial, old.codvenda, old.tipovenda, old.coditvenda, old.codemppd, old.codfilialpd, old.codprod, null, old.qtditvenda);
 
-  END
+  --END
   
 end ^
 
@@ -39881,23 +39881,23 @@ AS
   declare variable subtipovenda char(2);
   declare variable estoqtipomovpd char(1);
 
-  DECLARE VARIABLE V_CHAVE VARCHAR(500);
-  DECLARE VARIABLE V_RECURSIVO INTEGER;
+--  DECLARE VARIABLE V_CHAVE VARCHAR(500);
+--  DECLARE VARIABLE V_RECURSIVO INTEGER;
 BEGIN
 
-  V_CHAVE = 'VDITVENDATGAD'; -- Nome do objeto (trigger ou procedure) a controlar recursividade
-  V_CHAVE = V_CHAVE || '_' || IIF(INSERTING, 'INS', IIF(UPDATING, 'UPD', 'DEL')); -- tipo de evento
-  V_CHAVE = V_CHAVE || '_' || CAST(OLD.CODVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
-  V_CHAVE = V_CHAVE || '_' || CAST(OLD.CODITVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
-  V_CHAVE = V_CHAVE || '_' || CAST(OLD.TIPOVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
-  V_CHAVE = V_CHAVE || '_' || CAST(OLD.CODFILIAL AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
-  V_CHAVE = V_CHAVE || '_' || CAST(OLD.CODEMP AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+--  V_CHAVE = 'VDITVENDATGAD'; -- Nome do objeto (trigger ou procedure) a controlar recursividade
+--  V_CHAVE = V_CHAVE || '_' || IIF(INSERTING, 'INS', IIF(UPDATING, 'UPD', 'DEL')); -- tipo de evento
+--  V_CHAVE = V_CHAVE || '_' || CAST(OLD.CODVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+ -- V_CHAVE = V_CHAVE || '_' || CAST(OLD.CODITVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+--  V_CHAVE = V_CHAVE || '_' || CAST(OLD.TIPOVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+--  V_CHAVE = V_CHAVE || '_' || CAST(OLD.CODFILIAL AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+--  V_CHAVE = V_CHAVE || '_' || CAST(OLD.CODEMP AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
 
-  EXECUTE PROCEDURE PRO_RECURSIVO(:V_CHAVE) RETURNING_VALUES (:V_RECURSIVO);
+--  EXECUTE PROCEDURE PRO_RECURSIVO(:V_CHAVE) RETURNING_VALUES (:V_RECURSIVO);
 
   /* Verifica se é uma chamada recursiva ou não, se não for continua */
-  IF (V_RECURSIVO = 0) THEN
-  BEGIN
+--  IF (V_RECURSIVO = 0) THEN
+--  BEGIN
 
     IF ( not ( (old.EMMANUT='S') and (old.EMMANUT IS NOT NULL) ) ) THEN
     BEGIN
@@ -39945,7 +39945,7 @@ BEGIN
       
     END
 
-  END
+--  END
   
 END ^
 
@@ -40630,22 +40630,22 @@ CREATE TRIGGER VDVENDATGBI FOR VDVENDA
 ACTIVE BEFORE INSERT POSITION 0 
 AS
   DECLARE VARIABLE sTipoMov CHAR(2);
-  DECLARE VARIABLE V_CHAVE VARCHAR(500);
-  DECLARE VARIABLE V_RECURSIVO INTEGER;
+--  DECLARE VARIABLE V_CHAVE VARCHAR(500);
+--  DECLARE VARIABLE V_RECURSIVO INTEGER;
 BEGIN
 
-  V_CHAVE = 'VDVENDATGBI'; -- Nome do objeto (trigger ou procedure) a controlar recursividade
-  V_CHAVE = V_CHAVE || '_' || IIF(INSERTING, 'INS', IIF(UPDATING, 'UPD', 'DEL')); -- tipo de evento
-  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
-  V_CHAVE = V_CHAVE || '_' || CAST(NEW.TIPOVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
-  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODFILIAL AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
-  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODEMP AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+--  V_CHAVE = 'VDVENDATGBI'; -- Nome do objeto (trigger ou procedure) a controlar recursividade
+--  V_CHAVE = V_CHAVE || '_' || IIF(INSERTING, 'INS', IIF(UPDATING, 'UPD', 'DEL')); -- tipo de evento
+--  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+--  V_CHAVE = V_CHAVE || '_' || CAST(NEW.TIPOVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+--  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODFILIAL AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+--  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODEMP AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
 
-  EXECUTE PROCEDURE PRO_RECURSIVO(:V_CHAVE) RETURNING_VALUES (:V_RECURSIVO);
+--  EXECUTE PROCEDURE PRO_RECURSIVO(:V_CHAVE) RETURNING_VALUES (:V_RECURSIVO);
 
   /* Verifica se é uma chamada recursiva ou não, se não for continua */
-  IF (V_RECURSIVO = 0) THEN
-  BEGIN
+--  IF (V_RECURSIVO = 0) THEN
+--  BEGIN
 
     EXECUTE PROCEDURE VDCLIENTEATIVOSP(new.CODEMPCL, new.CODFILIALCL, new.CODCLI);
     /*  EXECUTE PROCEDURE FNLIBCREDSP(new.CODVENDA,new.CODCLI,new.CODEMPCL,new.CODFILIALCL,null); */
@@ -40704,29 +40704,29 @@ BEGIN
             ELSE new.STATUSVENDA = 'P1';
     END
 
-  END
+--  END
 
 END ^
 
 CREATE TRIGGER VDVENDATGAI FOR VDVENDA 
 ACTIVE AFTER INSERT POSITION 0 
 AS
-  DECLARE VARIABLE V_CHAVE VARCHAR(500);
-  DECLARE VARIABLE V_RECURSIVO INTEGER;
+--  DECLARE VARIABLE V_CHAVE VARCHAR(500);
+--  DECLARE VARIABLE V_RECURSIVO INTEGER;
 BEGIN
 
-  V_CHAVE = 'VDVENDATGAI'; -- Nome do objeto (trigger ou procedure) a controlar recursividade
-  V_CHAVE = V_CHAVE || '_' || IIF(INSERTING, 'INS', IIF(UPDATING, 'UPD', 'DEL')); -- tipo de evento
-  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
-  V_CHAVE = V_CHAVE || '_' || CAST(NEW.TIPOVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
-  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODFILIAL AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
-  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODEMP AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+--  V_CHAVE = 'VDVENDATGAI'; -- Nome do objeto (trigger ou procedure) a controlar recursividade
+--  V_CHAVE = V_CHAVE || '_' || IIF(INSERTING, 'INS', IIF(UPDATING, 'UPD', 'DEL')); -- tipo de evento
+-- V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+--  V_CHAVE = V_CHAVE || '_' || CAST(NEW.TIPOVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+--  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODFILIAL AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+--  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODEMP AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
 
-  EXECUTE PROCEDURE PRO_RECURSIVO(:V_CHAVE) RETURNING_VALUES (:V_RECURSIVO);
+--  EXECUTE PROCEDURE PRO_RECURSIVO(:V_CHAVE) RETURNING_VALUES (:V_RECURSIVO);
 
   /* Verifica se é uma chamada recursiva ou não, se não for continua */
-  IF (V_RECURSIVO = 0) THEN
-  BEGIN
+--  IF (V_RECURSIVO = 0) THEN
+--  BEGIN
 
     insert into vdvendacomis
     (codemp,codfilial,codvenda,tipovenda,seqvc,
@@ -40742,7 +40742,7 @@ BEGIN
             and vd.codemp=NEW.codemp and vd.codfilial=NEW.codfilial and vd.codvenda=NEW.codvenda
             and vd.tipovenda=NEW.tipovenda;
 
-  END
+--  END
 
 end ^
 
@@ -40774,22 +40774,22 @@ AS
   DECLARE VARIABLE PERCIT NUMERIC(9,2);
   DECLARE VARIABLE RETENSAOIMP CHAR(1);
 
-  DECLARE VARIABLE V_CHAVE VARCHAR(500);
-  DECLARE VARIABLE V_RECURSIVO INTEGER;
+  --DECLARE VARIABLE V_CHAVE VARCHAR(500);
+  --DECLARE VARIABLE V_RECURSIVO INTEGER;
 BEGIN
 
-  V_CHAVE = 'VDVENDATGBU'; -- Nome do objeto (trigger ou procedure) a controlar recursividade
-  V_CHAVE = V_CHAVE || '_' || IIF(INSERTING, 'INS', IIF(UPDATING, 'UPD', 'DEL')); -- tipo de evento
-  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
-  V_CHAVE = V_CHAVE || '_' || CAST(NEW.TIPOVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
-  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODFILIAL AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
-  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODEMP AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  --V_CHAVE = 'VDVENDATGBU'; -- Nome do objeto (trigger ou procedure) a controlar recursividade
+  --V_CHAVE = V_CHAVE || '_' || IIF(INSERTING, 'INS', IIF(UPDATING, 'UPD', 'DEL')); -- tipo de evento
+  --V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  --V_CHAVE = V_CHAVE || '_' || CAST(NEW.TIPOVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  --V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODFILIAL AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  --V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODEMP AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
 
-  EXECUTE PROCEDURE PRO_RECURSIVO(:V_CHAVE) RETURNING_VALUES (:V_RECURSIVO);
+  --EXECUTE PROCEDURE PRO_RECURSIVO(:V_CHAVE) RETURNING_VALUES (:V_RECURSIVO);
 
   /* Verifica se é uma chamada recursiva ou não, se não for continua */
-  IF (V_RECURSIVO = 0) THEN
-  BEGIN
+  --IF (V_RECURSIVO = 0) THEN
+  --BEGIN
 
     retensaoimp = 'N';
 
@@ -41035,7 +41035,7 @@ BEGIN
       new.emmanut = 'N';
     end
 
-  END
+  --END
 
 END ^
 
@@ -41079,22 +41079,22 @@ as
     declare variable vlrretensaoiss numeric(15, 5);
     declare variable icodmodnota integer;
 
-  DECLARE VARIABLE V_CHAVE VARCHAR(500);
-  DECLARE VARIABLE V_RECURSIVO INTEGER;
+  --DECLARE VARIABLE V_CHAVE VARCHAR(500);
+  --DECLARE VARIABLE V_RECURSIVO INTEGER;
 BEGIN
 
-  V_CHAVE = 'VDVENDATGAU'; -- Nome do objeto (trigger ou procedure) a controlar recursividade
-  V_CHAVE = V_CHAVE || '_' || IIF(INSERTING, 'INS', IIF(UPDATING, 'UPD', 'DEL')); -- tipo de evento
-  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
-  V_CHAVE = V_CHAVE || '_' || CAST(NEW.TIPOVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
-  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODFILIAL AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
-  V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODEMP AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  --V_CHAVE = 'VDVENDATGAU'; -- Nome do objeto (trigger ou procedure) a controlar recursividade
+  --V_CHAVE = V_CHAVE || '_' || IIF(INSERTING, 'INS', IIF(UPDATING, 'UPD', 'DEL')); -- tipo de evento
+  --V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  --V_CHAVE = V_CHAVE || '_' || CAST(NEW.TIPOVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  --V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODFILIAL AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  --V_CHAVE = V_CHAVE || '_' || CAST(NEW.CODEMP AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
 
-  EXECUTE PROCEDURE PRO_RECURSIVO(:V_CHAVE) RETURNING_VALUES (:V_RECURSIVO);
+  --EXECUTE PROCEDURE PRO_RECURSIVO(:V_CHAVE) RETURNING_VALUES (:V_RECURSIVO);
 
   /* Verifica se é uma chamada recursiva ou não, se não for continua */
-  IF (V_RECURSIVO = 0) THEN
-  BEGIN
+  --IF (V_RECURSIVO = 0) THEN
+  --BEGIN
 
         if ( not ( (new.emmanut='S') or ( (old.emmanut='S') and (old.emmanut is not null) )) ) then
         begin
@@ -41477,29 +41477,29 @@ BEGIN
 
     end
 
-  END
+  --END
   
 end ^
 
 CREATE TRIGGER VDVENDATGBD FOR VDVENDA 
 ACTIVE BEFORE DELETE POSITION 0 
 AS
-  DECLARE VARIABLE V_CHAVE VARCHAR(500);
-  DECLARE VARIABLE V_RECURSIVO INTEGER;
+  --DECLARE VARIABLE V_CHAVE VARCHAR(500);
+  --DECLARE VARIABLE V_RECURSIVO INTEGER;
 BEGIN
 
-  V_CHAVE = 'VDVENDATGBD'; -- Nome do objeto (trigger ou procedure) a controlar recursividade
-  V_CHAVE = V_CHAVE || '_' || IIF(INSERTING, 'INS', IIF(UPDATING, 'UPD', 'DEL')); -- tipo de evento
-  V_CHAVE = V_CHAVE || '_' || CAST(OLD.CODVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
-  V_CHAVE = V_CHAVE || '_' || CAST(OLD.TIPOVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
-  V_CHAVE = V_CHAVE || '_' || CAST(OLD.CODFILIAL AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
-  V_CHAVE = V_CHAVE || '_' || CAST(OLD.CODEMP AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  --V_CHAVE = 'VDVENDATGBD'; -- Nome do objeto (trigger ou procedure) a controlar recursividade
+  --V_CHAVE = V_CHAVE || '_' || IIF(INSERTING, 'INS', IIF(UPDATING, 'UPD', 'DEL')); -- tipo de evento
+  --V_CHAVE = V_CHAVE || '_' || CAST(OLD.CODVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  --V_CHAVE = V_CHAVE || '_' || CAST(OLD.TIPOVENDA AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  --V_CHAVE = V_CHAVE || '_' || CAST(OLD.CODFILIAL AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
+  --V_CHAVE = V_CHAVE || '_' || CAST(OLD.CODEMP AS VARCHAR(50)); -- concatenação dos campos que formam a chave primária
 
-  EXECUTE PROCEDURE PRO_RECURSIVO(:V_CHAVE) RETURNING_VALUES (:V_RECURSIVO);
+  --EXECUTE PROCEDURE PRO_RECURSIVO(:V_CHAVE) RETURNING_VALUES (:V_RECURSIVO);
 
   /* Verifica se é uma chamada recursiva ou não, se não for continua */
-  IF (V_RECURSIVO = 0) THEN
-  BEGIN
+  --IF (V_RECURSIVO = 0) THEN
+  --BEGIN
 
     IF ( not ( ( old.EMMANUT='S') and (old.EMMANUT IS NOT NULL) ) ) THEN
     BEGIN
@@ -41511,7 +41511,7 @@ BEGIN
 
     END
 
-  END
+  --END
 
 END ^
 
