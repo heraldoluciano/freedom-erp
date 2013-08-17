@@ -1,14 +1,14 @@
-Freedom-ERP Versão 1.2.0.0
-1999-2009 / Setpoint Informática Ltda (R).
+Freedom-ERP Versão 1.2
+1999-2013 / Setpoint Informática Ltda (R).
 Licença GPL 2.0
 
 
 *** Requisitos do sistema ***
 
 	Esta versão do Freedom-ERP requer um dos seguintes sistemas
-	operacionais instalados: MS-Windows, Linux, MacOS-X ou SUN-Solaris.
+	operacionais instalados: GNU/Linux, MS-Windows, MacOS-X ou SUN-Solaris.
 	Também requer a instalação prévia dos seguintes softwares: 
-	Máquina virtual Java da Sun versão 1.6 ou superior, e o gerenciador
+	Máquina virtual Java da Sun versão 1.6 ou superior e o gerenciador
 	de banco de dados Firebird versão 1.5.x.
 
 *** Instalação Firebid
@@ -38,32 +38,39 @@ Licença GPL 2.0
 
 *** Inslação Freedom-ERP no Windows
 
-    Se você recebeu esta versão do Freedom-ERP em um CD-ROM,
-    você deverá instalar da seguinte forma:
+    Após fazer o download da última versão no site oficial,
+    execute o arquivo: freedomERP-<versão>-windows-installer.exe
 
-    Insira o CD-ROM em seu drive e execute.
+*** Instalação Freedom-ERP no GNU/Linux (todas as distros)
 
-        D:\setup.exe
-
-*** Instalação Freedom-ERP no Linux
-    
-    Descompacte o arquivo com a extensão "zip" no diretório raiz, 
+    Após fazer o download da última versão no site oficial,
+    descompacte o arquivo com a extensão freedom-full-<versão>.zip no diretório raiz, 
     utilizando o super usuário, exemplo para o Linux Ubuntu:
     ---------------------------------------------
 	Entre na console e execute os comandos...
 	---------------------------------------------
 	  # sudo su - <ENTER>                         
 	  # cd / <ENTER>                           
-	  # unzip install_ubuntu.zip <ENTER>
+	  # unzip freedom-full-<versão>.zip <ENTER>
 	  # /opt/freedom/bin/install_db.sh <ENTER>
 	  # cd /opt/firebird/UDF <ENTER>
 	  # ./udfinstall.sh <ENTER>
 	---------------------------------------------  
-	Cria atalhos na sua área de trabalho para os arquivos com a extensão sh, 
-	que se encontram na pasta /opt/freedom/bin.
+	Crie atalhos na sua área de trabalho para os arquivos com a extensão sh, 
+	que se encontram na pasta /opt/freedom/bin/.
 	
 	Obs: # é o sinal de prompt do Shell Linux e 
 	<ENTER> para pressionar a tecla ENTER.
+	
+	---------------------------------------------  
+	
+	Debian/Ubuntu e derivados:
+	
+	Após fazer o download da última versão no site oficial, acesse
+	o diretório onde o arquivo foi baixado e execute: 
+	sudo dpkg -i freedomERP-all-<versão>.deb
+	
+	Digite a senha de super usuário quando solicitado.
     
 
 *** Documentação
