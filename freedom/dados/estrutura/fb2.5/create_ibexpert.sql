@@ -2,13 +2,13 @@ SET SQL DIALECT 3;
 
 SET NAMES ISO8859_1;
 
-CONNECT 'localhost:c:/opt/firebird/dados/desenv/freedom.fdb'
+CONNECT 'localhost:c:/opt/firebird/dados/desenv/freedom25.fdb'
   USER 'SYSDBA'
   PASSWORD 'masterkey';
 
-DROP DATABASE 'localhost:c:/opt/firebird/dados/desenv/freedom.fdb';
+DROP DATABASE 'localhost:c:/opt/firebird/dados/desenv/freedom25.fdb';
 
-CREATE DATABASE 'localhost:c:/opt/firebird/dados/desenv/freedom.fdb'
+CREATE DATABASE 'localhost:c:/opt/firebird/dados/desenv/freedom25.fdb'
   USER 'SYSDBA' PASSWORD 'masterkey'
   PAGE_SIZE 16384
   DEFAULT CHARACTER SET ISO8859_1 COLLATION PT_BR;
@@ -31,13 +31,13 @@ SET SQL DIALECT 3;
 
 SET NAMES ISO8859_1;
 
-CONNECT 'localhost:c:/opt/firebird/dados/desenv/freedom.fdb'
+CONNECT 'localhost:c:/opt/firebird/dados/desenv/freedom25.fdb'
   USER 'SYSDBA'
   PASSWORD 'masterkey';
 
-DROP DATABASE 'localhost:c:/opt/firebird/dados/desenv/freedom.fdb';
+DROP DATABASE 'localhost:c:/opt/firebird/dados/desenv/freedom25.fdb';
 
-CREATE DATABASE 'localhost:c:/opt/firebird/dados/desenv/freedom.fdb'
+CREATE DATABASE 'localhost:c:/opt/firebird/dados/desenv/freedom25.fdb'
   USER 'SYSDBA' PASSWORD 'masterkey'
   PAGE_SIZE 16384
   DEFAULT CHARACTER SET ISO8859_1 COLLATION PT_BR;
@@ -58,13 +58,13 @@ SET SQL DIALECT 3;
 
 SET NAMES WIN1252;
 
-CONNECT 'localhost:c:/opt/firebird/dados/desenv/freedom.fdb'
+CONNECT 'localhost:c:/opt/firebird/dados/desenv/freedom25.fdb'
   USER 'SYSDBA'
   PASSWORD 'masterkey';
 
-DROP DATABASE 'localhost:c:/opt/firebird/dados/desenv/freedom.fdb';
+DROP DATABASE 'localhost:c:/opt/firebird/dados/desenv/freedom25.fdb';
 
-CREATE DATABASE 'localhost:c:/opt/firebird/dados/desenv/freedom.fdb'
+CREATE DATABASE 'localhost:c:/opt/firebird/dados/desenv/freedom25.fdb'
   USER 'SYSDBA' PASSWORD 'masterkey'
   PAGE_SIZE 16384
   DEFAULT CHARACTER SET WIN1252 COLLATION WIN_PTBR;
@@ -85,13 +85,13 @@ SET SQL DIALECT 3;
 
 SET NAMES NONE;
 
-CONNECT 'localhost:c:/opt/firebird/dados/desenv/freedom.fdb'
+CONNECT 'localhost:c:/opt/firebird/dados/desenv/freedom25.fdb'
   USER 'SYSDBA'
   PASSWORD 'masterkey';
 
-DROP DATABASE 'localhost:c:/opt/firebird/dados/desenv/freedom.fdb';
+DROP DATABASE 'localhost:c:/opt/firebird/dados/desenv/freedom25.fdb';
 
-CREATE DATABASE 'localhost:c:/opt/firebird/dados/desenv/freedom.fdb'
+CREATE DATABASE 'localhost:c:/opt/firebird/dados/desenv/freedom25.fdb'
   USER 'SYSDBA' PASSWORD 'masterkey'
   PAGE_SIZE 16384
   DEFAULT CHARACTER SET NONE COLLATION NONE;
