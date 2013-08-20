@@ -1,10 +1,11 @@
 <project>
     <shortName>freedomERP</shortName>
     <fullName>Freedom ERP</fullName>
-    <version>1.2.6.2</version>
+    <version>1.2.6.5</version>
     <installerFilename></installerFilename>
     <readmeFile>/home/setpointadm/workspace/freedom/doc/leiame.txt</readmeFile>
     <licenseFile>/home/setpointadm/workspace/freedom/doc/licenca/GPL-pt_BR.txt</licenseFile>
+    <logoImage>/home/setpointadm/workspace/freedom/icones/novos/png/icon_freedom.png</logoImage>
     <defaultLanguage>pt_BR</defaultLanguage>
     <componentList>
         <component>
@@ -195,13 +196,13 @@
                     <description>dados</description>
                     <destination>${installdir}/../firebird/dados</destination>
                     <name>dados</name>
-                    <platforms>all</platforms>
+                    <platforms>windows</platforms>
                     <distributionFileList>
                         <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/firebird/dados/freedom.fbk</origin>
+                            <origin>/usr/lib/firebird/1.5/dados/tag/1265/freedom.fbk</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>/usr/lib/firebird/1.5/dados/clientes/99/freedom.fdb</origin>
+                            <origin>/usr/lib/firebird/1.5/dados/FREEDOM.FDB</origin>
                         </distributionFile>
                     </distributionFileList>
                 </folder>
@@ -233,212 +234,6 @@
                     <destination>${installdir}/lib</destination>
                     <name>lib_lin</name>
                     <platforms>linux</platforms>
-                    <distributionFileList>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/activation.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/axis.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/barbecue.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/bizcal.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/comm/lin/comm.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/commons-beanutils.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/commons-collections.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/commons-digester.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/commons-discovery.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/commons-lang.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/commons-logging.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/dom4j.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/dsgebrazilutils.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/dsn.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/freedom.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/freedomatd.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/freedomcfg.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/freedomcrm.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/freedomecf.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/freedomfnc.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/freedomfw1.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/freedomgms.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/freedomgpe.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/freedomgrh.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/freedominfra.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/freedomlvf.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/freedomnfe.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/freedompcp.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/freedompdv.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/freedomstd.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/groovy.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/ical4j.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/ilf-gpl.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/imap.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/ireport.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/itext.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/jasperreports-fonts.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/jasperreports.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/jaxrpc.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/jaybird-full.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/jcalendar.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/jcommon.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/jdt-compiler.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/jfreechart.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/jmf.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/junit.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/jxls-core-1.0.1.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/jxls-reader-1.0.1.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/liquidlnf.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/log4j.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/mail.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/mailapi.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/metouia.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/nachocalendar.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/poi-3.9-20121203.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/poi-contrib-3.5-final.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/poi-ooxml-3.9-20121203.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/poi-ooxml-schemas-3.9-20121203.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/poi.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/pop3.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/saaj.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/santec.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/smtp.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/squareness.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/swingx-ws.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/swingx.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/TableLayout.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/lib/comm/lin/javax.comm.properties</origin>
-                        </distributionFile>
-                    </distributionFileList>
                 </folder>
                 <folder>
                     <description>Lib_Win</description>
@@ -447,208 +242,262 @@
                     <platforms>windows</platforms>
                     <distributionFileList>
                         <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/activation.jar</origin>
+                            <origin>/home/setpointadm/workspace/freedom/lib/dom4j.jar</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/axis.jar</origin>
+                            <origin>/home/setpointadm/workspace/freedom/lib/dsn.jar</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/barbecue.jar</origin>
+                            <origin>/home/setpointadm/workspace/freedom/lib/freedom.jar</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/bizcal.jar</origin>
+                            <origin>/home/setpointadm/workspace/freedom/lib/freedomatd.jar</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/commons-beanutils.jar</origin>
+                            <origin>/home/setpointadm/workspace/freedom/lib/freedomcfg.jar</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/commons-collections.jar</origin>
+                            <origin>/home/setpointadm/workspace/freedom/lib/freedomcrm.jar</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/commons-digester.jar</origin>
+                            <origin>/home/setpointadm/workspace/freedom/lib/freedomecf.jar</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/commons-discovery.jar</origin>
+                            <origin>/home/setpointadm/workspace/freedom/lib/freedomfnc.jar</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/commons-lang.jar</origin>
+                            <origin>/home/setpointadm/workspace/freedom/lib/freedomfw1.jar</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/commons-logging.jar</origin>
+                            <origin>/home/setpointadm/workspace/freedom/lib/freedomgms.jar</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/dom4j.jar</origin>
+                            <origin>/home/setpointadm/workspace/freedom/lib/freedomgpe.jar</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/dsgebrazilutils.jar</origin>
+                            <origin>/home/setpointadm/workspace/freedom/lib/freedomgrh.jar</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/dsn.jar</origin>
+                            <origin>/home/setpointadm/workspace/freedom/lib/freedominfra.jar</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/freedom.jar</origin>
+                            <origin>/home/setpointadm/workspace/freedom/lib/freedomlvf.jar</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/freedomatd.jar</origin>
+                            <origin>/home/setpointadm/workspace/freedom/lib/freedomnfe.jar</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/freedomcfg.jar</origin>
+                            <origin>/home/setpointadm/workspace/freedom/lib/freedompcp.jar</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/freedomcrm.jar</origin>
+                            <origin>/home/setpointadm/workspace/freedom/lib/freedompdv.jar</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/freedomecf.jar</origin>
+                            <origin>/home/setpointadm/workspace/freedom/lib/freedomrep.jar</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/freedomfnc.jar</origin>
+                            <origin>/home/setpointadm/workspace/freedom/lib/freedomstd.jar</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/freedomfw1.jar</origin>
+                            <origin>/home/setpointadm/workspace/freedom/lib/imap.jar</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/freedomgms.jar</origin>
+                            <origin>/home/setpointadm/workspace/freedom/lib/ireport.jar</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/freedomgpe.jar</origin>
+                            <origin>/home/setpointadm/workspace/freedom/lib/jasperreports-chart-themes-3.7.6.jar</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/freedomgrh.jar</origin>
+                            <origin>/home/setpointadm/workspace/freedom/lib/jasperreports-extensions-3.5.3.jar</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/freedominfra.jar</origin>
+                            <origin>/home/setpointadm/workspace/freedom/lib/jcommon.jar</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/freedomlvf.jar</origin>
+                            <origin>/home/setpointadm/workspace/freedom/lib/jdt-compiler.jar</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/freedomnfe.jar</origin>
+                            <origin>/home/setpointadm/workspace/freedom/lib/liquidlnf.jar</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/freedompcp.jar</origin>
+                            <origin>/home/setpointadm/workspace/freedom/lib/mailapi.jar</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/freedompdv.jar</origin>
+                            <origin>/home/setpointadm/workspace/freedom/lib/metouia.jar</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/freedomstd.jar</origin>
+                            <origin>/home/setpointadm/workspace/freedom/lib/poi.jar</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/groovy.jar</origin>
+                            <origin>/home/setpointadm/workspace/freedom/lib/pop3.jar</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/ical4j.jar</origin>
+                            <origin>/home/setpointadm/workspace/freedom/lib/saaj.jar</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/ilf-gpl.jar</origin>
+                            <origin>/home/setpointadm/workspace/freedom/lib/smtp.jar</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/imap.jar</origin>
+                            <origin>/home/setpointadm/workspace/freedom/lib/spring-beans-2.5.5.jar</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/ireport.jar</origin>
+                            <origin>/home/setpointadm/workspace/freedom/lib/spring-core-2.5.5.jar</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/itext.jar</origin>
+                            <origin>/home/setpointadm/workspace/freedom/lib/squareness.jar</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/jasperreports-fonts.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/jasperreports.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/jaxrpc.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/jaybird-full.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/jcalendar.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/jcommon.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/jdt-compiler.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/jfreechart.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/jmf.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/junit.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/jxls-core-1.0.1.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/jxls-reader-1.0.1.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/liquidlnf.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/log4j.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/mail.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/mailapi.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/metouia.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/nachocalendar.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/poi-3.9-20121203.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/poi-contrib-3.5-final.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/poi-ooxml-3.9-20121203.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/poi-ooxml-schemas-3.9-20121203.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/poi.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/pop3.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/saaj.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/santec.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/smtp.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/squareness.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/swingx-ws.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/swingx.jar</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>/home/setpointadm/workspace/freedom/setup/disco/opt/freedom/lib/TableLayout.jar</origin>
+                            <origin>/home/setpointadm/workspace/freedom/lib/TableLayout.jar</origin>
                         </distributionFile>
                         <distributionFile>
                             <origin>/home/setpointadm/workspace/freedom/lib/comm/win/comm.jar</origin>
                         </distributionFile>
                         <distributionFile>
                             <origin>/home/setpointadm/workspace/freedom/lib/comm/win/javax.comm.properties</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>/home/setpointadm/workspace/freedom-ecf/lib/CliSiTef.ini</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>/home/setpointadm/workspace/freedom-ecf/lib/CliSiTef32.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>/home/setpointadm/workspace/freedom-ecf/lib/CliSiTef32I.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>/home/setpointadm/workspace/freedom-ecf/lib/javax.comm.properties</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>/home/setpointadm/workspace/freedom-ecf/lib/jclisitef.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>/home/setpointadm/workspace/freedom-ecf/lib/jLibSiTef.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>/home/setpointadm/workspace/freedom-ecf/lib/junit.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>/home/setpointadm/workspace/freedom-ecf/lib/LibSiTef.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>/home/setpointadm/workspace/freedom-fw1/lib/activation.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>/home/setpointadm/workspace/freedom-fw1/lib/axis.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>/home/setpointadm/workspace/freedom-fw1/lib/barbecue.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>/home/setpointadm/workspace/freedom-fw1/lib/bizcal.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>/home/setpointadm/workspace/freedom-fw1/lib/commons-beanutils.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>/home/setpointadm/workspace/freedom-fw1/lib/commons-collections.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>/home/setpointadm/workspace/freedom-fw1/lib/commons-digester.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>/home/setpointadm/workspace/freedom-fw1/lib/commons-discovery.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>/home/setpointadm/workspace/freedom-fw1/lib/commons-lang.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>/home/setpointadm/workspace/freedom-fw1/lib/commons-logging.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>/home/setpointadm/workspace/freedom-fw1/lib/dsgebrazilutils.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>/home/setpointadm/workspace/freedom-fw1/lib/groovy.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>/home/setpointadm/workspace/freedom-fw1/lib/ical4j.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>/home/setpointadm/workspace/freedom-fw1/lib/itext.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>/home/setpointadm/workspace/freedom-fw1/lib/jasperreports-fonts.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>/home/setpointadm/workspace/freedom-fw1/lib/jasperreports.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>/home/setpointadm/workspace/freedom-fw1/lib/jaxrpc.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>/home/setpointadm/workspace/freedom-fw1/lib/jcalendar.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>/home/setpointadm/workspace/freedom-fw1/lib/jfreechart.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>/home/setpointadm/workspace/freedom-fw1/lib/jxls-core-1.0.1.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>/home/setpointadm/workspace/freedom-fw1/lib/jxls-reader-1.0.1.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>/home/setpointadm/workspace/freedom-fw1/lib/log4j.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>/home/setpointadm/workspace/freedom-fw1/lib/mail.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>/home/setpointadm/workspace/freedom-fw1/lib/nachocalendar.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>/home/setpointadm/workspace/freedom-fw1/lib/poi-3.9-20121203.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>/home/setpointadm/workspace/freedom-fw1/lib/poi-contrib-3.5-final.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>/home/setpointadm/workspace/freedom-fw1/lib/poi-ooxml-3.9-20121203.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>/home/setpointadm/workspace/freedom-fw1/lib/poi-ooxml-schemas-3.9-20121203.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>/home/setpointadm/workspace/freedom-fw1/lib/santec.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>/home/setpointadm/workspace/freedom-fw1/lib/swingx-ws.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>/home/setpointadm/workspace/freedom-fw1/lib/swingx.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>/home/setpointadm/workspace/freedom-infra/lib/freedom-infra.jardesc</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>/home/setpointadm/workspace/freedom-infra/lib/ilf-gpl.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>/home/setpointadm/workspace/freedom-infra/lib/javax.comm.properties</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>/home/setpointadm/workspace/freedom-infra/lib/jaybird-full.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>/home/setpointadm/workspace/freedom-infra/lib/jmf.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>/home/setpointadm/workspace/freedom-infra/lib/mailapi.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>/home/setpointadm/workspace/freedom-infra/lib/mp3plugin.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>/home/setpointadm/workspace/freedom-infra/lib/swingx-ws.jar</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>/home/setpointadm/workspace/freedom-infra/lib/swingx.jar</origin>
                         </distributionFile>
                     </distributionFileList>
                 </folder>
