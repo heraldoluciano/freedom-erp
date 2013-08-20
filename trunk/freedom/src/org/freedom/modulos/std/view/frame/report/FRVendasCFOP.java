@@ -74,6 +74,8 @@ public class FRVendasCFOP extends FRelatorio {
 	
 	private JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
+	private JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
 	private JTextFieldFK txtNomeCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JCheckBoxPad cbVendaCanc = new JCheckBoxPad( "Mostrar canceladas", "S", "N" );
@@ -165,7 +167,7 @@ public class FRVendasCFOP extends FRelatorio {
 		txtCodTipoMov.setTabelaExterna( lcMov, null );
 		
 		lcVend.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.Comiss.", ListaCampos.DB_PK, false ) );
-		lcVend.add( new GuardaCampo( txtNomeVend, "NomeVend", "Descrição do Comissionado", ListaCampos.DB_SI, false ) );
+		lcVend.add( new GuardaCampo( txtNomeVend, "NomeVend", "Nome do Comissionado", ListaCampos.DB_SI, false ) );
 		lcVend.montaSql( false, "VENDEDOR", "VD" );
 		lcVend.setQueryCommit( false );
 		lcVend.setReadOnly( true );
@@ -174,7 +176,8 @@ public class FRVendasCFOP extends FRelatorio {
 		txtCodVend.setTabelaExterna( lcVend, null );
 		
 		lcCli.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.Cli", ListaCampos.DB_PK, false ) );
-		lcCli.add( new GuardaCampo( txtNomeCli, "NomeCli", "Descrição do Cliente", ListaCampos.DB_SI, false ) );
+		lcCli.add( new GuardaCampo( txtRazCli, "RazCli", "Razão social", ListaCampos.DB_SI, false ) );
+		lcCli.add( new GuardaCampo( txtNomeCli, "NomeCli", "Nome do cliente", ListaCampos.DB_SI, false ) );
 		lcCli.montaSql( false, "CLIENTE", "VD" );
 		lcCli.setQueryCommit( false );
 		lcCli.setReadOnly( true );
@@ -203,12 +206,12 @@ public class FRVendasCFOP extends FRelatorio {
 		adic( txtDescTipoMov, 80, 120, 190, 20 );
 		adic( new JLabelPad( "Cód.Comis." ), 7, 140, 210, 20 );
 		adic( txtCodVend, 7, 160, 70, 20 );
-		adic( new JLabelPad( "Descrição do Comissionado" ), 80, 140, 210, 20 );
+		adic( new JLabelPad( "Nome do Comissionado" ), 80, 140, 210, 20 );
 		adic( txtNomeVend, 80, 160, 190, 20 );
 		adic( new JLabelPad( "Cód.Cliente" ), 7, 180, 210, 20 );
 		adic( txtCodCli, 7, 200, 70, 20 );
-		adic( new JLabelPad( "Descrição do Cliente" ), 80, 180, 210, 20 );
-		adic( txtNomeCli, 80, 200, 190, 20 );
+		adic( new JLabelPad( "Razão social" ), 80, 180, 210, 20 );
+		adic( txtRazCli, 80, 200, 190, 20 );
 		adic( rgTipo, 7, 230, 265, 30 );
 		adic( rgFaturados, 7, 263, 120, 70 );
 		adic( rgFinanceiro, 153, 263, 120, 70 );
@@ -258,7 +261,7 @@ public class FRVendasCFOP extends FRelatorio {
 		
 		if ( txtCodCli.getVlrInteger().intValue() > 0 ) {
 			sWhere += " AND C.CODCLI = ? ";
-			sCab += "FILTRADO PELO CLIENTE - " + txtNomeCli.getVlrString();
+			sCab += "FILTRADO PELO CLIENTE - " + txtRazCli.getVlrString();
 		}
 		
 	

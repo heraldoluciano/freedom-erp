@@ -59,6 +59,8 @@ public class FRVendasTipoMov extends FRelatorio {
 	
 	private JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
+	private JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	
 	private JTextFieldFK txtNomeCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JCheckBoxPad cbDesc = new JCheckBoxPad( "Ordenar decrescente ?", "DESC", "" );
@@ -97,7 +99,8 @@ public class FRVendasTipoMov extends FRelatorio {
 		cbDesc.setVlrString( "DESC" );
 		
 		lcCli.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.Cli", ListaCampos.DB_PK, false ) );
-		lcCli.add( new GuardaCampo( txtNomeCli, "NomeCli", "Descrição do Cliente", ListaCampos.DB_SI, false ) );
+		lcCli.add( new GuardaCampo( txtRazCli, "RazCli", "Razão social", ListaCampos.DB_SI, false ) );
+		lcCli.add( new GuardaCampo( txtNomeCli, "NomeCli", "Nome do Cliente", ListaCampos.DB_SI, false ) );
 		lcCli.montaSql( false, "CLIENTE", "VD" );
 		lcCli.setQueryCommit( false );
 		lcCli.setReadOnly( true );
@@ -179,12 +182,10 @@ public class FRVendasTipoMov extends FRelatorio {
 		adic( txtDataini, 17, 35, 125, 20 );
 		adic( new JLabelPad( "à", SwingConstants.CENTER ), 142, 35, 30, 20 );
 		adic( txtDatafim, 172, 35, 125, 20 );
-		
-		adic( new JLabelPad( "Cód.Cliente" ), 7, 70, 240, 20 );
+ 		adic( new JLabelPad( "Cód.Cliente" ), 7, 70, 240, 20 );
 		adic( txtCodCli, 7, 90, 70, 20 );
-		adic( new JLabelPad( "Descrição do Cliente" ), 80,90, 240, 20 );
+		adic( new JLabelPad( "Razão social" ), 80,70, 240, 20 );
 		adic( txtNomeCli, 80, 90, 220, 20 );
-		
 		adic( rgFormato, 7,	130, 300, 30 );
 		adic( new JLabelPad( "Ordem" ), 7, 160, 50, 20 );
 		adic( rgOrdem, 7, 180, 300, 30 );
