@@ -1579,7 +1579,7 @@ public class RegT400 extends Reg {
 		
 		//setVlrOutrosCred( CnabUtil.strToBigDecimal( line.substring( 279, 292 ) ) );
 		
-		setDataCred( CnabUtil.stringAAAAMMDDToDate( line.substring(  295, 301 ).trim() ) ); //Posição 296 a 301 -Data do credito na conta corrente
+		setDataCred( CnabUtil.stringDDMMAAToDate( line.substring(  295, 301 ).trim() ) ); //Posição 296 a 301 -Data do credito na conta corrente
 		
 	}
 	
