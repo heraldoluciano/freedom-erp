@@ -18,11 +18,11 @@ DIR_DDL="$DIR_FREEDOM/dados/estrutura/fb2.5"
 FILE_DDL="$DIR_DDL/freedom.sql"
 FILE_DROP="$DIR_DDL/drop.sql"
 FILE_CREATE="$DIR_DDL/create.sql"
-FILE_DESCRIPTION="$DIR_DDL/description.sql"
+#FILE_DESCRIPTION="$DIR_DDL/description.sql"
 CMD_DROP_DB="$CMD_ISQL -sqldialect 3 -charset ISO8859_1 -input $FILE_DROP $URL_FREEDOM_FB"
 CMD_CREATE_DB="$CMD_ISQL -sqldialect 3 -charset ISO8859_1 -input $FILE_CREATE"
 CMD_DDL="$CMD_ISQL -sqldialect 3 -charset ISO8859_1 -input $FILE_DDL $URL_FREEDOM_FB"
-CMD_DESCRIPTION="$CMD_ISQL -sqldialect 3 -charset ISO8859_1 -input $FILE_DESCRIPTION $URL_FREEDOM_FB"
+#CMD_DESCRIPTION="$CMD_ISQL -sqldialect 3 -charset ISO8859_1 -input $FILE_DESCRIPTION $URL_FREEDOM_FB"
 RESULT=0
 #echo $CMD_CREATE_DB
 
@@ -90,12 +90,12 @@ fn_executa()
          echo $CMD_DDL
          $CMD_DDL -user $ISC_USER -pass $ISC_PASSWORD > $FILE_DDL.log
          RESULT=$?
-         if [ $RESULT -eq 0 ]; then
-            echo "Aplicando descriptions DDL"
-            #echo $CMD_DESCRIPTION -user $ISC_USER -pass $ISC_PASSWORD
-            $CMD_DESCRIPTION -user $ISC_USER -pass $ISC_PASSWORD > $FILE_DESCRIPTION.log
-            RESULT=$?
-         fi
+         #if [ $RESULT -eq 0 ]; then
+         #   echo "Aplicando descriptions DDL"
+         #   #echo $CMD_DESCRIPTION -user $ISC_USER -pass $ISC_PASSWORD
+         #   $CMD_DESCRIPTION -user $ISC_USER -pass $ISC_PASSWORD > $FILE_DESCRIPTION.log
+         #   RESULT=$?
+         #fi
       fi
    fi
     
