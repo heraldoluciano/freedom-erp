@@ -1571,7 +1571,8 @@ public class RegT400 extends Reg {
 		setVlrAbatimento( CnabUtil.strToBigDecimal( line.substring( 227, 240 ) ) );
 		setVlrDesc( CnabUtil.strToBigDecimal( line.substring( 240, 253 ) ) );
 
-		setVlrPago( CnabUtil.strToBigDecimal( line.substring( 253, 266 ) ) );  //  254 a 266 - Valor lançado em conta corrente - Valor principal
+		 //  254 a 266 - Valor lançado em conta corrente - Valor principal + o valor da cobrança 176-188
+		setVlrPago( CnabUtil.strToBigDecimal( line.substring( 253, 266 ) ).add( CnabUtil.strToBigDecimal( line.substring( 175, 188 ) ) ) ); 
 		
 		setVlrJurosTaxa( CnabUtil.strToBigDecimal( line.substring( 266, 279 ) ) );
 		
