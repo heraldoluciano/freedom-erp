@@ -861,14 +861,14 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 				errsql.printStackTrace();
 			}
 
-			System.out.println( sql.toString() );
+			//System.out.println( sql.toString() );
 
 			if ( lcCampos.getStatus() == ListaCampos.LCS_EDIT ) {
 				// Utiliza mesma query utilizada acima, trocando apenas o keyword create por alter.
 				sqlalter.append( sql.toString().replace( "create", "alter" ) );
 				try {
 					ps = con.prepareStatement( sqlalter.toString() );
-					System.out.println( sqlalter.toString() );
+					//System.out.println( sqlalter.toString() );
 					ps.execute();
 					ps.close();
 					con.commit();
