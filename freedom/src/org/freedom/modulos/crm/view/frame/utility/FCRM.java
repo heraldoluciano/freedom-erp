@@ -417,6 +417,8 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		adicFiltrosChamado();
 
 		criaTelaMensagem();
+		
+		setTelaPrim( Aplicativo.telaPrincipal );
 
 	}
 
