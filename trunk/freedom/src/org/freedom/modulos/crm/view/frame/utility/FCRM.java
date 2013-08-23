@@ -150,6 +150,14 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 	private boolean acesatdodelout = false;
 
+	private boolean aceschamaltout = false;
+
+	private boolean aceschamlerout = false;
+
+	private boolean aceschamdellan = false;
+
+	private boolean aceschamdelout = false;
+
 	private JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtCodAtendo = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -162,7 +170,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 	private JTextFieldFK txtNomeAtendenteChamado = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private JTextFieldPad txtAcesAtdoLerOutAtendo = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+	/*private JTextFieldPad txtAcesAtdoLerOutAtendo = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
 	private JTextFieldPad txtAcesAtdoAltOutAtendo = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
@@ -170,6 +178,14 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 	private JTextFieldPad txtAcesAtdoDelLanAtendo = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
+	private JTextFieldPad txtAcesChamLerOutAtendo = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+
+	private JTextFieldPad txtAcesChamAltOutAtendo = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+
+	private JTextFieldPad txtAcesChamDelOutAtendo = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+
+	private JTextFieldPad txtAcesChamDelLanAtendo = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+*/
 	private JTextFieldPad txtCodChamado = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtCodEspec = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
