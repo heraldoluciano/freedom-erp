@@ -62,6 +62,7 @@ import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JTextAreaPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
+import org.freedom.library.swing.component.Navegador;
 import org.freedom.library.swing.dialog.DLLoading;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDados;
@@ -433,12 +434,20 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 	}
 
 
-	public void exec( Integer codchamado, boolean chamadoBloqueado ) {
+	public void exec( Integer codchamado, boolean chamadoBloqueado, boolean aceschamlerout ) {
 		this.chamadoBloqueado = chamadoBloqueado;
 		if ( codchamado != null ) {
 			txtCodChamado.setVlrInteger( codchamado );
 			lcCampos.carregaDados();
 			bloqueiaCampos( chamadoBloqueado );
+		}
+		// Se o atendente não tiver acesso de leitura aos chamados de outros, não poderá digitar o código do chamado e também não poderá navegar
+		if (!aceschamlerout) {
+			txtCodChamado.setSoLeitura( true );
+			nav.setAtivo( Navegador.BT_PRIMEIRO, false );
+			nav.setAtivo( Navegador.BT_PROXIMO, false );
+			nav.setAtivo( Navegador.BT_ANTERIOR, false );
+			nav.setAtivo( Navegador.BT_ULTIMO, false );
 		}
 	}
 

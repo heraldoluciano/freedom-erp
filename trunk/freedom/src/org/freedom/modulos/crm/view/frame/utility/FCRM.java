@@ -166,9 +166,9 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 	private JTextFieldFK txtNomeAtendAtendo = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private JTextFieldPad txtCodAtendenteChamado = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldPad txtCodAtendChamado = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldFK txtNomeAtendenteChamado = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	private JTextFieldFK txtNomeAtendChamado = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	/*private JTextFieldPad txtAcesAtdoLerOutAtendo = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
@@ -487,8 +487,8 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 		pinFiltrosChamado.adic( cbEmAtendimento, 7, 50, 200, 20 );
 
-		pinFiltrosChamado.adic( txtCodAtendenteChamado, 153, 20, 70, 20, "Cód.Atend." );
-		pinFiltrosChamado.adic( txtNomeAtendenteChamado, 226, 20, 280, 20, "Nome do Atendente designado" );
+		pinFiltrosChamado.adic( txtCodAtendChamado, 153, 20, 70, 20, "Cód.Atend." );
+		pinFiltrosChamado.adic( txtNomeAtendChamado, 226, 20, 280, 20, "Nome do Atendente designado" );
 
 		pinFiltrosChamado.adic( cbTpChamado, 226, 60, 280, 20, "Tipo" );
 
@@ -715,11 +715,11 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		lcAtendenteAtendimento.montaSql( false, "ATENDENTE", "AT" );
 		lcAtendenteAtendimento.setReadOnly( true );
 
-		txtCodAtendenteChamado.setTabelaExterna( lcAtendenteChamado, FAtendente.class.getCanonicalName() );
-		txtCodAtendenteChamado.setFK( true );
-		txtCodAtendenteChamado.setNomeCampo( "CodAtend" );
-		lcAtendenteChamado.add( new GuardaCampo( txtCodAtendenteChamado, "CodAtend", "Cód.atend.", ListaCampos.DB_PK, false ) );
-		lcAtendenteChamado.add( new GuardaCampo( txtNomeAtendenteChamado, "NomeAtend", "Nome", ListaCampos.DB_SI, false ) );
+		txtCodAtendChamado.setTabelaExterna( lcAtendenteChamado, FAtendente.class.getCanonicalName() );
+		txtCodAtendChamado.setFK( true );
+		txtCodAtendChamado.setNomeCampo( "CodAtend" );
+		lcAtendenteChamado.add( new GuardaCampo( txtCodAtendChamado, "CodAtend", "Cód.atend.", ListaCampos.DB_PK, false ) );
+		lcAtendenteChamado.add( new GuardaCampo( txtNomeAtendChamado, "NomeAtend", "Nome", ListaCampos.DB_SI, false ) );
 		lcAtendenteChamado.montaSql( false, "ATENDENTE", "AT" );
 		lcAtendenteChamado.setReadOnly( true );
 
@@ -1175,7 +1175,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			Aplicativo.telaPrincipal.criatela( "Chamado", chamado, con );
 		}
 
-		chamado.exec( (Integer) tabchm.getValor( tabchm.getLinhaSel(), COL_CHAMADO.CODCHAMADO.ordinal() ), chamadoBloqueado );
+		chamado.exec( (Integer) tabchm.getValor( tabchm.getLinhaSel(), COL_CHAMADO.CODCHAMADO.ordinal() ), chamadoBloqueado, aceschamlerout );
 
 	}
 
@@ -1497,7 +1497,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 				if ( cbPrioridade.getVlrInteger() > 0 ) {
 					sql.append( " and ch.prioridade=? " );
 				}
-				if ( txtCodAtendenteChamado.getVlrInteger() > 0 ) {
+				if ( txtCodAtendChamado.getVlrInteger() > 0 ) {
 					sql.append( " and ch.codempae=? and ch.codfilialae=? and ch.codatend=? " );
 				}
 
@@ -1541,10 +1541,10 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 						ps.setInt( param++, cbPrioridade.getVlrInteger() );
 					}
 
-					if ( txtCodAtendenteChamado.getVlrInteger() > 0 ) {
+					if ( txtCodAtendChamado.getVlrInteger() > 0 ) {
 						ps.setInt( param++, Aplicativo.iCodEmp );
 						ps.setInt( param++, ListaCampos.getMasterFilial( "ATATENDENTE" ) );
-						ps.setInt( param++, txtCodAtendenteChamado.getVlrInteger() );
+						ps.setInt( param++, txtCodAtendChamado.getVlrInteger() );
 
 					}
 
@@ -2198,7 +2198,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 				codatend_atual = (Integer) atendente.get( "codatend" );
 
 				txtCodAtendAtendo.setVlrInteger( codatend_atual);
-				txtCodAtendenteChamado.setVlrInteger( codatend_atual );
+				txtCodAtendChamado.setVlrInteger( codatend_atual );
 				lcAtendenteAtendimento.carregaDados();
 
 				acesatdoaltout = (Boolean) atendente.get("acesatdoaltout");
@@ -2212,12 +2212,12 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 				aceschamdelout = (Boolean) atendente.get("aceschamdelout");
 				
 				txtCodAtendAtendo.setSoLeitura( !acesatdolerout );
-				txtCodAtendenteChamado.setSoLeitura( !aceschamlerout);
+				txtCodAtendChamado.setSoLeitura( !aceschamlerout);
 			}
 		} else {
 			codatend_atual = org.freedom.modulos.crm.business.component.Atendimento.buscaAtendente();
 			txtCodAtendAtendo.setVlrInteger( codatend_atual);
-			txtCodAtendenteChamado.setVlrInteger( codatend_atual );
+			txtCodAtendChamado.setVlrInteger( codatend_atual );
 			lcAtendenteAtendimento.carregaDados();
 			acesatdoaltout = true;
 			acesatdolerout = true;
@@ -2343,7 +2343,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			else if ( tabchm.getLinhaSel() > -1 ) {
 
 				txtCodChamado.setVlrInteger( (Integer) tabchm.getValor( tabchm.getLinhaSel(), COL_CHAMADO.CODCHAMADO.ordinal() ) );
-				txtCodAtendAtendo.setVlrInteger( txtCodAtendenteChamado.getVlrInteger() );
+				txtCodAtendAtendo.setVlrInteger( txtCodAtendChamado.getVlrInteger() );
 				txtDatainiAtend.setVlrString( "" );
 				txtDatafimAtend.setVlrString( "" );
 				lcAtendenteAtendimento.carregaDados();
