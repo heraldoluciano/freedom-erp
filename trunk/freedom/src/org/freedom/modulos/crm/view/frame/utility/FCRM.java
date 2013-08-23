@@ -389,7 +389,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 	private Map<String, Object> atendente = null;
 
 	public enum COL_CHAMADO {
-		DTCHAMADO, PRIORIDADE, DESCTPCHAMADO, CODCHAMADO, CLIENTE, DESCCHAMADO, DESIGNADO, STATUS, QTDHORASPREVISAO, DTPREVISAO, EM_ATENDIMENTO, DADOS_ATENDIMENTO, TIPO_ATENDIMENTO, DETCHAMADO, CODCLI
+		DTCHAMADO, PRIORIDADE, DESCTPCHAMADO, CODCHAMADO, CLIENTE, DESCCHAMADO, CODATEND, DESIGNADO, STATUS, QTDHORASPREVISAO, DTPREVISAO, EM_ATENDIMENTO, DADOS_ATENDIMENTO, TIPO_ATENDIMENTO, DETCHAMADO, CODCLI
 	}
 
 	public enum COL_ATENDIMENTO {
@@ -903,7 +903,8 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		tabchm.adicColuna( "Cliente" );
 		tabchm.adicColuna( "Descrição" );
 		// tabchm.adicColuna( "Solicitante" );
-		tabchm.adicColuna( "Designado" );
+		tabchm.adicColuna( "Cod.atend.");
+		tabchm.adicColuna( "Atendente designado" );
 		tabchm.adicColuna( "St." );
 		tabchm.adicColuna( "Qtd.Prev." );
 		tabchm.adicColuna( "Dt.Prev." );
@@ -919,6 +920,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		tabchm.setTamColuna( 30, COL_CHAMADO.CODCHAMADO.ordinal() );
 		tabchm.setTamColuna( 140, COL_CHAMADO.CLIENTE.ordinal() );
 		tabchm.setTamColuna( 250, COL_CHAMADO.DESCCHAMADO.ordinal() );
+		tabchm.setTamColuna( 50, COL_CHAMADO.CODATEND.ordinal() );
 		tabchm.setTamColuna( 75, COL_CHAMADO.DESIGNADO.ordinal() );
 		tabchm.setTamColuna( 25, COL_CHAMADO.STATUS.ordinal() );
 		tabchm.setTamColuna( 40, COL_CHAMADO.QTDHORASPREVISAO.ordinal() );
@@ -1157,7 +1159,13 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 	private void visualizaCham() {
 
+		boolean chamadoBloqueado = false;
+		Integer codchamado = (Integer) tabchm.getValor( tabchm.getLinhaSel(), COL_CHAMADO.CODCHAMADO.ordinal() );
+		Integer codatend = (Integer) tabchm.getValor( tabchm.getLinhaSel(), COL_CHAMADO.CODATEND.ordinal() );
+
 		FChamado chamado = null;
+
+		chamadoBloqueado = !daoatend.bloquearChamados( aceschamaltout, codatend_atual,codatend );
 
 		if ( Aplicativo.telaPrincipal.temTela( FChamado.class.getName() ) ) {
 			chamado = (FChamado) Aplicativo.telaPrincipal.getTela( FChamado.class.getName() );
@@ -1167,7 +1175,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			Aplicativo.telaPrincipal.criatela( "Chamado", chamado, con );
 		}
 
-		chamado.exec( (Integer) tabchm.getValor( tabchm.getLinhaSel(), COL_CHAMADO.CODCHAMADO.ordinal() ) );
+		chamado.exec( (Integer) tabchm.getValor( tabchm.getLinhaSel(), COL_CHAMADO.CODCHAMADO.ordinal() ), chamadoBloqueado );
 
 	}
 
@@ -1413,7 +1421,8 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 		try {
 
-			sql.append( "select ch.codcli, ch.dtchamado, ch.prioridade, ch.codchamado, ch.descchamado, ( ch.codcli || ' ' || rtrim(cl.nomecli) || ' ' || (coalesce(ch.solicitante,'')) ) cliente, ch.codcli, ch.solicitante, ate.NOMEATEND as designado," );
+			sql.append( "select ch.codcli, ch.dtchamado, ch.prioridade, ch.codchamado, ch.descchamado");
+			sql.append(", ( ch.codcli || ' ' || rtrim(cl.nomecli) || ' ' || (coalesce(ch.solicitante,'')) ) cliente, ch.codcli, ch.solicitante, ate.codatend, ate.NOMEATEND as designado," );
 			sql.append( "ch.status, ch.qtdhorasprevisao, ch.dtprevisao, ch.dtconclusao, tc.desctpchamado, coalesce(ch.ematendimento,'N') ematendimento, " );
 			sql.append( "(ch.idusualt || ' desde ' || substring(cast( ch.halt as char(20)) from 1 for 5)) dados_atendimento, ch.detchamado, " );
 			sql.append( "'' as tipo_atendimento " );
@@ -1586,6 +1595,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 					tabchm.setValor( rs.getInt( COL_CHAMADO.PRIORIDADE.name() ), i, COL_CHAMADO.PRIORIDADE.ordinal() );
 					tabchm.setValor( rs.getInt( COL_CHAMADO.CODCHAMADO.name() ), i, COL_CHAMADO.CODCHAMADO.ordinal() );
 					tabchm.setValor( rs.getString( COL_CHAMADO.DESCCHAMADO.name() ), i, COL_CHAMADO.DESCCHAMADO.ordinal() );
+					tabchm.setValor( new Integer(rs.getInt( COL_CHAMADO.CODATEND.name() ) ), i, COL_CHAMADO.CODATEND.ordinal() );
 					tabchm.setValor( rs.getString( COL_CHAMADO.DESIGNADO.name() ), i, COL_CHAMADO.DESIGNADO.ordinal() );
 
 					imgColuna = Chamado.getImagem( rs.getString( "status" ), Chamado.IMG_TAMANHO_M );

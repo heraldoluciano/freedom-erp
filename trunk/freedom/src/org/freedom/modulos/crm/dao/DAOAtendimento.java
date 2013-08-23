@@ -1969,6 +1969,13 @@ public class DAOAtendimento extends AbstractDAO {
 	}
 
 
+	public boolean bloquearChamados(boolean aceschamaltout, Integer codatendpadrao, Integer codatendatendo) {
+		boolean result = false;
+		if ( codatendpadrao != null && result==false && aceschamaltout==false && codatendatendo.equals( codatendpadrao )==false ) {
+			result = true;
+		}
+		return result;
+	}
 
 	public boolean bloquearAtendimentos(Integer codatendo, String data, String hora, boolean acesatdoaltout, Integer codatendpadrao, Integer codatendatendo)  throws SQLException{
 		boolean result = false;
