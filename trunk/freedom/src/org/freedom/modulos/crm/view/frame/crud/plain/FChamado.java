@@ -404,13 +404,28 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 	}
 
 	public void bloqueiaCampos(boolean ativo) {
-		txtCodCli.setAtivo( ativo );
 		txtCodChamado.setAtivo( ativo );
-		txtCodAtend.setAtivo( ativo );
+		txtDescChamado.setAtivo( ativo );
+		cbTpChamado.setEnabled( ativo );
+		txtCodCli.setAtivo( ativo );
+		txtSolicitante.setAtivo( ativo );
+		txtEmailSolicitante.setAtivo( ativo );
+		txtEmailAtendente.setAtivo( ativo );
 		txtCodContr.setAtivo( ativo );
 		txtCodItContr.setAtivo( ativo );
+		txtDtChamado.setAtivo( ativo );
+		txtDtPrevisao.setAtivo( ativo );
+		//txtDtConclusao.setAtivo( ativo );
+		cbPrioridade.setAtivo( ativo );
+		txtCodAtend.setAtivo( ativo );
 		cbStatus.setEnabled( ativo );
-		cbStatus.setEnabled( ativo );
+		cbNotificaAtendente.setEnabled( ativo );
+		cbNotificaCliente.setEnabled( ativo );
+		cbNotificaTecnico.setEnabled( ativo );
+		txaDetChamado.setEnabled( ativo );
+		txaFatoGerador.setEnabled( ativo );
+		txaAmbiente.setEnabled( ativo );
+		txaObsChamado.setEnabled( ativo );
 //		btRun.setEnabled( ativo ); 
 		//btOK.setEnabled( ativo );
 		//cbSituacao.setEnabled( ativo );
