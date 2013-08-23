@@ -1743,14 +1743,22 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 	}
 
 	private void excluiChm() {
-
 		StringBuilder sql = new StringBuilder();
+		int linhaSel = tabchm.getLinhaSel(); 
+		if (  linhaSel == -1 ) {
+			Funcoes.mensagemInforma( this, "Selecione um item na lista!" );
+			return;
+		}
+		Integer codatend = (Integer) tabchm.getValor( linhaSel, COL_CHAMADO.CODATEND.ordinal() );
+		if ( ( !aceschamdelout ) &&  ( ! (codatend_atual).equals( codatend ) ) ) {
+			Funcoes.mensagemInforma( this, "Não é permitido excluir chamados de outro atendente !" );
+			return;
+		} else if ( ( !aceschamdellan) && (  (codatend_atual).equals( codatend ) ) ) {
+			Funcoes.mensagemInforma( this, "Não é permitido excluir chamados !" );
+			return;
+		}
 		if ( Funcoes.mensagemConfirma( this, "Confirma a exclusão deste Chamado?" ) == JOptionPane.YES_OPTION ) {
 
-			if ( tabchm.getLinhaSel() == -1 ) {
-				Funcoes.mensagemInforma( this, "Selecione um item na lista!" );
-				return;
-			}
 			try {
 				sql.append( "DELETE FROM CRCHAMADO WHERE CODCHAMADO=? AND CODEMP=? AND CODFILIAL=?" );
 				PreparedStatement ps = con.prepareStatement( sql.toString() );
@@ -2198,7 +2206,13 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 				acesatdodellan = (Boolean) atendente.get("acesatdodellan");
 				acesatdodelout = (Boolean) atendente.get("acesatdodelout");
 
+				aceschamaltout = (Boolean) atendente.get("aceschamaltout");
+				aceschamlerout = (Boolean) atendente.get("aceschamlerout");
+				aceschamdellan = (Boolean) atendente.get("aceschamdellan");
+				aceschamdelout = (Boolean) atendente.get("aceschamdelout");
+				
 				txtCodAtendAtendo.setSoLeitura( !acesatdolerout );
+				txtCodAtendenteChamado.setSoLeitura( !aceschamlerout);
 			}
 		} else {
 			codatend_atual = org.freedom.modulos.crm.business.component.Atendimento.buscaAtendente();
@@ -2209,7 +2223,13 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			acesatdolerout = true;
 			acesatdodellan = true;
 			acesatdodelout = true;
-			txtCodAtendAtendo.setSoLeitura( !acesatdolerout );
+			
+			aceschamaltout = true;
+			aceschamlerout = true;
+			aceschamdellan = true;
+			aceschamdelout = true;
+
+//			txtCodAtendAtendo.setSoLeitura( !acesatdolerout );
 		}
 
 		lcAtendenteChamado.carregaDados();
@@ -2220,6 +2240,13 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		else {
 			btExcluirAtd.setEnabled( true );
 		}
+		if ( !aceschamdellan && !aceschamdelout ) {
+			btExcluir.setEnabled( false );
+		}
+		else {
+			btExcluir.setEnabled( true );
+		}
+
 	}
 
 	public void focusGained( FocusEvent arg0 ) {
