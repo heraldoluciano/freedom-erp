@@ -198,6 +198,8 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 	private ListaCampos lcItContrato = new ListaCampos( this, "CT" );
 
 	private FDados telanterior = null;
+	
+	private boolean chamadoBloqueado = false;
 
 	public FChamado() {
 
@@ -401,15 +403,28 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 
 	}
 
+	public void bloqueiaCampos(boolean ativo) {
+		txtCodCli.setAtivo( ativo );
+		txtCodChamado.setAtivo( ativo );
+		txtCodAtend.setAtivo( ativo );
+		txtCodContr.setAtivo( ativo );
+		txtCodItContr.setAtivo( ativo );
+		cbStatus.setEnabled( ativo );
+		cbStatus.setEnabled( ativo );
+//		btRun.setEnabled( ativo ); 
+		//btOK.setEnabled( ativo );
+		//cbSituacao.setEnabled( ativo );
+		
+	}
 
 
-	public void exec( Integer codchamado ) {
-
+	public void exec( Integer codchamado, boolean chamadoBloqueado ) {
+		this.chamadoBloqueado = chamadoBloqueado;
 		if ( codchamado != null ) {
 			txtCodChamado.setVlrInteger( codchamado );
 			lcCampos.carregaDados();
+			bloqueiaCampos( chamadoBloqueado );
 		}
-
 	}
 
 	public void setConexao( DbConnection cn ) {
