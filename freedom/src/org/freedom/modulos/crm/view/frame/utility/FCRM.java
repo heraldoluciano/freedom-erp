@@ -1757,7 +1757,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			Funcoes.mensagemInforma( this, "Não é permitido excluir chamados !" );
 			return;
 		}
-		if ( Funcoes.mensagemConfirma( this, "Confirma a exclusão deste Chamado?" ) == JOptionPane.YES_OPTION ) {
+		if ( Funcoes.mensagemConfirma( this, "Confirma a exclusão deste Chamado ?" ) == JOptionPane.YES_OPTION ) {
 
 			try {
 				sql.append( "DELETE FROM CRCHAMADO WHERE CODCHAMADO=? AND CODEMP=? AND CODFILIAL=?" );
