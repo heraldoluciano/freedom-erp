@@ -531,12 +531,13 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 	}
 
 	public void afterInsert( InsertEvent ievt ) {
-
-		txtDtChamado.setVlrDate( new Date() );
-		txtDtPrevisao.setVlrDate( new Date() );
-		txtQtdHorasPrev.setVlrInteger( new Integer( 1 ) );
-
-		cbStatus.setVlrString( "PE" );
+		if (ievt.getListaCampos()==lcCampos) {
+			txtDtChamado.setVlrDate( new Date() );
+			txtDtPrevisao.setVlrDate( new Date() );
+			txtQtdHorasPrev.setVlrInteger( new Integer( 1 ) );
+			cbStatus.setVlrString( "PE" );
+			bloqueiaCampos();
+		}
 
 	}
 
