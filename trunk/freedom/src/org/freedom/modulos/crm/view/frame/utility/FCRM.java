@@ -1159,13 +1159,13 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 	private void visualizaCham() {
 
-		boolean chamadoBloqueado = false;
+		boolean bloquearChamado = false;
 		Integer codchamado = (Integer) tabchm.getValor( tabchm.getLinhaSel(), COL_CHAMADO.CODCHAMADO.ordinal() );
 		Integer codatend = (Integer) tabchm.getValor( tabchm.getLinhaSel(), COL_CHAMADO.CODATEND.ordinal() );
 
 		FChamado chamado = null;
 
-		chamadoBloqueado = !daoatend.bloquearChamados( aceschamaltout, codatend_atual,codatend );
+		bloquearChamado = daoatend.bloquearChamados( aceschamaltout, codatend_atual,codatend );
 
 		if ( Aplicativo.telaPrincipal.temTela( FChamado.class.getName() ) ) {
 			chamado = (FChamado) Aplicativo.telaPrincipal.getTela( FChamado.class.getName() );
@@ -1175,7 +1175,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			Aplicativo.telaPrincipal.criatela( "Chamado", chamado, con );
 		}
 
-		chamado.exec( (Integer) tabchm.getValor( tabchm.getLinhaSel(), COL_CHAMADO.CODCHAMADO.ordinal() ), chamadoBloqueado, aceschamlerout );
+		chamado.exec( (Integer) tabchm.getValor( tabchm.getLinhaSel(), COL_CHAMADO.CODCHAMADO.ordinal() ), bloquearChamado, aceschamlerout );
 
 	}
 
