@@ -1188,11 +1188,19 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			if (novo) {
 				Integer codcli = null;
 				if ( txtCodCli.getVlrInteger() < 1 ) {
-					if ( tpnAbas.getSelectedIndex() == ABA_CHAMADO ) {
-						codcli = (Integer) tabchm.getValor( tabchm.getSelectedRow(), COL_CHAMADO.CLIENTE.ordinal() );
-					}
-					else if ( tpnAbas.getSelectedIndex() == ABA_ATENDIMENTO ) {
-						codcli = (Integer) tabatd.getValor( tabatd.getSelectedRow(), COL_ATENDIMENTO.CODCLI.ordinal() );
+					if (tabchm.getSelectedRow()>-1) {
+						if ( tpnAbas.getSelectedIndex() == ABA_CHAMADO ) {
+							Object ocodcli = tabchm.getValor( tabchm.getSelectedRow(), COL_CHAMADO.CLIENTE.ordinal());
+							if (!"".equals( ocodcli) ) {
+								codcli = (Integer) ocodcli;
+							}
+						}
+						else if ( tpnAbas.getSelectedIndex() == ABA_ATENDIMENTO ) {
+							Object ocodcli = tabatd.getValor( tabatd.getSelectedRow(), COL_ATENDIMENTO.CODCLI.ordinal() );
+							if (!"".equals( ocodcli )) {
+								codcli = (Integer) ocodcli ;
+							}
+						}
 					}
 				}
 				else {
