@@ -156,9 +156,16 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 	private boolean aceschamlerout = false;
 
+	/*        ACESCHAMFINPRO CHAR(1) DEFAULT 'S' NOT NULL,
+        ACESCHAMFINOUT CHAR(1) DEFAULT 'S' NOT NULL, 
+*/
 	private boolean aceschamdellan = false;
 
 	private boolean aceschamdelout = false;
+
+	private boolean aceschamfinlan = false;
+
+	private boolean aceschamfinout = false;
 
 	private JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -172,22 +179,6 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 	private JTextFieldFK txtNomeAtendChamado = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
-	/*private JTextFieldPad txtAcesAtdoLerOutAtendo = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
-
-	private JTextFieldPad txtAcesAtdoAltOutAtendo = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
-
-	private JTextFieldPad txtAcesAtdoDelOutAtendo = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
-
-	private JTextFieldPad txtAcesAtdoDelLanAtendo = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
-
-	private JTextFieldPad txtAcesChamLerOutAtendo = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
-
-	private JTextFieldPad txtAcesChamAltOutAtendo = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
-
-	private JTextFieldPad txtAcesChamDelOutAtendo = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
-
-	private JTextFieldPad txtAcesChamDelLanAtendo = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
-*/
 	private JTextFieldPad txtCodChamado = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtCodEspec = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -1212,7 +1203,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			chamado.exec( daoatend, codatend_atual
 					, (Integer) tabchm.getValor( tabchm.getLinhaSel(), COL_CHAMADO.CODCHAMADO.ordinal() )
 					, bloquearChamado, aceschamlerout, aceschamaltout, aceschamaltpro
-					, aceschamdelout, aceschamdellan );
+					, aceschamdelout, aceschamdellan, aceschamfinout, aceschamfinlan );
 		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
@@ -2213,6 +2204,8 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 				aceschamlerout = (Boolean) atendente.get("aceschamlerout");
 				aceschamdellan = (Boolean) atendente.get("aceschamdellan");
 				aceschamdelout = (Boolean) atendente.get("aceschamdelout");
+				aceschamfinlan = (Boolean) atendente.get("aceschamfinlan");
+				aceschamfinout = (Boolean) atendente.get("aceschamfinout");
 				
 				txtCodAtendAtendo.setSoLeitura( !acesatdolerout );
 				txtCodAtendChamado.setSoLeitura( !aceschamlerout);
