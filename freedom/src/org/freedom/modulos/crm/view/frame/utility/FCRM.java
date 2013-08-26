@@ -1176,7 +1176,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			}
 
 			FChamado chamado = null;
-			bloquearChamado = daoatend.bloquearChamados( aceschamaltout, aceschamaltpro, codatend_atual, codatend );
+			bloquearChamado = daoatend.bloquearChamados( novo, aceschamaltout, aceschamaltpro, codatend_atual, codatend );
 			
 			if ( Aplicativo.telaPrincipal.temTela( FChamado.class.getName() ) ) {
 				chamado = (FChamado) Aplicativo.telaPrincipal.getTela( FChamado.class.getName() );
@@ -1203,7 +1203,8 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			}
 			chamado.exec( daoatend, codatend_atual
 					, (Integer) tabchm.getValor( tabchm.getLinhaSel(), COL_CHAMADO.CODCHAMADO.ordinal() )
-					, bloquearChamado, aceschamlerout, aceschamaltout, aceschamaltpro, aceschamdelout, aceschamdellan );
+					, bloquearChamado, aceschamlerout, aceschamaltout, aceschamaltpro
+					, aceschamdelout, aceschamdellan );
 		} catch ( Exception e ) {
 			e.printStackTrace();
 		}

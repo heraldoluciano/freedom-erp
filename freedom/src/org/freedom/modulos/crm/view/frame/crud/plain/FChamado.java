@@ -424,8 +424,9 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 
 	public void bloqueiaCampos() {
 		Integer codatend = txtCodAtend.getVlrInteger();
+		boolean novo = ( lcCampos.getStatus()==ListaCampos.LCS_INSERT );
 		if (daoatend!=null) {
-			bloquearChamado = daoatend.bloquearChamados( aceschamaltout, aceschamaltpro, codatend_atual, codatend );
+			bloquearChamado = daoatend.bloquearChamados( novo, aceschamaltout, aceschamaltpro, codatend_atual, codatend );
 			bloquearExcluir = daoatend.bloquearChamadosExcluir(aceschamdelout, aceschamdellan, codatend_atual, codatend );
 		}
 		boolean ativo = ! bloquearChamado;
