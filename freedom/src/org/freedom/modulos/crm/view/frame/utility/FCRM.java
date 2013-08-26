@@ -1214,6 +1214,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		Integer codatendo = (Integer) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.CODATENDO.ordinal() );
 		Integer codatend = (Integer) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.CODATEND.ordinal() );
 		boolean atendimentoBloqueado = false;
+		boolean bloquearFinalizar = false;
 
 		int icodAtend = codatend;
 		int icodAtendo = codatendo;
@@ -1225,11 +1226,12 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			FNovoAtend dl = new FNovoAtend( true );
 			atendimentoBloqueado = !daoatend.bloquearAtendimentos( codatendo, (String) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.DATAATENDOFIN.ordinal() ), (String) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.HORAATENDOFIN.ordinal() ), acesatdoaltout, codatend_atual,
 					codatend );
+			bloquearFinalizar = daoatend.bloquearChamadosFinalizar( aceschamfinout, aceschamfinpro, codatend_atual, codatend);
 			if ( dl != null && dl.isUpdate() ) {
-				dl.adicAtendimento( txtCodCli.getVlrInteger(), codchamado, this, true, con, icodAtendo, icodAtend, tipoatendo, financeiro, (Integer) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.CODORC.ordinal() ), atendimentoBloqueado );
+				dl.adicAtendimento( txtCodCli.getVlrInteger(), codchamado, this, true, con, icodAtendo, icodAtend, tipoatendo, financeiro, (Integer) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.CODORC.ordinal() ), atendimentoBloqueado, bloquearFinalizar );
 			}
 			else {
-				dl = new FNovoAtend( txtCodCli.getVlrInteger(), codchamado, this, true, con, icodAtendo, icodAtend, tipoatendo, financeiro, null, (Integer) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.CODORC.ordinal() ), atendimentoBloqueado );
+				dl = new FNovoAtend( txtCodCli.getVlrInteger(), codchamado, this, true, con, icodAtendo, icodAtend, tipoatendo, financeiro, null, (Integer) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.CODORC.ordinal() ), atendimentoBloqueado, bloquearFinalizar );
 			}
 			if ( fPrim.temTela( "Edição de Atendimento: " + icodAtendo ) == false ) {
 				fPrim.criatela( "Edição de Atendimento: " + icodAtendo, dl, con );
@@ -1813,13 +1815,16 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 	private void novoAtend( Integer codchamado, Integer codcli, org.freedom.modulos.crm.business.object.Atendimento atd, String titulo ) {
 
+		boolean bloquearFinalizar = false;
 		Object ORets[];
 
 		FNovoAtend dl = null;
 
+		bloquearFinalizar = daoatend.bloquearChamadosFinalizar( bloquearFinalizar, bloquearFinalizar, codatend_atual, codatend_atual );
 		if ( atd == null ) {
 			if ( txtCodRec.getVlrInteger() > 0 && txtNParcItRec.getVlrInteger() > 0 ) {
-				dl = new FNovoAtend( txtCodCli.getVlrInteger().intValue(), null, this, con, false, txtCodRec.getVlrInteger(), txtNParcItRec.getVlrInteger(), tipoatendo, financeiro, null );
+				dl = new FNovoAtend( txtCodCli.getVlrInteger().intValue(), null, this, con, false, txtCodRec.getVlrInteger()
+						, txtNParcItRec.getVlrInteger(), tipoatendo, financeiro, null, bloquearFinalizar );
 			}
 			else {
 
@@ -1831,11 +1836,11 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 					codcli = new Integer( 0 );
 				}
 
-				dl = new FNovoAtend( codcli.intValue(), codchamado, this, con, tipoatendo, false, financeiro, null );
+				dl = new FNovoAtend( codcli.intValue(), codchamado, this, con, tipoatendo, false, financeiro, null, bloquearFinalizar );
 			}
 		}
 		else {
-			dl = new FNovoAtend( this, con, atd, tipoatendo, titulo );
+			dl = new FNovoAtend( this, con, atd, tipoatendo, titulo, bloquearFinalizar );
 
 		}
 

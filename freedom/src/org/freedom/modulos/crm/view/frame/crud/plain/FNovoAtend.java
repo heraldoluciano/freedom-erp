@@ -270,8 +270,8 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 	
 	public FNovoAtend( int iCodCli, Integer codchamado, Component cOrig, boolean isUpdate,
 			DbConnection conn, int codatendo, int codatend, String tipoatendo, boolean financeirop, 
-			String titulo, Integer codorc, boolean atendimentoBloqueado ) {
-		this( iCodCli, codchamado, cOrig, conn, tipoatendo, isUpdate, financeirop, titulo);
+			String titulo, Integer codorc, boolean atendimentoBloqueado, boolean bloquearFinalizar ) {
+		this( iCodCli, codchamado, cOrig, conn, tipoatendo, isUpdate, financeirop, titulo, bloquearFinalizar);
 
 		corig = cOrig;
 
@@ -306,11 +306,11 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 		cbSituacao.setVlrString( txtSitAtendo.getVlrString() );
 		
 		
-		bloqueiaCampos( atendimentoBloqueado );
+		bloqueiaCampos( atendimentoBloqueado, bloquearFinalizar );
 
 	}	
 	
-	public void bloqueiaCampos(boolean ativo) {
+	public void bloqueiaCampos(boolean ativo, boolean bloquearFinalizar) {
 		txtCodCli.setAtivo( ativo );
 		txtCodChamado.setAtivo( ativo );
 		txtCodAtend.setAtivo( ativo );
@@ -331,6 +331,9 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 		btRun.setEnabled( ativo ); 
 		btOK.setEnabled( ativo );
 		cbSituacao.setEnabled( ativo );
+		if (bloquearFinalizar) {
+			cbConcluiChamado.setEnabled( false );
+		}
 	}
 
 	public void adicAtendimento( int codcli, Integer codchamado, Component cOrig,
@@ -384,7 +387,7 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 
 	public void adicAtendimento( int iCodCli, Integer codchamado, Component cOrig, boolean isUpdate, 
 			DbConnection conn, int codatendo, int codatend, String tipoatendo, boolean financeirop, 
-			Integer codorc, boolean atendimentoBloqueado ) {
+			Integer codorc, boolean atendimentoBloqueado, boolean bloquearFinalizar ) {
 
 		adicAtendimento( iCodCli, codchamado, cOrig, conn, isUpdate, tipoatendo, financeirop );
 
@@ -410,20 +413,22 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 
 		lcOrc.carregaDados();
 
-		bloqueiaCampos( atendimentoBloqueado );
+		bloqueiaCampos( atendimentoBloqueado, bloquearFinalizar );
 	}
 
-	public FNovoAtend( int codcli, Integer codchamado, Component cOrig, DbConnection conn, boolean isUpdate, Integer codrec, Integer nparcitrec, String tipoatendo, boolean financeirop, String titulo ) {
+	public FNovoAtend( int codcli, Integer codchamado, Component cOrig, DbConnection conn
+			, boolean isUpdate, Integer codrec, Integer nparcitrec, String tipoatendo
+			, boolean financeirop, String titulo, boolean bloquearFinalizar ) {
 
-		this( codcli, codchamado, cOrig, conn, tipoatendo, isUpdate, financeirop, titulo );
+		this( codcli, codchamado, cOrig, conn, tipoatendo, isUpdate, financeirop, titulo, bloquearFinalizar );
 
 		this.codrec = codrec;
 		this.nparcitrec = nparcitrec;
 
 	}
 
-	public FNovoAtend( Component cOrig, DbConnection conn, org.freedom.modulos.crm.business.object.Atendimento atd, String tipoatendo, String titulo ) {
-		this( atd.getCodcli(), atd.getCodchamado(), cOrig, conn, tipoatendo, false, false, titulo );
+	public FNovoAtend( Component cOrig, DbConnection conn, org.freedom.modulos.crm.business.object.Atendimento atd, String tipoatendo, String titulo, boolean bloquearFinalizar ) {
+		this( atd.getCodcli(), atd.getCodchamado(), cOrig, conn, tipoatendo, false, false, titulo, bloquearFinalizar );
 		//txtCodAtend.setVlrInteger( atd.getCodatend() );
 		txtCodTpAtendo.setVlrInteger( atd.getCodtpatendo() );
 		lcTpAtendo.carregaDados();
@@ -463,7 +468,8 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 		
 	}
 
-	public FNovoAtend( int codcli, Integer codchamado, Component cOrig, DbConnection conn, String tipoatendo, boolean isUpdate, boolean financeirop, String titulo ) {
+	public FNovoAtend( int codcli, Integer codchamado, Component cOrig, DbConnection conn, String tipoatendo
+			, boolean isUpdate, boolean financeirop, String titulo, boolean bloquearFinalizar ) {
 		this(true);
 		
 		String horaini = null;
