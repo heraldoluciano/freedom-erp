@@ -1164,8 +1164,14 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 	private void visualizaCham(boolean novo) {
 		try {
 			boolean bloquearChamado = false;
-			Integer codchamado = (Integer) tabchm.getValor( tabchm.getLinhaSel(), COL_CHAMADO.CODCHAMADO.ordinal() );
-			Integer codatend = (Integer) tabchm.getValor( tabchm.getLinhaSel(), COL_CHAMADO.CODATEND.ordinal() );
+			Integer codchamado = null;
+			Integer codatend = null;
+			if (novo) {
+				codatend = codatend_atual;
+			} else {
+				codchamado = (Integer) tabchm.getValor( tabchm.getLinhaSel(), COL_CHAMADO.CODCHAMADO.ordinal() );
+				codatend = (Integer) tabchm.getValor( tabchm.getLinhaSel(), COL_CHAMADO.CODATEND.ordinal() );
+			}
 
 			FChamado chamado = null;
 			bloquearChamado = daoatend.bloquearChamados( aceschamaltout, codatend_atual,codatend );
@@ -1177,7 +1183,6 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 				chamado = new FChamado();
 				Aplicativo.telaPrincipal.criatela( "Chamado", chamado, con );
 			}
-			
 			if (novo) {
 				Integer codcli = null;
 				if ( txtCodCli.getVlrInteger() < 1 ) {
@@ -1193,17 +1198,11 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 				}
 				chamado.novo();
 				chamado.setCodCli( codcli );
-				
 			}
-			
 			chamado.exec( (Integer) tabchm.getValor( tabchm.getLinhaSel(), COL_CHAMADO.CODCHAMADO.ordinal() ), bloquearChamado, aceschamlerout );
-			
-
 		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
-
-
 	}
 
 	private void visualizaAtend() {
