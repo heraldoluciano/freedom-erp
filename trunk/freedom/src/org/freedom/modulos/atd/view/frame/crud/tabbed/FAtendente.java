@@ -137,6 +137,8 @@ public class FAtendente extends FTabDados implements CarregaListener, PostListen
 	private JCheckBoxPad cbAcesChamAltOut = new JCheckBoxPad( "Alterar chamados de outros atendentes.", "S", "N" );
 
 	private JCheckBoxPad cbAcesChamDelLan = new JCheckBoxPad( "Excluir chamados próprios.", "S", "N" );
+	
+	private JCheckBoxPad cbAcesChamAltPro = new JCheckBoxPad( "Alterar chamados próprios.", "S", "N" );
 
 	private JCheckBoxPad cbAcesChamDelOut =  new JCheckBoxPad( "Excluir chamados de outros atendentes.", "S", "N" );
 
@@ -241,13 +243,14 @@ public class FAtendente extends FTabDados implements CarregaListener, PostListen
 		adicDB( cbAcesChamDelLan, 7, 170, 400, 20, "aceschamdellan", "", true );
 		adicDB( cbAcesChamFinOut, 7, 190, 400, 20, "aceschamfinout", "", true );
 		adicDB( cbAcesChamFinPro, 7, 210, 400, 20, "aceschamfinpro", "", true );
+		adicDB( cbAcesChamAltPro, 7, 230, 400, 20, "aceschamaltpro", "", true );
 		
-		adic(new JLabelPad("Acesso aos relatórios estatísticos:"), 7, 240, 400, 20);
-		adicDB( cbAcesRelEstOut, 7, 260, 400, 20, "acesrelestout", "", true );
+		adic(new JLabelPad("Acesso aos relatórios estatísticos:"), 7, 260, 400, 20);
+		adicDB( cbAcesRelEstOut, 7, 280, 400, 20, "acesrelestout", "", true );
 		
-		adic(new JLabelPad("Acesso a tela de cadastro de cliente:"), 7, 290, 400, 20);
-		adicDB( cbAcesTroComis, 7, 310, 400, 20, "acestrocomis", "", true );
-		adicDB( cbAcesTroComisOut, 7, 330, 400, 20, "acestrocomisout", "", true );
+		adic(new JLabelPad("Acesso a tela de cadastro de cliente:"), 7, 310, 400, 20);
+		adicDB( cbAcesTroComis, 7, 330, 400, 20, "acestrocomis", "", true );
+		adicDB( cbAcesTroComisOut, 7, 350, 400, 20, "acestrocomisout", "", true );
 
 		txtRgAtend.setMascara( JTextFieldPad.MC_RG );
 		txtCepAtend.setMascara( JTextFieldPad.MC_CEP );
