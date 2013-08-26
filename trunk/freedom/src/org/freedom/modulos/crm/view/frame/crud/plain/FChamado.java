@@ -462,6 +462,9 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 			nav.setAtivo( Navegador.BT_EDITAR, false );
 			nav.setAtivo( Navegador.BT_SALVAR, false );
 		}
+		if (bloquearExcluir) {
+			nav.setAtivo( Navegador.BT_EXCLUIR, false );
+		}
 //		btRun.setEnabled( ativo ); 
 		//btOK.setEnabled( ativo );
 		//cbSituacao.setEnabled( ativo );
