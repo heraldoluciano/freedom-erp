@@ -202,6 +202,8 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 	
 	private boolean bloquearChamado = false;
 
+	boolean aceschamlerout = true;
+	
 	public FChamado() {
 
 		super();
@@ -405,8 +407,8 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 
 	}
 
-	public void bloqueiaCampos(boolean bloquear) {
-		boolean ativo = ! bloquear;
+	public void bloqueiaCampos() {
+		boolean ativo = ! bloquearChamado;
 		txtCodChamado.setAtivo( ativo );
 		txtDescChamado.setAtivo( ativo );
 		cbTpChamado.setEnabled( ativo );
@@ -429,6 +431,14 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 		txaFatoGerador.setEnabled( ativo );
 		txaAmbiente.setEnabled( ativo );
 		txaObsChamado.setEnabled( ativo );
+		// Se o atendente não tiver acesso de leitura aos chamados de outros, não poderá digitar o código do chamado e também não poderá navegar
+		if (!aceschamlerout) {
+			txtCodChamado.setEditable( false );
+			nav.setAtivo( Navegador.BT_PRIMEIRO, false );
+			nav.setAtivo( Navegador.BT_PROXIMO, false );
+			nav.setAtivo( Navegador.BT_ANTERIOR, false );
+			nav.setAtivo( Navegador.BT_ULTIMO, false );
+		}
 //		btRun.setEnabled( ativo ); 
 		//btOK.setEnabled( ativo );
 		//cbSituacao.setEnabled( ativo );
@@ -438,19 +448,12 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 
 	public void exec( Integer codchamado, boolean bloquearChamado, boolean aceschamlerout ) {
 		this.bloquearChamado = bloquearChamado;
+		this.aceschamlerout = aceschamlerout;
 		if ( codchamado != null ) {
 			txtCodChamado.setVlrInteger( codchamado );
 			lcCampos.carregaDados();
-			bloqueiaCampos( bloquearChamado );
 		}
-		// Se o atendente não tiver acesso de leitura aos chamados de outros, não poderá digitar o código do chamado e também não poderá navegar
-		if (!aceschamlerout) {
-			txtCodChamado.setSoLeitura( true );
-			nav.setAtivo( Navegador.BT_PRIMEIRO, false );
-			nav.setAtivo( Navegador.BT_PROXIMO, false );
-			nav.setAtivo( Navegador.BT_ANTERIOR, false );
-			nav.setAtivo( Navegador.BT_ULTIMO, false );
-		}
+		bloqueiaCampos();
 	}
 
 	public void setConexao( DbConnection cn ) {
@@ -835,16 +838,12 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 	}
 
 	public void afterCarrega( CarregaEvent cevt ) {
-
 		if ( cevt.getListaCampos() == lcCli && lcCampos.getStatus() == ListaCampos.LCS_INSERT ) {
-
 			txtSolicitante.setVlrString( txtContCli.getVlrString() );
 			txtEmailSolicitante.setVlrString( txtEmailCli.getVlrString() );
-
 		} else if (cevt.getListaCampos()==lcCampos ) {
-			bloqueiaCampos( bloquearChamado );
+			bloqueiaCampos();
 		}
-
 	}
 
 	public void beforeCarrega( CarregaEvent cevt ) {
