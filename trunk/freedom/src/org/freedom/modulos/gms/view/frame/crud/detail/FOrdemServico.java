@@ -1984,7 +1984,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 			// Do contrário deve abrir o existente.
 			else {
 
-				chamado.exec( codchamado, false, false );
+				chamado.exec( null, null, codchamado,false, true, true );
 
 			}
 

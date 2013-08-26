@@ -70,6 +70,7 @@ import org.freedom.library.swing.util.SwingParams;
 import org.freedom.modulos.atd.view.frame.crud.tabbed.FAtendente;
 import org.freedom.modulos.crm.business.object.Chamado;
 import org.freedom.modulos.crm.business.object.Prioridade;
+import org.freedom.modulos.crm.dao.DAOAtendimento;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 
 public class FChamado extends FDados implements ActionListener, JComboBoxListener, InsertListener, CarregaListener, PostListener {
@@ -204,7 +205,11 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 
 	boolean aceschamlerout = true;
 	
-	//boolean aceschamaltout = true;
+	boolean aceschamaltout = true;
+	
+	private DAOAtendimento daoatend = null;
+
+	Integer codatend_atual = null;
 	
 	public FChamado() {
 
@@ -411,6 +416,8 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 
 	public void bloqueiaCampos() {
 		boolean ativo = ! bloquearChamado;
+		Integer codatend = txtCodAtend.getVlrInteger();
+		bloquearChamado = daoatend.bloquearChamados( aceschamaltout, codatend_atual, codatend );
 		txtCodChamado.setAtivo( ativo );
 		txtDescChamado.setAtivo( ativo );
 		cbTpChamado.setEnabled( ativo );
@@ -451,10 +458,12 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 	}
 
 
-	public void exec( Integer codchamado, boolean bloquearChamado, boolean aceschamlerout ) {
+	public void exec( DAOAtendimento daoatend, Integer codatend_atual, Integer codchamado, boolean bloquearChamado, boolean aceschamlerout, boolean aceschamaltout ) {
+		this.daoatend = daoatend;
 		this.bloquearChamado = bloquearChamado;
 		this.aceschamlerout = aceschamlerout;
-		//this.aceschamaltout = aceschamaltout;
+		this.aceschamaltout = aceschamaltout;
+		this.codatend_atual = codatend_atual;
 		if ( codchamado != null ) {
 			txtCodChamado.setVlrInteger( codchamado );
 			lcCampos.carregaDados();
