@@ -204,6 +204,8 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 
 	boolean aceschamlerout = true;
 	
+	//boolean aceschamaltout = true;
+	
 	public FChamado() {
 
 		super();
@@ -421,6 +423,7 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 		txtDtChamado.setAtivo( ativo );
 		txtDtPrevisao.setAtivo( ativo );
 		//txtDtConclusao.setAtivo( ativo );
+		txtQtdHorasPrev.setAtivo( ativo );
 		cbPrioridade.setAtivo( ativo );
 		txtCodAtend.setAtivo( ativo );
 		cbStatus.setEnabled( ativo );
@@ -439,6 +442,10 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 			nav.setAtivo( Navegador.BT_ANTERIOR, false );
 			nav.setAtivo( Navegador.BT_ULTIMO, false );
 		}
+		if (bloquearChamado) {
+			nav.setAtivo( Navegador.BT_EDITAR, false );
+			nav.setAtivo( Navegador.BT_SALVAR, false );
+		}
 //		btRun.setEnabled( ativo ); 
 		//btOK.setEnabled( ativo );
 		//cbSituacao.setEnabled( ativo );
@@ -449,6 +456,7 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 	public void exec( Integer codchamado, boolean bloquearChamado, boolean aceschamlerout ) {
 		this.bloquearChamado = bloquearChamado;
 		this.aceschamlerout = aceschamlerout;
+		//this.aceschamaltout = aceschamaltout;
 		if ( codchamado != null ) {
 			txtCodChamado.setVlrInteger( codchamado );
 			lcCampos.carregaDados();
