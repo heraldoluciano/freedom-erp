@@ -1994,6 +1994,17 @@ public class DAOAtendimento extends AbstractDAO {
 		return result;
 	}
 	
+	public boolean bloquearChamadosFinalizar(boolean aceschamfinout, boolean aceschamfinlan, Integer codatendpadrao, Integer codatendatendo) {
+		boolean result = false;
+		if ( codatendpadrao != null && result==false 
+				// Se ele não tem acesso aos chamados de outro atendente e o atendente atual é diferente do atendente do chamado, bloqueia
+			&& ( (!aceschamfinout && !codatendatendo.equals( codatendpadrao ) )  
+				// Se ele não tem acesso para alterar os próprios atendimentos e o atendente atual é igual ao atendente do chamado, bloqueia
+				|| (!aceschamfinlan && codatendatendo.equals( codatendpadrao) ) ) ) {
+			result = true;
+		}
+		return result;
+	}
 	public boolean bloquearAtendimentos(Integer codatendo, String data, String hora, boolean acesatdoaltout, Integer codatendpadrao, Integer codatendatendo)  throws SQLException{
 		boolean result = false;
 		String bloqAtendimento = (String) prefs[org.freedom.modulos.crm.business.object.Atendimento.PREFS.BLOQATENDIMENTO.ordinal()];
@@ -2152,7 +2163,7 @@ public class DAOAtendimento extends AbstractDAO {
 			sql = new StringBuilder();
 			sql.append( "select AcesAtdoLerOut, AcesAtdoAltOut, AcesAtdoDelLan, AcesAtdoDelOut ");
 			sql.append( ", AcesChamLerOut, AcesChamAltOut, AcesChamAltPro, AcesChamDelLan, AcesChamDelOut ");
-			sql.append( ", acestrocomis, acestrocomisout, codvend " );
+			sql.append( ", AcesChamFinOut, AcesChamFimLan, acestrocomis, acestrocomisout, codvend " );
 			sql.append( "from atatendente ")
 			   .append( "where codemp=? and codfilial=? and codatend=?" );
 			int param = 1;
@@ -2176,6 +2187,8 @@ public class DAOAtendimento extends AbstractDAO {
 				result.put( "aceschamaltpro",  "S".equals(rs.getString("AcesChamAltPro")));
 				result.put( "aceschamdellan",  "S".equals(rs.getString("AcesChamDelLan")));
 				result.put( "aceschamdelout",  "S".equals(rs.getString("AcesChamDelOut")));
+				result.put( "aceschamfimlan",  "S".equals(rs.getString("AcesChamFinLan")));
+				result.put( "aceschamfimout",  "S".equals(rs.getString("AcesChamFinOut")));
 				result.put( "codvend",  rs.getInt("codvend"));
 				result.put( "codatend", codatend_atual );			
 			}
