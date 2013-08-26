@@ -200,7 +200,7 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 
 	private FDados telanterior = null;
 	
-	private boolean chamadoBloqueado = false;
+	private boolean bloquearChamado = false;
 
 	public FChamado() {
 
@@ -218,6 +218,7 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 		cbStatus.addComboBoxListener( this );
 
 		lcCampos.addInsertListener( this );
+		lcCampos.addCarregaListener( this );
 		lcCli.addCarregaListener( this );
 
 	}
@@ -404,7 +405,8 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 
 	}
 
-	public void bloqueiaCampos(boolean ativo) {
+	public void bloqueiaCampos(boolean bloquear) {
+		boolean ativo = ! bloquear;
 		txtCodChamado.setAtivo( ativo );
 		txtDescChamado.setAtivo( ativo );
 		cbTpChamado.setEnabled( ativo );
@@ -434,12 +436,12 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 	}
 
 
-	public void exec( Integer codchamado, boolean chamadoBloqueado, boolean aceschamlerout ) {
-		this.chamadoBloqueado = chamadoBloqueado;
+	public void exec( Integer codchamado, boolean bloquearChamado, boolean aceschamlerout ) {
+		this.bloquearChamado = bloquearChamado;
 		if ( codchamado != null ) {
 			txtCodChamado.setVlrInteger( codchamado );
 			lcCampos.carregaDados();
-			bloqueiaCampos( chamadoBloqueado );
+			bloqueiaCampos( bloquearChamado );
 		}
 		// Se o atendente não tiver acesso de leitura aos chamados de outros, não poderá digitar o código do chamado e também não poderá navegar
 		if (!aceschamlerout) {
@@ -839,6 +841,8 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 			txtSolicitante.setVlrString( txtContCli.getVlrString() );
 			txtEmailSolicitante.setVlrString( txtEmailCli.getVlrString() );
 
+		} else if (cevt.getListaCampos()==lcCampos ) {
+			bloqueiaCampos( bloquearChamado );
 		}
 
 	}
