@@ -813,7 +813,7 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 					rs.close();
 					ps.close();
 					
-					con.commit();
+					con.commit(); 
 					
 					return null;
 					
