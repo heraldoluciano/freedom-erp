@@ -1981,6 +1981,18 @@ public class DAOAtendimento extends AbstractDAO {
 		return result;
 	}
 
+	public boolean bloquearExcluir(boolean aceschamdelout, boolean aceschamdellan, Integer codatendpadrao, Integer codatendatendo) {
+		boolean result = false;
+		if ( codatendpadrao != null && result==false 
+				// Se ele não tem acesso aos chamados de outro atendente e o atendente atual é diferente do atendente do chamado, bloqueia
+			&& ( (!aceschamdelout && !codatendatendo.equals( codatendpadrao ) )  
+				// Se ele não tem acesso para alterar os próprios atendimentos e o atendente atual é igual ao atendente do chamado, bloqueia
+				|| (!aceschamdellan && codatendatendo.equals( codatendpadrao) ) ) ) {
+			result = true;
+		}
+		return result;
+	}
+	
 	public boolean bloquearAtendimentos(Integer codatendo, String data, String hora, boolean acesatdoaltout, Integer codatendpadrao, Integer codatendatendo)  throws SQLException{
 		boolean result = false;
 		String bloqAtendimento = (String) prefs[org.freedom.modulos.crm.business.object.Atendimento.PREFS.BLOQATENDIMENTO.ordinal()];

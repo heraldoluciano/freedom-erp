@@ -1201,7 +1201,9 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 				chamado.novo();
 				chamado.setCodCli( codcli );
 			}
-			chamado.exec( daoatend, codatend_atual, (Integer) tabchm.getValor( tabchm.getLinhaSel(), COL_CHAMADO.CODCHAMADO.ordinal() ), bloquearChamado, aceschamlerout, aceschamaltout, aceschamaltpro );
+			chamado.exec( daoatend, codatend_atual
+					, (Integer) tabchm.getValor( tabchm.getLinhaSel(), COL_CHAMADO.CODCHAMADO.ordinal() )
+					, bloquearChamado, aceschamlerout, aceschamaltout, aceschamaltpro, aceschamdelout, aceschamdellan );
 		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
