@@ -2163,7 +2163,7 @@ public class DAOAtendimento extends AbstractDAO {
 			sql = new StringBuilder();
 			sql.append( "select AcesAtdoLerOut, AcesAtdoAltOut, AcesAtdoDelLan, AcesAtdoDelOut ");
 			sql.append( ", AcesChamLerOut, AcesChamAltOut, AcesChamAltPro, AcesChamDelLan, AcesChamDelOut ");
-			sql.append( ", AcesChamFinOut, AcesChamFimLan, acestrocomis, acestrocomisout, codvend " );
+			sql.append( ", AcesChamFinOut, AcesChamFinLan, acestrocomis, acestrocomisout, codvend " );
 			sql.append( "from atatendente ")
 			   .append( "where codemp=? and codfilial=? and codatend=?" );
 			int param = 1;
