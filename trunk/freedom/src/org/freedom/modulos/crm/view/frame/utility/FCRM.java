@@ -163,7 +163,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 	private boolean aceschamdelout = false;
 
-	private boolean aceschamfinlan = false;
+	private boolean aceschamfinpro = false;
 
 	private boolean aceschamfinout = false;
 
@@ -1203,7 +1203,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			chamado.exec( daoatend, codatend_atual
 					, (Integer) tabchm.getValor( tabchm.getLinhaSel(), COL_CHAMADO.CODCHAMADO.ordinal() )
 					, bloquearChamado, aceschamlerout, aceschamaltout, aceschamaltpro
-					, aceschamdelout, aceschamdellan, aceschamfinout, aceschamfinlan );
+					, aceschamdelout, aceschamdellan, aceschamfinout, aceschamfinpro );
 		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
@@ -2204,7 +2204,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 				aceschamlerout = (Boolean) atendente.get("aceschamlerout");
 				aceschamdellan = (Boolean) atendente.get("aceschamdellan");
 				aceschamdelout = (Boolean) atendente.get("aceschamdelout");
-				aceschamfinlan = (Boolean) atendente.get("aceschamfinlan");
+				aceschamfinpro = (Boolean) atendente.get("aceschamfinpro");
 				aceschamfinout = (Boolean) atendente.get("aceschamfinout");
 				
 				txtCodAtendAtendo.setSoLeitura( !acesatdolerout );

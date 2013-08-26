@@ -219,7 +219,7 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 	
 	boolean aceschamfinout = true;
 	
-	boolean aceschamfinlan = true;
+	boolean aceschamfinpro = true;
 	
 	private DAOAtendimento daoatend = null;
 
@@ -434,7 +434,7 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 		if (daoatend!=null) {
 			bloquearChamado = daoatend.bloquearChamados( novo, aceschamaltout, aceschamaltpro, codatend_atual, codatend );
 			bloquearExcluir = daoatend.bloquearChamadosExcluir(aceschamdelout, aceschamdellan, codatend_atual, codatend );
-			bloquearFinalizar = daoatend.bloquearChamadosFinalizar(aceschamfinout, aceschamfinlan, codatend_atual, codatend );
+			bloquearFinalizar = daoatend.bloquearChamadosFinalizar(aceschamfinout, aceschamfinpro, codatend_atual, codatend );
 		}
 		boolean ativo = ! bloquearChamado;
 		txtCodChamado.setAtivo( ativo );
@@ -488,7 +488,7 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 
 	public void exec( DAOAtendimento daoatend, Integer codatend_atual, Integer codchamado, boolean bloquearChamado, boolean aceschamlerout
 			, boolean aceschamaltout, boolean aceschamaltpro, boolean aceschamdelout, boolean aceschamdellan
-			, boolean aceschamfinout, boolean aceschamfinlan	) {
+			, boolean aceschamfinout, boolean aceschamfinpro	) {
 		this.daoatend = daoatend;
 		this.bloquearChamado = bloquearChamado;
 		this.aceschamlerout = aceschamlerout;
@@ -497,7 +497,7 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 		this.aceschamdelout = aceschamdelout;
 		this.aceschamdellan = aceschamdellan;
 		this.aceschamfinout = aceschamfinout;
-		this.aceschamfinlan = aceschamfinlan;
+		this.aceschamfinpro = aceschamfinpro;
 		this.codatend_atual = codatend_atual;
 		if ( codchamado != null ) {
 			txtCodChamado.setVlrInteger( codchamado );
