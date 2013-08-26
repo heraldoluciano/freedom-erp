@@ -1158,24 +1158,51 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 	}
 
 	private void visualizaCham() {
+		visualizaCham(false);
+	}
+	
+	private void visualizaCham(boolean novo) {
+		try {
+			boolean bloquearChamado = false;
+			Integer codchamado = (Integer) tabchm.getValor( tabchm.getLinhaSel(), COL_CHAMADO.CODCHAMADO.ordinal() );
+			Integer codatend = (Integer) tabchm.getValor( tabchm.getLinhaSel(), COL_CHAMADO.CODATEND.ordinal() );
 
-		boolean bloquearChamado = false;
-		Integer codchamado = (Integer) tabchm.getValor( tabchm.getLinhaSel(), COL_CHAMADO.CODCHAMADO.ordinal() );
-		Integer codatend = (Integer) tabchm.getValor( tabchm.getLinhaSel(), COL_CHAMADO.CODATEND.ordinal() );
+			FChamado chamado = null;
+			bloquearChamado = daoatend.bloquearChamados( aceschamaltout, codatend_atual,codatend );
+			
+			if ( Aplicativo.telaPrincipal.temTela( FChamado.class.getName() ) ) {
+				chamado = (FChamado) Aplicativo.telaPrincipal.getTela( FChamado.class.getName() );
+			}
+			else {
+				chamado = new FChamado();
+				Aplicativo.telaPrincipal.criatela( "Chamado", chamado, con );
+			}
+			
+			if (novo) {
+				Integer codcli = null;
+				if ( txtCodCli.getVlrInteger() < 1 ) {
+					if ( tpnAbas.getSelectedIndex() == ABA_CHAMADO ) {
+						codcli = (Integer) tabchm.getValor( tabchm.getSelectedRow(), COL_CHAMADO.CLIENTE.ordinal() );
+					}
+					else if ( tpnAbas.getSelectedIndex() == ABA_ATENDIMENTO ) {
+						codcli = (Integer) tabatd.getValor( tabatd.getSelectedRow(), COL_ATENDIMENTO.CODCLI.ordinal() );
+					}
+				}
+				else {
+					codcli = txtCodCli.getVlrInteger();
+				}
+				chamado.novo();
+				chamado.setCodCli( codcli );
+				
+			}
+			
+			chamado.exec( (Integer) tabchm.getValor( tabchm.getLinhaSel(), COL_CHAMADO.CODCHAMADO.ordinal() ), bloquearChamado, aceschamlerout );
+			
 
-		FChamado chamado = null;
-
-		bloquearChamado = daoatend.bloquearChamados( aceschamaltout, codatend_atual,codatend );
-
-		if ( Aplicativo.telaPrincipal.temTela( FChamado.class.getName() ) ) {
-			chamado = (FChamado) Aplicativo.telaPrincipal.getTela( FChamado.class.getName() );
+		} catch ( Exception e ) {
+			e.printStackTrace();
 		}
-		else {
-			chamado = new FChamado();
-			Aplicativo.telaPrincipal.criatela( "Chamado", chamado, con );
-		}
 
-		chamado.exec( (Integer) tabchm.getValor( tabchm.getLinhaSel(), COL_CHAMADO.CODCHAMADO.ordinal() ), bloquearChamado, aceschamlerout );
 
 	}
 
@@ -1820,46 +1847,9 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 	}
 
+	
 	private void novoChamado() {
-
-		try {
-
-			FChamado chamado = null;
-			Integer codcli = null;
-
-			if ( Aplicativo.telaPrincipal.temTela( FChamado.class.getName() ) ) {
-				chamado = (FChamado) Aplicativo.telaPrincipal.getTela( FChamado.class.getName() );
-			}
-			else {
-				chamado = new FChamado();
-				Aplicativo.telaPrincipal.criatela( "Chamado", chamado, con );
-			}
-
-			if ( txtCodCli.getVlrInteger() < 1 ) {
-
-				if ( tpnAbas.getSelectedIndex() == ABA_CHAMADO ) {
-
-					codcli = (Integer) tabchm.getValor( tabchm.getSelectedRow(), COL_CHAMADO.CLIENTE.ordinal() );
-
-				}
-				else if ( tpnAbas.getSelectedIndex() == ABA_ATENDIMENTO ) {
-
-					codcli = (Integer) tabatd.getValor( tabatd.getSelectedRow(), COL_ATENDIMENTO.CODCLI.ordinal() );
-
-				}
-
-			}
-			else {
-				codcli = txtCodCli.getVlrInteger();
-			}
-
-			chamado.novo();
-
-			chamado.setCodCli( codcli );
-
-		} catch ( Exception e ) {
-			e.printStackTrace();
-		}
+		visualizaCham(true);
 	}
 
 	private void novoModelo() {
