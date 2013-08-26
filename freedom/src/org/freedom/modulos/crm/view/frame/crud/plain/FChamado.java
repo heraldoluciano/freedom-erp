@@ -435,14 +435,12 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 		txaAmbiente.setEnabled( ativo );
 		txaObsChamado.setEnabled( ativo );
 		// Se o atendente não tiver acesso de leitura aos chamados de outros, não poderá digitar o código do chamado e também não poderá navegar
-		if (!aceschamlerout) {
+		if (bloquearChamado) {
 			txtCodChamado.setEditable( false );
 			nav.setAtivo( Navegador.BT_PRIMEIRO, false );
 			nav.setAtivo( Navegador.BT_PROXIMO, false );
 			nav.setAtivo( Navegador.BT_ANTERIOR, false );
 			nav.setAtivo( Navegador.BT_ULTIMO, false );
-		}
-		if (bloquearChamado) {
 			nav.setAtivo( Navegador.BT_EDITAR, false );
 			nav.setAtivo( Navegador.BT_SALVAR, false );
 		}
