@@ -1981,7 +1981,7 @@ public class DAOAtendimento extends AbstractDAO {
 		return result;
 	}
 
-	public boolean bloquearExcluir(boolean aceschamdelout, boolean aceschamdellan, Integer codatendpadrao, Integer codatendatendo) {
+	public boolean bloquearChamadosExcluir(boolean aceschamdelout, boolean aceschamdellan, Integer codatendpadrao, Integer codatendatendo) {
 		boolean result = false;
 		if ( codatendpadrao != null && result==false 
 				// Se ele não tem acesso aos chamados de outro atendente e o atendente atual é diferente do atendente do chamado, bloqueia
