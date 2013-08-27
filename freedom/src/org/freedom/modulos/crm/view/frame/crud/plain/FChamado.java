@@ -202,6 +202,8 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 	private FDados telanterior = null;
 	
 	private boolean bloquearChamado = false;
+	
+	private boolean bloquearChamadoOutros = false;
 
 	private boolean bloquearExcluir = false;
 
@@ -419,10 +421,11 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 		boolean novo = ( lcCampos.getStatus()==ListaCampos.LCS_INSERT );
 		if (daoatend!=null) {
 			bloquearChamado = daoatend.bloquearChamados( novo, codatend );
+			bloquearChamadoOutros = daoatend.bloquearChamadosOutros( novo, codatend );
 			bloquearExcluir = daoatend.bloquearChamadosExcluir( codatend );
 			bloquearFinalizar = daoatend.bloquearChamadosFinalizar( codatend );
 		}
-		boolean ativo = ! bloquearChamado;
+		boolean ativo = ! ( bloquearChamado || bloquearChamadoOutros);
 		txtCodChamado.setAtivo( ativo );
 		txtDescChamado.setAtivo( ativo );
 		cbTpChamado.setEnabled( ativo );
@@ -447,7 +450,7 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 		txaAmbiente.setEnabled( ativo );
 		txaObsChamado.setEnabled( ativo );
 		// Se o atendente não tiver acesso de leitura aos chamados de outros, não poderá digitar o código do chamado e também não poderá navegar
-		if (bloquearChamado) {
+		if (daoatend.isAceschamaltout() && daoatend.isAceschamaltpro() ) {
 			txtCodChamado.setEditable( false );
 			nav.setAtivo( Navegador.BT_PRIMEIRO, false );
 			nav.setAtivo( Navegador.BT_PROXIMO, false );
@@ -456,8 +459,13 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 			nav.setAtivo( Navegador.BT_EDITAR, false );
 			// Só bloquear se não for novo
 			//nav.setAtivo( Navegador.BT_SALVAR, novo );
+		} else if (bloquearChamadoOutros) {
+			nav.setAtivo( Navegador.BT_EDITAR, false );
 		} else if (novo) {
 			nav.setAtivo( Navegador.BT_SALVAR, true );
+		}
+		if (!bloquearChamadoOutros && !bloquearChamado && !novo) {
+			nav.setAtivo( Navegador.BT_EDITAR, true );
 		}
 		if (bloquearExcluir) {
 			nav.setAtivo( Navegador.BT_EXCLUIR, false );
