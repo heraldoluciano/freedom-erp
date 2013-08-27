@@ -517,6 +517,11 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 		lcQualificacao.setConexao( cn );
 		lcContrato.setConexao( cn );
 		lcItContrato.setConexao( cn );
+		try {
+			daoatend = new DAOAtendimento( cn, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDIMENTO" ) );
+		} catch (SQLException e) {
+			Funcoes.mensagemErro( this, "Erro carregando parâmetros do atendente !\n"+e.getMessage() );
+		}
 
 	}
 
