@@ -1985,38 +1985,38 @@ public class DAOAtendimento extends AbstractDAO {
 	}
 
 
-	public boolean bloquearChamados(boolean novo, boolean aceschamaltout, boolean aceschamaltpro, Integer codatendpadrao, Integer codatendatendo) {
+	public boolean bloquearChamados(boolean novo, Integer codatendatendo) {
 		boolean result = false;
 		if (!novo // Se não for novo  
-			&& codatendpadrao != null && result==false 
+			&& getCodatend_atual() != null && result==false 
 				// Se ele não tem acesso aos chamados de outro atendente e o atendente atual é diferente do atendente do chamado, bloqueia
-			&& ( (!aceschamaltout && !codatendatendo.equals( codatendpadrao ) )  
+			&& ( (!aceschamaltout && !codatendatendo.equals( getCodatend_atual() ) )  
 				// Se ele não tem acesso para alterar os próprios atendimentos e o atendente atual é igual ao atendente do chamado, bloqueia
-				|| (!aceschamaltpro && codatendatendo.equals( codatendpadrao) ) ) ) {
+				|| (!aceschamaltpro && codatendatendo.equals( getCodatend_atual()) ) ) ) {
 			result = true;
 		}
 		return result;
 	}
 
-	public boolean bloquearChamadosExcluir(boolean aceschamdelout, boolean aceschamdellan, Integer codatendpadrao, Integer codatendatendo) {
+	public boolean bloquearChamadosExcluir(Integer codatendatendo) {
 		boolean result = false;
-		if ( codatendpadrao != null && result==false 
+		if ( getCodatend_atual() != null && result==false 
 				// Se ele não tem acesso aos chamados de outro atendente e o atendente atual é diferente do atendente do chamado, bloqueia
-			&& ( (!aceschamdelout && !codatendatendo.equals( codatendpadrao ) )  
+			&& ( (!aceschamdelout && !codatendatendo.equals( getCodatend_atual() ) )  
 				// Se ele não tem acesso para alterar os próprios atendimentos e o atendente atual é igual ao atendente do chamado, bloqueia
-				|| (!aceschamdellan && codatendatendo.equals( codatendpadrao) ) ) ) {
+				|| (!aceschamdellan && codatendatendo.equals( getCodatend_atual()) ) ) ) {
 			result = true;
 		}
 		return result;
 	}
 	
-	public boolean bloquearChamadosFinalizar(boolean aceschamfinout, boolean aceschamfinpro, Integer codatendpadrao, Integer codatendatendo) {
+	public boolean bloquearChamadosFinalizar(Integer codatendatendo) {
 		boolean result = false;
-		if ( codatendpadrao != null && result==false 
+		if ( getCodatend_atual() != null && result==false 
 				// Se ele não tem acesso aos chamados de outro atendente e o atendente atual é diferente do atendente do chamado, bloqueia
-			&& ( (!aceschamfinout && !codatendatendo.equals( codatendpadrao ) )  
+			&& ( (!aceschamfinout && !codatendatendo.equals( getCodatend_atual() ) )  
 				// Se ele não tem acesso para alterar os próprios atendimentos e o atendente atual é igual ao atendente do chamado, bloqueia
-				|| (!aceschamfinpro && codatendatendo.equals( codatendpadrao) ) ) ) {
+				|| (!aceschamfinpro && codatendatendo.equals( getCodatend_atual() ) ) ) ) {
 			result = true;
 		}
 		return result;

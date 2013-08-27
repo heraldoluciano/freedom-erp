@@ -1676,8 +1676,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			atendimentoBloqueado = !daoatend.bloquearAtendimentos( codatendo, (String) tabAtendimentos.getValor( tabAtendimentos.getLinhaSel(), COL_ATENDIMENTO.DATAATENDOFIN.ordinal() ), 
 					(String) tabAtendimentos.getValor( tabAtendimentos.getLinhaSel(), COL_ATENDIMENTO.HORAATENDOFIN.ordinal() ),
 					acesatdoaltout, codatend_atual, codatend );
-			bloqueiaFinalizar = daoatend.bloquearChamadosFinalizar( daoatend.isAceschamfinout(), daoatend.isAceschamfinpro()
-					, daoatend.getCodatend_atual(), daoatend.getCodatend_atual() );
+			bloqueiaFinalizar = daoatend.bloquearChamadosFinalizar( daoatend.getCodatend_atual() );
 
 			if ( dl != null && dl.isUpdate() ) {
 				dl.adicAtendimento( txtCodCli.getVlrInteger(), codchamado, this, true, con, icodAtendo, 
