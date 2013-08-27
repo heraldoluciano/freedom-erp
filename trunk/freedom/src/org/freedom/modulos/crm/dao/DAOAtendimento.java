@@ -1988,11 +1988,20 @@ public class DAOAtendimento extends AbstractDAO {
 	public boolean bloquearChamados(boolean novo, Integer codatendatendo) {
 		boolean result = false;
 		if (!novo // Se não for novo  
+			&& getCodatend_atual() != null && result==false   
+				// Se ele não tem acesso para alterar os próprios atendimentos e o atendente atual é igual ao atendente do chamado, bloqueia
+				&& (!aceschamaltpro && codatendatendo.equals( getCodatend_atual()) ) ) {
+			result = true;
+		}
+		return result;
+	}
+
+	public boolean bloquearChamadosOutros(boolean novo, Integer codatendatendo) {
+		boolean result = false;
+		if (!novo // Se não for novo  
 			&& getCodatend_atual() != null && result==false 
 				// Se ele não tem acesso aos chamados de outro atendente e o atendente atual é diferente do atendente do chamado, bloqueia
-			&& ( (!aceschamaltout && !codatendatendo.equals( getCodatend_atual() ) )  
-				// Se ele não tem acesso para alterar os próprios atendimentos e o atendente atual é igual ao atendente do chamado, bloqueia
-				|| (!aceschamaltpro && codatendatendo.equals( getCodatend_atual()) ) ) ) {
+			&& !aceschamaltout && !codatendatendo.equals( getCodatend_atual() ) ) {
 			result = true;
 		}
 		return result;
