@@ -1141,8 +1141,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			}
 
 			FChamado chamado = null;
-			bloquearChamado = daoatend.bloquearChamados( novo, daoatend.isAceschamaltout(), daoatend.isAceschamaltpro()
-					, daoatend.getCodatend_atual(), codatend );
+			bloquearChamado = daoatend.bloquearChamados( novo, codatend );
 			
 			if ( Aplicativo.telaPrincipal.temTela( FChamado.class.getName() ) ) {
 				chamado = (FChamado) Aplicativo.telaPrincipal.getTela( FChamado.class.getName() );
@@ -1199,8 +1198,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			atendimentoBloqueado = !daoatend.bloquearAtendimentos( codatendo, (String) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.DATAATENDOFIN.ordinal() )
 					, (String) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.HORAATENDOFIN.ordinal() ), daoatend.isAcesatdoaltout()
 					, daoatend.getCodatend_atual(), codatend );
-			bloquearFinalizar = daoatend.bloquearChamadosFinalizar( daoatend.isAceschamfinout(), daoatend.isAceschamfinpro()
-					, daoatend.getCodatend_atual(), codatend);
+			bloquearFinalizar = daoatend.bloquearChamadosFinalizar( codatend);
 			if ( dl != null && dl.isUpdate() ) {
 				dl.adicAtendimento( txtCodCli.getVlrInteger(), codchamado, this, true, con, icodAtendo, icodAtend, tipoatendo, financeiro, (Integer) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.CODORC.ordinal() ), atendimentoBloqueado, bloquearFinalizar );
 			}
@@ -1794,8 +1792,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 		FNovoAtend dl = null;
 
-		bloquearFinalizar = daoatend.bloquearChamadosFinalizar( bloquearFinalizar, bloquearFinalizar
-				, daoatend.getCodatend_atual(), daoatend.getCodatend_atual() );
+		bloquearFinalizar = daoatend.bloquearChamadosFinalizar( daoatend.getCodatend_atual() );
 		if ( atd == null ) {
 			if ( txtCodRec.getVlrInteger() > 0 && txtNParcItRec.getVlrInteger() > 0 ) {
 				dl = new FNovoAtend( txtCodCli.getVlrInteger().intValue(), null, this, con, false, txtCodRec.getVlrInteger()

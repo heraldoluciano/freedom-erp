@@ -2102,8 +2102,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			atendimentoBloqueado = !daoatend.bloquearAtendimentos( codatendo, (String) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.DATAATENDOFIN.ordinal() ), 
 					(String) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.HORAATENDOFIN.ordinal() )
 					, daoatend.isAcesatdoaltout(), daoatend.getCodatend_atual(), codatend );
-			boolean finalizarChamado = daoatend.bloquearChamadosFinalizar( daoatend.isAceschamfinout()
-					, daoatend.isAceschamfinpro(), daoatend.getCodatend_atual(), daoatend.getCodatend_atual() );
+			boolean finalizarChamado = daoatend.bloquearChamadosFinalizar( daoatend.getCodatend_atual() );
 
 			if ( dl != null && dl.isUpdate() ) {
 				dl.adicAtendimento( txtCodCli.getVlrInteger(), codchamado, this, true, con, icodAtendo
@@ -4399,8 +4398,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 				atd.setCodfilialcl( ListaCampos.getMasterFilial( "VDCLIENTE" ));
 				atd.setCodcli( txtCodCli.getVlrInteger() );
 
-				boolean finalizarChamado = daoatend.bloquearChamadosFinalizar( daoatend.isAceschamfinout(), daoatend.isAceschamfinpro()
-						, daoatend.getCodatend_atual(), daoatend.getCodatend_atual() );
+				boolean finalizarChamado = daoatend.bloquearChamadosFinalizar( daoatend.getCodatend_atual() );
 				dl = new FNovoAtend( this, con, atd, "A", "Novo atendimento a partir de modelo", finalizarChamado  );
 
 				if ( fPrim.temTela( "Novo Atendimento" ) == false ) {

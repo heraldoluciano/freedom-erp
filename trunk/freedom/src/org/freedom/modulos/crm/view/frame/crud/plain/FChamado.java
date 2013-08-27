@@ -207,20 +207,6 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 
 	private boolean bloquearFinalizar = false;
 
-	boolean aceschamlerout = true;
-	
-	boolean aceschamaltout = true;
-
-	boolean aceschamaltpro = true;
-	
-	boolean aceschamdelout = true;
-	
-	boolean aceschamdellan = true;
-	
-	boolean aceschamfinout = true;
-	
-	boolean aceschamfinpro = true;
-	
 	private DAOAtendimento daoatend = null;
 
 	Integer codatend_atual = null;
@@ -432,9 +418,9 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 		Integer codatend = txtCodAtend.getVlrInteger();
 		boolean novo = ( lcCampos.getStatus()==ListaCampos.LCS_INSERT );
 		if (daoatend!=null) {
-			bloquearChamado = daoatend.bloquearChamados( novo, aceschamaltout, aceschamaltpro, codatend_atual, codatend );
-			bloquearExcluir = daoatend.bloquearChamadosExcluir(aceschamdelout, aceschamdellan, codatend_atual, codatend );
-			bloquearFinalizar = daoatend.bloquearChamadosFinalizar(aceschamfinout, aceschamfinpro, codatend_atual, codatend );
+			bloquearChamado = daoatend.bloquearChamados( novo, codatend );
+			bloquearExcluir = daoatend.bloquearChamadosExcluir( codatend );
+			bloquearFinalizar = daoatend.bloquearChamadosFinalizar( codatend );
 		}
 		boolean ativo = ! bloquearChamado;
 		txtCodChamado.setAtivo( ativo );
