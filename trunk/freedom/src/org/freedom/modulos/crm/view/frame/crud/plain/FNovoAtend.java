@@ -1611,7 +1611,7 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 				}
 				try {
 					Integer codatend = txtCodAtend.getVlrInteger();
-					if(daoatend.bloquearAtendimentos( 0, txtDataAtendimento.getVlrString(), txtHoraini.getVlrString(), true, codatend, codatend  ) ) {
+					if(daoatend.bloquearAtendimentos( 0, txtDataAtendimento.getVlrString(), txtHoraini.getVlrString(), codatend  ) ) {
 						Funcoes.mensagemInforma( null, "Lançamento fora do prazo de inserção/edição!!!");
 					} else {
 						if( gravaForm() ){
