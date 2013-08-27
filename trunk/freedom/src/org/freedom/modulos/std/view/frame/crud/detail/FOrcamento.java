@@ -468,7 +468,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 	private boolean bImprimir = true;
 	
-	private DAOAtendimento daoatendo = null;
+	//private DAOAtendimento daoatendo = null;
 	
 	//private Map<String, Object> infAtendente = null;
 	
@@ -1632,7 +1632,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	private void carregaTabAtendo() {
 		try {
 			tabAtendimentos.limpa();
-			tabAtendimentos.setDataVector( daoatendo.carregaGridPorCliente( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDIMENTO" ), 
+			tabAtendimentos.setDataVector( daoatend.carregaGridPorCliente( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDIMENTO" ), 
 					txtCodCli.getVlrInteger(), codatend_atual, acesatdolerout));
 		} catch (SQLException e) {
 			Funcoes.mensagemErro( this, "Erro ao carregar grid de atendimento!!!" );
@@ -1673,10 +1673,10 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		try {
 
 			FNovoAtend dl = new FNovoAtend( true );
-			atendimentoBloqueado = !daoatendo.bloquearAtendimentos( codatendo, (String) tabAtendimentos.getValor( tabAtendimentos.getLinhaSel(), COL_ATENDIMENTO.DATAATENDOFIN.ordinal() ), 
+			atendimentoBloqueado = !daoatend.bloquearAtendimentos( codatendo, (String) tabAtendimentos.getValor( tabAtendimentos.getLinhaSel(), COL_ATENDIMENTO.DATAATENDOFIN.ordinal() ), 
 					(String) tabAtendimentos.getValor( tabAtendimentos.getLinhaSel(), COL_ATENDIMENTO.HORAATENDOFIN.ordinal() ),
 					acesatdoaltout, codatend_atual, codatend );
-			bloqueiaFinalizar = daoatendo.bloquearChamadosFinalizar( daoatend.isAceschamfinout(), daoatend.isAceschamfinpro()
+			bloqueiaFinalizar = daoatend.bloquearChamadosFinalizar( daoatend.isAceschamfinout(), daoatend.isAceschamfinpro()
 					, daoatend.getCodatend_atual(), daoatend.getCodatend_atual() );
 
 			if ( dl != null && dl.isUpdate() ) {
@@ -2835,7 +2835,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		daoemail = new DAOEmail( cn, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "TKEMAIL" ) ); 
 		try {
 			daoatend = new DAOAtendimento( cn, Aplicativo.iCodEmp, ListaCampos.getMasterFilial("ATATENDENTE")  );
-			daoatendo.setPrefs( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE3" ));
+			daoatend.setPrefs( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE3" ));
 		} catch ( SQLException e ) {
 			Funcoes.mensagemErro( this, "Erro carregando preferências !\b" + e.getMessage() );
 		}
@@ -3354,7 +3354,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
         	
         if(codmodel != null){
 	       	try {
-				atd = daoatendo.loadModelAtend( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDIMENTO" ), Aplicativo.iCodEmp, 
+				atd = daoatend.loadModelAtend( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDIMENTO" ), Aplicativo.iCodEmp, 
 						ListaCampos.getMasterFilial( "ATMODATENDO" ), codmodel);
 				novoAtend( null, txtCodCli.getVlrInteger(), atd, "Novo atendimento a partir de modelo" );
 			} catch ( SQLException e ) {
