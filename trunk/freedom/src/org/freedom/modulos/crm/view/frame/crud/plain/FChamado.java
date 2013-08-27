@@ -486,19 +486,7 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 	}
 
 
-	public void exec( DAOAtendimento daoatend, Integer codatend_atual, Integer codchamado, boolean bloquearChamado, boolean aceschamlerout
-			, boolean aceschamaltout, boolean aceschamaltpro, boolean aceschamdelout, boolean aceschamdellan
-			, boolean aceschamfinout, boolean aceschamfinpro	) {
-		this.daoatend = daoatend;
-		this.bloquearChamado = bloquearChamado;
-		this.aceschamlerout = aceschamlerout;
-		this.aceschamaltout = aceschamaltout;
-		this.aceschamaltpro = aceschamaltpro;
-		this.aceschamdelout = aceschamdelout;
-		this.aceschamdellan = aceschamdellan;
-		this.aceschamfinout = aceschamfinout;
-		this.aceschamfinpro = aceschamfinpro;
-		this.codatend_atual = codatend_atual;
+	public void exec( Integer codchamado) {
 		if ( codchamado != null ) {
 			txtCodChamado.setVlrInteger( codchamado );
 			lcCampos.carregaDados();
@@ -522,7 +510,7 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 		} catch (SQLException e) {
 			Funcoes.mensagemErro( this, "Erro carregando parâmetros do atendente !\n"+e.getMessage() );
 		}
-
+		exec(null);
 	}
 
 	public void valorAlterado( JComboBoxEvent evt ) {
