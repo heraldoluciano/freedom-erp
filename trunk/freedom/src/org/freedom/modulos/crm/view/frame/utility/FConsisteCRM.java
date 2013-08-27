@@ -254,14 +254,12 @@ public class FConsisteCRM extends FFilho implements ActionListener, MouseListene
 		lcAtend.setConexao( cn );
 		lcEmpregado.setConexao( cn );
 		lcTurno.setConexao( cn );
-						
-		daoatend = new DAOAtendimento( cn );
 		try {
+			daoatend = new DAOAtendimento( cn, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDIMENTO" ) );
 			daoatend.setPrefs( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE3" ) );
 		} catch (SQLException e) {
 			Funcoes.mensagemErro( this, "Erro carregando preferências !\b" + e.getMessage() );
 		}
-
 		daobatida = new DAOBatida( cn );
 		try {
 			daobatida.setPrefs( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE3" ) );

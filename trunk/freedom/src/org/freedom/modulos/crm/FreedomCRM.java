@@ -327,7 +327,7 @@ public class FreedomCRM extends AplicativoPD {
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == miAtendimento ) {
-			FNovoAtend dl = new FNovoAtend( 0, null, telaPrincipal, false, con, 0, 0, "A", false, null, null, false );
+			FNovoAtend dl = new FNovoAtend( 0, null, telaPrincipal, false, con, 0, 0, "A", false, null, null, false, true );
 			dl.setVisible( true );
 			dl.dispose();
 		}
