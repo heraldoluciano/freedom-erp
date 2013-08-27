@@ -2100,8 +2100,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 			FNovoAtend dl = new FNovoAtend( true );
 			atendimentoBloqueado = !daoatend.bloquearAtendimentos( codatendo, (String) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.DATAATENDOFIN.ordinal() ), 
-					(String) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.HORAATENDOFIN.ordinal() )
-					, daoatend.isAcesatdoaltout(), daoatend.getCodatend_atual(), codatend );
+					(String) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.HORAATENDOFIN.ordinal() ), codatend );
 			boolean finalizarChamado = daoatend.bloquearChamadosFinalizar( daoatend.getCodatend_atual() );
 
 			if ( dl != null && dl.isUpdate() ) {

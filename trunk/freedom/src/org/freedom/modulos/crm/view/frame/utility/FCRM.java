@@ -1196,8 +1196,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 			FNovoAtend dl = new FNovoAtend( true );
 			atendimentoBloqueado = !daoatend.bloquearAtendimentos( codatendo, (String) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.DATAATENDOFIN.ordinal() )
-					, (String) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.HORAATENDOFIN.ordinal() ), daoatend.isAcesatdoaltout()
-					, daoatend.getCodatend_atual(), codatend );
+					, (String) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.HORAATENDOFIN.ordinal() ), codatend );
 			bloquearFinalizar = daoatend.bloquearChamadosFinalizar( codatend);
 			if ( dl != null && dl.isUpdate() ) {
 				dl.adicAtendimento( txtCodCli.getVlrInteger(), codchamado, this, true, con, icodAtendo, icodAtend, tipoatendo, financeiro, (Integer) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.CODORC.ordinal() ), atendimentoBloqueado, bloquearFinalizar );
