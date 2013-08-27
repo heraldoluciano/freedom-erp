@@ -96,7 +96,6 @@ import org.freedom.modulos.atd.view.frame.crud.plain.FTipoConv;
 import org.freedom.modulos.atd.view.frame.crud.tabbed.FAtendente;
 import org.freedom.modulos.atd.view.frame.crud.tabbed.FConveniado;
 import org.freedom.modulos.crm.business.object.Atendimento;
-import org.freedom.modulos.crm.business.object.Atendimento.PREFS;
 import org.freedom.modulos.crm.dao.DAOAtendimento;
 import org.freedom.modulos.crm.view.frame.crud.plain.FNovoAtend;
 import org.freedom.modulos.crm.view.frame.utility.FCRM.COL_ATENDIMENTO;
@@ -471,13 +470,15 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	
 	private DAOAtendimento daoatendo = null;
 	
-	private Map<String, Object> infAtendente = null;
+	//private Map<String, Object> infAtendente = null;
 	
 	private boolean acesatdolerout = false;
 	
 	private boolean acesatdoaltout = false;
 	
 	private Integer codatend_atual = null;
+	
+	DAOAtendimento daoatend = null;
 
 	private enum OrcVenda {
 		CODVENDA, DOCVENDA, SERIE, CODCLI, RAZCLI, DTEMISSAO, DTSAIDA, CODPAG, DESCPAG, CODITVENDA, QTDITVENDA, PRECOITVENDA, VLRLIQITVENDA, TIPOVENDA;
@@ -1654,7 +1655,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	
 	private void visualizaAtend() {
 
-		if (infAtendente == null) {
+		if (daoatend.getCodatend_atual() == null) {
 			Funcoes.mensagemInforma( this, "Não existe atendente vinculado a este usuário, verifique!!!" );
 			return;
 		}
@@ -1662,6 +1663,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		Integer codatendo = (Integer) tabAtendimentos.getValor( tabAtendimentos.getLinhaSel(), COL_ATENDIMENTO.CODATENDO.ordinal() );
 		Integer codatend = (Integer) tabAtendimentos.getValor( tabAtendimentos.getLinhaSel(), COL_ATENDIMENTO.CODATEND.ordinal());
 		boolean atendimentoBloqueado = false;
+		boolean bloqueiaFinalizar = false;
 
 		int icodAtend = codatend;
 		int icodAtendo = codatendo;
@@ -1674,14 +1676,18 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			atendimentoBloqueado = !daoatendo.bloquearAtendimentos( codatendo, (String) tabAtendimentos.getValor( tabAtendimentos.getLinhaSel(), COL_ATENDIMENTO.DATAATENDOFIN.ordinal() ), 
 					(String) tabAtendimentos.getValor( tabAtendimentos.getLinhaSel(), COL_ATENDIMENTO.HORAATENDOFIN.ordinal() ),
 					acesatdoaltout, codatend_atual, codatend );
+			bloqueiaFinalizar = daoatendo.bloquearChamadosFinalizar( daoatend.isAceschamfinout(), daoatend.isAceschamfinpro()
+					, daoatend.getCodatend_atual(), daoatend.getCodatend_atual() );
 
 			if ( dl != null && dl.isUpdate() ) {
 				dl.adicAtendimento( txtCodCli.getVlrInteger(), codchamado, this, true, con, icodAtendo, 
 						icodAtend, "A", false, (Integer) tabAtendimentos.getValor( tabAtendimentos.getLinhaSel(), COL_ATENDIMENTO.CODORC.ordinal() ), 
-								atendimentoBloqueado );
+								atendimentoBloqueado, bloqueiaFinalizar );
 			}
 			else {
-				dl = new FNovoAtend( txtCodCli.getVlrInteger(), codchamado, this, true, con, icodAtendo, icodAtend, "A", false, null, (Integer) tabAtendimentos.getValor( tabAtendimentos.getLinhaSel(), COL_ATENDIMENTO.CODORC.ordinal() ), atendimentoBloqueado );
+				dl = new FNovoAtend( txtCodCli.getVlrInteger(), codchamado, this, true, con, icodAtendo
+						, icodAtend, "A", false, null, (Integer) tabAtendimentos.getValor( tabAtendimentos.getLinhaSel()
+								, COL_ATENDIMENTO.CODORC.ordinal() ),atendimentoBloqueado, bloqueiaFinalizar  );
 			}
 			if ( fPrim.temTela( "Edição de Atendimento: " + icodAtendo ) == false ) {
 				fPrim.criatela( "Edição de Atendimento: " + icodAtendo, dl, con );
@@ -2827,7 +2833,12 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 		super.setConexao( cn );
 		daoemail = new DAOEmail( cn, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "TKEMAIL" ) ); 
-
+		try {
+			daoatend = new DAOAtendimento( cn, Aplicativo.iCodEmp, ListaCampos.getMasterFilial("ATATENDENTE")  );
+			daoatendo.setPrefs( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE3" ));
+		} catch ( SQLException e ) {
+			Funcoes.mensagemErro( this, "Erro carregando preferências !\b" + e.getMessage() );
+		}
 		lcProd.setConexao( cn );
 		lcProd2.setConexao( cn );
 		lcLote.setConexao( cn );
@@ -2863,23 +2874,10 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		if ( ( (Boolean) oPrefs[ Orcamento.PrefOrc.BLOQPRECOORC.ordinal() ] ).booleanValue() ) {
 			txtPrecoItOrc.setEditable( false );
 		}
-		daoatendo = new DAOAtendimento( cn );
-		try {
-			daoatendo.setPrefs( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE3" ));
-		} catch ( SQLException e ) {
-			Funcoes.mensagemErro( this, "Erro carregando preferências !\b" + e.getMessage() );
-		}
 		
-		if ( (Boolean) daoatendo.getPrefs()[PREFS.CONTROLEACESATEND.ordinal()]) {
-		
-			try {
-				infAtendente = daoatendo.paramAtendente( Aplicativo.iCodEmp, ListaCampos.getMasterFilial("ATATENDENTE") );
-			} catch (SQLException e) {
-				Funcoes.mensagemErro( this, "Erro carregando dados do atendente !\b" + e.getMessage() );
-			}
-			
-			if (infAtendente != null) {	
-				codatend_atual = (Integer) infAtendente.get("codatend");
+/*		if ( (Boolean) daoatendo.getPrefs()[PREFS.CONTROLEACESATEND.ordinal()]) {
+			if (daoatend.getCodatend_atual() != null) {	
+				//codatend_atual = (Integer) infAtendente.get("codatend");
 				acesatdolerout = (Boolean) infAtendente.get("acesatdolerout");
 				acesatdoaltout = (Boolean) infAtendente.get("acesatdoaltout");
 			}
@@ -2887,7 +2885,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			codatend_atual = org.freedom.modulos.crm.business.component.Atendimento.buscaAtendente();
 			acesatdoaltout = true;
 			acesatdolerout = true;
-		}
+		}*/
 	}
 
 	private void atualizaLucratividade() {
@@ -3386,13 +3384,13 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				codcli = new Integer( 0 );
 			}
 
-			dl = new FNovoAtend( codcli.intValue(), codchamado, this, con, tipoatendo, false, financeiro , null);
+			dl = new FNovoAtend( codcli.intValue(), codchamado, this, con, tipoatendo, false, financeiro , null, false);
 
 		} else {
 			atd.setCodcli( codcli );
 			atd.setCodorc( txtCodOrc.getVlrInteger() );
 			
-			dl = new FNovoAtend( this, con, atd, tipoatendo, titulo );
+			dl = new FNovoAtend( this, con, atd, tipoatendo, titulo, false );
 		}
 
 /*		dl.setModal( false );

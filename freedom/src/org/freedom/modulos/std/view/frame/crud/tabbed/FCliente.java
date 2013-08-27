@@ -88,7 +88,6 @@ import org.freedom.modulos.cfg.view.frame.crud.plain.FMunicipio;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FPais;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FUF;
 import org.freedom.modulos.crm.business.object.Atendimento;
-import org.freedom.modulos.crm.business.object.Atendimento.PREFS;
 import org.freedom.modulos.crm.dao.DAOAtendimento;
 import org.freedom.modulos.crm.view.frame.crud.plain.FNovoAtend;
 import org.freedom.modulos.crm.view.frame.utility.FCRM.COL_ATENDIMENTO;
@@ -679,29 +678,17 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 	private String sURLBanco = null;
 
-	private Integer codatend_atual = null;
+//	private Integer codatend_atual = null;
 
-	private Integer codvend_atual = null;
+//	private Integer codvend_atual = null;
 
 	private JCheckBoxPad cbDescIpi = new JCheckBoxPad( "Habilita desconto do IPI", "S", "N" );
 
 	private DAOCliente daocli;
 
-	private DAOAtendimento daoatendo;
+	private DAOAtendimento daoatend;
 
-	private Map<String, Object> atendente = null;
-
-	private boolean acesatdoaltout = false;
-
-	private boolean acesatdolerout = false;
-
-	private boolean acesatdodellan = false;
-
-	private boolean acesatdodelout = false;
-
-	private boolean acestrocomis = false;
-
-	private boolean acestrocomisout = false;
+	//private Map<String, Object> atendente = null;
 
 	public FCliente() {
 
@@ -1933,8 +1920,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 	private void carregaTabAtendo() {
 		try {
-			tabatd.setDataVector( daoatendo.carregaGridPorCliente( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDIMENTO" ), 
-					txtCodCli.getVlrInteger(), codatend_atual, acesatdolerout));
+			tabatd.setDataVector( daoatend.carregaGridPorCliente( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDIMENTO" ), 
+					txtCodCli.getVlrInteger(), daoatend.getCodatend_atual(), daoatend.isAcesatdolerout()));
 		} catch (SQLException e) {
 			Funcoes.mensagemErro( this, "Erro ao carregar grid de atendimento!!!" );
 		}
@@ -2095,7 +2082,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 	private void visualizaAtend() {
 
-		if (codatend_atual == null) {
+		if (daoatend.getCodatend_atual() == null) {
 			Funcoes.mensagemInforma( this, "Não existe atendente vinculado a este usuário, verifique!!!" );
 			return;
 		}
@@ -2112,14 +2099,21 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		try {
 
 			FNovoAtend dl = new FNovoAtend( true );
-			atendimentoBloqueado = !daoatendo.bloquearAtendimentos( codatendo, (String) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.DATAATENDOFIN.ordinal() ), 
-					(String) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.HORAATENDOFIN.ordinal() ), acesatdoaltout, codatend_atual, codatend );
+			atendimentoBloqueado = !daoatend.bloquearAtendimentos( codatendo, (String) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.DATAATENDOFIN.ordinal() ), 
+					(String) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.HORAATENDOFIN.ordinal() )
+					, daoatend.isAcesatdoaltout(), daoatend.getCodatend_atual(), codatend );
+			boolean finalizarChamado = daoatend.bloquearChamadosFinalizar( daoatend.isAceschamfinout()
+					, daoatend.isAceschamfinpro(), daoatend.getCodatend_atual(), daoatend.getCodatend_atual() );
 
 			if ( dl != null && dl.isUpdate() ) {
-				dl.adicAtendimento( txtCodCli.getVlrInteger(), codchamado, this, true, con, icodAtendo, icodAtend, "A", false, (Integer) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.CODORC.ordinal() ), atendimentoBloqueado );
+				dl.adicAtendimento( txtCodCli.getVlrInteger(), codchamado, this, true, con, icodAtendo
+						, icodAtend, "A", false, (Integer) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.CODORC.ordinal() )
+						, atendimentoBloqueado, finalizarChamado );
 			}
 			else {
-				dl = new FNovoAtend( txtCodCli.getVlrInteger(), codchamado, this, true, con, icodAtendo, icodAtend, "A", false, null, (Integer) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.CODORC.ordinal() ), atendimentoBloqueado );
+				dl = new FNovoAtend( txtCodCli.getVlrInteger(), codchamado, this, true, con, icodAtendo
+						, icodAtend, "A", false, null, (Integer) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.CODORC.ordinal() )
+						, atendimentoBloqueado, finalizarChamado );
 			}
 			if ( fPrim.temTela( "Edição de Atendimento: " + icodAtendo ) == false ) {
 				fPrim.criatela( "Edição de Atendimento: " + icodAtendo, dl, con );
@@ -4386,7 +4380,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		}
 
 		
-		if (codatend_atual == null) {
+		if (daoatend.getCodatend_atual() == null) {
 			Funcoes.mensagemInforma( this, "Não existe atendente vinculado a este usuário, verifique!!!" );
 			return;
 		}
@@ -4399,12 +4393,15 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		
 		if ( codmodel != null ) {
 			try {
-				atd = daoatendo.loadModelAtend( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDIMENTO" ), Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATMODATENDO" ), codmodel );
+				atd = daoatend.loadModelAtend( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDIMENTO" )
+						, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATMODATENDO" ), codmodel );
 				atd.setCodempcl( Aplicativo.iCodEmp );
 				atd.setCodfilialcl( ListaCampos.getMasterFilial( "VDCLIENTE" ));
 				atd.setCodcli( txtCodCli.getVlrInteger() );
 
-				dl = new FNovoAtend( this, con, atd, "A", "Novo atendimento a partir de modelo" );
+				boolean finalizarChamado = daoatend.bloquearChamadosFinalizar( daoatend.isAceschamfinout(), daoatend.isAceschamfinpro()
+						, daoatend.getCodatend_atual(), daoatend.getCodatend_atual() );
+				dl = new FNovoAtend( this, con, atd, "A", "Novo atendimento a partir de modelo", finalizarChamado  );
 
 				if ( fPrim.temTela( "Novo Atendimento" ) == false ) {
 					fPrim.criatela( "Novo Atendimento", dl, con );
@@ -4422,7 +4419,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		StringBuilder sql = new StringBuilder();
 		int linhaSel = tabatd.getLinhaSel();
 		
-		if (codatend_atual == null) {
+		if (daoatend.getCodatend_atual() == null) {
 			Funcoes.mensagemInforma( this, "Não existe atendente vinculado a este usuário, verifique!!!" );
 			return;
 		}
@@ -4439,17 +4436,17 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 		Integer codatend = (Integer) tabatd.getValor( linhaSel, COL_ATENDIMENTO.CODATEND.ordinal() );
 
-		if ( ( !acesatdodelout ) &&  ( ! (codatend_atual).equals( codatend ) ) ) {
+		if ( ( !daoatend.isAcesatdodelout() ) &&  ( ! (daoatend.getCodatend_atual()).equals( codatend ) ) ) {
 			Funcoes.mensagemInforma( this, "Não é permitido excluir lançamentos de outro atendente !" );
 			return;
-		} else if ( ( !acesatdodellan) && (  (codatend_atual).equals( codatend ) ) ) {
+		} else if ( ( !daoatend.isAcesatdodellan()) && (  (daoatend.getCodatend_atual()).equals( codatend ) ) ) {
 			Funcoes.mensagemInforma( this, "Não é permitido excluir atendimentos !" );
 			return;
 		}
 
 		if ( Funcoes.mensagemConfirma( this, "Confirma a exclusão deste atendimento?" ) == JOptionPane.YES_OPTION ) {
 			try {
-				daoatendo.excluirAtendimento( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDIMENTO" ), 
+				daoatend.excluirAtendimento( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDIMENTO" ), 
 						(Integer) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.CODATENDO.ordinal() ) );
 			} catch ( SQLException err ) {
 				Funcoes.mensagemErro( this, "Erro ao excluir atendimento!\n" + err.getMessage(), true, con, err );
@@ -4545,9 +4542,10 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	}
 
 	private void habilitaDesabilitaCodvend() {
-		if ( ( !acestrocomisout ) &&  ( !txtCodVend.getVlrInteger().equals( codvend_atual ) && txtCodVend.getVlrInteger().intValue() != 0)) {
+		if ( ( !daoatend.isAcestrocomisout() ) &&  ( !txtCodVend.getVlrInteger().equals( daoatend.getCodvend_atual() ) 
+				&& txtCodVend.getVlrInteger().intValue() != 0)) {
 			txtCodVend.setEnabled( false );
-		} else if ( ( !acestrocomis) && (  txtCodVend.getVlrInteger().equals( codvend_atual ) ) ) {
+		} else if ( ( !daoatend.isAcestrocomis()) && (  txtCodVend.getVlrInteger().equals( daoatend.getCodvend_atual() ) ) ) {
 			txtCodVend.setEnabled( false );
 		} else {
 			txtCodVend.setEnabled( true );
@@ -4560,7 +4558,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			carregaTabelaObs();
 			txtAno.setVlrInteger( new Integer( Calendar.getInstance().get( Calendar.YEAR ) ) );
 			getContatos();
-			if (codatend_atual != null) {
+			if (daoatend.getCodatend_atual() != null) {
 				carregaTabAtendo();
 			}
 			habilitaDesabilitaCodvend();
@@ -4891,43 +4889,13 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			e.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao carregar preferência geral" + e.getMessage() );
 		}
-
-
-		daoatendo= new DAOAtendimento( cn );
 		try {
-			daoatendo.setPrefs( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE3" ));
-			bPref.put( "prefAtendo", daoatendo.getPrefs());
+			daoatend= new DAOAtendimento( cn, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDIMENTO" )  );
+			daoatend.setPrefs( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE3" ));
+			bPref.put( "prefAtendo", daoatend.getPrefs());
 
 		} catch ( SQLException e ) {
 			Funcoes.mensagemErro( this, "Erro carregando preferências !\b" + e.getMessage() );
-		}
-
-		//Se não controlar o acesso pelo atendente deixa liberado para ler,gravar e etc.
-		if ((Boolean) ((Object[]) bPref.get( "prefAtendo" ))[PREFS.CONTROLEACESATEND.ordinal()]) {
-			try {
-				atendente = daoatendo.paramAtendente( Aplicativo.iCodEmp, ListaCampos.getMasterFilial("ATATENDENTE") );
-			} catch (SQLException e) {
-				Funcoes.mensagemErro( this, "Erro carregando dados do atendente !\b" + e.getMessage() );
-			}
-	
-			if (atendente != null) {	
-				codatend_atual = (Integer) atendente.get("codatend");
-				codvend_atual = (Integer) atendente.get( "codvend" );
-				acesatdoaltout = (Boolean) atendente.get("acesatdoaltout");
-				acesatdolerout = (Boolean) atendente.get("acesatdolerout");
-				acesatdodellan = (Boolean) atendente.get("acesatdodellan");
-				acesatdodelout = (Boolean) atendente.get("acesatdodelout");
-				acestrocomis = (Boolean) atendente.get("acestrocomis");
-				acestrocomisout = (Boolean) atendente.get("acestrocomisout");
-			}
-		} else {
-			codatend_atual = org.freedom.modulos.crm.business.component.Atendimento.buscaAtendente();
-			acesatdoaltout = true;
-			acesatdolerout = true;
-			acesatdodellan = true;
-			acesatdodelout = true;
-			acestrocomis = true;		
-			acestrocomisout = true;
 		}
 
 		montaTela();
@@ -4966,7 +4934,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			txtCodFiscCli.setRequerido( true );
 		}
 		
-		if ( !acesatdodellan && !acesatdodelout ) {
+		if ( !daoatend.isAcesatdodellan() && !daoatend.isAcesatdodelout() ) {
 			btExcluirAtd.setEnabled( false );
 		}
 		else {

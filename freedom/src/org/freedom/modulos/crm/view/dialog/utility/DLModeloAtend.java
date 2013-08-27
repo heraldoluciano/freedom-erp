@@ -98,9 +98,8 @@ public class DLModeloAtend extends FFDialogo {
 
 		super.setConexao( cn );
 		lcModAtendo.setConexao( cn );
-		
-		daoatend = new DAOAtendimento( cn );
 		try {
+			daoatend = new DAOAtendimento( cn, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE3" )  );
 			daoatend.setPrefs( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE3" ) );
 		} catch (SQLException e) {
 			Funcoes.mensagemErro( this, "Erro carregando preferências !\b" + e.getMessage() );

@@ -28,7 +28,6 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -141,31 +140,6 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 	private JTablePad tabstatus = new JTablePad();
 
 	private JTablePad tabsprioridade = new JTablePad();
-
-	private boolean acesatdoaltout = false;
-
-	private boolean acesatdolerout = false;
-
-	private boolean acesatdodellan = false;
-
-	private boolean acesatdodelout = false;
-
-	private boolean aceschamaltout = false;
-
-	private boolean aceschamaltpro = false;
-
-	private boolean aceschamlerout = false;
-
-	/*        ACESCHAMFINPRO CHAR(1) DEFAULT 'S' NOT NULL,
-        ACESCHAMFINOUT CHAR(1) DEFAULT 'S' NOT NULL, 
-*/
-	private boolean aceschamdellan = false;
-
-	private boolean aceschamdelout = false;
-
-	private boolean aceschamfinpro = false;
-
-	private boolean aceschamfinout = false;
 
 	private JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -375,11 +349,11 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 	private int TIPO_PK = Types.INTEGER;
 
-	Integer codatend_atual = null;
+//	Integer codatend_atual = null;
 
 	private String filtroObs = null;
 
-	private Map<String, Object> atendente = null;
+	//private Map<String, Object> atendente = null;
 
 	public enum COL_CHAMADO {
 		DTCHAMADO, PRIORIDADE, DESCTPCHAMADO, CODCHAMADO, CLIENTE, DESCCHAMADO, CODATEND, DESIGNADO, STATUS, QTDHORASPREVISAO, DTPREVISAO, EM_ATENDIMENTO, DADOS_ATENDIMENTO, TIPO_ATENDIMENTO, DETCHAMADO, CODCLI
@@ -1160,14 +1134,15 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			Integer codchamado = null;
 			Integer codatend = null;
 			if (novo) {
-				codatend = codatend_atual;
+				codatend = daoatend.getCodatend_atual();
 			} else {
 				codchamado = (Integer) tabchm.getValor( tabchm.getLinhaSel(), COL_CHAMADO.CODCHAMADO.ordinal() );
 				codatend = (Integer) tabchm.getValor( tabchm.getLinhaSel(), COL_CHAMADO.CODATEND.ordinal() );
 			}
 
 			FChamado chamado = null;
-			bloquearChamado = daoatend.bloquearChamados( novo, aceschamaltout, aceschamaltpro, codatend_atual, codatend );
+			bloquearChamado = daoatend.bloquearChamados( novo, daoatend.isAceschamaltout(), daoatend.isAceschamaltpro()
+					, daoatend.getCodatend_atual(), codatend );
 			
 			if ( Aplicativo.telaPrincipal.temTela( FChamado.class.getName() ) ) {
 				chamado = (FChamado) Aplicativo.telaPrincipal.getTela( FChamado.class.getName() );
@@ -1200,10 +1175,10 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 				chamado.novo();
 				chamado.setCodCli( codcli );
 			}
-			chamado.exec( daoatend, codatend_atual
+			chamado.exec( daoatend, daoatend.getCodatend_atual()
 					, (Integer) tabchm.getValor( tabchm.getLinhaSel(), COL_CHAMADO.CODCHAMADO.ordinal() )
-					, bloquearChamado, aceschamlerout, aceschamaltout, aceschamaltpro
-					, aceschamdelout, aceschamdellan, aceschamfinout, aceschamfinpro );
+					, bloquearChamado, daoatend.isAceschamlerout(), daoatend.isAceschamaltout(), daoatend.isAceschamaltpro()
+					, daoatend.isAceschamdelout(), daoatend.isAceschamdellan(), daoatend.isAceschamfinout(), daoatend.isAceschamfinpro() );
 		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
@@ -1224,9 +1199,11 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		try {
 
 			FNovoAtend dl = new FNovoAtend( true );
-			atendimentoBloqueado = !daoatend.bloquearAtendimentos( codatendo, (String) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.DATAATENDOFIN.ordinal() ), (String) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.HORAATENDOFIN.ordinal() ), acesatdoaltout, codatend_atual,
-					codatend );
-			bloquearFinalizar = daoatend.bloquearChamadosFinalizar( aceschamfinout, aceschamfinpro, codatend_atual, codatend);
+			atendimentoBloqueado = !daoatend.bloquearAtendimentos( codatendo, (String) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.DATAATENDOFIN.ordinal() )
+					, (String) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.HORAATENDOFIN.ordinal() ), daoatend.isAcesatdoaltout()
+					, daoatend.getCodatend_atual(), codatend );
+			bloquearFinalizar = daoatend.bloquearChamadosFinalizar( daoatend.isAceschamfinout(), daoatend.isAceschamfinpro()
+					, daoatend.getCodatend_atual(), codatend);
 			if ( dl != null && dl.isUpdate() ) {
 				dl.adicAtendimento( txtCodCli.getVlrInteger(), codchamado, this, true, con, icodAtendo, icodAtend, tipoatendo, financeiro, (Integer) tabatd.getValor( tabatd.getLinhaSel(), COL_ATENDIMENTO.CODORC.ordinal() ), atendimentoBloqueado, bloquearFinalizar );
 			}
@@ -1746,10 +1723,10 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 		Integer codatend = (Integer) tabatd.getValor( linhaSel, COL_ATENDIMENTO.CODATEND.ordinal() );
 
-		if ( ( !acesatdodelout ) &&  ( ! (codatend_atual).equals( codatend ) ) ) {
+		if ( ( !daoatend.isAcesatdodelout() ) &&  ( ! (daoatend.getCodatend_atual()).equals( codatend ) ) ) {
 			Funcoes.mensagemInforma( this, "Não é permitido excluir lançamentos de outro atendente !" );
 			return;
-		} else if ( ( !acesatdodellan) && (  (codatend_atual).equals( codatend ) ) ) {
+		} else if ( ( !daoatend.isAcesatdodellan()) && (  (daoatend.getCodatend_atual()).equals( codatend ) ) ) {
 			Funcoes.mensagemInforma( this, "Não é permitido excluir atendimentos !" );
 			return;
 		}
@@ -1782,10 +1759,10 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			return;
 		}
 		Integer codatend = (Integer) tabchm.getValor( linhaSel, COL_CHAMADO.CODATEND.ordinal() );
-		if ( ( !aceschamdelout ) &&  ( ! (codatend_atual).equals( codatend ) ) ) {
+		if ( ( !daoatend.isAceschamdelout() ) &&  ( ! (daoatend.getCodatend_atual()).equals( codatend ) ) ) {
 			Funcoes.mensagemInforma( this, "Não é permitido excluir chamados de outro atendente !" );
 			return;
-		} else if ( ( !aceschamdellan) && (  (codatend_atual).equals( codatend ) ) ) {
+		} else if ( ( !daoatend.isAceschamdellan()) && (  (daoatend.getCodatend_atual()).equals( codatend ) ) ) {
 			Funcoes.mensagemInforma( this, "Não é permitido excluir chamados !" );
 			return;
 		}
@@ -1820,7 +1797,8 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 		FNovoAtend dl = null;
 
-		bloquearFinalizar = daoatend.bloquearChamadosFinalizar( bloquearFinalizar, bloquearFinalizar, codatend_atual, codatend_atual );
+		bloquearFinalizar = daoatend.bloquearChamadosFinalizar( bloquearFinalizar, bloquearFinalizar
+				, daoatend.getCodatend_atual(), daoatend.getCodatend_atual() );
 		if ( atd == null ) {
 			if ( txtCodRec.getVlrInteger() > 0 && txtNParcItRec.getVlrInteger() > 0 ) {
 				dl = new FNovoAtend( txtCodCli.getVlrInteger().intValue(), null, this, con, false, txtCodRec.getVlrInteger()
@@ -2178,70 +2156,38 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		montaComboTipoAtend();
 		montaComboTipoChamado();
 
-		daoatend = new DAOAtendimento( cn );
 		try {
+			daoatend = new DAOAtendimento( cn, Aplicativo.iCodEmp, ListaCampos.getMasterFilial("ATATENDENTE")  );
 			daoatend.setPrefs( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE3" ) );
 		} catch ( SQLException e ) {
 			Funcoes.mensagemErro( this, "Erro carregando preferências !\b" + e.getMessage() );
 		}
 
 		if ( (Boolean) daoatend.getPrefs()[PREFS.CONTROLEACESATEND.ordinal()]) {
-			try {
-				atendente = daoatend.paramAtendente( Aplicativo.iCodEmp, ListaCampos.getMasterFilial("ATATENDENTE") );
-			} catch (SQLException e) {
-				Funcoes.mensagemErro( this, "Erro carregando dados do atendente !\b" + e.getMessage() );
-			}
-
-			if (atendente != null) {
-				codatend_atual = (Integer) atendente.get( "codatend" );
-
-				txtCodAtendAtendo.setVlrInteger( codatend_atual);
-				txtCodAtendChamado.setVlrInteger( codatend_atual );
+			if (daoatend.getCodatend_atual() != null) {
+				txtCodAtendAtendo.setVlrInteger( daoatend.getCodatend_atual());
+				txtCodAtendChamado.setVlrInteger( daoatend.getCodatend_atual() );
 				lcAtendenteAtendimento.carregaDados();
-
-				acesatdoaltout = (Boolean) atendente.get("acesatdoaltout");
-				acesatdolerout = (Boolean) atendente.get("acesatdolerout");
-				acesatdodellan = (Boolean) atendente.get("acesatdodellan");
-				acesatdodelout = (Boolean) atendente.get("acesatdodelout");
-
-				aceschamaltout = (Boolean) atendente.get("aceschamaltout");
-				aceschamaltpro = (Boolean) atendente.get("aceschamaltpro");
-				aceschamlerout = (Boolean) atendente.get("aceschamlerout");
-				aceschamdellan = (Boolean) atendente.get("aceschamdellan");
-				aceschamdelout = (Boolean) atendente.get("aceschamdelout");
-				aceschamfinpro = (Boolean) atendente.get("aceschamfinpro");
-				aceschamfinout = (Boolean) atendente.get("aceschamfinout");
-				
-				txtCodAtendAtendo.setSoLeitura( !acesatdolerout );
-				txtCodAtendChamado.setSoLeitura( !aceschamlerout);
+				txtCodAtendAtendo.setSoLeitura( !daoatend.isAcesatdolerout() );
+				txtCodAtendChamado.setSoLeitura( !daoatend.isAceschamlerout());
 			}
 		} else {
-			codatend_atual = org.freedom.modulos.crm.business.component.Atendimento.buscaAtendente();
+			Integer codatend_atual = org.freedom.modulos.crm.business.component.Atendimento.buscaAtendente();
 			txtCodAtendAtendo.setVlrInteger( codatend_atual);
 			txtCodAtendChamado.setVlrInteger( codatend_atual );
 			lcAtendenteAtendimento.carregaDados();
-			acesatdoaltout = true;
-			acesatdolerout = true;
-			acesatdodellan = true;
-			acesatdodelout = true;
-			
-			aceschamaltout = true;
-			aceschamlerout = true;
-			aceschamdellan = true;
-			aceschamdelout = true;
-
 //			txtCodAtendAtendo.setSoLeitura( !acesatdolerout );
 		}
 
 		lcAtendenteChamado.carregaDados();
 
-		if ( !acesatdodellan && !acesatdodelout ) {
+		if ( !daoatend.isAcesatdodellan() && !daoatend.isAcesatdodelout() ) {
 			btExcluirAtd.setEnabled( false );
 		}
 		else {
 			btExcluirAtd.setEnabled( true );
 		}
-		if ( !aceschamdellan && !aceschamdelout ) {
+		if ( !daoatend.isAceschamdellan() && !daoatend.isAceschamdelout() ) {
 			btExcluir.setEnabled( false );
 		}
 		else {

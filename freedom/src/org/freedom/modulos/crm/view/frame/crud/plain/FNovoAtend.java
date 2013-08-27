@@ -1708,9 +1708,9 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 		lcContrato.carregaDados();
 		lcItContrato.carregaDados();
 
-		daoatend = new DAOAtendimento( cn );
-		daoagenda = new DAOAgenda( cn );
 		try {
+			daoatend = new DAOAtendimento( cn, Aplicativo.iCodEmp, ListaCampos.getMasterFilial("ATATENDENTE")  );
+			daoagenda = new DAOAgenda( cn );
 			daoatend.setPrefs( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE3" ) );
 			prefs = daoatend.getPrefs();
 		} catch (SQLException e) {

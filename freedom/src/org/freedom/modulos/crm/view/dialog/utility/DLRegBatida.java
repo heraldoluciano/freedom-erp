@@ -151,8 +151,8 @@ public class DLRegBatida extends FFDialogo {
 		
 		if ( diferenca>0 ) {
 			// Cria um DAOAtendimento para inserção de atendimento
-			DAOAtendimento daoatend = new DAOAtendimento( con );
 			try {
+				DAOAtendimento daoatend = new DAOAtendimento( con, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDIMENTO" ) );
 				// Carrega o preferências com modelo de atendimento para intervalo de chegada ou saída.
 				daoatend.setPrefs( Aplicativo.iCodEmp , ListaCampos.getMasterFilial("SGPREFERE3") );
 				// Continua se tiver modelo de atendimento para intervalo de chegada ou saída

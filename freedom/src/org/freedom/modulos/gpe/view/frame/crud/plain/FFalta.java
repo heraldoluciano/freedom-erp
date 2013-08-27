@@ -286,23 +286,20 @@ public class FFalta extends FDados implements InsertListener, KeyListener, PostL
 	}
 		
 	public void setConexao( DbConnection cn ) {
-
 		super.setConexao( cn );
-		
 		lcEmpr.setConexao( cn );
 		lcTurno.setConexao( cn );
 		lcAtendimento.setConexao( cn );
 		lcAtend.setConexao( cn );
 		lcAtend.carregaDados();
-		
-		daoatend = new DAOAtendimento( cn );
 		try {
+			daoatend = new DAOAtendimento( cn, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDIMENTO" ) );
 			daoatend.setPrefs( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "SGPREFERE3" ) );
 		} catch (SQLException e) {
 			Funcoes.mensagemErro( this, "Erro carregando preferências !\b" + e.getMessage() );
 		}
-		
 	}
+	
 	public void keyPressed( KeyEvent kevt ) {
 
 		

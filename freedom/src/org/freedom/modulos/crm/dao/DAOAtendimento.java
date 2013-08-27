@@ -25,8 +25,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Vector;
 
 import org.freedom.infra.dao.AbstractDAO;
@@ -47,21 +45,39 @@ import org.freedom.modulos.crm.business.object.SaldoContrato;
 import org.freedom.modulos.crm.view.frame.utility.FCRM.COL_ATENDIMENTO;
 import org.freedom.modulos.gpe.business.object.Batida;
 
+
 public class DAOAtendimento extends AbstractDAO {
 
 	private Object prefs[] = null;
 	private enum COLBAT {INITURNO, INIINTTURNO, FININTTURNO, FINTURNO};
 	private enum COLBATLANCTO {BATIDA, LANCTO, DIF, POS};
 
+	private boolean acesatdoaltout = true;
+	private boolean acesatdolerout = true;
+	private boolean acesatdodellan = true;
+	private boolean acesatdodelout = true;
+	private boolean aceschamaltout = true;
+	private boolean aceschamaltpro = true;
+	private boolean aceschamlerout = true;
+	private boolean aceschamdellan = true;
+	private boolean aceschamdelout = true;
+	private boolean aceschamfinpro = true;
+	private boolean aceschamfinout = true;
+	private boolean acestrocomis = true;
+	private boolean acestrocomisout = true;
+
+	private Integer codvend_atual = null;
+	private Integer codatend_atual = null;
+	
 	// loop para checar estágio
 	// Stágios: EPE = estágio pendente/sem nenhuma revisão
 	//			E1I = estágio 1 situação (I) inconsistência
 	//			E1O = estágio 1 situação (O) OK
 	// Estágio 1, verifica a necessidade de inserção de horários no ponto
 
-	public DAOAtendimento( DbConnection cn )  {
-
+	public DAOAtendimento( DbConnection cn, Integer codemp, Integer codfilial ) throws SQLException {
 		super( cn );
+		loadParamAtendente( codemp, codfilial );
 		//setPrefs();
 
 	}
@@ -2152,10 +2168,9 @@ public class DAOAtendimento extends AbstractDAO {
 	}
 	
 	
-	public Map<String, Object> paramAtendente(Integer codemp, Integer codfilial) throws SQLException {
-		Map<String, Object> result = null;
+	private void loadParamAtendente(Integer codemp, Integer codfilial) throws SQLException {
 		
-		Integer codatend_atual = org.freedom.modulos.crm.business.component.Atendimento.buscaAtendente();
+		setCodatend_atual( org.freedom.modulos.crm.business.component.Atendimento.buscaAtendente());
 		StringBuilder sql = null;
 		
 		
@@ -2171,30 +2186,205 @@ public class DAOAtendimento extends AbstractDAO {
 			PreparedStatement ps = getConn().prepareStatement( sql.toString() );
 			ps.setInt( param++, codemp );
 			ps.setInt( param++, codfilial );
-			ps.setInt( param++, codatend_atual );
+			ps.setInt( param++, getCodatend_atual() );
 			ResultSet rs = ps.executeQuery();
 			
 			if (rs.next()) {
-				result = new HashMap<String, Object>();
-				result.put( "acesatdolerout",  "S".equals(rs.getString("AcesAtdoLerOut")));
-				result.put( "acesatdoaltout",  "S".equals(rs.getString("AcesAtdoAltOut")));
-				result.put( "acesatdodellan",  "S".equals(rs.getString("AcesAtdoDelLan")));
-				result.put( "acesatdodelout",  "S".equals(rs.getString("AcesAtdoDelOut")));
-				result.put( "acestrocomis",  "S".equals(rs.getString("acestrocomis")));
-				result.put( "acestrocomisout",  "S".equals(rs.getString("acestrocomisout")));
-				result.put( "aceschamlerout",  "S".equals(rs.getString("AcesChamLerOut")));
-				result.put( "aceschamaltout",  "S".equals(rs.getString("AcesChamAltOut")));
-				result.put( "aceschamaltpro",  "S".equals(rs.getString("AcesChamAltPro")));
-				result.put( "aceschamdellan",  "S".equals(rs.getString("AcesChamDelLan")));
-				result.put( "aceschamdelout",  "S".equals(rs.getString("AcesChamDelOut")));
-				result.put( "aceschamfinpro",  "S".equals(rs.getString("AcesChamFinPro")));
-				result.put( "aceschamfinout",  "S".equals(rs.getString("AcesChamFinOut")));
-				result.put( "codvend",  rs.getInt("codvend"));
-				result.put( "codatend", codatend_atual );			
+				setAcesatdolerout( "S".equals(rs.getString("AcesAtdoLerOut")));
+				setAcesatdoaltout( "S".equals(rs.getString("AcesAtdoAltOut")));
+				setAcesatdodellan( "S".equals(rs.getString("AcesAtdoDelLan")));
+				setAcesatdodelout( "S".equals(rs.getString("AcesAtdoDelOut")));
+				setAcestrocomis( "S".equals(rs.getString("acestrocomis")));
+				setAcestrocomisout( "S".equals(rs.getString("acestrocomisout")));
+				setAceschamlerout( "S".equals(rs.getString("AcesChamLerOut")));
+				setAceschamaltout( "S".equals(rs.getString("AcesChamAltOut")));
+				setAceschamaltpro( "S".equals(rs.getString("AcesChamAltPro")));
+				setAceschamdellan( "S".equals(rs.getString("AcesChamDelLan")));
+				setAceschamdelout( "S".equals(rs.getString("AcesChamDelOut")));
+				setAceschamfinpro( "S".equals(rs.getString("AcesChamFinPro")));
+				setAceschamfinout( "S".equals(rs.getString("AcesChamFinOut")));
+				setCodvend_atual(rs.getInt("codvend"));
 			}
 	
 		}
-		
-		return result;
+	}
+	
+	public boolean isAcesatdoaltout() {
+	
+		return acesatdoaltout;
+	}
+
+	
+	public boolean isAcesatdolerout() {
+	
+		return acesatdolerout;
+	}
+
+	
+	public boolean isAcesatdodellan() {
+	
+		return acesatdodellan;
+	}
+
+	
+	public boolean isAcesatdodelout() {
+	
+		return acesatdodelout;
+	}
+
+	
+	public boolean isAceschamaltout() {
+	
+		return aceschamaltout;
+	}
+
+	
+	public boolean isAceschamaltpro() {
+	
+		return aceschamaltpro;
+	}
+
+	
+	public boolean isAceschamlerout() {
+	
+		return aceschamlerout;
+	}
+
+	
+	public boolean isAceschamdellan() {
+	
+		return aceschamdellan;
+	}
+
+	
+	public boolean isAceschamdelout() {
+	
+		return aceschamdelout;
+	}
+
+	
+	public boolean isAceschamfinpro() {
+	
+		return aceschamfinpro;
+	}
+
+	
+	public boolean isAceschamfinout() {
+	
+		return aceschamfinout;
+	}
+
+	
+	public void setAcesatdoaltout( boolean acesatdoaltout ) {
+	
+		this.acesatdoaltout = acesatdoaltout;
+	}
+
+	
+	public void setAcesatdolerout( boolean acesatdolerout ) {
+	
+		this.acesatdolerout = acesatdolerout;
+	}
+
+	
+	public void setAcesatdodellan( boolean acesatdodellan ) {
+	
+		this.acesatdodellan = acesatdodellan;
+	}
+
+	
+	public void setAcesatdodelout( boolean acesatdodelout ) {
+	
+		this.acesatdodelout = acesatdodelout;
+	}
+
+	
+	public void setAceschamaltout( boolean aceschamaltout ) {
+	
+		this.aceschamaltout = aceschamaltout;
+	}
+
+	
+	public void setAceschamaltpro( boolean aceschamaltpro ) {
+	
+		this.aceschamaltpro = aceschamaltpro;
+	}
+
+	
+	public void setAceschamlerout( boolean aceschamlerout ) {
+	
+		this.aceschamlerout = aceschamlerout;
+	}
+
+	
+	public void setAceschamdellan( boolean aceschamdellan ) {
+	
+		this.aceschamdellan = aceschamdellan;
+	}
+
+	
+	public void setAceschamdelout( boolean aceschamdelout ) {
+	
+		this.aceschamdelout = aceschamdelout;
+	}
+
+	
+	public void setAceschamfinpro( boolean aceschamfinpro ) {
+	
+		this.aceschamfinpro = aceschamfinpro;
+	}
+
+	
+	public void setAceschamfinout( boolean aceschamfinout ) {
+	
+		this.aceschamfinout = aceschamfinout;
+	}
+
+	
+	public Integer getCodatend_atual() {
+	
+		return codatend_atual;
+	}
+
+	
+	public void setCodatend_atual( Integer codatend_atual ) {
+	
+		this.codatend_atual = codatend_atual;
+	}
+
+	
+	public boolean isAcestrocomis() {
+	
+		return acestrocomis;
+	}
+
+	
+	public boolean isAcestrocomisout() {
+	
+		return acestrocomisout;
+	}
+
+	
+	public void setAcestrocomis( boolean acestrocomis ) {
+	
+		this.acestrocomis = acestrocomis;
+	}
+
+	
+	public void setAcestrocomisout( boolean acestrocomisout ) {
+	
+		this.acestrocomisout = acestrocomisout;
+	}
+
+	
+	public Integer getCodvend_atual() {
+	
+		return codvend_atual;
+	}
+
+	
+	public void setCodvend_atual( Integer codvend_atual ) {
+	
+		this.codvend_atual = codvend_atual;
 	}
 }
