@@ -96,11 +96,11 @@ public class FRRecebAberto extends FRelatorio implements FocusListener {
 	public void imprimir( TYPE_PRINT bVisualizar ) {
 
 		StringBuilder sql = new StringBuilder();
-		    sql.append("select ir.dtitrec, ir.dtvencitrec, r.docrec, r.codvenda, ir.vlrparcitrec, ir.vlrpagoitrec, ir.vlrapagitrec, ir.dtpagoitrec "); 
+		    sql.append("select ir.dtitrec, ir.dtvencitrec, ir.nparcitrec, r.codcli, r.docrec, r.codvenda, ir.vlrparcitrec, ir.vlrpagoitrec, ir.vlrapagitrec, ir.dtpagoitrec "); 
 			sql.append(" from fnreceber r, fnitreceber ir "); 
 			sql.append(" where ir.codemp=r.codemp and ir.codfilial=r.codfilial and ir.codrec=r.codrec ");
 			sql.append(" and statusitrec in ('R1','RL') ");
-			sql.append(" and r.codemp=? and r.codfilial=? and r.dtvencitrec<=? ");
+			sql.append(" and r.codemp=? and r.codfilial=? and ir.dtvencitrec<=? ");
 			sql.append(" order by ir.dtitrec" );
 
 		PreparedStatement ps = null;
@@ -112,7 +112,7 @@ public class FRRecebAberto extends FRelatorio implements FocusListener {
 			ps.setInt( param++, ListaCampos.getMasterFilial( "FNRECEBER" ) );
 			ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
 			rs = ps.executeQuery();
-			imprimiGrafico( rs, bVisualizar, "Relatório " );
+			imprimiGrafico( rs, bVisualizar, "Referência: " + txtDatafim.getVlrString()  );
 
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro consulta ao relatório de recebimentos em aberto!\n" + err.getMessage(), true, con, err );
