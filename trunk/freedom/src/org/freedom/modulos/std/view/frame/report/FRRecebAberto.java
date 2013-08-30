@@ -75,9 +75,9 @@ public class FRRecebAberto extends FRelatorio implements FocusListener {
 		txtDatafim.setAtivo( false );
 		JLabelPad lbLinha = new JLabelPad();
 		lbLinha.setBorder( BorderFactory.createEtchedBorder() );
-		JLabelPad lbPeriodo = new JLabelPad( "Referência:", SwingConstants.CENTER );
+		JLabelPad lbPeriodo = new JLabelPad( "Correção para:", SwingConstants.CENTER );
 		lbPeriodo.setOpaque( true );
-		adic( lbPeriodo, 7, 1, 80, 20 );
+		adic( lbPeriodo, 7, 1, 100, 20 );
 		adic( lbLinha, 5, 10, 300, 45 );
 		adic( new JLabelPad("Mês e Ano: "), 10, 25, 70, 20);
 		adic( txtMes, 90, 25, 30, 20);
@@ -112,7 +112,7 @@ public class FRRecebAberto extends FRelatorio implements FocusListener {
 			ps.setInt( param++, ListaCampos.getMasterFilial( "FNRECEBER" ) );
 			ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
 			rs = ps.executeQuery();
-			imprimiGrafico( rs, bVisualizar, "Referência: " + txtDatafim.getVlrString()  );
+			imprimiGrafico( rs, bVisualizar, "Correção para: " + txtDatafim.getVlrString()  );
 
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro consulta ao relatório de recebimentos em aberto!\n" + err.getMessage(), true, con, err );
