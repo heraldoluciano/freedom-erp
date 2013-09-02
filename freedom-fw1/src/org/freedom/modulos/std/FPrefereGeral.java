@@ -28,7 +28,9 @@
 
 package org.freedom.modulos.std;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Vector;
@@ -36,6 +38,7 @@ import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
 import org.freedom.acao.CarregaEvent;
@@ -61,6 +64,7 @@ import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JPasswordFieldPad;
 import org.freedom.library.swing.component.JRadioGroup;
+import org.freedom.library.swing.component.JTextAreaPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.component.Navegador;
@@ -131,6 +135,12 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private JPanelPad pinNFe = new JPanelPad();
 
 	private JPanelPad pinRecursos = new JPanelPad();
+	
+	private JPanelPad pinReplicacao = new JPanelPad();
+	
+	private JTextAreaPad txaSqlReplicaOrc = new JTextAreaPad( 1000 );
+	
+	private JScrollPane spnSqlReplicaOrc = new JScrollPane( txaSqlReplicaOrc );
 
 	private JPanelPad pinFrete = new JPanelPad();
 
@@ -421,6 +431,10 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 //	private JLabelPad lbProdOpcoes = new JLabelPad(opcoes, SwingConstants.CENTER);
 
 	private JLabelPad lbRecursos = new JLabelPad(opcoes, SwingConstants.CENTER);
+	
+	private JLabelPad lbReplicacao = new JLabelPad(opcoes, SwingConstants.CENTER);
+	
+	private JLabelPad pnReplicacao = new JLabelPad(opcoes, SwingConstants.CENTER);
 
 	private JPanelPad pnFrete = new JPanelPad();
 
@@ -696,6 +710,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private final JCheckBoxPad cbComissManut = new JCheckBoxPad("Comissionado obrigarório na manutenção de comissões.", "S", "N");
 
 	private final JCheckBoxPad cbBuscaCep = new JCheckBoxPad("Habilita a busca de endereço via CEP.", "S", "N");
+	
+	private final JCheckBoxPad cdReplicaOrc = new JCheckBoxPad("Habilita replicação de orçamentos", "S", "N");
 
 	private final JCheckBoxPad cbLancaFinContr = new JCheckBoxPad("Permite lançamento financeiro em contrato.", "S", "N");
 
@@ -2096,6 +2112,22 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adic(lbRecursosCont, 7, 20, 380, 100);
 		adicDB(cbBuscaCep, 10, 35, 330, 20, "BUSCACEP", "", true);
 		adicCampo(txtUrlWsCep, 13, 85, 300, 20, "URLWSCEP", "URL do Web Service para consulta de CEP.", ListaCampos.DB_SI, false);
+		
+		/*************************
+		 * Replicação *
+		 *************************/
+		
+		setPainel(pinReplicacao);
+		adicTab("Replicação", pinReplicacao);
+		
+		adic(pnReplicacao, 7, 10, 450, 155);
+		pnReplicacao.setBorder(SwingParams.getPanelLabel("Orçamentos", Color.BLUE));
+		
+		adic(lbReplicacao, 17, 10, 70, 20);
+		adicDB(cdReplicaOrc, 10, 35, 330, 20, "REPLICAORC", "", true);
+		adic(txaSqlReplicaOrc, 17, 65, 330, 200);
+
+		spnSqlReplicaOrc.setBorder( BorderFactory.createTitledBorder( "Query para replicação" ) );
 
 		/*************************
 		 * Conhecimento de frete *
