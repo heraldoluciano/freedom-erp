@@ -433,10 +433,6 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 //	private JLabelPad lbProdOpcoes = new JLabelPad(opcoes, SwingConstants.CENTER);
 
 	private JLabelPad lbRecursos = new JLabelPad(opcoes, SwingConstants.CENTER);
-	
-	private JLabelPad lbReplicacao = new JLabelPad(opcoes, SwingConstants.CENTER);
-	
-	private JLabelPad pnReplicacao = new JLabelPad(opcoes, SwingConstants.CENTER);
 
 	private JPanelPad pnFrete = new JPanelPad();
 
@@ -2122,12 +2118,12 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		setPainel(pinReplicacao);
 		adicTab("Replicação", pinReplicacao);
 		
-		adic(pinReplicOrc, 7, 10, 450, 155);
+		adic(pinReplicOrc, 7, 10, 450, 170);
 		pinReplicOrc.setBorder(SwingParams.getPanelLabel("Orçamentos", Color.BLUE));
 		setPainel(pinReplicOrc);
-		adic(lbReplicacao, 17, 10, 70, 20);
-		adicDB(cdReplicaOrc, 10, 35, 330, 20, "REPLICAORC", "", true);
-		adic(txaSqlReplicaOrc, 17, 65, 330, 200);
+		adicDB(cdReplicaOrc, 10, 10, 330, 20, "REPLICAORC", "", true);
+		adic(txaSqlReplicaOrc, 17, 55, 400, 80, "Query para replicação");
+		adicDB(txaSqlReplicaOrc,17, 55, 400, 80, "SQLREPLICAORC", "Query para replicação",  ListaCampos.DB_SI, false);
 
 		spnSqlReplicaOrc.setBorder( BorderFactory.createTitledBorder( "Query para replicação" ) );
 
