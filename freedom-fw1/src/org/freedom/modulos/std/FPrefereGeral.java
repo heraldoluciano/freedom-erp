@@ -153,6 +153,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private JPanelPad pinOpcoesGeral = new JPanelPad();
 
 	private JPanelPad pinCentrosdecustoGeral = new JPanelPad();
+	
+	private JPanelPad pinReplicOrc = new JPanelPad();
 
 	private JPanelPad pinCasasDecGeral = new JPanelPad();
 
@@ -2120,9 +2122,9 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		setPainel(pinReplicacao);
 		adicTab("Replicação", pinReplicacao);
 		
-		adic(pnReplicacao, 7, 10, 450, 155);
-		pnReplicacao.setBorder(SwingParams.getPanelLabel("Orçamentos", Color.BLUE));
-		
+		adic(pinReplicOrc, 7, 10, 450, 155);
+		pinReplicOrc.setBorder(SwingParams.getPanelLabel("Orçamentos", Color.BLUE));
+		setPainel(pinReplicOrc);
 		adic(lbReplicacao, 17, 10, 70, 20);
 		adicDB(cdReplicaOrc, 10, 35, 330, 20, "REPLICAORC", "", true);
 		adic(txaSqlReplicaOrc, 17, 65, 330, 200);
