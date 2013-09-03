@@ -326,6 +326,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 	private JButtonPad btCopiaOrcamento = new JButtonPad( Icone.novo( "btCopiar.png" ) );
 
+	private JButtonPad btReplicaOrcamento = new JButtonPad( Icone.novo( "btReplicaOrc.png" ) );
+
 	private JButtonPad btCriaLancamento = new JButtonPad("Contato", Icone.novo( "btContatoOrc.png" ) );
 
 	private JLabelPad lbStatus = new JLabelPad();
@@ -509,6 +511,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		btOrcTst.setToolTipText( "Imprime orçamento assinado" );
 		btOrcTst2.setToolTipText( "Imprime contrato de locação" );
 		btCopiaOrcamento.setToolTipText( "Copia orçamento." );
+		btReplicaOrcamento.setToolTipText( "Replica orçamento entre empresas." );
 		btCriaLancamento.setToolTipText( "Gera atendimento." );
 
 		// Desativa as os TextFields para que os usuários não fussem
@@ -549,6 +552,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		btOrcTst2.addActionListener( this );
 
 		btCopiaOrcamento.addActionListener( this );
+		btReplicaOrcamento.addActionListener( this );
 		btCriaLancamento.addActionListener( this );
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
@@ -965,7 +969,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		navEast.setPreferredSize( new Dimension( 354, 30 ) );
 		navEast.adic( btCriaLancamento, 0, 0, 140, 25 );
 		navEast.adic( lbStatus, 143, 3, 180, 20 );
-		navEast.adic( btCopiaOrcamento, 326, 0, 28, 25 );
+		navEast.adic( btCopiaOrcamento, 298, 0, 28, 25 );
+		navEast.adic( btReplicaOrcamento, 326, 0, 28, 25 );
 
 		navEast.tiraBorda();
 		pnNavCab.add( navEast, BorderLayout.EAST );
