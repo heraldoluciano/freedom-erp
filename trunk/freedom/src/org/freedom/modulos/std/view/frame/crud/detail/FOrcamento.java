@@ -44,8 +44,10 @@ import java.sql.Blob;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
@@ -68,6 +70,8 @@ import org.freedom.acao.PostListener;
 import org.freedom.bmps.Icone;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
+import org.freedom.infra.util.db.DBEngine;
+import org.freedom.infra.util.db.DBEngine.Variable;
 import org.freedom.library.business.component.Lucratividade;
 import org.freedom.library.business.object.EmailBean;
 import org.freedom.library.component.ImprimeOS;
@@ -111,6 +115,7 @@ import org.freedom.modulos.std.view.dialog.utility.DLAltFatLucro;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
 import org.freedom.modulos.std.view.dialog.utility.DLCompOrc;
 import org.freedom.modulos.std.view.dialog.utility.DLCopiaOrc;
+import org.freedom.modulos.std.view.dialog.utility.DLReplicaOrc;
 import org.freedom.modulos.std.view.frame.crud.plain.FAlmox;
 import org.freedom.modulos.std.view.frame.crud.plain.FCLComis;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
@@ -968,7 +973,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		JPanelPad navEast = new JPanelPad();
 		navEast.setPreferredSize( new Dimension( 354, 30 ) );
 		navEast.adic( btCriaLancamento, 0, 0, 140, 25 );
-		navEast.adic( lbStatus, 143, 3, 180, 20 );
+		navEast.adic( lbStatus, 143, 3, 155, 20 );
 		navEast.adic( btCopiaOrcamento, 296, 0, 28, 25 );
 		navEast.adic( btReplicaOrcamento, 326, 0, 28, 25 );
 
@@ -1542,6 +1547,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 	private void carregaStatus() {
 
+		
 		if ( Orcamento.STATUS_ABERTO.getValue().equals( txtStatusOrc.getVlrString() ) || Orcamento.STATUS_PENDENTE.getValue().equals( txtStatusOrc.getVlrString() ) ) {
 			lbStatus.setText( Orcamento.STATUS_ABERTO.getName() + "/" + Orcamento.STATUS_PENDENTE.getName() );
 			lbStatus.setBackground( Color.ORANGE );
@@ -1554,6 +1560,9 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			lbStatus.setText( Orcamento.STATUS_APROVADO.getName() );
 			lbStatus.setBackground( new Color( 45, 190, 60 ) );
 			lbStatus.setVisible( true );
+			if ((Boolean) oPrefs[PrefOrc.REPLICAORC.ordinal()]) {
+				btReplicaOrcamento.setEnabled( true );
+			}
 		} else if ( Orcamento.STATUS_FATURADO.getValue().equals( txtStatusOrc.getVlrString() ) ) {
 			lbStatus.setText( Orcamento.STATUS_FATURADO.getName() );
 			lbStatus.setBackground( Color.RED );
@@ -1571,6 +1580,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			lbStatus.setBackground( Color.RED );
 			lbStatus.setVisible( true );
 		} else {
+			btReplicaOrcamento.setEnabled( false );
 			lbStatus.setForeground( Color.WHITE );
 			lbStatus.setBackground( Color.GRAY );
 			lbStatus.setText( "" );
@@ -1824,6 +1834,34 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		}
 
 		dl.dispose();
+	}
+
+	private void replicaOrcamento() {
+		DLReplicaOrc dl = null;
+		if ( txtCodOrc.getVlrInteger().intValue() == 0 || lcCampos.getStatus() != ListaCampos.LCS_SELECT ) {
+			Funcoes.mensagemInforma( this, "Selecione um orçamento cadastrado antes!" );
+			return;
+		}
+		dl = new DLReplicaOrc( this );
+		dl.setConexao( con );
+		dl.setVisible( true );
+		if ( !dl.OK ) {
+			dl.dispose();
+			return;
+		}
+		int codemp = dl.getCodemp().intValue();
+		dl.dispose();
+		if (codemp!=0) {
+			DBEngine engine = new DBEngine(con);
+			List<Variable> listvar = new ArrayList<Variable>();
+			listvar.add( engine.new Variable("#CODEMP_SOURCE#", String.valueOf(Aplicativo.iCodEmp) ));
+			listvar.add( engine.new Variable("#CODEMP_TARGET#", String.valueOf(codemp) ));
+			listvar.add( engine.new Variable("#CODORC#", txtCodOrc.getVlrString()) );
+			String job = (String) oPrefs[Orcamento.PrefOrc.SQLREPLICAORC.ordinal()];
+			if (engine.execute( job, listvar )) {
+				Funcoes.mensagemInforma( this, "Replicação executada com sucesso !" );
+			}
+		}
 	}
 
 	public void aprovar() {
@@ -2582,6 +2620,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			mostraObs( "VDORCAMENTO", txtCodOrc.getVlrInteger().intValue() );
 		} else if ( evt.getSource() == btCopiaOrcamento ) {
 			copiaOrcamento();
+		} else if ( evt.getSource() == btReplicaOrcamento ) {
+			replicaOrcamento();
 		} else if ( evt.getSource() == btCriaLancamento) {
 			novoModelo();
 		}
@@ -2633,12 +2673,10 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 			lcAlmox.carregaDados();
 		} else if ( cevt.getListaCampos() == lcCampos ) {
-
 			String s = txtCodOrc.getVlrString();
 			lcOrc2.carregaDados();// Carrega os Totais
 			txtCodOrc.setVlrString( s );
 			s = null;
-
 			carregaStatus();
 			carregaPedidos();
 			if (codatend_atual != null) {
@@ -2649,7 +2687,6 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				lcPrevTrib.carregaDados(); // Carrega previsionamento de tributos
 				atualizaLucratividade();
 			}
-
 			if( (!((Boolean) oPrefs[Orcamento.PrefOrc.PERMITIMPORCANTAP.ordinal()]).booleanValue()) 
 					&& (Orcamento.STATUS_ABERTO.getValue().equals(txtStatusOrc.getVlrString()) || Orcamento.STATUS_PENDENTE.getValue().equals(txtStatusOrc.getVlrString()) 
 							|| Orcamento.STATUS_COMPLETO.getValue().equals(txtStatusOrc.getVlrString()))) {
@@ -2657,14 +2694,11 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			} else {
 				permitirImpressao(true);
 			}
-			
 			if ("".equals( txtStatusOrc.getVlrString() ))	{
 				btCriaLancamento.setEnabled( false );
 			} else {
 				btCriaLancamento.setEnabled( true );
 			}
-		
-			
 		} else if ( cevt.getListaCampos() == lcCli ) {
 			if ( ( (Boolean) oPrefs[ Orcamento.PrefOrc.OBSCLIVEND.ordinal() ] ).booleanValue() ) {
 				if ( iCodCliAnt != txtCodCli.getVlrInteger().intValue() ) {
