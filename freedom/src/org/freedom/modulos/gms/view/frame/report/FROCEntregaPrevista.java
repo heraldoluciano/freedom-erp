@@ -12,6 +12,7 @@ import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JTextFieldFK;
@@ -39,11 +40,13 @@ public class FROCEntregaPrevista extends FRelatorio {
 	boolean cliente = false;
 
 	boolean diario = false;
+	
+	private JCheckBoxPad cbPendentes = new JCheckBoxPad( "Só pendentes", "S", "N" );
 
 	public FROCEntregaPrevista() {
 
 		setTitulo( "Entregas previstas" );
-		setAtribos( 80, 80, 380, 220 );
+		setAtribos( 80, 80, 380, 250 );
 
 		txtRazFor.setAtivo( false );
 
@@ -71,10 +74,11 @@ public class FROCEntregaPrevista extends FRelatorio {
 		JPanelPad pnFiltros = new JPanelPad();
 		pnFiltros.setBorder( SwingParams.getPanelLabel( "Filtros", Color.BLACK, 1 ) );
 
-		adic( pnFiltros, 4, 65, 325, 80 );
+		adic( pnFiltros, 4, 65, 325, 110 );
 
-		pnFiltros.adic( this.txtCodFor, 4, 20, 70, 20, "Cód.For." );
-		pnFiltros.adic( this.txtRazFor, 77, 20, 230, 20, "Razão social do fornecedor" );
+		pnFiltros.adic( this.cbPendentes, 4, 4, 150, 20, "" );
+		pnFiltros.adic( this.txtCodFor, 4, 50, 70, 20, "Cód.For." );
+		pnFiltros.adic( this.txtRazFor, 77, 50, 230, 20, "Razão social do fornecedor" );
 	}
 
 	public void imprimir( TYPE_PRINT visualizar ) {
@@ -104,7 +108,12 @@ public class FROCEntregaPrevista extends FRelatorio {
 			sql.append( "inner join cpitordcomprape pe on pe.codemp=io.codemp and pe.codfilial=io.codfilial and pe.codordcp=io.codordcp and pe.coditordcp=io.coditordcp " );
 			sql.append( "inner join eqproduto pd on pd.codemp=io.codemppd and pd.codfilial=io.codfilialpd and pd.codprod=io.codprod " );
 
-			sql.append( "and oc.statusoc not in ('PE', 'CA') and  (pe.qtditpe - pe.qtditentpe) > 0 " );
+			if(cbPendentes.getVlrString().equals( "S" )) {
+			
+				sql.append( "and oc.statusoc not in ('PE', 'CA') and  (pe.qtditpe - pe.qtditentpe) > 0 " );
+			
+			}
+			
 			sql.append( "and oc.codemp=? and oc.codfilial=? and pe.dtitpe between ? and ? " );
 
 			if ( this.txtCodFor.getVlrInteger().intValue() > 0 ) {
@@ -129,12 +138,6 @@ public class FROCEntregaPrevista extends FRelatorio {
 			}
 
 			sCab.append( "Período de " + Funcoes.dateToStrDate( this.txtDataini.getVlrDate() ) + " até " + Funcoes.dateToStrDate( this.txtDataini.getVlrDate() ) );
-
-			if ( this.txtCodFor.getVlrInteger().intValue() > 0 ) {
-				ps.setInt( param++, this.lcForneced.getCodEmp() );
-				ps.setInt( param++, this.lcForneced.getCodFilial() );
-				ps.setInt( param++, this.txtCodFor.getVlrInteger().intValue() );
-			}
 
 			rs = ps.executeQuery();
 
