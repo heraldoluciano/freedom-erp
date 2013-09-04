@@ -28,6 +28,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
 
+import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.swing.component.JComboBoxPad;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.dialog.FFDialogo;
@@ -48,12 +49,12 @@ public class DLReplicaOrc extends FFDialogo {
 	public DLReplicaOrc( Component cOrig ) {
 		super( cOrig );
 		setTitulo( "Cópia de orçamento" );
-		setAtribos( 320, 200 );
+		setAtribos( 340, 200 );
 	}
 
 	private void montaTela() {
 		adic( new JLabelPad( "Empresa" ), 7, 5, 200, 20 );
-		adic( cbEmpresa, 7, 25, 200, 20 );
+		adic( cbEmpresa, 7, 25, 300, 20 );
 	}
 	
 	public void actionPerformed( ActionEvent evt ) {
@@ -87,12 +88,16 @@ public class DLReplicaOrc extends FFDialogo {
 		}
 	}
 
+	public void setConexao(DbConnection cn) {
+		super.setConexao(cn);
+		loadEmpresas();
+		montaTela();
+	}
 	
 	public Integer getCodemp() {
 		return codemp;
 	}
 
-	
 	public void setCodemp( Integer codemp ) {
 		this.codemp = codemp;
 	}
