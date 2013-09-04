@@ -986,6 +986,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		if ( ( "S".equals( permusu.get( "VISUALIZALUCR" ) ) ) && (Boolean) ( oPrefs[ Orcamento.PrefOrc.VISUALIZALUCR.ordinal() ] ) ) {
 			adicPainelLucr();
 		}
+		
+		btReplicaOrcamento.setEnabled( false );
 
 	}
 
@@ -1546,8 +1548,6 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	}
 
 	private void carregaStatus() {
-
-		
 		if ( Orcamento.STATUS_ABERTO.getValue().equals( txtStatusOrc.getVlrString() ) || Orcamento.STATUS_PENDENTE.getValue().equals( txtStatusOrc.getVlrString() ) ) {
 			lbStatus.setText( Orcamento.STATUS_ABERTO.getName() + "/" + Orcamento.STATUS_PENDENTE.getName() );
 			lbStatus.setBackground( Color.ORANGE );
