@@ -122,7 +122,7 @@ public class FEntrega extends FDados {
 		lcVenda.add( new GuardaCampo( txtSeries, "Serie", "Serie", ListaCampos.DB_SI, false ) );
 		lcVenda.add( new GuardaCampo( txtVlrLiqVenda, "VlrLiqVenda", "V.liq.", ListaCampos.DB_SI, false ) );
 		lcVenda.add( new GuardaCampo( txtDtEmitVenda, "DtEmitVenda", "Dt.Emissão", ListaCampos.DB_SI, false ) );
-		lcVenda.add( new GuardaCampo( txtDtSaiVenda, "DtEmitVenda", "Dt.Emissão", ListaCampos.DB_SI, false ) );
+		lcVenda.add( new GuardaCampo( txtDtSaiVenda, "dtSaidaVenda", "Dt.Saida", ListaCampos.DB_SI, false ) );
 		lcVenda.add( new GuardaCampo( txtCodCli, "CodCli", "Cód.Cli", ListaCampos.DB_FK, false ) );
 		
 		txtDocVenda.setListaCampos( lcVenda );
