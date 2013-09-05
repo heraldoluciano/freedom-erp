@@ -10,15 +10,17 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.JarURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
-import java.nio.charset.Charset;
+//import java.nio.charset.Charset;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Enumeration;
 import java.util.Vector;
 import java.util.jar.Attributes;
-import java.util.jar.JarFile;
+//import java.util.jar.JarFile;
+//import java.util.jar.JarInputStream;
 import java.util.jar.Manifest;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -27,6 +29,8 @@ import java.util.zip.ZipOutputStream;
 import javax.swing.JOptionPane;
 
 import org.freedom.infra.model.jdbc.DbConnection;
+
+//import com.sun.org.apache.xerces.internal.util.HTTPInputSource;
 
 public class SystemFunctions {
 
@@ -107,22 +111,33 @@ public class SystemFunctions {
 
 	public static String getVersionSis(Class<?> clazz) {
 		String versao = "";
-
 		try {
-
-			File file = new File(clazz.getProtectionDomain().getCodeSource().getLocation().toURI());
-			JarFile jarfile = new JarFile(file.getAbsolutePath());
-
-			Manifest manifest = jarfile.getManifest();
-
-			Attributes att = manifest.getMainAttributes();
-
-			versao = att.getValue("Signature-Version");
+			//JOptionPane.showMessageDialog(null, "Tentando carregar versão");
 			
-			jarfile.close();
-
+			URL urlToJar = clazz.getProtectionDomain().getCodeSource().getLocation(); // some HTTP URL
+			//JOptionPane.showMessageDialog(null, "carregou URL "+clazz.getProtectionDomain().getCodeSource().getLocation());
+			URL jarUrl = new URL(urlToJar, "jar:" + urlToJar + "!/");
+			//JOptionPane.showMessageDialog(null, "carregou URL completa");
+			JarURLConnection jconn = (JarURLConnection)jarUrl.openConnection();
+			Manifest manifest = jconn.getManifest();
+			
+			//File file = new File(clazz.getProtectionDomain().getCodeSource().getLocation().toURI());
+			//JOptionPane.showMessageDialog(null, "jar:"+clazz.getProtectionDomain().getCodeSource().getLocation().toString());
+			//FileInputStream fis = new FileInputStream(clazz.getProtectionDomain().getCodeSource().getLocation().toString());
+			//JarInputStream jis = new JarInputStream(fis);
+			
+			//JarFile jarfile = new JarFile(clazz.getProtectionDomain().getCodeSource().getLocation().toString());
+			//JOptionPane.showMessageDialog(null, "Criou file");
+			//System.out.println("Criou o jarFile");
+			//Manifest manifest = jarfile.getManifest();
+			//System.out.println("Carregou o manifest");
+			Attributes att = manifest.getMainAttributes();
+			//System.out.println("Carregou os atributos");
+			versao = att.getValue("Signature-Version");
 		}
 		catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Erro: \n"+e.getMessage());
+			e.printStackTrace();
 			versao = "Indefinida";
 		}
 
