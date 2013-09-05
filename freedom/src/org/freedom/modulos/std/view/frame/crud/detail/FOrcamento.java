@@ -1548,6 +1548,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	}
 
 	private void carregaStatus() {
+		btReplicaOrcamento.setEnabled( false );
 		if ( Orcamento.STATUS_ABERTO.getValue().equals( txtStatusOrc.getVlrString() ) || Orcamento.STATUS_PENDENTE.getValue().equals( txtStatusOrc.getVlrString() ) ) {
 			lbStatus.setText( Orcamento.STATUS_ABERTO.getName() + "/" + Orcamento.STATUS_PENDENTE.getName() );
 			lbStatus.setBackground( Color.ORANGE );
@@ -1580,7 +1581,6 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			lbStatus.setBackground( Color.RED );
 			lbStatus.setVisible( true );
 		} else {
-			btReplicaOrcamento.setEnabled( false );
 			lbStatus.setForeground( Color.WHITE );
 			lbStatus.setBackground( Color.GRAY );
 			lbStatus.setText( "" );
