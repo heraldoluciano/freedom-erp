@@ -97,7 +97,7 @@ public class DBEngine {
 		for (int i=0; i<jobline.length; i++) {
 			jobline[i] = replaceValue(jobline[i], listvar);
 		}
-		executeSQL(jobline);
+		result = executeSQL(jobline);
 		return result;
 	}
 	
