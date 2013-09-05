@@ -107,8 +107,9 @@ public class DBEngine {
 		if (listvar==null) {
 			tmp = line;
 		} else {
+			tmp = line;
 			for (Variable var: listvar) {
-				tmp = line.replace(var.getName(), var.getValue());
+				tmp = tmp.replace(var.getName(), var.getValue());
 			}
 		}
 		/*String[] splitline = tmp.split("\n");
