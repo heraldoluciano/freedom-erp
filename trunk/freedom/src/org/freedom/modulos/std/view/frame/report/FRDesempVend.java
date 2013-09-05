@@ -223,12 +223,12 @@ public class FRDesempVend extends FRelatorio {
 			sSQL.append( "LEFT OUTER JOIN VDITVENDA VI ON VI.CODVENDA = VD.CODVENDA " );
 			sSQL.append( "LEFT OUTER JOIN EQTIPOMOV TM ON VD.CODEMPTM=TM.CODEMP AND VD.CODFILIALTM=TM.CODFILIAL AND VD.CODTIPOMOV=TM.CODTIPOMOV " );
 			sSQL.append( "WHERE V.CODEMP=? AND V.CODFILIAL=? AND " );
-			sSQL.append( "V.CODEMP=VD.CODEMP, AND V.CODFILIAL=VD.CODFILIAL AND " );
+			sSQL.append( "VD.CODEMPVD=V.CODEMP AND VD.CODFILIALVD=V.CODFILIAL AND " );
 			sSQL.append( "NOT SUBSTR(VD.STATUSVENDA,1,1)='C' AND " );
 			sSQL.append( "VD.DTEMITVENDA BETWEEN ? AND ? " ); 
 			
 			if ( txtCodVend.getVlrInteger().intValue() > 0 ) {
-				sSQL.append( "AND VD.CODVEND=? " );
+				sSQL.append( "AND V.CODVEND=? " );
 			}
 			
 			sSQL.append( sWhere1 );
