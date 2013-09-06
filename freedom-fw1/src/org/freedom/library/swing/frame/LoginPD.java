@@ -184,10 +184,9 @@ public class LoginPD extends Login implements ActionListener, FocusListener {
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-
 		try {
-
-			sql.append("select fl.codemp, fl.codfilial, fl.codemp||' - '||fl.nomefilial nomefilial ");
+			sql.append("select fl.codemp, fl.codfilial, fl.codemp||' - '||fl.nomefilial nomefilial");
+			sql.append(", coalesce((select first 1 fmz.codfilial from sgfilial fmz where fmz.codemp=fl.codemp and mzfilial='S'),1) codfilialmz ");
 			sql.append("from sgfilial fl ");
 			if (!bAdmin) {
 				sql.append("inner join sgacessoeu ac ");
@@ -209,7 +208,9 @@ public class LoginPD extends Login implements ActionListener, FocusListener {
 			vVals.clear();
 			vLabs.clear();
 			while (rs.next()) {
-				vVals.addElement(rs.getInt("codemp")+"-"+rs.getInt("codfilial"));
+				iFilialMz = rs.getInt("codfilialmz");
+				String strfilial = rs.getInt("codemp")+"-"+rs.getInt("codfilial")+"-"+iFilialMz;
+				vVals.addElement(strfilial);
 				vLabs.addElement(rs.getString("nomefilial"));
 				if (rs.getInt("codfilial") == 1)
 					iFilialPadrao = rs.getInt("codfilial");
@@ -218,16 +219,6 @@ public class LoginPD extends Login implements ActionListener, FocusListener {
 			//cbEmp.setVlrString(new Integer(iFilialPadrao));
 			sUsuAnt = sUsu;
 			// Buscar código da filial matriz
-			sql.delete(0, sql.length());
-			sql.append("select fl.codfilial from sgfilial fl ");
-			sql.append("where fl.codemp=? and fl.mzfilial=?");
-			param = 1;
-			ps = conLogin.prepareStatement(sql.toString());
-			ps.setInt(param++, Aplicativo.iCodEmp);
-			ps.setString(param++, "S");
-			rs = ps.executeQuery();
-			if (rs.next())
-				iFilialMz = rs.getInt("codfilial");
 			rs.close();
 			ps.close();
 			conLogin.commit();
