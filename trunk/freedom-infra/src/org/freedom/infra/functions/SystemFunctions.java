@@ -115,6 +115,7 @@ public class SystemFunctions {
 			//JOptionPane.showMessageDialog(null, "Tentando carregar versão");
 			
 			URL urlToJar = clazz.getProtectionDomain().getCodeSource().getLocation(); // some HTTP URL
+			//System.out.println(clazz.getProtectionDomain().getCodeSource().getLocation());
 			//JOptionPane.showMessageDialog(null, "carregou URL "+clazz.getProtectionDomain().getCodeSource().getLocation());
 			URL jarUrl = new URL(urlToJar, "jar:" + urlToJar + "!/");
 			//JOptionPane.showMessageDialog(null, "carregou URL completa");
@@ -136,8 +137,8 @@ public class SystemFunctions {
 			versao = att.getValue("Signature-Version");
 		}
 		catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Erro: \n"+e.getMessage());
-			e.printStackTrace();
+			//JOptionPane.showMessageDialog(null, "Erro: \n"+e.getMessage());
+			//e.printStackTrace();
 			versao = "Indefinida";
 		}
 

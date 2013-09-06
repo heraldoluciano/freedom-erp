@@ -354,42 +354,39 @@ public class FRPagar extends FRelatorio {
 
 		StringBuilder sql = new StringBuilder();
 
-		sql.append( "SELECT IT.CODPAG, IT.DTVENCITPAG,IT.NPARCPAG,P.CODCOMPRA,P.CODFOR,F.RAZFOR,IT.VLRPARCITPAG," );
+		sql.append( "SELECT IT.CODPAG, IT.DTVENCITPAG,IT.NPARCPAG,P.CODCOMPRA"); 
+		sql.append(",P.CODFOR,F.RAZFOR,IT.VLRPARCITPAG,IT.VLRPAGOITPAG VLRPAGOITPAGTOT," );
 		if ( !bcorrecao ) {
 		//	sql.append( "IT.VLRPAGOITPAG,IT.VLRAPAGITPAG,IT.DTPAGOITPAG" );
-			sql.append( "COALESCE(LA.VLRLANCA * -1 , IT.VLRPAGOITPAG) VLRPAGOITPAG,IT.VLRPAGOITPAG VLRPAGOITPAGTOT,IT.VLRAPAGITPAG,coalesce(la.datalanca,IT.DTPAGOITPAG) dtpagoitpag " );
-			
-			
+			sql.append( "COALESCE(LA.VLRSUBLANCA, IT.VLRPAGOITPAG) VLRPAGOITPAG");
+			sql.append( ",IT.VLRAPAGITPAG,coalesce(la.datasublanca,IT.DTPAGOITPAG) dtpagoitpag " );
 		}
 		else {
 			// Valor pago
-			sql.append( "(COALESCE((SELECT SUM(VLRLANCA) FROM FNLANCA L WHERE L.CODEMPPG=IT.CODEMP" );
+			sql.append( "(COALESCE((SELECT SUM(VLRSUBLANCA) FROM FNSUBLANCA L WHERE L.CODEMPPG=IT.CODEMP" );
 			sql.append( " AND L.CODFILIALPG=IT.CODFILIAL AND L.CODPAG=IT.CODPAG" );
-			sql.append( " AND L.NPARCPAG=IT.NPARCPAG AND L.DATALANCA<=?),0)*-1) VLRPAGOITPAG, " );
-			
+			sql.append( " AND L.NPARCPAG=IT.NPARCPAG AND L.DATASUBLANCA<=?),0)) VLRPAGOITPAG, " );
 		//	sql.append( " COALESCE(LA.VLRLANCA * -1 , IT.VLRPAGOITPAG) VLRPAGOITPAG, " );
-			
-			
 			// Valor a pagar
-			sql.append( "COALESCE(IT.VLRPARCITPAG,0)+COALESCE((SELECT SUM(VLRLANCA) FROM FNLANCA L WHERE L.CODEMPPG=IT.CODEMP" );
+			sql.append( "COALESCE(IT.VLRPARCITPAG,0)-COALESCE((SELECT SUM(VLRSUBLANCA) FROM FNSUBLANCA L WHERE L.CODEMPPG=IT.CODEMP" );
 			sql.append( " AND L.CODFILIALPG=IT.CODFILIAL AND L.CODPAG=IT.CODPAG" );
-			sql.append( " AND L.NPARCPAG=IT.NPARCPAG AND L.DATALANCA<=?),0) VLRAPAGITPAG," );
+			sql.append( " AND L.NPARCPAG=IT.NPARCPAG AND L.DATASUBLANCA<=?),0) VLRAPAGITPAG," );
 			// Data de pagamento
-			sql.append( "(SELECT MAX(L.DATALANCA) FROM FNLANCA L WHERE L.CODEMPPG=IT.CODEMP" );
+			sql.append( "(SELECT MAX(L.DATASUBLANCA) FROM FNSUBLANCA L WHERE L.CODEMPPG=IT.CODEMP" );
 			sql.append( " AND L.CODFILIALPG=IT.CODFILIAL AND L.CODPAG=IT.CODPAG" );
-			sql.append( " AND L.NPARCPAG=IT.NPARCPAG AND L.DATALANCA<=?) DTPAGOITPAG " );
+			sql.append( " AND L.NPARCPAG=IT.NPARCPAG AND L.DATASUBLANCA<=?) DTPAGOITPAG " );
 		}
 		sql.append( ", (SELECT C.STATUSCOMPRA FROM CPCOMPRA C WHERE C.FLAG IN " );
 		sql.append( AplicativoPD.carregaFiltro( con, org.freedom.library.swing.frame.Aplicativo.iCodEmp ) );
 		sql.append( " AND C.CODEMP=P.CODEMPCP AND C.CODFILIAL=P.CODFILIALCP AND C.CODCOMPRA=P.CODCOMPRA) STATUSCOMPRA," );
-		sql.append( "P.DOCPAG,COALESCE(LA.histlanca,IT.OBSITPAG) OBSITPAG,	 " );
+		sql.append( "P.DOCPAG,COALESCE(LA.histsublanca,IT.OBSITPAG) OBSITPAG,	 " );
 		sql.append( "(SELECT C.DTEMITCOMPRA FROM CPCOMPRA C WHERE C.FLAG IN " );
 		sql.append( AplicativoPD.carregaFiltro( con, org.freedom.library.swing.frame.Aplicativo.iCodEmp ) );
 		sql.append( " AND C.CODEMP=P.CODEMPCP AND C.CODFILIAL=P.CODFILIALCP AND C.CODCOMPRA=P.CODCOMPRA) AS DTEMITCOMPRA " );
 		sql.append( "FROM FNPAGAR P,CPFORNECED F, FNITPAGAR IT LEFT OUTER JOIN FNCONTA CT ON " );
 		sql.append( " CT.CODEMP = IT.CODEMPCA AND CT.CODFILIAL=IT.CODFILIALCA AND CT.NUMCONTA=IT.NUMCONTA " );
-		if ( !bcorrecao ) {
-			sql.append( " LEFT OUTER JOIN fnlanca LA ON LA.NPARCPAG = IT.NPARCPAG AND LA.CODPAG=IT.codpag AND LA.CODFILIALPG=IT.codfilial AND LA.CODEMPPG=IT.codemp " );
+		if ( bcorrecao ) {
+			sql.append( " LEFT OUTER JOIN fnsublanca LA ON LA.NPARCPAG = IT.NPARCPAG AND LA.CODPAG=IT.codpag AND LA.CODFILIALPG=IT.codfilial AND LA.CODEMPPG=IT.codemp " );
 		}
 		sql.append( " WHERE P.FLAG IN " + AplicativoPD.carregaFiltro( con, org.freedom.library.swing.frame.Aplicativo.iCodEmp ) );
 		sql.append( " AND IT.CODEMP = P.CODEMP AND IT.CODFILIAL=P.CODFILIAL " );
@@ -413,15 +410,15 @@ public class FRPagar extends FRelatorio {
 			// data de correção diferente da data atual
 			if ( "N".equals( sFiltroPag ) ) {
 				sql.append( "( IT.STATUSITPAG IN (?,?,?) OR " );
-				sql.append( "(NOT EXISTS ( SELECT * FROM FNLANCA L WHERE L.CODEMPPG=IT.CODEMP" );
+				sql.append( "(NOT EXISTS ( SELECT * FROM FNSUBLANCA L WHERE L.CODEMPPG=IT.CODEMP" );
 				sql.append( " AND L.CODFILIALPG=IT.CODFILIAL AND L.CODPAG=IT.CODPAG" );
-				sql.append( " AND L.NPARCPAG=IT.NPARCPAG AND L.DATALANCA<=? ) ) )" );
+				sql.append( " AND L.NPARCPAG=IT.NPARCPAG AND L.DATASUBLANCA<=? ) ) )" );
 			}
 			else if ( "P".equals( sFiltroPag ) ) {
 				sql.append( "( IT.STATUSITPAG IN (?,?,?) OR " );
-				sql.append( "(EXISTS ( SELECT * FROM FNLANCA L WHERE L.CODEMPPG=IT.CODEMP" );
+				sql.append( "(EXISTS ( SELECT * FROM FNSUBLANCA L WHERE L.CODEMPPG=IT.CODEMP" );
 				sql.append( " AND L.CODFILIALPG=IT.CODFILIAL AND L.CODPAG=IT.CODPAG" );
-				sql.append( " AND L.NPARCPAG=IT.NPARCPAG AND L.DATALANCA<=? ) ) )" );
+				sql.append( " AND L.NPARCPAG=IT.NPARCPAG AND L.DATASUBLANCA<=? ) ) )" );
 			}
 			else if ( "A".equals( sFiltroPag ) ) {
 				sql.append( "IT.STATUSITPAG IN (?,?,?)" );
@@ -432,23 +429,17 @@ public class FRPagar extends FRelatorio {
 		sql.append( "".equals( txtCodFor.getVlrString() ) ? "" : " AND P.CODFOR=" + txtCodFor.getVlrString() );
 		sql.append( "".equals( txtCodPlanoPag.getVlrString() ) ? "" : " AND P.CODPLANOPAG=" + txtCodPlanoPag.getVlrString() );
 		sql.append( " AND P.CODEMP=? AND P.CODFILIAL=? " );
-
 		if ( txtCodBanco.getVlrInteger() > 0 ) {
 			sql.append( " AND COALESCE(CT.CODEMPBO,P.CODEMPBO)=? AND COALESCE(CT.CODFILIALBO,P.CODFILIALBO)=?" );
 			sql.append( " AND COALESCE(CT.CODBANCO,P.CODBANCO)=? " );
 		}
-		
 		if ( ! "".equals( txtNumConta.getVlrString() )  ) {
 			sql.append( " AND IT.CODEMPCA=? AND IT.CODFILIALCA=? AND IT.NUMCONTA=? " );
 		}
-
 		if ( txtCodTipoCob.getVlrInteger() > 0 ) {
 			sql.append( " AND IT.CODTIPOCOB=? AND IT.CODEMPTC=? AND IT.CODFILIALTC=? " );
-
 		}
-
 		sql.append( "ORDER BY " );
-
 		if ( "P".equals( cbOrdem.getVlrString() ) ) {
 			sql.append( "IT.DTPAGOITPAG" );
 		}
@@ -458,7 +449,6 @@ public class FRPagar extends FRelatorio {
 		else {
 			sql.append( "IT.DTITPAG" );
 		}
-
 		sql.append( ", F.RAZFOR" );
 
 		try {
