@@ -191,7 +191,7 @@ public class LoginPD extends Login implements ActionListener, FocusListener {
 			sql.append("from sgfilial fl ");
 			if (!bAdmin) {
 				sql.append("inner join sgacessoeu ac ");
-				sql.append("lower(ac.idusu) = ? and ac.codempfl=fl.codemp and ac.codfilialfl=fl.codfilial");
+				sql.append("on ac.idusu = ? and ac.codempfl=fl.codemp and ac.codfilialfl=fl.codfilial ");
 			}
 			if (Aplicativo.iCodEmp!=0) {
 				sql.append("where fl.codemp = ? ");	
