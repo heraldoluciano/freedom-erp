@@ -187,48 +187,50 @@ public class LoginPD extends Login implements ActionListener, FocusListener {
 
 		try {
 
-			if (bAdmin) {
-				sql.append("SELECT CODFILIAL,NOMEFILIAL,1 FROM SGFILIAL FL WHERE CODEMP=?");
-			}
-			else {
-				sql.append("SELECT FL.CODFILIAL,FL.NOMEFILIAL,AC.CODFILIAL FROM SGFILIAL FL, SGACESSOEU AC ");
-				sql.append("WHERE FL.CODEMP = ? AND LOWER(AC.IDUSU) = ? AND ");
-				sql.append("FL.CODEMP = AC.CODEMPFL AND FL.CODFILIAL = AC.CODFILIALFL");
-			}
-			ps = conLogin.prepareStatement(sql.toString());
-			ps.setInt(1, Aplicativo.iCodEmp);
+			sql.append("select fl.codemp, fl.codfilial, fl.codemp||' - '||fl.nomefilial nomefilial ");
+			sql.append("from sgfilial fl ");
 			if (!bAdmin) {
-				ps.setString(2, sUsu);
+				sql.append("inner join sgacessoeu ac ");
+				sql.append("lower(ac.idusu) = ? and ac.codempfl=fl.codemp and ac.codfilialfl=fl.codfilial");
+			}
+			if (Aplicativo.iCodEmp!=0) {
+				sql.append("where fl.codemp = ? ");	
+			}
+			sql.append("order by fl.codemp, fl.codfilial");
+			ps = conLogin.prepareStatement(sql.toString());
+			int param = 1;
+			if (!bAdmin) {
+				ps.setString(param++, sUsu);
+			}
+			if (Aplicativo.iCodEmp!=0) {
+				ps.setInt(param++, Aplicativo.iCodEmp);
 			}
 			rs = ps.executeQuery();
 			vVals.clear();
 			vLabs.clear();
 			while (rs.next()) {
-				vVals.addElement(new Integer(rs.getInt("CODFILIAL")));
-				vLabs.addElement(rs.getString("NOMEFILIAL") != null ? rs.getString("NOMEFILIAL") : "");
-				if (rs.getInt(1) == rs.getInt(3))
-					iFilialPadrao = rs.getInt(1);
+				vVals.addElement(rs.getInt("codemp")+"-"+rs.getInt("codfilial"));
+				vLabs.addElement(rs.getString("nomefilial"));
+				if (rs.getInt("codfilial") == 1)
+					iFilialPadrao = rs.getInt("codfilial");
 			}
-
 			cbEmp.setItensGeneric(vLabs, vVals);
-			cbEmp.setVlrInteger(new Integer(iFilialPadrao));
-
+			//cbEmp.setVlrString(new Integer(iFilialPadrao));
 			sUsuAnt = sUsu;
-
 			// Buscar código da filial matriz
 			sql.delete(0, sql.length());
-			sql.append("SELECT FL.CODFILIAL FROM SGFILIAL FL ");
-			sql.append("WHERE FL.CODEMP=? AND FL.MZFILIAL=?");
+			sql.append("select fl.codfilial from sgfilial fl ");
+			sql.append("where fl.codemp=? and fl.mzfilial=?");
+			param = 1;
 			ps = conLogin.prepareStatement(sql.toString());
-			ps.setInt(1, Aplicativo.iCodEmp);
-			ps.setString(2, "S");
+			ps.setInt(param++, Aplicativo.iCodEmp);
+			ps.setString(param++, "S");
 			rs = ps.executeQuery();
 			if (rs.next())
-				iFilialMz = rs.getInt("CODFILIAL");
+				iFilialMz = rs.getInt("codfilial");
 			rs.close();
 			ps.close();
 			conLogin.commit();
-
 		}
 		catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao carregar dados da empresa\n" + err);

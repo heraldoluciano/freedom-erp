@@ -51,9 +51,9 @@ public abstract class Login extends FDialogo implements ActionListener, FocusLis
 	private static final long serialVersionUID = 1L;
 	protected JTextFieldPad txtUsuario = new JTextFieldPad(JTextFieldPad.TP_STRING, 15, 0);
 	protected JPasswordFieldPad txpSenha = new JPasswordFieldPad(9);
-	protected Vector<Integer> vVals = new Vector<Integer>();
+	protected Vector<String> vVals = new Vector<String>();
 	protected Vector<String> vLabs = new Vector<String>();
-	protected JComboBoxPad cbEmp = new JComboBoxPad(vLabs, vVals, JComboBoxPad.TP_INTEGER, 8, 0);
+	protected JComboBoxPad cbEmp = new JComboBoxPad(vLabs, vVals, JComboBoxPad.TP_STRING, 20, 0);
 	protected String nfe = "";
 	protected String nfse = "";
 	protected String strBanco = "";
@@ -274,7 +274,7 @@ public abstract class Login extends FDialogo implements ActionListener, FocusLis
 					btOK.doClick();
 				return;
 			}
-			else if (( cbEmp.getVlrInteger().intValue() == 0 ) && ( !bAdmin )) {
+			else if ( "".equals(cbEmp.getVlrString().trim()) && !bAdmin ) {
 				if (sUsuAnt.equals(sUsu)) {
 					Funcoes.mensagemInforma(this, "Filial não foi selecionada!");
 					cbEmp.requestFocus();
@@ -283,7 +283,11 @@ public abstract class Login extends FDialogo implements ActionListener, FocusLis
 			}
 			// Setar a filial independentemente do usuário
 			// Incluído para corrigir problemas nas procedures
-			iFilialPadrao = cbEmp.getVlrInteger();
+			String[] codemp_codfilial = cbEmp.getVlrString().split("-");
+			if (Aplicativo.iCodEmp==0) {
+				Aplicativo.iCodEmp=Integer.parseInt(codemp_codfilial[0]);
+			}
+			iFilialPadrao = Integer.parseInt(codemp_codfilial[1]);
 		}
 		super.actionPerformed(evt);
 

@@ -99,7 +99,7 @@ public class FRRecebAberto extends FRelatorio implements FocusListener {
 		
 		sql.append("select ir.codemp, ir.codfilial, ir.codrec, ir.nparcitrec ");
 		sql.append(", ir.dtitrec, ir.dtvencitrec, r.codcli, c.razcli, r.docrec ");
-		sql.append(", r.codvenda, ir.vlrparcitrec, ir.vlrdescitrec, ir.vlrjurositrec ");
+		sql.append(", r.codvenda, ir.vlrparcitrec, ir.vlrdescitrec, ir.vlrjurositrec, ir.vlritrec ");
 		sql.append(",sum(sl.vlrsublanca*-1) vlrpagoitrec ");
 		sql.append(", max(datasublanca) dtpagoitrec ");
 		sql.append("from fnreceber r, vdcliente c, fnitreceber ir ");
@@ -109,14 +109,14 @@ public class FRRecebAberto extends FRelatorio implements FocusListener {
 		sql.append("where r.codemp=ir.codemp and r.codfilial=ir.codfilial and r.codrec=ir.codrec ");
 		sql.append("and ir.codemp=? and ir.codfilial=? and ir.dtvencitrec <= ? ");
 		sql.append("and c.codemp=r.codempcl and c.codfilial=r.codfilialcl and c.codcli=r.codcli ");
-		sql.append("and ir.vlrparcitrec<(select sum(sl2.vlrsublanca*-1) ");
+		sql.append("and ir.vlritrec<(select sum(sl2.vlrsublanca*-1) ");
 		sql.append("from fnsublanca sl2 ");
 		sql.append("where sl2.codemprc=ir.codemp and sl2.codfilialrc=ir.codfilial and sl2.codrec=ir.codrec ");
 		sql.append("and sl2.nparcitrec=ir.nparcitrec and sl2.datasublanca<=? and sl2.codsublanca<>0) ");
 		sql.append("group by ir.codemp, ir.codfilial, ir.codrec, ir.nparcitrec ");
 		sql.append(", ir.dtitrec, ir.dtvencitrec, r.codcli, c.razcli, r.docrec ");
-		sql.append(", r.codvenda, ir.vlrparcitrec, ir.vlrdescitrec, ir.vlrjurositrec ");
-		sql.append("order by ir.dtvencitrec desc ");
+		sql.append(", r.codvenda, ir.vlrparcitrec, ir.vlrdescitrec, ir.vlrjurositrec, ir.vlritrec ");
+		sql.append("order by ir.dtvencitrec");
 
 		
 /*		    sql.append("select ir.dtitrec, ir.dtvencitrec, ir.nparcitrec, r.codcli, r.docrec, r.codvenda, ir.vlrparcitrec, ir.vlrpagoitrec, ir.vlrapagitrec, ir.dtpagoitrec "); 
