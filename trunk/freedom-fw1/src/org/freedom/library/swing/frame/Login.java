@@ -60,7 +60,7 @@ public abstract class Login extends FDialogo implements ActionListener, FocusLis
 	protected String strBanconfe = "";
 	protected String strDriver = "";
 	protected String sUsuAnt = "";
-	protected int iFilialMz = 0;
+	protected int iFilialMz;
 	protected DbConnection conLogin = null;
 	protected DbConnection conNFE = null;
 	protected JLabelPad lbInstrucoes = new JLabelPad("");
@@ -288,6 +288,7 @@ public abstract class Login extends FDialogo implements ActionListener, FocusLis
 				Aplicativo.iCodEmp=Integer.parseInt(codemp_codfilial[0]);
 			}
 			iFilialPadrao = Integer.parseInt(codemp_codfilial[1]);
+			iFilialMz = Integer.parseInt(codemp_codfilial[2]);
 		}
 		super.actionPerformed(evt);
 
