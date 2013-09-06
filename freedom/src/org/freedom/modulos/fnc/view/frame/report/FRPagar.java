@@ -385,9 +385,9 @@ public class FRPagar extends FRelatorio {
 		sql.append( " AND C.CODEMP=P.CODEMPCP AND C.CODFILIAL=P.CODFILIALCP AND C.CODCOMPRA=P.CODCOMPRA) AS DTEMITCOMPRA " );
 		sql.append( "FROM FNPAGAR P,CPFORNECED F, FNITPAGAR IT LEFT OUTER JOIN FNCONTA CT ON " );
 		sql.append( " CT.CODEMP = IT.CODEMPCA AND CT.CODFILIAL=IT.CODFILIALCA AND CT.NUMCONTA=IT.NUMCONTA " );
-		if ( bcorrecao ) {
-			sql.append( " LEFT OUTER JOIN fnsublanca LA ON LA.NPARCPAG = IT.NPARCPAG AND LA.CODPAG=IT.codpag AND LA.CODFILIALPG=IT.codfilial AND LA.CODEMPPG=IT.codemp " );
-		}
+		//if ( !bcorrecao ) {
+		sql.append( " LEFT OUTER JOIN fnsublanca LA ON LA.NPARCPAG = IT.NPARCPAG AND LA.CODPAG=IT.codpag AND LA.CODFILIALPG=IT.codfilial AND LA.CODEMPPG=IT.codemp " );
+		//}
 		sql.append( " WHERE P.FLAG IN " + AplicativoPD.carregaFiltro( con, org.freedom.library.swing.frame.Aplicativo.iCodEmp ) );
 		sql.append( " AND IT.CODEMP = P.CODEMP AND IT.CODFILIAL=P.CODFILIAL " );
 
