@@ -21,7 +21,7 @@
  * 
  */
 
-package org.freedom.modulos.std.view.frame.report;
+package org.freedom.modulos.fnc.view.frame.report;
 
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;

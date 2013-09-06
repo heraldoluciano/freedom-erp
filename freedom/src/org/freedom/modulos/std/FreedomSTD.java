@@ -200,7 +200,7 @@ import org.freedom.modulos.std.view.frame.report.FRProdGrup;
 import org.freedom.modulos.std.view.frame.report.FRRazCli;
 import org.freedom.modulos.std.view.frame.report.FRRazFor;
 import org.freedom.modulos.std.view.frame.report.FRRazaoFin;
-import org.freedom.modulos.std.view.frame.report.FRRecebAberto;
+import org.freedom.modulos.fnc.view.frame.report.FRRecebAberto;
 import org.freedom.modulos.std.view.frame.report.FRRegDuplicatas;
 import org.freedom.modulos.std.view.frame.report.FRRestricao;
 import org.freedom.modulos.std.view.frame.report.FRResumoDiario;
