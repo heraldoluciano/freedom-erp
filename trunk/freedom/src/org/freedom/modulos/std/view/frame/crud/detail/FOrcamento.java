@@ -1549,6 +1549,13 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 	private void carregaStatus() {
 		btReplicaOrcamento.setEnabled( false );
+		if ((Boolean) oPrefs[PrefOrc.REPLICAORC.ordinal()]) {
+			if (Orcamento.STATUS_APROVADO.getValue().equals( txtStatusOrc.getVlrString() ) 
+					|| Orcamento.STATUS_FATURADO.getValue().equals( txtStatusOrc.getVlrString() )
+					|| Orcamento.STATUS_FATURADO_PARCIAL.getValue().equals( txtStatusOrc.getVlrString() )) {
+				btReplicaOrcamento.setEnabled( true );
+			}
+		}
 		if ( Orcamento.STATUS_ABERTO.getValue().equals( txtStatusOrc.getVlrString() ) || Orcamento.STATUS_PENDENTE.getValue().equals( txtStatusOrc.getVlrString() ) ) {
 			lbStatus.setText( Orcamento.STATUS_ABERTO.getName() + "/" + Orcamento.STATUS_PENDENTE.getName() );
 			lbStatus.setBackground( Color.ORANGE );
@@ -1561,9 +1568,6 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			lbStatus.setText( Orcamento.STATUS_APROVADO.getName() );
 			lbStatus.setBackground( new Color( 45, 190, 60 ) );
 			lbStatus.setVisible( true );
-			if ((Boolean) oPrefs[PrefOrc.REPLICAORC.ordinal()]) {
-				btReplicaOrcamento.setEnabled( true );
-			}
 		} else if ( Orcamento.STATUS_FATURADO.getValue().equals( txtStatusOrc.getVlrString() ) ) {
 			lbStatus.setText( Orcamento.STATUS_FATURADO.getName() );
 			lbStatus.setBackground( Color.RED );
