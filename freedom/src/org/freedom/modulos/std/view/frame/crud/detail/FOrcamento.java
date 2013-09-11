@@ -479,11 +479,11 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	
 	//private Map<String, Object> infAtendente = null;
 	
-	private boolean acesatdolerout = false;
+	//private boolean acesatdolerout = false;
 	
-	private boolean acesatdoaltout = false;
+	//private boolean acesatdoaltout = false;
 	
-	private Integer codatend_atual = null;
+	//private Integer codatend_atual = null;
 	
 	DAOAtendimento daoatend = null;
 
@@ -1627,7 +1627,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		try {
 			tabAtendimentos.limpa();
 			tabAtendimentos.setDataVector( daoatend.carregaGridPorCliente( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDIMENTO" ), 
-					txtCodCli.getVlrInteger(), codatend_atual, acesatdolerout));
+					txtCodCli.getVlrInteger(), daoatend.getCodatend_atual(), daoatend.isAcesatdolerout()));
 		} catch (SQLException e) {
 			Funcoes.mensagemErro( this, "Erro ao carregar grid de atendimento!!!" );
 		}
@@ -2658,7 +2658,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			s = null;
 			carregaStatus();
 			carregaPedidos();
-			if (codatend_atual != null) {
+			if (daoatend != null && daoatend.getCodatend_atual()!=null) {
 				carregaTabAtendo();
 			}
 			if ( ( "S".equals( permusu.get( "VISUALIZALUCR" ) ) && ( (Boolean) oPrefs[ Orcamento.PrefOrc.VISUALIZALUCR.ordinal() ] ) ) ) {
@@ -2889,7 +2889,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		}
 		if ( ( (Boolean) oPrefs[ Orcamento.PrefOrc.BLOQPRECOORC.ordinal() ] ).booleanValue() ) {
 			txtPrecoItOrc.setEditable( false );
-		}
+		} 
 		
 /*		if ( (Boolean) daoatendo.getPrefs()[PREFS.CONTROLEACESATEND.ordinal()]) {
 			if (daoatend.getCodatend_atual() != null) {	
