@@ -35,8 +35,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
@@ -123,7 +123,7 @@ import org.freedom.modulos.std.view.frame.crud.tabbed.FTransp;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FVendedor;
 import org.freedom.modulos.std.view.frame.utility.FSelOrc;
 
-public class FOrcamento extends FVD implements PostListener, CarregaListener, FocusListener, ActionListener, InsertListener, DeleteListener {
+public class FOrcamento extends FVD implements PostListener, CarregaListener, FocusListener, ActionListener, InsertListener, DeleteListener, MouseListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -501,13 +501,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		setAtribos( 50, 50, 790, 490 );
 
 		txtDescProd.setToolTipText( "Clique aqui duas vezes para alterar a descrição." );
-		txtDescProd.addMouseListener( new MouseAdapter() {
-			public void mouseClicked( MouseEvent mevt ) {
-				if ( mevt.getClickCount() == 2 ) {
-					mostraTelaDecricao( txaObsItOrc, txtCodProd.getVlrInteger().intValue(), txtDescProd.getVlrString(), (Boolean) oPrefs[PrefOrc.BLOQDESCCOMPORC.ordinal()] );
-				}
-			}
-		} );
+		txtDescProd.addMouseListener( this );
 
 		// Coloca os comentário nos botões
 		btFechaOrc.setToolTipText( "Completar o Orçamento (F4)" ); 
@@ -1023,18 +1017,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		tabPedidos.setTamColuna( 80, OrcVenda.VLRLIQITVENDA.ordinal() );
 		tabPedidos.setColunaInvisivel( OrcVenda.TIPOVENDA.ordinal() );
 
-		tabPedidos.addMouseListener( new MouseAdapter() {
-
-			@ Override
-			public void mouseClicked( MouseEvent e ) {
-
-				if ( e.getClickCount() == 2 ) {
-					if ( e.getSource() == tabPedidos ) {
-						abreVenda();
-					}
-				}
-			}
-		} );
+		tabPedidos.addMouseListener( this );
 	}
 	
 	private void montaTabelaAtend() {
@@ -1077,15 +1060,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		tabAtendimentos.setTamColuna(45, COL_ATENDIMENTO.CODESPEC.ordinal() );
 		tabAtendimentos.setRowHeight( 20 );
 
-		tabAtendimentos.addMouseListener( new MouseAdapter() {
-
-			public void mouseClicked( MouseEvent mevt ) {
-
-				if ( mevt.getSource() == tabAtendimentos && mevt.getClickCount() == 2 && mevt.getModifiers() == MouseEvent.BUTTON1_MASK ) {
-					visualizaAtend();
-				}
-			}
-		} );
+		tabAtendimentos.addMouseListener( this );
 
 	}
 
@@ -3439,6 +3414,42 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		dl.setVisible( true );
 */
 		Aplicativo.telaPrincipal.criatela( "Novo Atendimento", dl, con );
+	}
+
+	public void mouseClicked( MouseEvent e ) {
+		if (e.getSource()==txtDescProd) {
+			if ( e.getClickCount() == 2 ) {
+				mostraTelaDecricao( txaObsItOrc, txtCodProd.getVlrInteger().intValue(), txtDescProd.getVlrString(), (Boolean) oPrefs[PrefOrc.BLOQDESCCOMPORC.ordinal()] );
+			}
+		} else if (e.getSource()==tabPedidos) {
+			if ( e.getClickCount() == 2 ) {
+				abreVenda();
+			}
+		} else if (e.getSource()==tabAtendimentos) {
+			if ( e.getClickCount() == 2 && e.getModifiers() == MouseEvent.BUTTON1_MASK ) {
+				visualizaAtend();
+			}
+		}
+	}
+
+	public void mousePressed( MouseEvent e ) {
+
+		
+	}
+
+	public void mouseReleased( MouseEvent e ) {
+
+		
+	}
+
+	public void mouseEntered( MouseEvent e ) {
+
+		
+	}
+
+	public void mouseExited( MouseEvent e ) {
+
+		
 	}
 
 }
