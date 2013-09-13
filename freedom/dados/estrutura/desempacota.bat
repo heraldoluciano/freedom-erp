@@ -19,11 +19,11 @@ set ISC_PASSWORD=masterkey
 
 
 @echo off
-"C:\Program Files\Firebird\Firebird_2_5\bin\isql" -sqldialect 3 -charset ISO8859_1 -input drop.sql  localhost:c:/opt/firebird/dados/desenv/freedom25.fdb
-"C:\Program Files\Firebird\Firebird_2_5\bin\isql" -sqldialect 3 -charset ISO8859_1 -input create.sql 
+isql -sqldialect 3 -charset ISO8859_1 -input drop.sql  localhost:c:/opt/firebird/dados/desenv/freedom25.fdb
+isql -sqldialect 3 -charset ISO8859_1 -input create.sql 
 @echo on
-"C:\Program Files\Firebird\Firebird_2_5\bin\isql" -sqldialect 3 -charset ISO8859_1 -input freedom.sql localhost:c:/opt/firebird/dados/desenv/freedom25.fdb
-"C:\Program Files\Firebird\Firebird_2_5\bin\isql" -sqldialect 3 -charset ISO8859_1 -input description.sql localhost:c:/opt/firebird/dados/desenv/freedom25.fdb
+isql -sqldialect 3 -charset ISO8859_1 -input freedom.sql localhost:c:/opt/firebird/dados/desenv/freedom25.fdb
+isql -sqldialect 3 -charset ISO8859_1 -input description.sql localhost:c:/opt/firebird/dados/desenv/freedom25.fdb
 @echo off
 goto fim
 :nodesempac
