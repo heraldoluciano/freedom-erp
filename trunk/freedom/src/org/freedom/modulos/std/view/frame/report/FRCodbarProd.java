@@ -52,10 +52,11 @@ import org.freedom.modulos.std.view.dialog.utility.DLEtiqCompra;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Vector;
 
-import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
@@ -68,7 +69,7 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 
 	private static final long serialVersionUID = 1L;
 
-	private final JPanelPad pnCampos = new JPanelPad( 600, 95 );
+	private final JPanelPad pnCampos = new JPanelPad( 600, 150 );
 
 	private final JPanelPad pnBotoesGrid = new JPanelPad( 35, 200 );
 
@@ -79,18 +80,20 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 	private final JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private final JTextFieldPad txtRefProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldPad txtCodGrup = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
+
+	private JTextFieldFK txtDescGrup = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private final JTextFieldPad txtCodBarProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private final JTextFieldPad txtQtdPod = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
-	private JComboBox cbSel = null;
-
 	private JComboBoxPad cbEtiquetas = null;
 
 	private final JButtonPad btExecuta = new JButtonPad( Icone.novo( "btExecuta.png" ) );
 
-	private final JButtonPad btSelectCompra = new JButtonPad( Icone.novo( "btPesquisa.png" ) );
+	private final JButtonPad btSelectCompra = new JButtonPad( Icone.novo( "btEntrada.png" ) );
 
 	private final JButtonPad btExcluir = new JButtonPad( Icone.novo( "btCancelar.png" ) );
 
@@ -101,6 +104,8 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 	private final JScrollPane spnGrid = new JScrollPane( tabGrid );
 
 	private final ListaCampos lcProduto = new ListaCampos( this );
+	
+	private ListaCampos lcGrupo = new ListaCampos( this );
 
 	private final JCheckBoxPad cbPreco = new JCheckBoxPad( "Mostra preço?", "S", "N" );
 
@@ -108,7 +113,7 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 
 		super( true );
 		setTitulo( "Etiquetas de código de barras" );
-		setAtribos( 80, 30, 520, 380 );
+		setAtribos( 30, 30, 520, 480 );
 
 		montaTela();
 		montaListaCampos();
@@ -130,6 +135,15 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 		txtCodProd.setFK( true );
 		lcProduto.setReadOnly( true );
 		lcProduto.montaSql( false, "PRODUTO", "EQ" );
+		
+		lcGrupo.add( new GuardaCampo( txtCodGrup, "CodGrup", "Cód.grupo", ListaCampos.DB_PK, false ) );
+		lcGrupo.add( new GuardaCampo( txtDescGrup, "DescGrup", "Descrição do grupo", ListaCampos.DB_SI, false ) );
+		txtCodGrup.setTabelaExterna( lcGrupo, null );
+		txtCodGrup.setNomeCampo( "CodGrup" );
+		txtCodGrup.setFK( true );
+		lcGrupo.setReadOnly( true );
+		lcGrupo.montaSql( false, "GRUPO", "EQ" );
+
 
 	}
 
@@ -153,9 +167,6 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 
 		cbEtiquetas = new JComboBoxPad( vLabsCtb, vValsCtb, JComboBoxPad.TP_STRING, 2, 0 );
 
-		pnCampos.adic( cbEtiquetas, 7, 60, 200, 20 );
-		cbPreco.setVlrString( "S" );
-		pnCampos.adic( cbPreco, 210, 60, 150, 20 );
 
 		pnCampos.adic( new JLabelPad( "Cód. Produto" ), 07, 10, 100, 20 );
 		pnCampos.adic( txtCodProd, 07, 30, 80, 20 );
@@ -163,8 +174,22 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 		pnCampos.adic( txtDescProd, 93, 30, 280, 20 );
 		pnCampos.adic( new JLabelPad( "qtd." ), 375, 10, 60, 20 );
 		pnCampos.adic( txtQtdPod, 375, 30, 60, 20 );
+		
+		pnCampos.adic( cbEtiquetas, 7, 60, 200, 20 );
+		cbPreco.setVlrString( "S" );
+		pnCampos.adic( cbPreco, 210, 60, 150, 20 );
+
 		pnCampos.adic( btExecuta, 445, 20, 50, 30 );
-		pnCampos.adic( btSelectCompra, 445, 55, 50, 30 );
+		
+		pnCampos.adic( new JLabelPad( "Cód.grupo" ), 7, 80, 250, 20 );
+		pnCampos.adic( txtCodGrup, 7, 100, 70, 20 );
+		pnCampos.adic( new JLabelPad( "Descrição do grupo de produtos" ), 80, 80, 250, 20 );
+		pnCampos.adic( txtDescGrup, 80, 100, 294, 20 );
+
+		pnBotoes.add( btSelectCompra );
+		
+		//pnCampos.adic( btSelectCompra, 445, 90, 50, 30 );
+
 		pnBotoesGrid.adic( btExcluir, 0, 0, 30, 30 );
 		pnBotoesGrid.adic( btExcluirTudo, 0, 30, 30, 30 );
 
@@ -191,35 +216,67 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 
 	}
 
-	private void adicLinha( BigDecimal qtd, int codprod, String descprod ) {
+	private void adicLinha( Integer qtd, int codprod, String descprod, String codgrup ) {
+		StringBuilder sql = new StringBuilder();
+		sql.append("select p.codprod, p.descprod, cast(p.sldliqprod as integer) sldliqprod from eqproduto p ");
+		sql.append("where p.codempgp=? and p.codfilialgp=? and p.codgrup like ?");
+		PreparedStatement ps;
+		List<Item> listitem = new ArrayList<Item>(); 
 
 		int pos = -1;
 
-		if ( codprod == 0 ) {
-
+		if ( codprod == 0 && "".equals( codgrup )) {
 			Funcoes.mensagemInforma( this, "Produto não encontrado!" );
 			txtCodProd.requestFocus();
 			return;
 		}
+		if ( codprod == 0 && !"".equals( codgrup )) {
+			try {
+				ps = con.prepareStatement( sql.toString() );
+				int param = 1;
+				ps.setInt( param++, Aplicativo.iCodEmp );
+				ps.setInt( param++, ListaCampos.getMasterFilial( "EQGRUPO" ) );
+				ps.setString( param++, codgrup.trim()+"%" );
+				ResultSet rs = ps.executeQuery();
+				while (rs.next()) {
+					Item item = null;
+					if (qtd.intValue()==0) {
+						item = new Item(rs.getInt("codprod"), rs.getString( "descprod"), rs.getInt( "sldliqprod" ) );
+					} else {
+						item = new Item(rs.getInt("codprod"), rs.getString( "descprod"), qtd );
+					}
+					listitem.add(item);
+				}
+				rs.close();
+				ps.close();
+				con.commit();
 
-		for ( int i = 0; i < tabGrid.getNumLinhas(); i++ ) {
-
-			if ( codprod == ( (Integer) tabGrid.getValor( i, EProduto.CODPROD.ordinal() ) ).intValue() ) {
-				pos = i;
-				qtd = qtd.add( (BigDecimal) tabGrid.getValor( i, EProduto.QTDPROD.ordinal() ) );
-				break;
+			} catch ( SQLException e ) {
+				e.printStackTrace();
+				Funcoes.mensagemErro( this, "Erro carregando lista de produtos !\n"+e.getMessage() );
 			}
+		} else {
+			listitem.add(new Item(codprod, descprod, qtd));
 		}
 
-		if ( pos == -1 ) {
-
-			tabGrid.adicLinha();
-			pos = tabGrid.getNumLinhas() - 1;
+		// Loop para gravar no grid
+		for (Item item: listitem) {
+			pos = -1;
+			for ( int i = 0; i < tabGrid.getNumLinhas(); i++ ) {
+				if ( item.getCodprod() == ( (Integer) tabGrid.getValor( i, EProduto.CODPROD.ordinal() ) ).intValue() ) {
+					pos = i;
+					item.setQtd( item.getQtd() +  ((Integer) tabGrid.getValor( i, EProduto.QTDPROD.ordinal() ) ).intValue() );
+					break;
+				}
+			}
+			if ( pos == -1 ) {
+				tabGrid.adicLinha();
+				pos = tabGrid.getNumLinhas() - 1;
+			}
+			tabGrid.setValor( item.getCodprod(), pos, EProduto.CODPROD.ordinal() );
+			tabGrid.setValor( item.getDescprod(), pos, EProduto.DESCPROD.ordinal() );
+			tabGrid.setValor( item.getQtd(), pos, EProduto.QTDPROD.ordinal() );
 		}
-
-		tabGrid.setValor( codprod, pos, EProduto.CODPROD.ordinal() );
-		tabGrid.setValor( descprod, pos, EProduto.DESCPROD.ordinal() );
-		tabGrid.setValor( qtd, pos, EProduto.QTDPROD.ordinal() );
 
 	}
 
@@ -255,7 +312,7 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 			// adiclinha( quantidade, codigo do produto, descrição do produto).
 
 			StringBuilder sql = new StringBuilder();
-			sql.append( "SELECT IT.CODPROD, IT.QTDITCOMPRA, PD.DESCPROD " );
+			sql.append( "SELECT IT.CODPROD, cast(IT.QTDITCOMPRA as integer) QTDITCOMPRA, PD.DESCPROD " );
 			sql.append( "FROM CPITCOMPRA IT, EQPRODUTO PD, CPCOMPRA C " );
 			sql.append( "WHERE C.CODEMP=? AND C.CODFILIAL=? AND C.CODCOMPRA=? AND " );
 			sql.append( "IT.CODEMP=C.CODEMP AND IT.CODFILIAL=C.CODFILIAL AND IT.CODCOMPRA=C.CODCOMPRA AND " );
@@ -272,7 +329,7 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 
 				while ( rs.next() ) {
 
-					adicLinha( rs.getBigDecimal( "QTDITCOMPRA" ).setScale( 0, BigDecimal.ROUND_HALF_UP ), rs.getInt( "CODPROD" ), rs.getString( "DESCPROD" ) );
+					adicLinha( rs.getInt( "QTDITCOMPRA" ) , rs.getInt( "CODPROD" ), rs.getString( "DESCPROD" ), "" );
 				}
 
 				rs.close();
@@ -526,6 +583,7 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 
 		super.setConexao( cn );
 		lcProduto.setConexao( cn );
+		lcGrupo.setConexao( cn );
 
 	}
 
@@ -554,7 +612,7 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 		super.actionPerformed( evt );
 
 		if ( evt.getSource() == btExecuta ) {
-			adicLinha( new BigDecimal( txtQtdPod.getVlrString() ), txtCodProd.getVlrInteger().intValue(), txtDescProd.getVlrString() );
+			adicLinha( txtQtdPod.getVlrInteger(), txtCodProd.getVlrInteger().intValue(), txtDescProd.getVlrString(), txtCodGrup.getVlrString().trim() );
 			txtCodProd.requestFocus();
 		}
 		else if ( evt.getSource() == btSelectCompra ) {
@@ -595,5 +653,48 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 			this.tipo = tipo;
 			this.local = local;
 		}
+	}
+	
+	private class Item {
+		private int codprod;
+		private String descprod;
+		int qtd;
+		
+		private Item(int codprod, String descprod, int qtd) {
+			setCodprod( codprod );
+			setDescprod( descprod );
+			setQtd( qtd );
+		}
+				
+		public int getCodprod() {
+		
+			return codprod;
+		}
+		
+		public String getDescprod() {
+		
+			return descprod;
+		}
+		
+		public int getQtd() {
+		
+			return qtd;
+		}
+		
+		public void setCodprod( int codprod ) {
+		
+			this.codprod = codprod;
+		}
+		
+		public void setDescprod( String descprod ) {
+		
+			this.descprod = descprod;
+		}
+		
+		public void setQtd( int qtd ) {
+		
+			this.qtd = qtd;
+		}
+
 	}
 }
