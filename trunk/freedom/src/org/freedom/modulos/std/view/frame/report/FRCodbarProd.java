@@ -28,7 +28,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.math.BigDecimal;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.component.ImprimeOS;
 import org.freedom.library.functions.EtiquetaPPLA;
@@ -423,7 +422,7 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 			for ( int i = 0; i < tabGrid.getNumLinhas(); i++ ) {
 
 				codprod = (Integer) tabGrid.getValor( i, EProduto.CODPROD.ordinal() );
-				quantidade = ( (BigDecimal) tabGrid.getValor( i, EProduto.QTDPROD.ordinal() ) ).intValue();
+				quantidade = ( (Integer) tabGrid.getValor( i, EProduto.QTDPROD.ordinal() ) ).intValue();
 
 				for ( int j = 0; j < quantidade; j++ ) {
 					if ( !insetEtiqueta( conexao, codprod, sql ) ) {
