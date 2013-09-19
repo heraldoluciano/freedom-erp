@@ -218,7 +218,7 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 	private void adicLinha( Integer qtd, int codprod, String descprod, String codgrup ) {
 		StringBuilder sql = new StringBuilder();
 		sql.append("select p.codprod, p.descprod, cast(p.sldliqprod as integer) sldliqprod from eqproduto p ");
-		sql.append("where p.codempgp=? and p.codfilialgp=? and p.codgrup like ?");
+		sql.append("where p.codempgp=? and p.codfilialgp=? and p.codgrup like ? order by p.descprod");
 		PreparedStatement ps;
 		List<Item> listitem = new ArrayList<Item>(); 
 
@@ -470,6 +470,7 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 			sSQL.append( "FROM EQETIQPROD E, EQPRODUTO P " );
 			sSQL.append( "WHERE E.NRCONEXAO=? AND " );
 			sSQL.append( "P.CODEMP=E.CODEMP AND P.CODFILIAL=E.CODFILIAL AND P.CODPROD=E.CODPROD " );
+			sSQL.append( "ORDER BY P.DESCPROD " );
 
 			PreparedStatement ps = con.prepareStatement( sSQL.toString() );
 			ps.setInt( 1, getNrConexao() );
