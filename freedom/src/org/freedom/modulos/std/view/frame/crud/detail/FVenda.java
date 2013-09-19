@@ -2592,7 +2592,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 			}
 
-			DLFechaVenda dl = new DLFechaVenda( con, txtCodVenda.getVlrInteger(), this, impPedido, chbImpNfTipoMov.getVlrString(), chbImpBolTipoMov.getVlrString(), chbImpRecTipoMov.getVlrString(), chbReImpNfTipoMov.getVlrString(), codtran, txtTipoFrete.getVlrString(),
+			DLFechaVenda dl = new DLFechaVenda( con, txtCodVenda.getVlrInteger(), this, impPedido, chbImpNfTipoMov.getVlrString()
+					, chbImpBolTipoMov.getVlrString(), chbImpRecTipoMov.getVlrString(), chbReImpNfTipoMov.getVlrString()
+					, codtran, txtTipoFrete.getVlrString(),
 					getVolumes(), ( nfecf.getHasNFE() && "E".equals( txtTipoModNota.getVlrString() ) ), txtDescMarca.getVlrString() );
 			// dl.getDadosCli();
 			dl.setVisible( true );
@@ -2880,7 +2882,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		if ( ( nfecf.getHasNFE() && "E".equals( txtTipoModNota.getVlrString() ) ) ) {
 			emiteNFE();
 		}
-		else {
+		else if ( ! "O".equals( txtTipoModNota.getVlrString() ) ) {
 			emiteNF( sTipo );
 		}
 	}
