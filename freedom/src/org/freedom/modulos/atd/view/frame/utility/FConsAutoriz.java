@@ -201,7 +201,7 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 		lcGrupo.add( new GuardaCampo( txtCodGrupo, "CodGrup", "Cód.grupo", ListaCampos.DB_PK, false ) );
 		lcGrupo.add( new GuardaCampo( txtDescGrupo, "DescGrup", "Descrição do grupo", ListaCampos.DB_SI, false ) );
 		txtCodGrupo.setTabelaExterna( lcGrupo, null );
-		txtCodGrupo.setNomeCampo( "CodEnc" );
+		txtCodGrupo.setNomeCampo( "CodGrup" );
 		txtCodGrupo.setFK( true );
 		lcGrupo.setReadOnly( true );
 		lcGrupo.montaSql( false, "GRUPO", "EQ" );
