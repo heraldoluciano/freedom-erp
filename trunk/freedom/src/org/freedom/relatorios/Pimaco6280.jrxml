@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Pimaco6280" columnCount="3" printOrder="Horizontal" pageWidth="612" pageHeight="792" columnWidth="174" columnSpacing="28" leftMargin="20" rightMargin="14" topMargin="0" bottomMargin="0">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Pimaco6280" columnCount="3" printOrder="Horizontal" pageWidth="612" pageHeight="792" columnWidth="189" columnSpacing="9" leftMargin="13" rightMargin="13" topMargin="0" bottomMargin="71">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.5937424601000023"/>
@@ -12,7 +12,7 @@
 	<queryString>
 		<![CDATA[select e.CODPROD, p.descprod, p.codbarprod, p.precobaseprod from eqproduto p, eqetiqprod e
 where e.codemp=p.codemp and e.codfilial=p.codfilial and e.codprod=p.codprod
---and e.nrconexao=1]]>
+and e.nrconexao=106]]>
 	</queryString>
 	<field name="CODPROD" class="java.lang.Integer"/>
 	<field name="DESCPROD" class="java.lang.String"/>
@@ -31,7 +31,7 @@ where e.codemp=p.codemp and e.codfilial=p.codfilial and e.codprod=p.codprod
 		<band splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="75" splitType="Stretch">
+		<band height="71" splitType="Stretch">
 			<textField isBlankWhenNull="false">
 				<reportElement key="textField-2" x="5" y="36" width="153" height="11"/>
 				<box>

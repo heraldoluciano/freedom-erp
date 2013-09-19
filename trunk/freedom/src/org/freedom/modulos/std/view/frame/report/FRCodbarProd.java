@@ -540,7 +540,9 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 			if ( persistEtiquetas() ) {
 
 				EEtiqueta etiqueta = getTpEtiquetas();
-
+				if (etiqueta == EEtiqueta.NONE) {
+					return;
+				}
 				if ( bVisualizar==TYPE_PRINT.VIEW ) {
 					if ( etiqueta.tipo == EEtiqueta.JASPER ) {
 						FPrinterJob dlGr = null;
