@@ -47,8 +47,9 @@ public class DLCopiaCliente extends FDialogo {
 	private String tipoPessoa;
 	private String cnpjAtual;
 	private boolean permiteMesmoCnpj;
+	private boolean validacpf = false;
 	
-	public DLCopiaCliente(String tipoPessoa, String cnpjAtual, boolean permiteMesmoCnpj) {
+	public DLCopiaCliente(String tipoPessoa, String cnpjAtual, boolean permiteMesmoCnpj, boolean validacpf) {
 		super();
 		setTitulo( "Copiar Cliente" );
 		setAtribos( 230, 130 );
@@ -56,6 +57,7 @@ public class DLCopiaCliente extends FDialogo {
 		this.tipoPessoa = tipoPessoa;
 		this.cnpjAtual = cnpjAtual;
 		this.permiteMesmoCnpj = permiteMesmoCnpj;
+		this.validacpf = validacpf;
 		
 		this.montaTela();
 	}
@@ -78,29 +80,29 @@ public class DLCopiaCliente extends FDialogo {
 		}
 	}
 	
-	private boolean duploCNPJ() {
+	private boolean duploCNPJCPF() {
 
 		boolean bRetorno = false;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String sSQL = "SELECT CNPJCLI FROM VDCLIENTE WHERE CODEMP=? AND CODFILIAL=? AND CNPJCLI=?";
-
+		StringBuilder sql = new StringBuilder();
+		sql.append("select cnpjcli, cpfcli from vdcliente where codemp=? and codfilial=? and ");
+		if ("F".equals(tipoPessoa)) {
+			sql.append("cpfcli=?");
+		} else {
+			sql.append("cnpjcli=?");
+		}
 		try {
-
-			ps = con.prepareStatement( sSQL );
+			ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "CPCLIENTE" ) );
-			ps.setString( 3, txtCnpj.getVlrString() );
-
+			ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
+			ps.setString( 3, getDocumento() );
 			rs = ps.executeQuery();
-
 			if ( rs.next() ) {
 				bRetorno = true;
 			}
-
 			rs.close();
 			ps.close();
-
 			con.commit();
 
 		} catch ( Exception err ) {
@@ -109,7 +111,6 @@ public class DLCopiaCliente extends FDialogo {
 		} finally {
 			ps = null;
 			rs = null;
-			sSQL = null;
 		}
 		return bRetorno;
 	}
@@ -126,9 +127,24 @@ public class DLCopiaCliente extends FDialogo {
 	public void actionPerformed( ActionEvent evt ) {
 
 		if(evt.getSource() == btOK){
-			if(!permiteMesmoCnpj && duploCNPJ()){
-				Funcoes.mensagemInforma( this, "Cnpj ja cadastrado");
+			if(!permiteMesmoCnpj && duploCNPJCPF()){
+				if ("F".equals( tipoPessoa )) {
+					Funcoes.mensagemInforma( this, "Cpf já cadastrado");
+				} else {
+					Funcoes.mensagemInforma( this, "Cnpj já cadastrado");
+				}
 				return;
+			}
+			if ("F".equals( tipoPessoa )) {
+				if (validacpf && !Funcoes.ValidaCPF( getDocumento() )) {
+					Funcoes.mensagemInforma( this, "CPF Inválido !" );
+					return;
+				}
+			} else {
+				if (!Funcoes.ValidaCNPJ( getDocumento() )) {
+					Funcoes.mensagemInforma(this, "CNPJ Inválido !");
+					return;
+				}
 			}
 		}
 		
