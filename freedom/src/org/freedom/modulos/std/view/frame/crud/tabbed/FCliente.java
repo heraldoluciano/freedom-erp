@@ -4151,7 +4151,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			return;
 		}
 
-		DLCopiaCliente dlCopiaCliente = new DLCopiaCliente( rgPessoa.getVlrString(), txtCnpjCli.getText(), (Boolean) bPref.get( "CLIMESMOCNPJ" ) );
+		DLCopiaCliente dlCopiaCliente = new DLCopiaCliente( rgPessoa.getVlrString(), txtCnpjCli.getText(), (Boolean) bPref.get( "CLIMESMOCNPJ" ), (Boolean) bPref.get( "CONSISTCPFCLI" ) );
 		dlCopiaCliente.setConexao( con );
 		dlCopiaCliente.setVisible( true );
 
