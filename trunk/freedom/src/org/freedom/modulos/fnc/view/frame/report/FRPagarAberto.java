@@ -98,25 +98,25 @@ public class FRPagarAberto extends FRelatorio implements FocusListener {
 		StringBuilder sql = new StringBuilder();
 		
 		sql.append("select ip.codemp, ip.codfilial, ip.codpag, ip.nparcpag ");
-		sql.append(", ip.dtitpag, ip.dtvencitpag, p.codcli, c.razcli, p.docpag ");
+		sql.append(", ip.dtitpag, ip.dtvencitpag, p.codfor, f.razfor, p.docpag ");
 		sql.append(", p.codvenda, coalesce(ip.vlrparcitpag,0) vlrparcitpag");
 		sql.append(", coalesce(ip.vlrdescitpag,0) vlrdescitpag, coalesce(ip.vlrjurositpag,0) vlrjurositpag");
 		sql.append(", coalesce(ip.vlritpag,0) vlritpag ");
 		sql.append(",coalesce(sum(sl.vlrsublanca),0) vlrpagoitpag ");
 		sql.append(", max(datasublanca) dtpagoitpag ");
-		sql.append("from fnpagar p, vdcliente c, fnitpagar ip ");
+		sql.append("from fnpagar p, cpforneced f, fnitpagar ip ");
 		sql.append("left outer join fnsublanca sl ");
 		sql.append("on sl.codemprc=ip.codemp and sl.codfilialpg=ip.codfilial and sl.codpag=ip.codpag ");
 		sql.append("and sl.nparcpag=ip.nparcpag and sl.datasublanca<=? and sl.codsublanca<>0 ");
 		sql.append("where p.codemp=ip.codemp and p.codfilial=ip.codfilial and p.codpag=ip.codpag ");
 		sql.append("and ip.codemp=? and ip.codfilial=? and ip.dtitpag <= ? ");
-		sql.append("and c.codemp=p.codempcl and c.codfilial=p.codfilialcl and c.codcli=p.codcli ");
+		sql.append("and f.codemp=p.codempfr and f.codfilial=p.codfilialfr and f.codfor=p.codfor ");
 		sql.append("and ip.vlritpag>coalesce((select sum(sl2.vlrsublanca) ");
 		sql.append("from fnsublanca sl2 ");
 		sql.append("where sl2.codemppg=ip.codemp and sl2.codfilialpg=ip.codfilial and sl2.codpag=ip.codpag ");
 		sql.append("and sl2.nparcpag=ip.nparcpag and sl2.datasublanca<=? and sl2.codsublanca<>0),0) ");
 		sql.append("group by ip.codemp, ip.codfilial, ip.codpag, ip.nparcpag ");
-		sql.append(", ip.dtitpag, ip.dtvencitpag, p.codcli, c.razcli, p.docpag ");
+		sql.append(", ip.dtitpag, ip.dtvencitpag, p.codfor, f.razfor, p.docpag ");
 		sql.append(", p.codvenda, ip.vlrparcitpag, ip.vlrdescitpag, ip.vlrjurositpag, ip.vlritpag ");
 		sql.append("order by ip.dtvencitpag");
 
