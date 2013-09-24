@@ -5,7 +5,7 @@
  *         Projeto: Freedom <BR>
  * 
  *         Pacote: org.freedom.modulos.fnc.view.frame.report <BR>
- *         Classe: @(#)FRRecebAberto.java <BR>
+ *         Classe: @(#)FRPagarAberto.java <BR>
  * 
  *         Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
  *         modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
@@ -17,7 +17,7 @@
  *         escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA <BR>
  * <BR>
  * 
- *         Relatório de recebimentos em aberto
+ *         Relatório de pagamentos em aberto
  * 
  */
 
@@ -47,7 +47,7 @@ import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
 import org.freedom.library.type.TYPE_PRINT;
 
-public class FRRecebAberto extends FRelatorio implements FocusListener {
+public class FRPagarAberto extends FRelatorio implements FocusListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -61,8 +61,8 @@ public class FRRecebAberto extends FRelatorio implements FocusListener {
 
 	private Vector<String> vLabs1 = new Vector<String>();
 
-	public FRRecebAberto() {
-		setTitulo( "Recebimentos em aberto" );
+	public FRPagarAberto() {
+		setTitulo( "Pagamentos em aberto" );
 		setAtribos( 80, 80, 350, 180 );
 		GregorianCalendar cPeriodo = new GregorianCalendar();
 		txtMes.setVlrInteger( cPeriodo.get(GregorianCalendar.MONTH) + 1 );
@@ -83,7 +83,7 @@ public class FRRecebAberto extends FRelatorio implements FocusListener {
 		adic( txtMes, 90, 25, 30, 20);
 		adic( new JLabelPad("/"), 126, 25, 70, 20);
 		adic( txtAno, 140, 25, 50, 20);
-		adic( new JLabelPad( "Recebimentos em aberto até:" ), 10, 60, 200, 20 );
+		adic( new JLabelPad( "Pagamentos em aberto até:" ), 10, 60, 200, 20 );
 		adic( txtDatafim, 200, 60, 90, 20 );
 		txtMes.addFocusListener( this );
 		txtAno.addFocusListener( this );
@@ -97,37 +97,29 @@ public class FRRecebAberto extends FRelatorio implements FocusListener {
 
 		StringBuilder sql = new StringBuilder();
 		
-		sql.append("select ir.codemp, ir.codfilial, ir.codrec, ir.nparcitrec ");
-		sql.append(", ir.dtitrec, ir.dtvencitrec, r.codcli, c.razcli, r.docrec ");
-		sql.append(", r.codvenda, coalesce(ir.vlrparcitrec,0) vlrparcitrec");
-		sql.append(", coalesce(ir.vlrdescitrec,0) vlrdescitrec, coalesce(ir.vlrjurositrec,0) vlrjurositrec");
-		sql.append(", coalesce(ir.vlritrec,0) vlritrec ");
-		sql.append(",coalesce(sum(sl.vlrsublanca*-1),0) vlrpagoitrec ");
-		sql.append(", max(datasublanca) dtpagoitrec ");
-		sql.append("from fnreceber r, vdcliente c, fnitreceber ir ");
+		sql.append("select ip.codemp, ip.codfilial, ip.codpag, ip.nparcpag ");
+		sql.append(", ip.dtitpag, ip.dtvencitpag, p.codcli, c.razcli, p.docpag ");
+		sql.append(", p.codvenda, coalesce(ip.vlrparcitpag,0) vlrparcitpag");
+		sql.append(", coalesce(ip.vlrdescitpag,0) vlrdescitpag, coalesce(ip.vlrjurositpag,0) vlrjurositpag");
+		sql.append(", coalesce(ip.vlritpag,0) vlritpag ");
+		sql.append(",coalesce(sum(sl.vlrsublanca),0) vlrpagoitpag ");
+		sql.append(", max(datasublanca) dtpagoitpag ");
+		sql.append("from fnpagar p, vdcliente c, fnitpagar ip ");
 		sql.append("left outer join fnsublanca sl ");
-		sql.append("on sl.codemprc=ir.codemp and sl.codfilialrc=ir.codfilial and sl.codrec=ir.codrec ");
-		sql.append("and sl.nparcitrec=ir.nparcitrec and sl.datasublanca<=? and sl.codsublanca<>0 ");
-		sql.append("where r.codemp=ir.codemp and r.codfilial=ir.codfilial and r.codrec=ir.codrec ");
-		sql.append("and ir.codemp=? and ir.codfilial=? and ir.dtitrec <= ? ");
-		sql.append("and c.codemp=r.codempcl and c.codfilial=r.codfilialcl and c.codcli=r.codcli ");
-		sql.append("and ir.vlritrec>coalesce((select sum(sl2.vlrsublanca*-1) ");
+		sql.append("on sl.codemprc=ip.codemp and sl.codfilialpg=ip.codfilial and sl.codpag=ip.codpag ");
+		sql.append("and sl.nparcpag=ip.nparcpag and sl.datasublanca<=? and sl.codsublanca<>0 ");
+		sql.append("where p.codemp=ip.codemp and p.codfilial=ip.codfilial and p.codpag=ip.codpag ");
+		sql.append("and ip.codemp=? and ip.codfilial=? and ip.dtitpag <= ? ");
+		sql.append("and c.codemp=p.codempcl and c.codfilial=p.codfilialcl and c.codcli=p.codcli ");
+		sql.append("and ip.vlritpag>coalesce((select sum(sl2.vlrsublanca) ");
 		sql.append("from fnsublanca sl2 ");
-		sql.append("where sl2.codemprc=ir.codemp and sl2.codfilialrc=ir.codfilial and sl2.codrec=ir.codrec ");
-		sql.append("and sl2.nparcitrec=ir.nparcitrec and sl2.datasublanca<=? and sl2.codsublanca<>0),0) ");
-		sql.append("group by ir.codemp, ir.codfilial, ir.codrec, ir.nparcitrec ");
-		sql.append(", ir.dtitrec, ir.dtvencitrec, r.codcli, c.razcli, r.docrec ");
-		sql.append(", r.codvenda, ir.vlrparcitrec, ir.vlrdescitrec, ir.vlrjurositrec, ir.vlritrec ");
-		sql.append("order by ir.dtvencitrec");
+		sql.append("where sl2.codemppg=ip.codemp and sl2.codfilialpg=ip.codfilial and sl2.codpag=ip.codpag ");
+		sql.append("and sl2.nparcpag=ip.nparcpag and sl2.datasublanca<=? and sl2.codsublanca<>0),0) ");
+		sql.append("group by ip.codemp, ip.codfilial, ip.codpag, ip.nparcpag ");
+		sql.append(", ip.dtitpag, ip.dtvencitpag, p.codcli, c.razcli, p.docpag ");
+		sql.append(", p.codvenda, ip.vlrparcitpag, ip.vlrdescitpag, ip.vlrjurositpag, ip.vlritpag ");
+		sql.append("order by ip.dtvencitpag");
 
-		
-/*		    sql.append("select ir.dtitrec, ir.dtvencitrec, ir.nparcitrec, r.codcli, r.docrec, r.codvenda, ir.vlrparcitrec, ir.vlrpagoitrec, ir.vlrapagitrec, ir.dtpagoitrec "); 
-			sql.append(" from fnreceber r, fnitreceber ir "); 
-			sql.append(" where ir.codemp=r.codemp and ir.codfilial=r.codfilial and ir.codrec=r.codrec ");
-			sql.append(" and statusitrec in ('R1','RL') ");
-			sql.append(" and r.codemp=? and r.codfilial=? and ir.dtvencitrec<=? ");
-			sql.append(" order by ir.dtitrec" );
-*/
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
@@ -142,7 +134,7 @@ public class FRRecebAberto extends FRelatorio implements FocusListener {
 			imprimiGrafico( rs, bVisualizar, "Correção para: " + txtDatafim.getVlrString()  );
 
 		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro consulta ao relatório de recebimentos em aberto!\n" + err.getMessage(), true, con, err );
+			Funcoes.mensagemErro( this, "Erro consulta ao relatório de pagamentos em aberto!\n" + err.getMessage(), true, con, err );
 		}
 
 
@@ -158,7 +150,7 @@ public class FRRecebAberto extends FRelatorio implements FocusListener {
 		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
 		hParam.put( "FILTROS", sCab );
 
-		dlGr = new FPrinterJob( "relatorios/FRRecebAberto.jasper", "Relatório de Recebimentos em aberto", sCab, rs, hParam, this );
+		dlGr = new FPrinterJob( "relatorios/FRPagarAberto.jasper", "Relatório de pagamentos em aberto", sCab, rs, hParam, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
@@ -167,7 +159,7 @@ public class FRRecebAberto extends FRelatorio implements FocusListener {
 			try {
 				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
 			} catch ( Exception err ) {
-				Funcoes.mensagemErro( this, "Erro na impressão de relatório de Recebimentos em aberto!" + err.getMessage(), true, con, err );
+				Funcoes.mensagemErro( this, "Erro na impressão de relatório de pagamentos em aberto!" + err.getMessage(), true, con, err );
 			}
 		}
 	}
