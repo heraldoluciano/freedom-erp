@@ -1,11 +1,11 @@
 /**
- * @version 08/12/2000 <BR>
- * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
+ * @version 24/09/2013 <BR>
+ * @author Setpoint Tecnologia em Informática Ltda./Robson Sanchez/Heraldo Luciano<BR>
  * 
  *         Projeto: Freedom <BR>
  * 
- *         Pacote: org.freedom.modulos.std <BR>
- *         Classe: @(#)FRInadimplentes.java <BR>
+ *         Pacote: org.freedom.modulos.fnc.view.frame.report <BR>
+ *         Classe: @(#)FRRecebAberto.java <BR>
  * 
  *         Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
  *         modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
@@ -17,7 +17,7 @@
  *         escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA <BR>
  * <BR>
  * 
- *         Comentários sobre a classe...
+ *         Relatório de recebimentos em aberto
  * 
  */
 
