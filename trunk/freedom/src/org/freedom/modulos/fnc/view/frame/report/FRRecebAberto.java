@@ -99,8 +99,10 @@ public class FRRecebAberto extends FRelatorio implements FocusListener {
 		
 		sql.append("select ir.codemp, ir.codfilial, ir.codrec, ir.nparcitrec ");
 		sql.append(", ir.dtitrec, ir.dtvencitrec, r.codcli, c.razcli, r.docrec ");
-		sql.append(", r.codvenda, ir.vlrparcitrec, ir.vlrdescitrec, ir.vlrjurositrec, ir.vlritrec ");
-		sql.append(",sum(sl.vlrsublanca*-1) vlrpagoitrec ");
+		sql.append(", r.codvenda, coalesce(ir.vlrparcitrec,0) vlrparcitrec");
+		sql.append(", coalesce(ir.vlrdescitrec,0) vlrdescitrec, coalesce(ir.vlrjurositrec,0) vlrjurositrec");
+		sql.append(", coalesce(ir.vlritrec,0) vlritrec ");
+		sql.append(",coalesce(sum(sl.vlrsublanca*-1),0) vlrpagoitrec ");
 		sql.append(", max(datasublanca) dtpagoitrec ");
 		sql.append("from fnreceber r, vdcliente c, fnitreceber ir ");
 		sql.append("left outer join fnsublanca sl ");
