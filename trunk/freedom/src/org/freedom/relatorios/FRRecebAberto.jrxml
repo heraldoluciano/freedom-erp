@@ -2,8 +2,8 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="FRInadimplentes" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="786" leftMargin="28" rightMargin="28" topMargin="14" bottomMargin="14">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="2.9282000000000066"/>
-	<property name="ireport.x" value="754"/>
+	<property name="ireport.zoom" value="1.6528925619834745"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -272,7 +272,7 @@ Vencto]]></text>
 						<rightPen lineWidth="1.0"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="9" isBold="true"/>
+						<font size="8" isBold="true"/>
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{VRLTOTPARC}]]></textFieldExpression>
 				</textField>
@@ -285,7 +285,7 @@ Vencto]]></text>
 						<rightPen lineWidth="1.0"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="9" isBold="true"/>
+						<font size="8" isBold="true"/>
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{VLRPAGOPARC}]]></textFieldExpression>
 				</textField>
@@ -298,7 +298,7 @@ Vencto]]></text>
 						<rightPen lineWidth="1.0"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="9" isBold="true"/>
+						<font size="8" isBold="true"/>
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{VLRTOTAPAGITREC}]]></textFieldExpression>
 				</textField>
@@ -324,7 +324,7 @@ Vencto]]></text>
 						<rightPen lineWidth="1.0"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="9" isBold="true"/>
+						<font size="8" isBold="true"/>
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{VLRTOTDESC}]]></textFieldExpression>
 				</textField>
@@ -337,7 +337,7 @@ Vencto]]></text>
 						<rightPen lineWidth="1.0"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="9" isBold="true"/>
+						<font size="8" isBold="true"/>
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{VLRTOTJUROS}]]></textFieldExpression>
 				</textField>
