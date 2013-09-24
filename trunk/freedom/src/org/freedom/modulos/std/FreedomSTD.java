@@ -56,6 +56,7 @@ import org.freedom.modulos.fnc.view.frame.report.FRExtratoPrevisto;
 import org.freedom.modulos.fnc.view.frame.report.FRFluxoCaixa;
 import org.freedom.modulos.fnc.view.frame.report.FRFluxoCaixaRes;
 import org.freedom.modulos.fnc.view.frame.report.FRPagar;
+import org.freedom.modulos.fnc.view.frame.report.FRPagarAberto;
 import org.freedom.modulos.fnc.view.frame.report.FRRecPag;
 import org.freedom.modulos.fnc.view.frame.report.FRReceber;
 import org.freedom.modulos.fnc.view.frame.report.FRReceberMes;
@@ -450,6 +451,8 @@ public class FreedomSTD extends AplicativoPD {
 		addOpcao( 400400000, TP_OPCAO_ITEM, "Pagar/Pagas", "Pagar/Pagas", 'P', 400401000, 2, true, FRPagar.class );
 		addOpcao( 400400000, TP_OPCAO_ITEM, "Comissões", "Comissão", 'C', 400402000, 2, true, FRComissoes.class );
 		addOpcao( 400400000, TP_OPCAO_ITEM, "Razão", "Razão", 'R', 400403000, 2, true, FRRazFor.class );
+		addOpcao( 400400000, TP_OPCAO_ITEM, "Pagamentos em aberto", "Pagamentos em aberto", 'a', 400404000, 2, true, FRPagarAberto.class );
+
 		addSeparador( 400000000 );
 		addOpcao( 400000000, TP_OPCAO_ITEM, "Emissão de cheques", "Emissão de cheques", 'm', 400500000, 2, true, FPagCheque.class );
 
