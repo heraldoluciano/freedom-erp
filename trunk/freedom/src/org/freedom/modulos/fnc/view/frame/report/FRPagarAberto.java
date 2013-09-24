@@ -99,7 +99,7 @@ public class FRPagarAberto extends FRelatorio implements FocusListener {
 		
 		sql.append("select ip.codemp, ip.codfilial, ip.codpag, ip.nparcpag ");
 		sql.append(", ip.dtitpag, ip.dtvencitpag, p.codfor, f.razfor, p.docpag ");
-		sql.append(", p.codvenda, coalesce(ip.vlrparcitpag,0) vlrparcitpag");
+		sql.append(", p.codcompra, coalesce(ip.vlrparcitpag,0) vlrparcitpag");
 		sql.append(", coalesce(ip.vlrdescitpag,0) vlrdescitpag, coalesce(ip.vlrjurositpag,0) vlrjurositpag");
 		sql.append(", coalesce(ip.vlritpag,0) vlritpag ");
 		sql.append(",coalesce(sum(sl.vlrsublanca),0) vlrpagoitpag ");
@@ -117,7 +117,7 @@ public class FRPagarAberto extends FRelatorio implements FocusListener {
 		sql.append("and sl2.nparcpag=ip.nparcpag and sl2.datasublanca<=? and sl2.codsublanca<>0),0) ");
 		sql.append("group by ip.codemp, ip.codfilial, ip.codpag, ip.nparcpag ");
 		sql.append(", ip.dtitpag, ip.dtvencitpag, p.codfor, f.razfor, p.docpag ");
-		sql.append(", p.codvenda, ip.vlrparcitpag, ip.vlrdescitpag, ip.vlrjurositpag, ip.vlritpag ");
+		sql.append(", p.codcompra, ip.vlrparcitpag, ip.vlrdescitpag, ip.vlrjurositpag, ip.vlritpag ");
 		sql.append("order by ip.dtvencitpag");
 
 		PreparedStatement ps = null;
