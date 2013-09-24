@@ -119,15 +119,7 @@ public class FRRecebAberto extends FRelatorio implements FocusListener {
 		sql.append(", ir.dtitrec, ir.dtvencitrec, r.codcli, c.razcli, r.docrec ");
 		sql.append(", r.codvenda, ir.vlrparcitrec, ir.vlrdescitrec, ir.vlrjurositrec, ir.vlritrec ");
 		sql.append("order by ir.dtvencitrec");
-
 		
-/*		    sql.append("select ir.dtitrec, ir.dtvencitrec, ir.nparcitrec, r.codcli, r.docrec, r.codvenda, ir.vlrparcitrec, ir.vlrpagoitrec, ir.vlrapagitrec, ir.dtpagoitrec "); 
-			sql.append(" from fnreceber r, fnitreceber ir "); 
-			sql.append(" where ir.codemp=r.codemp and ir.codfilial=r.codfilial and ir.codrec=r.codrec ");
-			sql.append(" and statusitrec in ('R1','RL') ");
-			sql.append(" and r.codemp=? and r.codfilial=? and ir.dtvencitrec<=? ");
-			sql.append(" order by ir.dtitrec" );
-*/
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
