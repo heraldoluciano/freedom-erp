@@ -30,7 +30,10 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.Vector;
+
+import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
@@ -44,6 +47,7 @@ import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
 import org.freedom.library.type.TYPE_PRINT;
 
@@ -71,7 +75,9 @@ public class FRInvPeps extends FRelatorio {
 
 	private JTextFieldFK txtDescGrup = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
-	private JCheckBoxPad cbSemEstoq = new JCheckBoxPad( "Imprimir somento produtos com estoque ?", "S", "N" );
+	private JCheckBoxPad cbComEstoq = new JCheckBoxPad( "Imprimir somento produtos com estoque ?", "S", "N" );
+
+	private JCheckBoxPad cbRelTexto = new JCheckBoxPad( "Relatório texto ?", "S", "N" );
 
 	private JCheckBoxPad cbAtivos = new JCheckBoxPad( "Somente ativos?", "S", "N" );
 
@@ -132,7 +138,8 @@ public class FRInvPeps extends FRelatorio {
 
 		rgCusto = new JRadioGroup<String, String>( 1, 3, vDescCusto, vOpcCusto );
 
-		cbSemEstoq.setVlrString( "N" );
+		cbComEstoq.setVlrString( "N" );
+		cbRelTexto.setVlrString( "N" );
 		cbAtivos.setVlrString( "S" );
 
 		lcAlmox.add( new GuardaCampo( txtCodAlmox, "CodAlmox", "Cód.almox.", ListaCampos.DB_PK, false ) );
@@ -178,9 +185,130 @@ public class FRInvPeps extends FRelatorio {
 		adic( txtCodGrup, 7, 180, 80, 20 );
 		adic( lbDescGrup, 90, 160, 250, 20 );
 		adic( txtDescGrup, 90, 180, 250, 20 );
-		adic( cbSemEstoq, 7, 200, 250, 20 );
-		adic( cbAtivos, 7, 230, 250, 30 );
-		adic( rgCusto, 7, 260, 250, 30 );
+		adic( cbComEstoq, 7, 200, 300, 20 );
+		adic( cbRelTexto, 7, 220, 300, 20 );
+		adic( cbAtivos, 7, 240, 250, 20 );
+		adic( rgCusto, 7, 270, 250, 30 );
+
+	}
+
+	public void imprimirTexto(TYPE_PRINT bVisualizar, ResultSet rs, StringBuilder filtros, String campocodigo) throws SQLException {
+		BigDecimal bdCustoTot = new BigDecimal(0);
+		double deSldProd = 0;
+		int linPag = 0;
+		ImprimeOS imp = new ImprimeOS( "", con );
+		imp.limpaPags();
+		imp.montaCab( txtPagina.getVlrInteger().intValue() - 1 );
+		imp.setTitulo( "Relatorio de inventário de estoque" );
+		imp.addSubTitulo( filtros.toString() );
+		linPag = imp.verifLinPag() - 1;
+
+		//imp.addSubTitulo( sFiltros2 );
+
+		while ( rs.next() ) {
+			if ( imp.pRow() >= ( linPag - 1 ) ) {
+				imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
+				imp.say( imp.pRow() + 0, 0, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
+				imp.incPags();
+				imp.eject();
+
+			}
+			if ( imp.pRow() == 0 ) {
+				imp.impCab( 136, true );
+				/*
+				 * imp.say(imp.pRow()+0,0,"|"+StringFunctions.replicate("-",133)+"|"); imp.say(imp.pRow()+1,0,""+imp.comprimido()); imp.say(imp.pRow()+0,0,"| CODIGO"); imp.say(imp.pRow()+0,16,"| DESCRICAO "); imp.say(imp.pRow()+0,70,"| SALDO"); imp.say(imp.pRow()+0,83,"| CUSTO UNIT.");
+				 * imp.say(imp.pRow()+0,101,"| CUSTO TOTAL"); imp.say(imp.pRow()+0,135,"|"); imp.say(imp.pRow()+1,0,""+imp.comprimido()); imp.say(imp.pRow()+0,0,"|"+StringFunctions.replicate("-",133)+"|");
+				 */
+
+				imp.say( imp.pRow() + 0, 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
+				imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
+				imp.say( imp.pRow() + 0, 0, "| CODIGO" );
+				imp.say( imp.pRow() + 0, 16, "| COD.FAB. " );
+				imp.say( imp.pRow() + 0, 29, "| COD.BAR. " );
+				imp.say( imp.pRow() + 0, 43, "| DESCRICAO " );
+				imp.say( imp.pRow() + 0, 95, "| SALDO" );// 19
+				imp.say( imp.pRow() + 0, 106, "| CUSTO UNIT." ); // 20
+				imp.say( imp.pRow() + 0, 118, "| CUSTO TOTAL" ); // 15
+				imp.say( imp.pRow() + 0, 135, "|" );
+				imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
+				imp.say( imp.pRow() + 0, 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
+
+			}
+			/*
+			 * imp.say(imp.pRow()+1,0,""+imp.comprimido()); imp.say(imp.pRow()+0,0,"|"+Funcoes.adicEspacosEsquerda(rs.getString(sCpCodigo).trim(),13)); imp.say(imp.pRow()+0,16,"| "+Funcoes.adicionaEspacos(rs.getString("DESCPROD"),50));
+			 * imp.say(imp.pRow()+0,70,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble("SLDPROD")+"",10)); imp.say(imp.pRow()+0,83,"|"+Funcoes.strDecimalToStrCurrency(15,2,rs.getDouble("CUSTOUNIT")+""));
+			 * imp.say(imp.pRow()+0,101,"|"+Funcoes.strDecimalToStrCurrency(15,2,rs.getDouble("CUSTOTOT")+"")); imp.say(imp.pRow()+0,135,"|");
+			 */
+
+			imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
+			imp.say( imp.pRow() + 0, 0, "|" + Funcoes.adicEspacosEsquerda( rs.getString( campocodigo ).trim(), 13 ) );
+			imp.say( imp.pRow() + 0, 16, "|" + Funcoes.adicEspacosEsquerda( rs.getString( "CODFABPROD" ).trim(), 11 ) );
+			imp.say( imp.pRow() + 0, 29, "|" + Funcoes.adicEspacosEsquerda( rs.getString( "CODBARPROD" ).trim(), 12 ) );
+			imp.say( imp.pRow() + 0, 43, "| " + Funcoes.adicionaEspacos( rs.getString( "DESCPROD" ), 49 ) );
+			imp.say( imp.pRow() + 0, 95, "|" + Funcoes.adicEspacosEsquerda( rs.getDouble( "SLDPROD" ) + "", 8 ) );// 19
+			imp.say( imp.pRow() + 0, 106, "|" + Funcoes.strDecimalToStrCurrency( 11, 2, rs.getDouble( "CUSTOUNIT" ) + "" ) ); // 18
+			imp.say( imp.pRow() + 0, 119, "|" + Funcoes.strDecimalToStrCurrency( 14, 2, rs.getDouble( "CUSTOTOT" ) + "" ) ); // 17
+			imp.say( imp.pRow() + 0, 135, "|" );
+
+			deSldProd += rs.getDouble( "SLDPROD" );
+			BigDecimal custo = rs.getBigDecimal( "CUSTOTOT" ); 
+//			bdCustoTot = bdCustoTot.add( custo.setScale( Aplicativo.casasDecFin ) );
+			bdCustoTot = bdCustoTot.add( custo.setScale( Aplicativo.casasDecFin, BigDecimal.ROUND_FLOOR ) );
+
+		}
+
+		rs.close();
+		con.commit();
+		/*
+		 * imp.say(imp.pRow()+1,0,""+imp.comprimido()); imp.say(imp.pRow()+0,0,"|"+StringFunctions.replicate("-",133)+"|"); imp.say(imp.pRow()+1,0,""+imp.comprimido()); imp.say(imp.pRow()+0,0,"| TOTAL");
+		 * imp.say(imp.pRow()+0,70,"|"+Funcoes.adicEspacosEsquerda(Funcoes.arredDouble(deSldProd,2)+"",10)); imp.say(imp.pRow()+0,83,"|"); imp.say(imp.pRow()+0,101,"|"+Funcoes.strDecimalToStrCurrency(15,2,deCustoTot+"")); imp.say(imp.pRow()+0,135,"|");
+		 * imp.say(imp.pRow()+1,0,""+imp.comprimido()); imp.say(imp.pRow()+0,0,"+"+StringFunctions.replicate("-",133)+"+");
+		 */
+
+		imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
+		imp.say( imp.pRow() + 0, 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
+		imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
+		imp.say( imp.pRow() + 0, 0, "| TOTAL" );
+		imp.say( imp.pRow() + 0, 95, "|" + Funcoes.adicEspacosEsquerda( Funcoes.arredDouble( deSldProd, 2 ) + "", 8 ) );// 19
+		imp.say( imp.pRow() + 0, 106, "|" ); // 18
+		imp.say( imp.pRow() + 0, 119, "|" + Funcoes.strDecimalToStrCurrency( 14, 2, bdCustoTot + "" ) );// 17
+		imp.say( imp.pRow() + 0, 135, "|" );
+		imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
+		imp.say( imp.pRow() + 0, 0, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
+
+		imp.eject();
+		imp.fechaGravacao();
+		
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
+			imp.preview( this );
+		}
+		else {
+			imp.print();
+		}
+
+	}
+
+	public void imprimirGrafico(TYPE_PRINT bVisualizar, ResultSet rs, StringBuilder filtros) {
+		FPrinterJob dlGr = null;
+		HashMap<String, Object> hParam = new HashMap<String, Object>();
+
+		hParam.put( "CODEMP", Aplicativo.iCodEmp );
+		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "FNITPAGAR" ) );
+		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
+		hParam.put( "FILTROS", filtros.toString() );
+
+		dlGr = new FPrinterJob( "relatorios/FRInvPeps.jasper", "Relatório de inventário", filtros.toString(), rs, hParam, this );
+
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
+			dlGr.setVisible( true );
+		}
+		else {
+			try {
+				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+			} catch ( Exception err ) {
+				Funcoes.mensagemErro( this, "Erro na impressão de relatório de inventário!" + err.getMessage(), true, con, err );
+			}
+		}
 
 	}
 
@@ -189,9 +317,10 @@ public class FRInvPeps extends FRelatorio {
 		StringBuilder sql = new StringBuilder();
 		StringBuilder filtros = new StringBuilder();
 		String campocodigo = "";
-		String semestoque = "";
+		String comestoque = "";
 		String codmarca = "";
 		String codgrup = "";
+		String imprimetexto = "";
 		/*String sSql = "";
 		String sSemEstoq = "";
 		String sCodMarca = "";
@@ -199,26 +328,20 @@ public class FRInvPeps extends FRelatorio {
 		String sFiltros1 = "";
 		String sFiltros2 = ""; */
 		int codalmox = 0;
-		ImprimeOS imp = null;
-		int linPag = 0;
+//		ImprimeOS imp = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		BigDecimal bdCustoTot = new BigDecimal(0);
-		double deSldProd = 0;
 
 		try {
 
-			imp = new ImprimeOS( "", con );
-			linPag = imp.verifLinPag() - 1;
-
 			campocodigo = ( bPrefs[ 0 ] ? "REFPROD" : "CODPROD" );
 			codalmox = txtCodAlmox.getVlrInteger().intValue();
-			semestoque = cbSemEstoq.getVlrString();
+			comestoque = cbComEstoq.getVlrString();
 			codmarca = txtCodMarca.getVlrString().trim();
 			codgrup = txtCodGrup.getVlrString().trim();
 			
 			sql.append("select ");
-			sql.append(campocodigo);
+			sql.append( "codprod, refprod ");
 			sql.append(",descprod, sldprod, custounit, custotot ");
 			sql.append(",coalesce(codfabprod,0) codfabprod, coalesce(codbarprod,0) codbarprod, ativoprod ");
 			sql.append(" from eqrelpepssp(?,?,?,?,?,?,?,?,?,?,?,?,?,'N',? ) ");
@@ -229,24 +352,6 @@ public class FRInvPeps extends FRelatorio {
 			} else {
 				sql.append( " ('S','N') " );
 			}
-
-			/*			    icodemp integer,
-			scodfilial smallint,
-			dtestoq date,
-			icodempmc integer,
-			scodfilialmc smallint,
-			ccodmarca char(6),
-			icodempgp integer,
-			scodfilialgp smallint,
-			ccodgrup varchar(14),
-			ctipocusto char(1),
-			icodempax integer,
-			scodfilialax smallint,
-			icodalmox integer,
-			cloteprod char(1),
-			soprodsaldo char(1))
-*/
-			// iCodAlmox = txt
 			sql.append(" order by " );
 			if ("D".equals(rgOrdem.getVlrString())) {
 				sql.append(" descprod ");
@@ -254,9 +359,9 @@ public class FRInvPeps extends FRelatorio {
 				sql.append(campocodigo);
 			}
 			
-			System.out.println( sql.toString() );
+//			System.out.println( sql.toString() );
 			try {
-				if ( semestoque.equals( "S" ) )
+				if ( comestoque.equals( "S" ) )
 					filtros.append(  " ( SOMENTE PROD. C/ESTOQUE ) " );
 				ps = con.prepareStatement( sql.toString() );
 				int param = 1;
@@ -310,109 +415,24 @@ public class FRInvPeps extends FRelatorio {
 					filtros.append(" ) ");
 				}
 
-				ps.setString( param++, cbSemEstoq.getVlrString() );
+				ps.setString( param++, cbComEstoq.getVlrString() );
 				
 				rs = ps.executeQuery();
-
-				imp.limpaPags();
-
-				imp.montaCab( txtPagina.getVlrInteger().intValue() - 1 );
-				imp.setTitulo( "Relatorio de inventário de estoque" );
-				imp.addSubTitulo( filtros.toString() );
-				//imp.addSubTitulo( sFiltros2 );
-
-				while ( rs.next() ) {
-					if ( imp.pRow() >= ( linPag - 1 ) ) {
-						imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-						imp.say( imp.pRow() + 0, 0, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
-						imp.incPags();
-						imp.eject();
-
-					}
-					if ( imp.pRow() == 0 ) {
-						imp.impCab( 136, true );
-						/*
-						 * imp.say(imp.pRow()+0,0,"|"+StringFunctions.replicate("-",133)+"|"); imp.say(imp.pRow()+1,0,""+imp.comprimido()); imp.say(imp.pRow()+0,0,"| CODIGO"); imp.say(imp.pRow()+0,16,"| DESCRICAO "); imp.say(imp.pRow()+0,70,"| SALDO"); imp.say(imp.pRow()+0,83,"| CUSTO UNIT.");
-						 * imp.say(imp.pRow()+0,101,"| CUSTO TOTAL"); imp.say(imp.pRow()+0,135,"|"); imp.say(imp.pRow()+1,0,""+imp.comprimido()); imp.say(imp.pRow()+0,0,"|"+StringFunctions.replicate("-",133)+"|");
-						 */
-
-						imp.say( imp.pRow() + 0, 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
-						imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-						imp.say( imp.pRow() + 0, 0, "| CODIGO" );
-						imp.say( imp.pRow() + 0, 16, "| COD.FAB. " );
-						imp.say( imp.pRow() + 0, 29, "| COD.BAR. " );
-						imp.say( imp.pRow() + 0, 43, "| DESCRICAO " );
-						imp.say( imp.pRow() + 0, 95, "| SALDO" );// 19
-						imp.say( imp.pRow() + 0, 106, "| CUSTO UNIT." ); // 20
-						imp.say( imp.pRow() + 0, 118, "| CUSTO TOTAL" ); // 15
-						imp.say( imp.pRow() + 0, 135, "|" );
-						imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-						imp.say( imp.pRow() + 0, 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
-
-					}
-					/*
-					 * imp.say(imp.pRow()+1,0,""+imp.comprimido()); imp.say(imp.pRow()+0,0,"|"+Funcoes.adicEspacosEsquerda(rs.getString(sCpCodigo).trim(),13)); imp.say(imp.pRow()+0,16,"| "+Funcoes.adicionaEspacos(rs.getString("DESCPROD"),50));
-					 * imp.say(imp.pRow()+0,70,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble("SLDPROD")+"",10)); imp.say(imp.pRow()+0,83,"|"+Funcoes.strDecimalToStrCurrency(15,2,rs.getDouble("CUSTOUNIT")+""));
-					 * imp.say(imp.pRow()+0,101,"|"+Funcoes.strDecimalToStrCurrency(15,2,rs.getDouble("CUSTOTOT")+"")); imp.say(imp.pRow()+0,135,"|");
-					 */
-
-					imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-					imp.say( imp.pRow() + 0, 0, "|" + Funcoes.adicEspacosEsquerda( rs.getString( campocodigo ).trim(), 13 ) );
-					imp.say( imp.pRow() + 0, 16, "|" + Funcoes.adicEspacosEsquerda( rs.getString( "CODFABPROD" ).trim(), 11 ) );
-					imp.say( imp.pRow() + 0, 29, "|" + Funcoes.adicEspacosEsquerda( rs.getString( "CODBARPROD" ).trim(), 12 ) );
-					imp.say( imp.pRow() + 0, 43, "| " + Funcoes.adicionaEspacos( rs.getString( "DESCPROD" ), 49 ) );
-					imp.say( imp.pRow() + 0, 95, "|" + Funcoes.adicEspacosEsquerda( rs.getDouble( "SLDPROD" ) + "", 8 ) );// 19
-					imp.say( imp.pRow() + 0, 106, "|" + Funcoes.strDecimalToStrCurrency( 11, 2, rs.getDouble( "CUSTOUNIT" ) + "" ) ); // 18
-					imp.say( imp.pRow() + 0, 119, "|" + Funcoes.strDecimalToStrCurrency( 14, 2, rs.getDouble( "CUSTOTOT" ) + "" ) ); // 17
-					imp.say( imp.pRow() + 0, 135, "|" );
-
-					deSldProd += rs.getDouble( "SLDPROD" );
-					BigDecimal custo = rs.getBigDecimal( "CUSTOTOT" ); 
-//					bdCustoTot = bdCustoTot.add( custo.setScale( Aplicativo.casasDecFin ) );
-					bdCustoTot = bdCustoTot.add( custo.setScale( Aplicativo.casasDecFin, BigDecimal.ROUND_FLOOR ) );
-
+				
+				if ("S".equals(imprimetexto)) {
+					imprimirTexto( bVisualizar, rs, filtros, campocodigo );
+				} else {
+					imprimirGrafico( bVisualizar, rs, filtros);
 				}
 
-				rs.close();
-				ps.close();
-				con.commit();
-				/*
-				 * imp.say(imp.pRow()+1,0,""+imp.comprimido()); imp.say(imp.pRow()+0,0,"|"+StringFunctions.replicate("-",133)+"|"); imp.say(imp.pRow()+1,0,""+imp.comprimido()); imp.say(imp.pRow()+0,0,"| TOTAL");
-				 * imp.say(imp.pRow()+0,70,"|"+Funcoes.adicEspacosEsquerda(Funcoes.arredDouble(deSldProd,2)+"",10)); imp.say(imp.pRow()+0,83,"|"); imp.say(imp.pRow()+0,101,"|"+Funcoes.strDecimalToStrCurrency(15,2,deCustoTot+"")); imp.say(imp.pRow()+0,135,"|");
-				 * imp.say(imp.pRow()+1,0,""+imp.comprimido()); imp.say(imp.pRow()+0,0,"+"+StringFunctions.replicate("-",133)+"+");
-				 */
-
-				imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-				imp.say( imp.pRow() + 0, 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
-				imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-				imp.say( imp.pRow() + 0, 0, "| TOTAL" );
-				imp.say( imp.pRow() + 0, 95, "|" + Funcoes.adicEspacosEsquerda( Funcoes.arredDouble( deSldProd, 2 ) + "", 8 ) );// 19
-				imp.say( imp.pRow() + 0, 106, "|" ); // 18
-				imp.say( imp.pRow() + 0, 119, "|" + Funcoes.strDecimalToStrCurrency( 14, 2, bdCustoTot + "" ) );// 17
-				imp.say( imp.pRow() + 0, 135, "|" );
-				imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-				imp.say( imp.pRow() + 0, 0, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
-
-				imp.eject();
-				imp.fechaGravacao();
 
 			} catch ( SQLException err ) {
 				Funcoes.mensagemErro( this, "Erro executando a consulta.\n" + err.getMessage(), true, con, err );
 				err.printStackTrace();
 			}
-			if ( bVisualizar==TYPE_PRINT.VIEW ) {
-				imp.preview( this );
-			}
-			else {
-				imp.print();
-			}
 		} finally {
-			imp = null;
 			ps = null;
 			rs = null;
-			bdCustoTot = null;
-			deSldProd = 0;
-			linPag = 0;
 		}
 
 	}
