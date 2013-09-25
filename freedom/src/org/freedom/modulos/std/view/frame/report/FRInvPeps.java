@@ -297,7 +297,7 @@ public class FRInvPeps extends FRelatorio {
 		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
 		hParam.put( "FILTROS", filtros.toString() );
 
-		dlGr = new FPrinterJob( "relatorios/FRInvPeps.jasper", "Relatório de inventário", filtros.toString(), rs, hParam, this );
+		dlGr = new FPrinterJob( "layout/rel/FRInvPeps.jasper", "Relatório de inventário", filtros.toString(), rs, hParam, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );

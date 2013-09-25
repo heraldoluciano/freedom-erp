@@ -17,13 +17,13 @@
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["C:\\opt\\eclipse\\workspace\\freedom\\src\\org\\freedom\\layout\\rel\\"]]></defaultValueExpression>
 	</parameter>
-	<parameter name="DATA" class="java.util.Date">
+	<parameter name="DATA" class="java.util.Date" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
 	</parameter>
-	<parameter name="CODEMP" class="java.lang.Integer">
-		<defaultValueExpression><![CDATA[new Integer(3)]]></defaultValueExpression>
+	<parameter name="CODEMP" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Integer(7)]]></defaultValueExpression>
 	</parameter>
-	<parameter name="CODFILIAL" class="java.lang.Integer">
+	<parameter name="CODFILIAL" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
 	<queryString>
@@ -31,12 +31,11 @@
 codfabprod, coalesce(codbarprod,0) codbarprod, ativoprod  from eqrelpepssp(?,?,?,?,?,?,?,?,?,?,?,?,?,'N',? )
  where ativoprod in  ('S')  order by  descprod]]>
 	</queryString>
-	<field name="CODEMP" class="java.lang.Integer"/>
-	<field name="CODFILIAL" class="java.lang.Integer"/>
+	<field name="REFPROD" class="java.lang.String"/>
 	<field name="CODPROD" class="java.lang.Integer"/>
 	<field name="DESCPROD" class="java.lang.String"/>
 	<field name="SLDPROD" class="java.math.BigDecimal"/>
-	<field name="CUSTO" class="java.math.BigDecimal"/>
+	<field name="CUSTOUNIT" class="java.math.BigDecimal"/>
 	<field name="CUSTOTOT" class="java.math.BigDecimal"/>
 	<variable name="VALORTOTALTOT" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{CUSTOTOT}]]></variableExpression>
@@ -233,7 +232,7 @@ codfabprod, coalesce(codbarprod,0) codbarprod, ativoprod  from eqrelpepssp(?,?,?
 				<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{CUSTO}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{CUSTOUNIT}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-17" x="372" y="1" width="50" height="14"/>
