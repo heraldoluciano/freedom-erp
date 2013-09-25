@@ -106,7 +106,7 @@ public class FRPagarAberto extends FRelatorio implements FocusListener {
 		sql.append(", max(datasublanca) dtpagoitpag ");
 		sql.append("from fnpagar p, cpforneced f, fnitpagar ip ");
 		sql.append("left outer join fnsublanca sl ");
-		sql.append("on sl.codemprc=ip.codemp and sl.codfilialpg=ip.codfilial and sl.codpag=ip.codpag ");
+		sql.append("on sl.codemppg=ip.codemp and sl.codfilialpg=ip.codfilial and sl.codpag=ip.codpag ");
 		sql.append("and sl.nparcpag=ip.nparcpag and sl.datasublanca<=? and sl.codsublanca<>0 ");
 		sql.append("where p.codemp=ip.codemp and p.codfilial=ip.codfilial and p.codpag=ip.codpag ");
 		sql.append("and ip.codemp=? and ip.codfilial=? and ip.dtitpag <= ? ");
