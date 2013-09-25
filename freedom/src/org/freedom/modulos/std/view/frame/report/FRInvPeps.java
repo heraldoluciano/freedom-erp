@@ -343,15 +343,18 @@ public class FRInvPeps extends FRelatorio {
 			filtros.append( " ( ESTOQUE EM: " );
 			filtros.append( txtData.getVlrString() );
 			filtros.append( " ) " );
+			filtros.append(" ( BASE CÁLC. ");
+			filtros.append(vDescCusto.elementAt( vOpcCusto.indexOf( rgCusto.getVlrString())));
+			filtros.append(" )");
 			if ("S".equals( comestoque )) {
-				filtros.append(  " ( SOMENTE PROD. C/ESTOQUE ) " );
+				filtros.append(  " ( SOMENTE C/ESTOQUE ) " );
 			}
 			if ( cbAtivos.getVlrString().equals( "S" ) ) {
 				sql.append( " ('S') " );
-				filtros.append(  " ( SOMENTE PROD. ATIVOS ) " );
+				filtros.append(  " ( SOMENTE ATIVOS ) " );
 			} else {
 				sql.append( " ('S','N') " );
-				filtros.append(  " ( PRODUTOS ATIVOS E INATIVOS ) " );
+				filtros.append(  " ( ATIVOS E INATIVOS ) " );
 			}
 			sql.append(" order by " );
 			if ("D".equals(rgOrdem.getVlrString())) {
