@@ -321,14 +321,7 @@ public class FRInvPeps extends FRelatorio {
 		String codmarca = "";
 		String codgrup = "";
 		String imprimetexto = "";
-		/*String sSql = "";
-		String sSemEstoq = "";
-		String sCodMarca = "";
-		String sCodGrup = "";
-		String sFiltros1 = "";
-		String sFiltros2 = ""; */
 		int codalmox = 0;
-//		ImprimeOS imp = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -347,10 +340,18 @@ public class FRInvPeps extends FRelatorio {
 			sql.append(" from eqrelpepssp(?,?,?,?,?,?,?,?,?,?,?,?,?,'N',? ) ");
 			sql.append(" where ativoprod in ");
 
+			filtros.append( " ( ESTOQUE EM: " );
+			filtros.append( txtData.getVlrString() );
+			filtros.append( " ) " );
+			if ("S".equals( comestoque )) {
+				filtros.append(  " ( SOMENTE PROD. C/ESTOQUE ) " );
+			}
 			if ( cbAtivos.getVlrString().equals( "S" ) ) {
 				sql.append( " ('S') " );
+				filtros.append(  " ( SOMENTE PROD. ATIVOS ) " );
 			} else {
 				sql.append( " ('S','N') " );
+				filtros.append(  " ( PRODUTOS ATIVOS E INATIVOS ) " );
 			}
 			sql.append(" order by " );
 			if ("D".equals(rgOrdem.getVlrString())) {
@@ -361,8 +362,6 @@ public class FRInvPeps extends FRelatorio {
 			
 //			System.out.println( sql.toString() );
 			try {
-				if ( comestoque.equals( "S" ) )
-					filtros.append(  " ( SOMENTE PROD. C/ESTOQUE ) " );
 				ps = con.prepareStatement( sql.toString() );
 				int param = 1;
 				ps.setInt( param++, Aplicativo.iCodEmp );
