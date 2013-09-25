@@ -37,7 +37,7 @@
         , max(datasublanca) dtpagoitpag
         from fnpagar p, cpforneced f, fnitpagar ip
         left outer join fnsublanca sl
-        on sl.codemprc=ip.codemp and sl.codfilialpg=ip.codfilial and sl.codpag=ip.codpag
+        on sl.codemppg=ip.codemp and sl.codfilialpg=ip.codfilial and sl.codpag=ip.codpag
         and sl.nparcpag=ip.nparcpag and sl.datasublanca<='30.09.2013' and sl.codsublanca<>0
         where p.codemp=ip.codemp and p.codfilial=ip.codfilial and p.codpag=ip.codpag
         and ip.codemp=7 and ip.codfilial=1 and ip.dtitpag <= '30.09.2013'
