@@ -347,7 +347,12 @@ public class FOPFase extends FDetalhe implements PostListener, CancelListener, I
 
 		} catch ( Exception err ) {
 			err.printStackTrace();
-			Funcoes.mensagemErro( this, "Erro ao atualizar quantidade produzida na OP.!\n", true, con, err );
+			try {
+				con.rollback();
+			} catch (SQLException err2) {
+				err2.printStackTrace();
+			}
+			Funcoes.mensagemErro( this, "Erro ao atualizar quantidade produzida na OP.!\n" + err.getMessage() );
 		} finally {
 			ps = null;
 			sql = null;
