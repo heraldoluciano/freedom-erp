@@ -502,6 +502,9 @@ public class FOPFase extends FDetalhe implements PostListener, CancelListener, I
 					result = false;
 				}
 			}
+			rs.close();
+			ps.close();
+			con.commit();
 		} catch (SQLException e) {
 			result = false;
 			Funcoes.mensagemErro( this, "Erro consistindo lote!\n"+e.getMessage() );
