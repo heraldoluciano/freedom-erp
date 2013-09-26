@@ -483,6 +483,32 @@ public class FOPFase extends FDetalhe implements PostListener, CancelListener, I
 
 	}
 
+	private boolean consistLote() {
+		boolean result = true;
+		StringBuilder sql = new StringBuilder();
+		sql.append("select pd.cloteprod, op.codlote from eqproduto pd, ppop op ");
+		sql.append("where op.codemp=? and op.codfilial=? and op.codop=? and op.seqop=? ");
+		sql.append("and pd.codemp=op.codemppd and pd.codfilial=op.codfilialpd and pd.codprod=op.codprod ");
+		try {
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
+			int param = 1;
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "PPOP" ) );
+			ps.setInt( param++, txtCodOP.getVlrInteger().intValue() );
+			ps.setInt( param++, txtSeqOP.getVlrInteger().intValue() );
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				if ("S".equals(rs.getString( "cloteprod" )) && (rs.getString( "codlote" )==null || "".equals( rs.getString( "codlote" ).trim() ))) {
+					result = false;
+				}
+			}
+		} catch (SQLException e) {
+			result = false;
+			Funcoes.mensagemErro( this, "Erro consistindo lote!\n"+e.getMessage() );
+		}
+		return result;
+	}
+	
 	public void beforePost( PostEvent pevt ) {
 
 		if ( pevt.getListaCampos() == lcDet ) {
@@ -503,6 +529,11 @@ public class FOPFase extends FDetalhe implements PostListener, CancelListener, I
 					return;
 				}
 			
+				if (!consistLote()) {
+					Funcoes.mensagemInforma( this, "Lote é obrigatório !" );
+					pevt.cancela();
+					return;
+				}
 				//  getBloqQtdProd( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPESTRUTURA" ), txtCodProd.getVlrInteger(), iSeqEst );
 				String bloqqtdprod =  paramEstrutura.get( "bloqqtdprod" );
 				
