@@ -39,7 +39,7 @@ public class DLConsultaBaixaPagamento extends DLConsultaBaixa {
 	@ Override
 	public String getSqlSelect() {
 		StringBuilder sSQL = new StringBuilder();
-		sSQL.append( "SELECT S.DATASUBLANCA, (S.VLRSUBLANCA * -1) as VLRSUBLANCA ,S.HISTSUBLANCA " );
+		sSQL.append( "SELECT S.DATASUBLANCA, S.VLRSUBLANCA ,S.HISTSUBLANCA " );
 		sSQL.append( "FROM FNSUBLANCA S, FNLANCA L WHERE S.CODLANCA=L.CODLANCA " );
 		sSQL.append( "AND S.CODEMP=L.CODEMP AND S.CODFILIAL=L.CODFILIAL " );
 		sSQL.append( "AND S.CODPAG=? AND S.NPARCPAG=? AND S.CODEMP=? " );
