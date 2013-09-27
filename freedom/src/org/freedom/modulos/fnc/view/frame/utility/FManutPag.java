@@ -2683,30 +2683,30 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 		ps.close();
 
 		sqlLanca.append("INSERT INTO FNLANCA (TIPOLANCA,CODEMP,CODFILIAL,CODLANCA, ");
-		sqlLanca.append("CODEMPPN,CODFILIALPN,CODPLAN,DTCOMPLANCA,DATALANCA,DOCLANCA, ");
+		sqlLanca.append("DTCOMPLANCA,DATALANCA,DOCLANCA, ");
 		sqlLanca.append("HISTBLANCA,DTPREVLANCA, CODEMPPN,CODFILIALPN,CODPLAN, VLRLANCA) ");
-		sqlLanca.append("VALUES ('F', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0 )");
-
+		sqlLanca.append("VALUES ('F', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0 )");
+		int param = 1;
 		ps = con.prepareStatement( sqlLanca.toString() );
-		ps.setInt( 1, Aplicativo.iCodEmp );
-		ps.setInt( 2, Aplicativo.iCodFilial );
-		ps.setInt( 3, codlanca );
+		ps.setInt( param++, Aplicativo.iCodEmp );
+		ps.setInt( param++, Aplicativo.iCodFilial );
+		ps.setInt( param++, codlanca );
 
-		ps.setInt( 4, Aplicativo.iCodEmp );
-		ps.setInt( 5, ListaCampos.getMasterFilial( "FNCONTA" ) );
-		ps.setString( 6, sRets[1] );
+		/*ps.setInt( param++, Aplicativo.iCodEmp );
+		ps.setInt( param++, ListaCampos.getMasterFilial( "FNCONTA" ) );
+		ps.setString( param++, sRets[1] );
+*/
+		ps.setDate( param++, Funcoes.dateToSQLDate( dtCompLanca ) );
+		ps.setDate( param++, Funcoes.strDateToSqlDate( sRets[ 3 ] ) );
 
-		ps.setDate( 7, Funcoes.dateToSQLDate( dtCompLanca ) );
-		ps.setDate( 8, Funcoes.strDateToSqlDate( sRets[ 3 ] ) );
+		ps.setString( param++, sRets[ 2 ] );
+		ps.setString( param++, sRets[ 7 ] );
 
-		ps.setString( 9, sRets[ 2 ] );
-		ps.setString( 10, sRets[ 7 ] );
+		ps.setDate( param++, Funcoes.strDateToSqlDate( sRets[ 3 ] ) );
 
-		ps.setDate( 11, Funcoes.strDateToSqlDate( sRets[ 3 ] ) );
-
-		ps.setInt( 12, codEmpPlan );
-		ps.setInt( 13, codFilialPlan );
-		ps.setString( 14, codPlan );
+		ps.setInt( param++, codEmpPlan );
+		ps.setInt( param++, codFilialPlan );
+		ps.setString( param++, codPlan );
 
 		ps.executeUpdate();
 
