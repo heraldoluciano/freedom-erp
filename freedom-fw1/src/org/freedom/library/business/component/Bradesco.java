@@ -256,8 +256,8 @@ public class Bradesco extends Banco {
 		//result.append( getCarteiraBanco().substring(0, 1));
 		String tmpNossoNumero = getNossoNumero();
 		int tanNossoNumero = tmpNossoNumero.length();
-		if (tanNossoNumero>10) {
-			result.append(tmpNossoNumero.substring(tanNossoNumero-10));
+		if (tanNossoNumero>11) {
+			result.append(tmpNossoNumero.substring(tanNossoNumero-11));
 		} else {
 			result.append(tmpNossoNumero);
 		}
