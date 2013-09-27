@@ -43,7 +43,7 @@ public class DLConsultaBaixaPagamento extends DLConsultaBaixa {
 		sSQL.append( "FROM FNSUBLANCA S, FNLANCA L WHERE S.CODLANCA=L.CODLANCA " );
 		sSQL.append( "AND S.CODEMP=L.CODEMP AND S.CODFILIAL=L.CODFILIAL " );
 		sSQL.append( "AND S.CODPAG=? AND S.NPARCPAG=? AND S.CODEMP=? " );
-		sSQL.append( "AND S.CODFILIAL=? AND S.CODSUBLANCA=0 " );
+		sSQL.append( "AND S.CODFILIAL=? " );
 		sSQL.append( "ORDER BY DATASUBLANCA" );
 		return sSQL.toString();
 	}
