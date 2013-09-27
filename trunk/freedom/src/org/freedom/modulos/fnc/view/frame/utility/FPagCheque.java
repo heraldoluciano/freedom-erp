@@ -1027,7 +1027,7 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 			sqlins.append( seqcheq );
 			sqlins.append( " SEQCHEQ, 0 NUMCHEQ, CT.AGENCIACONTA AGENCIACHEQ, '");
 			sqlins.append( numconta.trim() );
-			sqlins.append( "' CONTACHEQ, F.RAZFILIAL NOMEEMITCHEQ, FR.RAZFOR NOMEFAVCHEQ, ");
+			sqlins.append( "' CONTACHEQ, F.RAZFILIAL NOMEEMITCHEQ, substring(FR.RAZFOR from 1 for 50) NOMEFAVCHEQ, ");
 			sqlins.append( vlrcheque );
 			sqlins.append( " VLRCHEQ, ");
 			sqlins.append( histcheq.toString() );
