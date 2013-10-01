@@ -1245,7 +1245,9 @@ public class RegT400 extends Reg {
 			line.append( CnabUtil.dateToString( getDtEmitTit(), "DDMMAA" ) ); // Posição 151 a 156 - Data de emissão do título
 			
 			line.append( format( getCodProtesto(), ETipo.$9, 2, 0 ) ); // Posição 157 a 158 - 1° Instrução - Código para juros
-			line.append( StringFunctions.strZero( getDiasProtesto() + "", 2 ) ); // Posição 159 a 160 - 2° Instrução - Numero de dias para protesto
+			// Segunda instrução de protesto deverá ir em branco temporariamente
+			line.append( format( "", ETipo.$9, 2, 0 ) ); // Posição 159 a 160 - 2° Instrução
+			//line.append( StringFunctions.strZero( getDiasProtesto() + "", 2 ) ); // Posição 159 a 160 - 2° Instrução - Numero de dias para protesto
 			
 			if ( (getCodJuros() == 1) || (getCodJuros() ==2 ) ) { // Se Juros/Mora diária
 				line.append( format( calcVlrJuros(getCodJuros(), getVlrTitulo(), getVlrJurosTaxa()), ETipo.$9, 13, 2 ) ); // Posição 161 a 173 - (se for do tipo mora diária) Mora por dia de atraso
@@ -1269,7 +1271,9 @@ public class RegT400 extends Reg {
 			line.append( format( getRazAva(), ETipo.X, 30, 0 ) );// Posição 352 a 381
 			line.append( format( "", ETipo.X, 4, 0 ) );// Posição 382 a 385
 			line.append( format( "", ETipo.$9, 6, 0 ) );// Posição 386 a 391
-			line.append( format( "", ETipo.$9, 2, 0 ) );// Posição 392 a 393
+			line.append( StringFunctions.strZero( getDiasProtesto() + "", 2 ) ); // Posição 392 a 393 Dias para protesto
+			//line.append( format( "", ETipo.$9, 2, 0 ) );// Posição 392 a 393 Dias para protesto
+			
 			line.append( " " );// Posição 394 a 394 Complemento brancos
 			line.append( format( getSeqregistro(), ETipo.$9, 6, 0 ) );// Posição 395 a 400 - Não Sequencial do registro
 			
