@@ -366,7 +366,7 @@ public class FreedomSTD extends AplicativoPD {
 		addSeparador( 100500000 );
 		addOpcao( 100500000, TP_OPCAO_ITEM, "Empresa", "Empresa", 'E', 100560000, 2, true, FEmpresa.class );
 		addSeparador( 100500000 );
-		addOpcao( 100500000, TP_OPCAO_ITEM, "Proxy web", "Proxy web", 'E', 100560000, 2, true, FProxyWeb.class );
+		addOpcao( 100500000, TP_OPCAO_ITEM, "Proxy web", "Proxy web", 'E', 100570000, 2, true, FProxyWeb.class );
 		
 
 		addOpcao( -1, TP_OPCAO_MENU, "Entrada", "", 'E', 200000000, 0, false, null );
