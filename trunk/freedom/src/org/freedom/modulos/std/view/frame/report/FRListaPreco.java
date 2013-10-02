@@ -28,6 +28,7 @@ import java.awt.GridLayout;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Vector;
 
@@ -141,6 +142,8 @@ public class FRListaPreco extends FRelatorio {
 	private JCheckBoxPad cbSinalizarAlterados = new JCheckBoxPad( "Sinalizar alterados", "S", "N" );
 
 	private JTextFieldPad txtNroDiasAlt = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 2, 0 );
+	
+	private JTextFieldPad txtValidade = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JRadioGroup<?, ?> rgTipo = null;
 
@@ -340,6 +343,8 @@ public class FRListaPreco extends FRelatorio {
 		pinTipo.adic( rgOrdem, 300, 22, 270, 30 );
 		pinTipo.adic( new JLabelPad( "Cadastro para:" ), 20, 55, 100, 15 );
 		pinTipo.adic( rgCV, 20, 72, 270, 30 );
+		pinTipo.adic( new JLabelPad( "Validade:" ), 300, 55, 100, 15 );
+		pinTipo.adic( txtValidade, 300, 72, 100, 20 );
 		
 
 		// pinOpt.setBorder( SwingParams.getPanelLabel( "Opções de filtros" ) );
@@ -422,6 +427,11 @@ public class FRListaPreco extends FRelatorio {
 		pinPlan.adic( txtCodPlanoPag7, 7, 140, 80, 20 );
 		pinPlan.adic( new JLabelPad( "Descrição do plano de pgto. (7)" ), 90, 120, 250, 20 );
 		pinPlan.adic( txtDescPlanoPag7, 90, 140, 200, 20 );
+		
+		// Ajustando a data de validade
+		//Calendar cal = Calendar.getInstance();
+		//cal.add( Calendar.MONTH, 1 );
+		
 
 	}
 
@@ -685,6 +695,7 @@ public class FRListaPreco extends FRelatorio {
 
 		try {
 
+			String validade = txtValidade.getVlrString();
 			hParam.put( "RAZAOEMP", Aplicativo.sNomeFilial );
 			hParam.put( "DESCPLANOPAG", txtDescPlanoPag1.getVlrString().trim() );
 			hParam.put( "DESCGRUPO", txtDescGrup.getVlrString().trim() );
@@ -696,6 +707,7 @@ public class FRListaPreco extends FRelatorio {
 			hParam.put( "SEÇÃO", txtDescSecao.getVlrString().trim() );
 			hParam.put( "COMREF", new Boolean( comRef() ) );
 			hParam.put( "DESTAQUE", new Boolean( "S".equals( cbSinalizarAlterados.getVlrString().trim() ) ) );
+			hParam.put( "VALIDADE", validade );
 			
 //			if ( comRef() )
 //				sCodRel = "REFPROD";

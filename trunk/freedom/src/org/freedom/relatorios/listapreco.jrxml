@@ -2,8 +2,8 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="listapreco" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="192"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -52,6 +52,9 @@
 		<defaultValueExpression><![CDATA[new Boolean(true)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="COMREF" class="java.lang.Boolean" isForPrompting="false"/>
+	<parameter name="VALIDADE" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[SELECT PP.CODPROD, P.DESCPROD, P.REFPROD, P.CODFABPROD, P.CODUNID, PP.PRECOPROD, P.SLDPROD,P.QTDEMBALAGEM, P.CODBARPROD,
 (select aliqipifisc from LFBUSCAFISCALSP(P.CODEMP,P.CODFILIAL,P.CODPROD,P.CODEMP,NULL,NULL,P1.codempT3,P1.codfilialt3,P1.CODTIPOMOV3)) AS ALIQIPI,
@@ -297,7 +300,7 @@ ORDER BY PP.CODPROD]]>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{DESCCLASCLI}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement key="staticText-10" positionType="Float" mode="Transparent" x="94" y="48" width="78" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement key="staticText-10" positionType="Float" mode="Transparent" x="94" y="48" width="92" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -310,7 +313,7 @@ ORDER BY PP.CODPROD]]>
 				<text><![CDATA[Tabela de preço :]]></text>
 			</staticText>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement key="textField-23" mode="Transparent" x="175" y="48" width="176" height="12" forecolor="#000000" backcolor="#FFFFFF">
+				<reportElement key="textField-23" mode="Transparent" x="188" y="48" width="176" height="12" forecolor="#000000" backcolor="#FFFFFF">
 					<printWhenExpression><![CDATA[new Boolean( ($P{DESCTABPRECO}!=null) && (!("".equals($P{DESCTABPRECO}))) )]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -420,6 +423,21 @@ ORDER BY PP.CODPROD]]>
 					<printWhenExpression><![CDATA[new Boolean("S".equals($P{IMPQTDEMB}))]]></printWhenExpression>
 				</reportElement>
 			</line>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement key="textField-22" mode="Transparent" x="375" y="48" width="160" height="12" forecolor="#000000" backcolor="#FFFFFF">
+					<printWhenExpression><![CDATA[(!"".equals($P{VALIDADE}))]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+					<font fontName="SansSerif" size="9" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Preços válidos até "+$P{VALIDADE}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<columnHeader>
