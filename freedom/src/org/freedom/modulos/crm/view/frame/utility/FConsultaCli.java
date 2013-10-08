@@ -572,6 +572,9 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 
 			rs = ps.executeQuery();
 
+			txtUltimaCompra.setVlrString("");
+			txtVlrUltimaCompra.setVlrString( "" );
+			
 			if ( rs.next() ) {
 				txtUltimaCompra.setVlrDate( Funcoes.sqlDateToDate( rs.getDate( "DTEMITVENDA" ) ) );
 				txtVlrUltimaCompra.setVlrBigDecimal( rs.getBigDecimal( "VLRLIQVENDA" ) );
@@ -610,6 +613,9 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 			ps.setDate( 7, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
 		
 			rs = ps.executeQuery();
+			
+			txtTotalCompras.setVlrString( "" );
+			txtTotalAberto.setVlrString( "" );
 
 			if ( rs.next() ) {
 				
