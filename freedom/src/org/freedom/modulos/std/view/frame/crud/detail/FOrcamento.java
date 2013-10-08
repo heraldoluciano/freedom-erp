@@ -91,6 +91,7 @@ import org.freedom.library.swing.component.JTablePad;
 import org.freedom.library.swing.component.JTextAreaPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
+import org.freedom.library.swing.component.Navegador;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.util.SwingParams;
@@ -3450,6 +3451,14 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	public void mouseExited( MouseEvent e ) {
 
 		
+	}
+	
+	public void setAtivaNavegacao(boolean ativar) {
+		nav.setAtivo( Navegador.BT_ANTERIOR, ativar );
+		nav.setAtivo( Navegador.BT_PROXIMO, ativar );
+		nav.setAtivo( Navegador.BT_PRIMEIRO, ativar );
+		nav.setAtivo( Navegador.BT_ULTIMO, ativar );
+		txtCodOrc.setEnabled( ativar );
 	}
 
 }

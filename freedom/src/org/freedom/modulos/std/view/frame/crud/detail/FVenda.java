@@ -1501,6 +1501,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			}
 			else {
 				tela = new FOrcamento();
+				tela.setAtivaNavegacao( false );
 				Aplicativo.telaPrincipal.criatela( "Orçamento", tela, con );
 			}
 			tela.exec( (Integer) tabOrcamentos.getValor( tabOrcamentos.getLinhaSel(), ORCAMENTO.CODORCAMENTO.ordinal() ) );
