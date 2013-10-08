@@ -53,6 +53,7 @@ import org.freedom.acao.InsertListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.bmps.Icone;
+import org.freedom.infra.beans.Usuario;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
@@ -116,6 +117,8 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 	private JCheckBoxPad cbLiberaCampoPesagem = new JCheckBoxPad( "Libera campo pesagem", "S", "N" );
 
 	private JCheckBoxPad cbAprovOrdCP = new JCheckBoxPad( "Aprova ordens de compra", "S", "N" );
+	
+	private JCheckBoxPad cbCadOutUsu = new JCheckBoxPad("Cadastra outros usuários", "S", "N");
 
 	private JList lsDisp = new JList();
 
@@ -324,6 +327,8 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 		adicDB( cbAbreGaveta, 4, 60, 180, 20, "AbreGavetaUsu", "", false );
 		adicDB( cbAlmoxarife, 4, 80, 180, 20, "AlmoxarifeUsu", "", false );
 		adicDB( cbCompra, 4, 100, 200, 20, "ComprasUsu", "", false );
+		adicDB( cbCadOutUsu, 4, 120, 200, 20, "CadOutUsu", "", true );
+		
 		adicDB( cbAtivCli, 200, 00, 200, 20, "AtivCli", "", true );
 		adicDB( cbLiberaCred, 200, 20, 200, 20, "LiberaCredUsu", "", true );
 		adicDB( cbCancelaOP, 200, 40, 250, 20, "CancelaOP", "", false );
@@ -539,7 +544,7 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 		String sSep = null;
 		String sSqlI = null;
 		String sSqlD = null;
-		String sSqlG = null;
+		StringBuilder sqlg = new StringBuilder();
 
 		PreparedStatement ps = null;
 
@@ -576,10 +581,23 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 				ps.close();
 				con.commit();
 			}
-
-			sSqlG = "GRANT " + txtIDGrpUsu.getVlrString().trim() + " TO USER \"" + txtIDUsu.getVlrString().trim() + "\"";
-
-			ps = con.prepareStatement( sSqlG );
+	
+			//alter user freedom grant admin role
+			
+			if ("S".equals(cbCadOutUsu.getVlrString())) {
+				sqlg.append("alter user ");
+				sqlg.append( txtIDUsu.getVlrString().trim() );
+				sqlg.append(" grant admin role");
+			} else {
+				sqlg.append("GRANT ");
+//				sqlg.append(" ,");
+//				sqlg.append( Usuario.role_adm );
+				sqlg.append(txtIDGrpUsu.getVlrString().trim());
+				sqlg.append( " TO USER \"");
+				sqlg.append( txtIDUsu.getVlrString().trim() );
+				sqlg.append( "\"");
+			}
+			ps = con.prepareStatement( sqlg.toString() );
 
 			ps.executeUpdate();
 
@@ -593,7 +611,6 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 			sSep = null;
 			sSqlI = null;
 			sSqlD = null;
-			sSqlG = null;
 			ps = null;
 		}
 	}
@@ -714,6 +731,10 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 		cbAcesOpBtRetorno.setVlrString( "S" );
 		cbAcesOpBtVeritens.setVlrString( "S" );
 		cbAprovOrdCP.setVlrString( "N" );
+		cbCadOutUsu.setVlrString( "N" );
+		if (Aplicativo.FIREBIRD_15.equals( Aplicativo.strFbVersao )) {
+			cbCadOutUsu.setEnabled( false );
+		}
 
 	}
 

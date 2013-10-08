@@ -27,6 +27,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Vector;
+
+import org.freedom.infra.beans.Usuario;
 import org.freedom.infra.functions.SystemFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
@@ -48,6 +50,7 @@ public class LoginPD extends Login implements ActionListener, FocusListener {
 		StringBuilder sql = new StringBuilder();
 		DbConnection conRet = null;
 		Integer nrconexao = null;
+		StringBuilder role_name = new StringBuilder();
 
 		if (conLogin == null)
 			return null;
@@ -65,11 +68,11 @@ public class LoginPD extends Login implements ActionListener, FocusListener {
 				}
 			}
 
-			sql.append("SELECT G.IDGRPUSU, U.ATIVOUSU, U.IDUSU, ");
-			sql.append("current_connection nrconexao ");
-			sql.append("FROM SGGRPUSU G, SGUSUARIO U ");
-			sql.append("WHERE G.IDGRPUSU=U.IDGRPUSU AND G.CODEMP=U.CODEMPIG AND ");
-			sql.append("G.CODFILIAL=U.CODFILIALIG AND U.IDUSU=? ");
+			sql.append("select g.idgrpusu, u.ativousu, u.idusu, ");
+			sql.append("current_connection nrconexao, u.cadoutusu ");
+			sql.append("from sggrpusu g, sgusuario u ");
+			sql.append("where g.idgrpusu=u.idgrpusu and g.codemp=u.codempig and ");
+			sql.append("g.codfilial=u.codfilialig and u.idusu=? ");
 
 			ps = conLogin.prepareStatement(sql.toString());
 			ps.setString(1, txtUsuario.getVlrString().trim().toLowerCase());
@@ -77,13 +80,18 @@ public class LoginPD extends Login implements ActionListener, FocusListener {
 
 			if (rs.next()) {
 				System.out.println("IDGRUP = " + rs.getString("IDGRPUSU"));
-				props.put("sql_role_name", rs.getString("IDGRPUSU"));
+				if ("S".equals(rs.getString("CADOUTUSU"))) {
+					//role_name.append(", ");
+					role_name.append(Usuario.role_adm);
+				} else {
+					role_name.append( rs.getString("IDGRPUSU").trim() );
+				}
+				props.put("sql_role_name", role_name.toString());
 				//props.put("role", rs.getString("IDGRPUSU").toLowerCase());
 				nrconexao = rs.getInt("nrconexao");
 				if ("N".equals(rs.getString("ATIVOUSU"))) {
 					throw new Exception("O usuário " + rs.getString("IDUSU") + " está inativo!");
 				}
-
 				rs.close();
 				ps.close();
 				conLogin.close();
