@@ -902,6 +902,7 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 		int iCodOrc = ( (Integer) tab.getValor( tab.getLinhaSel(), 1 ) ).intValue();
 		if ( fPrim.temTela( "Orcamento" ) == false ) {
 			FOrcamento tela = new FOrcamento();
+			tela.setTelaPrim( fPrim );
 			fPrim.criatela( "Orcamento", tela, con );
 			tela.exec( iCodOrc );
 		}
