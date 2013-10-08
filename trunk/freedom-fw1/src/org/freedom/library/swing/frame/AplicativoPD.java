@@ -299,7 +299,7 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 		 sql.append(" , ativousu, visualizalucr, liberacampopesagem,");
 		 sql.append("  aprovordcp, acesopbtcadlote, acesopbtrma, acesopbtqualid");
 		 sql.append("  , acesopbtdistr, acesopbtfase, acesopbtcanc, acesopbtsubprod");
-		 sql.append("  , acesopbtremessa, acesopbtretorno, acesopveritens");
+		 sql.append("  , acesopbtremessa, acesopbtretorno, acesopveritens, cadoutusu");
 		 sql.append("  , dtins, hins, idusuins, dtalt, halt, idusualt ");
 		 sql.append("  from sgusuario");
 		 sql.append(" where codemp=? and codfilial=? and idusu=? ");
@@ -366,6 +366,7 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 				getUsuario().setAcesopbtremessa( rs.getString("acesopbtremessa") );
 				getUsuario().setAcesopbtretorno( rs.getString("acesopbtretorno") );
 				getUsuario().setAcesopveritens( rs.getString("acesopveritens") );
+				getUsuario().setCadoutusu( rs.getString("cadoutusu") );
 				getUsuario().setDtins( Funcoes.sqlDateToDate(rs.getDate("dtins")) );
 				getUsuario().setHins( rs.getString("hins") );
 				getUsuario().setIdusuins( rs.getString("idusuins") );

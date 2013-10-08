@@ -79,6 +79,7 @@ public class Usuario {
 	private String acesopbtremessa;
 	private String acesopbtretorno;
 	private String acesopveritens;
+	private String cadoutusu;
 	private Date dtins;
 	private String hins;
 	private String idusuins;
@@ -86,6 +87,8 @@ public class Usuario {
 	private String halt;
 	private String idusualt;
 	private String senha;
+	
+	public static String role_adm = "RDB$ADMIN";
 	
 	public Integer getCodemp() {
 		return codemp;
@@ -419,6 +422,12 @@ public class Usuario {
 	}
 	public void setAcesopveritens(String acesopveritens) {
 		this.acesopveritens = acesopveritens;
+	}
+	public String getCadoutusu() {
+		return cadoutusu;
+	}
+	public void setCadoutusu(String cadoutusu) {
+		this.cadoutusu = cadoutusu;
 	}
 	public void setDtins(Date dtins) {
 		this.dtins = dtins;
