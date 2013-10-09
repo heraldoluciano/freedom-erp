@@ -1292,10 +1292,12 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		vLabs1.addElement("Por Codigo");
 		vLabs1.addElement("Por Descrição");
 		vLabs1.addElement("Por Marca");
+		vLabs1.addElement("Por Nro. Item");
 		vVals1.addElement("C");
 		vVals1.addElement("D");
 		vVals1.addElement("M");
-		rgOrdNota = new JRadioGroup<String, String>(3, 1, vLabs1, vVals1);
+		vVals1.addElement("I");
+		rgOrdNota = new JRadioGroup<String, String>(2, 2, vLabs1, vVals1);
 		rgOrdNota.setVlrString("C");
 
 		Vector<String> vLabs2 = new Vector<String>();
@@ -1523,7 +1525,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		setPainel(pinVenda);
 		adicTab("Venda", pinVenda);
 
-		adicDB(rgOrdNota, 7, 25, 160, 80, "OrdNota", " Ordem de Emissão", true);
+		adicDB(rgOrdNota, 7, 25, 320, 80, "OrdNota", " Ordem de Emissão", true);
 
 		adicCampo(txtCodTipoMov3, 7, 130, 75, 20, "CodTipoMov3", "Cód.tp.mov", ListaCampos.DB_FK, txtDescTipoMov3, false);
 		adicDescFK(txtDescTipoMov3, 85, 130, 250, 20, "DescTipoMov", "Tipo de movimento para pedido.");
