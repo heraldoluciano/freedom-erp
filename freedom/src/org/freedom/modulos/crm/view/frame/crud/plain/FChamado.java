@@ -247,7 +247,7 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 
 		adicCampoInvisivel( txtCodTpChamado, "CodTpChamado", "", ListaCampos.DB_FK, false );
 
-		adicDB( cbTpChamado				, 433	, 20	, 190	, 20, "CodTpChamado", "Tipo de chamado", false );
+		adicDB( cbTpChamado				, 433	, 20	, 190	, 22, "CodTpChamado", "Tipo de chamado", true );
 
 		adicCampo( txtCodCli			, 7		, 60	, 80	, 20, "CodCli", "Cód.Cli.", ListaCampos.DB_FK, txtRazCli, true );
 		adicDescFK( txtRazCli			, 90	, 60	, 280	, 20, "RazCli", "Razão social do cliente" );
@@ -264,13 +264,13 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 		adicCampo( txtDtPrevisao		, 90	, 140	, 80	, 20, "DtPrevisao", "Dt.Previsão", ListaCampos.DB_SI, true );
 		adicCampo( txtQtdHorasPrev		, 173	, 140	, 60	, 20, "QtdHorasPrevisao", "Qtd.Prev.", ListaCampos.DB_SI, true );
 
-		adicDB( cbPrioridade			, 236	, 140	, 110	, 20, "prioridade", "Prioridade", false );
+		adicDB( cbPrioridade			, 236	, 140	, 110	, 22, "prioridade", "Prioridade", true );
 
 		adicCampo( txtDtConclusao		, 349	, 140	, 80	, 20, "DtConclusao", "Dt.Conclusão", ListaCampos.DB_SI, false );
 
 		adicDB( cbStatus				, 433	, 140	, 190	, 20, "Status", "Status", false );
 
-		adicCampo( txtCodAtend			, 7		, 180	, 80	, 20, "CodAtend", "Cód.Atend.", ListaCampos.DB_FK, txtNomeAtend, false );
+		adicCampo( txtCodAtend			, 7		, 180	, 80	, 20, "CodAtend", "Cód.Atend.", ListaCampos.DB_FK, txtNomeAtend, true );
 		adicDescFK( txtNomeAtend		, 90	, 180	, 256	, 20, "NomeAtend", "Nome do atendente designado" );
 
 		adicCampo( txtCodQualific		, 349	, 180	, 80	, 20, "CodQualific", "Cód.Qualific.", ListaCampos.DB_FK, txtDescQualific, false );
@@ -278,7 +278,7 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 		
 		txtDtConclusao.setEditable( false );
 
-		adicDBLiv( txaDetChamado, "DetChamado", "Detalhamamento", false );
+		adicDBLiv( txaDetChamado, "DetChamado", "Detalhamamento", true );
 		adicDBLiv( txaObsChamado, "ObsChamado", "Observações", false );
 		adicDBLiv( txaAmbiente, "Ambiente", "Ambiente", false );
 		adicDBLiv( txaFatoGerador, "FatoGerador", "Fato gerador", false );
@@ -893,8 +893,17 @@ public class FChamado extends FDados implements ActionListener, JComboBoxListene
 	}
 
 	public void beforePost( PostEvent pevt ) {
-		if ( lcCampos.getStatus() == ListaCampos.LCS_INSERT ) {
-				txtCodChamado.setVlrInteger( Integer.parseInt( lcCampos.getNovoCodigo().trim()) );
+		if (pevt.getListaCampos()==lcCampos) {
+			if ( lcCampos.getStatus() == ListaCampos.LCS_INSERT ) {
+					txtCodChamado.setVlrInteger( Integer.parseInt( lcCampos.getNovoCodigo().trim()) );
+			}
+			if (cbTpChamado.getSelectedIndex()==0) {
+				pevt.cancela();
+				Funcoes.mensagemInforma( this, "Tipo de chamado obrigatório!" );
+				if (cbTpChamado.isFocusable()) {
+					cbTpChamado.requestFocus();
+				}
+			}
 		}
 	}
 	
