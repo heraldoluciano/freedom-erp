@@ -604,6 +604,20 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 			ps.close();
 
 			con.commit();
+			
+			sqlg.delete( 0, sqlg.length() );
+			if ("S".equals(cbCadOutUsu.getVlrString())) {
+				sqlg.append( "grant ");
+				sqlg.append( Usuario.role_adm );
+				sqlg.append(" to user ");
+				sqlg.append( txtIDUsu.getVlrString().trim() );
+				ps = con.prepareStatement( sqlg.toString() );
+				ps.executeUpdate();
+				ps.close();
+				con.commit();
+			}
+			
+			
 		} catch ( SQLException err ) {
 			err.printStackTrace();
 			Funcoes.mensagemInforma( this, "Erro ao cadastrar o acesso!\n" + err.getMessage() );
