@@ -712,7 +712,11 @@ public class SaidaVO {
 		saida.append(EbsContabil.format(getValorPIS(), 12, 2));
 		saida.append(EbsContabil.format(getValorCOFINS(), 12, 2));
 		saida.append(EbsContabil.format(getValorCSLL(), 12, 2));
-		saida.append(EbsContabil.format(getDataRecebimento()));
+		if (getDataRecebimento()==null) { // Caso não tenha contas a receber (Notas de devolução, bonificação e remessa)
+			saida.append(EbsContabil.format(getDataEmissao()));
+		} else {
+			saida.append(EbsContabil.format(getDataRecebimento()));
+		}
 		saida.append(EbsContabil.format(getOperacaoContabil(), 4));
 		saida.append(EbsContabil.format(getValorMateriais(), 12, 2));
 		saida.append(EbsContabil.format(getValorSubEmpreitada(), 12, 2));
