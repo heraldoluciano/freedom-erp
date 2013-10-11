@@ -743,16 +743,21 @@ public class EbsContabil extends Contabil {
 		sql.append("tm.codmodnota, tm.especietipomov, c.cnpjcli, c.cpfcli, r.datarec, c.codclicontab, ");
 		sql.append("coalesce(sum(liv.vlrbasepis), 0)  vlrbasepis, coalesce( sum(liv.vlrbasecofins), 0 ) vlrbasecofins, ");
 		sql.append("coalesce(sum(liv.vlrpis),0) vlrpis, coalesce(sum(liv.vlrcofins),0) vlrcofins "); 
-		sql.append("from eqtipomov tm, lfserie s, vdcliente c, fnreceber r, lfmodnota mn, vdvenda v ");
+		sql.append("from vdvenda v ");
+		sql.append("inner join eqtipomov tm on ");
+		sql.append("tm.codemp=v.codemptm and tm.codfilial=v.codfilialtm and tm.codtipomov=v.codtipomov ");
+		sql.append("and tm.fiscaltipomov='S' ");
+		sql.append("inner join lfserie s on ");
+		sql.append("s.codemp=v.codempse and s.codfilial=v.codfilialse and s.serie=v.serie ");
+		sql.append("inner join vdcliente c on ");
+		sql.append("c.codemp=v.codempcl and c.codfilial=v.codfilialcl and c.codcli=v.codcli ");
+		sql.append("inner join lfmodnota mn on "); 
+		sql.append("mn.codemp=tm.codempmn and mn.codfilial=tm.codfilialmn and mn.codmodnota=tm.codmodnota ");
 		sql.append("left outer join lfitvenda liv on ");
 		sql.append("liv.codemp=v.codemp and liv.codfilial=v.codfilial and liv.codvenda=v.codvenda ");
-		sql.append("where v.codemp=? and v.codfilial=? and v.tipovenda='V' and v.dtemitvenda between ? and ? and ");
-		sql.append("tm.codemp=v.codemptm and tm.codfilial=v.codfilialtm and tm.codtipomov=v.codtipomov and ");
-		sql.append("tm.fiscaltipomov='S' and ");
-		sql.append("mn.codemp=tm.codempmn and mn.codfilial=tm.codfilialmn and mn.codmodnota=tm.codmodnota and ");
-		sql.append("s.codemp=v.codempse and s.codfilial=v.codfilialse and s.serie=v.serie and ");
-		sql.append("c.codemp=v.codempcl and c.codfilial=v.codfilialcl and c.codcli=v.codcli and ");
+		sql.append("left outer join fnreceber r on "); 
 		sql.append("r.codempvd=v.codemp and r.codfilialvd=v.codfilial and r.codvenda=v.codvenda and r.tipovenda=v.tipovenda ");
+		sql.append("where v.codemp=? and v.codfilial=? and v.tipovenda='V' and v.dtemitvenda between ? and ? ");
 		sql.append("group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16");
 		sql.append("order by v.docvenda");
 
@@ -783,8 +788,18 @@ public class EbsContabil extends Contabil {
 			saida.setModelo(rs.getInt("codmodnota"));
 			saida.setSerie(rs.getString("SERIE"));
 			saida.setSubSerie(null);
+			//System.out.println(rs.getInt("codvenda"));
+			//System.out.println(rs.getString("tipovenda"));
 			
-			saida.setCfop( Integer.valueOf( this.getCfopVenda(rs.getInt("codvenda"), rs.getString("tipovenda"))) );
+			int codvenda = rs.getInt("codvenda");
+			String tipovenda = rs.getString("tipovenda");
+			String cfop = this.getCfopVenda(codvenda, tipovenda );
+			
+			if (cfop == null) {
+				throw new Exception("Pedido tipo: "+tipovenda+" - Número: "+codvenda+" Não possui CFOP.");
+			}
+
+			saida.setCfop( Integer.valueOf( cfop ) );
 
 			saida.setVariacaoCfop(1); // Se for 0 não não considera para recolhimento de tributos.
 			saida.setClassificacao1(0); // Padrão do Cordilheira
@@ -1308,7 +1323,6 @@ public class EbsContabil extends Contabil {
 		}
 		rsCFOP.close();
 		psCFOP.close();
-		
 		return cfop;
 	}
 	
