@@ -310,7 +310,7 @@ public class FExporta extends FFilho implements ActionListener, FocusListener {
 			( (FreedomContabil) layoutContabil ).execute( con, txtDtIni.getVlrDate(), txtDtFim.getVlrDate() );
 
 		} catch ( Exception e ) {
-			Funcoes.mensagemErro( this, "Erro ao buscar dados para sistema Freedom Contábil!" );
+			Funcoes.mensagemErro( this, "Erro ao buscar dados para sistema Freedom Contábil!\n" + e.getMessage() );
 			e.printStackTrace();
 		}
 	}
@@ -325,7 +325,7 @@ public class FExporta extends FFilho implements ActionListener, FocusListener {
 			erros = ( (SafeContabil) layoutContabil ).execute( con, txtDtIni.getVlrDate(), txtDtFim.getVlrDate() );
 
 		} catch ( Exception e ) {
-			Funcoes.mensagemErro( this, "Erro ao buscar dados para sistema Safe Contábil!" );
+			Funcoes.mensagemErro( this, "Erro ao buscar dados para sistema Safe Contábil!\n"+e.getMessage() );
 			e.printStackTrace();
 		}
 
@@ -342,7 +342,7 @@ public class FExporta extends FFilho implements ActionListener, FocusListener {
 			( (EbsContabil) layoutContabil ).execute( con, txtDtIni.getVlrDate(), txtDtFim.getVlrDate() );
 
 		} catch ( Exception e ) {
-			Funcoes.mensagemErro( this, "Erro ao buscar dados para sistema Cordilheira Contábil!" );
+			Funcoes.mensagemErro( this, "Erro ao buscar dados para sistema Cordilheira Contábil!\n"+e.getMessage() );
 			e.printStackTrace();
 		}
 
