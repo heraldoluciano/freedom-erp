@@ -16,7 +16,9 @@ public class PrazoVO {
 	private String tipoTitulo;
 
 	private Date dtVencimento;
-	
+
+	private Date dtEmissao;
+
 	private BigDecimal vlrParcela;
 	
 	private int sequencial;
@@ -43,6 +45,14 @@ public class PrazoVO {
 
 	public void setTipoTitulo(String tipoTitulo) {
 		this.tipoTitulo = tipoTitulo;
+	}
+
+	public Date getDtEmissao() {
+		return dtEmissao;
+	}
+
+	public void setDtEmissao(Date dtEmissao) {
+		this.dtEmissao = dtEmissao;
 	}
 
 	public Date getDtVencimento() {
@@ -82,7 +92,11 @@ public class PrazoVO {
 		prazo.append(EbsContabil.format(getTipoParcela(),1));
 		prazo.append(EbsContabil.format(getNrFatura(), 9));
 		prazo.append(EbsContabil.format(getTipoTitulo(),2 ));
-		prazo.append(EbsContabil.format(getDtVencimento() ));
+		if (getDtVencimento()==null) { // Caso não exista contas a receber
+			prazo.append(EbsContabil.format(getDtEmissao() ));
+		} else {
+			prazo.append(EbsContabil.format(getDtVencimento() ));
+		}
 		prazo.append(EbsContabil.format(getVlrParcela(), 12, 2 ));
 		prazo.append(EbsContabil.format(" ", 456));
 		prazo.append(EbsContabil.format(" ", 5));

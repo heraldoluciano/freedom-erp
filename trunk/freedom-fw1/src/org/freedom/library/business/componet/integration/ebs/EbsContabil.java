@@ -326,7 +326,7 @@ public class EbsContabil extends Contabil {
 		StringBuilder sql = new StringBuilder();
 
 		sqlprazo.append("select (case when ip.dtitpag=ip.dtvencitpag then 'E' else 'N' end) tipoparcela, ");
-		sqlprazo.append("p.docpag, coalesce(tc.tiposped,'00') tipotitulo, ip.dtvencitpag, ip.vlritpag ");
+		sqlprazo.append("p.docpag, coalesce(tc.tiposped,'00') tipotitulo, ip.dtvencitpag, ip.vlritpag, c.dtemitcompra ");
 		sqlprazo.append("from cpcompra c, fnpagar p, fnparcpag pp, fnplanopag pg, fnitpagar ip ");
 		sqlprazo.append("left outer join fntipocob tc on ");
 		sqlprazo.append("tc.codemp=ip.codemptc and tc.codfilial=ip.codfilialtc and tc.codtipocob=ip.codtipocob ");
@@ -550,6 +550,7 @@ public class EbsContabil extends Contabil {
         	prazovo.setTipoParcela(rs.getString("TIPOPARCELA"));
         	prazovo.setNrFatura(rs.getInt("DOCPAG"));
         	prazovo.setTipoTitulo(rs.getString("TIPOTITULO"));
+        	prazovo.setDtEmissao(rs.getDate("DTEMITCOMPRA"));
         	prazovo.setDtVencimento(rs.getDate("DTVENCITPAG"));
         	prazovo.setVlrParcela(rs.getBigDecimal("VLRITPAG"));
 			prazovo.setSequencial(sequencial++);
@@ -723,18 +724,24 @@ public class EbsContabil extends Contabil {
 		
 		StringBuilder sqlprazo = new StringBuilder();
 		sqlprazo.append("select (case when ir.dtitrec=ir.dtvencitrec then 'E' else 'N' end) tipoparcela, ");
-		sqlprazo.append("r.docrec, coalesce(tc.tiposped,'00') tipotitulo, ir.dtvencitrec, ir.vlritrec ");
-		sqlprazo.append("from vdvenda v, fnreceber r, fnparcpag pp, fnplanopag pg, fnitreceber ir ");
+		sqlprazo.append("r.docrec, coalesce(tc.tiposped,'00') tipotitulo, ir.dtvencitrec, ir.vlritrec, v.dtemitvenda ");
+		sqlprazo.append("from vdvenda v ");
+		/*sqlprazo.append("inner join fnplanopag pg on ");
+		sqlprazo.append("pg.codemp=pp.codemp and pg.codfilial=pp.codfilial and pg.codplanopag=pp.codplanopag ");*/
+		sqlprazo.append("left outer join fnreceber r on ");
+		sqlprazo.append("r.codempvd=v.codemptc and r.codfilialvd=v.codfilial and r.tipovenda= v.tipovenda and r.codvenda = v.codvenda ");
+		sqlprazo.append("left outer join fnitreceber ir on "); 
+		sqlprazo.append("ir.codemp=r.codemp and ir.codfilial=r.codfilial and ir.codrec=r.codrec ");
+		sqlprazo.append("left outer join fnparcpag pp on ");
+		sqlprazo.append("pp.codemp=r.codempvd and pp.codfilial=r.codfilialvd and pp.codplanopag=r.codplanopag and ");
+		sqlprazo.append("pp.nroparcpag=ir.nparcitrec ");
 		sqlprazo.append("left outer join fntipocob tc on ");
 		sqlprazo.append("tc.codemp=ir.codemp and tc.codfilial=ir.codfilialtc and tc.codtipocob=ir.codtipocob ");
-		sqlprazo.append("where r.codempvd=v.codemptc and r.codfilialvd=v.codfilial and r.tipovenda= v.tipovenda and r.codvenda = v.codvenda and ");
-		sqlprazo.append("ir.codemp=r.codemp and ir.codfilial=r.codfilial and ir.codrec=r.codrec and ");
-		sqlprazo.append("pp.codemp=r.codempvd and pp.codfilial=r.codfilialvd and pp.codplanopag=r.codplanopag and ");
-		sqlprazo.append("pp.nroparcpag=ir.nparcitrec and ");
-		sqlprazo.append("pg.codemp=pp.codemp and pg.codfilial=pp.codfilial and pg.codplanopag=pp.codplanopag and ");
-		sqlprazo.append("v.codemp=? and v.codfilial=? and v.dtemitvenda between ? and ? and ");
-		sqlprazo.append("exists (select i.coditvenda from vditvenda i where i.codemp=v.codemp and ");
-		sqlprazo.append("i.codfilial=v.codfilial and i.codvenda=v.codvenda and i.tipovenda=v.tipovenda ) ");
+		sqlprazo.append("where ");
+		sqlprazo.append("v.codemp=? and v.codfilial=? and v.dtemitvenda between ? and ? ");
+		sqlprazo.append("and substring(v.statusvenda from 1 for 1)<>'C' ");
+		sqlprazo.append("and exists (select i.coditvenda from vditvenda i where i.codemp=v.codemp ");
+		sqlprazo.append("and i.codfilial=v.codfilial and i.codvenda=v.codvenda and i.tipovenda=v.tipovenda ) ");
 		sqlprazo.append("order by v.codvenda");
 		
 		StringBuilder sql = new StringBuilder();
@@ -758,6 +765,7 @@ public class EbsContabil extends Contabil {
 		sql.append("left outer join fnreceber r on "); 
 		sql.append("r.codempvd=v.codemp and r.codfilialvd=v.codfilial and r.codvenda=v.codvenda and r.tipovenda=v.tipovenda ");
 		sql.append("where v.codemp=? and v.codfilial=? and v.tipovenda='V' and v.dtemitvenda between ? and ? ");
+		sql.append("and substring(v.statusvenda from 1 for 1)<>'C' ");
 		sql.append("group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16");
 		sql.append("order by v.docvenda");
 
@@ -900,7 +908,11 @@ public class EbsContabil extends Contabil {
 			saida.setValorIRRF(new BigDecimal("0.00"));
 			saida.setObservacoesLivrosFiscais(null);
 			saida.setEspecie(rs.getString("ESPECIETIPOMOV"));
-			saida.setVendaAVista(rs.getDate("dtemitvenda").compareTo(rs.getDate("datarec")) == 0 ? "S" : "N");
+			if (rs.getDate("datarec")==null) {
+				saida.setVendaAVista("S");
+			} else { 
+				saida.setVendaAVista(rs.getDate("dtemitvenda").compareTo(rs.getDate("datarec")) == 0 ? "S" : "N");
+			}
 			saida.setCfopSubTributaria(0);
 			saida.setValorPISCOFINS(new BigDecimal("0.00"));
 			saida.setModalidadeFrete(0);
@@ -968,6 +980,7 @@ public class EbsContabil extends Contabil {
         	prazovo.setTipoParcela(rs.getString("TIPOPARCELA"));
         	prazovo.setNrFatura(rs.getInt("DOCREC"));
         	prazovo.setTipoTitulo(rs.getString("TIPOTITULO"));
+        	prazovo.setDtEmissao(rs.getDate("DTEMITVENDA"));
         	prazovo.setDtVencimento(rs.getDate("DTVENCITREC"));
         	prazovo.setVlrParcela(rs.getBigDecimal("VLRITREC"));
 			prazovo.setSequencial(sequencial++);
