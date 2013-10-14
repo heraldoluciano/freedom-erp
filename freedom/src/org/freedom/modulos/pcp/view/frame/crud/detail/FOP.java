@@ -98,6 +98,7 @@ import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FTipoMov;
 import org.freedom.modulos.pcp.Interface.Recarrega;
 import org.freedom.modulos.pcp.business.object.ModLote;
+import org.freedom.modulos.pcp.dao.DAOOp;
 import org.freedom.modulos.pcp.view.dialog.report.DLROP;
 import org.freedom.modulos.pcp.view.dialog.utility.DLContrQualidade;
 import org.freedom.modulos.pcp.view.dialog.utility.DLDistrib;
@@ -346,11 +347,11 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 	private String SitOp = "";
 
-	private HashMap<String, Object> prefere = null;
-	
 	private JPanelPad pnAdicEstrutura = new JPanelPad();
 	
 	private JButtonPad btAdicProdutoEstrutura = new JButtonPad( Icone.novo( "btEstProduto.png" ) );
+	
+	private DAOOp daoop = null;
 
 	public FOP( int codOp, int seqOp ) {
 
@@ -412,7 +413,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		tpnAbas.addTab( "OS's relacionadas", spOSS );
 		
 		
-		if ( (Boolean) prefere.get( "PRODETAPAS" ) ) {
+		if ( (Boolean) daoop.getPrefere().get( "PRODETAPAS" ) ) {
 		
 			tpnAbas.addTab( "Entradas parciais", spEntradaParcial );
 		}
@@ -545,7 +546,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		adicDescFK( txtDescTipoMov, 216, 20, 256, 20, "DescTipoMov", "Descrição do tipo de movimento" );
 		adicCampo( txtDtFabProd, 475, 20, 80, 20, "dtfabrop", "Dt.Fabricação", ListaCampos.DB_SI, true );
 
-		if ( (Boolean) prefere.get( "USAREFPROD" ) ) {
+		if ( (Boolean) daoop.getPrefere().get( "USAREFPROD" ) ) {
 			adicCampo( txtRefProdEst, 7, 60, 133, 20, "refprod", "Referência", ListaCampos.DB_FK, true );
 			adicCampoInvisivel( txtCodProdEst, "CodProd", "Cód.prod.", ListaCampos.DB_FK, txtDescEst, true );
 			txtCodProdEst.setFK( true );
@@ -821,7 +822,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 		adicCampo( txtSeqItOp, 7, 20, 50, 20, "seqitop", "Sq.", ListaCampos.DB_PK, true );
 
-		if ( (Boolean) prefere.get( "USAREFPROD" ) ) {
+		if ( (Boolean) daoop.getPrefere().get( "USAREFPROD" ) ) {
 			adicCampo( txtRefProdDet, 60, 20, 70, 20, "RefProd", "Ref.prod.", ListaCampos.DB_PF, txtDescProdDet, true );
 			adicCampoInvisivel( txtCodProdDet, "CodProd", "Cód.prod.", ListaCampos.DB_PF, txtDescProdDet, true );
 			//adicCampo( txtCodProdDet, 60, 20, 70, 20, "CodProd", "Cód.prod.", ListaCampos.DB_PF, txtDescProdDet, true );
@@ -872,13 +873,13 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		
 		tab.setTamColuna( 30, 0 ); // Seq.
 		
-		if ( (Boolean) prefere.get( "USAREFPROD" ) ) {
+		if ( (Boolean) daoop.getPrefere().get( "USAREFPROD" ) ) {
 			tab.setTamColuna( 112, 1 ); // RefProd.
 		}
 		
 		tab.setTamColuna( 145, 2 ); // Descrição do produto
 		
-		if ( (Boolean) prefere.get( "USAREFPROD" ) ) {
+		if ( (Boolean) daoop.getPrefere().get( "USAREFPROD" ) ) {
 //			tab.setColunaInvisivel( 3 ); // Código do produto
 		}
 		
@@ -911,7 +912,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				
 				int colunaseqac = 9;
 
-				if ( (Boolean) prefere.get( "USAREFPROD" ) ) {
+				if ( (Boolean) daoop.getPrefere().get( "USAREFPROD" ) ) {
 					colunaseqac = 10;
 				}
 
@@ -1747,7 +1748,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				int	seqop = txtSeqOP.getVlrInteger().intValue();
 				int seqest = txtSeqEst.getVlrInteger().intValue();
 
-				FOPFase tela = new FOPFase( codop, seqop, seqest, this, (Boolean) prefere.get( "USAREFPROD" ), (Boolean) prefere.get( "VALIDAFASE" ) );
+				FOPFase tela = new FOPFase( codop, seqop, seqest, this, (Boolean) daoop.getPrefere().get( "USAREFPROD" ), (Boolean) daoop.getPrefere().get( "VALIDAFASE" ) );
 				
 				fPrim.criatela( "Fases da OP", tela, con );
 				
@@ -1777,7 +1778,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				ps.setInt( 1, Aplicativo.iCodEmp );
 				ps.setInt( 2, Aplicativo.iCodFilial );
 
-				if ( !(Boolean) prefere.get( "USAREFPROD" ) ) {
+				if ( !(Boolean) daoop.getPrefere().get( "USAREFPROD" ) ) {
 					ps.setInt( 3, ( (Integer) tab.getValor( i, 1 ) ).intValue() );
 				}
 				else {
@@ -1806,7 +1807,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 			if ( iSldNeg > 0 ) {
 
-				if ( (Boolean) prefere.get( "RATAUTO" ) ) {
+				if ( (Boolean) daoop.getPrefere().get( "RATAUTO" ) ) {
 					bloquearOPSemSaldo( true );
 					Funcoes.mensagemInforma( this, "Esta OP será bloqueada devido a falta de saldo para alguns itens.\n" + sSaida );
 					return true;
@@ -1846,7 +1847,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		try {
 			for ( int i = 0; i < lcDet.getTab().getRowCount(); i++ ) {
 				
-				if ( !(Boolean) prefere.get( "USAREFPROD" ) ) {
+				if ( !(Boolean) daoop.getPrefere().get( "USAREFPROD" ) ) {
 					codProd = (Integer) lcDet.getTab().getValor( i, 1 );	
 				}
 				else {
@@ -2024,7 +2025,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			if ( rs.next() ) {
 				try {
 					if ( temSldLote() ) {
-						boolean confirmar = (Boolean) prefere.get( "RATAUTO" );
+						boolean confirmar = (Boolean) daoop.getPrefere().get( "RATAUTO" );
 						if ( !confirmar ) {
 							confirmar = Funcoes.mensagemConfirma( this, "Confirma a geração de RMA para a OP:" + txtCodOP.getVlrString() + " SEQ:" + txtSeqOP.getVlrString() + "?" ) == JOptionPane.YES_OPTION;
 						}
@@ -2250,6 +2251,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		return novaquantidade;
 	}
 
+	@ SuppressWarnings ( "resource" )
 	private boolean rateiaItemSemSaldo( Integer seq, Integer codprod, BigDecimal quantidade, List<String> lotesutilizados ) throws Exception {
 
 		boolean rateio = false;
@@ -2730,7 +2732,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				int	seqop = txtSeqOP.getVlrInteger().intValue();
 				int seqest = txtSeqEst.getVlrInteger().intValue();
 
-				FOPSubProd tela = new FOPSubProd( codop, seqop, seqest, this, (Boolean) prefere.get( "USAREFPROD" )  );
+				FOPSubProd tela = new FOPSubProd( codop, seqop, seqest, this, (Boolean) daoop.getPrefere().get( "USAREFPROD" )  );
 				fPrim.criatela( "Subprodutos", tela, con );
 				tela.setConexao( con );
 			}
@@ -3154,7 +3156,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			sValores[ 7 ] = txtQtdPrevProdOP.getVlrBigDecimal();
 			sValores[ 8 ] = txtCodLoteProdEst.getVlrString();
 
-			DLDistrib dl = new DLDistrib( con, this, (Boolean) prefere.get( "USAREFPROD" ) );
+			DLDistrib dl = new DLDistrib( con, this, (Boolean) daoop.getPrefere().get( "USAREFPROD" ) );
 			dl.carregaCampos( sValores );
 			dl.carregaTabela( txtCodOP.getVlrInteger().intValue(), txtSeqOP.getVlrInteger().intValue() );
 			dl.setVisible( true );
@@ -3184,7 +3186,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			sValores[ 6 ] = txtQtdFinalProdOP.getVlrBigDecimal();
 			sValores[ 7 ] = txtQtdPrevProdOP.getVlrBigDecimal();
 
-			DLContrQualidade dl = new DLContrQualidade( con, (Boolean) prefere.get( "USAREFPROD" ) );
+			DLContrQualidade dl = new DLContrQualidade( con, (Boolean) daoop.getPrefere().get( "USAREFPROD" ) );
 			dl.carregaCampos( sValores );
 			dl.carregaTabela( txtCodOP.getVlrInteger().intValue(), txtSeqOP.getVlrInteger().intValue() );
 			dl.setVisible( true );
@@ -3198,68 +3200,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		}
 	}
 
-	private HashMap<String, Object> getPrefere( DbConnection con ) {
-
-		HashMap<String, Object> retorno = new HashMap<String, Object>();
-		boolean[] bRetorno = new boolean[ 1 ];
-		StringBuffer sql = new StringBuffer();
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		try {
-
-			sql.append( "SELECT P1.USAREFPROD, P5.RATAUTO, coalesce(prodetapas,'S') prodetapas ");
-			sql.append( ", coalesce(P5.VALIDAQTDOP,'N') VALIDAQTDOP, coalesce(P5.VALIDAFASEOP,'N') VALIDAFASE");
-			sql.append( ", coalesce(P5.EDITQTDOP, 'S') EDITQTDOP, coalesce(P5.OPSEQ,'N') OPSEQ ");
-			sql.append( "FROM SGPREFERE1 P1,SGPREFERE5 P5 " );
-			sql.append( "WHERE P1.CODEMP=? AND P1.CODFILIAL=? " );
-			sql.append( "AND P5.CODEMP=? AND P5.CODFILIAL=?" );
-
-			bRetorno[ 0 ] = false;
-			ps = con.prepareStatement( sql.toString() );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
-			ps.setInt( 3, Aplicativo.iCodEmp );
-			ps.setInt( 4, ListaCampos.getMasterFilial( "SGPREFERE5" ) );
-
-			rs = ps.executeQuery();
-
-			if ( rs.next() ) {
-				retorno.put( "USAREFPROD", new Boolean( rs.getString( "USAREFPROD" ).trim().equals( "S" ) ) );
-				retorno.put( "RATAUTO", new Boolean( rs.getString( "RATAUTO" ).trim().equals( "S" ) ) );
-				retorno.put( "PRODETAPAS", new Boolean( rs.getString( "prodetapas" ).trim().equals( "S" ) ) );
-				retorno.put( "VALIDAQTDOP", new Boolean( rs.getString( "VALIDAQTDOP" ).trim().equals( "S" )));
-				retorno.put( "VALIDAFASE", new Boolean( rs.getString( "VALIDAFASE" ).trim().equals( "S" )));
-				retorno.put( "EDITQTDOP", new Boolean( rs.getString( "EDITQTDOP" ).trim().equals( "S" )));
-				retorno.put( "OPSEQ", new Boolean(rs.getString( "OPSEQ" ).trim().equals( "S" )));
-			}
-			else {
-				retorno.put( "USAREFPROD", new Boolean( false ) );
-				retorno.put( "RATAUTO", new Boolean( false ) );
-				retorno.put( "PRODETAPAS", new Boolean( true ) );
-				retorno.put( "VALIDAQTDOP", new Boolean( false));
-				retorno.put( "VALIDAFASE", new Boolean( false));
-				retorno.put( "EDITQTDOP", new Boolean(true));
-				retorno.put( "OPSEQ", new Boolean(false));
-				Funcoes.mensagemInforma( null, "Não foram encontradas preferências para o módulo PCP!" );
-
-			}
-
-			rs.close();
-			ps.close();
-
-			con.commit();
-
-		} catch ( SQLException err ) {
-			err.printStackTrace();
-			Funcoes.mensagemErro( this, "Erro ao carregar a tabela PREFERE1!\n" + err.getMessage(), true, con, err );
-		} finally {
-			ps = null;
-			rs = null;
-			sql = null;
-		}
-		return retorno;
-	}
-	
+		
 	
 	public String getExpedirRMA(){
 		StringBuilder sql = new StringBuilder();
@@ -3332,7 +3273,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			simularOP();
 		}
 		else if ( campo.getSource() == txtSeqEst ) {
-			if ( (Boolean) prefere.get( "USAREFPROD" ) ) {
+			if ( (Boolean) daoop.getPrefere().get( "USAREFPROD" ) ) {
 				lcEstruturaRef.carregaDados();
 			}
 			else {
@@ -3403,7 +3344,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				txtQtdItSp.setVlrBigDecimal( getQtdSubProd() );
 				txtCodUnidProd.setVlrString( getCodUnid() );
 				
-				if(!(Boolean) prefere.get( "EDITQTDOP" ) ){
+				if(!(Boolean) daoop.getPrefere().get( "EDITQTDOP" ) ){
 					if ( lcCampos.getStatus() == ListaCampos.LCS_INSERT ) {
 						txtQtdSugProdOP.setEditable(  true );
 					} else {
@@ -3562,7 +3503,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		
 		if( pevt.getListaCampos() == lcCampos){	
 			
-			if((Boolean) prefere.get( "VALIDAQTDOP" )){
+			if((Boolean) daoop.getPrefere().get( "VALIDAQTDOP" )){
 			
 				if(!validaQuantidade()){
 					pevt.cancela();
@@ -3583,7 +3524,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			if ( tpnAbas.getSelectedIndex() == 0 ) {
 				tpnAbas.setSelectedIndex( 1 );
 			}
-			if ( (Boolean) prefere.get( "RATAUTO" ) ) {
+			if ( (Boolean) daoop.getPrefere().get( "RATAUTO" ) ) {
 				ratearOp();
 				geraRMA();
 			}
@@ -3600,7 +3541,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 		if ( ievt.getListaCampos() == lcCampos ) {
 			getTipoMov();
-			if ( (Boolean) prefere.get( "OPSEQ" )) {
+			if ( (Boolean) daoop.getPrefere().get( "OPSEQ" )) {
 				txtCodOP.setVlrInteger( testaCodPK() );
 			}
 			txtCodTpMov.setVlrInteger( iCodTpMov );
@@ -3633,9 +3574,15 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 	}
 
 	public void setConexao( DbConnection cn ) {
-
 		super.setConexao( cn );
-		prefere = getPrefere( cn );
+		try {
+			daoop = new DAOOp( cn );
+		} catch ( Exception err ) {
+			err.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao carregar a tabela PREFERE1!\n" + err.getMessage(), true, con, err );
+			this.dispose();
+			return;
+		}
 		montaTela();
 		lcEstruturaCod.setConexao( cn );
 		lcEstruturaRef.setConexao( cn );
@@ -3648,10 +3595,8 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		lcAlmoxEst.setConexao( cn );
 		lcModLote.setConexao( cn );
 		lcCampos.carregaDados();
-
 		if ( bnovo )
 			lcCampos.insert( true );
-
 	}
 
 	public Color cor( int r, int g, int b ) {
