@@ -22287,20 +22287,6 @@ CODTIPOMOV INTEGER,
 CODITFISC INTEGER)
 RETURNS (CODNAT CHAR(4))
 AS 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
 declare variable noest char(1);
 declare variable cv char(1);
 declare variable itmp integer;
@@ -22362,6 +22348,7 @@ begin
         and c.codfisc=p.codfisc and c.codfilial=p.codfilialfc and c.codemp = p.codempfc and r.codregra = coalesce(icf.codregra, c.codregra)
         and r.codfilial = c.codfilialra and r.codemp = c.codempra
         and r.cvitrf=:cv and r.noufitrf=:noest
+        order by r.codtipomov
         into codnat;
      end
 
