@@ -110,7 +110,6 @@ import org.freedom.modulos.pcp.view.frame.crud.plain.FModLote;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
 import org.freedom.modulos.std.view.frame.crud.plain.FAlmox;
 
-
 public class FOP extends FDetalhe implements ChangeListener, CancelListener, InsertListener, CarregaListener, FocusListener, TabelaEditListener, Recarrega {
 
 	private static final long serialVersionUID = 1L;
@@ -128,11 +127,11 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 	private JTabbedPanePad tpnAbas = new JTabbedPanePad();
 
 	private JTextFieldPad txtCodOP = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-	
+
 	private JTextFieldPad txtTicket = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-	
+
 	private JTextFieldPad txtCodItRecMerc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-	
+
 	private JTextFieldPad txtCodItOS = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtSeqOP = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -156,7 +155,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 	private JTextFieldPad txtQtdDistOp = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
 
 	private JTextFieldPad txtQtdItSp = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
-	
+
 	private JTextFieldPad txtQtdSugProdOP = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDec );
 
 	private JTextFieldFK txtVlrDensidade = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, casasDec );
@@ -184,13 +183,13 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 	private JTextFieldPad txtSeqAc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtBloqOp = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
-	
+
 	private JTextFieldPad txtPermiteAjusteItOp = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
 	private JTextFieldFK txtDescLoteProdEst = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldFK txtSldLiqProd = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, casasDec );
-	
+
 	private JTextFieldFK txtCodUnidProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 20, 0 );
 
 	private JTextFieldFK txtUsaLoteDet = new JTextFieldFK( JTextFieldPad.TP_STRING, 1, 0 );
@@ -242,11 +241,11 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 	private ListaCampos lcModLote = new ListaCampos( this, "ML" );
 
 	private JButtonPad btFinaliza = new JButtonPad( Icone.novo( "btFinalizaOP.png" ) );
-	
+
 	private JButtonPad btSubProd = new JButtonPad( Icone.novo( "btSubProd.png" ) );
-	
+
 	private JButtonPad btRemessa = new JButtonPad( Icone.novo( "btRemessa.png" ) );
-	
+
 	private JButtonPad btRetorno = new JButtonPad( Icone.novo( "btRetorno1.png" ) );
 
 	private JButtonPad btCancela = new JButtonPad( Icone.novo( "btCancelar.png" ) );
@@ -276,7 +275,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 	private JTextFieldFK txtDescTipoMov = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private Integer iCodTpMov = null;
-	
+
 	private boolean entrada_parcial = false;
 
 	private JPanelPad pinBotCab = new JPanelPad( 104, 33 );
@@ -290,9 +289,9 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 	public JTablePad tabRMA = new JTablePad();
 
 	public JTablePad tabOPS = new JTablePad();
-	
+
 	public JTablePad tabOSS = new JTablePad();
-	
+
 	public JTablePad tabEntradaParcial = new JTablePad();
 
 	private JScrollPane spSimu = new JScrollPane( tabSimu );
@@ -300,11 +299,11 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 	public JScrollPane spRma = new JScrollPane( tabRMA );
 
 	public JScrollPane spOPS = new JScrollPane( tabOPS );
-	
+
 	public JScrollPane spOSS = new JScrollPane( tabOSS );
 
 	public JScrollPane spEntradaParcial = new JScrollPane( tabEntradaParcial );
-	
+
 	private ImageIcon imgCancelada = Icone.novo( "clVencido.gif" );
 
 	private ImageIcon imgExpedida = Icone.novo( "clPago.gif" );
@@ -332,9 +331,9 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 	private boolean bBuscaOPS = false;
 
 	private JCheckBoxPad cbEstDinamica = new JCheckBoxPad( "Inserir ítens dinamicamente?", "S", "N" );
-	
+
 	private JCheckBoxPad cbGarantia = new JCheckBoxPad( "Substituição de garantia?", "S", "N" );
-	
+
 	private boolean bnovo = false;
 
 	// painel
@@ -348,9 +347,9 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 	private String SitOp = "";
 
 	private JPanelPad pnAdicEstrutura = new JPanelPad();
-	
+
 	private JButtonPad btAdicProdutoEstrutura = new JButtonPad( Icone.novo( "btEstProduto.png" ) );
-	
+
 	private DAOOp daoop = null;
 
 	public FOP( int codOp, int seqOp ) {
@@ -375,9 +374,9 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		}
 
 		nav.setNavigation( true );
-		
+
 		btRatearItem.setBorder( BorderFactory.createEmptyBorder() );
-		//setName( "Ordens de produção" );
+		// setName( "Ordens de produção" );
 		setTitulo( "Ordens de produção" );
 		setAtribos( 15, 10, 645, 600 );
 		setAltCab( 238 );
@@ -386,24 +385,24 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		btObs2.setVisible( true );
 		btReprocessaItens.setVisible( false );
 
-		//pnRodape.remove( btSair );
+		// pnRodape.remove( btSair );
 		pnRodape.removeAll();
-		
+
 		pnAdicEstrutura.setBorder( null );
 
 		pnRodape.add( navRod, BorderLayout.WEST );
-		
+
 		pnRodape.add( btSair, BorderLayout.EAST );
-		
+
 		pnRodape.add( pnAdicEstrutura, BorderLayout.CENTER );
-		
+
 		pnAdicEstrutura.adic( btPrevimp, 0, 0, 30, 26 );
 		pnAdicEstrutura.adic( btImp, 30, 0, 30, 26 );
 		pnAdicEstrutura.adic( btAdicProdutoEstrutura, 60, 0, 30, 26 );
-		
+
 		btAdicProdutoEstrutura.setEnabled( false );
 		cbEstDinamica.setEnabled( false );
-		
+
 		pnMaster.remove( spTab );
 
 		tpnAbas.addTab( "Previsão", spSimu );
@@ -411,20 +410,19 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		tpnAbas.addTab( "Rma", spRma );
 		tpnAbas.addTab( "OP's relacionadas", spOPS );
 		tpnAbas.addTab( "OS's relacionadas", spOSS );
-		
-		
+
 		if ( (Boolean) daoop.getPrefere().get( "PRODETAPAS" ) ) {
-		
+
 			tpnAbas.addTab( "Entradas parciais", spEntradaParcial );
 		}
-		
+
 		pnMaster.add( tpnAbas, BorderLayout.CENTER );
 
 		btFinaliza.setToolTipText( "Fases/Finalização" );
 		btSubProd.setToolTipText( "Subprodutos" );
 		btRemessa.setToolTipText( "Remessa" );
 		btRetorno.setToolTipText( "Retorno" );
-		
+
 		btRMA.setToolTipText( "Gera ou exibe RMA." );
 		btLote.setToolTipText( "Cadastra lote" );
 		btRatearItem.setToolTipText( "Ratear ítem" );
@@ -435,20 +433,20 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		btObs2.setToolTipText( "Observação" );
 		btReprocessaItens.setToolTipText( "Reprocessar itens" );
 		btAdicProdutoEstrutura.setToolTipText( "Busca itens da estrutura" );
-		
+
 		pinCab.adic( pinQuantidades, 5, 125, 550, 50 );
 		pinCab.adic( pinBotCab, 560, 5, 66, 190 );
 
-		pinBotCab.adic( btLote, 		0, 	0, 		30, 30 );
-		pinBotCab.adic( btRMA, 			0, 	31, 	30, 30 );
-		pinBotCab.adic( btContrQuali, 	0, 	62, 	30, 30 );
-		pinBotCab.adic( btDistrib, 		0,	93, 	30, 30 );
-		pinBotCab.adic( btFinaliza, 	0, 	124, 	30, 30 );
-		pinBotCab.adic( btCancela, 		0, 	155, 	30, 30 );
-		pinBotCab.adic( btSubProd, 		31, 0, 		30, 30 );
-		pinBotCab.adic( btRemessa, 		31, 31, 	30, 30 );
-		pinBotCab.adic( btRetorno, 		31, 62,		30, 30 );
-		
+		pinBotCab.adic( btLote, 0, 0, 30, 30 );
+		pinBotCab.adic( btRMA, 0, 31, 30, 30 );
+		pinBotCab.adic( btContrQuali, 0, 62, 30, 30 );
+		pinBotCab.adic( btDistrib, 0, 93, 30, 30 );
+		pinBotCab.adic( btFinaliza, 0, 124, 30, 30 );
+		pinBotCab.adic( btCancela, 0, 155, 30, 30 );
+		pinBotCab.adic( btSubProd, 31, 0, 30, 30 );
+		pinBotCab.adic( btRemessa, 31, 31, 30, 30 );
+		pinBotCab.adic( btRetorno, 31, 62, 30, 30 );
+
 		pnNavCab.add( pinStatus, BorderLayout.EAST );
 		pinStatus.tiraBorda();
 		pinStatus.adic( pinLb, 38, 0, 110, 25 );
@@ -509,7 +507,6 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		lcEstruturaCod.add( new GuardaCampo( txtNroDiasValid, "NroDiasValid", "Dias de validade", ListaCampos.DB_SI, false ) );
 		lcEstruturaCod.add( new GuardaCampo( txtUsaDensidadeOP, "UsaDensidadeOp", "Usa Densidade", ListaCampos.DB_SI, false ) );
 		lcEstruturaCod.add( new GuardaCampo( cbEstDinamica, "EstDinamica", "", ListaCampos.DB_SI, false ) );
-		
 
 		lcEstruturaCod.setWhereAdic( "ATIVOEST='S'" );
 		lcEstruturaCod.montaSql( false, "ESTRUTURA", "PP" );
@@ -579,25 +576,25 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 		adicDB( cbEstDinamica, 5, 175, 200, 20, "estdinamica", "", true );
 		adicDB( cbGarantia, 208, 175, 208, 20, "garantia", "", true );
-		
+
 		setPainel( pinQuantidades );
 
 		txtQtdDistOp.setSoLeitura( true );
 		txtQtdItSp.setSoLeitura( true );
 
-		adicDescFK( txtCodUnidProd, 7, 20, 30, 20, "CodUnid", "Unid."); // Qtd.Sugerida
+		adicDescFK( txtCodUnidProd, 7, 20, 30, 20, "CodUnid", "Unid." ); // Qtd.Sugerida
 		adicCampo( txtQtdSugProdOP, 40, 20, 95, 20, "qtdsugprodop", "Qtd. Sugerida", ListaCampos.DB_SI, true ); // Qtd.Sugerida
 		adicCampo( txtQtdPrevProdOP, 137, 20, 100, 20, "qtdprevprodop", "Qtd. Prevista", ListaCampos.DB_SI, false ); // Qtd.prevista
 		adicCampo( txtQtdFinalProdOP, 240, 20, 100, 20, "qtdfinalprodop", "Qtd. Realizada", ListaCampos.DB_SI, false ); // Qtd.Realizada
 		adicCampo( txtQtdDistOp, 343, 20, 100, 20, "QTDDISTPOP", "Qtd. Distribuida", ListaCampos.DB_SI, false ); // Qtd.Produzida
 		adic( txtQtdItSp, 446, 20, 95, 20, "Qtd.Subproduto" ); // Qtd.sub.produto
-		
+
 		cbEstDinamica.setVlrString( "N" );
-		
+
 		adicCampoInvisivel( txtTicket, "ticket", "Ticket", ListaCampos.DB_SI, false ); // Ticket
 		adicCampoInvisivel( txtCodItRecMerc, "coditrecmerc", "Cod.It.Rec.Merc.", ListaCampos.DB_SI, false ); // Ticket
 		adicCampoInvisivel( txtCodItOS, "coditos", "Cod.It.OS.", ListaCampos.DB_SI, false ); // Ticket
-		
+
 		setListaCampos( true, "OP", "PP" );
 
 		txtCodTpMov.setAtivo( false );
@@ -625,7 +622,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		btReprocessaItens.addActionListener( this );
 		btRemessa.addActionListener( this );
 		btRetorno.addActionListener( this );
-		
+
 		btContrQuali.addActionListener( this );
 		btRMA.addActionListener( this );
 		btLote.addActionListener( this );
@@ -635,8 +632,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		btDistrib.addActionListener( this );
 		btCancela.addActionListener( this );
 		btAdicProdutoEstrutura.addActionListener( this );
-		
-		
+
 		txtQtdSugProdOP.addFocusListener( this );
 		txtSeqEst.addFocusListener( this );
 
@@ -685,7 +681,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		tabOPS.adicColuna( "Seq.Est." );// 4
 		tabOPS.adicColuna( "Descrição do produto" );// 5
 		tabOPS.adicColuna( "Descrição da estrutura" );// 6
-		
+
 		tabOPS.setTamColuna( 13, 0 );
 		tabOPS.setTamColuna( 50, 1 );
 		tabOPS.setTamColuna( 50, 2 );
@@ -693,7 +689,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		tabOPS.setTamColuna( 50, 4 );
 		tabOPS.setColunaInvisivel( 5 );
 		tabOPS.setTamColuna( 350, 6 );
-		
+
 		tabOSS.adicColuna( "Ticket" );// 0
 		tabOSS.adicColuna( "It.Rec." );// 1
 		tabOSS.adicColuna( "It.OS." );// 2
@@ -707,7 +703,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		tabOSS.setTamColuna( 100, 3 );
 		tabOSS.setTamColuna( 50, 4 );
 		tabOSS.setTamColuna( 300, 5 );
-		
+
 		tabEntradaParcial.adicColuna( "Seq." );// 0
 		tabEntradaParcial.adicColuna( "Data" );// 1
 		tabEntradaParcial.adicColuna( "Hora" );// 2
@@ -721,7 +717,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		tabEntradaParcial.setTamColuna( 100, 3 );
 		tabEntradaParcial.setTamColuna( 150, 4 );
 		tabEntradaParcial.setTamColuna( 100, 5 );
-		
+
 		tabRMA.addMouseListener( new MouseAdapter() {
 
 			public void mouseClicked( MouseEvent mevt ) {
@@ -739,7 +735,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 					abreOps();
 			}
 		} );
-		
+
 		tabOSS.addMouseListener( new MouseAdapter() {
 
 			public void mouseClicked( MouseEvent mevt ) {
@@ -748,7 +744,6 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 					abreOS();
 			}
 		} );
-
 
 		lSitOp = new JLabelPad();
 		lSitOp.setForeground( Color.WHITE );
@@ -825,8 +820,8 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		if ( (Boolean) daoop.getPrefere().get( "USAREFPROD" ) ) {
 			adicCampo( txtRefProdDet, 60, 20, 70, 20, "RefProd", "Ref.prod.", ListaCampos.DB_PF, txtDescProdDet, true );
 			adicCampoInvisivel( txtCodProdDet, "CodProd", "Cód.prod.", ListaCampos.DB_PF, txtDescProdDet, true );
-			//adicCampo( txtCodProdDet, 60, 20, 70, 20, "CodProd", "Cód.prod.", ListaCampos.DB_PF, txtDescProdDet, true );
-			//txtCodProdDet.setBuscaAdic( new DLBuscaProd( con, "CODPROD", lcProdDetCod.getWhereAdic() ) );
+			// adicCampo( txtCodProdDet, 60, 20, 70, 20, "CodProd", "Cód.prod.", ListaCampos.DB_PF, txtDescProdDet, true );
+			// txtCodProdDet.setBuscaAdic( new DLBuscaProd( con, "CODPROD", lcProdDetCod.getWhereAdic() ) );
 		}
 		else {
 			adic( new JLabelPad( "Referência" ), 60, 0, 70, 20 );
@@ -845,7 +840,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		adicCampoInvisivel( txtSeqAc, "SeqAc", "", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtBloqOp, "BloqOp", "", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtPermiteAjusteItOp, "PermiteAjusteItOp", "", ListaCampos.DB_SI, false );
-		
+
 		setListaCampos( true, "ITOP", "PP" );
 		lcDet.setQueryInsert( false );
 
@@ -865,40 +860,40 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		btSubProd.setEnabled( false );
 		btRemessa.setEnabled( false );
 		btRetorno.setEnabled( false );
-		
+
 		montaTab();
-		
+
 		tab.adicColuna( "" );
 		tab.adicColuna( "" );
-		
+
 		tab.setTamColuna( 30, 0 ); // Seq.
-		
+
 		if ( (Boolean) daoop.getPrefere().get( "USAREFPROD" ) ) {
 			tab.setTamColuna( 112, 1 ); // RefProd.
 		}
-		
+
 		tab.setTamColuna( 145, 2 ); // Descrição do produto
-		
+
 		if ( (Boolean) daoop.getPrefere().get( "USAREFPROD" ) ) {
-//			tab.setColunaInvisivel( 3 ); // Código do produto
+			// tab.setColunaInvisivel( 3 ); // Código do produto
 		}
-		
+
 		tab.setTamColuna( 65, 4 ); // Lote
-//		tab.setColunaInvisivel( 5 ); // Não identificado
+		// tab.setColunaInvisivel( 5 ); // Não identificado
 		tab.setTamColuna( 65, 6 ); // Qtd.
 		tab.setTamColuna( 65, 7 ); // Qtd.rat.
 		tab.setTamColuna( 65, 8 ); // Lote.rat.
 		tab.setTamColuna( 50, 9 ); // RMA
-		
-//		tab.setColunaInvisivel( 10 );		
-		
+
+		// tab.setColunaInvisivel( 10 );
+
 		tab.setTamColuna( 13, 11 ); // Acao corretiva imagem
 		tab.setTamColuna( 13, 12 ); // Bloqueio de OP imagem
-	
-//		tab.setColunaInvisivel( 13 );
-		
-		if(tab.getNumColunas()>14) {
-//			tab.setColunaInvisivel( 14 );
+
+		// tab.setColunaInvisivel( 13 );
+
+		if ( tab.getNumColunas() > 14 ) {
+			// tab.setColunaInvisivel( 14 );
 		}
 
 	}
@@ -908,16 +903,15 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		try {
 			for ( int i = 0; tab.getNumLinhas() > i; i++ ) {
 
-			//	if ( tab.getValor( i, 9 ) != null && ( !"".equals( tab.getValor( i, 9 ) ) ) && ( (Integer) ( tab.getValor( i, 9 ) ) ) > 0 ) {
-				
+				// if ( tab.getValor( i, 9 ) != null && ( !"".equals( tab.getValor( i, 9 ) ) ) && ( (Integer) ( tab.getValor( i, 9 ) ) ) > 0 ) {
+
 				int colunaseqac = 9;
 
 				if ( (Boolean) daoop.getPrefere().get( "USAREFPROD" ) ) {
 					colunaseqac = 10;
 				}
 
-
-				if ( tab.getValor( i, colunaseqac ) != null && ( !"".equals( tab.getValor( i, colunaseqac ) ) ) && ( (Integer) ( tab.getValor( i, colunaseqac ) ) ) > 0 ) {	
+				if ( tab.getValor( i, colunaseqac ) != null && ( !"".equals( tab.getValor( i, colunaseqac ) ) ) && ( (Integer) ( tab.getValor( i, colunaseqac ) ) ) > 0 ) {
 					tab.setValor( imgItemCorrecao, i, 11 );
 				}
 				else {
@@ -987,39 +981,39 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		}
 		return sRet;
 	}
-	
+
 	private Boolean temRemessa() {
+
 		boolean ret = false;
-		
+
 		try {
-		
+
 			ret = temRemessaRetorno( "E" );
-			
-		}
-		catch (Exception e) {
+
+		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
-		
+
 		return ret;
-		
+
 	}
-	
+
 	private Boolean temRetorno() {
+
 		boolean ret = false;
-		
+
 		try {
-		
+
 			ret = temRemessaRetorno( "R" );
-			
-		}
-		catch (Exception e) {
+
+		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
-		
+
 		return ret;
-		
+
 	}
-	
+
 	private boolean temRemessaRetorno( String tipo ) {
 
 		boolean ret = false;
@@ -1029,12 +1023,12 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 		try {
 
-			sql.append("select first 1 ");
-			sql.append("it.tipoexterno, fs.externafase ");
-			sql.append("from ppitestrutura it, ppfase fs ");
-			sql.append("where fs.codemp=it.codempfs and fs.codfilial=it.codfilialfs and fs.codfase=it.codfase and ");
-			sql.append("it.codemp=? and it.codfilial=? and it.codprod=? and it.seqest=? and ");
-			sql.append("fs.externafase='S' and it.tipoexterno=?");
+			sql.append( "select first 1 " );
+			sql.append( "it.tipoexterno, fs.externafase " );
+			sql.append( "from ppitestrutura it, ppfase fs " );
+			sql.append( "where fs.codemp=it.codempfs and fs.codfilial=it.codfilialfs and fs.codfase=it.codfase and " );
+			sql.append( "it.codemp=? and it.codfilial=? and it.codprod=? and it.seqest=? and " );
+			sql.append( "fs.externafase='S' and it.tipoexterno=?" );
 
 			ps = con.prepareStatement( sql.toString() );
 
@@ -1043,13 +1037,13 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			ps.setInt( 3, txtCodProdEst.getVlrInteger() );
 			ps.setInt( 4, txtSeqEst.getVlrInteger() );
 			ps.setString( 5, tipo );
-			
+
 			rs = ps.executeQuery();
-			
+
 			if ( rs.next() ) {
-				
+
 				ret = true;
-				
+
 			}
 
 			rs.close();
@@ -1059,8 +1053,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao buscar remessa/retorno!\n" + err );
-		}
-		finally {
+		} finally {
 			ps = null;
 			rs = null;
 			sql = null;
@@ -1155,42 +1148,42 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			sitexprma = null;
 		}
 	}
-	
-	public boolean situacaoRMA(){
+
+	public boolean situacaoRMA() {
+
 		PreparedStatement ps = null;
 		StringBuilder sql = new StringBuilder();
 		ResultSet rs = null;
 		boolean situacao = false;
-		
+
 		try {
-		    sql.append( "SELECT IR.coditrma, ir.sititrma ");
-	        sql.append( "FROM EQRMA R , eqitrma IR ");
-	        sql.append( "WHERE R.CODEMPOF=? AND R.CODFILIALOF=? AND R.CODOP=? AND R.SEQOP=?  AND IR.CODEMP=R.CODEMP AND IR.CODFILIAL=R.CODFILIAL AND IR.CODRMA=R.CODRMA ");
-		
+			sql.append( "SELECT IR.coditrma, ir.sititrma " );
+			sql.append( "FROM EQRMA R , eqitrma IR " );
+			sql.append( "WHERE R.CODEMPOF=? AND R.CODFILIALOF=? AND R.CODOP=? AND R.SEQOP=?  AND IR.CODEMP=R.CODEMP AND IR.CODFILIAL=R.CODFILIAL AND IR.CODRMA=R.CODRMA " );
+
 			ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, lcCampos.getCodFilial() );
-			ps.setInt( 3, txtCodOP.getVlrInteger());
+			ps.setInt( 3, txtCodOP.getVlrInteger() );
 			ps.setInt( 4, txtSeqOP.getVlrInteger() );
-			
+
 			rs = ps.executeQuery();
-			
-			while(rs.next()){
-				situacao = "EF".equals(rs.getString( "SITITRMA" ));
-				
-				if(situacao){
+
+			while ( rs.next() ) {
+				situacao = "EF".equals( rs.getString( "SITITRMA" ) );
+
+				if ( situacao ) {
 					break;
 				}
 			}
-			
-		} catch (SQLException e) {
+
+		} catch ( SQLException e ) {
 			Funcoes.mensagemErro( this, "Erro ao carregar a tabela EQRMA!\n" + e.getMessage(), true, con, e );
-			e.printStackTrace(); 
+			e.printStackTrace();
 		}
-		
+
 		return situacao;
 	}
-	
 
 	private void getOPS() {
 
@@ -1258,7 +1251,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			sql = null;
 		}
 	}
-	
+
 	private void getOSS() {
 
 		String codop;
@@ -1272,7 +1265,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 			tabOSS.limpa();
 
-			if ( "".equals(txtCodOP.getVlrString()) )  {
+			if ( "".equals( txtCodOP.getVlrString() ) ) {
 				return;
 			}
 
@@ -1295,7 +1288,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 				tabOSS.adicLinha();
 
-				tabOSS.setValor( rs.getInt( "TICKET" ) , iLin, 0 );
+				tabOSS.setValor( rs.getInt( "TICKET" ), iLin, 0 );
 				tabOSS.setValor( rs.getInt( "CODITRECMERC" ), iLin, 1 );
 				tabOSS.setValor( rs.getInt( "CODITOS" ), iLin, 2 );
 				tabOSS.setValor( rs.getInt( "NUMSERIE" ), iLin, 3 );
@@ -1316,7 +1309,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			sql = null;
 		}
 	}
-	
+
 	private void getEntradaParcial() {
 
 		String codop;
@@ -1330,7 +1323,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 			tabEntradaParcial.limpa();
 
-			if ( "".equals(txtCodOP.getVlrString()) )  {
+			if ( "".equals( txtCodOP.getVlrString() ) ) {
 				return;
 			}
 
@@ -1338,37 +1331,35 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			sql.append( "where et.codemp=? and et.codfilial=? and et.codop=? and et.seqop=? " );
 
 			ps = con.prepareStatement( sql.toString() );
-			
+
 			ps.setInt( 1, lcCampos.getCodEmp() );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "PPOP" ) );
 			ps.setInt( 3, txtCodOP.getVlrInteger() );
 			ps.setInt( 4, txtSeqOP.getVlrInteger() );
-			
+
 			rs = ps.executeQuery();
 
 			while ( rs.next() ) {
 
 				tabEntradaParcial.adicLinha();
 
-				tabEntradaParcial.setValor( rs.getInt( "seqent" ) , iLin, 0 );
+				tabEntradaParcial.setValor( rs.getInt( "seqent" ), iLin, 0 );
 				tabEntradaParcial.setValor( rs.getDate( "dtent" ), iLin, 1 );
 				tabEntradaParcial.setValor( rs.getTime( "hent" ).toString(), iLin, 2 );
-				tabEntradaParcial.setValor( rs.getBigDecimal( "qtdent" ), iLin, 3 );				
+				tabEntradaParcial.setValor( rs.getBigDecimal( "qtdent" ), iLin, 3 );
 				tabEntradaParcial.setValor( rs.getString( "obsent" ), iLin, 4 );
 				tabEntradaParcial.setValor( rs.getString( "idusuins" ), iLin, 5 );
-				
+
 				iLin++;
 
 			}
 
 			con.commit();
-			
-		} 
-		catch ( SQLException err ) {
+
+		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao carregar a tabela de entradas parciais!\n" + err.getMessage(), true, con, err );
 			err.printStackTrace();
-		} 
-		finally {
+		} finally {
 			ps = null;
 			rs = null;
 			sql = null;
@@ -1489,14 +1480,9 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				txtQtdPrevProdOP.setVlrBigDecimal( txtQtdSugProdOP.getVlrBigDecimal() );
 			}
 
-			sSQL = "SELECT IT.CODFASE, IT.SEQITEST, IT.CODPRODPD, P.DESCPROD, " 
-				+ "P.CODUNID, coalesce(IT.QTDITEST/cast(e.qtdest as numeric(15,7)),0) qtditest, P.SLDLIQPROD, IT.RMAAUTOITEST, IT.QTDFIXA " 
-				+ "FROM PPESTRUTURA E, PPITESTRUTURA IT, EQPRODUTO P " 
-				+ "WHERE E.CODEMP=? AND E.CODFILIAL=? AND E.CODPROD=? AND E.SEQEST=? "
-				+ "AND E.CODEMP=IT.CODEMP AND E.CODFILIAL=IT.CODFILIAL " 
-				+ "AND E.CODPROD=IT.CODPROD AND E.SEQEST=IT.SEQEST " 
-				+ "AND P.CODEMP=IT.CODEMPPD AND P.CODFILIAL=IT.CODFILIALPD AND P.CODPROD=IT.CODPRODPD " 
-				+ "ORDER BY IT.CODFASE, IT.SEQITEST";
+			sSQL = "SELECT IT.CODFASE, IT.SEQITEST, IT.CODPRODPD, P.DESCPROD, " + "P.CODUNID, coalesce(IT.QTDITEST/cast(e.qtdest as numeric(15,7)),0) qtditest, P.SLDLIQPROD, IT.RMAAUTOITEST, IT.QTDFIXA " + "FROM PPESTRUTURA E, PPITESTRUTURA IT, EQPRODUTO P "
+					+ "WHERE E.CODEMP=? AND E.CODFILIAL=? AND E.CODPROD=? AND E.SEQEST=? " + "AND E.CODEMP=IT.CODEMP AND E.CODFILIAL=IT.CODFILIAL " + "AND E.CODPROD=IT.CODPROD AND E.SEQEST=IT.SEQEST " + "AND P.CODEMP=IT.CODEMPPD AND P.CODFILIAL=IT.CODFILIALPD AND P.CODPROD=IT.CODPRODPD "
+					+ "ORDER BY IT.CODFASE, IT.SEQITEST";
 
 			PreparedStatement ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, Aplicativo.iCodEmp );
@@ -1512,12 +1498,12 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				linha[ 1 ] = new Integer( rs.getInt( "CODPRODPD" ) );
 				linha[ 2 ] = rs.getString( "DESCPROD" ) != null ? rs.getString( "DESCPROD" ).trim() : "";
 				linha[ 3 ] = rs.getString( "CODUNID" ) != null ? rs.getString( "CODUNID" ) : "";
-				
+
 				BigDecimal qtditest = rs.getBigDecimal( "QTDITEST" ).setScale( 7, BigDecimal.ROUND_HALF_UP );
-				
-				//linha[ 4 ] = rs.getBigDecimal( "QTDITEST" ) != null ? rs.getBigDecimal( "QTDITEST" ) : new BigDecimal( 0 );
+
+				// linha[ 4 ] = rs.getBigDecimal( "QTDITEST" ) != null ? rs.getBigDecimal( "QTDITEST" ) : new BigDecimal( 0 );
 				linha[ 4 ] = qtditest;
-				
+
 				linha[ 5 ] = rs.getBigDecimal( "SLDLIQPROD" ) != null ? rs.getBigDecimal( "SLDLIQPROD" ) : new BigDecimal( 0 );
 				linha[ 5 ] = ( (BigDecimal) linha[ 5 ] ).setScale( Aplicativo.casasDec, BigDecimal.ROUND_HALF_UP );
 				linha[ 6 ] = "S".equals( rs.getString( "QTDFIXA" ) ) ? ( rs.getBigDecimal( "QTDITEST" ) != null ? rs.getBigDecimal( "QTDITEST" ) : new BigDecimal( 0 ) ) : getQtdTotal( ( rs.getBigDecimal( "QTDITEST" ) != null ? rs.getBigDecimal( "QTDITEST" ) : new BigDecimal( 0 ) ) );
@@ -1541,7 +1527,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 	}
 
 	private void abreRma() {
-		
+
 		Container cont = getContentPane();
 		while ( true ) {
 			if ( cont instanceof FPrincipal )
@@ -1549,12 +1535,14 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			cont = cont.getParent();
 		}
 		int iRma = ( (Integer) tabRMA.getValor( tabRMA.getLinhaSel(), 1 ) ).intValue();
-		if ( !((FPrincipal) cont ).temTela( "Requisição de material" ) ) {
+		if ( ! ( (FPrincipal) cont ).temTela( "Requisição de material" ) ) {
 			FRma tela = new FRma();
 			fPrim.criatela( "Requisição de material", tela, con );
 			tela.exec( iRma );
 			tela.addInternalFrameListener( new InternalFrameAdapter() {
+
 				public void internalFrameClosed( InternalFrameEvent ievt ) {
+
 					lcCampos.carregaDados();
 					desabilitaBtFinaliza();
 				}
@@ -1576,7 +1564,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		}
 
 	}
-	
+
 	private void abreOS() {
 
 		FOrdemServico ordemservico = null;
@@ -1607,153 +1595,147 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 	}
 
-	
-	private Integer getSeqEntradaParcial(){
+	private Integer getSeqEntradaParcial() {
+
 		Integer ret = 1;
 		ResultSet rs = null;
 		PreparedStatement ps = null;
 		StringBuilder sql = new StringBuilder();
 		try {
-			
-			sql.append("select coalesce(max(seqent),0) + 1 seq from ppopentrada where codemp=? and codfilial=? and codop=? and seqop=?");
-			
-			ps = con.prepareStatement( sql.toString() );
-			
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, lcCampos.getCodFilial() );
-			ps.setInt( 3, txtCodOP.getVlrInteger() );
-			ps.setInt( 4,txtSeqOP.getVlrInteger() );
-			
-			rs = ps.executeQuery();
-			
-			if(rs.next()) {
-				
-				ret = rs.getInt( "seq" );
-				
-			}
-		
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		return ret;
-		
-	}
-	
-	
-	private void insereEntradaParcial(BigDecimal qtdent, String obsent, Date dtent, String hent) {
 
-		StringBuilder sql = new StringBuilder();
-		PreparedStatement ps = null;
-		
-		try {
-			
-			sql.append( "insert into ppopentrada (codemp, codfilial, codop, seqop, seqent, dtent, hent, qtdent, obsent ) " );
-			sql.append( "values (?,?,?,?,?,?,?,?,?)" );
-			
+			sql.append( "select coalesce(max(seqent),0) + 1 seq from ppopentrada where codemp=? and codfilial=? and codop=? and seqop=?" );
+
 			ps = con.prepareStatement( sql.toString() );
-			
+
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, lcCampos.getCodFilial() );
 			ps.setInt( 3, txtCodOP.getVlrInteger() );
 			ps.setInt( 4, txtSeqOP.getVlrInteger() );
-			
+
+			rs = ps.executeQuery();
+
+			if ( rs.next() ) {
+
+				ret = rs.getInt( "seq" );
+
+			}
+
+		} catch ( Exception e ) {
+			e.printStackTrace();
+		}
+
+		return ret;
+
+	}
+
+	private void insereEntradaParcial( BigDecimal qtdent, String obsent, Date dtent, String hent ) {
+
+		StringBuilder sql = new StringBuilder();
+		PreparedStatement ps = null;
+
+		try {
+
+			sql.append( "insert into ppopentrada (codemp, codfilial, codop, seqop, seqent, dtent, hent, qtdent, obsent ) " );
+			sql.append( "values (?,?,?,?,?,?,?,?,?)" );
+
+			ps = con.prepareStatement( sql.toString() );
+
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, lcCampos.getCodFilial() );
+			ps.setInt( 3, txtCodOP.getVlrInteger() );
+			ps.setInt( 4, txtSeqOP.getVlrInteger() );
+
 			ps.setInt( 5, getSeqEntradaParcial() );
 			ps.setDate( 6, Funcoes.dateToSQLDate( dtent ) );
 			ps.setTime( 7, Funcoes.strTimeTosqlTime( hent ) );
 
 			ps.setBigDecimal( 8, qtdent );
 			ps.setString( 9, obsent );
-			
+
 			ps.execute();
-			
-			
-		}
-		catch (Exception e) {
+
+		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	private void deletaEntradaParcial( Integer seqent ) {
 
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
-		
+
 		try {
-			
+
 			sql.append( "delete from ppopentrada where codemp=? and codfilial=? and codop=? and seqop=? and seqent=? " );
-			
+
 			ps = con.prepareStatement( sql.toString() );
-			
+
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, lcCampos.getCodFilial() );
 			ps.setInt( 3, txtCodOP.getVlrInteger() );
 			ps.setInt( 4, txtSeqOP.getVlrInteger() );
 			ps.setInt( 5, seqent );
-			
-			ps.execute();			
-			
-		}
-		catch (Exception e) {
+
+			ps.execute();
+
+		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	public void finalizaOP() {
 
-		//String expedirRMA = getExpedirRMA();
-		
-		
-		// Se a aba de entrada parcial estiver selecioada... 
-		
-		if ( tpnAbas.getSelectedIndex() == 5 ) {		
-			
-			 if("FN".equals( txtSitOp.getVlrString())) {
-				 
-				 Funcoes.mensagemInforma( this, "Não é possível realizar novas entradas, pois a O.P está finalizada! " );				 
-				 
-			 }
-			 else {
-			 			
+		// String expedirRMA = getExpedirRMA();
+
+		// Se a aba de entrada parcial estiver selecioada...
+
+		if ( tpnAbas.getSelectedIndex() == 5 ) {
+
+			if ( "FN".equals( txtSitOp.getVlrString() ) ) {
+
+				Funcoes.mensagemInforma( this, "Não é possível realizar novas entradas, pois a O.P está finalizada! " );
+
+			}
+			else {
+
 				DLFinalizaOPParcial dl = new DLFinalizaOPParcial( this, txtQtdPrevProdOP.getVlrBigDecimal().subtract( txtQtdFinalProdOP.getVlrBigDecimal() ) );
-				
+
 				dl.setVisible( true );
-	 
+
 				if ( dl.OK == false ) {
 					dl.dispose();
 					return;
 				}
-	
+
 				BigDecimal qtdent = dl.getQtdEnt();
 				String obsent = dl.getObs();
 				Date dtent = dl.getDtEnt();
 				String hent = dl.getHEnt();
-				
+
 				insereEntradaParcial( qtdent, obsent, dtent, hent );
-				
+
 				lcCampos.carregaDados();
-				
+
 				tpnAbas.setSelectedIndex( 5 );
-				
-			 }
-			
+
+			}
+
 		}
 		else {
 			if ( fPrim.temTela( "Fases da OP" ) == false ) {
-				
+
 				int codop = txtCodOP.getVlrInteger().intValue();
-				int	seqop = txtSeqOP.getVlrInteger().intValue();
+				int seqop = txtSeqOP.getVlrInteger().intValue();
 				int seqest = txtSeqEst.getVlrInteger().intValue();
 
 				FOPFase tela = new FOPFase( codop, seqop, seqest, this, (Boolean) daoop.getPrefere().get( "USAREFPROD" ), (Boolean) daoop.getPrefere().get( "VALIDAFASE" ) );
-				
+
 				fPrim.criatela( "Fases da OP", tela, con );
-				
+
 				tela.setConexao( con );
-				
+
 			}
 		}
 
@@ -1783,9 +1765,9 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				}
 				else {
 					ps.setInt( 3, ( (Integer) tab.getValor( i, 3 ) ).intValue() );
-					
-				}	
-				
+
+				}
+
 				ps.setString( 4, (String) tab.getValor( i, 4 ) );
 
 				ResultSet rs = ps.executeQuery();
@@ -1846,16 +1828,15 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		Integer codProd = null;
 		try {
 			for ( int i = 0; i < lcDet.getTab().getRowCount(); i++ ) {
-				
+
 				if ( !(Boolean) daoop.getPrefere().get( "USAREFPROD" ) ) {
-					codProd = (Integer) lcDet.getTab().getValor( i, 1 );	
+					codProd = (Integer) lcDet.getTab().getValor( i, 1 );
 				}
 				else {
 					codProd = (Integer) lcDet.getTab().getValor( i, 3 );
-				}	
-				
+				}
+
 				codLote = "" + lcDet.getTab().getValor( i, 4 );
-				
 
 				sSQL = "SELECT CLOTEPROD FROM EQPRODUTO WHERE CODEMP=? AND CODFILIAL=? AND CODPROD=?";
 
@@ -1868,7 +1849,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 					sUsaLote = rs.getString( 1 );
 
 				if ( sUsaLote.equals( "S" ) ) {
-					if ( !FOP.existeLote( con, codProd.intValue(), codLote ) ) {
+					if ( !daoop.existeLote( codProd.intValue(), codLote ) ) {
 						retorno = false;
 						break;
 					}
@@ -1918,14 +1899,14 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 		return rs;
 	}
-	
+
 	private Integer getNumItensRMA() {
 
 		StringBuffer sql = new StringBuffer();
 		ResultSet rs = null;
 		PreparedStatement ps = null;
 		Integer ret = 0;
-		
+
 		try {
 			sql.append( "SELECT COUNT(*) FROM PPITOP WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=? AND GERARMA='S'" );
 
@@ -1936,11 +1917,11 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			ps.setInt( 4, txtSeqOP.getVlrInteger().intValue() );
 
 			rs = ps.executeQuery();
-			
-			if(rs.next()) {
+
+			if ( rs.next() ) {
 				ret = rs.getInt( 1 );
 			}
-			
+
 			rs = ps.executeQuery();
 		} catch ( Exception e ) {
 			e.printStackTrace();
@@ -2001,9 +1982,9 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		boolean ret = true;
 
 		try {
-//			ret = ( (ResultSet) itensRma() ).getFetchSize() > 0;
+			// ret = ( (ResultSet) itensRma() ).getFetchSize() > 0;
 			ret = getNumItensRMA() > 0;
-			
+
 		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
@@ -2080,9 +2061,9 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			rs.close();
 
 			con.commit();
-			
+
 			lcCampos.carregaDados();
-			
+
 		} catch ( Exception err ) {
 			Funcoes.mensagemErro( this, "Erro ao consultar RMA", true, con, err );
 			err.printStackTrace();
@@ -2505,100 +2486,21 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		}
 	}
 
-	public static boolean existeLote( DbConnection cn, int iCodProd, String sCodLote ) {
-
-		boolean bRet = false;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		String sSQL = "SELECT CODLOTE FROM EQLOTE WHERE CODEMP=? AND CODFILIAL=? AND CODPROD=? AND CODLOTE=?";
-		try {
-			ps = cn.prepareStatement( sSQL );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "EQLOTE" ) );
-			ps.setInt( 3, iCodProd );
-			ps.setString( 4, sCodLote );
-			rs = ps.executeQuery();
-			if ( rs.next() )
-				bRet = true;
-
-			rs.close();
-			ps.close();
-			cn.commit();
-		} catch ( SQLException err ) {
-			err.printStackTrace();
-			Funcoes.mensagemErro( null, "Erro ao buscar existencia do lote!\n", true, cn, err );
-		} finally {
-			ps = null;
-			rs = null;
-			sSQL = null;
-		}
-		return bRet;
-	}
-
-	public static Object[] gravaLote( DbConnection cn, boolean bInsere, String sCodModLote, String sUsaLoteEst, String sModLote, int iCodProd, Date dtFabProd, int iNroDiasValid, String sCodLote ) {
-
-		Object[] retorno = null;
-		ModLote objMl = null;
-		try {
-			if ( ! ( sCodModLote.equals( "" ) ) ) {
-				if ( sCodLote == null ) {
-					objMl = new ModLote();
-					objMl.setTexto( sModLote );
-					sCodLote = objMl.getLote( new Integer( iCodProd ), dtFabProd, cn );
-				}
-				GregorianCalendar cal = new GregorianCalendar();
-				cal.setTime( dtFabProd );
-				cal.add( GregorianCalendar.DAY_OF_YEAR, iNroDiasValid );
-				Date dtVenctoLote = cal.getTime();
-				retorno = new Object[ 3 ];
-				retorno[ 0 ] = sCodLote;
-				retorno[ 1 ] = dtVenctoLote;
-				retorno[ 2 ] = new Boolean( false );
-				if ( ( !existeLote( cn, iCodProd, sCodLote ) ) && ( bInsere ) ) {
-					if ( Funcoes.mensagemConfirma( null, "Deseja criar o lote " + sCodLote.trim() + " ?" ) == JOptionPane.YES_OPTION ) {
-						PreparedStatement ps = null;
-						String sSql = "INSERT INTO EQLOTE (CODEMP,CODFILIAL,CODPROD,CODLOTE,DINILOTE,VENCTOLOTE) VALUES(?,?,?,?,?,?)";
-						try {
-							ps = cn.prepareStatement( sSql );
-							ps.setInt( 1, Aplicativo.iCodEmp );
-							ps.setInt( 2, ListaCampos.getMasterFilial( "EQLOTE" ) );
-							ps.setInt( 3, iCodProd );
-							ps.setString( 4, sCodLote );
-							ps.setDate( 5, Funcoes.dateToSQLDate( dtFabProd ) );
-							ps.setDate( 6, Funcoes.dateToSQLDate( dtVenctoLote ) );
-							if ( ps.executeUpdate() == 0 )
-								Funcoes.mensagemInforma( null, "Não foi possível inserir registro na tabela de Lotes!" );
-
-							cn.commit();
-							retorno[ 2 ] = new Boolean( true );
-						} catch ( SQLException err ) {
-							Funcoes.mensagemErro( null, "Erro ao inserir registro na tabela de Lotes!\n" + err.getMessage(), true, cn, err );
-						} finally {
-							ps = null;
-							sSql = null;
-						}
-					}
-				}
-				else if ( bInsere )
-					Funcoes.mensagemInforma( null, "Lote já cadastrado para o produto!" );
-			}
-		} finally {
-			sCodLote = null;
-			objMl = null;
-		}
-		return retorno;
-	}
-
 	public void gravaLote( boolean bInsere ) {
 
-		Object[] lote = gravaLote( con, bInsere, txtCodModLote.getVlrString(), txtUsaLoteEst.getVlrString(), txtModLote.getVlrString(), txtCodProdEst.getVlrInteger().intValue(), txtDtFabProd.getVlrDate(), txtNroDiasValid.getVlrInteger().intValue(), null );
 		try {
-			if ( lote != null ) {
-				txtCodLoteProdEst.setVlrString( (String) lote[ 0 ] );
-				txtDtValidOP.setVlrDate( (Date) lote[ 1 ] );
+			Object[] lote = daoop.gravaLote( bInsere, txtCodModLote.getVlrString(), txtUsaLoteEst.getVlrString(), txtModLote.getVlrString()
+					, txtCodProdEst.getVlrInteger().intValue(), txtDtFabProd.getVlrDate(), txtNroDiasValid.getVlrInteger().intValue(), null );
+			try {
+				if ( lote != null ) {
+					txtCodLoteProdEst.setVlrString( (String) lote[ 0 ] );
+					txtDtValidOP.setVlrDate( (Date) lote[ 1 ] );
+				}
+			} finally {
+				lote = null;
 			}
-		} finally {
-			lote = null;
+		} catch ( Exception err ) {
+			Funcoes.mensagemInforma( this, err.getMessage() );
 		}
 	}
 
@@ -2649,13 +2551,13 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 					hParam.put( "CODEMP", Aplicativo.iCodEmp );
 					hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "PPOP" ) );
 					hParam.put( "CODOP", txtCodOP.getVlrInteger() );
-					hParam.put( "SEQOP", txtSeqOP.getVlrInteger() );					
+					hParam.put( "SEQOP", txtSeqOP.getVlrInteger() );
 					hParam.put( "SUBREPORT_DIR", "org/freedom/layout/op/" );
 					hParam.put( "ORDEM", ordem );
 
 					dlGr = new FPrinterJob( "layout/op/" + sClassOP, "Ordem de produção", "", this, hParam, con );
 
-					if ( bVisualizar==TYPE_PRINT.VIEW ) {
+					if ( bVisualizar == TYPE_PRINT.VIEW ) {
 						dlGr.setVisible( true );
 					}
 					else {
@@ -2685,13 +2587,13 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 		super.actionPerformed( evt );
 		if ( evt.getSource() == btImp ) {
-			imprimir( TYPE_PRINT.PRINT);
+			imprimir( TYPE_PRINT.PRINT );
 		}
 		else if ( evt.getSource() == btPrevimp ) {
 			imprimir( TYPE_PRINT.VIEW );
 		}
 		else if ( evt.getSource() == btFinaliza ) {
-		
+
 			finalizaOP();
 		}
 		else if ( evt.getSource() == btRMA ) {
@@ -2727,12 +2629,12 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		}
 		else if ( evt.getSource() == btSubProd ) {
 			if ( fPrim.temTela( "Subprodutos" ) == false ) {
-				
+
 				int codop = txtCodOP.getVlrInteger().intValue();
-				int	seqop = txtSeqOP.getVlrInteger().intValue();
+				int seqop = txtSeqOP.getVlrInteger().intValue();
 				int seqest = txtSeqEst.getVlrInteger().intValue();
 
-				FOPSubProd tela = new FOPSubProd( codop, seqop, seqest, this, (Boolean) daoop.getPrefere().get( "USAREFPROD" )  );
+				FOPSubProd tela = new FOPSubProd( codop, seqop, seqest, this, (Boolean) daoop.getPrefere().get( "USAREFPROD" ) );
 				fPrim.criatela( "Subprodutos", tela, con );
 				tela.setConexao( con );
 			}
@@ -2799,41 +2701,6 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		}
 	}
 
-	// Busca Numero de ops relacioadas
-	private int getQtdOPS() {
-
-		int ret = 0;
-		StringBuffer sql = new StringBuffer();
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-
-		try {
-
-			sql.append( "select count(*) from ppop opr " );
-			sql.append( "where opr.codemp=? and opr.codfilial=? and opr.codop=? " );
-			sql.append( "and opr.seqop<>?" );
-
-			ps = con.prepareStatement( sql.toString() );
-
-			ps.setInt( 1, lcCampos.getCodEmp() );
-			ps.setInt( 2, lcCampos.getCodFilial() );
-			ps.setInt( 3, txtCodOP.getVlrInteger().intValue() );
-			ps.setInt( 4, txtSeqOP.getVlrInteger().intValue() );
-
-			rs = ps.executeQuery();
-
-			if ( rs.next() ) {
-				ret = rs.getInt( 1 );
-			}
-
-			con.commit();
-
-		} catch ( Exception e ) {
-			Funcoes.mensagemErro( null, "Erro ao buscar O.P's. relacionadas!", true, con, e );
-		}
-		return ret;
-	}
-
 	private void bloqueiaOp() {
 
 		String sitop = null;
@@ -2843,21 +2710,21 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		try {
 
 			sitop = txtSitOp.getVlrString();
-			lote = existeLote( con, txtCodProdEst.getVlrInteger(), txtCodLoteProdEst.getVlrString() );
+			lote = daoop.existeLote( txtCodProdEst.getVlrInteger(), txtCodLoteProdEst.getVlrString() );
 			rma = faltaRma() && liberaRMA();
 
-			setAcessoBotoes(btContrQuali, !temCQ() );
-			setAcessoBotoes(btDistrib, !temDistrib() );
+			setAcessoBotoes( btContrQuali, !temCQ() );
+			setAcessoBotoes( btDistrib, !temDistrib() );
 			btObs.setVisible( false );
 			btReprocessaItens.setVisible( false );
 
-			setAcessoBotoes(btFinaliza, true );
+			setAcessoBotoes( btFinaliza, true );
 			if ( sitop.equals( "PE" ) ) {
 
-				setAcessoBotoes(btLote, !lote );
-				setAcessoBotoes(btRMA, rma );
+				setAcessoBotoes( btLote, !lote );
+				setAcessoBotoes( btRMA, rma );
 
-				setAcessoBotoes(btCancela, true );
+				setAcessoBotoes( btCancela, true );
 
 				txtCodProdEst.setAtivo( false );
 				txtSeqEst.setAtivo( false );
@@ -2892,10 +2759,10 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			else if ( sitop.equals( "FN" ) ) {
 
 				btLote.setEnabled( false );
-				setAcessoBotoes(btRMA, rma );
+				setAcessoBotoes( btRMA, rma );
 				// btFinaliza.setEnabled( false );
 				// btDistrb.setEnabled( true );
-				setAcessoBotoes(btCancela, true );
+				setAcessoBotoes( btCancela, true );
 
 				txtCodProdEst.setAtivo( false );
 				txtSeqEst.setAtivo( false );
@@ -2919,11 +2786,11 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			}
 			else if ( sitop.equals( "CA" ) ) {
 
-				setAcessoBotoes(btLote, false );
-				setAcessoBotoes(btRMA,  false );
+				setAcessoBotoes( btLote, false );
+				setAcessoBotoes( btRMA, false );
 				// btFinaliza.setEnabled( false );
-				setAcessoBotoes(btDistrib, false );
-				setAcessoBotoes(btCancela, false );
+				setAcessoBotoes( btDistrib, false );
+				setAcessoBotoes( btCancela, false );
 
 				txtCodProdEst.setAtivo( false );
 				txtSeqEst.setAtivo( false );
@@ -2998,9 +2865,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				lSitOp.setText( SitOp );
 				pinLb.setBackground( cor( 238, 238, 238 ) );
 			}
-			
-			setAcessoBotoes(btSubProd, true );
-			
+			setAcessoBotoes( btSubProd, true );
 
 		} catch ( Exception e ) {
 			e.printStackTrace();
@@ -3014,46 +2879,27 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		PreparedStatement ps1 = null;
 		PreparedStatement ps2 = null;
 		DLJustCanc dl = null;
-
 		try {
-
-			if ( tpnAbas.getSelectedIndex() == 5 ) {		
-				
+			if ( tpnAbas.getSelectedIndex() == 5 ) {
 				Integer seqent = (Integer) tabEntradaParcial.getValor( tabEntradaParcial.getSelectedRow(), 0 );
-				
-				if( seqent>0 ) {
-					
-					if(Funcoes.mensagemConfirma( this, "Confirma a exclusão da entrada de produção?" )==JOptionPane.YES_OPTION) {
-					
+				if ( seqent > 0 ) {
+					if ( Funcoes.mensagemConfirma( this, "Confirma a exclusão da entrada de produção?" ) == JOptionPane.YES_OPTION ) {
 						deletaEntradaParcial( seqent );
-					
 						lcCampos.carregaDados();
-						
 						tpnAbas.setSelectedIndex( 5 );
-						
 					}
-					
 				}
 				else {
-					
 					Funcoes.mensagemInforma( this, "Selecione uma entrada para exclusão!" );
-					
 				}
-				 
 			}
 			else if ( Funcoes.mensagemConfirma( null, "Confirma o cancelamento da O.P.?" ) == JOptionPane.OK_OPTION ) {
-
 				dl = new DLJustCanc();
 				dl.setVisible( true );
-
 				if ( dl.OK ) {
-
-					int qtdops = getQtdOPS();
-
+					int qtdops = daoop.getQtdOPS( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPOP" ), txtCodOP.getVlrInteger(), txtSeqOP.getVlrInteger() );
 					if ( qtdops > 0 ) {
-
 						if ( Funcoes.mensagemConfirma( null, "Existe" + ( qtdops > 1 ? "m " : " " ) + qtdops + " Ordem" + ( qtdops > 1 ? "s " : " " ) + "de Produção ativa" + ( qtdops > 1 ? "s " : " " ) + ", vinculadas a esta O.P!\n" + "Deseja cancelar também?" ) == JOptionPane.OK_OPTION ) {
-
 							sql.append( "update ppop opr set opr.sitop='CA', JUSTIFICCANC=? " );
 							sql.append( "where opr.codemp=? and opr.codfilial=? and opr.codop=? " );
 							sql.append( "and opr.seqop<>?" );
@@ -3068,30 +2914,23 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 							ps1.executeUpdate();
 							ps1.close();
-
 						}
 					}
 
 					sql.delete( 0, sql.length() );
-
 					sql.append( "UPDATE PPOP SET SITOP='CA', JUSTIFICCANC=? " );
 					sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=?" );
 
 					ps2 = con.prepareStatement( sql.toString() );
-
 					ps2.setString( 1, dl.getValor() );
 					ps2.setInt( 2, lcCampos.getCodEmp() );
 					ps2.setInt( 3, lcCampos.getCodFilial() );
 					ps2.setInt( 4, txtCodOP.getVlrInteger().intValue() );
 					ps2.setInt( 5, txtSeqOP.getVlrInteger().intValue() );
-
 					ps2.executeUpdate();
 					ps2.close();
-
 					con.commit();
-
 					lcCampos.carregaDados();
-
 				}
 				else {
 					dl.cancel();
@@ -3101,42 +2940,6 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			Funcoes.mensagemErro( this, "Erro ao realizar a conversão de produtos!\n" + e.getMessage() );
 			e.printStackTrace();
 		}
-	}
-
-	
-	public Integer testaCodPK() {
-
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		Integer retorno = new Integer( 0 );
-
-		try {
-			ps = con.prepareStatement( "SELECT ISEQ FROM SPGERANUM(?,?,?)" );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-
-			ps.setInt( 2, ListaCampos.getMasterFilial( "PPOP" ) );
-			ps.setString( 3, "OP" );
-
-			rs = ps.executeQuery();
-			rs.next();
-
-			retorno = new Integer( rs.getString( "ISEQ" ) );
-
-			rs.close();
-			ps.close();
-
-			con.commit();
-
-		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro ao confirmar número da OP!\n" + err.getMessage(), true, con, err );
-			err.printStackTrace();
-		} finally {
-			ps = null;
-			rs = null;
-		}
-
-		return retorno;
-
 	}
 
 	private void distribuicao() {
@@ -3156,7 +2959,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			sValores[ 7 ] = txtQtdPrevProdOP.getVlrBigDecimal();
 			sValores[ 8 ] = txtCodLoteProdEst.getVlrString();
 
-			DLDistrib dl = new DLDistrib( con, this, (Boolean) daoop.getPrefere().get( "USAREFPROD" ) );
+			DLDistrib dl = new DLDistrib( con, this, (Boolean) daoop.getPrefere().get( "USAREFPROD" ), daoop );
 			dl.carregaCampos( sValores );
 			dl.carregaTabela( txtCodOP.getVlrInteger().intValue(), txtSeqOP.getVlrInteger().intValue() );
 			dl.setVisible( true );
@@ -3200,42 +3003,17 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		}
 	}
 
-		
-	
-	public String getExpedirRMA(){
-		StringBuilder sql = new StringBuilder();
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		String expedirrma = null;
-		
-		try{
-			sql.append( "select e.expedirrma from ppestrutura e where e.codemp=? and e.codfilial=? and e.codprod=? and e.seqest=? " );
-			ps = con.prepareStatement( sql.toString() );
-			int param = 1;
-			ps.setInt( param++, Aplicativo.iCodEmp );
-			ps.setInt( param++, ListaCampos.getMasterFilial( "PPESTRUTURA" ));
-			ps.setInt( param++, txtCodProdEst.getVlrInteger() );
-			ps.setInt( param++, txtSeqEst.getVlrInteger() );
-			rs = ps.executeQuery();
-			
-			if(rs.next()){
-				expedirrma = rs.getString( "expedirrma" );
-			}		
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		return expedirrma;
-	}
-	
-	
-	public void desabilitaBtFinaliza(){
-		String expedirrma = getExpedirRMA();
-		boolean situacao = false;	
-		if("S".equals( expedirrma )){
-			
-			situacao = situacaoRMA();
-			setAcessoBotoes(btFinaliza, situacao );
+	public void desabilitaBtFinaliza() {
+
+		try {
+			String expedirrma = daoop.getExpedirRMA( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPESTRUTURA" ), txtCodProdEst.getVlrInteger(), txtSeqEst.getVlrInteger() );
+			boolean situacao = false;
+			if ( "S".equals( expedirrma ) ) {
+				situacao = situacaoRMA();
+				setAcessoBotoes( btFinaliza, situacao );
+			}
+		} catch ( Exception err ) {
+			Funcoes.mensagemErro( this, "Erro consultando RMA's !\n" + err.getMessage() );
 		}
 	}
 
@@ -3244,10 +3022,15 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		if ( kevt.getSource() == txtSeqOP )
 			if ( ( (JTextFieldPad) kevt.getSource() ).getVlrString().trim().equals( "" ) )
 				( (JTextFieldPad) kevt.getSource() ).setVlrInteger( new Integer( 0 ) );
-	
-		if ( kevt.getKeyCode() == KeyEvent.VK_ENTER ){ 
-			if ( kevt.getSource() == txtCodProdEst || kevt.getSource() == txtRefProdEst )
-					txtCodUnidProd.setVlrString( getCodUnid() );
+
+		if ( kevt.getKeyCode() == KeyEvent.VK_ENTER ) {
+			if ( kevt.getSource() == txtCodProdEst || kevt.getSource() == txtRefProdEst ) {
+				try {
+					txtCodUnidProd.setVlrString( daoop.getCodUnid( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQPRODUTO" ), txtCodProdEst.getVlrInteger(), txtRefProdEst.getVlrString() ) );
+				} catch ( Exception e ) {
+					Funcoes.mensagemErro( this, e.getMessage() );
+				}
+			}
 		}
 	}
 
@@ -3300,7 +3083,6 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			else if ( tpnAbas.getSelectedIndex() == 5 ) {
 				getEntradaParcial();
 			}
-	
 
 		}
 	}
@@ -3308,109 +3090,92 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 	public void beforeCarrega( CarregaEvent cevt ) {
 
 		if ( cevt.getListaCampos() == lcCampos ) {
-			
+
 			bBuscaRMA = false;
 			bBuscaOPS = false;
-			
+
 		}
 	}
 
 	public void afterCarrega( CarregaEvent cevt ) {
 
 		String sSitOp = txtSitOp.getVlrString();
-		String expedirrma =  null;
-		
+		String expedirrma = null;
 		try {
-			
 			if ( cevt.getListaCampos() == lcCampos ) {
 				bloqueiaOp();
-				
 				desabilitaBtFinaliza();
-			
 				bBuscaRMA = true;
 				bBuscaOPS = true;
 				tabSimu.limpa();
-
 				tpnAbas.setSelectedIndex( 1 );
 				tpnAbas.setEnabledAt( 0, false );
-
 				btAdicProdutoEstrutura.setEnabled( "S".equals( cbEstDinamica.getVlrString() ) );
-				
-				setAcessoBotoes(btRemessa, temRemessa( ) );
-				setAcessoBotoes(btRetorno, temRetorno( ) );
-				
-				btPrevimp.setEnabled( ! txtSitOp.getVlrString().equals( "BL" ) );
-				btImp.setEnabled( ! txtSitOp.getVlrString().equals( "BL" ) );
-				txtQtdItSp.setVlrBigDecimal( getQtdSubProd() );
-				txtCodUnidProd.setVlrString( getCodUnid() );
-				
-				if(!(Boolean) daoop.getPrefere().get( "EDITQTDOP" ) ){
+				setAcessoBotoes( btRemessa, temRemessa() );
+				setAcessoBotoes( btRetorno, temRetorno() );
+				btPrevimp.setEnabled( !txtSitOp.getVlrString().equals( "BL" ) );
+				btImp.setEnabled( !txtSitOp.getVlrString().equals( "BL" ) );
+				txtQtdItSp.setVlrBigDecimal( daoop.getQtdSubProd( txtCodOP.getVlrInteger(), txtSeqOP.getVlrInteger() ) );
+				try {
+					txtCodUnidProd.setVlrString( daoop.getCodUnid( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQPRODUTO" ), txtCodProdEst.getVlrInteger(), txtRefProdEst.getVlrString() ) );
+				} catch ( Exception err ) {
+					Funcoes.mensagemErro( this, err.getMessage() );
+				}
+				if ( !(Boolean) daoop.getPrefere().get( "EDITQTDOP" ) ) {
 					if ( lcCampos.getStatus() == ListaCampos.LCS_INSERT ) {
-						txtQtdSugProdOP.setEditable(  true );
-					} else {
-						txtQtdSugProdOP.setEditable(  false );
+						txtQtdSugProdOP.setEditable( true );
+					}
+					else {
+						txtQtdSugProdOP.setEditable( false );
 					}
 				}
-
-			} else if ( ( cevt.getListaCampos() == lcEstruturaCod ) || ( cevt.getListaCampos() == lcEstruturaRef ) ) {
-
+			}
+			else if ( ( cevt.getListaCampos() == lcEstruturaCod ) || ( cevt.getListaCampos() == lcEstruturaRef ) ) {
 				carregaProduto();
-
 				if ( txtQtdPrevProdOP.getVlrString().equals( "" ) ) {
 					txtQtdSugProdOP.setVlrBigDecimal( txtQtdEst.getVlrBigDecimal() );
 				}
-
 				if ( ( txtCodLoteProdEst.getVlrString().equals( "" ) ) && ( txtUsaLoteEst.getVlrString().equals( "S" ) ) ) {
 					txtCodLoteProdEst.setVlrString( getLote( lcEstruturaCod, txtCodProdEst, false ) );
 					txtDtValidOP.setAtivo( false );
-
 					lcLoteProdEst.setDinWhereAdic( "CODPROD=#N AND (VENCTOLOTE >= #D)", txtCodProdEst );
 					lcLoteProdEst.setDinWhereAdic( "", txtDtFabProd );
-
 					lcLoteProdEst.carregaDados();
 				}
 				else if ( ( txtUsaLoteEst.getVlrString().equals( "N" ) ) ) {
 					txtCodLoteProdEst.setAtivo( false );
 					txtDtValidOP.setAtivo( true );
 				}
-
-			} else  if ( cevt.getListaCampos() == lcLoteProdEst ) {
+			}
+			else if ( cevt.getListaCampos() == lcLoteProdEst ) {
 				txtDtValidOP.setVlrDate( txtDescLoteProdEst.getVlrDate() );
-			} else 	if ( cevt.getListaCampos() == lcDet ) {
-				
+			}
+			else if ( cevt.getListaCampos() == lcDet ) {
 				if ( txtUsaLoteDet.getVlrString().equals( "S" ) ) {
-					
 					txtCodLoteProdDet.setVlrString( getLote( lcProdDetCod, txtCodProdDet, true ) );
 					txtCodLoteProdDet.setAtivo( true );
 					lcLoteProdDet.carregaDados();
-					setAcessoBotoes(btRMA, liberaRMA() );
-					
+					setAcessoBotoes( btRMA, liberaRMA() );
 				}
 				else if ( ( txtUsaLoteDet.getVlrString().equals( "N" ) ) ) {
-					
 					txtCodLoteProdDet.setAtivo( false );
-					
 				}
-				
-				if( "S".equals( txtPermiteAjusteItOp.getVlrString() )) {
-					
+				if ( "S".equals( txtPermiteAjusteItOp.getVlrString() ) ) {
 					txtQtdItOp.setAtivo( true );
-					
 				}
 				else {
-					
 					txtQtdItOp.setAtivo( false );
-					
 				}
-				
+
 				processaTab();
-				if(tab.getNumColunas()>14) {
+				if ( tab.getNumColunas() > 14 ) {
 					tab.setColunaInvisivel( 14 );
 				}
-			} else 	if ( cevt.getListaCampos() == lcModLote ) {
+			}
+			else if ( cevt.getListaCampos() == lcModLote ) {
 				if ( ! ( txtCodModLote.getVlrString().equals( "" ) ) && ( txtCodLoteProdEst.getVlrString().equals( "" ) ) ) {
 					gravaLote( false );
-					setAcessoBotoes(btLote, true );
+					setAcessoBotoes( btLote, true );
 				}
 			}
 		} catch ( Exception e ) {
@@ -3420,7 +3185,8 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 	}
 
 	private void setAcessoPaineisNavegacao() {
-		if (! "S".equals(Aplicativo.getUsuario().getAcesopveritens())) {
+
+		if ( !"S".equals( Aplicativo.getUsuario().getAcesopveritens() ) ) {
 			pnDet.setVisible( false );
 			tab.setVisible( false );
 			tabEntradaParcial.setVisible( false );
@@ -3433,89 +3199,72 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			navRod.setVisible( false );
 			btImp.setVisible( false );
 			btPrevimp.setVisible( false );
-			//pnGImp.setVisible( false );
-			//pnImp.setVisible( false );
+			// pnGImp.setVisible( false );
+			// pnImp.setVisible( false );
 		}
 	}
-	
-	private void setAcessoBotoes(JButtonPad botaoAcesso, boolean enabled) {
+
+	private void setAcessoBotoes( JButtonPad botaoAcesso, boolean enabled ) {
+
 		Usuario usuario = Aplicativo.getUsuario();
-		if (enabled) {
-			if (botaoAcesso==btLote && ! "S".equals( usuario.getAcesopbtcadlote() )) {
+		if ( enabled ) {
+			if ( botaoAcesso == btLote && !"S".equals( usuario.getAcesopbtcadlote() ) ) {
 				enabled = false;
-			} else if (botaoAcesso==btCancela && ! "S".equals( usuario.getAcesopbtcanc() )) {
+			}
+			else if ( botaoAcesso == btCancela && !"S".equals( usuario.getAcesopbtcanc() ) ) {
 				enabled = false;
-			} else if (botaoAcesso==btDistrib && ! "S".equals( usuario.getAcesopbtdistr() )) {
+			}
+			else if ( botaoAcesso == btDistrib && !"S".equals( usuario.getAcesopbtdistr() ) ) {
 				enabled = false;
-			} else if (botaoAcesso==btFinaliza && ! "S".equals( usuario.getAcesopbtfase() )) {
+			}
+			else if ( botaoAcesso == btFinaliza && !"S".equals( usuario.getAcesopbtfase() ) ) {
 				enabled = false;
-			} else if (botaoAcesso==btContrQuali && ! "S".equals( usuario.getAcesopbtqualid() )) {
+			}
+			else if ( botaoAcesso == btContrQuali && !"S".equals( usuario.getAcesopbtqualid() ) ) {
 				enabled = false;
-			} else if (botaoAcesso==btRemessa && ! "S".equals( usuario.getAcesopbtremessa() )) {
+			}
+			else if ( botaoAcesso == btRemessa && !"S".equals( usuario.getAcesopbtremessa() ) ) {
 				enabled = false;
-			} else if (botaoAcesso==btRetorno && ! "S".equals( usuario.getAcesopbtretorno() )) {
+			}
+			else if ( botaoAcesso == btRetorno && !"S".equals( usuario.getAcesopbtretorno() ) ) {
 				enabled = false;
-			} else if (botaoAcesso==btRMA && ! "S".equals( usuario.getAcesopbtrma() )) {
+			}
+			else if ( botaoAcesso == btRMA && !"S".equals( usuario.getAcesopbtrma() ) ) {
 				enabled = false;
-			} else if (botaoAcesso==btSubProd && ! "S".equals( usuario.getAcesopbtsubprod() )) {
+			}
+			else if ( botaoAcesso == btSubProd && !"S".equals( usuario.getAcesopbtsubprod() ) ) {
 				enabled = false;
 			}
 		}
 		botaoAcesso.setEnabled( enabled );
 	}
-	
+
 	public void beforeInsert( InsertEvent ievt ) {
 
 		lcCampos.limpaCampos( false );
 		simularOP();
 		bloqueiaOp();
 	}
-	
-	
-	public boolean validaQuantidade(){
-		boolean result = false;
-		
-		HashMap<String, BigDecimal> valores = getValoresFSC();
-		BigDecimal nroPlanos = valores.get( "NROPLANOS" );
-	    BigDecimal qtdPlanos = valores.get( "QTDPORPLANO" );
-	    BigDecimal fatorfsc = valores.get( "FATORFSC" );
-	    
-	    BigDecimal qtdMinimaEtiquetas = qtdPlanos.divide( nroPlanos );
-	    BigDecimal quantidadeOP = txtQtdSugProdOP.getVlrBigDecimal().multiply( fatorfsc );
-	    
-	    
-	    if(quantidadeOP.remainder(qtdMinimaEtiquetas).compareTo(new BigDecimal(0) ) == 0){
-	    	System.out.println("OK");
-	    	result = true;
-	    }	else {
-	    
-	    	BigDecimal valor = quantidadeOP.divide( qtdMinimaEtiquetas );
-	    	BigDecimal qtdMinimaOP = new BigDecimal(valor.intValue()).multiply( qtdMinimaEtiquetas );
-	    	BigDecimal qtdASeguirOP =qtdMinimaOP.add(  qtdMinimaEtiquetas  );
-	    	//.multiply( new BigDecimal(fatorfsc.intValue()) 
-	    	Funcoes.mensagemInforma( this, "Quantidade invalida!!!\nQuantidade Sugerida:\nMenor: " + qtdMinimaOP + "\nMaior: " + qtdASeguirOP );
-	    }
-	    
-	    return result;
-	}
 
 	public void beforePost( PostEvent pevt ) {
-		
-		if( pevt.getListaCampos() == lcCampos){	
-			
-			if((Boolean) daoop.getPrefere().get( "VALIDAQTDOP" )){
-			
-				if(!validaQuantidade()){
-					pevt.cancela();
+
+		if ( pevt.getListaCampos() == lcCampos ) {
+			if ( (Boolean) daoop.getPrefere().get( "VALIDAQTDOP" ) ) {
+				try {
+					String mensagem = daoop.validaQuantidade( txtCodProdEst.getVlrInteger(), txtRefProdEst.getVlrString(), txtQtdSugProdOP.getVlrBigDecimal() );
+					if ( !"".equals( mensagem ) ) {
+						pevt.cancela();
+						Funcoes.mensagemInforma( this, mensagem );
+					}
+				} catch ( Exception err ) {
+					Funcoes.mensagemErro( this, "Erro validando quantidades !\n" + err.getMessage() );
 				}
 			}
-		}	
-
+		}
 		if ( ! ( txtQtdFinalProdOP.getVlrBigDecimal().compareTo( new BigDecimal( 0 ) ) > 0 ) ) {
 			txtQtdFinalProdOP.setVlrBigDecimal( new BigDecimal( 0 ) );
 			txtSitOp.setVlrString( "PE" );
 		}
-
 	}
 
 	public void afterPost( PostEvent pevt ) {
@@ -3528,12 +3277,12 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				ratearOp();
 				geraRMA();
 			}
-			
+
 			btAdicProdutoEstrutura.setEnabled( "S".equals( cbEstDinamica.getVlrString() ) );
-			
+
 		}
 		else if ( pevt.getListaCampos() == lcDet ) {
-			setAcessoBotoes(btRMA, liberaRMA() );
+			setAcessoBotoes( btRMA, liberaRMA() );
 		}
 	}
 
@@ -3541,8 +3290,14 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 		if ( ievt.getListaCampos() == lcCampos ) {
 			getTipoMov();
-			if ( (Boolean) daoop.getPrefere().get( "OPSEQ" )) {
-				txtCodOP.setVlrInteger( testaCodPK() );
+			if ( (Boolean) daoop.getPrefere().get( "OPSEQ" ) ) {
+				try {
+					txtCodOP.setVlrInteger( daoop.testaCodPK() );
+				} catch ( Exception err ) {
+					ievt.cancela();
+					Funcoes.mensagemErro( this, err.getMessage() );
+					return;
+				}
 			}
 			txtCodTpMov.setVlrInteger( iCodTpMov );
 			lcTipoMov.carregaDados();
@@ -3551,7 +3306,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				txtSeqOP.setVlrInteger( new Integer( 0 ) );
 			}
 			txtCodUnidProd.setVlrString( "" );
-			txtQtdSugProdOP.setVlrBigDecimal( new BigDecimal(0) );
+			txtQtdSugProdOP.setVlrBigDecimal( new BigDecimal( 0 ) );
 			txtQtdSugProdOP.setEditable( true );
 		}
 	}
@@ -3574,6 +3329,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 	}
 
 	public void setConexao( DbConnection cn ) {
+
 		super.setConexao( cn );
 		try {
 			daoop = new DAOOp( cn );
@@ -3609,116 +3365,26 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 		lcCampos.carregaDados();
 	}
-	
-	private Integer getSeqItOP() {
-		
-		Integer ret = 1;
-		StringBuilder sql = new StringBuilder();
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		
-		try {
-		
-			sql.append( "select coalesce(max(io.seqitop),0) + 1 from ppitop io ");
-			sql.append( "where io.codemp=? and io.codfilial=? and io.codop=? and io.seqop=? " );
-			
-			ps = con.prepareStatement( sql.toString() );
-			
-			ps.setInt( 1, lcCampos.getCodEmp() );
-			ps.setInt( 2, lcCampos.getCodFilial() );
-			ps.setInt( 3, txtCodOP.getVlrInteger() );
-			ps.setInt( 4, txtSeqOP.getVlrInteger() );
-			
-			rs = ps.executeQuery();
-			
-			
-			
-			if(rs.next()) {
-				ret = rs.getInt( 1 );
-			}
-			
-			con.commit();
-			
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-		return ret; 
-	}
-	
-	private void insereItOpDinamica(Integer codfase, Integer codprod, String refprod, BigDecimal qtditop, String gerarma) {
-		StringBuilder sql = new StringBuilder();
-		PreparedStatement ps = null;		
-		
-		try {
-			
-			sql.append( "insert into ppitop (" );
-			
-			sql.append( "codemp, codfilial, codop, seqop, seqitop, ");
-			sql.append( "codempfs, codfilialfs, codfase, ");
-			sql.append( "codemppd, codfilialpd, codprod, refprod, ");
-			sql.append( "qtditop, gerarma");
-			
-			sql.append( ") values ( ");
-			
-			sql.append( "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )");
-			
-			ps = con.prepareStatement( sql.toString() );
-			
-			Integer iparam = 1;
-			
-			ps.setInt( iparam++, lcCampos.getCodEmp() );
-			ps.setInt( iparam++, lcCampos.getCodFilial() );
-			ps.setInt( iparam++, txtCodOP.getVlrInteger() );
-			ps.setInt( iparam++, txtSeqOP.getVlrInteger() );
-			ps.setInt( iparam++, getSeqItOP() );
-			
-			ps.setInt( iparam++, lcCampos.getCodEmp() );
-			ps.setInt( iparam++, lcCampos.getCodFilial() );
-			ps.setInt( iparam++, codfase );
-			
-			ps.setInt( iparam++, lcCampos.getCodEmp() );
-			ps.setInt( iparam++, lcCampos.getCodFilial() );
-			ps.setInt( iparam++, codprod );
-			ps.setString( iparam++, refprod );
-			
-			ps.setBigDecimal( iparam++, qtditop );
-			ps.setString( iparam++, gerarma );
-			
-			ps.execute();
-			
-			con.commit();
-			
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
+
 	private void buscaEstrutura() {
-		
+
 		try {
-		
-			DLItensEstruturaProd dl = new DLItensEstruturaProd(txtQtdSugProdOP.getVlrBigDecimal());
-			
+
+			DLItensEstruturaProd dl = new DLItensEstruturaProd( txtQtdSugProdOP.getVlrBigDecimal() );
 			dl.setCodemp( Aplicativo.iCodEmp );
 			dl.setCodemppd( Aplicativo.iCodEmp );
-			
-			dl.setCodfilial( ListaCampos.getMasterFilial( "EQPRODUTO" ) );			
+			dl.setCodfilial( ListaCampos.getMasterFilial( "EQPRODUTO" ) );
 			dl.setCodfilialpd( ListaCampos.getMasterFilial( "EQPRODUTO" ) );
-			
 			dl.setCodprod( txtCodProdEst.getVlrInteger() );
 			dl.setSeqest( txtSeqEst.getVlrInteger() );
-			dl.carregaItens(false);
-			
+			dl.carregaItens( false );
 			dl.setVisible( true );
-			
-			
+
 			if ( dl.OK ) {
-				
-				Vector<HashMap<String,Object>> valores = dl.getValores();
-				HashMap<String,Object> item = new HashMap<String, Object>();
-				
+
+				Vector<HashMap<String, Object>> valores = dl.getValores();
+				HashMap<String, Object> item = new HashMap<String, Object>();
+
 				Integer codprod = null;
 				String refprod = null;
 				BigDecimal qtditest = null;
@@ -3726,194 +3392,69 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				Integer codfilialfs = null;
 				Integer codfase = null;
 				String gerarma = null;
-				
-				for(int i=0; i< valores.size(); i++) {
-					
+
+				for ( int i = 0; i < valores.size(); i++ ) {
 					item = valores.elementAt( i );
-					
 					codprod = (Integer) item.get( DLItensEstruturaProd.ITENS.CODPRODPD.name() );
 					refprod = (String) item.get( DLItensEstruturaProd.ITENS.REFPRODPD.name() );
 					qtditest = (BigDecimal) item.get( DLItensEstruturaProd.ITENS.QTDITEST.name() );
-					
-					
-					
 					codfase = (Integer) item.get( DLItensEstruturaProd.ITENS.CODFASE.name() );
-					
 					gerarma = (String) item.get( "GERARMA" );
-					
-					insereItOpDinamica( codfase, codprod, refprod, qtditest, gerarma );
-					
-				
+					daoop.insereItOpDinamica( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPOP" ), txtCodOP.getVlrInteger(), txtSeqOP.getVlrInteger(), codfase, codprod, refprod, qtditest, gerarma );
 				}
 				lcCampos.carregaDados();
 			}
-			dl.dispose();		
-		}
-		catch (Exception e) {
+			dl.dispose();
+		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
-	}
-	
-	
-	
-	private HashMap<String, BigDecimal> getValoresFSC() {
-		String result = null;
-		PreparedStatement ps;
-		ResultSet rs;
-		
-		StringBuilder sql = null;
-		HashMap<String, BigDecimal> valores = new HashMap<String, BigDecimal>();
-		
-		try {
-
-			sql = new StringBuilder("");
-			sql.append( "select pd.NroPlanos , pd.QtdPorPlano, pd.fatorfsc from eqproduto pd ");
-			sql.append( "where pd.codemp=? and pd.codfilial=? ");
-			
-			if(txtCodProdEst.getVlrInteger()>0){
-				sql.append( "and pd.codprod=? ");
-			} else {
-				sql.append( "and pd.refprod=? ");
-			}
-			
-			
-			ps = con.prepareStatement( sql.toString() );
-			int param = 1;	
-			ps.setInt( param++, Aplicativo.iCodEmp );
-			ps.setInt( param++, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
-			if(txtCodProdEst.getVlrInteger()>0){
-				ps.setInt( param++, txtCodProdEst.getVlrInteger() );
-			} else {
-				ps.setString( param++, txtRefProdEst.getVlrString() );
-			}
-			rs = ps.executeQuery();
-			
-			if (rs.next()) {
-				valores.put("NROPLANOS", rs.getBigDecimal( "NROPLANOS" ));
-				valores.put("QTDPORPLANO", rs.getBigDecimal( "QTDPORPLANO" ));
-				valores.put("FATORFSC", rs.getBigDecimal( "FATORFSC" ));
-			}
-			
-			rs.close();
-			ps.close();
-			con.commit();
-		} catch ( SQLException e ) {
-			Funcoes.mensagemInforma( this, "Não foi possível carregar valores para conversão FSC !\n" + e.getMessage() );
-			e.printStackTrace();
-		}
-		return valores;
-	}
-	
-	private String getCodUnid() {
-		String result = null;
-		StringBuilder sql = new StringBuilder("select pd.codunid from eqproduto pd ");
-		sql.append( "where pd.codemp=? and pd.codfilial=? ");
-		if(txtCodProdEst.getVlrInteger()>0){
-			sql.append( "and pd.codprod=? ");
-		} else {
-			sql.append( "and pd.refprod=? ");
-		}
-		PreparedStatement ps;
-		ResultSet rs;
-		try {
-			ps = con.prepareStatement( sql.toString() );
-			int param = 1;
-			
-			ps.setInt( param++, Aplicativo.iCodEmp );
-			ps.setInt( param++, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
-			if(txtCodProdEst.getVlrInteger()>0){
-				ps.setInt( param++, txtCodProdEst.getVlrInteger() );
-			} else {
-				ps.setString( param++, txtRefProdEst.getVlrString() );
-			}
-			rs = ps.executeQuery();
-			if (rs.next()) {
-				result = rs.getString( "codunid" );
-			}
-			rs.close();
-			ps.close();
-			con.commit();
-		} catch ( SQLException e ) {
-			Funcoes.mensagemInforma( this, "Não foi possível carregar unidade !\n" + e.getMessage() );
-			e.printStackTrace();
-		}
-		return result;
 	}
 
-	private BigDecimal getQtdSubProd() {
-		BigDecimal result = BigDecimal.ZERO;
-		StringBuilder sql = new StringBuilder("select sum(sp.qtditsp) qtditsp from ppopsubprod sp ");
-		sql.append( "where sp.codemp=? and sp.codfilial=? and sp.codop=? and sp.seqop=?");
-		PreparedStatement ps;
-		ResultSet rs;
-		try {
-			ps = con.prepareStatement( sql.toString() );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "PPOPSUBPROD" ) );
-			ps.setInt( 3, txtCodOP.getVlrInteger() );
-			ps.setInt( 4, txtSeqOP.getVlrInteger() );
-			rs = ps.executeQuery();
-			if (rs.next()) {
-				result = getBigDecimal(rs.getBigDecimal( "qtditsp" ));
-			}
-			rs.close();
-			ps.close();
-			con.commit();
-		} catch ( SQLException e ) {
-			Funcoes.mensagemInforma( this, "Não foi possível carregar qtd. de sub-produtos !\n" + e.getMessage() );
-			e.printStackTrace();
-		}
-		return result;
-	}
-	
 	private BigDecimal getBigDecimal( BigDecimal value ) {
+
 		BigDecimal result = null;
-		
-		if (value == null){
+
+		if ( value == null ) {
 			result = BigDecimal.ZERO;
-		} else {
+		}
+		else {
 			result = value;
 		}
 		return result;
 	}
-	
+
 	private void geraRemessa() {
-		
-		try { 
-		
+
+		try {
+
 			DLRemIndustria dl = new DLRemIndustria( con, txtCodOP.getVlrInteger(), txtSeqOP.getVlrInteger() );
-//			dl.carregaCampos( sValores );
-//			dl.carregaTabela( txtCodOP.getVlrInteger().intValue(), txtSeqOP.getVlrInteger().intValue() );
+			// dl.carregaCampos( sValores );
+			// dl.carregaTabela( txtCodOP.getVlrInteger().intValue(), txtSeqOP.getVlrInteger().intValue() );
 			dl.setVisible( true );
 			if ( dl.OK ) {
-	//			lcCampos.carregaDados();
+				// lcCampos.carregaDados();
 			}
-			
-		}
-		catch (Exception e) {
+
+		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
 	}
 
-
 	private void geraRetorno() {
-		
-		try { 
-		
+
+		try {
+
 			DLRetIndustria dl = new DLRetIndustria( con, txtCodOP.getVlrInteger(), txtSeqOP.getVlrInteger() );
-//			dl.carregaCampos( sValores );
-//			dl.carregaTabela( txtCodOP.getVlrInteger().intValue(), txtSeqOP.getVlrInteger().intValue() );
+			// dl.carregaCampos( sValores );
+			// dl.carregaTabela( txtCodOP.getVlrInteger().intValue(), txtSeqOP.getVlrInteger().intValue() );
 			dl.setVisible( true );
 			if ( dl.OK ) {
-	//			lcCampos.carregaDados();
+				// lcCampos.carregaDados();
 			}
-			
-		}
-		catch (Exception e) {
+
+		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
 	}
 
 }
-
-

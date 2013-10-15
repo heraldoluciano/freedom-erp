@@ -41,7 +41,7 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.pcp.business.object.ModLote;
-import org.freedom.modulos.pcp.view.frame.crud.detail.FOP;
+import org.freedom.modulos.pcp.dao.DAOOp;
 
 public class DLFechaDistrib extends FFDialogo {
 
@@ -64,10 +64,13 @@ public class DLFechaDistrib extends FFDialogo {
 	private Vector<Object> vBuscaLote = new Vector<Object>();
 
 	private String lotePrincipal;
+	
+	private DAOOp daoop = null;
 
-	public DLFechaDistrib( Component cOrig, int iSeqDist, int iCodProd, String sDescProd, float ftQtdade ) {
+	public DLFechaDistrib( Component cOrig, int iSeqDist, int iCodProd, String sDescProd, float ftQtdade, DAOOp daoop ) {
 
 		super( cOrig );
+		this.daoop = daoop;
 		setTitulo( "Quantidade" );
 		setAtribos( 310, 220 );
 
@@ -265,7 +268,13 @@ public class DLFechaDistrib extends FFDialogo {
 
 	public boolean existeLote( int iCodProd, String sCodLote ) {
 
-		return FOP.existeLote( con, iCodProd, sCodLote );
+		boolean result = false;
+		try {
+			result = daoop.existeLote( iCodProd, sCodLote );
+		} catch (Exception err) {
+			Funcoes.mensagemErro( this, err.getMessage() );
+		}
+		return result;
 	}
 
 	public Object[] getModLote() {
@@ -351,7 +360,11 @@ public class DLFechaDistrib extends FFDialogo {
 			if ( ( !existeLote( iCodProd, sCodLote ) ) ) {
 				txtLote.setVlrString( sCodLote );
 				txtDtValid.setVlrDate( (Date) lote[ 2 ] );
-				retorno = FOP.gravaLote( con, true, (String) lote[ 3 ], getUsaLote(), (String) lote[ 3 ], iCodProd, (Date) lote[ 1 ], ( (Integer) lote[ 4 ] ).intValue(), sCodLote );
+				try { 
+					retorno = daoop.gravaLote( true, (String) lote[ 3 ], getUsaLote(), (String) lote[ 3 ], iCodProd, (Date) lote[ 1 ], ( (Integer) lote[ 4 ] ).intValue(), sCodLote );
+				} catch (Exception err) {
+					Funcoes.mensagemErro( this, err.getMessage() );
+				}
 				bret = ( (Boolean) retorno[ 2 ] ).booleanValue();
 			}
 			else if ( Funcoes.mensagemConfirma( null, "Lote já cadastrado para o produto!\nDeseja usa-lo?" ) == JOptionPane.YES_OPTION ) {
