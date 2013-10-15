@@ -39,6 +39,7 @@ import org.freedom.library.swing.component.JTablePad;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.modulos.pcp.dao.DAOOp;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -82,11 +83,14 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
 	private JTablePad tabDistrib = new JTablePad();
 
 	private String lotePrincipal = null;
+	
+	private DAOOp daoop = null;
 
-	public DLDistrib( DbConnection cn, Component cOrig, boolean bPref ) {
+	public DLDistrib( DbConnection cn, Component cOrig, boolean bPref, DAOOp daoop ) {
 
 		super( cOrig );
 		setConexao( cn );
+		this.daoop = daoop;
 		setTitulo( "Distribuição" );
 		setAtribos( 757, 380 );
 
@@ -215,7 +219,7 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
 
 		while ( !ok ) {
 
-			dl = new DLFechaDistrib( DLDistrib.this, iSeqDist, iCodProd, sDescProd, ftQtdade );
+			dl = new DLFechaDistrib( DLDistrib.this, iSeqDist, iCodProd, sDescProd, ftQtdade, daoop );
 
 			try {
 
