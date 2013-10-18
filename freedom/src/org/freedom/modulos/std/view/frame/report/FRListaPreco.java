@@ -213,7 +213,7 @@ public class FRListaPreco extends FRelatorio implements CheckBoxListener {
 		super( false );
 
 		setTitulo( "Lista de Preços" );
-		setAtribos( 50, 50, 635, 630 );
+		setAtribos( 50, 50, 635, 710 );
 
 		vLabs.addElement( "Código" );
 		vLabs.addElement( "Descrição" );
@@ -377,7 +377,7 @@ public class FRListaPreco extends FRelatorio implements CheckBoxListener {
 		
 
 		// pinOpt.setBorder( SwingParams.getPanelLabel( "Opções de filtros" ) );
-		adic( pinOpt, 5, 133, 600, 250 );
+		adic( pinOpt, 5, 136, 600, 230 );
 
 		pinOpt.adic( new JLabelPad( "Cód.grupo" ), 7, 0, 80, 20 );
 		pinOpt.adic( txtCodGrup, 7, 20, 80, 20 );
@@ -414,9 +414,13 @@ public class FRListaPreco extends FRelatorio implements CheckBoxListener {
 		pinOpt.adic( txtCodCli, 300, 140, 80, 20 );
 		pinOpt.adic( new JLabelPad( "Razão social do cliente" ), 383, 120, 200, 20 );
 		pinOpt.adic( txtRazCli, 383, 140, 200, 20 );
+		pinOpt.adic( new JLabelPad( "Data inicial:"), 7, 160, 100, 20  );
+		pinOpt.adic( txtDataini, 7, 180, 100, 20 );
+		pinOpt.adic( new JLabelPad( "Data final:"),  110, 160, 100, 20  );
+		pinOpt.adic( txtDatafim, 110, 180, 100, 20 );
 		
 		// pinOpt2.setBorder( SwingParams.getPanelLabel( "Opções complementares" ) );
-		adic( pinOpt2, 5, 419, 600, 80 );
+		adic( pinOpt2, 5, 365, 600, 80 );
 
 		pinOpt2.adic( cbAgrupar, 10, 5, 105, 20 );
 		pinOpt2.adic( cbImpSaldo, 10, 25, 90, 20 );
@@ -431,7 +435,7 @@ public class FRListaPreco extends FRelatorio implements CheckBoxListener {
 		pinOpt2.adic( txtNroDiasAlt, 490, 25, 30, 20 );
 
 		// pinPlan.setBorder( SwingParams.getPanelLabel("Planos de pagamento") );
-		adic( pinPlan, 5, 502, 600, 190 );
+		adic( pinPlan, 5, 445, 600, 190 );
 
 		pinPlan.adic( new JLabelPad( "Cód.p.pag." ), 7, 0, 250, 20 );
 		pinPlan.adic( txtCodPlanoPag1, 7, 20, 80, 20 );
