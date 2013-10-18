@@ -614,6 +614,7 @@ public class FRListaPreco extends FRelatorio implements CheckBoxListener {
 				+ "AND P.CODGRUP LIKE ? AND P.ATIVOPROD='S' " 
 				+ "AND PG.CODEMP=PP.CODEMPPG " + "AND PG.CODFILIAL=PP.CODFILIALPG "
 				+ "AND PG.CODPLANOPAG = PP.CODPLANOPAG " 
+				+ "AND PP.ATIVOPRECOPROD='S' "
 				+ "AND PP.CODPLANOPAG IN (?,?,?,?,?,?,?)" + sWhere ;
 			if ("S".equals(cbFiltrarProdCli.getVlrString())) {
 				sSQL += " and exists (select * from vdvenda vd, vditvenda iv ";
@@ -863,6 +864,7 @@ public class FRListaPreco extends FRelatorio implements CheckBoxListener {
 
 			sql.append( " WHERE P.CODEMP=PP.CODEMP AND P.CODFILIAL=PP.CODFILIAL AND P.CODPROD=PP.CODPROD " );
 			sql.append( " AND P1.CODEMP=PP.CODEMP AND P1.CODFILIAL=PP.CODFILIAL " );
+			sql.append( " and pp.ativoprecoprod='S' " );
 			sql.append( " AND PP.CODEMP=? AND PP.CODFILIAL=? " + sWhere );
 			if ("S".equals(cbFiltrarProdCli.getVlrString())) {
 				sql.append( " and exists (select * from vdvenda vd, vditvenda iv ");
