@@ -409,7 +409,7 @@ public class FRListaPreco extends FRelatorio implements CheckBoxListener {
 		pinOpt.adic( txtNomeFor, 90, 100, 200, 20 );
 
 		// Filtro de produtos por cliente
-		pinOpt.adic( cbFiltrarProdCli, 7, 140, 250, 20 );
+		pinOpt.adic( cbFiltrarProdCli, 7, 130, 250, 20 );
 		pinOpt.adic( new JLabelPad( "Cód.Cliente" ), 300, 120, 80, 20 );
 		pinOpt.adic( txtCodCli, 300, 140, 80, 20 );
 		pinOpt.adic( new JLabelPad( "Razão social do cliente" ), 383, 120, 200, 20 );
@@ -491,6 +491,29 @@ public class FRListaPreco extends FRelatorio implements CheckBoxListener {
 	
 	public void imprimir( TYPE_PRINT bVisualizar ) {
 
+		if ("S".equals(cbFiltrarProdCli.getVlrString())) {
+			if (txtCodCli.getVlrInteger().intValue()==0) {
+				Funcoes.mensagemInforma( this, "Selecione um cliente !" );
+				if (txtCodCli.isFocusable()) {
+					txtCodCli.requestFocus();
+				}
+				return;
+			}
+			if ("".equals( txtDataini.getVlrString().trim() ) ) {
+				Funcoes.mensagemInforma( this, "Preencha a data inicial  !" );
+				if (txtDataini.isFocusable()) {
+					txtDataini.requestFocus();
+				}
+				return;
+			}
+			if ("".equals( txtDatafim.getVlrString().trim() ) ) {
+				Funcoes.mensagemInforma( this, "Preencha a data final  !" );
+				if (txtDatafim.isFocusable()) {
+					txtDatafim.requestFocus();
+				}
+				return;
+			}
+		}
 		if ( "G".equals( rgTipo.getVlrString().substring( 0, 1 ) ) ) {
 			if ( txtCodPlanoPag2.getVlrInteger().intValue() > 0 || txtCodPlanoPag3.getVlrInteger().intValue() > 0 || txtCodPlanoPag4.getVlrInteger().intValue() > 0 || txtCodPlanoPag5.getVlrInteger().intValue() > 0 || txtCodPlanoPag6.getVlrInteger().intValue() > 0
 					|| txtCodPlanoPag7.getVlrInteger().intValue() > 0 )
@@ -591,17 +614,35 @@ public class FRListaPreco extends FRelatorio implements CheckBoxListener {
 				+ "AND P.CODGRUP LIKE ? AND P.ATIVOPROD='S' " 
 				+ "AND PG.CODEMP=PP.CODEMPPG " + "AND PG.CODFILIAL=PP.CODFILIALPG "
 				+ "AND PG.CODPLANOPAG = PP.CODPLANOPAG " 
-				+ "AND PP.CODPLANOPAG IN (?,?,?,?,?,?,?)" + sWhere + " ORDER BY " + sOrdem;
+				+ "AND PP.CODPLANOPAG IN (?,?,?,?,?,?,?)" + sWhere ;
+			if ("S".equals(cbFiltrarProdCli.getVlrString())) {
+				sSQL += " and exists (select * from vdvenda vd, vditvenda iv ";
+				sSQL += " where vd.codempcl=? and vd.codfilialcl=? and vd.codcli=? ";
+				sSQL += " and vd.dtemitvenda between ? and ? ";
+				sSQL += " and iv.codemp=vd.codemp and iv.codfilial=vd.codfilial and iv.tipovenda=vd.tipovenda and iv.codvenda=vd.codvenda ";
+				sSQL += " and iv.codemppd=p.codemp and iv.codfilial=p.codfilial and iv.codprod=p.codprod ) ";
+			}
+			sSQL += " ORDER BY " + sOrdem;
+			
 
 			ps = con.prepareStatement( sSQL );
-			ps.setString( 1, txtCodGrup.getVlrString().trim().length() < 14 ? txtCodGrup.getVlrString().trim() + "%" : txtCodGrup.getVlrString().trim() );
-			ps.setInt( 2, txtCodPlanoPag1.getVlrInteger().intValue() );
-			ps.setInt( 3, txtCodPlanoPag2.getVlrInteger().intValue() );
-			ps.setInt( 4, txtCodPlanoPag3.getVlrInteger().intValue() );
-			ps.setInt( 5, txtCodPlanoPag4.getVlrInteger().intValue() );
-			ps.setInt( 6, txtCodPlanoPag5.getVlrInteger().intValue() );
-			ps.setInt( 7, txtCodPlanoPag6.getVlrInteger().intValue() );
-			ps.setInt( 8, txtCodPlanoPag7.getVlrInteger().intValue() );
+			int param = 1;
+			ps.setString( param++, txtCodGrup.getVlrString().trim().length() < 14 ? txtCodGrup.getVlrString().trim() + "%" : txtCodGrup.getVlrString().trim() );
+			ps.setInt( param++, txtCodPlanoPag1.getVlrInteger().intValue() );
+			ps.setInt( param++, txtCodPlanoPag2.getVlrInteger().intValue() );
+			ps.setInt( param++, txtCodPlanoPag3.getVlrInteger().intValue() );
+			ps.setInt( param++, txtCodPlanoPag4.getVlrInteger().intValue() );
+			ps.setInt( param++, txtCodPlanoPag5.getVlrInteger().intValue() );
+			ps.setInt( param++, txtCodPlanoPag6.getVlrInteger().intValue() );
+			ps.setInt( param++, txtCodPlanoPag7.getVlrInteger().intValue() );
+			if ("S".equals(cbFiltrarProdCli.getVlrString())) {
+				ps.setInt( param++, Aplicativo.iCodEmp );
+				ps.setInt( param++, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
+				ps.setInt( param++, txtCodCli.getVlrInteger().intValue());
+				ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+				ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+			}
+
 			rs = ps.executeQuery();
 
 			while ( rs.next() ) {
@@ -774,7 +815,7 @@ public class FRListaPreco extends FRelatorio implements CheckBoxListener {
 				sOrdem = ( cbAgrupar.getVlrString().equals( "S" ) ? "P.CODGRUP," : "" ) + "P.DESCPROD";
 
 			if ( txtCodPlanoPag1.getVlrInteger().intValue() > 0 ) {
-				sWhere += " AND PP.CODPLANOPAG=" + txtCodPlanoPag1.getVlrInteger().intValue();
+				sWhere += " and pp.codplanopag=" + txtCodPlanoPag1.getVlrInteger().intValue();
 			}
 			if ( txtCodTabPreco.getVlrInteger().intValue() > 0 ) {
 				sWhere += " AND PP.CODTAB=" + txtCodTabPreco.getVlrInteger().intValue();
@@ -823,20 +864,32 @@ public class FRListaPreco extends FRelatorio implements CheckBoxListener {
 			sql.append( " WHERE P.CODEMP=PP.CODEMP AND P.CODFILIAL=PP.CODFILIAL AND P.CODPROD=PP.CODPROD " );
 			sql.append( " AND P1.CODEMP=PP.CODEMP AND P1.CODFILIAL=PP.CODFILIAL " );
 			sql.append( " AND PP.CODEMP=? AND PP.CODFILIAL=? " + sWhere );
+			if ("S".equals(cbFiltrarProdCli.getVlrString())) {
+				sql.append( " and exists (select * from vdvenda vd, vditvenda iv ");
+				sql.append( " where vd.codempcl=? and vd.codfilialcl=? and vd.codcli=? ");
+				sql.append( " and vd.dtemitvenda between ? and ? ");
+				sql.append( " and iv.codemp=vd.codemp and iv.codfilial=vd.codfilial and iv.tipovenda=vd.tipovenda and iv.codvenda=vd.codvenda ");
+				sql.append( " and iv.codemppd=p.codemp and iv.codfilial=p.codfilial and iv.codprod=p.codprod ) ");
+			}
 			sql.append( " ORDER BY " + sOrdem );
 
 			System.out.println( "SQL:" + sql.toString() );
 
 			ps = con.prepareStatement( sql.toString() );
 
-			ps.setInt( 1, txtNroDiasAlt.getVlrInteger() );
-			ps.setInt( 2, Aplicativo.iCodEmp );
-			ps.setInt( 3, ListaCampos.getMasterFilial( "VDPRECOPROD" ) );
-			rs = ps.executeQuery();
-
-			if ( new Boolean( true ) && new Boolean( true ) ) {
-
+			int param = 1;
+			ps.setInt( param++, txtNroDiasAlt.getVlrInteger() );
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "VDPRECOPROD" ) );
+			if ("S".equals(cbFiltrarProdCli.getVlrString())) {
+				ps.setInt( param++, Aplicativo.iCodEmp );
+				ps.setInt( param++, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
+				ps.setInt( param++, txtCodCli.getVlrInteger().intValue());
+				ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+				ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
 			}
+
+			rs = ps.executeQuery();
 
 			String srel = "";
 
