@@ -98,6 +98,8 @@ public class FRListaPreco extends FRelatorio {
 	private JTextFieldPad txtCodPlanoPag6 = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtCodPlanoPag7 = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtDescGrup = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
@@ -112,6 +114,8 @@ public class FRListaPreco extends FRelatorio {
 	private JTextFieldPad txtNomeFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtSiglaMarca = new JTextFieldFK( JTextFieldPad.TP_STRING, 20, 0 );
+	
+	private JTextFieldPad txtNomeCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 20, 0);
 
 	private JTextFieldPad txtDescPlanoPag1 = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
@@ -140,6 +144,8 @@ public class FRListaPreco extends FRelatorio {
 	private JCheckBoxPad cbPrecoFracionado = new JCheckBoxPad( "Preço fracionado", "S", "N" );
 
 	private JCheckBoxPad cbSinalizarAlterados = new JCheckBoxPad( "Sinalizar alterados", "S", "N" );
+	
+	private JCheckBoxPad cbFiltrarProdCli = new JCheckBoxPad( "Filtrar produtos vendidos por cliente", "S", "N" );
 
 	private JTextFieldPad txtNroDiasAlt = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 2, 0 );
 	
@@ -348,7 +354,7 @@ public class FRListaPreco extends FRelatorio {
 		
 
 		// pinOpt.setBorder( SwingParams.getPanelLabel( "Opções de filtros" ) );
-		adic( pinOpt, 5, 133, 600, 150 );
+		adic( pinOpt, 5, 133, 600, 250 );
 
 		pinOpt.adic( new JLabelPad( "Cód.grupo" ), 7, 0, 80, 20 );
 		pinOpt.adic( txtCodGrup, 7, 20, 80, 20 );
@@ -361,7 +367,6 @@ public class FRListaPreco extends FRelatorio {
 		pinOpt.adic( txtDescMarca, 90, 60, 200, 20 );
 
 		pinOpt.adic( new JLabelPad( "Cód.c.cli." ), 300, 0, 80, 20 );
-		pinOpt.adic( txtCodClasCli, 300, 20, 80, 20 );
 		pinOpt.adic( new JLabelPad( "Descrição da classf. do cliente" ), 383, 0, 200, 20 );
 		pinOpt.adic( txtDescClasCli, 383, 20, 200, 20 );
 
@@ -380,8 +385,17 @@ public class FRListaPreco extends FRelatorio {
 		pinOpt.adic( new JLabelPad( "Nome do fornecedor" ), 90, 80, 200, 20 );
 		pinOpt.adic( txtNomeFor, 90, 100, 200, 20 );
 
+		// Filtro de produtos por cliente
+		pinOpt.adic( cbFiltrarProdCli, 7, 130, 300, 20 );
+		pinOpt.adic( new JLabelPad( "Cód.Cliente" ), 7, 160, 80, 20 );
+		pinOpt.adic( txtCodCli, 7, 180, 80, 20 );
+		pinOpt.adic( new JLabelPad( "Nome do cliente" ), 90, 160, 200, 20 );
+		pinOpt.adic( txtNomeCli, 90, 180, 200, 20 );
+		
+		
+
 		// pinOpt2.setBorder( SwingParams.getPanelLabel( "Opções complementares" ) );
-		adic( pinOpt2, 5, 286, 600, 80 );
+		adic( pinOpt2, 5, 419, 600, 80 );
 
 		pinOpt2.adic( cbAgrupar, 10, 5, 105, 20 );
 		pinOpt2.adic( cbImpSaldo, 10, 25, 90, 20 );
@@ -396,7 +410,7 @@ public class FRListaPreco extends FRelatorio {
 		pinOpt2.adic( txtNroDiasAlt, 490, 25, 30, 20 );
 
 		// pinPlan.setBorder( SwingParams.getPanelLabel("Planos de pagamento") );
-		adic( pinPlan, 5, 369, 600, 190 );
+		adic( pinPlan, 5, 502, 600, 190 );
 
 		pinPlan.adic( new JLabelPad( "Cód.p.pag." ), 7, 0, 250, 20 );
 		pinPlan.adic( txtCodPlanoPag1, 7, 20, 80, 20 );
