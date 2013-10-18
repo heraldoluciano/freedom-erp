@@ -32,8 +32,14 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Vector;
 
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
 import net.sf.jasperreports.engine.JasperPrintManager;
 
+import org.freedom.acao.CheckBoxEvent;
+import org.freedom.acao.CheckBoxListener;
+//import org.freedom.acao.CheckBoxListener;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.component.ImprimeOS;
@@ -55,9 +61,10 @@ import org.freedom.modulos.std.view.frame.crud.detail.FPlanoPag;
 import org.freedom.modulos.std.view.frame.crud.plain.FClasCli;
 import org.freedom.modulos.std.view.frame.crud.plain.FMarca;
 import org.freedom.modulos.std.view.frame.crud.plain.FTabPreco;
+import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FFornecedor;
 
-public class FRListaPreco extends FRelatorio {
+public class FRListaPreco extends FRelatorio implements CheckBoxListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -115,7 +122,11 @@ public class FRListaPreco extends FRelatorio {
 
 	private JTextFieldPad txtSiglaMarca = new JTextFieldFK( JTextFieldPad.TP_STRING, 20, 0 );
 	
-	private JTextFieldPad txtNomeCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 20, 0);
+	private JTextFieldPad txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0);
+	
+	private JTextFieldPad txtDataini = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+
+	private JTextFieldPad txtDatafim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldPad txtDescPlanoPag1 = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
@@ -150,6 +161,7 @@ public class FRListaPreco extends FRelatorio {
 	private JTextFieldPad txtNroDiasAlt = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 2, 0 );
 	
 	private JTextFieldPad txtValidade = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+	
 
 	private JRadioGroup<?, ?> rgTipo = null;
 
@@ -176,6 +188,8 @@ public class FRListaPreco extends FRelatorio {
 	private ListaCampos lcMarca = new ListaCampos( this );
 
 	private ListaCampos lcFor = new ListaCampos( this );
+
+	private ListaCampos lcCli = new ListaCampos( this );
 
 	private ListaCampos lcClassCli = new ListaCampos( this );
 
@@ -268,6 +282,15 @@ public class FRListaPreco extends FRelatorio {
 		txtCodFor.setFK( true );
 		lcFor.setReadOnly( true );
 		lcFor.montaSql( false, "FORNECED", "CP" );
+
+		lcCli.add( new GuardaCampo( txtCodCli, "Codcli", "Cód.cli.", ListaCampos.DB_PK, false ) );
+		lcCli.add( new GuardaCampo( txtRazCli, "Razcli", "Razão social do cliente", ListaCampos.DB_SI, false ) );
+
+		txtCodCli.setTabelaExterna( lcCli, FCliente.class.getCanonicalName() );
+		txtCodCli.setNomeCampo( "CodCli" );
+		txtCodCli.setFK( true );
+		lcCli.setReadOnly( true );
+		lcCli.montaSql( false, "CLIENTE", "VD" );
 
 		lcClassCli.add( new GuardaCampo( txtCodClasCli, "CodClasCli", "Cód.c.cli.", ListaCampos.DB_PK, false ) );
 		lcClassCli.add( new GuardaCampo( txtDescClasCli, "DescClasCli", "Descrição da classificação do cliente", ListaCampos.DB_SI, false ) );
@@ -386,14 +409,12 @@ public class FRListaPreco extends FRelatorio {
 		pinOpt.adic( txtNomeFor, 90, 100, 200, 20 );
 
 		// Filtro de produtos por cliente
-		pinOpt.adic( cbFiltrarProdCli, 7, 130, 300, 20 );
-		pinOpt.adic( new JLabelPad( "Cód.Cliente" ), 7, 160, 80, 20 );
-		pinOpt.adic( txtCodCli, 7, 180, 80, 20 );
-		pinOpt.adic( new JLabelPad( "Nome do cliente" ), 90, 160, 200, 20 );
-		pinOpt.adic( txtNomeCli, 90, 180, 200, 20 );
+		pinOpt.adic( cbFiltrarProdCli, 7, 140, 250, 20 );
+		pinOpt.adic( new JLabelPad( "Cód.Cliente" ), 300, 120, 80, 20 );
+		pinOpt.adic( txtCodCli, 300, 140, 80, 20 );
+		pinOpt.adic( new JLabelPad( "Razão social do cliente" ), 383, 120, 200, 20 );
+		pinOpt.adic( txtRazCli, 383, 140, 200, 20 );
 		
-		
-
 		// pinOpt2.setBorder( SwingParams.getPanelLabel( "Opções complementares" ) );
 		adic( pinOpt2, 5, 419, 600, 80 );
 
@@ -442,13 +463,28 @@ public class FRListaPreco extends FRelatorio {
 		pinPlan.adic( new JLabelPad( "Descrição do plano de pgto. (7)" ), 90, 120, 250, 20 );
 		pinPlan.adic( txtDescPlanoPag7, 90, 140, 200, 20 );
 		
+		//cbFiltrarProdCli.addActionListener( this );
+		cbFiltrarProdCli.addCheckBoxListener( this );
+		cbFiltrarProdCli.setVlrString( "N" );
 		// Ajustando a data de validade
 		//Calendar cal = Calendar.getInstance();
 		//cal.add( Calendar.MONTH, 1 );
+		//cbFiltraprodc
 		
 
 	}
-
+	
+	private void enableCli() {
+		boolean enable = false;
+		if ("S".equals(cbFiltrarProdCli.getVlrString())) {
+			enable = true;
+		}
+		txtCodCli.setEnabled( enable);
+		txtDataini.setEnabled( enable );
+		txtDatafim.setEnabled( enable );
+	}
+	
+	
 	public void imprimir( TYPE_PRINT bVisualizar ) {
 
 		if ( "G".equals( rgTipo.getVlrString().substring( 0, 1 ) ) ) {
@@ -859,6 +895,7 @@ public class FRListaPreco extends FRelatorio {
 		lcSecao.setConexao( cn );
 		lcMarca.setConexao( cn );
 		lcFor.setConexao( cn );
+		lcCli.setConexao( cn );
 		lcTabPreco.setConexao( cn );
 		lcClassCli.setConexao( cn );
 		lcPlanoPag1.setConexao( cn );
@@ -870,4 +907,21 @@ public class FRListaPreco extends FRelatorio {
 		lcPlanoPag7.setConexao( cn );
 
 	}
+
+	public void stateChanged( ChangeEvent e ) {
+
+		if (e.getSource()==cbFiltrarProdCli) {
+			enableCli();
+		}
+		
+	}
+
+	public void valorAlterado( CheckBoxEvent evt ) {
+
+		if (evt.getCheckBox()==cbFiltrarProdCli) {
+			enableCli();
+		}
+		
+	}
+
 }
