@@ -39,7 +39,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
@@ -67,7 +66,6 @@ import org.freedom.acao.TabelaEditEvent;
 import org.freedom.acao.TabelaEditListener;
 import org.freedom.bmps.Icone;
 import org.freedom.infra.beans.Usuario;
-import org.freedom.infra.functions.ConversionFunctions;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
@@ -97,7 +95,7 @@ import org.freedom.modulos.gms.view.frame.crud.detail.FRma;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FTipoMov;
 import org.freedom.modulos.pcp.Interface.Recarrega;
-import org.freedom.modulos.pcp.business.object.ModLote;
+//import org.freedom.modulos.pcp.business.object.ModLote;
 import org.freedom.modulos.pcp.dao.DAOOp;
 import org.freedom.modulos.pcp.view.dialog.report.DLROP;
 import org.freedom.modulos.pcp.view.dialog.utility.DLContrQualidade;
@@ -1741,81 +1739,6 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 	}
 
-	private boolean temSldLote() {
-
-		boolean bRet = false;
-
-		try {
-
-			String sSaida = "";
-			int iSldNeg = 0;
-			int iTemp = 0;
-			float fSldLote = 0f;
-
-			String sSQL = "SELECT SLDLOTE FROM EQLOTE WHERE CODEMP=? AND CODFILIAL=? AND CODPROD=? AND CODLOTE=? ";
-
-			for ( int i = 0; i < tab.getRowCount(); i++ ) {
-
-				PreparedStatement ps = con.prepareStatement( sSQL );
-				ps.setInt( 1, Aplicativo.iCodEmp );
-				ps.setInt( 2, Aplicativo.iCodFilial );
-
-				if ( !(Boolean) daoop.getPrefere().get( "USAREFPROD" ) ) {
-					ps.setInt( 3, ( (Integer) tab.getValor( i, 1 ) ).intValue() );
-				}
-				else {
-					ps.setInt( 3, ( (Integer) tab.getValor( i, 3 ) ).intValue() );
-
-				}
-
-				ps.setString( 4, (String) tab.getValor( i, 4 ) );
-
-				ResultSet rs = ps.executeQuery();
-
-				if ( rs.next() ) {
-					fSldLote = rs.getFloat( "SLDLOTE" );
-				}
-
-				if ( fSldLote < ConversionFunctions.stringCurrencyToBigDecimal( (String) tab.getValor( i, 6 ) ).subtract( ConversionFunctions.stringCurrencyToBigDecimal( (String) tab.getValor( i, 7 ) ) ).floatValue() && !"".equals( (String) tab.getValor( i, 4 ) ) ) {
-					iSldNeg++;
-					sSaida += "\nProduto: " + tab.getValor( i, 1 ) + StringFunctions.replicate( " ", 20 ) + "Lote: " + tab.getValor( i, 4 );
-				}
-
-				rs.close();
-				ps.close();
-			}
-
-			con.commit();
-
-			if ( iSldNeg > 0 ) {
-
-				if ( (Boolean) daoop.getPrefere().get( "RATAUTO" ) ) {
-					bloquearOPSemSaldo( true );
-					Funcoes.mensagemInforma( this, "Esta OP será bloqueada devido a falta de saldo para alguns itens.\n" + sSaida );
-					return true;
-				}
-
-				iTemp = Funcoes.mensagemConfirma( this, "Estes lotes possuem saldo menor que a quantidade solicitada." + sSaida + "\n\nDeseja gerar RMA com lote sem saldo?" );
-				if ( iTemp == JOptionPane.NO_OPTION ) {
-					bRet = false;
-				}
-				else if ( iTemp == JOptionPane.YES_OPTION ) {
-					bRet = true;
-				}
-			}
-			else {
-				bRet = true;
-			}
-		} catch ( SQLException e ) {
-			Funcoes.mensagemErro( this, "Erro ao verificar quantidade de Lote\n" + e.getMessage(), true, con, e );
-			e.printStackTrace();
-		} catch ( Exception e ) {
-			Funcoes.mensagemErro( this, "Erro ao verificar quantidade de Lote\n" + e.getMessage(), true, con, e );
-			e.printStackTrace();
-		}
-
-		return bRet;
-	}
 
 	private boolean liberaRMA() {
 
@@ -1875,29 +1798,6 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			rs = null;
 		}
 		return retorno;
-	}
-
-	private ResultSet itensRma() {
-
-		StringBuffer sql = new StringBuffer();
-		ResultSet rs = null;
-		PreparedStatement ps = null;
-
-		try {
-			sql.append( "SELECT GERARMA FROM PPITOP WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=? AND GERARMA='S'" );
-
-			ps = con.prepareStatement( sql.toString() );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "PPITOP" ) );
-			ps.setInt( 3, txtCodOP.getVlrInteger().intValue() );
-			ps.setInt( 4, txtSeqOP.getVlrInteger().intValue() );
-
-			rs = ps.executeQuery();
-		} catch ( Exception e ) {
-			e.printStackTrace();
-		}
-
-		return rs;
 	}
 
 	private Integer getNumItensRMA() {
@@ -1991,90 +1891,6 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		return ret;
 	}
 
-	public void geraRMA() {
-
-		String sSQL = null;
-		ResultSet rs = null;
-		ResultSet rs2 = null;
-		PreparedStatement ps2 = null;
-		PreparedStatement ps3 = null;
-
-		try {
-
-			rs = itensRma();
-
-			if ( rs.next() ) {
-				try {
-					if ( temSldLote() ) {
-						boolean confirmar = (Boolean) daoop.getPrefere().get( "RATAUTO" );
-						if ( !confirmar ) {
-							confirmar = Funcoes.mensagemConfirma( this, "Confirma a geração de RMA para a OP:" + txtCodOP.getVlrString() + " SEQ:" + txtSeqOP.getVlrString() + "?" ) == JOptionPane.YES_OPTION;
-						}
-						if ( confirmar ) {
-							ps2 = con.prepareStatement( "EXECUTE PROCEDURE EQGERARMASP(?,?,?,?)" );
-							ps2.setInt( 1, Aplicativo.iCodEmp );
-							ps2.setInt( 2, ListaCampos.getMasterFilial( "PPOP" ) );
-							ps2.setInt( 3, txtCodOP.getVlrInteger().intValue() );
-							ps2.setInt( 4, txtSeqOP.getVlrInteger().intValue() );
-							ps2.execute();
-							ps2.close();
-
-							con.commit();
-
-							try {
-								ps3 = con.prepareStatement( "SELECT CODRMA FROM EQRMA WHERE CODEMP=? AND CODFILIAL=? AND CODEMPOF=CODEMP AND CODFILIALOF=? AND CODOP=? AND SEQOP=?" );
-								ps3.setInt( 1, Aplicativo.iCodEmp );
-								ps3.setInt( 2, ListaCampos.getMasterFilial( "PPITOP" ) );
-								ps3.setInt( 3, ListaCampos.getMasterFilial( "PPOP" ) );
-								ps3.setInt( 4, txtCodOP.getVlrInteger().intValue() );
-								ps3.setInt( 5, txtSeqOP.getVlrInteger().intValue() );
-
-								rs2 = ps3.executeQuery();
-								String sRma = "";
-								while ( rs2.next() ) {
-									sRma += rs2.getString( 1 ) + " - ";
-								}
-								if ( sRma.length() > 0 ) {
-									Funcoes.mensagemInforma( this, "Foram geradas as seguintes RMA:\n" + sRma );
-								}
-
-								rs2.close();
-							} catch ( Exception err ) {
-								Funcoes.mensagemErro( this, "Erro ao buscar RMA criada", true, con, err );
-								err.printStackTrace();
-							}
-						}
-					}
-				} catch ( SQLException err ) {
-					System.out.println( err.getMessage() );
-					Funcoes.mensagemErro( this, "Erro ao criar RMA\n" + err.getMessage(), true, con, err );
-					err.printStackTrace();
-				} catch ( Exception err ) {
-					Funcoes.mensagemErro( this, "Erro ao criar RMA", true, con, err );
-					err.printStackTrace();
-				}
-			}
-			else {
-				Funcoes.mensagemInforma( this, "Não há itens para gerar RMA.\n " + "Os itens não geram RMA automaticamente\n" + "ou o processo de geração de RMA já foi efetuado." );
-			}
-
-			rs.close();
-
-			con.commit();
-
-			lcCampos.carregaDados();
-
-		} catch ( Exception err ) {
-			Funcoes.mensagemErro( this, "Erro ao consultar RMA", true, con, err );
-			err.printStackTrace();
-		} finally {
-			sSQL = null;
-			rs = null;
-			rs2 = null;
-			ps2 = null;
-			ps3 = null;
-		}
-	}
 
 	private void ratearItem( boolean bPergunta ) {
 
@@ -2451,10 +2267,11 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 			if ( ratearOp() ) {
 				Funcoes.mensagemInforma( this, "Itens foram reprocessados com sucesso." );
-				bloquearOPSemSaldo( false );
+				daoop.bloquearOPSemSaldo( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPOP" ), txtCodOP.getVlrInteger(), txtSeqOP.getVlrInteger(), false );
 			}
 
-			geraRMA();
+			daoop.geraRMA( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPOP" ), txtCodOP.getVlrInteger(), txtSeqOP.getVlrInteger() 
+					, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQPRODUTO" ), tab.getDataVector() );
 
 			lcCampos.carregaDados();
 
@@ -2464,27 +2281,6 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		}
 	}
 
-	private void bloquearOPSemSaldo( boolean bloquear ) {
-
-		try {
-			StringBuilder sql = new StringBuilder();
-
-			sql.append( "UPDATE PPOP SET SITOP='" + ( bloquear ? "BL" : "PE" ) + "' " );
-			sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=?" );
-
-			PreparedStatement ps = con.prepareStatement( sql.toString() );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "PPOP" ) );
-			ps.setInt( 3, txtCodOP.getVlrInteger() );
-			ps.setInt( 4, txtSeqOP.getVlrInteger() );
-			ps.executeUpdate();
-			ps.close();
-
-			con.commit();
-		} catch ( SQLException e ) {
-			e.printStackTrace();
-		}
-	}
 
 	public void gravaLote( boolean bInsere ) {
 
@@ -2597,7 +2393,9 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			finalizaOP();
 		}
 		else if ( evt.getSource() == btRMA ) {
-			geraRMA();
+			daoop.geraRMA( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPOP" ), txtCodOP.getVlrInteger(), txtSeqOP.getVlrInteger()
+					, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQPRODUTO" ), tab.getDataVector() );
+			lcCampos.carregaDados();
 		}
 		else if ( evt.getSource() == btLote ) {
 			gravaLote( true );
@@ -3275,7 +3073,8 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			}
 			if ( (Boolean) daoop.getPrefere().get( "RATAUTO" ) ) {
 				ratearOp();
-				geraRMA();
+				daoop.geraRMA( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPOP" ), txtCodOP.getVlrInteger(), txtSeqOP.getVlrInteger(),
+						Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQPRODUTO" ), tab.getDataVector() );
 			}
 
 			btAdicProdutoEstrutura.setEnabled( "S".equals( cbEstDinamica.getVlrString() ) );
