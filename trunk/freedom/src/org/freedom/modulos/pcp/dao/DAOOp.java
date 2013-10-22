@@ -27,9 +27,11 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.JOptionPane;
@@ -61,9 +63,10 @@ public class DAOOp extends AbstractDAO {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
-		sql.append( "SELECT P1.USAREFPROD, P5.RATAUTO, coalesce(prodetapas,'S') prodetapas " );
-		sql.append( ", coalesce(P5.VALIDAQTDOP,'N') VALIDAQTDOP, coalesce(P5.VALIDAFASEOP,'N') VALIDAFASE" );
-		sql.append( ", coalesce(P5.EDITQTDOP, 'S') EDITQTDOP, coalesce(P5.OPSEQ,'N') OPSEQ " );
+		sql.append( "select p1.usarefprod, p5.ratauto, coalesce(prodetapas,'S') prodetapas " );
+		sql.append( ", coalesce(p5.VALIDAQTDOP,'N') VALIDAQTDOP, coalesce(P5.VALIDAFASEOP,'N') VALIDAFASE" );
+		sql.append( ", coalesce(p5.EDITQTDOP, 'S') EDITQTDOP, coalesce(p5.opseq,'N') opseq " );
+		sql.append( ", coalesce(p5.bloqopsemsaldo, 'N') bloqopsemsaldo ");
 		sql.append( "FROM SGPREFERE1 P1,SGPREFERE5 P5 " );
 		sql.append( "WHERE P1.CODEMP=? AND P1.CODFILIAL=? " );
 		sql.append( "AND P5.CODEMP=? AND P5.CODFILIAL=?" );
@@ -85,6 +88,7 @@ public class DAOOp extends AbstractDAO {
 			prefere.put( "VALIDAFASE", new Boolean( rs.getString( "VALIDAFASE" ).trim().equals( "S" ) ) );
 			prefere.put( "EDITQTDOP", new Boolean( rs.getString( "EDITQTDOP" ).trim().equals( "S" ) ) );
 			prefere.put( "OPSEQ", new Boolean( rs.getString( "OPSEQ" ).trim().equals( "S" ) ) );
+			prefere.put( "BLOQOPSEMSALDO", new Boolean( rs.getString( "BLOQOPSEMSALDO" ).trim().equals( "S" ) ) );
 		}
 		else {
 			prefere.put( "USAREFPROD", new Boolean( false ) );
@@ -94,6 +98,7 @@ public class DAOOp extends AbstractDAO {
 			prefere.put( "VALIDAFASE", new Boolean( false ) );
 			prefere.put( "EDITQTDOP", new Boolean( true ) );
 			prefere.put( "OPSEQ", new Boolean( false ) );
+			prefere.put( "BLOQOPSEMSALDO", new Boolean( false ) );
 			throw new Exception( "Não foram encontradas preferências para o módulo PCP!" );
 		}
 		rs.close();
@@ -283,7 +288,7 @@ public class DAOOp extends AbstractDAO {
 
 	}
 
-	private Vector<Vector<Object>> getDataVector( Integer codemp, Integer codfilial, Integer codop, Integer seqop ) throws SQLException {
+	public Vector<Vector<Object>> getDataVector( Integer codemp, Integer codfilial, Integer codop, Integer seqop ) throws SQLException {
 		Vector<Vector<Object>> result = new Vector<Vector<Object>>();
 		StringBuilder sql = new StringBuilder();
 		sql.append( "select iop.seqitop, iop.refprod, iop.codprod " );
@@ -529,6 +534,90 @@ public class DAOOp extends AbstractDAO {
 		}
 		return result;
 	}
+	
+	public boolean ratearOp(Integer codemp, Integer codfilial, Integer codop, Integer seqop, Integer codfilialpd) {
+
+		boolean result = true;
+
+		try {
+
+			HashMap<Integer, List<String>> lotes = new HashMap<Integer, List<String>>();
+			Integer seq;
+			Integer codprod;
+			String lote;
+			BigDecimal quantidade;
+			BigDecimal novaquantidade;
+
+			StringBuilder sql = new StringBuilder();
+
+			sql.append( "SELECT SEQITOP, CODPROD, CODLOTE, QTDITOP " );
+			sql.append( "FROM PPITOP " );
+			sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=? " );
+			sql.append( "ORDER BY SEQITOP" );
+
+			PreparedStatement ps = getConn().prepareStatement( sql.toString() );
+			int param = 1;
+			ps.setInt( param++, codemp );
+			ps.setInt( param++, codfilial );
+			ps.setInt( param++, codop );
+			ps.setInt( param++, seqop );
+
+			ResultSet rs = ps.executeQuery();
+
+			while ( rs.next() ) {
+				seq = rs.getInt( "SEQITOP" );
+				codprod = rs.getInt( "CODPROD" );
+				lote = rs.getString( "CODLOTE" );
+				quantidade = rs.getBigDecimal( "QTDITOP" );
+				if ( lotes.get( codprod ) == null ) {
+					lotes.put( codprod, new ArrayList<String>() );
+				}
+				novaquantidade = verificaSaldoLote( codemp, codfilialpd, codprod, lote, quantidade );
+				if ( novaquantidade.floatValue() > 0 ) {
+					lotes.get( codprod ).add( lote );
+					if ( ! rateiaItemSemSaldo( codemp, codfilial
+							, codop, seqop, seq, codprod, novaquantidade, lotes.get( codprod ) ) ) {
+						result = false;
+					}
+				}
+			}
+
+			getConn().commit();
+
+		} catch ( Exception e ) {
+			e.printStackTrace();
+		}
+
+		return result;
+	}
+
+	private BigDecimal verificaSaldoLote( Integer codemp, Integer codfilialpd, Integer codprod, String lote, BigDecimal quantidade ) throws Exception {
+
+		BigDecimal novaquantidade = new BigDecimal( "0.00" );
+		BigDecimal saldolote = new BigDecimal( "0.00" );
+
+		StringBuilder sql = new StringBuilder();
+
+		sql.append( "SELECT L.SLDLOTE FROM EQLOTE L " );
+		sql.append( "WHERE L.CODEMP=? AND L.CODFILIAL=? AND L.CODPROD=? AND L.CODLOTE=? " );
+
+		int param = 1;
+		PreparedStatement ps = getConn().prepareStatement( sql.toString() );
+		ps.setInt( param++, codemp );
+		ps.setInt( param++, codfilialpd );
+		ps.setInt( param++, codprod );
+		ps.setString( param++, lote );
+		ResultSet rs = ps.executeQuery();
+		if ( rs.next() ) {
+			saldolote = rs.getBigDecimal( "SLDLOTE" );
+		}
+		rs.close();
+		ps.close();
+		if ( quantidade.max( saldolote ) == quantidade ) {
+			novaquantidade = quantidade.subtract( saldolote );
+		}
+		return novaquantidade;
+	}
 
 	public String getCodUnid( Integer codemp, Integer codfilial, Integer codprodest, String refprodest ) throws Exception {
 
@@ -691,32 +780,30 @@ public class DAOOp extends AbstractDAO {
 			int iSldNeg = 0;
 			int iTemp = 0;
 			float fSldLote = 0f;
+			int codprod = 0;
+			String codlote = null;
 
 			String sSQL = "SELECT SLDLOTE FROM EQLOTE WHERE CODEMP=? AND CODFILIAL=? AND CODPROD=? AND CODLOTE=? ";
 
 			for ( int i = 0; i < dataVector.size(); i++ ) {
 
 				PreparedStatement ps = getConn().prepareStatement( sSQL );
+				if ( !(Boolean) getPrefere().get( "USAREFPROD" ) ) {
+					codprod = ( (Integer) dataVector.elementAt( i ).elementAt( 1 ) ).intValue();
+				}
+				else {
+					codprod = ( (Integer) dataVector.elementAt( i ).elementAt( 3 ) ).intValue();
+				}
+				codlote = (String) dataVector.elementAt( i ).elementAt( 4 );
 				int param = 1;
 				ps.setInt( param++, Aplicativo.iCodEmp );
 				ps.setInt( param++, Aplicativo.iCodFilial );
-
-				if ( !(Boolean) getPrefere().get( "USAREFPROD" ) ) {
-					ps.setInt( param++, ( (Integer) dataVector.elementAt( i ).elementAt( 1 ) ).intValue() );
-				}
-				else {
-					ps.setInt( param++, ( (Integer) dataVector.elementAt( i ).elementAt( 3 ) ).intValue() );
-
-				}
-
-				ps.setString( 4, (String) dataVector.elementAt( i ).elementAt( 4 ) );
-
+				ps.setInt( param++, codprod );
+				ps.setString( param++, codlote );
 				ResultSet rs = ps.executeQuery();
-
 				if ( rs.next() ) {
 					fSldLote = rs.getFloat( "SLDLOTE" );
 				}
-
 				if ( fSldLote < ConversionFunctions.stringCurrencyToBigDecimal( 
 						(String) dataVector.elementAt( i ).elementAt( 6 ) ).subtract( 
 								ConversionFunctions.stringCurrencyToBigDecimal( 
@@ -726,7 +813,6 @@ public class DAOOp extends AbstractDAO {
 					sSaida += "\nProduto: " + dataVector.elementAt( i ).elementAt( 1 ) + StringFunctions.replicate( " ", 20 ) 
 							+ "Lote: " + dataVector.elementAt( i ).elementAt( 4 );
 				}
-
 				rs.close();
 				ps.close();
 			}
@@ -765,23 +851,126 @@ public class DAOOp extends AbstractDAO {
 
 	public void bloquearOPSemSaldo( Integer codemp, Integer codfilial, Integer codop, Integer seqop, boolean bloquear ) {
 
-		try {
-			StringBuilder sql = new StringBuilder();
-			sql.append( "UPDATE PPOP SET SITOP='" + ( bloquear ? "BL" : "PE" ) + "' " );
-			sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=?" );
-			PreparedStatement ps = getConn().prepareStatement( sql.toString() );
-			ps.setInt( 1, codemp );
-			ps.setInt( 2, codfilial );
-			ps.setInt( 3, codop );
-			ps.setInt( 4, seqop );
-			ps.executeUpdate();
-			ps.close();
-			getConn().commit();
-		} catch ( SQLException e ) {
-			e.printStackTrace();
+		if ( (Boolean) getPrefere().get("BLOQOPSEMSALDO") ) {
+			try {
+				StringBuilder sql = new StringBuilder();
+				sql.append( "UPDATE PPOP SET SITOP='" + ( bloquear ? "BL" : "PE" ) + "' " );
+				sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=?" );
+				PreparedStatement ps = getConn().prepareStatement( sql.toString() );
+				ps.setInt( 1, codemp );
+				ps.setInt( 2, codfilial );
+				ps.setInt( 3, codop );
+				ps.setInt( 4, seqop );
+				ps.executeUpdate();
+				ps.close();
+				getConn().commit();
+			} catch ( SQLException e ) {
+				e.printStackTrace();
+			}
 		}
 	}
 
+	
+	@ SuppressWarnings ( "resource" )
+	public boolean rateiaItemSemSaldo( Integer codemp, Integer codfilial, Integer codop, Integer seqop
+			, Integer seq, Integer codprod, BigDecimal quantidade, List<String> lotesutilizados ) throws Exception {
+
+		boolean rateio = false;
+		boolean novorateio = false;
+		int param = 1;
+
+		String lotes = "";
+
+		for ( int i = 0; i < lotesutilizados.size(); i++ ) {
+			if ( i > 0 ) {
+				lotes += ",";
+			}
+			lotes += "'" + lotesutilizados.get( i ) + "'";
+		}
+
+		String lote = null;
+		BigDecimal saldo = new BigDecimal( "0.00" );
+
+		StringBuilder sql = new StringBuilder();
+		sql.append( "SELECT FIRST 1 L.CODLOTE, L.SLDLOTE " );
+		sql.append( "FROM EQLOTE L " );
+		sql.append( "WHERE L.CODEMP=? AND L.CODFILIAL=? AND L.CODPROD=? AND " );
+		sql.append( "L.SLDLIQLOTE>0 AND L.VENCTOLOTE>=cast('today' as date) AND " );
+		sql.append( "NOT L.CODLOTE IN ( " + lotes + " ) " );
+		sql.append( "ORDER BY L.VENCTOLOTE, L.CODLOTE " );
+
+		PreparedStatement ps = getConn().prepareStatement( sql.toString() );
+		param = 1;
+		ps.setInt( param++, Aplicativo.iCodEmp );
+		ps.setInt( param++, ListaCampos.getMasterFilial( "EQLOTE" ) );
+		ps.setInt( param++, codprod );
+
+		ResultSet rs = ps.executeQuery();
+
+		if ( rs.next() ) {
+			lote = rs.getString( "CODLOTE" );
+			saldo = rs.getBigDecimal( "SLDLOTE" );
+		}
+		rs.close();
+		ps.close();
+
+		if ( saldo.floatValue() > 0 ) {
+			if ( quantidade.max( saldo ) == quantidade ) {
+				novorateio = true;
+			}
+			sql = new StringBuilder();
+			sql.append( "UPDATE PPITOP SET QTDCOPIAITOP=?, CODLOTERAT=?, BLOQOP='N' " );
+			sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=? AND SEQITOP=?" );
+			ps = getConn().prepareStatement( sql.toString() );
+			ps.setBigDecimal( 1, quantidade );
+			ps.setString( 2, lote );
+			ps.setInt( 3, codemp );
+			ps.setInt( 4, codfilial );
+			ps.setInt( 5, codop );
+			ps.setInt( 6, seqop );
+			ps.setInt( 7, seq );
+			ps.executeUpdate();
+			ps.close();
+			rateio = true;
+			if ( novorateio ) {
+				sql = new StringBuilder();
+				sql.append( "SELECT MAX(SEQITOP) SEQITOP FROM PPITOP WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=?" );
+				ps = getConn().prepareStatement( sql.toString() );
+				param = 1;
+				ps.setInt( param++, codemp );
+				ps.setInt( param++, codfilial );
+				ps.setInt( param++, codop );
+				ps.setInt( param++, seqop );
+				rs = ps.executeQuery();
+				if ( rs.next() ) {
+					seq = rs.getInt( "SEQITOP" );
+				}
+				lotesutilizados.add( lote );
+				rateio = rateiaItemSemSaldo( codemp, codfilial, codop, seqop, seq, codprod, quantidade.subtract( saldo ), lotesutilizados );
+			}
+		}
+		else {
+			sql = new StringBuilder();
+			sql.append( "UPDATE PPITOP SET BLOQOP='S' " );
+			sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=? AND SEQITOP=?" );
+
+			ps = getConn().prepareStatement( sql.toString() );
+			param = 1;
+			ps.setInt( param++, codemp );
+			ps.setInt( param++, codfilial );
+			ps.setInt( param++, codop );
+			ps.setInt( param++, seqop );
+			ps.setInt( param++, seq );
+
+			ps.executeUpdate();
+			ps.close();
+
+			rateio = true;
+		}
+
+		return rateio;
+	}
+	
 	public void geraRMA(Integer codemp, Integer codfilial, Integer codop, Integer seqop, Integer codfilialpd, Vector<Vector<Object>> dataVector) {
 
 		String sSQL = null;
