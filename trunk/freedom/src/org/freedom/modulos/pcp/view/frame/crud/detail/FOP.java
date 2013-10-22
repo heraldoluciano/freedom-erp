@@ -861,6 +861,10 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 		montaTab();
 
+		/*for (int i=0; i<tab.getColumnCount(); i++) {
+			System.out.println("Coluna: "+i+ " - " + tab.getColumnName( i ));
+		}
+			*/	
 		tab.adicColuna( "" );
 		tab.adicColuna( "" );
 
