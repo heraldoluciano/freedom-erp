@@ -30,10 +30,13 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.Vector;
 
 import javax.swing.JOptionPane;
 
 import org.freedom.infra.dao.AbstractDAO;
+import org.freedom.infra.functions.ConversionFunctions;
+import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
@@ -492,6 +495,213 @@ public class DAOOp extends AbstractDAO {
 		}
 		return bRet;
 	}
+	
+	private ResultSet itensRma(Integer codemp, Integer codfilial, Integer codop, Integer seqop) throws Exception {
+		StringBuffer sql = new StringBuffer();
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		try {
+			sql.append( "SELECT GERARMA FROM PPITOP WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=? AND GERARMA='S'" );
+			ps = getConn().prepareStatement( sql.toString() );
+			ps.setInt( 1, codemp );
+			ps.setInt( 2, codfilial );
+			ps.setInt( 3, codop );
+			ps.setInt( 4, seqop );
+			rs = ps.executeQuery();
+		} catch ( Exception e ) {
+			e.printStackTrace();
+			getConn().rollback();
+			throw new Exception("Erro carregando RMA !\n" + e.getMessage());
+		}
+
+		return rs;
+	}
+	
+	
+	private boolean temSldLote(Integer codemp, Integer codfilial, Integer codop, Integer seqop, Integer codemppd, Integer codfilialpd, Vector<Vector<Object>> dataVector) {
+
+		boolean bRet = false;
+
+		try {
+
+			String sSaida = "";
+			int iSldNeg = 0;
+			int iTemp = 0;
+			float fSldLote = 0f;
+
+			String sSQL = "SELECT SLDLOTE FROM EQLOTE WHERE CODEMP=? AND CODFILIAL=? AND CODPROD=? AND CODLOTE=? ";
+
+			for ( int i = 0; i < dataVector.size(); i++ ) {
+
+				PreparedStatement ps = getConn().prepareStatement( sSQL );
+				int param = 1;
+				ps.setInt( param++, Aplicativo.iCodEmp );
+				ps.setInt( param++, Aplicativo.iCodFilial );
+
+				if ( !(Boolean) getPrefere().get( "USAREFPROD" ) ) {
+					ps.setInt( param++, ( (Integer) dataVector.elementAt( i ).elementAt( 1 ) ).intValue() );
+				}
+				else {
+					ps.setInt( param++, ( (Integer) dataVector.elementAt( i ).elementAt( 3 ) ).intValue() );
+
+				}
+
+				ps.setString( 4, (String) dataVector.elementAt( i ).elementAt( 4 ) );
+
+				ResultSet rs = ps.executeQuery();
+
+				if ( rs.next() ) {
+					fSldLote = rs.getFloat( "SLDLOTE" );
+				}
+
+				if ( fSldLote < ConversionFunctions.stringCurrencyToBigDecimal( 
+						(String) dataVector.elementAt( i ).elementAt( 6 ) ).subtract( 
+								ConversionFunctions.stringCurrencyToBigDecimal( 
+										(String) dataVector.elementAt( i ).elementAt( 7 ) ) ).floatValue() 
+										&& !"".equals( (String) dataVector.elementAt( i ).elementAt( 4 ) ) ) {
+					iSldNeg++;
+					sSaida += "\nProduto: " + dataVector.elementAt( i ).elementAt( 1 ) + StringFunctions.replicate( " ", 20 ) 
+							+ "Lote: " + dataVector.elementAt( i ).elementAt( 4 );
+				}
+
+				rs.close();
+				ps.close();
+			}
+
+			getConn().commit();
+
+			if ( iSldNeg > 0 ) {
+
+				if ( (Boolean) getPrefere().get( "RATAUTO" ) ) {
+					bloquearOPSemSaldo( codemp, codfilial, codop, seqop, true );
+					Funcoes.mensagemInforma( null, "Esta OP será bloqueada devido a falta de saldo para alguns itens.\n" + sSaida );
+					return true;
+				}
+
+				iTemp = Funcoes.mensagemConfirma( null, "Estes lotes possuem saldo menor que a quantidade solicitada." + sSaida + "\n\nDeseja gerar RMA com lote sem saldo?" );
+				if ( iTemp == JOptionPane.NO_OPTION ) {
+					bRet = false;
+				}
+				else if ( iTemp == JOptionPane.YES_OPTION ) {
+					bRet = true;
+				}
+			}
+			else {
+				bRet = true;
+			}
+		} catch ( SQLException e ) {
+			Funcoes.mensagemErro( null, "Erro ao verificar quantidade de Lote\n" + e.getMessage(), true, getConn(), e );
+			e.printStackTrace();
+		} catch ( Exception e ) {
+			Funcoes.mensagemErro( null, "Erro ao verificar quantidade de Lote\n" + e.getMessage(), true, getConn(), e );
+			e.printStackTrace();
+		}
+
+		return bRet;
+	}
+
+	public void bloquearOPSemSaldo( Integer codemp, Integer codfilial, Integer codop, Integer seqop, boolean bloquear ) {
+
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append( "UPDATE PPOP SET SITOP='" + ( bloquear ? "BL" : "PE" ) + "' " );
+			sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=?" );
+			PreparedStatement ps = getConn().prepareStatement( sql.toString() );
+			ps.setInt( 1, codemp );
+			ps.setInt( 2, codfilial );
+			ps.setInt( 3, codop );
+			ps.setInt( 4, seqop );
+			ps.executeUpdate();
+			ps.close();
+			getConn().commit();
+		} catch ( SQLException e ) {
+			e.printStackTrace();
+		}
+	}
+
+	public void geraRMA(Integer codemp, Integer codfilial, Integer codop, Integer seqop, Integer codemppd, Integer codfilialpd, Vector<Vector<Object>> dataVector) {
+
+		String sSQL = null;
+		ResultSet rs = null;
+		ResultSet rs2 = null;
+		PreparedStatement ps2 = null;
+		PreparedStatement ps3 = null;
+
+		try {
+
+			rs = itensRma(codemp, codfilial, codop, seqop);
+
+			if ( rs.next() ) {
+				try {
+					if ( temSldLote(codemp, codfilial, codop, seqop, codemppd, codfilialpd, dataVector ) ) {
+						boolean confirmar = (Boolean) getPrefere().get( "RATAUTO" );
+						if ( !confirmar ) {
+							confirmar = Funcoes.mensagemConfirma( null, "Confirma a geração de RMA para a OP:" + codop + " SEQ:" + seqop + "?" ) == JOptionPane.YES_OPTION;
+						}
+						if ( confirmar ) {
+							ps2 = getConn().prepareStatement( "EXECUTE PROCEDURE EQGERARMASP(?,?,?,?)" );
+							ps2.setInt( 1, codemp );
+							ps2.setInt( 2, codfilial);
+							ps2.setInt( 3, codop );
+							ps2.setInt( 4, seqop );
+							ps2.execute();
+							ps2.close();
+
+							getConn().commit();
+
+							try {
+								ps3 = getConn().prepareStatement( "SELECT CODRMA FROM EQRMA WHERE CODEMP=? AND CODFILIAL=? AND CODEMPOF=CODEMP AND CODFILIALOF=? AND CODOP=? AND SEQOP=?" );
+								ps3.setInt( 1, codemp );
+								ps3.setInt( 2, codfilial );
+								ps3.setInt( 3, codfilial );
+								ps3.setInt( 4, codop );
+								ps3.setInt( 5, seqop );
+
+								rs2 = ps3.executeQuery();
+								String sRma = "";
+								while ( rs2.next() ) {
+									sRma += rs2.getString( 1 ) + " - ";
+								}
+								if ( sRma.length() > 0 ) {
+									Funcoes.mensagemInforma( null, "Foram geradas as seguintes RMA:\n" + sRma );
+								}
+
+								rs2.close();
+							} catch ( Exception err ) {
+								Funcoes.mensagemErro( null, "Erro ao buscar RMA criada", true, getConn(), err );
+								err.printStackTrace();
+							}
+						}
+					}
+				} catch ( SQLException err ) {
+					System.out.println( err.getMessage() );
+					Funcoes.mensagemErro( null, "Erro ao criar RMA\n" + err.getMessage(), true, getConn(), err );
+					err.printStackTrace();
+				} catch ( Exception err ) {
+					Funcoes.mensagemErro( null, "Erro ao criar RMA", true, getConn(), err );
+					err.printStackTrace();
+				}
+			}
+			else {
+				Funcoes.mensagemInforma( null, "Não há itens para gerar RMA.\n " + "Os itens não geram RMA automaticamente\n" + "ou o processo de geração de RMA já foi efetuado." );
+			}
+
+			rs.close();
+
+			getConn().commit();
+
+		} catch ( Exception err ) {
+			Funcoes.mensagemErro( null, "Erro ao consultar RMA", true, getConn(), err );
+			err.printStackTrace();
+		} finally {
+			sSQL = null;
+			rs = null;
+			rs2 = null;
+			ps2 = null;
+			ps3 = null;
+		}
+	}
+
 
 	public HashMap<String, Object> getPrefere() {
 
