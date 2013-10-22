@@ -287,11 +287,12 @@ public class DAOOp extends AbstractDAO {
 		Vector<Vector<Object>> result = new Vector<Vector<Object>>();
 		StringBuilder sql = new StringBuilder();
 		sql.append( "select iop.seqitop, iop.refprod, iop.codprod " );
-		sql.append( ", pp.descprod, iop.codlote, iop.qtditop ");
+		sql.append( ", pd.descprod, iop.codlote, iop.qtditop ");
 		sql.append( ", iop.qtdcopiaitop, iop.codloterat, iop.gerarma ");
 		sql.append( ", iop.seqac, iop.bloqop, iop.permiteajusteitop ");
-		sql.append( "from ppitop iop ");
+		sql.append( "from ppitop iop, eqproduto pd ");
 		sql.append( "where iop.codemp=? and iop.codfilial=? and iop.codop=? and iop.seqop=?");
+		sql.append( " and pd.codemp=iop.codemppd and pd.codfilial=iop.codfilialpd and pd.codprod=iop.codprod ");
 		PreparedStatement ps = getConn().prepareStatement( sql.toString() );
 		int param = 1;
 		ps.setInt( param++, codemp );
