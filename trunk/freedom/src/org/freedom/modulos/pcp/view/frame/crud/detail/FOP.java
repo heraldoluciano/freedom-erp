@@ -951,8 +951,13 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		String sSQL = null;
 		try {
 
-			sSQL = "SELECT MIN(L.CODLOTE) FROM EQLOTE L " + "WHERE L.CODPROD=? AND L.CODFILIAL=? " + ( bSaldoPos ? "AND L.SLDLIQLOTE>0 " : "" ) + "AND L.CODEMP=? AND " + "L.VENCTOLOTE=(SELECT MIN(VENCTOLOTE) FROM EQLOTE LS "
-					+ "WHERE LS.CODPROD=L.CODPROD AND LS.CODFILIAL=L.CODFILIAL AND LS.CODEMP=L.CODEMP AND " + "LS.SLDLIQLOTE>0 AND VENCTOLOTE >= CAST('today' AS DATE))";
+			sSQL = "SELECT MIN(L.CODLOTE) FROM EQLOTE L "
+					+ "WHERE L.CODPROD=? AND L.CODFILIAL=? " 
+					+ ( bSaldoPos ? "AND L.SLDLIQLOTE>0 " : "" )
+					+ "AND L.CODEMP=? AND "
+					+ "L.VENCTOLOTE=(SELECT MIN(VENCTOLOTE) FROM EQLOTE LS "
+					+ "WHERE LS.CODPROD=L.CODPROD AND LS.CODFILIAL=L.CODFILIAL AND LS.CODEMP=L.CODEMP AND " 
+					+ "LS.SLDLIQLOTE>0 AND VENCTOLOTE >= CAST('today' AS DATE))";
 
 			ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, txtProd.getVlrInteger().intValue() );
@@ -1478,8 +1483,13 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				txtQtdPrevProdOP.setVlrBigDecimal( txtQtdSugProdOP.getVlrBigDecimal() );
 			}
 
-			sSQL = "SELECT IT.CODFASE, IT.SEQITEST, IT.CODPRODPD, P.DESCPROD, " + "P.CODUNID, coalesce(IT.QTDITEST/cast(e.qtdest as numeric(15,7)),0) qtditest, P.SLDLIQPROD, IT.RMAAUTOITEST, IT.QTDFIXA " + "FROM PPESTRUTURA E, PPITESTRUTURA IT, EQPRODUTO P "
-					+ "WHERE E.CODEMP=? AND E.CODFILIAL=? AND E.CODPROD=? AND E.SEQEST=? " + "AND E.CODEMP=IT.CODEMP AND E.CODFILIAL=IT.CODFILIAL " + "AND E.CODPROD=IT.CODPROD AND E.SEQEST=IT.SEQEST " + "AND P.CODEMP=IT.CODEMPPD AND P.CODFILIAL=IT.CODFILIALPD AND P.CODPROD=IT.CODPRODPD "
+			sSQL = "SELECT IT.CODFASE, IT.SEQITEST, IT.CODPRODPD, P.DESCPROD, " 
+			+ "P.CODUNID, coalesce(IT.QTDITEST/cast(e.qtdest as numeric(15,7)),0) qtditest, P.SLDLIQPROD, IT.RMAAUTOITEST, IT.QTDFIXA " 
+					+ "FROM PPESTRUTURA E, PPITESTRUTURA IT, EQPRODUTO P "
+					+ "WHERE E.CODEMP=? AND E.CODFILIAL=? AND E.CODPROD=? AND E.SEQEST=? " 
+					+ "AND E.CODEMP=IT.CODEMP AND E.CODFILIAL=IT.CODFILIAL " 
+					+ "AND E.CODPROD=IT.CODPROD AND E.SEQEST=IT.SEQEST " 
+					+ "AND P.CODEMP=IT.CODEMPPD AND P.CODFILIAL=IT.CODFILIALPD AND P.CODPROD=IT.CODPRODPD "
 					+ "ORDER BY IT.CODFASE, IT.SEQITEST";
 
 			PreparedStatement ps = con.prepareStatement( sSQL );
@@ -2271,7 +2281,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			}
 
 			daoop.geraRMA( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPOP" ), txtCodOP.getVlrInteger(), txtSeqOP.getVlrInteger() 
-					, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQPRODUTO" ), tab.getDataVector() );
+					, ListaCampos.getMasterFilial( "EQPRODUTO" ), tab.getDataVector() );
 
 			lcCampos.carregaDados();
 
@@ -2394,7 +2404,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		}
 		else if ( evt.getSource() == btRMA ) {
 			daoop.geraRMA( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPOP" ), txtCodOP.getVlrInteger(), txtSeqOP.getVlrInteger()
-					, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQPRODUTO" ), tab.getDataVector() );
+					, ListaCampos.getMasterFilial( "EQPRODUTO" ), tab.getDataVector() );
 			lcCampos.carregaDados();
 		}
 		else if ( evt.getSource() == btLote ) {
@@ -3074,7 +3084,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			if ( (Boolean) daoop.getPrefere().get( "RATAUTO" ) ) {
 				ratearOp();
 				daoop.geraRMA( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPOP" ), txtCodOP.getVlrInteger(), txtSeqOP.getVlrInteger(),
-						Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQPRODUTO" ), tab.getDataVector() );
+						ListaCampos.getMasterFilial( "EQPRODUTO" ), tab.getDataVector() );
 			}
 
 			btAdicProdutoEstrutura.setEnabled( "S".equals( cbEstDinamica.getVlrString() ) );

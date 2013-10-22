@@ -41,7 +41,6 @@ import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.pcp.dao.DAOOp;
 
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -371,34 +370,6 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
 		}
 	}
 
-	private int buscaTipoMov() {
-
-		int codTipoMov = 0;
-
-		try {
-
-			PreparedStatement ps = con.prepareStatement( "SELECT CODTIPOMOV FROM SGPREFERE5 WHERE CODEMP=? AND CODFILIAL=?" );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
-			ResultSet rs = ps.executeQuery();
-
-			if ( rs.next() ) {
-				if ( rs.getString( 1 ) != null ) {
-					codTipoMov = rs.getInt( 1 );
-				}
-				else {
-					codTipoMov = 0;
-					Funcoes.mensagemInforma( null, "Não existe um tipo de movimento padrão para OP definido nas preferências!" );
-				}
-			}
-			rs.close();
-			ps.close();
-		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro ao buscar documento de preferências!\n" + err.getMessage() );
-		}
-		return codTipoMov;
-	}
-
 	private void gravaDistrib() {
 
 		Vector<?> linha = null;
@@ -406,7 +377,13 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
 		for ( int i = 0; i < tabDistrib.getNumLinhas(); i++ ) {
 			linha = tabDistrib.getLinha( i );
 			if ( ( (BigDecimal) linha.elementAt( 7 ) ).floatValue() > 0 )
-				gravaOp( linha );
+				daoop.gravaOp( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPOP" )
+						, txtCodOP.getVlrInteger(), txtSeqOP.getVlrInteger()
+						, ListaCampos.getMasterFilial( "PPESTRUTURA" )
+						, ListaCampos.getMasterFilial( "EQLOTE" )
+						, ListaCampos.getMasterFilial( "EQTIPOMOV" )
+						, ListaCampos.getMasterFilial( "EQPRODUTO" )
+						, linha );
 		}
 	}
 
@@ -461,92 +438,6 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
 		}
 	}
 
-	private void gravaOp( Vector<?> op ) {
-
-		PreparedStatement ps = null;
-		String sql = null;
-		ResultSet rs = null;
-		int seqop = 0;
-		Date dtFabrOP = null;
-
-		try {
-
-			sql = "SELECT MAX(SEQOP) FROM PPOP WHERE CODEMP=? AND CODFILIAL=? AND CODOP=?";
-			ps = con.prepareStatement( sql );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "PPOP" ) );
-			ps.setInt( 3, txtCodOP.getVlrInteger().intValue() );
-			rs = ps.executeQuery();
-			if ( rs.next() ) {
-				seqop = rs.getInt( 1 ) + 1;
-			}
-			rs.close();
-			ps.close();
-			con.commit();
-
-			sql = "SELECT DTFABROP FROM PPOP WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=?";
-			ps = con.prepareStatement( sql );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "PPOP" ) );
-			ps.setInt( 3, txtCodOP.getVlrInteger().intValue() );
-			ps.setInt( 4, txtSeqOP.getVlrInteger().intValue() );
-			rs = ps.executeQuery();
-			if ( rs.next() ) {
-				dtFabrOP = rs.getDate( 1 );
-			}
-			rs.close();
-			ps.close();
-			con.commit();
-
-			sql = "INSERT INTO PPOP (CODEMP,CODFILIAL,CODOP,SEQOP,CODEMPPD,CODFILIALPD,CODPROD,SEQEST,DTFABROP,"
-			        + "QTDPREVPRODOP,QTDFINALPRODOP,DTVALIDPDOP,CODEMPLE,CODFILIALLE,CODLOTE,CODEMPTM,CODFILIALTM,CODTIPOMOV,"
-					+ "CODEMPAX,CODFILIALAX,CODALMOX,CODEMPOPM,CODFILIALOPM,CODOPM,SEQOPM,QTDDISTIOP,QTDSUGPRODOP)" 
-			        + " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-
-			ps = con.prepareStatement( sql );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "PPOP" ) );
-			ps.setInt( 3, txtCodOP.getVlrInteger().intValue() );
-			ps.setInt( 4, seqop );
-			ps.setInt( 5, Aplicativo.iCodEmp );
-			ps.setInt( 6, ListaCampos.getMasterFilial( "PPESTRUTURA" ) );
-			ps.setInt( 7, ( (Integer) op.elementAt( 4 ) ).intValue() ); // Código do produto
-			ps.setInt( 8, ( (Integer) op.elementAt( 6 ) ).intValue() ); // Sequencia da estrutura
-			ps.setDate( 9, dtFabrOP ); // Data de fabricação
-			ps.setFloat( 10, ( (BigDecimal) op.elementAt( 7 ) ).floatValue() ); // Qtdade prevista
-			ps.setFloat( 11, 0 ); // Quantidade produzida
-			ps.setDate( 12, ( Funcoes.strDateToSqlDate( (String) op.elementAt( 11 ) ) ) ); // data de validade
-			ps.setInt( 13, Aplicativo.iCodEmp );
-			ps.setInt( 14, ListaCampos.getMasterFilial( "EQLOTE" ) );
-			ps.setString( 15, ( (String) op.elementAt( 10 ) ) ); // lote
-			ps.setInt( 16, Aplicativo.iCodEmp );
-			ps.setInt( 17, ListaCampos.getMasterFilial( "EQTIPOMOV" ) );
-			ps.setInt( 18, buscaTipoMov() ); // tipo de movimento
-			ps.setInt( 19, ( (Integer) op.elementAt( 13 ) ).intValue() );
-			ps.setInt( 20, ( (Integer) op.elementAt( 14 ) ).intValue() );
-			ps.setInt( 21, ( (Integer) op.elementAt( 12 ) ).intValue() ); // Código do almoxarifado
-			ps.setInt( 22, Aplicativo.iCodEmp );
-			ps.setInt( 23, ListaCampos.getMasterFilial( "PPOP" ) );
-			ps.setInt( 24, txtCodOP.getVlrInteger().intValue() ); // CODOP Principal
-			ps.setInt( 25, txtSeqOP.getVlrInteger().intValue() ); // SEQOP Principal
-			ps.setFloat( 26, ( (BigDecimal) op.elementAt( 9 ) ).floatValue() ); // Qtdade distribuída
-			ps.setFloat( 27, ( (BigDecimal) op.elementAt( 7 ) ).floatValue() ); // Qtdade sugerida
-
-			ps.executeUpdate();
-			ps.close();
-			con.commit();
-
-			geraRMA( seqop );
-
-		} catch ( SQLException e ) {
-			Funcoes.mensagemErro( null, "Erro ao gerar OP's de distribuição!\n" + e.getMessage() );
-			try {
-				con.rollback();
-			} catch ( SQLException eb ) {
-			}
-		}
-
-	}
 
 	public void carregaCampos( Object[] sValores ) {
 
