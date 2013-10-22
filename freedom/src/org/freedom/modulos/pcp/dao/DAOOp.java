@@ -303,9 +303,15 @@ public class DAOOp extends AbstractDAO {
 		while (rs.next()) {
 			Vector<Object> row = new Vector<Object>();
 			row.addElement( new Integer(rs.getInt( "seqitop" ) ));
-			row.addElement( rs.getString( "refprod" ));
-			row.addElement( new Integer(rs.getInt( "codprod" ) ));
+			if ( (Boolean) getPrefere().get( "USAREFPROD" ) ) {
+				row.addElement( rs.getString( "refprod" ));
+			} else {
+				row.addElement( new Integer(rs.getInt( "codprod" ) ));
+			}
 			row.addElement( rs.getString( "descprod" ) );
+			if ( (Boolean) getPrefere().get( "USAREFPROD" ) ) {
+				row.addElement( new Integer(rs.getInt( "codprod" ) ));
+			}
 			row.addElement( rs.getString( "codlote" ) );
 			row.addElement( rs.getBigDecimal( "qtditop" ) );
 			row.addElement( rs.getBigDecimal( "qtdcopiaitop" ) );
