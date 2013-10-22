@@ -189,6 +189,134 @@ public class DAOOp extends AbstractDAO {
 		}
 		return valores;
 	}
+	
+	
+	public void gravaOp( Integer codemp, Integer codfilial, Integer codop, Integer seqopm
+			, Integer codfilialet, Integer codfilialle, Integer codfilialtm, Integer codfilialpd, Vector<?> op ) {
+
+		PreparedStatement ps = null;
+		String sql = null;
+		ResultSet rs = null;
+		int seqop = 0;
+		java.sql.Date dtFabrOP = null;
+
+		try {
+
+			sql = "SELECT MAX(SEQOP) FROM PPOP WHERE CODEMP=? AND CODFILIAL=? AND CODOP=?";
+			ps = getConn().prepareStatement( sql );
+			ps.setInt( 1, codemp );
+			ps.setInt( 2, codfilial );
+			ps.setInt( 3, codop );
+			rs = ps.executeQuery();
+			if ( rs.next() ) {
+				seqop = rs.getInt( 1 ) + 1;
+			}
+			rs.close();
+			ps.close();
+			getConn().commit();
+
+			sql = "SELECT DTFABROP FROM PPOP WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=?";
+			ps = getConn().prepareStatement( sql );
+			ps.setInt( 1, codemp );
+			ps.setInt( 2, codfilial );
+			ps.setInt( 3, codop );
+			ps.setInt( 4, seqopm );
+			rs = ps.executeQuery();
+			if ( rs.next() ) {
+				dtFabrOP = rs.getDate( 1 );
+			}
+			rs.close();
+			ps.close();
+			getConn().commit();
+
+			sql = "INSERT INTO PPOP (CODEMP,CODFILIAL,CODOP,SEQOP,CODEMPPD,CODFILIALPD,CODPROD,SEQEST,DTFABROP,"
+			        + "QTDPREVPRODOP,QTDFINALPRODOP,DTVALIDPDOP,CODEMPLE,CODFILIALLE,CODLOTE,CODEMPTM,CODFILIALTM,CODTIPOMOV,"
+					+ "CODEMPAX,CODFILIALAX,CODALMOX,CODEMPOPM,CODFILIALOPM,CODOPM,SEQOPM,QTDDISTIOP,QTDSUGPRODOP)" 
+			        + " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+
+			ps = getConn().prepareStatement( sql );
+			int param = 1;
+			ps.setInt( param++, codemp );
+			ps.setInt( param++, codfilial );
+			ps.setInt( param++, codop );
+			ps.setInt( param++, seqop );
+			ps.setInt( param++, codemp );
+			ps.setInt( param++, codfilialet );
+			ps.setInt( param++, ( (Integer) op.elementAt( 4 ) ).intValue() ); // Código do produto
+			ps.setInt( param++, ( (Integer) op.elementAt( 6 ) ).intValue() ); // Sequencia da estrutura
+			ps.setDate( param++, dtFabrOP ); // Data de fabricação
+			ps.setFloat( param++, ( (BigDecimal) op.elementAt( 7 ) ).floatValue() ); // Qtdade prevista
+			ps.setFloat( param++, 0 ); // Quantidade produzida
+			ps.setDate( param++, ( Funcoes.strDateToSqlDate( (String) op.elementAt( 11 ) ) ) ); // data de validade
+			ps.setInt( param++, codemp );
+			ps.setInt( param++, codfilialle );
+			ps.setString( param++, ( (String) op.elementAt( 10 ) ) ); // lote
+			ps.setInt( param++, codemp );
+			ps.setInt( param++, codfilialtm );
+			ps.setInt( param++, buscaTipoMov() ); // tipo de movimento
+			ps.setInt( param++, ( (Integer) op.elementAt( 13 ) ).intValue() );
+			ps.setInt( param++, ( (Integer) op.elementAt( 14 ) ).intValue() );
+			ps.setInt( param++, ( (Integer) op.elementAt( 12 ) ).intValue() ); // Código do almoxarifado
+			ps.setInt( param++, codemp);
+			ps.setInt( param++, codfilial );
+			ps.setInt( param++, codop ); // CODOP Principal
+			ps.setInt( param++, seqopm ); // SEQOP Principal
+			ps.setFloat( param++, ( (BigDecimal) op.elementAt( 9 ) ).floatValue() ); // Qtdade distribuída
+			ps.setFloat( param++, ( (BigDecimal) op.elementAt( 7 ) ).floatValue() ); // Qtdade sugerida
+
+			ps.executeUpdate();
+			ps.close();
+			getConn().commit();
+
+			Vector<Vector<Object>> dataVector = getDataVector(codemp, codfilial, codop, seqop);
+			// Carregar aqui
+			
+			geraRMA( codemp, codfilial, codop, seqop, codfilialpd, dataVector );
+
+		} catch ( SQLException e ) {
+			Funcoes.mensagemErro( null, "Erro ao gerar OP's de distribuição!\n" + e.getMessage() );
+			try {
+				getConn().rollback();
+			} catch ( SQLException eb ) {
+			}
+		}
+
+	}
+
+	private Vector<Vector<Object>> getDataVector( Integer codemp, Integer codfilial, Integer codop, Integer seqop ) throws SQLException {
+		Vector<Vector<Object>> result = new Vector<Vector<Object>>();
+		StringBuilder sql = new StringBuilder();
+		sql.append( "select iop.seqitop, iop.refprod, iop.codprod " );
+		sql.append( ", pp.descprod, iop.codlote, iop.qtditop ");
+		sql.append( ", iop.qtdcopiaitop, iop.codloterat, iop.gerarma ");
+		sql.append( ", iop.seqac, iop.bloqop, iop.permiteajusteitop ");
+		sql.append( "from ppitop iop ");
+		sql.append( "where iop.codemp=? and iop.codfilial=? and iop.codop=? and iop.seqop=?");
+		PreparedStatement ps = getConn().prepareStatement( sql.toString() );
+		int param = 1;
+		ps.setInt( param++, codemp );
+		ps.setInt( param++, codfilial );
+		ps.setInt( param++, codop );
+		ps.setInt( param++, seqop );
+		ResultSet rs = ps.executeQuery();
+		while (rs.next()) {
+			Vector<Object> row = new Vector<Object>();
+			row.addElement( new Integer(rs.getInt( "seqitop" ) ));
+			row.addElement( rs.getString( "refprod" ));
+			row.addElement( new Integer(rs.getInt( "codprod" ) ));
+			row.addElement( rs.getString( "descprod" ) );
+			row.addElement( rs.getString( "codlote" ) );
+			row.addElement( rs.getBigDecimal( "qtditop" ) );
+			row.addElement( rs.getBigDecimal( "qtdcopiaitop" ) );
+			row.addElement( rs.getString( "codloterat" ) );
+			row.addElement( rs.getString( "gerarma" ) );
+			row.addElement( new Integer(rs.getInt( "seqac" ) ));
+			row.addElement( rs.getString( "bloqop" ) );
+			row.addElement( rs.getString( "permiteajusteitop" ) );
+			result.add( row );
+		}
+		return result;
+	}
 
 	public String validaQuantidade( Integer codprodest, String refprodest, BigDecimal qtdsugprodop ) throws Exception {
 
@@ -207,6 +335,34 @@ public class DAOOp extends AbstractDAO {
 			result = "Quantidade inválida!!!\nQuantidade Sugerida:\nMenor: " + qtdMinimaOP + "\nMaior: " + qtdASeguirOP;
 		}
 		return result;
+	}
+
+	private int buscaTipoMov() {
+
+		int codTipoMov = 0;
+
+		try {
+
+			PreparedStatement ps = getConn().prepareStatement( "SELECT CODTIPOMOV FROM SGPREFERE5 WHERE CODEMP=? AND CODFILIAL=?" );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+			ResultSet rs = ps.executeQuery();
+
+			if ( rs.next() ) {
+				if ( rs.getString( 1 ) != null ) {
+					codTipoMov = rs.getInt( 1 );
+				}
+				else {
+					codTipoMov = 0;
+					Funcoes.mensagemInforma( null, "Não existe um tipo de movimento padrão para OP definido nas preferências!" );
+				}
+			}
+			rs.close();
+			ps.close();
+		} catch ( SQLException err ) {
+			Funcoes.mensagemErro( null, "Erro ao buscar documento de preferências!\n" + err.getMessage() );
+		}
+		return codTipoMov;
 	}
 
 	public String getExpedirRMA( Integer codemp, Integer codfilial, Integer codprodest, Integer seqest ) throws Exception {
@@ -518,7 +674,7 @@ public class DAOOp extends AbstractDAO {
 	}
 	
 	
-	private boolean temSldLote(Integer codemp, Integer codfilial, Integer codop, Integer seqop, Integer codemppd, Integer codfilialpd, Vector<Vector<Object>> dataVector) {
+	private boolean temSldLote(Integer codemp, Integer codfilial, Integer codop, Integer seqop, Integer codfilialpd, Vector<Vector<Object>> dataVector) {
 
 		boolean bRet = false;
 
@@ -619,7 +775,7 @@ public class DAOOp extends AbstractDAO {
 		}
 	}
 
-	public void geraRMA(Integer codemp, Integer codfilial, Integer codop, Integer seqop, Integer codemppd, Integer codfilialpd, Vector<Vector<Object>> dataVector) {
+	public void geraRMA(Integer codemp, Integer codfilial, Integer codop, Integer seqop, Integer codfilialpd, Vector<Vector<Object>> dataVector) {
 
 		String sSQL = null;
 		ResultSet rs = null;
@@ -633,7 +789,7 @@ public class DAOOp extends AbstractDAO {
 
 			if ( rs.next() ) {
 				try {
-					if ( temSldLote(codemp, codfilial, codop, seqop, codemppd, codfilialpd, dataVector ) ) {
+					if ( temSldLote(codemp, codfilial, codop, seqop, codfilialpd, dataVector ) ) {
 						boolean confirmar = (Boolean) getPrefere().get( "RATAUTO" );
 						if ( !confirmar ) {
 							confirmar = Funcoes.mensagemConfirma( null, "Confirma a geração de RMA para a OP:" + codop + " SEQ:" + seqop + "?" ) == JOptionPane.YES_OPTION;
