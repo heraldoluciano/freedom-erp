@@ -37,10 +37,8 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -95,7 +93,6 @@ import org.freedom.modulos.gms.view.frame.crud.detail.FRma;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FTipoMov;
 import org.freedom.modulos.pcp.Interface.Recarrega;
-//import org.freedom.modulos.pcp.business.object.ModLote;
 import org.freedom.modulos.pcp.dao.DAOOp;
 import org.freedom.modulos.pcp.view.dialog.report.DLROP;
 import org.freedom.modulos.pcp.view.dialog.utility.DLContrQualidade;
@@ -107,6 +104,7 @@ import org.freedom.modulos.pcp.view.dialog.utility.DLRetIndustria;
 import org.freedom.modulos.pcp.view.frame.crud.plain.FModLote;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
 import org.freedom.modulos.std.view.frame.crud.plain.FAlmox;
+//import org.freedom.modulos.pcp.business.object.ModLote;
 
 public class FOP extends FDetalhe implements ChangeListener, CancelListener, InsertListener, CarregaListener, FocusListener, TabelaEditListener, Recarrega {
 
@@ -1969,204 +1967,6 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 		}
 	}
 
-	private boolean ratearOp() {
-
-		boolean result = false;
-
-		try {
-
-			HashMap<Integer, List<String>> lotes = new HashMap<Integer, List<String>>();
-			Integer seq;
-			Integer codprod;
-			String lote;
-			BigDecimal quantidade;
-			BigDecimal novaquantidade;
-
-			StringBuilder sql = new StringBuilder();
-
-			sql.append( "SELECT SEQITOP, CODPROD, CODLOTE, QTDITOP " );
-			sql.append( "FROM PPITOP " );
-			sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=? " );
-			sql.append( "ORDER BY SEQITOP" );
-
-			PreparedStatement ps = con.prepareStatement( sql.toString() );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "PPITOP" ) );
-			ps.setInt( 3, txtCodOP.getVlrInteger() );
-			ps.setInt( 4, txtSeqOP.getVlrInteger() );
-
-			ResultSet rs = ps.executeQuery();
-
-			while ( rs.next() ) {
-
-				seq = rs.getInt( "SEQITOP" );
-				codprod = rs.getInt( "CODPROD" );
-				lote = rs.getString( "CODLOTE" );
-				quantidade = rs.getBigDecimal( "QTDITOP" );
-
-				if ( lotes.get( codprod ) == null ) {
-					lotes.put( codprod, new ArrayList<String>() );
-				}
-
-				novaquantidade = verificaSaldoLote( codprod, lote, quantidade );
-
-				if ( novaquantidade.floatValue() > 0 ) {
-					lotes.get( codprod ).add( lote );
-					result = rateiaItemSemSaldo( seq, codprod, novaquantidade, lotes.get( codprod ) );
-				}
-				else {
-					result = true;
-				}
-			}
-
-			con.commit();
-
-			lcCampos.carregaDados();
-
-		} catch ( Exception e ) {
-			e.printStackTrace();
-		}
-
-		return result;
-	}
-
-	private BigDecimal verificaSaldoLote( Integer codprod, String lote, BigDecimal quantidade ) throws Exception {
-
-		BigDecimal novaquantidade = new BigDecimal( "0.00" );
-		BigDecimal saldolote = new BigDecimal( "0.00" );
-
-		StringBuilder sql = new StringBuilder();
-
-		sql.append( "SELECT L.SLDLOTE FROM EQLOTE L " );
-		sql.append( "WHERE L.CODEMP=? AND L.CODFILIAL=? AND L.CODPROD=? AND L.CODLOTE=? " );
-
-		PreparedStatement ps = con.prepareStatement( sql.toString() );
-		ps.setInt( 1, Aplicativo.iCodEmp );
-		ps.setInt( 2, ListaCampos.getMasterFilial( "EQLOTE" ) );
-		ps.setInt( 3, codprod );
-		ps.setString( 4, lote );
-
-		ResultSet rs = ps.executeQuery();
-
-		if ( rs.next() ) {
-			saldolote = rs.getBigDecimal( "SLDLOTE" );
-		}
-
-		rs.close();
-		ps.close();
-
-		if ( quantidade.max( saldolote ) == quantidade ) {
-			novaquantidade = quantidade.subtract( saldolote );
-		}
-
-		return novaquantidade;
-	}
-
-	@ SuppressWarnings ( "resource" )
-	private boolean rateiaItemSemSaldo( Integer seq, Integer codprod, BigDecimal quantidade, List<String> lotesutilizados ) throws Exception {
-
-		boolean rateio = false;
-		boolean novorateio = false;
-
-		String lotes = "";
-
-		for ( int i = 0; i < lotesutilizados.size(); i++ ) {
-			if ( i > 0 ) {
-				lotes += ",";
-			}
-			lotes += "'" + lotesutilizados.get( i ) + "'";
-		}
-
-		String lote = null;
-		BigDecimal saldo = new BigDecimal( "0.00" );
-
-		StringBuilder sql = new StringBuilder();
-		sql.append( "SELECT FIRST 1 L.CODLOTE, L.SLDLOTE " );
-		sql.append( "FROM EQLOTE L " );
-		sql.append( "WHERE L.CODEMP=? AND L.CODFILIAL=? AND L.CODPROD=? AND " );
-		sql.append( "L.SLDLIQLOTE>0 AND L.VENCTOLOTE>=cast('today' as date) AND " );
-		sql.append( "NOT L.CODLOTE IN ( " + lotes + " ) " );
-		sql.append( "ORDER BY L.VENCTOLOTE, L.CODLOTE " );
-
-		PreparedStatement ps = con.prepareStatement( sql.toString() );
-		ps.setInt( 1, Aplicativo.iCodEmp );
-		ps.setInt( 2, ListaCampos.getMasterFilial( "EQLOTE" ) );
-		ps.setInt( 3, codprod );
-
-		ResultSet rs = ps.executeQuery();
-
-		if ( rs.next() ) {
-			lote = rs.getString( "CODLOTE" );
-			saldo = rs.getBigDecimal( "SLDLOTE" );
-		}
-
-		rs.close();
-		ps.close();
-
-		if ( saldo.floatValue() > 0 ) {
-			if ( quantidade.max( saldo ) == quantidade ) {
-				novorateio = true;
-			}
-
-			sql = new StringBuilder();
-			sql.append( "UPDATE PPITOP SET QTDCOPIAITOP=?, CODLOTERAT=?, BLOQOP='N' " );
-			sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=? AND SEQITOP=?" );
-
-			ps = con.prepareStatement( sql.toString() );
-			ps.setBigDecimal( 1, quantidade );
-			ps.setString( 2, lote );
-			ps.setInt( 3, Aplicativo.iCodEmp );
-			ps.setInt( 4, ListaCampos.getMasterFilial( "PPITOP" ) );
-			ps.setInt( 5, txtCodOP.getVlrInteger() );
-			ps.setInt( 6, txtSeqOP.getVlrInteger() );
-			ps.setInt( 7, seq );
-
-			ps.executeUpdate();
-			ps.close();
-
-			rateio = true;
-
-			if ( novorateio ) {
-				sql = new StringBuilder();
-				sql.append( "SELECT MAX(SEQITOP) FROM PPITOP WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=?" );
-
-				ps = con.prepareStatement( sql.toString() );
-				ps.setInt( 1, Aplicativo.iCodEmp );
-				ps.setInt( 2, ListaCampos.getMasterFilial( "PPITOP" ) );
-				ps.setInt( 3, txtCodOP.getVlrInteger() );
-				ps.setInt( 4, txtSeqOP.getVlrInteger() );
-
-				rs = ps.executeQuery();
-
-				if ( rs.next() ) {
-					seq = rs.getInt( 1 );
-				}
-
-				lotesutilizados.add( lote );
-				rateio = rateiaItemSemSaldo( seq, codprod, quantidade.subtract( saldo ), lotesutilizados );
-			}
-		}
-		else {
-
-			sql = new StringBuilder();
-			sql.append( "UPDATE PPITOP SET BLOQOP='S' " );
-			sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=? AND SEQITOP=?" );
-
-			ps = con.prepareStatement( sql.toString() );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "PPITOP" ) );
-			ps.setInt( 3, txtCodOP.getVlrInteger() );
-			ps.setInt( 4, txtSeqOP.getVlrInteger() );
-			ps.setInt( 5, seq );
-
-			ps.executeUpdate();
-			ps.close();
-
-			rateio = true;
-		}
-
-		return rateio;
-	}
 
 	private void reprocessaItens() {
 
@@ -2279,10 +2079,16 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 			con.commit();
 
-			if ( ratearOp() ) {
+			boolean rateioOk = daoop.ratearOp(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPOP" )
+					, txtCodOP.getVlrInteger(), txtSeqOP.getVlrInteger(), ListaCampos.getMasterFilial( "EQPRODUTO" )); 
+			lcCampos.carregaDados();
+
+			if ( rateioOk ) {
 				Funcoes.mensagemInforma( this, "Itens foram reprocessados com sucesso." );
-				daoop.bloquearOPSemSaldo( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPOP" ), txtCodOP.getVlrInteger(), txtSeqOP.getVlrInteger(), false );
+			} else {
+				Funcoes.mensagemInforma( this, "Alguns itens não possuem saldo !" );
 			}
+			daoop.bloquearOPSemSaldo( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPOP" ), txtCodOP.getVlrInteger(), txtSeqOP.getVlrInteger(), rateioOk);
 
 			daoop.geraRMA( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPOP" ), txtCodOP.getVlrInteger(), txtSeqOP.getVlrInteger() 
 					, ListaCampos.getMasterFilial( "EQPRODUTO" ), tab.getDataVector() );
@@ -3086,9 +2892,21 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				tpnAbas.setSelectedIndex( 1 );
 			}
 			if ( (Boolean) daoop.getPrefere().get( "RATAUTO" ) ) {
-				ratearOp();
+				boolean rateioOk = daoop.ratearOp(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPOP" )
+						, txtCodOP.getVlrInteger(), txtSeqOP.getVlrInteger(), ListaCampos.getMasterFilial( "EQPRODUTO" ));
+				lcCampos.carregaDados();
+				daoop.bloquearOPSemSaldo( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPOP" ), txtCodOP.getVlrInteger(), txtSeqOP.getVlrInteger(), rateioOk );
+				Vector<Vector<Object>> dataVector = null;
+				try {
+					dataVector = daoop.getDataVector(Aplicativo.iCodEmp
+						, ListaCampos.getMasterFilial("PPOP" ), txtCodOP.getVlrInteger(), txtSeqOP.getVlrInteger());
+				} catch (Exception err) {
+					pevt.cancela();
+					Funcoes.mensagemErro(this, "Erro carregando itens da OP !\n"+err.getMessage() );
+					return;
+				}
 				daoop.geraRMA( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPOP" ), txtCodOP.getVlrInteger(), txtSeqOP.getVlrInteger(),
-						ListaCampos.getMasterFilial( "EQPRODUTO" ), tab.getDataVector() );
+						ListaCampos.getMasterFilial( "EQPRODUTO" ), dataVector );
 			}
 
 			btAdicProdutoEstrutura.setEnabled( "S".equals( cbEstDinamica.getVlrString() ) );
