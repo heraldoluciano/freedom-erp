@@ -293,7 +293,7 @@ public class DAOOp extends AbstractDAO {
 		StringBuilder sql = new StringBuilder();
 		sql.append( "select iop.seqitop, iop.refprod, iop.codprod " );
 		sql.append( ", pd.descprod, iop.codlote, iop.qtditop ");
-		sql.append( ", iop.qtdcopiaitop, iop.codloterat, iop.gerarma ");
+		sql.append( ", coalesce(iop.qtdcopiaitop,0) qtdcopiaitop, iop.codloterat, iop.gerarma ");
 		sql.append( ", iop.seqac, iop.bloqop, iop.permiteajusteitop ");
 		sql.append( "from ppitop iop, eqproduto pd ");
 		sql.append( "where iop.codemp=? and iop.codfilial=? and iop.codop=? and iop.seqop=?");
@@ -307,6 +307,17 @@ public class DAOOp extends AbstractDAO {
 		ResultSet rs = ps.executeQuery();
 		while (rs.next()) {
 			Vector<Object> row = new Vector<Object>();
+			/*Coluna: 0 - Sq.
+Coluna: 1 - Ref.prod.
+Coluna: 2 - Descrição do produto
+Coluna: 3 - Cód.prod.
+Coluna: 4 - Lote
+Coluna: 5 - 
+Coluna: 6 - Qtd.
+Coluna: 7 - Qtd.rat.
+Coluna: 8 - Lote rat.
+Coluna: 9 - Rma?
+Coluna: 18 - id.alt.*/
 			row.addElement( new Integer(rs.getInt( "seqitop" ) ));
 			if ( (Boolean) getPrefere().get( "USAREFPROD" ) ) {
 				row.addElement( rs.getString( "refprod" ));
@@ -317,9 +328,11 @@ public class DAOOp extends AbstractDAO {
 			if ( (Boolean) getPrefere().get( "USAREFPROD" ) ) {
 				row.addElement( new Integer(rs.getInt( "codprod" ) ));
 			}
+			//Funcoes.setPontoDec(rsItens.getString(iCol + 1))
 			row.addElement( rs.getString( "codlote" ) );
-			row.addElement( rs.getBigDecimal( "qtditop" ) );
-			row.addElement( rs.getBigDecimal( "qtdcopiaitop" ) );
+			row.addElement( "" );
+			row.addElement( ConversionFunctions.bigDecimalToStr(rs.getBigDecimal( "qtditop" ) ) );
+			row.addElement( ConversionFunctions.bigDecimalToStr(rs.getBigDecimal( "qtdcopiaitop" ) ) );
 			row.addElement( rs.getString( "codloterat" ) );
 			row.addElement( rs.getString( "gerarma" ) );
 			row.addElement( new Integer(rs.getInt( "seqac" ) ));
