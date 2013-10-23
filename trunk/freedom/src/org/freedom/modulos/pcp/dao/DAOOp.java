@@ -197,7 +197,7 @@ public class DAOOp extends AbstractDAO {
 	
 	
 	public void gravaOp( Integer codemp, Integer codfilial, Integer codop, Integer seqopm
-			, Integer codfilialet, Integer codfilialle, Integer codfilialtm, Integer codfilialpd, Vector<?> op ) {
+			, Integer codfilialet, Integer codfilialle, Integer codfilialtm, Integer codfilialpd, Vector<?> op ) throws Exception {
 
 		PreparedStatement ps = null;
 		String sql = null;
@@ -273,19 +273,31 @@ public class DAOOp extends AbstractDAO {
 			ps.close();
 			getConn().commit();
 
-			Vector<Vector<Object>> dataVector = getDataVector(codemp, codfilial, codop, seqop);
 			// Carregar aqui
 			
-			geraRMA( codemp, codfilial, codop, seqop, codfilialpd, dataVector );
-
+			if ( (Boolean) getPrefere().get( "RATAUTO" ) ) {
+				boolean rateioOk = ratearOp(codemp, codfilial, codop, seqop, codfilialpd );
+				Vector<Vector<Object>> dataVector = null;
+				try {
+					dataVector = getDataVector(codemp, codfilial, codop, seqop);
+				} catch (Exception err) {
+					err.printStackTrace();
+					throw new Exception("Erro gravando OP. \n"+err.getMessage());
+				}
+				if (geraRMA( codemp, codfilial, codop, seqop, codfilialpd, dataVector )) {
+					bloquearOPSemSaldo( codemp, codfilial, codop, seqop, !rateioOk );
+				}
+			}
 		} catch ( SQLException e ) {
-			Funcoes.mensagemErro( null, "Erro ao gerar OP's de distribuição!\n" + e.getMessage() );
+			e.printStackTrace();
 			try {
 				getConn().rollback();
+				throw new Exception("Erro gravando OP. \n"+e.getMessage());
 			} catch ( SQLException eb ) {
+				eb.printStackTrace();
+				throw new Exception("Erro gravando OP. \n"+eb.getMessage());
 			}
 		}
-
 	}
 
 	public Vector<Vector<Object>> getDataVector( Integer codemp, Integer codfilial, Integer codop, Integer seqop ) throws SQLException {
@@ -1062,6 +1074,7 @@ Coluna: 18 - id.alt.*/
 					Funcoes.mensagemErro( null, "Erro ao criar RMA\n" + err.getMessage(), true, getConn(), err );
 					err.printStackTrace();
 				} catch ( Exception err ) {
+					result = false;
 					Funcoes.mensagemErro( null, "Erro ao criar RMA", true, getConn(), err );
 					err.printStackTrace();
 				}
