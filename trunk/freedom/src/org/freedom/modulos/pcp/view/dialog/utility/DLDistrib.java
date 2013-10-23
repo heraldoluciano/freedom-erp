@@ -387,7 +387,7 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
 		}
 	}
 
-	public void geraRMA( int seqop ) {
+	/*public void geraRMA( int seqop ) {
 
 		String sSQL = null;
 		ResultSet rs2 = null;
@@ -438,7 +438,7 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
 		}
 	}
 
-
+*/
 	public void carregaCampos( Object[] sValores ) {
 
 		txtCodOP.setVlrInteger( (Integer) sValores[ 0 ] );
