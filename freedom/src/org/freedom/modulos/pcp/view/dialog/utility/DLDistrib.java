@@ -377,13 +377,17 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
 		for ( int i = 0; i < tabDistrib.getNumLinhas(); i++ ) {
 			linha = tabDistrib.getLinha( i );
 			if ( ( (BigDecimal) linha.elementAt( 7 ) ).floatValue() > 0 )
-				daoop.gravaOp( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPOP" )
+				try {
+					daoop.gravaOp( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPOP" )
 						, txtCodOP.getVlrInteger(), txtSeqOP.getVlrInteger()
 						, ListaCampos.getMasterFilial( "PPESTRUTURA" )
 						, ListaCampos.getMasterFilial( "EQLOTE" )
 						, ListaCampos.getMasterFilial( "EQTIPOMOV" )
 						, ListaCampos.getMasterFilial( "EQPRODUTO" )
 						, linha );
+				} catch (Exception e) {
+					Funcoes.mensagemErro( null, e.getMessage() );
+				}
 		}
 	}
 
