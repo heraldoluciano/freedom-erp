@@ -833,8 +833,10 @@ Coluna: 18 - id.alt.*/
 										(String) dataVector.elementAt( i ).elementAt( 7 ) ) ).floatValue() 
 										&& !"".equals( (String) dataVector.elementAt( i ).elementAt( 4 ) ) ) {
 					iSldNeg++;
-					sSaida += "\nProduto: " + dataVector.elementAt( i ).elementAt( 1 ) + StringFunctions.replicate( " ", 20 ) 
-							+ "Lote: " + dataVector.elementAt( i ).elementAt( 4 );
+					sSaida += "\nProduto: " + dataVector.elementAt( i ).elementAt( 1 ) + StringFunctions.replicate( " ", 20 );
+					if (dataVector.elementAt( i ).elementAt( 4 )!=null) {
+						sSaida += "Lote: " + dataVector.elementAt( i ).elementAt( 4 );
+					}
 				}
 				rs.close();
 				ps.close();
