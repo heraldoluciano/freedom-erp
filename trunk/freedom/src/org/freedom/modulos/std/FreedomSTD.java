@@ -253,6 +253,7 @@ import org.freedom.modulos.std.view.frame.utility.FSVV;
 import org.freedom.modulos.std.view.frame.utility.FStatusItOrc;
 import org.freedom.modulos.std.view.frame.utility.FTransfEstoque;
 import org.freedom.modulos.std.view.frame.utility.FTrocaDoc;
+import org.freedom.modulos.std.view.frame.utility.FTrocaRefprod;
 import org.freedom.modulos.std.view.frame.utility.FTrocaSeqItens;
 
 public class FreedomSTD extends AplicativoPD {
@@ -349,7 +350,8 @@ public class FreedomSTD extends AplicativoPD {
 		addOpcao( 100280000, TP_OPCAO_ITEM, "Compras", "Bloqueio e desbloqueio de compras", 'C', 100280100, 3, true, FBloqCompra.class );
 		addOpcao( 100280000, TP_OPCAO_ITEM, "Vendas", "Bloqueio e desbloqueio de vendas", 'V', 100280200, 3, true, FBloqVenda.class );
 		addOpcao( 100200000, TP_OPCAO_ITEM, "Canc. de vínc. venda x orçamento", "Canc. de vínc. venda x orçamento", 'v', 100290000, 2, true, FCancVendaOrc.class );
-		addOpcao( 100200000, TP_OPCAO_ITEM, "Reorganização de seq. de itens.", "Reorganização de seq. de itens.", 'v', 100300000, 2, true, FTrocaSeqItens.class );
+		addOpcao( 100200000, TP_OPCAO_ITEM, "Reorganização de seq. de itens.", "Reorganização de seq. de itens.", 'R', 100300000, 2, true, FTrocaSeqItens.class );
+		addOpcao( 100200000, TP_OPCAO_ITEM, "Troca referência dos produtos.", "Troca referência dos produtos", 'T', 100300000, 2, true, FTrocaRefprod.class );
 
 		addOpcao( 100000000, TP_OPCAO_MENU, "Preferências", "", 'P', 100400000, 1, false, null );
 		addOpcao( 100400000, TP_OPCAO_ITEM, "Preferências gerais", "Preferências Gerais", 'g', 100410000, 2, true, FPrefereGeral.class );
