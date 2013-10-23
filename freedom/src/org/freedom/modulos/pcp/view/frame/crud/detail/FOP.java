@@ -859,10 +859,10 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 		montaTab();
 
-		/*for (int i=0; i<tab.getColumnCount(); i++) {
+/*		for (int i=0; i<tab.getColumnCount(); i++) {
 			System.out.println("Coluna: "+i+ " - " + tab.getColumnName( i ));
 		}
-			*/	
+		*/
 		tab.adicColuna( "" );
 		tab.adicColuna( "" );
 
@@ -2909,6 +2909,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 						, ListaCampos.getMasterFilial("PPOP" ), txtCodOP.getVlrInteger(), txtSeqOP.getVlrInteger());
 				} catch (Exception err) {
 					pevt.cancela();
+					err.printStackTrace();
 					Funcoes.mensagemErro(this, "Erro carregando itens da OP !\n"+err.getMessage() );
 					return;
 				}
