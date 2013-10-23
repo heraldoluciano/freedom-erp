@@ -1001,8 +1001,9 @@ Coluna: 18 - id.alt.*/
 		return rateio;
 	}
 	
-	public void geraRMA(Integer codemp, Integer codfilial, Integer codop, Integer seqop, Integer codfilialpd, Vector<Vector<Object>> dataVector) {
+	public boolean geraRMA(Integer codemp, Integer codfilial, Integer codop, Integer seqop, Integer codfilialpd, Vector<Vector<Object>> dataVector) {
 
+		boolean result = true;
 		String sSQL = null;
 		ResultSet rs = null;
 		ResultSet rs2 = null;
@@ -1056,6 +1057,7 @@ Coluna: 18 - id.alt.*/
 						}
 					}
 				} catch ( SQLException err ) {
+					result = false;
 					System.out.println( err.getMessage() );
 					Funcoes.mensagemErro( null, "Erro ao criar RMA\n" + err.getMessage(), true, getConn(), err );
 					err.printStackTrace();
@@ -1065,14 +1067,13 @@ Coluna: 18 - id.alt.*/
 				}
 			}
 			else {
+				result = false;
 				Funcoes.mensagemInforma( null, "Não há itens para gerar RMA.\n " + "Os itens não geram RMA automaticamente\n" + "ou o processo de geração de RMA já foi efetuado." );
 			}
-
 			rs.close();
-
 			getConn().commit();
-
 		} catch ( Exception err ) {
+			result = false;
 			Funcoes.mensagemErro( null, "Erro ao consultar RMA", true, getConn(), err );
 			err.printStackTrace();
 		} finally {
@@ -1082,6 +1083,7 @@ Coluna: 18 - id.alt.*/
 			ps2 = null;
 			ps3 = null;
 		}
+		return result;
 	}
 
 
