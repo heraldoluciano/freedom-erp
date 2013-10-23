@@ -2085,10 +2085,12 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 
 			if ( rateioOk ) {
 				Funcoes.mensagemInforma( this, "Itens foram reprocessados com sucesso." );
-			} else {
-				Funcoes.mensagemInforma( this, "Alguns itens não possuem saldo !" );
+			} 
+			if (daoop.bloquearOPSemSaldo( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPOP" ), txtCodOP.getVlrInteger(), txtSeqOP.getVlrInteger(), !rateioOk)) {
+				if (!rateioOk) {
+					Funcoes.mensagemInforma( this, "Alguns itens de matéria prima estão sem saldo. Op bloqueada !" );
+				}
 			}
-			daoop.bloquearOPSemSaldo( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPOP" ), txtCodOP.getVlrInteger(), txtSeqOP.getVlrInteger(), rateioOk);
 
 			daoop.geraRMA( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPOP" ), txtCodOP.getVlrInteger(), txtSeqOP.getVlrInteger() 
 					, ListaCampos.getMasterFilial( "EQPRODUTO" ), tab.getDataVector() );
@@ -2895,7 +2897,12 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 				boolean rateioOk = daoop.ratearOp(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPOP" )
 						, txtCodOP.getVlrInteger(), txtSeqOP.getVlrInteger(), ListaCampos.getMasterFilial( "EQPRODUTO" ));
 				lcCampos.carregaDados();
-				daoop.bloquearOPSemSaldo( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPOP" ), txtCodOP.getVlrInteger(), txtSeqOP.getVlrInteger(), rateioOk );
+				if (daoop.bloquearOPSemSaldo( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPOP" ), txtCodOP.getVlrInteger(), txtSeqOP.getVlrInteger(), !rateioOk )) {
+					if (!rateioOk) {
+						Funcoes.mensagemInforma( this, "Alguns itens de matéria prima estão sem saldo. Op bloqueada !" );
+					}
+				}
+				lcCampos.carregaDados();
 				Vector<Vector<Object>> dataVector = null;
 				try {
 					dataVector = daoop.getDataVector(Aplicativo.iCodEmp

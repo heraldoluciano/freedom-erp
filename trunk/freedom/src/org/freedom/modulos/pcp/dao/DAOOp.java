@@ -547,13 +547,15 @@ public class DAOOp extends AbstractDAO {
 			String lote;
 			BigDecimal quantidade;
 			BigDecimal novaquantidade;
+			boolean cloteprod = false;
 
 			StringBuilder sql = new StringBuilder();
 
-			sql.append( "SELECT SEQITOP, CODPROD, CODLOTE, QTDITOP " );
-			sql.append( "FROM PPITOP " );
-			sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=? " );
-			sql.append( "ORDER BY SEQITOP" );
+			sql.append( "SELECT IOP.SEQITOP, IOP.CODPROD, IOP.CODLOTE, IOP.QTDITOP, PD.CLOTEPROD " );
+			sql.append( "FROM PPITOP IOP, EQPRODUTO PD " );
+			sql.append( "WHERE IOP.CODEMP=? AND IOP.CODFILIAL=? AND IOP.CODOP=? AND IOP.SEQOP=? " );
+			sql.append( "AND PD.CODEMP=IOP.CODEMPPD AND PD.CODFILIAL=IOP.CODFILIALPD AND PD.CODPROD=IOP.CODPROD ");
+			sql.append( "ORDER BY IOP.SEQITOP" );
 
 			PreparedStatement ps = getConn().prepareStatement( sql.toString() );
 			int param = 1;
@@ -569,10 +571,11 @@ public class DAOOp extends AbstractDAO {
 				codprod = rs.getInt( "CODPROD" );
 				lote = rs.getString( "CODLOTE" );
 				quantidade = rs.getBigDecimal( "QTDITOP" );
+				cloteprod = "S".equals(rs.getString( "CLOTEPROD" ));
 				if ( lotes.get( codprod ) == null ) {
 					lotes.put( codprod, new ArrayList<String>() );
 				}
-				novaquantidade = verificaSaldoLote( codemp, codfilialpd, codprod, lote, quantidade );
+				novaquantidade = verificaSaldo( codemp, codfilialpd, codprod, lote, quantidade, cloteprod );
 				if ( novaquantidade.floatValue() > 0 ) {
 					lotes.get( codprod ).add( lote );
 					if ( ! rateiaItemSemSaldo( codemp, codfilial
@@ -591,25 +594,32 @@ public class DAOOp extends AbstractDAO {
 		return result;
 	}
 
-	private BigDecimal verificaSaldoLote( Integer codemp, Integer codfilialpd, Integer codprod, String lote, BigDecimal quantidade ) throws Exception {
+	private BigDecimal verificaSaldo( Integer codemp, Integer codfilialpd, Integer codprod, String lote, BigDecimal quantidade, boolean cloteprod ) throws Exception {
 
 		BigDecimal novaquantidade = new BigDecimal( "0.00" );
 		BigDecimal saldolote = new BigDecimal( "0.00" );
 
 		StringBuilder sql = new StringBuilder();
 
-		sql.append( "SELECT L.SLDLOTE FROM EQLOTE L " );
-		sql.append( "WHERE L.CODEMP=? AND L.CODFILIAL=? AND L.CODPROD=? AND L.CODLOTE=? " );
+		if (cloteprod) {
+			sql.append( "SELECT L.SLDLIQLOTE SLDLIQ FROM EQLOTE L " );
+			sql.append( "WHERE L.CODEMP=? AND L.CODFILIAL=? AND L.CODPROD=? AND L.CODLOTE=? " );
+		} else {
+			sql.append( "SELECT P.SLDLIQPROD SLDLIQ FROM EQPRODUTO  P " );
+			sql.append( "WHERE P.CODEMP=? AND P.CODFILIAL=? AND P.CODPROD=? " );
+		}
 
 		int param = 1;
 		PreparedStatement ps = getConn().prepareStatement( sql.toString() );
 		ps.setInt( param++, codemp );
 		ps.setInt( param++, codfilialpd );
 		ps.setInt( param++, codprod );
-		ps.setString( param++, lote );
+		if (cloteprod) {
+			ps.setString( param++, lote );
+		}
 		ResultSet rs = ps.executeQuery();
 		if ( rs.next() ) {
-			saldolote = rs.getBigDecimal( "SLDLOTE" );
+			saldolote = rs.getBigDecimal( "SLDLIQ" );
 		}
 		rs.close();
 		ps.close();
@@ -849,7 +859,8 @@ public class DAOOp extends AbstractDAO {
 		return bRet;
 	}
 
-	public void bloquearOPSemSaldo( Integer codemp, Integer codfilial, Integer codop, Integer seqop, boolean bloquear ) {
+	public boolean bloquearOPSemSaldo( Integer codemp, Integer codfilial, Integer codop, Integer seqop, boolean bloquear ) {
+		boolean result = false;
 
 		if ( (Boolean) getPrefere().get("BLOQOPSEMSALDO") ) {
 			try {
@@ -867,7 +878,11 @@ public class DAOOp extends AbstractDAO {
 			} catch ( SQLException e ) {
 				e.printStackTrace();
 			}
+			if (bloquear) {
+				result = true;
+			}
 		}
+		return result;
 	}
 
 	
@@ -965,7 +980,7 @@ public class DAOOp extends AbstractDAO {
 			ps.executeUpdate();
 			ps.close();
 
-			rateio = true;
+			rateio = false;
 		}
 
 		return rateio;
