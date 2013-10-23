@@ -2888,7 +2888,6 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 	}
 
 	public void afterPost( PostEvent pevt ) {
-
 		if ( pevt.getListaCampos() == lcCampos ) {
 			if ( tpnAbas.getSelectedIndex() == 0 ) {
 				tpnAbas.setSelectedIndex( 1 );
@@ -2896,12 +2895,6 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 			if ( (Boolean) daoop.getPrefere().get( "RATAUTO" ) ) {
 				boolean rateioOk = daoop.ratearOp(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPOP" )
 						, txtCodOP.getVlrInteger(), txtSeqOP.getVlrInteger(), ListaCampos.getMasterFilial( "EQPRODUTO" ));
-				lcCampos.carregaDados();
-				if (daoop.bloquearOPSemSaldo( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPOP" ), txtCodOP.getVlrInteger(), txtSeqOP.getVlrInteger(), !rateioOk )) {
-					if (!rateioOk) {
-						Funcoes.mensagemInforma( this, "Alguns itens de matéria prima estão sem saldo. Op bloqueada !" );
-					}
-				}
 				lcCampos.carregaDados();
 				Vector<Vector<Object>> dataVector = null;
 				try {
@@ -2913,12 +2906,17 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 					Funcoes.mensagemErro(this, "Erro carregando itens da OP !\n"+err.getMessage() );
 					return;
 				}
-				daoop.geraRMA( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPOP" ), txtCodOP.getVlrInteger(), txtSeqOP.getVlrInteger(),
-						ListaCampos.getMasterFilial( "EQPRODUTO" ), dataVector );
+				if (daoop.geraRMA( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPOP" ), txtCodOP.getVlrInteger(), txtSeqOP.getVlrInteger(),
+						ListaCampos.getMasterFilial( "EQPRODUTO" ), dataVector ) ) {
+					if (daoop.bloquearOPSemSaldo( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "PPOP" ), txtCodOP.getVlrInteger(), txtSeqOP.getVlrInteger(), !rateioOk )) {
+						if (!rateioOk) {
+							Funcoes.mensagemInforma( this, "Alguns itens de matéria prima estão sem saldo. Op bloqueada !" );
+						}
+					}
+					lcCampos.carregaDados();
+				}
 			}
-
 			btAdicProdutoEstrutura.setEnabled( "S".equals( cbEstDinamica.getVlrString() ) );
-
 		}
 		else if ( pevt.getListaCampos() == lcDet ) {
 			setAcessoBotoes( btRMA, liberaRMA() );
