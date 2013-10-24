@@ -23,6 +23,7 @@
 package org.freedom.modulos.std.view.frame.utility;
 
 import java.sql.SQLException;
+import java.util.Date;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
@@ -37,19 +38,16 @@ import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
-//import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
+import org.freedom.modulos.std.dao.DAOTrocaRefprod;
 
 public class FTrocaRefprod extends FDetalhe implements InsertListener, PostListener, CarregaListener {
 
 	private static final long serialVersionUID = 1L;
 
 	private JTextFieldPad txtId = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
-
-	//private JTextFieldPad txtCodemp = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-
-	//private JTextFieldPad txtCodfilial = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtMotivo = new JTextFieldPad( JTextFieldPad.TP_STRING, 80, 0 );
 
@@ -76,6 +74,8 @@ public class FTrocaRefprod extends FDetalhe implements InsertListener, PostListe
 	private JPanelPad pinCab = new JPanelPad();
 
 	private JPanelPad pinDet = new JPanelPad();
+	
+	private DAOTrocaRefprod daotrocarefprod = null;
 
 	public FTrocaRefprod() {
 
@@ -84,11 +84,6 @@ public class FTrocaRefprod extends FDetalhe implements InsertListener, PostListe
 
 		setAltCab( 90 );
 		pinCab = new JPanelPad( 420, 90 );
-		//lcCampos.setUsaFI( false );
-		//lcCampos.setUsaME( false );
-		//lcDet.setUsaFI( false );
-		//lcDet.setUsaME( false );
-		//lcCampos.setWhereAdic( " codemp="+Aplicativo.iCodEmp+" and codfilial="+ListaCampos.getMasterFilial( "EQTROCAREFPROD" ) );
 
 		setListaCampos( lcCampos );
 		setPainel( pinCab, pnCliCab );
@@ -100,12 +95,14 @@ public class FTrocaRefprod extends FDetalhe implements InsertListener, PostListe
 		lcProd.setQueryCommit( false );
 		lcProd.setReadOnly( true );
 		txtCodprod.setTabelaExterna( lcProd, FProduto.class.getCanonicalName() );
+		
+		txtSituacao.setSoLeitura( true );
+		txtSituacaoIt.setSoLeitura( true );
 
 		adicCampo( txtId, 7, 20, 70, 20, "id", "ID.", ListaCampos.DB_PK, true );
 		adicCampo( txtMotivo, 80, 20, 330, 20, "motivo", "Motivo", ListaCampos.DB_SI, true );
 		adicCampo( txtDtTroca, 413, 20, 80, 20, "dttroca", "Data troca", ListaCampos.DB_SI, true);
-		//adicCampoInvisivel( txtCodemp, "codemp", "cód.emp.", ListaCampos.DB_SI, true );
-		//adicCampoInvisivel( txtCodfilial, "codfilial", "cód.filial.", ListaCampos.DB_SI, true );
+		adicCampo( txtSituacao, 496, 20, 80, 20, "situacao", "Situação", ListaCampos.DB_SI, true);
 		setListaCampos( false, "TROCAREFPROD", "EQ" );
 
 		setAltDet( 100 );
@@ -114,12 +111,11 @@ public class FTrocaRefprod extends FDetalhe implements InsertListener, PostListe
 		setNavegador( navRod );
 
 		adicCampo( txtId_it, 7, 20, 40, 20, "id_it", "ID.", ListaCampos.DB_PK, true );
-		//adicCampoInvisivel( txtId, "id_troca", "id. troca", ListaCampos.DB_PF, true );
-		//adicCampoInvisivel( txtId_troca, "id_troca", "id. troca", ListaCampos.DB_FK, true );
 		adicCampo( txtCodprod, 50, 20, 70, 20, "Codprod", "Cód.prod.", ListaCampos.DB_FK, txtDescprod, true );
 		adicDescFK( txtDescprod, 123, 20, 330, 20, "Descprod", "Descrição do produto" );
-		adicCampo( txtRefprodold, 7, 60, 100, 20, "refprodold", "Referência atual", ListaCampos.DB_SI, true);
-		adicCampo( txtRefprodnew, 110, 60, 100, 20, "refprodnew", "Referência nova", ListaCampos.DB_SI, true);
+		adicCampo( txtRefprodold, 7, 60, 150, 20, "refprodold", "Referência atual", ListaCampos.DB_SI, true);
+		adicCampo( txtRefprodnew, 160, 60, 150, 20, "refprodnew", "Referência nova", ListaCampos.DB_SI, true);
+		adicCampo( txtSituacaoIt, 313, 60, 80, 20, "situacao", "Situação", ListaCampos.DB_SI, true);
 		
 		setListaCampos( false, "ITTROCAREFPROD", "EQ" );
 
@@ -134,13 +130,12 @@ public class FTrocaRefprod extends FDetalhe implements InsertListener, PostListe
 		txtId_it.setAtivo( false );
 		txtRefprodold.setAtivo( false );
 		lcCampos.addCarregaListener( this );
-//		txtDttro
 	}
 
 	public void setConexao( DbConnection cn ) {
-
 		super.setConexao( cn );
 		lcProd.setConexao( cn );
+		daotrocarefprod = new DAOTrocaRefprod( cn, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQTROCAREFPROD" ) );
 	}
 
 	public void beforeInsert( InsertEvent ievt ) {
@@ -152,6 +147,7 @@ public class FTrocaRefprod extends FDetalhe implements InsertListener, PostListe
 		try {
 			if ( ievt.getListaCampos() == lcCampos ) {
 				txtId.setVlrInteger( lcCampos.gerarSeqId() );
+				txtSituacao.setVlrDate( new Date() );
 			} else if (ievt.getListaCampos() == lcDet) {
 				txtId_troca.setVlrInteger( txtId.getVlrInteger() );
 				txtId_it.setVlrInteger( lcDet.gerarSeqId() );
