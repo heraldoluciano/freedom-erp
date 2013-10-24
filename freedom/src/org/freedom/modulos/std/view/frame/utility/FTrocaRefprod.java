@@ -37,7 +37,7 @@ import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
-import org.freedom.library.swing.frame.Aplicativo;
+//import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 
@@ -47,13 +47,15 @@ public class FTrocaRefprod extends FDetalhe implements InsertListener, PostListe
 
 	private JTextFieldPad txtId = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
-	private JTextFieldPad txtCodemp = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	//private JTextFieldPad txtCodemp = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldPad txtCodfilial = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	//private JTextFieldPad txtCodfilial = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtMotivo = new JTextFieldPad( JTextFieldPad.TP_STRING, 80, 0 );
 
 	private JTextFieldPad txtDtTroca = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+	
+	private JTextFieldPad txtSituacao = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
 	private JTextFieldPad txtCodprod = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
@@ -62,6 +64,8 @@ public class FTrocaRefprod extends FDetalhe implements InsertListener, PostListe
 	private JTextFieldPad txtRefprodnew = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
 	private JTextFieldFK txtDescprod = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+
+	private JTextFieldPad txtSituacaoIt = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
 	private JTextFieldPad txtId_troca = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
@@ -100,8 +104,8 @@ public class FTrocaRefprod extends FDetalhe implements InsertListener, PostListe
 		adicCampo( txtId, 7, 20, 70, 20, "id", "ID.", ListaCampos.DB_PK, true );
 		adicCampo( txtMotivo, 80, 20, 330, 20, "motivo", "Motivo", ListaCampos.DB_SI, true );
 		adicCampo( txtDtTroca, 413, 20, 80, 20, "dttroca", "Data troca", ListaCampos.DB_SI, true);
-		adicCampoInvisivel( txtCodemp, "codemp", "cód.emp.", ListaCampos.DB_SI, true );
-		adicCampoInvisivel( txtCodfilial, "codfilial", "cód.filial.", ListaCampos.DB_SI, true );
+		//adicCampoInvisivel( txtCodemp, "codemp", "cód.emp.", ListaCampos.DB_SI, true );
+		//adicCampoInvisivel( txtCodfilial, "codfilial", "cód.filial.", ListaCampos.DB_SI, true );
 		setListaCampos( false, "TROCAREFPROD", "EQ" );
 
 		setAltDet( 100 );
@@ -109,9 +113,9 @@ public class FTrocaRefprod extends FDetalhe implements InsertListener, PostListe
 		setListaCampos( lcDet );
 		setNavegador( navRod );
 
-		adicCampo( txtId_it, 7, 20, 40, 20, "id", "ID.", ListaCampos.DB_PK, true );
+		adicCampo( txtId_it, 7, 20, 40, 20, "id_it", "ID.", ListaCampos.DB_PK, true );
 		//adicCampoInvisivel( txtId, "id_troca", "id. troca", ListaCampos.DB_PF, true );
-		adicCampoInvisivel( txtId_troca, "id_troca", "id. troca", ListaCampos.DB_FK, true );
+		//adicCampoInvisivel( txtId_troca, "id_troca", "id. troca", ListaCampos.DB_FK, true );
 		adicCampo( txtCodprod, 50, 20, 70, 20, "Codprod", "Cód.prod.", ListaCampos.DB_FK, txtDescprod, true );
 		adicDescFK( txtDescprod, 123, 20, 330, 20, "Descprod", "Descrição do produto" );
 		adicCampo( txtRefprodold, 7, 60, 100, 20, "refprodold", "Referência atual", ListaCampos.DB_SI, true);
@@ -165,10 +169,10 @@ public class FTrocaRefprod extends FDetalhe implements InsertListener, PostListe
 
 	public void beforePost(PostEvent pevt) {
 		super.beforePost( pevt );
-		if (pevt.getListaCampos()==lcCampos) {
+/*		if (pevt.getListaCampos()==lcCampos) {
 			txtCodemp.setVlrInteger( Aplicativo.iCodEmp );
 			txtCodfilial.setVlrInteger( ListaCampos.getMasterFilial( "EQTROCAREFPROD" ) );
-		}
+		}*/
 	}
 
 	public void beforeCarrega( CarregaEvent cevt ) {
