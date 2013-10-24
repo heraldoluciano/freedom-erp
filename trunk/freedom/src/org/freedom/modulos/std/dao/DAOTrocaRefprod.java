@@ -22,6 +22,10 @@
  */
 package org.freedom.modulos.std.dao;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import org.freedom.infra.dao.AbstractDAO;
 import org.freedom.infra.model.jdbc.DbConnection;
 
@@ -32,4 +36,28 @@ public class DAOTrocaRefprod extends AbstractDAO {
 		super( connection, codemp, codfilial );
 	}
 
+	public StringBuffer seekRefprod(String refprod) throws Exception {
+		StringBuffer found = new StringBuffer();
+		StringBuilder sql = new StringBuilder();
+		sql.append("select codprod, descprod, refprod from eqproduto where codemp=? and codfilial=? and refprod=?");
+		try {
+			PreparedStatement ps = getConn().prepareStatement( sql.toString() );
+			int param = 1;
+			ps.setInt( param++, getCodemp() );
+			ps.setInt( param++, getCodfilial() );
+			ps.setString( param++, refprod );
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				found.append("Referência está sendo utilizada em outro produto.\nCódigo: ");
+				found.append( rs.getInt( "codprod" ) );
+				found.append(" - ");
+				found.append("Descrição: ");
+				found.append(rs.getString( "descprod" ).trim());
+			}
+		} catch (SQLException e) {
+			getConn().rollback();
+			throw new Exception(e.getMessage());
+		}
+		return found;
+	}
 }
