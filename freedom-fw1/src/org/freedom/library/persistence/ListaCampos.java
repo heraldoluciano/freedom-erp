@@ -1929,6 +1929,9 @@ CarregaListener, MouseListener {
 		if (rs.next()) {
 			id = rs.getInt( "biseq" ); 
 		}
+		rs.close();
+		ps.close();
+		con.commit();
 		return id;
 	}
 
