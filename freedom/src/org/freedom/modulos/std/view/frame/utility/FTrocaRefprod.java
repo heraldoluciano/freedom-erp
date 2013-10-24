@@ -121,8 +121,8 @@ public class FTrocaRefprod extends FDetalhe implements InsertListener, PostListe
 
 		montaTab();
 		int col = 0;
-		tab.setTamColuna( 40, col++ );
-		tab.setTamColuna( 45, col++ );
+		tab.setTamColuna( 60, col++ );
+		tab.setTamColuna( 100, col++ );
 		tab.setTamColuna( 350, col++ );
 		lcCampos.addInsertListener( this );
 		lcDet.addInsertListener( this );
