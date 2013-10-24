@@ -25,6 +25,8 @@ package org.freedom.modulos.std.view.frame.utility;
 import java.sql.SQLException;
 import java.util.Date;
 
+import javax.swing.JProgressBar;
+
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.InsertEvent;
@@ -74,6 +76,9 @@ public class FTrocaRefprod extends FDetalhe implements InsertListener, PostListe
 	private JPanelPad pinCab = new JPanelPad();
 
 	private JPanelPad pinDet = new JPanelPad();
+	
+	private JProgressBar pbAndamento = new JProgressBar();
+
 	
 	private DAOTrocaRefprod daotrocarefprod = null;
 
