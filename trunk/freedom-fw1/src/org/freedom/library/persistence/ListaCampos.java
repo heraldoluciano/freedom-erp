@@ -312,6 +312,8 @@ CarregaListener, MouseListener {
 
 	private Map<String, Integer> fieldsUpdate = new LinkedHashMap<String, Integer>();
 
+	private boolean useId = false;
+	
 	// private boolean carregando = false;
 
 	public int getCodEmp() {
@@ -1419,7 +1421,7 @@ CarregaListener, MouseListener {
 			tab.adicColuna("H.Alt");
 		}
 
-		if (bTiraFI)
+		if (bTiraFI && bUsaME)
 			sSQLTab += " from " + sTabela.toLowerCase()
 			+ " master where master.codemp=?";
 		// alterado aqui para gerar codemp dinâmico + iCodEmp;
@@ -1431,7 +1433,7 @@ CarregaListener, MouseListener {
 		else
 			sSQLTab += " from " + sTabela.toLowerCase() + " master ";
 
-		sSepT = (bTiraFI || bUsaME ? " and " : " where ");
+		sSepT = (!bTiraFI || bUsaME ? " and " : " where ");
 
 		montaWhereCircular(this);
 
@@ -1644,7 +1646,7 @@ CarregaListener, MouseListener {
 			 * se este listacampos não for detalhe....porque se for detalhe é
 			 * preciso colocar as pks do listacampos master.
 			 */
-			if (bTiraFI)
+			if (bTiraFI && bUsaME)
 				sSQLMax = "select max(" + sPK + ") from "
 						+ sTabela.toLowerCase() + " where codemp=?" /*
 						 * + iCodEmp
@@ -1667,7 +1669,7 @@ CarregaListener, MouseListener {
 				}
 			}
 		}
-		if (bTiraFI) {
+		if (bTiraFI && bUsaME) {
 			sSQLInsert = "insert into " + sTabela.toLowerCase() + " (codemp,";
 			fieldsInsert.put("codemp", new Integer(1));
 		} else if (bUsaME) {
@@ -1762,7 +1764,7 @@ CarregaListener, MouseListener {
 		sSQLDelete += " from " + sTabela.toLowerCase() + " where " + sWhereEmp;
 		sSQLSelect += " from " + sTabela.toLowerCase() + " where " + sWhereEmp;
 
-		sSepD = sSepM = sSepParam = (bTiraFI || bUsaME ? " and " : "");
+		sSepD = sSepM = sSepParam = (!bTiraFI || bUsaME ? " and " : "");
 
 /*		if ("sgprefere1".equals(sTabela.toLowerCase())) {
 			System.out.println(sSQLUpdate);
@@ -1835,7 +1837,7 @@ CarregaListener, MouseListener {
 			}
 		}
 
-		if (bTiraFI) {
+		if (bTiraFI && bUsaME) {
 			if (fieldsUpdate.get("codemp")==null) {
 				sSQLUpdate += sSepU + "codemp=?";
 				fieldsUpdate.put("codemp", new Integer(fieldsUpdate.size()+1));
@@ -1914,6 +1916,20 @@ CarregaListener, MouseListener {
 
 		}
 
+	}
+
+	public Integer gerarSeqId () throws SQLException {
+		PreparedStatement ps = null;
+		ResultSet rs = null; 
+		Integer id = 0;
+		ps = con.prepareStatement( "select biseq from sgsequence_idsp(?)" );
+		int param = 1;
+		ps.setString( param, sTabela.toLowerCase() );
+		rs = ps.executeQuery();
+		if (rs.next()) {
+			id = rs.getInt( "biseq" ); 
+		}
+		return id;
 	}
 
 	private void carregaRegistro(int registro, int tipo) {
@@ -3764,6 +3780,14 @@ CarregaListener, MouseListener {
 
 	public void setLoginstab(boolean loginstab) {
 		this.loginstab = loginstab;
+	}
+
+	public boolean isUseId() {
+		return useId;
+	}
+
+	public void setUseId(boolean useId) {
+		this.useId = useId;
 	}
 
 	// public boolean isCarregando() {
