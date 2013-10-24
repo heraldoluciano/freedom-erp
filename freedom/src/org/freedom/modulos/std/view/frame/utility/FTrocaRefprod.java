@@ -102,7 +102,7 @@ public class FTrocaRefprod extends FDetalhe implements InsertListener, PostListe
 		adicCampo( txtId, 7, 20, 70, 20, "id", "ID.", ListaCampos.DB_PK, true );
 		adicCampo( txtMotivo, 80, 20, 330, 20, "motivo", "Motivo", ListaCampos.DB_SI, true );
 		adicCampo( txtDtTroca, 413, 20, 80, 20, "dttroca", "Data troca", ListaCampos.DB_SI, true);
-		adicCampo( txtSituacao, 496, 20, 80, 20, "situacao", "Situação", ListaCampos.DB_SI, true);
+		adicCampo( txtSituacao, 496, 20, 80, 20, "situacao", "Situação", ListaCampos.DB_SI, false);
 		setListaCampos( false, "TROCAREFPROD", "EQ" );
 
 		setAltDet( 100 );
@@ -115,7 +115,7 @@ public class FTrocaRefprod extends FDetalhe implements InsertListener, PostListe
 		adicDescFK( txtDescprod, 123, 20, 330, 20, "Descprod", "Descrição do produto" );
 		adicCampo( txtRefprodold, 7, 60, 150, 20, "refprodold", "Referência atual", ListaCampos.DB_SI, true);
 		adicCampo( txtRefprodnew, 160, 60, 150, 20, "refprodnew", "Referência nova", ListaCampos.DB_SI, true);
-		adicCampo( txtSituacaoIt, 313, 60, 80, 20, "situacao", "Situação", ListaCampos.DB_SI, true);
+		adicCampo( txtSituacaoIt, 313, 60, 80, 20, "situacao", "Situação", ListaCampos.DB_SI, false);
 		
 		setListaCampos( false, "ITTROCAREFPROD", "EQ" );
 
@@ -165,10 +165,19 @@ public class FTrocaRefprod extends FDetalhe implements InsertListener, PostListe
 
 	public void beforePost(PostEvent pevt) {
 		super.beforePost( pevt );
-/*		if (pevt.getListaCampos()==lcCampos) {
-			txtCodemp.setVlrInteger( Aplicativo.iCodEmp );
-			txtCodfilial.setVlrInteger( ListaCampos.getMasterFilial( "EQTROCAREFPROD" ) );
-		}*/
+		if (pevt.getListaCampos()==lcCampos) {
+			try {
+				StringBuffer seek = daotrocarefprod.seekRefprod( txtRefprodnew.getVlrString() );
+				if (seek.length()>0) {
+					pevt.cancela();
+					Funcoes.mensagemInforma( this, seek.toString() );
+					return;
+				}
+			} catch (Exception e) {
+				pevt.cancela();
+				Funcoes.mensagemErro( this, "Erro pesquisando referência !\n"+e.getMessage() );
+			}
+		}
 	}
 
 	public void beforeCarrega( CarregaEvent cevt ) {
