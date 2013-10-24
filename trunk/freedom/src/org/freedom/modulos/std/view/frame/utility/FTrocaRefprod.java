@@ -130,6 +130,7 @@ public class FTrocaRefprod extends FDetalhe implements InsertListener, PostListe
 		txtId_it.setAtivo( false );
 		txtRefprodold.setAtivo( false );
 		lcCampos.addCarregaListener( this );
+		lcDet.addPostListener( this );
 	}
 
 	public void setConexao( DbConnection cn ) {
@@ -165,7 +166,7 @@ public class FTrocaRefprod extends FDetalhe implements InsertListener, PostListe
 
 	public void beforePost(PostEvent pevt) {
 		super.beforePost( pevt );
-		if (pevt.getListaCampos()==lcCampos) {
+		if (pevt.getListaCampos()==lcDet) {
 			try {
 				StringBuffer seek = daotrocarefprod.seekRefprod( txtRefprodnew.getVlrString() );
 				if (seek.length()>0) {
