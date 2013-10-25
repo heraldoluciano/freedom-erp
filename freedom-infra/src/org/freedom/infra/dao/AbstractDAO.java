@@ -21,24 +21,28 @@
 package org.freedom.infra.dao;
 
 import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import org.freedom.infra.model.jdbc.DbConnection;
 
 public abstract class AbstractDAO {
 	private DbConnection conn;
-	Integer codemp = null; 
+	Integer codemp = null;
 	Integer codfilial = null;
-	
+
 	public AbstractDAO(DbConnection connection) {
 		setConn(connection);
 	}
-	
-	public AbstractDAO(DbConnection connection, Integer codemp, Integer codfilial) {
+
+	public AbstractDAO(DbConnection connection, Integer codemp,
+			Integer codfilial) {
 		this(connection);
 		setCodemp(codemp);
 		setCodfilial(codfilial);
 	}
-	
+
 	public DbConnection getConn() {
 		return conn;
 	}
@@ -61,39 +65,59 @@ public abstract class AbstractDAO {
 
 	public void setCodfilial(Integer codfilial) {
 		this.codfilial = codfilial;
-	}	
-	
-	protected String getString( String value ){
+	}
+
+	protected String getString(String value) {
 		String result = null;
 
-		if (value == null){
+		if (value == null) {
 			result = "";
-		} else {
-			result = value;
-		}
-		return result;
-	}	
-
-	protected Integer getInteger( Integer value ) {
-		Integer result = null;
-
-		if (value == null){
-			result = new Integer( 0 );
 		} else {
 			result = value;
 		}
 		return result;
 	}
 
-	protected BigDecimal getBigDecimal( BigDecimal value ) {
+	protected Integer getInteger(Integer value) {
+		Integer result = null;
+
+		if (value == null) {
+			result = new Integer(0);
+		} else {
+			result = value;
+		}
+		return result;
+	}
+
+	protected BigDecimal getBigDecimal(BigDecimal value) {
 		BigDecimal result = null;
 
-		if (value == null){
+		if (value == null) {
 			result = BigDecimal.ZERO;
 		} else {
 			result = value;
 		}
 		return result;
+	}
+
+	public Integer gerarSeqId(String tabela, boolean execCommit)
+			throws SQLException {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Integer id = 0;
+		ps = getConn().prepareStatement("select biseq from sgsequence_idsp(?)");
+		int param = 1;
+		ps.setString(param, tabela.toLowerCase());
+		rs = ps.executeQuery();
+		if (rs.next()) {
+			id = rs.getInt("biseq");
+		}
+		rs.close();
+		ps.close();
+		if (execCommit) {
+			getConn().commit();
+		}
+		return id;
 	}
 
 }
