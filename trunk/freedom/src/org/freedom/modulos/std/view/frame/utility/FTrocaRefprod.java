@@ -245,6 +245,7 @@ public class FTrocaRefprod extends FDetalhe implements InsertListener, PostListe
 		int i=0;
 		for (Change value: valuesChange) { 
 			for (Table table:tables) {
+				table.setCodfilial( ListaCampos.getMasterFilial( table.getTable_name() ) );
 				daotrocarefprod.executeChange(value, table);
 				i++;
 				pbAndamento.setValue( i );
