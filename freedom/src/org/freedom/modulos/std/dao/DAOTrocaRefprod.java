@@ -69,6 +69,7 @@ public class DAOTrocaRefprod extends AbstractDAO {
 				found.append( rs.getString( "descprod" ).trim() );
 			}
 		} catch ( SQLException e ) {
+			e.printStackTrace();
 			getConn().rollback();
 			throw new Exception( e.getMessage() );
 		}
@@ -89,8 +90,8 @@ public class DAOTrocaRefprod extends AbstractDAO {
 			ps.close();
 			getConn().commit();
 		} catch ( SQLException e ) {
-			getConn().rollback();
 			e.printStackTrace();
+			getConn().rollback();
 			throw new Exception( "Erro carregando tabelas !\n" + e.getMessage() );
 		}
 		return result;
@@ -118,8 +119,8 @@ public class DAOTrocaRefprod extends AbstractDAO {
 			ps.close();
 			getConn().commit();
 		} catch ( SQLException e ) {
-			getConn().rollback();
 			e.printStackTrace();
+			getConn().rollback();
 			throw new Exception( "Erro consultando produtos para a troca !\n" + e.getMessage() );
 		}
 		return result;
@@ -197,6 +198,7 @@ public class DAOTrocaRefprod extends AbstractDAO {
 			}
 			getConn().commit();
 		} catch ( SQLException e ) {
+			e.printStackTrace();
 			err = e;
 			situacao = SIT_LOG_TROCARP.ER;
 			getConn().rollback();
@@ -237,6 +239,7 @@ public class DAOTrocaRefprod extends AbstractDAO {
 			ps.executeUpdate();
 			getConn().commit();
 		} catch ( SQLException err ) {
+			err.printStackTrace();
 			getConn().rollback();
 			throw err;
 		}
@@ -250,6 +253,7 @@ public class DAOTrocaRefprod extends AbstractDAO {
 		ps.setInt( param++, id );
 		ps.setInt( param++, value.getId_it() );
 		ps.setString( param++, situacao.toString() );
+		ps.setString( param++, table.getTable_name() );
 		ps.setString( param++, mensagem );
 	}
 
