@@ -182,12 +182,48 @@ public class DAOTrocaRefprod extends AbstractDAO {
 		return result;
 	}
 
+	private StringBuilder getSqlUpdateProduto() {
+
+		StringBuilder result = new StringBuilder();
+		result.append( "update eqproduto set ativoprod=? " );
+		result.append( "where codemp=? and codfilial=? and codprod=? " );
+		return result;
+	}
+
+	private void setParamUpdateProduto( QUERY_ORDER qo, PreparedStatement ps, Change value ) throws SQLException {
+
+		int param = 1;
+		String ativoprod = "N";
+		if ( qo == QUERY_ORDER.Second ) {
+			ativoprod = "S";
+		}
+		ps.setString( param++, ativoprod );
+		ps.setInt( param++, value.getCodemppd() );
+		ps.setInt( param++, value.getCodfilialpd() );
+		ps.setInt( param++, value.getCodprod() );
+	}
+
+	private void changeActivityProd( boolean inactive, Change value ) throws SQLException {
+
+		StringBuilder sql = getSqlUpdateProduto();
+		PreparedStatement ps = getConn().prepareStatement( sql.toString() );
+		if ( inactive ) {
+			setParamUpdateProduto( QUERY_ORDER.First, ps, value );
+		}
+		else {
+			setParamUpdateProduto( QUERY_ORDER.Second, ps, value );
+		}
+		ps.executeUpdate();
+		getConn().commit();
+	}
+
 	public void executeChange( Change value, Table table ) throws Exception {
 
-		StringBuilder sql = getSqlChange( QUERY_ORDER.First, value, table );
 		SIT_LOG_TROCARP situacao = SIT_LOG_TROCARP.OK;
 		Exception err = null;
 		try {
+			changeActivityProd( true, value );
+			StringBuilder sql = getSqlChange( QUERY_ORDER.First, value, table );
 			PreparedStatement ps = getConn().prepareStatement( sql.toString() );
 			setParamChange( ps, QUERY_ORDER.First, value, table );
 			ps.executeUpdate();
@@ -197,6 +233,7 @@ public class DAOTrocaRefprod extends AbstractDAO {
 				ps.executeUpdate();
 			}
 			getConn().commit();
+			changeActivityProd( true, value );
 		} catch ( SQLException e ) {
 			e.printStackTrace();
 			err = e;
@@ -208,31 +245,45 @@ public class DAOTrocaRefprod extends AbstractDAO {
 		}
 	}
 
-	private StringBuilder getMensagemLog(Change value, Table table, SIT_LOG_TROCARP situacao, Exception e) {
+	private StringBuilder getMensagemLog( Change value, Table table, SIT_LOG_TROCARP situacao, Exception e ) {
+
 		StringBuilder result = new StringBuilder();
-		result.append("Tabela: ");
-		result.append(table.getTable_name());
-		result.append(" Campo: ");
-		result.append(table.getField_name());
-		result.append("\nValor anterior: ");
-		result.append(value.getRefprodold());
-		result.append(" Valor novo: ");
-		result.append(value.getRefprodnew());
-		result.append("\nSituacao: ");
-		if (situacao==SIT_LOG_TROCARP.OK) {
-			result.append("SUCESSO !");
-		} else {
-			result.append("ERRO:\n");
-			if (e!=null) {
+		result.append( "Tabela: " );
+		result.append( table.getTable_name() );
+		result.append( " Campo: " );
+		result.append( table.getField_name() );
+		result.append( "\nValor anterior: " );
+		result.append( value.getRefprodold() );
+		result.append( " Valor novo: " );
+		result.append( value.getRefprodnew() );
+		result.append( "\nSituacao: " );
+		if ( situacao == SIT_LOG_TROCARP.OK ) {
+			result.append( "SUCESSO !" );
+		}
+		else {
+			result.append( "ERRO:\n" );
+			if ( e != null ) {
 				result.append( e.getMessage() );
 			}
 		}
 		return result;
 	}
+
+	private void updateSitucaoItem( int id, SIT_LOG_TROCARP situacao ) throws SQLException {
+
+		StringBuilder sql = new StringBuilder();
+		sql.append( "update eqittrocarefprod set situacao=? where id_it=? " );
+		PreparedStatement ps = getConn().prepareStatement( sql.toString() );
+		int param = 1;
+		ps.setString( param++, situacao.toString() );
+		ps.setInt( param++, id );
+		getConn().commit();
+	}
+
 	private void executeLog( Change value, Table table, SIT_LOG_TROCARP situacao, Exception e ) throws Exception {
 
 		StringBuilder sql = getSqlInsertLog();
-		StringBuilder mensagem = getMensagemLog(value, table, situacao, e);
+		StringBuilder mensagem = getMensagemLog( value, table, situacao, e );
 		try {
 			PreparedStatement ps = getConn().prepareStatement( sql.toString() );
 			setParamInsertLog( ps, value, table, situacao, mensagem.toString() );
@@ -242,6 +293,8 @@ public class DAOTrocaRefprod extends AbstractDAO {
 			err.printStackTrace();
 			getConn().rollback();
 			throw err;
+		} finally {
+			updateSitucaoItem( value.id_it, situacao );
 		}
 
 	}
