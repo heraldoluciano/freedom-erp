@@ -245,7 +245,7 @@ BETWEEN '01.02.2013' AND '13.05.2013'  AND TM.FISCALTIPOMOV='S'  AND TM.SOMAVDTI
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{RAZEMP}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
-				<reportElement key="Emissor" mode="Opaque" x="79" y="42" width="240" height="21" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement key="Emissor" mode="Opaque" x="79" y="42" width="240" height="11" forecolor="#000000" backcolor="#FFFFFF"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -367,6 +367,13 @@ BETWEEN '01.02.2013' AND '13.05.2013'  AND TM.FISCALTIPOMOV='S'  AND TM.SOMAVDTI
 				</textElement>
 				<text><![CDATA[Qtd.Orçamento]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="79" y="53" width="451" height="33"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{FILTROS}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<columnHeader>

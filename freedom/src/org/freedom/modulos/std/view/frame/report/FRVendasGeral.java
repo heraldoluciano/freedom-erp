@@ -228,7 +228,7 @@ public class FRVendasGeral extends FRelatorio {
 		String sWhere2 = "";
 		String sWhere3 = "";
 		String sWhere4 = "";
-		String sCab = "PERÍODO: "+txtDataini.getVlrString()+" ATÉ "+txtDatafim.getVlrString()+" ";
+		String sCab = "PERÍODO: "+txtDataini.getVlrString()+" ATÉ "+txtDatafim.getVlrString()+"\n";
 
 		if ( txtCodVend.getText().trim().length() > 0 ) {
 			sWhere += " AND V.CODVEND = " + txtCodVend.getText().trim();
@@ -242,11 +242,11 @@ public class FRVendasGeral extends FRelatorio {
 
 		if ( rgFaturados.getVlrString().equals( "S" ) ) {
 			sWhere1 = " AND TM.FISCALTIPOMOV='S' ";
-			sCab += " - SO FATURADO";
+			sCab += " - SÓ FATURADO";
 		}
 		else if ( rgFaturados.getVlrString().equals( "N" ) ) {
 			sWhere1 = " AND TM.FISCALTIPOMOV='N' ";
-			sCab += " - NAO FATURADO";
+			sCab += " - NÃO FATURADO";
 		}
 		else if ( rgFaturados.getVlrString().equals( "A" ) ) {
 			sWhere1 = " AND TM.FISCALTIPOMOV IN ('S','N') ";
@@ -254,11 +254,11 @@ public class FRVendasGeral extends FRelatorio {
 
 		if ( rgFinanceiro.getVlrString().equals( "S" ) ) {
 			sWhere2 = " AND TM.SOMAVDTIPOMOV='S' ";
-			sCab += sCab.length() > 0 ? " - SO FINANCEIRO" : "SO FINANCEIRO";
+			sCab += sCab.length() > 0 ? " - SÓ FINANCEIRO" : "SÓ FINANCEIRO";
 		}
 		else if ( rgFinanceiro.getVlrString().equals( "N" ) ) {
 			sWhere2 = " AND TM.SOMAVDTIPOMOV='N' ";
-			sCab += sCab.length() > 0 ? " - NAO FINANCEIRO" : "NAO FINANCEIRO";
+			sCab += sCab.length() > 0 ? " - NÃO FINANCEIRO" : "NÃO FINANCEIRO";
 		}
 		else if ( rgFinanceiro.getVlrString().equals( "A" ) ) {
 			sWhere2 = " AND TM.SOMAVDTIPOMOV IN ('S','N') ";
@@ -266,11 +266,11 @@ public class FRVendasGeral extends FRelatorio {
 		
 		if ( rgEmitidos.getVlrString().equals( "S" ) ) {
 			sWhere4 = " AND V.STATUSVENDA IN ('V2','V3','P3') ";
-			sCab += sCab.length() > 0 ? " - SO EMITIDOS" : "SO EMITIDOS";
+			sCab += sCab.length() > 0 ? " - SÓ EMITIDOS" : "SÓ EMITIDOS";
 		}
 		else if ( rgEmitidos.getVlrString().equals( "N" ) ) {
 			sWhere4 = " AND V.STATUSVENDA NOT IN ('V2','V3','P3') ";
-			sCab += sCab.length() > 0 ? " - NAO EMITIDOS" : "NAO EMITIDOS";
+			sCab += sCab.length() > 0 ? " - NÃO EMITIDOS" : "NÃO EMITIDOS";
 		}
 
 		if ( cbVendaCanc.getVlrString().equals( "N" ) ) {

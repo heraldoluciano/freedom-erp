@@ -213,25 +213,26 @@ public class FRResumoDiario extends FRelatorio {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		StringBuffer sSQL = new StringBuffer();
-		StringBuffer sCab = new StringBuffer();
+		//StringBuffer sCab = new StringBuffer();
 		StringBuffer sWhere = new StringBuffer();
 		String orderBy = "";
 		String sWhere1 = "";
 		String sWhere2 = "";
 		String sWhere3 = "";
+		String sCab = "PERÍODO: "+txtDataini.getVlrString()+" ATÉ "+txtDatafim.getVlrString()+"\n";
 
 		try {
 
 			if ( rgFaturados.getVlrString().equals( "S" ) ) {
 				sWhere1 = " AND TM.FISCALTIPOMOV='S' ";
-				sCab.append( "FATURADO" );
+				sCab += "FATURADO" ;
 			}
 			else if ( rgFaturados.getVlrString().equals( "N" ) ) {
 				sWhere1 = " AND TM.FISCALTIPOMOV='N' ";
 				if ( sCab.length() > 0 ) {
-					sCab.append( " - " );
+					sCab +=  " - " ;
 				}
-				sCab.append( "NAO FATURADO" );
+				sCab +=  "NÃO FATURADO" ;
 			}
 			else if ( rgFaturados.getVlrString().equals( "A" ) ) {
 				sWhere1 = " AND TM.FISCALTIPOMOV IN ('S','N') ";
@@ -240,16 +241,16 @@ public class FRResumoDiario extends FRelatorio {
 			if ( rgFinanceiro.getVlrString().equals( "S" ) ) {
 				sWhere2 = " AND TM.SOMAVDTIPOMOV='S' ";
 				if ( sCab.length() > 0 ) {
-					sCab.append( " - " );
+					sCab +=  " - " ;
 				}
-				sCab.append( "FINANCEIRO" );
+				sCab +=  "FINANCEIRO" ;
 			}
 			else if ( rgFinanceiro.getVlrString().equals( "N" ) ) {
 				sWhere2 = " AND TM.SOMAVDTIPOMOV='N' ";
 				if ( sCab.length() > 0 ) {
-					sCab.append( " - " );
+					sCab +=  " - " ;
 				}
-				sCab.append( "NAO FINANCEIRO" );
+				sCab +=  "NÃO FINANCEIRO" ;
 			}
 			else if ( rgFinanceiro.getVlrString().equals( "A" ) ) {
 				sWhere2 = " AND TM.SOMAVDTIPOMOV IN ('S','N') ";
@@ -266,21 +267,21 @@ public class FRResumoDiario extends FRelatorio {
 				sWhere.append( Aplicativo.iCodEmp );
 				sWhere.append( " AND V.CODFILIALVD=" );
 				sWhere.append( lcVend.getCodFilial() );
-				sCab.append( "\nCOMISS.: " + txtCodVend.getVlrString() + " - " + txtDescVend.getText().trim() );
+				sCab +=  "\nCOMISS.: " + txtCodVend.getVlrString() + " - " + txtDescVend.getText().trim() ;
 			}
 			
 			if ( txtCodCli.getVlrString().trim().length() > 0 ) {
 				sWhere.append (" AND V.CODCLI = " + txtCodCli.getVlrInteger());;
-				sCab.append("\nCLIENTE: " + txtNomeCli.getVlrInteger());;
+				sCab += "\nCLIENTE: " + txtNomeCli.getVlrInteger();;
 			}
 			
 			if ( rgEmitidos.getVlrString().equals( "S" ) ) {
 				sWhere.append(" AND V.STATUSVENDA IN ('V2','V3','P3') " );
-				sCab.append(" EMITIDOS " );
+				sCab += " EMITIDOS " ;
 			}
 			else if ( rgEmitidos.getVlrString().equals( "N" ) ) {
 				sWhere.append(" AND V.STATUSVENDA NOT IN ('V2','V3','P3') ");
-				sCab.append( "NAO EMITIDOS" );
+				sCab +=  "NÃO EMITIDOS" ;
 			}
 
 			orderBy = " ORDER BY V.DTEMITVENDA,V.DOCVENDA";
