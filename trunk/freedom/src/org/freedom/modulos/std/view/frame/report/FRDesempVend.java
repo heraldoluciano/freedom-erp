@@ -171,44 +171,45 @@ public class FRDesempVend extends FRelatorio {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		StringBuffer sSQL = new StringBuffer();
-		StringBuffer sCab = new StringBuffer();
+		//StringBuffer sCab = new StringBuffer();
 		String sWhere1 = "";
 		String sWhere2 = "";
+		String sCab = "PERÍODO: "+txtDataini.getVlrString()+" ATÉ "+txtDatafim.getVlrString()+"\n";
 
 		try {
 			
 			if ( rgFaturados.getVlrString().equals( "S" ) ) {
 				sWhere1 = " AND TM.FISCALTIPOMOV='S' ";
-				sCab.append( "FATURADO" );
+				sCab += "FATURADO" ;
 			}
 			else if ( rgFaturados.getVlrString().equals( "N" ) ) {
 				sWhere1 = " AND TM.FISCALTIPOMOV='N' ";
 				if ( sCab.length() > 0 ) {
-					sCab.append( " - " );
+					sCab += " - " ;
 				}
-				sCab.append( "NAO FATURADO" );
+				sCab += "NÃO FATURADO" ;
 			}
 			if ( rgFinanceiro.getVlrString().equals( "S" ) ) {
 				sWhere2 = " AND TM.SOMAVDTIPOMOV='S' ";
 				if ( sCab.length() > 0 ) {
-					sCab.append( " - " );
+					sCab += " - " ;
 				}
-				sCab.append( "FINANCEIRO" );
+				sCab += "FINANCEIRO" ;
 			}
 			else if ( rgFinanceiro.getVlrString().equals( "N" ) ) {
 				sWhere2 = " AND TM.SOMAVDTIPOMOV='N' ";
 				if ( sCab.length() > 0 ) {
-					sCab.append( " - " );
+					sCab +=  " - " ;
 				}
-				sCab.append( "NAO FINANCEIRO" );
+				sCab += "NÃO FINANCEIRO" ;
 			}
 			if ( rgEmitidos.getVlrString().equals( "S" ) ) {
 				sWhere2 = " AND VD.STATUSVENDA IN ('V2','V3','P3') ";
-				sCab.append( " SO EMITIDOS ");
+				sCab += " SÓ EMITIDOS " ;
 			}
 			else if ( rgEmitidos.getVlrString().equals( "N" ) ) {
 				sWhere2 = " AND VD.STATUSVENDA NOT IN ('V2','V3','P3') ";
-				sCab.append( " NAO EMITIDOS " );
+				sCab += " NÃO EMITIDOS " ;
 			}
 			
 			sSQL.append( "SELECT V.CODVEND, V.NOMEVEND, " ); 
