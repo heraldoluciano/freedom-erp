@@ -228,11 +228,11 @@ public class FRVendasGeral extends FRelatorio {
 		String sWhere2 = "";
 		String sWhere3 = "";
 		String sWhere4 = "";
-		String sCab = "";
+		String sCab = "PERÍODO: "+txtDataini.getVlrString()+" ATÉ "+txtDatafim.getVlrString()+" ";
 
 		if ( txtCodVend.getText().trim().length() > 0 ) {
 			sWhere += " AND V.CODVEND = " + txtCodVend.getText().trim();
-			sCab = "REPR.: " + txtCodVend.getVlrString() + " - " + txtDescVend.getText().trim();
+			sCab += "REPR.: " + txtCodVend.getVlrString() + " - " + txtDescVend.getText().trim();
 			sWhere += " AND V.CODEMPVD=" + Aplicativo.iCodEmp + " AND V.CODFILIALVD=" + lcVend.getCodFilial();
 		}
 		if ( txtCodCli.getVlrString().trim().length() > 0 ) {

@@ -101,16 +101,127 @@ public class DAOTrocaRefprod extends AbstractDAO {
 		return result;
 	}
 	
+	public Vector<Change> selectValuesChange(int id) throws Exception {
+		Vector<Change> result = new Vector<Change>();
+		StringBuilder sql = new StringBuilder();
+		sql.append("select codemppd, codfilialpd, codprod, refprodold, refprodnew ");
+		sql.append("from eqtrocarefprod trf, eqittrocarefprod itrf ");
+		sql.append("where itrf.id=trf.id and trf.id=? ");
+		sql.append("and itrf.situacao<>'OK' ");
+		sql.append("order by codprod, refprodold ");
+		int param = 1;
+		try {
+		PreparedStatement ps = getConn().prepareStatement( sql.toString() );
+		ps.setInt(param, id);
+		ResultSet rs = ps.executeQuery();
+		while (rs.next()) {
+			result.add( new Change( rs.getInt( "codemppd" ), rs.getInt( "codemppd" )
+					, rs.getInt( "codprod" ), rs.getString( "refprodold" ), rs.getString( "refprodnew" ) ) );
+		}
+		rs.close();
+		ps.close();
+		getConn().commit();
+		} catch (SQLException e) {
+			getConn().rollback();
+			e.printStackTrace();
+			throw new Exception("Erro consultando produtos para a troca !\n"+e.getMessage());
+		}
+		return result;
+	}
+	
+	private StringBuilder getSqlChange(Change value, Table table) {
+		StringBuilder result = new StringBuilder();
+		String sep = "";
+		result.append( "update " );
+		result.append( table.table_name );
+		result.append( " set emmanut='S', " );
+		result.append( table.field_name );
+		result.append( "=? ");
+		result.append( "where ");
+		
+		result.append( "codemp=? ");
+		result.append( "codfilial=? ");
+		return result;
+	}
+	public void executeChange(Change value, Table table ) throws Exception {
+		StringBuilder sql = getSqlChange(value, table);
+	}
+	
 	private StringBuilder getSqlTables(DATABASE db) {
 		StringBuilder result = new StringBuilder();
 		if (db==DATABASE.FireBird) {
-			result.append("select rdb$relation_name table_name, rdb$filed_name field_name ");
+			result.append("select rdb$relation_name table_name, rdb$field_name field_name ");
 			result.append("from rdb$relation_fields ");
 			result.append("where rdb$field_name like 'REFPROD%' ");
 			result.append("and rdb$relation_name not in ('EQTROCAREFPROD','EQITTROCAREFPROD','EQITTROCARPLOG')");
 			result.append("order by rdb$relation_name, rdb$field_name");
 		}
 		return result;
+	}
+	
+	public class Change {
+		Integer codemppd;
+		Integer codfilialpd;
+		Integer codprod;
+		String refprodold;
+		String refprodnew;
+		
+		public Change(Integer codemppd, Integer codfilialpd, Integer codprod, String refprodold, String refprodnew) {
+			setCodemppd( codemppd );
+			setCodfilialpd( codfilialpd );
+			setCodprod( codprod );
+			setRefprodold( refprodold );
+			setRefprodnew( refprodnew );
+		}
+		
+		public String getRefprodold() {
+			return refprodold;
+		}
+		
+		public String getRefprodnew() {
+			return refprodnew;
+		}
+		
+		public void setRefprodold( String refprodold ) {
+			this.refprodold = refprodold;
+		}
+		
+		public void setRefprodnew( String refprodnew ) {
+			this.refprodnew = refprodnew;
+		}
+
+		
+		public Integer getCodemppd() {
+			return codemppd;
+		}
+
+		
+		public Integer getCodfilialpd() {
+		
+			return codfilialpd;
+		}
+
+		
+		public Integer getCodprod() {
+			return codprod;
+		}
+
+		
+		public void setCodemppd( Integer codemppd ) {
+			this.codemppd = codemppd;
+		}
+
+		
+		public void setCodfilialpd( Integer codfilialpd ) {
+			this.codfilialpd = codfilialpd;
+		}
+
+		
+		public void setCodprod( Integer codprod ) {
+			this.codprod = codprod;
+		}
+		
+		
 	}
 	
 	public class Table {
@@ -123,22 +234,18 @@ public class DAOTrocaRefprod extends AbstractDAO {
 		}
 		
 		public String getTable_name() {
-		
 			return table_name;
 		}
 		
 		public String getField_name() {
-		
 			return field_name;
 		}
 		
 		public void setTable_name( String table_name ) {
-		
 			this.table_name = table_name;
 		}
 		
 		public void setField_name( String field_name ) {
-		
 			this.field_name = field_name;
 		}
 	}
