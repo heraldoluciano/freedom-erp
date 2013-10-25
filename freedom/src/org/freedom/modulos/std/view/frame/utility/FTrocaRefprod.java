@@ -22,9 +22,12 @@
 
 package org.freedom.modulos.std.view.frame.utility;
 
+import java.awt.event.ActionEvent;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.Vector;
 
+import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 
 import org.freedom.acao.CarregaEvent;
@@ -33,10 +36,12 @@ import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
+import org.freedom.bmps.Icone;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.component.JButtonPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
@@ -44,6 +49,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.std.dao.DAOTrocaRefprod;
+import org.freedom.modulos.std.dao.DAOTrocaRefprod.Table;
 
 public class FTrocaRefprod extends FDetalhe implements InsertListener, PostListener, CarregaListener {
 
@@ -54,7 +60,7 @@ public class FTrocaRefprod extends FDetalhe implements InsertListener, PostListe
 	private JTextFieldPad txtMotivo = new JTextFieldPad( JTextFieldPad.TP_STRING, 80, 0 );
 
 	private JTextFieldPad txtDtTroca = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
-	
+
 	private JTextFieldPad txtSituacao = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
 	private JTextFieldPad txtCodprod = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
@@ -70,24 +76,27 @@ public class FTrocaRefprod extends FDetalhe implements InsertListener, PostListe
 	private JTextFieldPad txtId_troca = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
 	private JTextFieldPad txtId_it = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
-	
+
 	private ListaCampos lcProd = new ListaCampos( this, "PD" );
 
 	private JPanelPad pinCab = new JPanelPad();
 
 	private JPanelPad pinDet = new JPanelPad();
-	
+
 	private JProgressBar pbAndamento = new JProgressBar();
 
-	
+	private JButtonPad btExecutar = new JButtonPad( Icone.novo( "btGerar.png" ) );
+
+	JPanelPad pnAndamento = new JPanelPad();
+
 	private DAOTrocaRefprod daotrocarefprod = null;
 
 	public FTrocaRefprod() {
 
 		setTitulo( "Troca referência dos produtos" );
-		setAtribos( 10, 10, 600, 400 );
+		setAtribos( 10, 10, 600, 450 );
 
-		setAltCab( 90 );
+		setAltCab( 130 );
 		pinCab = new JPanelPad( 420, 90 );
 
 		setListaCampos( lcCampos );
@@ -100,15 +109,17 @@ public class FTrocaRefprod extends FDetalhe implements InsertListener, PostListe
 		lcProd.setQueryCommit( false );
 		lcProd.setReadOnly( true );
 		txtCodprod.setTabelaExterna( lcProd, FProduto.class.getCanonicalName() );
-		
+
 		txtSituacao.setSoLeitura( true );
 		txtSituacaoIt.setSoLeitura( true );
 
 		adicCampo( txtId, 7, 20, 70, 20, "id", "ID.", ListaCampos.DB_PK, true );
 		adicCampo( txtMotivo, 80, 20, 330, 20, "motivo", "Motivo", ListaCampos.DB_SI, true );
-		adicCampo( txtDtTroca, 413, 20, 80, 20, "dttroca", "Data troca", ListaCampos.DB_SI, true);
-		adicCampo( txtSituacao, 496, 20, 80, 20, "situacao", "Situação", ListaCampos.DB_SI, false);
+		adicCampo( txtDtTroca, 413, 20, 80, 20, "dttroca", "Data troca", ListaCampos.DB_SI, true );
+		adicCampo( txtSituacao, 496, 20, 80, 20, "situacao", "Situação", ListaCampos.DB_SI, false );
 		setListaCampos( false, "TROCAREFPROD", "EQ" );
+		adic( btExecutar, 7, 50, 30, 30 );
+		adic( pbAndamento, 43, 50, 300, 30 );
 
 		setAltDet( 100 );
 		setPainel( pinDet, pnDet );
@@ -118,10 +129,10 @@ public class FTrocaRefprod extends FDetalhe implements InsertListener, PostListe
 		adicCampo( txtId_it, 7, 20, 40, 20, "id_it", "ID.", ListaCampos.DB_PK, true );
 		adicCampo( txtCodprod, 50, 20, 70, 20, "Codprod", "Cód.prod.", ListaCampos.DB_FK, txtDescprod, true );
 		adicDescFK( txtDescprod, 123, 20, 330, 20, "Descprod", "Descrição do produto" );
-		adicCampo( txtRefprodold, 7, 60, 150, 20, "refprodold", "Referência atual", ListaCampos.DB_SI, true);
-		adicCampo( txtRefprodnew, 160, 60, 150, 20, "refprodnew", "Referência nova", ListaCampos.DB_SI, true);
-		adicCampo( txtSituacaoIt, 313, 60, 80, 20, "situacao", "Situação", ListaCampos.DB_SI, false);
-		
+		adicCampo( txtRefprodold, 7, 60, 150, 20, "refprodold", "Referência atual", ListaCampos.DB_SI, true );
+		adicCampo( txtRefprodnew, 160, 60, 150, 20, "refprodnew", "Referência nova", ListaCampos.DB_SI, true );
+		adicCampo( txtSituacaoIt, 313, 60, 80, 20, "situacao", "Situação", ListaCampos.DB_SI, false );
+
 		setListaCampos( false, "ITTROCAREFPROD", "EQ" );
 
 		montaTab();
@@ -136,9 +147,11 @@ public class FTrocaRefprod extends FDetalhe implements InsertListener, PostListe
 		txtRefprodold.setAtivo( false );
 		lcCampos.addCarregaListener( this );
 		lcDet.addPostListener( this );
+		btExecutar.addActionListener( this );
 	}
 
 	public void setConexao( DbConnection cn ) {
+
 		super.setConexao( cn );
 		lcProd.setConexao( cn );
 		daotrocarefprod = new DAOTrocaRefprod( cn, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQTROCAREFPROD" ) );
@@ -154,7 +167,8 @@ public class FTrocaRefprod extends FDetalhe implements InsertListener, PostListe
 			if ( ievt.getListaCampos() == lcCampos ) {
 				txtId.setVlrInteger( lcCampos.gerarSeqId() );
 				txtSituacao.setVlrDate( new Date() );
-			} else if (ievt.getListaCampos() == lcDet) {
+			}
+			else if ( ievt.getListaCampos() == lcDet ) {
 				txtId_troca.setVlrInteger( txtId.getVlrInteger() );
 				txtId_it.setVlrInteger( lcDet.gerarSeqId() );
 			}
@@ -169,19 +183,20 @@ public class FTrocaRefprod extends FDetalhe implements InsertListener, PostListe
 
 	}
 
-	public void beforePost(PostEvent pevt) {
+	public void beforePost( PostEvent pevt ) {
+
 		super.beforePost( pevt );
-		if (pevt.getListaCampos()==lcDet) {
+		if ( pevt.getListaCampos() == lcDet ) {
 			try {
 				StringBuffer seek = daotrocarefprod.seekRefprod( txtRefprodnew.getVlrString() );
-				if (seek.length()>0) {
+				if ( seek.length() > 0 ) {
 					pevt.cancela();
 					Funcoes.mensagemInforma( this, seek.toString() );
 					return;
 				}
-			} catch (Exception e) {
+			} catch ( Exception e ) {
 				pevt.cancela();
-				Funcoes.mensagemErro( this, "Erro pesquisando referência !\n"+e.getMessage() );
+				Funcoes.mensagemErro( this, "Erro pesquisando referência !\n" + e.getMessage() );
 			}
 		}
 	}
@@ -191,11 +206,50 @@ public class FTrocaRefprod extends FDetalhe implements InsertListener, PostListe
 	}
 
 	public void afterCarrega( CarregaEvent cevt ) {
-		if (cevt.getListaCampos()==lcCampos) {
-			if ( ! txtId_troca.getVlrString().equals( txtId.getVlrString() )) {
+
+		if ( cevt.getListaCampos() == lcCampos ) {
+			if ( !txtId_troca.getVlrString().equals( txtId.getVlrString() ) ) {
 				txtId_troca.setVlrInteger( txtId.getVlrInteger() );
 				lcDet.carregaDados();
 			}
 		}
+	}
+
+	public void actionPerformed( ActionEvent evt ) {
+
+		super.actionPerformed( evt );
+		if ( evt.getSource() == btExecutar ) {
+			execute();
+		}
+	}
+
+	private void execute() {
+
+		if ( txtId.getVlrInteger().intValue() == 0 || txtId_it.getVlrInteger() == 0 ) {
+			Funcoes.mensagemInforma( this, "Selecione a(s) referência(s) para execução da(s) troca(s) !" );
+			return;
+		}
+		if ( Funcoes.mensagemConfirma( this, "Confirma execução da troca !" ) == JOptionPane.YES_NO_OPTION ) {
+			try {
+				Vector<Table> tables = daotrocarefprod.selectTableChange();
+				if ( tables.size() == 0 ) {
+					Funcoes.mensagemInforma( this, "Não foram encontradas tabelas para execução da troca !" );
+					return;
+				}
+				executeChange(tables);
+			} catch ( Exception e ) {
+				Funcoes.mensagemErro( this, "Erro executando a troca !\n" + e.getMessage() );
+			}
+		}
+	}
+
+	private void executeChange(Vector<Table> tables) {
+		pbAndamento.setMinimum( 0 );
+	//	pnAndamento.set( tables.size() );
+		
+		for (int i=0; i<tables.size(); i++) {
+			
+		}
+
 	}
 }
