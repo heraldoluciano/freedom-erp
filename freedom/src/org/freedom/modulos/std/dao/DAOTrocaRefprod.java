@@ -44,6 +44,8 @@ public class DAOTrocaRefprod extends AbstractDAO {
 		OK, ER
 	}
 
+	private int update_count = 0;
+	
 	public DAOTrocaRefprod( DbConnection connection, Integer codemp, Integer codfilial ) {
 
 		super( connection, codemp, codfilial );
@@ -277,6 +279,7 @@ public class DAOTrocaRefprod extends AbstractDAO {
 		int param = 1;
 		ps.setString( param++, situacao.toString() );
 		ps.setInt( param++, id );
+		ps.executeUpdate();
 		getConn().commit();
 	}
 
