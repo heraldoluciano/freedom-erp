@@ -739,6 +739,9 @@ CarregaListener, MouseListener {
 	 */
 	public void setUsaME(boolean bVal) {
 		bUsaME = bVal;
+		if (!bVal) { // Se não for multi-empresa, não faz sentido ser multi-filial
+			setUsaFI(false);
+		}
 	}
 
 	/**
