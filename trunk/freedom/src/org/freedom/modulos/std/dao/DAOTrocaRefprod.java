@@ -45,7 +45,7 @@ public class DAOTrocaRefprod extends AbstractDAO {
 	}
 
 	private int update_count = 0;
-	
+
 	public DAOTrocaRefprod( DbConnection connection, Integer codemp, Integer codfilial ) {
 
 		super( connection, codemp, codfilial );
@@ -320,6 +320,18 @@ public class DAOTrocaRefprod extends AbstractDAO {
 		result.append( "(id, id_it_troca, situacao, tabela, mensagem) " );
 		result.append( "values (?, ?, ?, ?, ?) " );
 
+		return result;
+	}
+
+	public ResultSet getResultSetRelatorio( Integer id ) throws SQLException {
+
+		ResultSet result = null;
+		StringBuilder sql = new StringBuilder();
+		sql.append( "select trp.id, trp.motivo " );
+		sql.append( "from eqtrocarefprod trp " );
+		sql.append( "where trp.id=? " );
+		PreparedStatement ps = getConn().prepareStatement( sql.toString() );
+		result = ps.executeQuery();
 		return result;
 	}
 
