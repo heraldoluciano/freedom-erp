@@ -23,12 +23,16 @@
 package org.freedom.modulos.std.view.frame.utility;
 
 import java.awt.event.ActionEvent;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
+
+import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
@@ -47,6 +51,8 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
+import org.freedom.library.swing.frame.FPrinterJob;
+import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.std.dao.DAOTrocaRefprod;
 import org.freedom.modulos.std.dao.DAOTrocaRefprod.Change;
@@ -149,6 +155,8 @@ public class FTrocaRefprod extends FDetalhe implements InsertListener, PostListe
 		lcCampos.addCarregaListener( this );
 		lcDet.addPostListener( this );
 		btExecutar.addActionListener( this );
+		setImprimir( true );
+
 	}
 
 	public void setConexao( DbConnection cn ) {
@@ -221,6 +229,44 @@ public class FTrocaRefprod extends FDetalhe implements InsertListener, PostListe
 		super.actionPerformed( evt );
 		if ( evt.getSource() == btExecutar ) {
 			execute();
+		}
+	}
+
+	private void imprimir( TYPE_PRINT bVisualizar ) {
+
+		HashMap<String, Object> hParam = new HashMap<String, Object>();
+		hParam.put( "CODEMP", Aplicativo.iCodEmp );
+		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "EQTROCAREFPROD" ) );
+		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
+
+		StringBuilder filtros = new StringBuilder();
+		filtros.append( "ID da troca: " );
+		filtros.append( txtId.getVlrInteger() );
+
+		try {
+			ResultSet rs = daotrocarefprod.getResultSetRelatorio( txtId.getVlrInteger() );
+
+			FPrinterJob dlGr = new FPrinterJob( "relatorios/trocarefprod.jasper", "Relatório de troca de referências", filtros.toString(), rs, hParam, this );
+
+			if ( bVisualizar == TYPE_PRINT.VIEW ) {
+				dlGr.setVisible( true );
+			}
+			else {
+				try {
+					JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+				} catch ( Exception err ) {
+					Funcoes.mensagemErro( this, "Erro na impressão do relatório!\n" + err.getMessage(), true, con, err );
+				}
+			}
+		} catch ( SQLException e ) {
+			e.printStackTrace();
+			try {
+				con.rollback();
+			} catch ( SQLException err ) {
+				err.printStackTrace();
+			}
+			Funcoes.mensagemErro( this, "Erro criando consultando banco de dados para emissão do relatório !\n" + e.getMessage() );
+
 		}
 	}
 
