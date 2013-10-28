@@ -152,6 +152,7 @@ public class FTrocaRefprod extends FDetalhe implements InsertListener, PostListe
 	}
 
 	public void setConexao( DbConnection cn ) {
+
 		super.setConexao( cn );
 		lcProd.setConexao( cn );
 		daotrocarefprod = new DAOTrocaRefprod( cn, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQTROCAREFPROD" ) );
@@ -162,6 +163,7 @@ public class FTrocaRefprod extends FDetalhe implements InsertListener, PostListe
 	}
 
 	public void afterInsert( InsertEvent ievt ) {
+
 		try {
 			if ( ievt.getListaCampos() == lcCampos ) {
 				txtId.setVlrInteger( lcCampos.gerarSeqId() );
@@ -183,6 +185,7 @@ public class FTrocaRefprod extends FDetalhe implements InsertListener, PostListe
 	}
 
 	public void beforePost( PostEvent pevt ) {
+
 		super.beforePost( pevt );
 		if ( pevt.getListaCampos() == lcDet ) {
 			try {
@@ -204,6 +207,7 @@ public class FTrocaRefprod extends FDetalhe implements InsertListener, PostListe
 	}
 
 	public void afterCarrega( CarregaEvent cevt ) {
+
 		if ( cevt.getListaCampos() == lcCampos ) {
 			if ( !txtId_troca.getVlrString().equals( txtId.getVlrString() ) ) {
 				txtId_troca.setVlrInteger( txtId.getVlrInteger() );
@@ -213,6 +217,7 @@ public class FTrocaRefprod extends FDetalhe implements InsertListener, PostListe
 	}
 
 	public void actionPerformed( ActionEvent evt ) {
+
 		super.actionPerformed( evt );
 		if ( evt.getSource() == btExecutar ) {
 			execute();
@@ -220,6 +225,7 @@ public class FTrocaRefprod extends FDetalhe implements InsertListener, PostListe
 	}
 
 	private void execute() {
+
 		if ( txtId.getVlrInteger().intValue() == 0 || txtId_it.getVlrInteger() == 0 ) {
 			Funcoes.mensagemInforma( this, "Selecione a(s) referência(s) para execução da(s) troca(s) !" );
 			return;
@@ -232,21 +238,26 @@ public class FTrocaRefprod extends FDetalhe implements InsertListener, PostListe
 					Funcoes.mensagemInforma( this, "Não foram encontradas tabelas para execução da troca !" );
 					return;
 				}
-				executeChange(tables, valuesChange);
+				executeChange( tables, valuesChange );
 			} catch ( Exception e ) {
 				Funcoes.mensagemErro( this, "Erro executando a troca !\n" + e.getMessage() );
 			}
 		}
 	}
 
-	private void executeChange(Vector<Table> tables, Vector<Change> valuesChange) throws Exception {
+	private void executeChange( Vector<Table> tables, Vector<Change> valuesChange ) throws Exception {
+
 		pbAndamento.setMinimum( 0 );
 		pbAndamento.setMaximum( tables.size() * valuesChange.size() );
-		int i=0;
-		for (Change value: valuesChange) { 
-			for (Table table:tables) {
+		int i = 0;
+		for ( Change value : valuesChange ) {
+			for ( Table table : tables ) {
 				table.setCodfilial( ListaCampos.getMasterFilial( table.getTable_name() ) );
-				daotrocarefprod.executeChange(value, table);
+				try {
+					daotrocarefprod.executeChange( value, table );
+				} catch ( Exception e ) {
+					e.printStackTrace();
+				}
 				i++;
 				pbAndamento.setValue( i );
 				pbAndamento.updateUI();
