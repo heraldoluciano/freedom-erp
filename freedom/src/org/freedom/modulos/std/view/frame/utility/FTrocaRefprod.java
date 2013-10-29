@@ -156,6 +156,8 @@ public class FTrocaRefprod extends FDetalhe implements InsertListener, PostListe
 		lcDet.addPostListener( this );
 		btExecutar.addActionListener( this );
 		setImprimir( true );
+		btImp.addActionListener( this );
+		btPrevimp.addActionListener( this );
 
 	}
 
@@ -229,6 +231,10 @@ public class FTrocaRefprod extends FDetalhe implements InsertListener, PostListe
 		super.actionPerformed( evt );
 		if ( evt.getSource() == btExecutar ) {
 			execute();
+		} else if (evt.getSource() == btImp ) {
+			imprimir( TYPE_PRINT.PRINT );
+		} else if (evt.getSource() == btPrevimp ) {
+			imprimir( TYPE_PRINT.VIEW );
 		}
 	}
 
