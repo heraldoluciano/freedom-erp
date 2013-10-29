@@ -271,10 +271,23 @@ public class DAOTrocaRefprod extends AbstractDAO {
 		return result;
 	}
 
-	private void updateSitucaoItem( int id, SIT_LOG_TROCARP situacao ) throws SQLException {
+	public void updateSitucao( boolean item, int id, SIT_LOG_TROCARP situacao ) throws SQLException {
 
 		StringBuilder sql = new StringBuilder();
-		sql.append( "update eqittrocarefprod set situacao=? where id_it=? " );
+		sql.append( "update " );
+		if ( item ) {
+			sql.append( "eqittrocarefprod" );
+		}
+		else {
+			sql.append( "eqtrocarefprod" );
+		}
+		sql.append( " set situacao=? where " );
+		if ( item ) {
+			sql.append( "id_it=?" );
+		}
+		else {
+			sql.append( "id=?" );
+		}
 		PreparedStatement ps = getConn().prepareStatement( sql.toString() );
 		int param = 1;
 		ps.setString( param++, situacao.toString() );
@@ -288,8 +301,9 @@ public class DAOTrocaRefprod extends AbstractDAO {
 		StringBuilder sql = getSqlInsertLog();
 		StringBuilder mensagem = getMensagemLog( value, table, situacao, e );
 		try {
+			int id_log = gerarSeqId( "EQITTROCARPLOG", true );
 			PreparedStatement ps = getConn().prepareStatement( sql.toString() );
-			setParamInsertLog( ps, value, table, situacao, mensagem.toString() );
+			setParamInsertLog( ps, id_log, value, table, situacao, mensagem.toString() );
 			ps.executeUpdate();
 			getConn().commit();
 		} catch ( SQLException err ) {
@@ -297,16 +311,15 @@ public class DAOTrocaRefprod extends AbstractDAO {
 			getConn().rollback();
 			throw err;
 		} finally {
-			updateSitucaoItem( value.id_it, situacao );
+			updateSitucao( true, value.id_it, situacao );
 		}
 
 	}
 
-	private void setParamInsertLog( PreparedStatement ps, Change value, Table table, SIT_LOG_TROCARP situacao, String mensagem ) throws SQLException {
+	private void setParamInsertLog( PreparedStatement ps, Integer id_log, Change value, Table table, SIT_LOG_TROCARP situacao, String mensagem ) throws SQLException {
 
 		int param = 1;
-		int id = gerarSeqId( table.table_name, false );
-		ps.setInt( param++, id );
+		ps.setInt( param++, id_log );
 		ps.setInt( param++, value.getId_it() );
 		ps.setString( param++, situacao.toString() );
 		ps.setString( param++, table.getTable_name() );
@@ -327,12 +340,12 @@ public class DAOTrocaRefprod extends AbstractDAO {
 
 		ResultSet result = null;
 		StringBuilder sql = new StringBuilder();
-		sql.append("select trp.id, trp.motivo, trp.situacao sittroca, trp.dttroca ");
-		sql.append(", itrp.dtexec, itrp.id_it, itrp.situacao, itrpl.tabela, itrpl.situacao sitlog ");
-		sql.append(", itrpl.id idlog, itrpl.mensagem ");
-		sql.append("from eqtrocarefprod trp, eqittrocarefprod itrp, eqittrocarplog itrpl ");
-		sql.append("where trp.id=? ");
-		sql.append("and itrp.id=trp.id and itrpl.id_it_troca=itrp.id_it ");
+		sql.append( "select trp.id, trp.motivo, trp.situacao sittroca, trp.dttroca " );
+		sql.append( ", itrp.dtexec, itrp.id_it, itrp.situacao, itrpl.tabela, itrpl.situacao sitlog " );
+		sql.append( ", itrpl.id idlog, itrpl.mensagem " );
+		sql.append( "from eqtrocarefprod trp, eqittrocarefprod itrp, eqittrocarplog itrpl " );
+		sql.append( "where trp.id=? " );
+		sql.append( "and itrp.id=trp.id and itrpl.id_it_troca=itrp.id_it " );
 
 		PreparedStatement ps = getConn().prepareStatement( sql.toString() );
 		int param = 1;

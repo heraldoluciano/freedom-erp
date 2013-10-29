@@ -45,17 +45,20 @@ import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.component.Historico;
 import org.freedom.library.swing.component.JButtonPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
+import org.freedom.library.swing.frame.FListHistorico;
 import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
 import org.freedom.modulos.std.dao.DAOTrocaRefprod;
 import org.freedom.modulos.std.dao.DAOTrocaRefprod.Change;
+import org.freedom.modulos.std.dao.DAOTrocaRefprod.SIT_LOG_TROCARP;
 import org.freedom.modulos.std.dao.DAOTrocaRefprod.Table;
 
 public class FTrocaRefprod extends FDetalhe implements InsertListener, PostListener, CarregaListener {
@@ -170,6 +173,13 @@ public class FTrocaRefprod extends FDetalhe implements InsertListener, PostListe
 
 	public void beforeInsert( InsertEvent ievt ) {
 
+		if ( ievt.getListaCampos() == lcDet ) {
+			if ( !"PE".equals( txtSituacao.getVlrString() ) ) {
+				ievt.cancela();
+				Funcoes.mensagemInforma( this, "Este processo de troca já foi concluído.\nNão é possível inserir novo item !" );
+				return;
+			}
+		}
 	}
 
 	public void afterInsert( InsertEvent ievt ) {
@@ -180,8 +190,10 @@ public class FTrocaRefprod extends FDetalhe implements InsertListener, PostListe
 				txtDtTroca.setVlrDate( new Date() );
 			}
 			else if ( ievt.getListaCampos() == lcDet ) {
-				txtId_troca.setVlrInteger( txtId.getVlrInteger() );
-				txtId_it.setVlrInteger( lcDet.gerarSeqId() );
+				if ( "PE".equals( txtSituacao.getVlrString() ) ) {
+					txtId_troca.setVlrInteger( txtId.getVlrInteger() );
+					txtId_it.setVlrInteger( lcDet.gerarSeqId() );
+				}
 			}
 		} catch ( SQLException e ) {
 			try {
@@ -231,9 +243,11 @@ public class FTrocaRefprod extends FDetalhe implements InsertListener, PostListe
 		super.actionPerformed( evt );
 		if ( evt.getSource() == btExecutar ) {
 			execute();
-		} else if (evt.getSource() == btImp ) {
+		}
+		else if ( evt.getSource() == btImp ) {
 			imprimir( TYPE_PRINT.PRINT );
-		} else if (evt.getSource() == btPrevimp ) {
+		}
+		else if ( evt.getSource() == btPrevimp ) {
 			imprimir( TYPE_PRINT.VIEW );
 		}
 	}
@@ -284,23 +298,36 @@ public class FTrocaRefprod extends FDetalhe implements InsertListener, PostListe
 		}
 		if ( Funcoes.mensagemConfirma( this, "Confirma execução da troca !" ) == JOptionPane.YES_NO_OPTION ) {
 			try {
-				Vector<Table> tables = daotrocarefprod.selectTableChange();
-				Vector<Change> valuesChange = daotrocarefprod.selectValuesChange( txtId.getVlrInteger() );
+				final Vector<Table> tables = daotrocarefprod.selectTableChange();
+				final Vector<Change> valuesChange = daotrocarefprod.selectValuesChange( txtId.getVlrInteger() );
 				if ( tables.size() == 0 ) {
 					Funcoes.mensagemInforma( this, "Não foram encontradas tabelas para execução da troca !" );
 					return;
 				}
-				executeChange( tables, valuesChange );
+				Thread th = new Thread( new Runnable() {
+
+					public void run() {
+
+						try {
+							executeChange( txtId.getVlrInteger(), tables, valuesChange );
+						} catch ( Exception e ) {
+							e.printStackTrace();
+						}
+					}
+				} );
+				th.start();
 			} catch ( Exception e ) {
 				Funcoes.mensagemErro( this, "Erro executando a troca !\n" + e.getMessage() );
 			}
 		}
 	}
 
-	private void executeChange( Vector<Table> tables, Vector<Change> valuesChange ) throws Exception {
+	private void executeChange( Integer id, Vector<Table> tables, Vector<Change> valuesChange ) throws Exception {
 
+		Vector<Historico> listErr = new Vector<Historico>();
 		pbAndamento.setMinimum( 0 );
 		pbAndamento.setMaximum( tables.size() * valuesChange.size() );
+		SIT_LOG_TROCARP situacao = SIT_LOG_TROCARP.OK;
 		int i = 0;
 		for ( Change value : valuesChange ) {
 			for ( Table table : tables ) {
@@ -309,11 +336,36 @@ public class FTrocaRefprod extends FDetalhe implements InsertListener, PostListe
 					daotrocarefprod.executeChange( value, table );
 				} catch ( Exception e ) {
 					e.printStackTrace();
+					StringBuilder mensagem = new StringBuilder();
+					mensagem.append( "Erro executando troca de referência\n" );
+					mensagem.append( "Cód.prod.: " );
+					mensagem.append( value.getCodprod() );
+					mensagem.append( " - Ref. antiga: " );
+					mensagem.append( value.getRefprodold() );
+					mensagem.append( " - Ref. nova: " );
+					mensagem.append( value.getRefprodnew() );
+					mensagem.append( "\n" );
+					mensagem.append( e.getMessage() );
+					Historico historico = new Historico();
+					historico.setDataOperacao( new Date() );
+					historico.setTipoOperacao( "ERRO" );
+					historico.setHistorico( mensagem.toString() );
+					historico.setId( value.getId_it() );
 				}
 				i++;
 				pbAndamento.setValue( i );
 				pbAndamento.updateUI();
 			}
 		}
+		if ( listErr.size() > 0 ) {
+			situacao = SIT_LOG_TROCARP.ER;
+			FListHistorico hist = new FListHistorico( listErr );
+			hist.setVisible( true );
+		}
+		else {
+			Funcoes.mensagemInforma( this, "Troca de referências executada com sucesso !" );
+		}
+		daotrocarefprod.updateSitucao( false, id, situacao );
+		lcCampos.carregaDados();
 	}
 }
