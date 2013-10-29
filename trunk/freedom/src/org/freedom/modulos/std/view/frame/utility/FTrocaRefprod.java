@@ -353,11 +353,13 @@ public class FTrocaRefprod extends FDetalhe implements InsertListener, PostListe
 					historico.setHistorico( mensagem.toString() );
 					historico.setId( value.getId_it() );
 					listErr.addElement( historico );
+					break;
 				}
 				i++;
 				pbAndamento.setValue( i );
 				pbAndamento.updateUI();
 			}
+			
 		}
 		if ( listErr.size() > 0 ) {
 			situacao = SIT_LOG_TROCARP.ER;
