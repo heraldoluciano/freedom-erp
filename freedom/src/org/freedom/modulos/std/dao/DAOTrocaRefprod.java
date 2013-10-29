@@ -342,6 +342,7 @@ public class DAOTrocaRefprod extends AbstractDAO {
 		StringBuilder sql = new StringBuilder();
 		sql.append( "select trp.id, trp.motivo, trp.situacao sittroca, trp.dttroca " );
 		sql.append( ", itrp.dtexec, itrp.id_it, itrp.situacao, itrpl.tabela, itrpl.situacao sitlog " );
+		sql.append( ", itrp.refprodold, itrp.refprodnew" );
 		sql.append( ", itrpl.id idlog, itrpl.mensagem, itrpl.dtins, itrpl.hins, itrpl.tabela " );
 		sql.append( "from eqtrocarefprod trp, eqittrocarefprod itrp, eqittrocarplog itrpl " );
 		sql.append( "where trp.id=? " );
