@@ -37,28 +37,28 @@ import org.freedom.library.swing.component.JTablePad;
 import org.freedom.library.swing.component.JTextAreaPad;
 import org.freedom.library.swing.frame.FFilho;
 
-
 public class FListHistorico extends FFilho implements MouseListener {
 
 	private static final long serialVersionUID = 1L;
 
-	private JPanelPad panelListMensagens = new JPanelPad( new BorderLayout() );
-	
-	private JPanelPad panelListHistorico = new JPanelPad( new BorderLayout() );
-	
-	private JPanelPad panelHistorico = new JPanelPad( new BorderLayout() );
-	
-	private JPanelPad panelMensagens = new JPanelPad( new BorderLayout() );
+	private JPanelPad panelListMensagens = new JPanelPad(new BorderLayout());
 
-	private JLabelPad grupo = new JLabelPad( "    Inconsistências da nota fiscal" );
+	private JPanelPad panelListHistorico = new JPanelPad(new BorderLayout());
+
+	private JPanelPad panelHistorico = new JPanelPad(new BorderLayout());
+
+	private JPanelPad panelMensagens = new JPanelPad(new BorderLayout());
+
+	private JLabelPad grupo = new JLabelPad(
+			" -- Inconsistências -- ");
 
 	private JTablePad tabHistorico = new JTablePad();
-	
+
 	private JTablePad tabMensagens = new JTablePad();
 
-	private JPanelPad panelgrids = new JPanelPad( new GridLayout( 3, 1 ) );
-	
-	private JPanelPad panelTextos = new JPanelPad( new GridLayout( 2, 1 ) );
+	private JPanelPad panelgrids = new JPanelPad(new GridLayout(3, 1));
+
+	private JPanelPad panelTextos = new JPanelPad(new GridLayout(2, 1));
 
 	private JTextAreaPad descricao = new JTextAreaPad();
 
@@ -71,69 +71,73 @@ public class FListHistorico extends FFilho implements MouseListener {
 	private enum enum_grid_mensagens {
 		CODIGO, MENSAGEM, ACAO
 	}
-	
+
 	private Vector<Historico> list;
 
 	public FListHistorico(Vector<Historico> list) {
 		super(true);
 		this.list = list;
-		setTitulo( "", this.getClass().getName() );  
-		setSize( 700, 500 );
+		setTitulo("", this.getClass().getName());
+		setSize(700, 500);
 
-		c.setLayout( new BorderLayout() );
+		c.setLayout(new BorderLayout());
 
-		c.add( panelgrids, BorderLayout.CENTER);
-		c.add( adicBotaoSair(), BorderLayout.SOUTH );
-		
+		c.add(panelgrids, BorderLayout.CENTER);
+		c.add(adicBotaoSair(), BorderLayout.SOUTH);
+
 		panelgrids.add(panelHistorico);
 		panelgrids.add(panelMensagens);
 		panelgrids.add(panelTextos);
-		
-		panelHistorico.add( panelListHistorico, BorderLayout.CENTER );
-		
-		panelMensagens.add( panelListMensagens, BorderLayout.CENTER );
 
-		grupo.setPreferredSize( new Dimension( 300, 30 ) );
-		grupo.setForeground( Color.BLUE );
-		panelListMensagens.add( grupo, BorderLayout.NORTH );
+		panelHistorico.add(panelListHistorico, BorderLayout.CENTER);
 
-		tabHistorico.adicColuna( "Data" );
-		tabHistorico.adicColuna( "Tipo" );
-		tabHistorico.adicColuna( "Historico" );
-		tabHistorico.adicColuna( "ID" );
+		panelMensagens.add(panelListMensagens, BorderLayout.CENTER);
 
-		tabHistorico.setTamColuna( 70, enum_grid_historico.DATA.ordinal() );
-		tabHistorico.setTamColuna( 70, enum_grid_historico.TIPO.ordinal() );
-		tabHistorico.setTamColuna( 530, enum_grid_historico.HISTORICO.ordinal() );
-		tabHistorico.setColunaInvisivel( enum_grid_historico.HISTORICO_ID.ordinal() );
-		
-		tabMensagens.adicColuna( "Código" );
-		tabMensagens.adicColuna( "inconsistência / mensagem" );
-		tabMensagens.adicColuna( "Acao" );
+		grupo.setPreferredSize(new Dimension(300, 30));
+		grupo.setForeground(Color.BLUE);
+		panelListMensagens.add(grupo, BorderLayout.NORTH);
 
-		tabMensagens.setTamColuna( 50, enum_grid_mensagens.CODIGO.ordinal() );
-		tabMensagens.setTamColuna( 620, enum_grid_mensagens.MENSAGEM.ordinal() );
+		tabHistorico.adicColuna("Data");
+		tabHistorico.adicColuna("Tipo");
+		tabHistorico.adicColuna("Historico");
+		tabHistorico.adicColuna("ID");
+
+		tabHistorico.setTamColuna(70, enum_grid_historico.DATA.ordinal());
+		tabHistorico.setTamColuna(70, enum_grid_historico.TIPO.ordinal());
+		tabHistorico.setTamColuna(530, enum_grid_historico.HISTORICO.ordinal());
+		tabHistorico.setColunaInvisivel(enum_grid_historico.HISTORICO_ID
+				.ordinal());
+
+		tabMensagens.adicColuna("Código");
+		tabMensagens.adicColuna("inconsistência / mensagem");
+		tabMensagens.adicColuna("Acao");
+
+		tabMensagens.setTamColuna(50, enum_grid_mensagens.CODIGO.ordinal());
+		tabMensagens.setTamColuna(620, enum_grid_mensagens.MENSAGEM.ordinal());
 		tabMensagens.setColunaInvisivel(enum_grid_mensagens.ACAO.ordinal());
 
-		panelListMensagens.add( new JScrollPane( tabMensagens ), BorderLayout.CENTER );
-		
-		panelListHistorico.add( new JScrollPane( tabHistorico ), BorderLayout.CENTER );
-		
+		panelListMensagens.add(new JScrollPane(tabMensagens),
+				BorderLayout.CENTER);
 
-		descricao.setAtivo( false );
-		descricao.setBorder( BorderFactory.createTitledBorder( "Descrição : " ) );
-		panelTextos.add( descricao );
+		panelListHistorico.add(new JScrollPane(tabHistorico),
+				BorderLayout.CENTER);
 
-		acaoCorretiva.setAtivo( false );
-		acaoCorretiva.setBorder( BorderFactory.createTitledBorder( "Ação corretiva / Observações : " ) );
-		panelTextos.add( acaoCorretiva );
+		descricao.setAtivo(false);
+		descricao.setBorder(BorderFactory.createTitledBorder("Descrição : "));
+		panelTextos.add(descricao);
 
-		panelTextos.setPreferredSize( new Dimension( 700, 200 ) );
+		acaoCorretiva.setAtivo(false);
+		acaoCorretiva.setBorder(BorderFactory
+				.createTitledBorder("Ação corretiva / Observações : "));
+		panelTextos.add(acaoCorretiva);
 
-		tabMensagens.addMouseListener( this );
-		tabHistorico.addMouseListener( this );
-		
-//		ns = ( (AplicationSPED)Aplicativo.getInstace() ).getNota_eletronica();
+		panelTextos.setPreferredSize(new Dimension(700, 200));
+
+		tabMensagens.addMouseListener(this);
+		tabHistorico.addMouseListener(this);
+
+		// ns = ( (AplicationSPED)Aplicativo.getInstace()
+		// ).getNota_eletronica();
 
 		listHistorico();
 	}
@@ -142,78 +146,89 @@ public class FListHistorico extends FFilho implements MouseListener {
 
 		int lin = 0;
 		tabHistorico.limpa();
-		
-		for(Historico h : list) {
-			
+
+		for (Historico h : list) {
+
 			tabHistorico.adicLinha();
-			
-			tabHistorico.setValor(h.getDataOperacao(), lin, enum_grid_historico.DATA.ordinal());
-			tabHistorico.setValor(h.getTipoOperacao(), lin, enum_grid_historico.TIPO.ordinal());
-			tabHistorico.setValor(h.getHistorico(), lin, enum_grid_historico.HISTORICO.ordinal());
-			tabHistorico.setValor(h.getId(), lin, enum_grid_historico.HISTORICO_ID.ordinal());
-			
+
+			tabHistorico.setValor(h.getDataOperacao(), lin,
+					enum_grid_historico.DATA.ordinal());
+			tabHistorico.setValor(h.getTipoOperacao(), lin,
+					enum_grid_historico.TIPO.ordinal());
+			tabHistorico.setValor(h.getHistorico(), lin,
+					enum_grid_historico.HISTORICO.ordinal());
+			tabHistorico.setValor(h.getId(), lin,
+					enum_grid_historico.HISTORICO_ID.ordinal());
+
 			lin++;
-			
+
 		}
-		
-		
+
 	}
 
 	private void selecao() {
 
-		descricao.setVlrString( (String) tabMensagens.getValor(tabMensagens.getSelectedRow(), enum_grid_mensagens.MENSAGEM.ordinal()) );
-		acaoCorretiva.setVlrString(  (String) tabMensagens.getValor(tabMensagens.getSelectedRow(), enum_grid_mensagens.ACAO.ordinal())  );
+		descricao.setVlrString((String) tabMensagens.getValor(
+				tabMensagens.getSelectedRow(),
+				enum_grid_mensagens.MENSAGEM.ordinal()));
+		acaoCorretiva.setVlrString((String) tabMensagens.getValor(
+				tabMensagens.getSelectedRow(),
+				enum_grid_mensagens.ACAO.ordinal()));
 	}
-	
+
 	private void selecaoHistorico() {
 
-		int lin = 0; 
-		
+		int lin = 0;
+
 		tabMensagens.limpa();
-		
-/*		for(LoteMensagem m : ns.getDaoHistorico().listaMensagens((Integer)tabHistorico.getValor(tabHistorico.getLinhaSel(), enum_grid_historico.HISTORICO_ID.ordinal()))) {
-			
-			tabMensagens.adicLinha();
-			
-			tabMensagens.setValor(m.getCodigo(), lin, enum_grid_mensagens.CODIGO.ordinal());
-			tabMensagens.setValor(m.getMensagem(), lin, enum_grid_mensagens.MENSAGEM.ordinal());
-			tabMensagens.setValor(m.getCorrecao(), lin, enum_grid_mensagens.ACAO.ordinal());
-			
-			lin++;
-			
-		}
-	*/	
-		
+
+		int lin_sel = tabHistorico.getLinhaSel();
+		// int id = (Integer) tabHistorico.getValor(lin_sel,
+		// enum_grid_historico.HISTORICO_ID.ordinal());
+		String codigo = "";
+		String historico = (String) tabHistorico.getValor(lin_sel,
+				enum_grid_historico.HISTORICO.ordinal());
+		String acao = "";
+
+		tabMensagens.adicLinha();
+
+		tabMensagens
+				.setValor(codigo, lin, enum_grid_mensagens.CODIGO.ordinal());
+		tabMensagens.setValor(historico, lin,
+				enum_grid_mensagens.MENSAGEM.ordinal());
+		tabMensagens.setValor(acao, lin, enum_grid_mensagens.ACAO.ordinal());
 	}
-	
 
-	public void mouseClicked( MouseEvent e ) {
+	public void mouseClicked(MouseEvent e) {
 
-		if ( tabMensagens.equals( e.getSource() ) && tabMensagens.getLinhaSel() >= 0 ) {
+		if (tabMensagens.equals(e.getSource())
+				&& tabMensagens.getLinhaSel() >= 0) {
 			selecao();
 		}
-		
-		if ( tabHistorico.equals( e.getSource() ) && tabHistorico.getLinhaSel() >= 0 ) {
+
+		if (tabHistorico.equals(e.getSource())
+				&& tabHistorico.getLinhaSel() >= 0) {
 			selecaoHistorico();
 		}
 	}
 
-	public void mouseEntered( MouseEvent e ) {
+	public void mouseEntered(MouseEvent e) {
 
-		if ( tabMensagens.equals( e.getSource() ) && tabMensagens.getLinhaSel() >= 0 ) {
+		if (tabMensagens.equals(e.getSource())
+				&& tabMensagens.getLinhaSel() >= 0) {
 			selecao();
 		}
 	}
 
-	public void mouseExited( MouseEvent e ) {
+	public void mouseExited(MouseEvent e) {
 
 	}
 
-	public void mousePressed( MouseEvent e ) {
+	public void mousePressed(MouseEvent e) {
 
 	}
 
-	public void mouseReleased( MouseEvent e ) {
+	public void mouseReleased(MouseEvent e) {
 
 	}
 }

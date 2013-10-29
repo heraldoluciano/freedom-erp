@@ -334,6 +334,7 @@ public class FTrocaRefprod extends FDetalhe implements InsertListener, PostListe
 				table.setCodfilial( ListaCampos.getMasterFilial( table.getTable_name() ) );
 				try {
 					daotrocarefprod.executeChange( value, table );
+					//throw new Exception( "Erro forçado para testes!" );
 				} catch ( Exception e ) {
 					e.printStackTrace();
 					StringBuilder mensagem = new StringBuilder();
@@ -351,6 +352,7 @@ public class FTrocaRefprod extends FDetalhe implements InsertListener, PostListe
 					historico.setTipoOperacao( "ERRO" );
 					historico.setHistorico( mensagem.toString() );
 					historico.setId( value.getId_it() );
+					listErr.addElement( historico );
 				}
 				i++;
 				pbAndamento.setValue( i );
@@ -360,7 +362,9 @@ public class FTrocaRefprod extends FDetalhe implements InsertListener, PostListe
 		if ( listErr.size() > 0 ) {
 			situacao = SIT_LOG_TROCARP.ER;
 			FListHistorico hist = new FListHistorico( listErr );
-			hist.setVisible( true );
+			String titulo = "Inconsistências - troca de referências dos produtos";
+			fPrim.temTela( titulo );
+			fPrim.criatela( titulo, hist, con );
 		}
 		else {
 			Funcoes.mensagemInforma( this, "Troca de referências executada com sucesso !" );
