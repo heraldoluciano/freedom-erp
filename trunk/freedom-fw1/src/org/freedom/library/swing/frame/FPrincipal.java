@@ -63,7 +63,6 @@ import org.freedom.bmps.Icone;
 import org.freedom.bmps.Imagem;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
-import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JButtonPad;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JMenuPad;
@@ -75,8 +74,6 @@ import org.freedom.library.swing.dialog.FDialogo;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.util.SwingParams;
 import org.freedom.modulos.crm.agenda.FAgenda;
-import org.freedom.modulos.crm.dao.DAOAgenda;
-import org.omg.CosNaming.IstringHelper;
 
 public abstract class FPrincipal extends JFrame implements ActionListener, MouseListener, WindowListener {
 
@@ -148,6 +145,8 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 	private JScrollPane spnAgd = new JScrollPane(tabAgd);
 
 	private JSplitPane splitPane = null;
+	
+	private Thread threadAgenda = null;
 
 	String imgLogoSis = "lgFreedom3.jpg";
 
@@ -318,8 +317,8 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 
 	public void criaThreadAtualiza() {
 		Runnable runnable = new ThreadAtualizaAgenda(); 
-		Thread thread = new Thread(runnable);
-		thread.start();
+		threadAgenda = new Thread(runnable);
+		threadAgenda.start();
 	}
 
 	public static boolean getAtualizaAgenda() {
@@ -855,6 +854,14 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 
 
 
+	}
+
+	public Thread getThreadAgenda() {
+		return threadAgenda;
+	}
+
+	public void setThreadAgenda(Thread threadAgenda) {
+		this.threadAgenda = threadAgenda;
 	}
 
 	@Override
