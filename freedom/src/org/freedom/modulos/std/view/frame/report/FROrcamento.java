@@ -199,6 +199,7 @@ public class FROrcamento extends FRelatorio {
 				sql.append( "and o.statusorc in (" + status.toString() + ")" );
 			}
 			if ( "S".equals( cbCliSemVenda.getVlrString() )) {
+				filtros.append(", somente clientes sem vendas no período");
 				sql.append( " and not exists (select * from vdvenda v, vditvenda iv ");
 				sql.append( " where v.codemp=iv.codemp and v.codfilial=iv.codfilial and v.tipovenda=iv.tipovenda ");
 				sql.append( " and v.codvenda=iv.codvenda and v.codempcl=o.codempcl and v.codfilialcl=o.codfilialcl ");
