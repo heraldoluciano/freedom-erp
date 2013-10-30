@@ -240,7 +240,7 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 				int tempo = getTempoAtuAgenda()*1000;
 				System.out.println(tempo);
 				while(true) {
-					//System.out.println(con.isTransaction());
+					System.out.println(con.isTransaction());
 					if(!con.isTransaction()) {
 						carregaAgenda();
 					}

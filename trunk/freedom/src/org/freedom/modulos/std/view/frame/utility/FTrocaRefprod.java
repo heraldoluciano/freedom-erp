@@ -327,10 +327,12 @@ public class FTrocaRefprod extends FDetalhe implements InsertListener, PostListe
 		Integer codfilialpf = ListaCampos.getMasterFilial( "SGPREFERE1" );
 		boolean atualizaagenda = daotrocarefprod.getAtualizaAgenda( codfilialpf );
 		try {
-			if ( atualizaagenda ) {
-				if ( fPrim != null && fPrim.getThreadAgenda() != null ) {
-					fPrim.getThreadAgenda().wait();
-				}
+			if ( atualizaagenda && fPrim != null && fPrim.getThreadAgenda() != null ) {
+		        try {
+		        	fPrim.getThreadAgenda().interrupt();
+		         } catch (Exception e) {
+		            e.printStackTrace();
+		         }
 			}
 
 			Vector<Historico> listErr = new Vector<Historico>();
@@ -383,9 +385,11 @@ public class FTrocaRefprod extends FDetalhe implements InsertListener, PostListe
 			daotrocarefprod.updateSitucao( false, id, situacao );
 			lcCampos.carregaDados();
 		} finally {
-			if ( atualizaagenda ) {
-				if ( fPrim != null && fPrim.getThreadAgenda() != null ) {
-					fPrim.getThreadAgenda().start();
+			if ( atualizaagenda && fPrim != null ) {
+				try {
+					fPrim.criaThreadAtualiza();
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
 			}
 		}
