@@ -67,10 +67,10 @@ public class FROrcamento extends FRelatorio {
 	private JCheckBoxPad cbProduzido = new JCheckBoxPad( "Produzido", "S", "N" );
 
 	private JCheckBoxPad cbCancelado = new JCheckBoxPad( "Cancelado", "S", "N" );
-	
+
 	private JCheckBoxPad cbAgruparVendedor = new JCheckBoxPad( "Agrupar por Vendedor", "S", "N" );
-	
-	private JCheckBoxPad cbCliSemVenda = new JCheckBoxPad( "Somente clientes sem venda no perídodo", "S", "N");
+
+	private JCheckBoxPad cbCliSemVenda = new JCheckBoxPad( "Somente clientes sem venda no perídodo", "S", "N" );
 
 	public FROrcamento() {
 
@@ -107,9 +107,9 @@ public class FROrcamento extends FRelatorio {
 
 		adic( cbCancelado, 25, 141, 110, 20 );
 		adic( cbAgruparVendedor, 140, 141, 160, 20 );
-		
-		adic( cbCliSemVenda, 25, 159, 280, 20);
-		
+
+		adic( cbCliSemVenda, 25, 159, 280, 20 );
+
 		Calendar cPeriodo = Calendar.getInstance();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
 		cPeriodo.set( Calendar.DAY_OF_MONTH, cPeriodo.get( Calendar.DAY_OF_MONTH ) - 30 );
@@ -117,7 +117,7 @@ public class FROrcamento extends FRelatorio {
 	}
 
 	public void imprimir( TYPE_PRINT bVisualizar ) {
-		
+
 		String reportFileName = "layout/rel/REL_ORC_01.jasper";
 
 		StringBuilder sql = new StringBuilder();
@@ -173,18 +173,19 @@ public class FROrcamento extends FRelatorio {
 					status.append( "," );
 				}
 				status.append( "'OP'" );
+				filtros.append( ", produzidos" );
 			}
 			if ( "S".equals( cbCancelado.getVlrString() ) ) {
 				if ( status.length() > 0 ) {
 					status.append( "," );
 				}
 				status.append( "'CA'" );
+				filtros.append( ", cancelados" );
 			}
 			if ( "S".equals( cbAgruparVendedor.getVlrString() ) ) {
 				reportFileName = "layout/rel/REL_ORC_02.jasper";
 				orderBy = " order by o.codvend ";
 			}
-			
 
 			sql.append( "select o.codorc, o.dtorc, o.dtvencorc," );
 			sql.append( "o.codcli, cl.razcli, o.vlrliqorc, " );
@@ -198,12 +199,12 @@ public class FROrcamento extends FRelatorio {
 			if ( status.length() > 0 ) {
 				sql.append( "and o.statusorc in (" + status.toString() + ")" );
 			}
-			if ( "S".equals( cbCliSemVenda.getVlrString() )) {
-				filtros.append(", somente clientes sem vendas no período");
-				sql.append( " and not exists (select * from vdvenda v, vditvenda iv ");
-				sql.append( " where v.codemp=iv.codemp and v.codfilial=iv.codfilial and v.tipovenda=iv.tipovenda ");
-				sql.append( " and v.codvenda=iv.codvenda and v.codempcl=o.codempcl and v.codfilialcl=o.codfilialcl ");
-				sql.append( " and v.codcli=o.codcli and v.dtemitvenda between ? and ? ) ");
+			if ( "S".equals( cbCliSemVenda.getVlrString() ) ) {
+				filtros.append( ", somente clientes sem vendas no período" );
+				sql.append( " and not exists (select * from vdvenda v, vditvenda iv " );
+				sql.append( " where v.codemp=iv.codemp and v.codfilial=iv.codfilial and v.tipovenda=iv.tipovenda " );
+				sql.append( " and v.codvenda=iv.codvenda and v.codempcl=o.codempcl and v.codfilialcl=o.codfilialcl " );
+				sql.append( " and v.codcli=o.codcli and v.dtemitvenda between ? and ? ) " );
 			}
 			sql.append( orderBy );
 
@@ -213,7 +214,7 @@ public class FROrcamento extends FRelatorio {
 			ps.setInt( param++, ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
 			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
 			ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
-			if ( "S".equals( cbCliSemVenda.getVlrString() )) {
+			if ( "S".equals( cbCliSemVenda.getVlrString() ) ) {
 				ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
 				ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
 			}
@@ -224,7 +225,7 @@ public class FROrcamento extends FRelatorio {
 
 			FPrinterJob dlGr = new FPrinterJob( reportFileName, "Relatório de orçamentos", "", rs, hParam, this );
 
-			if ( bVisualizar==TYPE_PRINT.VIEW ) {
+			if ( bVisualizar == TYPE_PRINT.VIEW ) {
 				dlGr.setVisible( true );
 			}
 			else {

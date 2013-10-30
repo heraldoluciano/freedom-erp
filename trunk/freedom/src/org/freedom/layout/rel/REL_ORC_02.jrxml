@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="REL_ORC_02" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="2.1435888100000033"/>
-	<property name="ireport.x" value="133"/>
-	<property name="ireport.y" value="50"/>
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -68,7 +68,6 @@ o.statusorc in ('*','OA','OC','OL','OV')]]>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None">
 						<font fontName="SansSerif" size="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Courier" pdfEncoding="Cp1250" isPdfEmbedded="false"/>
-						<paragraph lineSpacing="Single"/>
 					</textElement>
 					<text><![CDATA[Vendedor]]></text>
 				</staticText>
@@ -82,7 +81,6 @@ o.statusorc in ('*','OA','OC','OL','OV')]]>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None">
 						<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
-						<paragraph lineSpacing="Single"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[String.valueOf($F{CODVEND}) + " - " + $F{NOMEVEND}]]></textFieldExpression>
 				</textField>
@@ -113,7 +111,6 @@ o.statusorc in ('*','OA','OC','OL','OV')]]>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None">
 						<font fontName="SansSerif" size="9" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Courier-Bold" pdfEncoding="Cp1250" isPdfEmbedded="false"/>
-						<paragraph lineSpacing="Single"/>
 					</textElement>
 					<text><![CDATA[Sub-Total:]]></text>
 				</staticText>
@@ -142,34 +139,6 @@ o.statusorc in ('*','OA','OC','OL','OV')]]>
 				<imageExpression class="java.awt.Image"><![CDATA[$P{LOGOEMP}]]></imageExpression>
 			</image>
 			<textField pattern="" isBlankWhenNull="false">
-				<reportElement key="Empresa" mode="Opaque" x="94" y="21" width="430" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
-					<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{RAZEMP}]]></textFieldExpression>
-			</textField>
-			<textField pattern="" isBlankWhenNull="false">
-				<reportElement key="Emissor" mode="Opaque" x="94" y="35" width="430" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
-					<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["Relatório emitido por: "+$P{USUARIO}]]></textFieldExpression>
-			</textField>
-			<textField pattern="" isBlankWhenNull="false">
 				<reportElement key="Data" mode="Transparent" x="440" y="3" width="92" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -179,7 +148,6 @@ o.statusorc in ('*','OA','OC','OL','OV')]]>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None">
 					<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Times-Roman" pdfEncoding="CP1252" isPdfEmbedded="false"/>
-					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
 			</textField>
@@ -193,37 +161,60 @@ o.statusorc in ('*','OA','OC','OL','OV')]]>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None">
 					<font fontName="SansSerif" size="9" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica-Bold" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
-					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{TITULO}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
-				<reportElement key="Emissor-1" mode="Opaque" x="152" y="48" width="373" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement key="Empresa" mode="Opaque" x="93" y="16" width="240" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 					<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
-					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{RAZEMP}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="false">
+				<reportElement key="Emissor" mode="Opaque" x="333" y="16" width="196" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+					<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Relatório emitido por: "+$P{USUARIO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="false">
+				<reportElement key="Emissor-1" mode="Opaque" x="157" y="35" width="376" height="24" forecolor="#000000" backcolor="#FFFFFF"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{FILTROS}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement key="staticText-17" positionType="Float" mode="Transparent" x="94" y="48" width="57" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement key="staticText-17" positionType="Float" mode="Transparent" x="93" y="35" width="57" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None">
-					<font fontName="SansSerif" size="9" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Courier" pdfEncoding="Cp1250" isPdfEmbedded="false"/>
-					<paragraph lineSpacing="Single"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+					<font fontName="SansSerif" size="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Courier" pdfEncoding="Cp1250" isPdfEmbedded="false"/>
 				</textElement>
-				<text><![CDATA[Orçamentos:]]></text>
+				<text><![CDATA[Filtros:]]></text>
 			</staticText>
 		</band>
 	</pageHeader>
@@ -239,7 +230,6 @@ o.statusorc in ('*','OA','OC','OL','OV')]]>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None">
 					<font fontName="SansSerif" size="9" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Courier" pdfEncoding="Cp1250" isPdfEmbedded="false"/>
-					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<text><![CDATA[Valor]]></text>
 			</staticText>
@@ -253,7 +243,6 @@ o.statusorc in ('*','OA','OC','OL','OV')]]>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None">
 					<font fontName="SansSerif" size="9" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Courier" pdfEncoding="Cp1250" isPdfEmbedded="false"/>
-					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<text><![CDATA[Código]]></text>
 			</staticText>
@@ -267,7 +256,6 @@ o.statusorc in ('*','OA','OC','OL','OV')]]>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None">
 					<font fontName="SansSerif" size="9" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Courier" pdfEncoding="Cp1250" isPdfEmbedded="false"/>
-					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<text><![CDATA[Data]]></text>
 			</staticText>
@@ -281,7 +269,6 @@ o.statusorc in ('*','OA','OC','OL','OV')]]>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None">
 					<font fontName="SansSerif" size="9" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Courier" pdfEncoding="Cp1250" isPdfEmbedded="false"/>
-					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<text><![CDATA[Cliente]]></text>
 			</staticText>
@@ -301,7 +288,6 @@ o.statusorc in ('*','OA','OC','OL','OV')]]>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None">
 					<font fontName="SansSerif" size="9" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Courier" pdfEncoding="Cp1250" isPdfEmbedded="false"/>
-					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<text><![CDATA[Data Valid.]]></text>
 			</staticText>
@@ -325,7 +311,6 @@ o.statusorc in ('*','OA','OC','OL','OV')]]>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None">
 					<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
-					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{CODORC}]]></textFieldExpression>
 			</textField>
@@ -339,7 +324,6 @@ o.statusorc in ('*','OA','OC','OL','OV')]]>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None">
 					<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
-					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRLIQORC}]]></textFieldExpression>
 			</textField>
@@ -353,7 +337,6 @@ o.statusorc in ('*','OA','OC','OL','OV')]]>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None">
 					<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
-					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression class="java.util.Date"><![CDATA[$F{DTORC}]]></textFieldExpression>
 			</textField>
@@ -367,7 +350,6 @@ o.statusorc in ('*','OA','OC','OL','OV')]]>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None">
 					<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
-					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{RAZCLI}]]></textFieldExpression>
 			</textField>
@@ -381,7 +363,6 @@ o.statusorc in ('*','OA','OC','OL','OV')]]>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None">
 					<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
-					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression class="java.util.Date"><![CDATA[$F{DTVENCORC}]]></textFieldExpression>
 			</textField>
@@ -402,7 +383,6 @@ o.statusorc in ('*','OA','OC','OL','OV')]]>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None">
 					<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="CP1252" isPdfEmbedded="false"/>
-					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
 			</textField>
@@ -416,7 +396,6 @@ o.statusorc in ('*','OA','OC','OL','OV')]]>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
 					<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="CP1252" isPdfEmbedded="false"/>
-					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["" + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
@@ -440,7 +419,6 @@ o.statusorc in ('*','OA','OC','OL','OV')]]>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None">
 					<font fontName="SansSerif" size="9" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica-Bold" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
-					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{VLRTOTAL}]]></textFieldExpression>
 			</textField>
@@ -454,7 +432,6 @@ o.statusorc in ('*','OA','OC','OL','OV')]]>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None">
 					<font fontName="SansSerif" size="9" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Courier-Bold" pdfEncoding="Cp1250" isPdfEmbedded="false"/>
-					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<text><![CDATA[Total:]]></text>
 			</staticText>
