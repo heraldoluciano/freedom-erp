@@ -205,15 +205,15 @@ public class DAOTrocaRefprod extends AbstractDAO {
 		ps.setInt( param++, value.getCodprod() );
 	}
 
-	private void changeActivityProd( boolean inactive, Change value ) throws SQLException {
+	private void changeActivityProd( boolean active, Change value ) throws SQLException {
 
 		StringBuilder sql = getSqlUpdateProduto();
 		PreparedStatement ps = getConn().prepareStatement( sql.toString() );
-		if ( inactive ) {
-			setParamUpdateProduto( QUERY_ORDER.First, ps, value );
+		if ( active ) {
+			setParamUpdateProduto( QUERY_ORDER.Second, ps, value );
 		}
 		else {
-			setParamUpdateProduto( QUERY_ORDER.Second, ps, value );
+			setParamUpdateProduto( QUERY_ORDER.First, ps, value );
 		}
 		ps.executeUpdate();
 		getConn().commit();
@@ -224,17 +224,21 @@ public class DAOTrocaRefprod extends AbstractDAO {
 		SIT_LOG_TROCARP situacao = SIT_LOG_TROCARP.OK;
 		Exception err = null;
 		try {
-			changeActivityProd( true, value );
+			// Desativa o produto 
+			changeActivityProd( false, value );
 			StringBuilder sql = getSqlChange( QUERY_ORDER.First, value, table );
 			PreparedStatement ps = getConn().prepareStatement( sql.toString() );
 			setParamChange( ps, QUERY_ORDER.First, value, table );
 			ps.executeUpdate();
+			ps.close();
 			if ( table.getEmmanut() ) {
 				sql = getSqlChange( QUERY_ORDER.Second, value, table );
+				ps = getConn().prepareStatement( sql.toString() );
 				setParamChange( ps, QUERY_ORDER.Second, value, table );
 				ps.executeUpdate();
 			}
 			getConn().commit();
+			// Ativa o produto
 			changeActivityProd( true, value );
 		} catch ( SQLException e ) {
 			e.printStackTrace();
