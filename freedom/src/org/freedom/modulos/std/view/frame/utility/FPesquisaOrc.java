@@ -440,7 +440,7 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 		sql.append( "  CL.CODEMP=O.CODEMPCL AND CL.CODFILIAL=O.CODFILIALCL AND CL.CODCLI=O.CODCLI " );
 		sql.append( where );
 		if ( "S".equals( cbCliSemVenda.getVlrString() )) {
-			sql.append( " and exists (select * from vdvenda v, vditvenda iv ");
+			sql.append( " and not exists (select * from vdvenda v, vditvenda iv ");
 			sql.append( " where v.codemp=iv.codemp and v.codfilial=iv.codfilial and v.tipovenda=iv.tipovenda ");
 			sql.append( " and v.codvenda=iv.codvenda and v.codempcl=o.codempcl and v.codfilialcl=o.codfilialcl ");
 			sql.append( " and v.codcli=o.codcli and v.dtemitvenda between ? and ? ) ");
