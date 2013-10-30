@@ -69,12 +69,14 @@ public class FROrcamento extends FRelatorio {
 	private JCheckBoxPad cbCancelado = new JCheckBoxPad( "Cancelado", "S", "N" );
 	
 	private JCheckBoxPad cbAgruparVendedor = new JCheckBoxPad( "Agrupar por Vendedor", "S", "N" );
+	
+	private JCheckBoxPad cbCliSemVenda = new JCheckBoxPad( "Somente clientes sem venda no perídodo", "S", "N");
 
 	public FROrcamento() {
 
 		super( false );
 		setTitulo( "Relatório de Orçamentos" );
-		setAtribos( 80, 80, 330, 240 );
+		setAtribos( 80, 80, 330, 280 );
 
 		JLabelPad lbLinha = new JLabelPad();
 		lbLinha.setBorder( BorderFactory.createEtchedBorder() );
@@ -92,7 +94,7 @@ public class FROrcamento extends FRelatorio {
 		JLabel borda2 = new JLabel();
 		borda2.setBorder( BorderFactory.createEtchedBorder() );
 		adic( status, 15, 75, 50, 18 );
-		adic( borda2, 7, 85, 300, 80 );
+		adic( borda2, 7, 85, 300, 110 );
 
 		adic( cbAberto, 25, 90, 80, 20 );
 		adic( cbFaturadoParcial, 140, 90, 120, 20 );
@@ -105,6 +107,8 @@ public class FROrcamento extends FRelatorio {
 
 		adic( cbCancelado, 25, 141, 110, 20 );
 		adic( cbAgruparVendedor, 140, 141, 160, 20 );
+		
+		adic( cbCliSemVenda, 25, 159, 300, 20);
 		
 		Calendar cPeriodo = Calendar.getInstance();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
@@ -189,14 +193,24 @@ public class FROrcamento extends FRelatorio {
 			if ( status.length() > 0 ) {
 				sql.append( "and o.statusorc in (" + status.toString() + ")" );
 			}
+			if ( "S".equals( cbCliSemVenda.getVlrString() )) {
+				sql.append( " and not exists (select * from vdvenda v, vditvenda iv ");
+				sql.append( " where v.codemp=iv.codemp and v.codfilial=iv.codfilial and v.tipovenda=iv.tipovenda ");
+				sql.append( " and v.codvenda=iv.codvenda and v.codempcl=o.codempcl and v.codfilialcl=o.codfilialcl ");
+				sql.append( " and v.codcli=o.codcli and v.dtemitvenda between ? and ? ) ");
+			}
 			sql.append( orderBy );
 
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
-			ps.setDate( 3, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
-			ps.setDate( 4, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
-
+			int param = 1;
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+			if ( "S".equals( cbCliSemVenda.getVlrString() )) {
+				ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+				ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+			}
 			ResultSet rs = ps.executeQuery();
 
 			HashMap<String, Object> hParam = new HashMap<String, Object>();

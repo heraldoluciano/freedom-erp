@@ -115,6 +115,7 @@ public class FBordero extends FDetalhe implements CarregaListener, InsertListene
 		super( false );
 
 		nav.setNavigation( true );
+		nav.setAtivo( Navegador.BT_NOVO, false );
 
 		setTitulo( "Bordero" );
 		setAtribos( 50, 50, 575, 500 );
