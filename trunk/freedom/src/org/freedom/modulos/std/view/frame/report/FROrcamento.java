@@ -108,7 +108,7 @@ public class FROrcamento extends FRelatorio {
 		adic( cbCancelado, 25, 141, 110, 20 );
 		adic( cbAgruparVendedor, 140, 141, 160, 20 );
 		
-		adic( cbCliSemVenda, 25, 159, 300, 20);
+		adic( cbCliSemVenda, 25, 159, 280, 20);
 		
 		Calendar cPeriodo = Calendar.getInstance();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
@@ -124,11 +124,16 @@ public class FROrcamento extends FRelatorio {
 		StringBuilder status = new StringBuilder();
 		StringBuilder filtros = new StringBuilder();
 		String orderBy = "";
+		filtros.append( "Período de " );
+		filtros.append( txtDataini.getVlrString() );
+		filtros.append( " até " );
+		filtros.append( txtDatafim.getVlrString() );
 
 		try {
 
 			if ( "S".equals( cbAberto.getVlrString() ) ) {
 				status.append( "'*','OA'" );
+				filtros.append( "," );
 				filtros.append( " em aberto" );
 			}
 			if ( "S".equals( cbImpresso.getVlrString() ) ) {
