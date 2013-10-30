@@ -224,7 +224,7 @@ public class DAOTrocaRefprod extends AbstractDAO {
 		SIT_LOG_TROCARP situacao = SIT_LOG_TROCARP.OK;
 		Exception err = null;
 		try {
-			// Desativa o produto 
+			// Desativa o produto
 			changeActivityProd( false, value );
 			StringBuilder sql = getSqlChange( QUERY_ORDER.First, value, table );
 			PreparedStatement ps = getConn().prepareStatement( sql.toString() );
@@ -382,6 +382,56 @@ public class DAOTrocaRefprod extends AbstractDAO {
 			result.append( "order by r1.rdb$relation_name, r1.rdb$field_name" );
 		}
 		return result;
+	}
+
+	public boolean getAtualizaAgenda( Integer codfilial ) throws Exception {
+
+		boolean result = false;
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append( "select atualizaagenda from sgprefere1 where codemp=? and codfilial=?" );
+			PreparedStatement ps = getConn().prepareStatement( sql.toString() );
+			int param = 1;
+			ps.setInt( param++, getCodemp() );
+			ps.setInt( param++, codfilial );
+			ResultSet rs = ps.executeQuery();
+			if ( rs.next() ) {
+				result = "S".equals( rs.getString( "atualizaagenda" ) );
+			}
+			rs.close();
+			ps.close();
+			getConn().commit();
+
+		} catch ( SQLException e ) {
+			e.printStackTrace();
+			getConn().rollback();
+		}
+		return result;
+	}
+
+	public void changeAtualizaAgenda( Integer codfilial, boolean atualizaagenda ) throws Exception {
+
+		try {
+			StringBuilder sql = new StringBuilder();
+			String atualiza = "N";
+			if ( atualizaagenda ) {
+				atualiza = "S";
+			}
+			sql.append( "update sgprefere1 set atualizaagenda=? where codemp=? and codfilial=?" );
+			PreparedStatement ps = getConn().prepareStatement( sql.toString() );
+			int param = 1;
+			ps.setString( param++, atualiza );
+			ps.setInt( param++, getCodemp() );
+			ps.setInt( param++, codfilial );
+			ps.executeUpdate();
+			ps.close();
+			getConn().commit();
+
+		} catch ( SQLException e ) {
+			e.printStackTrace();
+			getConn().rollback();
+		}
+
 	}
 
 	public class Change {

@@ -324,54 +324,71 @@ public class FTrocaRefprod extends FDetalhe implements InsertListener, PostListe
 
 	private void executeChange( Integer id, Vector<Table> tables, Vector<Change> valuesChange ) throws Exception {
 
-		Vector<Historico> listErr = new Vector<Historico>();
-		pbAndamento.setMinimum( 0 );
-		pbAndamento.setMaximum( tables.size() * valuesChange.size() );
-		SIT_LOG_TROCARP situacao = SIT_LOG_TROCARP.OK;
-		int i = 0;
-		for ( Change value : valuesChange ) {
-			for ( Table table : tables ) {
-				table.setCodfilial( ListaCampos.getMasterFilial( table.getTable_name() ) );
-				try {
-					daotrocarefprod.executeChange( value, table );
-					//throw new Exception( "Erro forçado para testes!" );
-				} catch ( Exception e ) {
-					e.printStackTrace();
-					StringBuilder mensagem = new StringBuilder();
-					mensagem.append( "Erro executando troca de referência\n" );
-					mensagem.append( "Cód.prod.: " );
-					mensagem.append( value.getCodprod() );
-					mensagem.append( " - Ref. antiga: " );
-					mensagem.append( value.getRefprodold() );
-					mensagem.append( " - Ref. nova: " );
-					mensagem.append( value.getRefprodnew() );
-					mensagem.append( "\n" );
-					mensagem.append( e.getMessage() );
-					Historico historico = new Historico();
-					historico.setDataOperacao( new Date() );
-					historico.setTipoOperacao( "ERRO" );
-					historico.setHistorico( mensagem.toString() );
-					historico.setId( value.getId_it() );
-					listErr.addElement( historico );
-					break;
+		Integer codfilialpf = ListaCampos.getMasterFilial( "SGPREFERE1" );
+		boolean atualizaagenda = daotrocarefprod.getAtualizaAgenda( codfilialpf );
+		try {
+			if ( atualizaagenda ) {
+				if ( fPrim != null && fPrim.getThreadAgenda() != null ) {
+					fPrim.getThreadAgenda().wait();
 				}
-				i++;
-				pbAndamento.setValue( i );
-				pbAndamento.updateUI();
 			}
-			
+
+			Vector<Historico> listErr = new Vector<Historico>();
+			pbAndamento.setMinimum( 0 );
+			pbAndamento.setMaximum( tables.size() * valuesChange.size() );
+			SIT_LOG_TROCARP situacao = SIT_LOG_TROCARP.OK;
+			int i = 0;
+			for ( Change value : valuesChange ) {
+				for ( Table table : tables ) {
+					table.setCodfilial( ListaCampos.getMasterFilial( table.getTable_name() ) );
+					try {
+						daotrocarefprod.executeChange( value, table );
+						// throw new Exception( "Erro forçado para testes!" );
+					} catch ( Exception e ) {
+						e.printStackTrace();
+						StringBuilder mensagem = new StringBuilder();
+						mensagem.append( "Erro executando troca de referência\n" );
+						mensagem.append( "Cód.prod.: " );
+						mensagem.append( value.getCodprod() );
+						mensagem.append( " - Ref. antiga: " );
+						mensagem.append( value.getRefprodold() );
+						mensagem.append( " - Ref. nova: " );
+						mensagem.append( value.getRefprodnew() );
+						mensagem.append( "\n" );
+						mensagem.append( e.getMessage() );
+						Historico historico = new Historico();
+						historico.setDataOperacao( new Date() );
+						historico.setTipoOperacao( "ERRO" );
+						historico.setHistorico( mensagem.toString() );
+						historico.setId( value.getId_it() );
+						listErr.addElement( historico );
+						break;
+					}
+					i++;
+					pbAndamento.setValue( i );
+					pbAndamento.updateUI();
+				}
+
+			}
+			if ( listErr.size() > 0 ) {
+				situacao = SIT_LOG_TROCARP.ER;
+				FListHistorico hist = new FListHistorico( listErr );
+				String titulo = "Inconsistências - troca de referências dos produtos";
+				fPrim.temTela( titulo );
+				fPrim.criatela( titulo, hist, con );
+			}
+			else {
+				Funcoes.mensagemInforma( this, "Troca de referências executada com sucesso !" );
+			}
+			daotrocarefprod.updateSitucao( false, id, situacao );
+			lcCampos.carregaDados();
+		} finally {
+			if ( atualizaagenda ) {
+				if ( fPrim != null && fPrim.getThreadAgenda() != null ) {
+					fPrim.getThreadAgenda().start();
+				}
+			}
 		}
-		if ( listErr.size() > 0 ) {
-			situacao = SIT_LOG_TROCARP.ER;
-			FListHistorico hist = new FListHistorico( listErr );
-			String titulo = "Inconsistências - troca de referências dos produtos";
-			fPrim.temTela( titulo );
-			fPrim.criatela( titulo, hist, con );
-		}
-		else {
-			Funcoes.mensagemInforma( this, "Troca de referências executada com sucesso !" );
-		}
-		daotrocarefprod.updateSitucao( false, id, situacao );
-		lcCampos.carregaDados();
+
 	}
 }
