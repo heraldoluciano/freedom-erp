@@ -120,6 +120,8 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 	private JCheckBoxPad cbCancelado = new JCheckBoxPad( "Cancelado", "S", "N" );
 
 	private JCheckBoxPad cbProduzido = new JCheckBoxPad( "Produzido", "S", "N" );
+	
+	private JCheckBoxPad cbCliSemVenda = new JCheckBoxPad( "Somente clientes sem venda no perídodo", "S", "N");
 
 	private JRadioGroup<String, String> gbVenc;
 
@@ -258,6 +260,8 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 		pinCab.adic( txtNomeUsu, 360, 110, 220, 20 );
 
 		pinCab.adic( cbAgrupar, 275, 140, 220, 20 );
+
+		pinCab.adic( cbCliSemVenda, 275, 170, 300, 20 );
 
 		pinCab.adic( btBusca, 280, 200, 145, 30 );
 		pinCab.adic( btPrevimp, 437, 200, 145, 30 );
@@ -435,7 +439,12 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 		sql.append( "  IT.CODORC=O.CODORC AND IT.CODEMP=O.CODEMP AND IT.CODFILIAL=O.CODFILIAL AND IT.TIPOORC=O.TIPOORC AND " );
 		sql.append( "  CL.CODEMP=O.CODEMPCL AND CL.CODFILIAL=O.CODFILIALCL AND CL.CODCLI=O.CODCLI " );
 		sql.append( where );
-		
+		if ( "S".equals( cbCliSemVenda.getVlrString() )) {
+			sql.append( " and exists (select * from vdvenda v, vditvenda iv ");
+			sql.append( " where v.codemp=iv.codemp and v.codfilial=iv.codfilial and v.tipovenda=iv.tipovenda ");
+			sql.append( " and v.codvenda=iv.codvenda and v.codempcl=o.codempcl and v.codfilialcl=o.codfilialcl ");
+			sql.append( " and v.codcli=o.codcli and v.dtemitvenda between ? and ? ) ");
+		}
 		if ( "S".equals( cbAgrupar.getVlrString() ) ) {
 			sql.append(" group by 1,2,3,4,5,6,7,8,9,10,12,13 ");
 		}
@@ -471,7 +480,10 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 			if ( usuario ) {
 				ps.setInt( param++, txtIdUsu.getVlrInteger().intValue() );
 			}
-
+			if ( "S".equals( cbCliSemVenda.getVlrString() )) {
+				ps.setDate( param++, Funcoes.dateToSQLDate( txtDtIni.getVlrDate() ) );
+				ps.setDate( param++, Funcoes.dateToSQLDate( txtDtFim.getVlrDate() ) );
+			}
 			ResultSet rs = ps.executeQuery();
 			int iLin = 0;
 
