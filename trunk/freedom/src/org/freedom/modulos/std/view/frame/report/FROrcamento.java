@@ -233,7 +233,7 @@ public class FROrcamento extends FRelatorio {
 			}
 
 		} catch ( Exception err ) {
-			Funcoes.mensagemErro( this, "Erro consultar orçamentos!\n" + err.getMessage(), true, con, err );
+			Funcoes.mensagemErro( this, "Erro ao consultar orçamentos!\n" + err.getMessage(), true, con, err );
 			err.printStackTrace();
 		}
 	}
