@@ -263,6 +263,8 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 
 	private JTextAreaPad txaCondicoesItRecMerc = new JTextAreaPad();
 
+	private JTextFieldPad txtTipoFrete = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+
 	private JTextAreaPad txaObsItOS = new JTextAreaPad();
 
 	private JTextAreaPad txaObsItRecMerc = new JTextAreaPad();
@@ -673,6 +675,8 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		adicCampo( txtTicket, 7, 20, 60, 20, "Ticket", "Ticket", ListaCampos.DB_PK, true );
 
 		adicCampoInvisivel( txtCodTipoRecMerc, "CodTipoRecMerc", "Cód.T.", ListaCampos.DB_FK, true );
+		
+		
 
 		adicCampo( txtCodCli, 70, 20, 60, 20, "CodCli", "Cód.Cli.", ListaCampos.DB_FK, txtRazCli, true );
 		adicDescFK( txtRazCli, 133, 20, 300, 20, "RazCli", "Razão social do cliente" );
@@ -684,6 +688,8 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		adicCampo( txtDtPrevRet, 837, 20, 70, 20, "DtPrevRet", "Dt.Prevista", ListaCampos.DB_SI, true );
 
 		adicDB( cbStatus, 764, 60, 142, 20, "Status", "Status", false );
+
+		adicCampoInvisivel( txtTipoFrete, "TipoFrete", "Tp.frete", ListaCampos.DB_SI, true );
 
 		//		adic( lbStatus, 620, 20, 123, 60 );
 
@@ -1752,6 +1758,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 			buscaAtendente();
 			txtDtEnt.setVlrDate( new Date() );
 			txtCodCli.requestFocus();
+			txtTipoFrete.setVlrString( "F" );
 		}
 
 	}

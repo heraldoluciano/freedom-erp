@@ -93,8 +93,6 @@ public class Funcoes {
 	private static JDialog dlErro = null;
 
 	private static Timer tim = null;
-	
-
 
 	public Funcoes() {
 	}
@@ -102,14 +100,13 @@ public class Funcoes {
 	public static boolean executeURL(String os, String comando, String url) {
 		boolean retorno = false;
 		Vector<String> comandos = new Vector<String>();
-		if (( comando != null ) && ( !comando.equals("") ))
+		if ((comando != null) && (!comando.equals("")))
 			comandos.addElement(comando);
 		if (os.equalsIgnoreCase("windows")) {
 			comandos.addElement("start");
 			comandos.addElement("firefox");
 			comandos.addElement("explorer");
-		}
-		else if (os.equalsIgnoreCase("linux")) {
+		} else if (os.equalsIgnoreCase("linux")) {
 			comandos.addElement("firefox");
 			comandos.addElement("konqueror");
 			comandos.addElement("mozilla");
@@ -121,8 +118,7 @@ public class Funcoes {
 				Runtime.getRuntime().exec(exec);
 				retorno = true;
 				break;
-			}
-			catch (IOException e) {
+			} catch (IOException e) {
 				retorno = false;
 			}
 		}
@@ -133,82 +129,73 @@ public class Funcoes {
 		StringBuffer result = new StringBuffer();
 		int intval = 0;
 		int intdec = 0;
-		if (val!=null) {
+		if (val != null) {
 			intval = val.intValue();
-			intdec = val.subtract(new BigDecimal(intval) ).multiply(new BigDecimal( 100) ).intValue();
-			result.append(StringFunctions.strZero(String.valueOf( intval ),2));
+			intdec = val.subtract(new BigDecimal(intval))
+					.multiply(new BigDecimal(100)).intValue();
+			result.append(StringFunctions.strZero(String.valueOf(intval), 2));
 			result.append(":");
 			intdec = intdec * 60 / 100;
 			result.append(StringFunctions.strZero(String.valueOf(intdec), 2));
-			//result = String.valueOf(val.intValue())+":"+String.valueOf(val.*100/60);
-			
+			// result =
+			// String.valueOf(val.intValue())+":"+String.valueOf(val.*100/60);
+
 		}
 		return result.toString();
 	}
-	
-	public static String getStringFormatedBigDecimal(BigDecimal bigVal, int iDecimal) {
-		
+
+	public static String getStringFormatedBigDecimal(BigDecimal bigVal,
+			int iDecimal) {
+
 		DecimalFormat df = null;
-		
+
 		String formato = "###";
 		String valores = ".";
-		
-		BigDecimal bigValAbs = bigVal.abs(); 
-		
-		if(bigValAbs!=null && bigValAbs.floatValue()>=1) {
-		
-			if(bigValAbs.intValue()>=1000) {
+
+		BigDecimal bigValAbs = bigVal.abs();
+
+		if (bigValAbs != null && bigValAbs.floatValue() >= 1) {
+
+			if (bigValAbs.intValue() >= 1000) {
 				formato = "#,###,";
 				valores = "0,000.";
-			}
-			else if(bigValAbs.intValue()>=10000) {
+			} else if (bigValAbs.intValue() >= 10000) {
 				formato = "##,###,";
-			}
-			else if(bigValAbs.intValue()>=100000) {
-				formato = "###,###,";	
-			}
-			else if(bigValAbs.intValue()>=1000000) {
+			} else if (bigValAbs.intValue() >= 100000) {
+				formato = "###,###,";
+			} else if (bigValAbs.intValue() >= 1000000) {
 				formato = "#,###,###,";
-			}
-			else if(bigValAbs.intValue()>=10000000) {
+			} else if (bigValAbs.intValue() >= 10000000) {
 				formato = "##,###,###,";
-			}
-			else if(bigValAbs.intValue()>=100000000) {
+			} else if (bigValAbs.intValue() >= 100000000) {
 				formato = "###,###,###,";
-			}
-			else if(bigValAbs.intValue()>=1000000000) {
+			} else if (bigValAbs.intValue() >= 1000000000) {
 				formato = "#,###,###,###,";
 			}
-			
-			for (int i = 0; i < iDecimal; i++) { 
+
+			for (int i = 0; i < iDecimal; i++) {
 				formato += "#";
 				valores += "0";
-	    	}
-		
-			df = new DecimalFormat(formato + valores );
-			
-		}
-		else {
-			df = new DecimalFormat("#,###0."+ StringFunctions.replicate("0", iDecimal));
+			}
+
+			df = new DecimalFormat(formato + valores);
+
+		} else {
+			df = new DecimalFormat("#,###0."
+					+ StringFunctions.replicate("0", iDecimal));
 		}
 		/*
-		if(iDecimal==0) {
-			return df.format(bigVal).replaceAll(",", "");
-		}
-		else {
-			return df.format(bigVal);	
-		}
-*/		
+		 * if(iDecimal==0) { return df.format(bigVal).replaceAll(",", ""); }
+		 * else { return df.format(bigVal); }
+		 */
 		return df.format(bigVal);
-		
-		
+
 	}
-	
-	
+
 	public static StringDireita bdToStr(BigDecimal vlr) {
 		return bdToStr(vlr, Aplicativo.casasDecFin);
 	}
-	
+
 	public static StringDireita bdToStrd(BigDecimal vlr) {
 		return bdToStrd(vlr, Aplicativo.casasDecFin);
 	}
@@ -216,10 +203,11 @@ public class Funcoes {
 	public static StringDireita bdToStr(BigDecimal vlr, int casasdec) {
 		StringDireita retorno = null;
 		if (vlr == null) {
-			retorno = new StringDireita(Funcoes.strDecimalToStrCurrency(casasdec, "0").trim());
-		}
-		else {
-			retorno = new StringDireita(Funcoes.strDecimalToStrCurrency(casasdec, String.valueOf(vlr)).trim());
+			retorno = new StringDireita(Funcoes.strDecimalToStrCurrency(
+					casasdec, "0").trim());
+		} else {
+			retorno = new StringDireita(Funcoes.strDecimalToStrCurrency(
+					casasdec, String.valueOf(vlr)).trim());
 		}
 		return retorno;
 	}
@@ -228,20 +216,22 @@ public class Funcoes {
 		StringDireita retorno = null;
 		if (vlr == null) {
 			retorno = Funcoes.strDecimalToStrCurrencyd(casasdec, "0");
-		}
-		else {
-			retorno = Funcoes.strDecimalToStrCurrencyd(casasdec, String.valueOf(vlr));
+		} else {
+			retorno = Funcoes.strDecimalToStrCurrencyd(casasdec,
+					String.valueOf(vlr));
 		}
 		return retorno;
 	}
 
-	
 	public static String getTimeString(Date data) {
 		String bRetorno = "";
 		if (data != null) {
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(data);
-			bRetorno = StringFunctions.strZero(cal.get(Calendar.HOUR) + "", 2) + ":" + StringFunctions.strZero(cal.get(Calendar.MINUTE) + "", 2) + ":"
+			bRetorno = StringFunctions.strZero(cal.get(Calendar.HOUR) + "", 2)
+					+ ":"
+					+ StringFunctions.strZero(cal.get(Calendar.MINUTE) + "", 2)
+					+ ":"
 					+ StringFunctions.strZero(cal.get(Calendar.SECOND) + "", 2);
 		}
 		return bRetorno;
@@ -260,7 +250,8 @@ public class Funcoes {
 		return iRet;
 	}
 
-	public static HashMap<String, Object> getCodMunic(String nomeCidade, String UF, DbConnection con) {
+	public static HashMap<String, Object> getCodMunic(String nomeCidade,
+			String UF, DbConnection con) {
 
 		HashMap<String, Object> retorno = new HashMap<String, Object>();
 		StringBuilder sql = new StringBuilder();
@@ -289,8 +280,7 @@ public class Funcoes {
 				retorno.put("SIGLAUF", rs.getString(3));
 			}
 
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 
 		}
@@ -316,8 +306,7 @@ public class Funcoes {
 				retorno = rs.getString("URLWSCEP");
 			}
 
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 
 		}
@@ -331,8 +320,7 @@ public class Funcoes {
 			bdValor = new BigDecimal(deValor);
 			bdValor = bdValor.setScale(iDec, BigDecimal.ROUND_HALF_UP);
 			deValor = bdValor.doubleValue();
-		}
-		finally {
+		} finally {
 			bdValor = null;
 		}
 		return deValor;
@@ -344,8 +332,7 @@ public class Funcoes {
 			bdValor = new BigDecimal(fValor);
 			bdValor = bdValor.setScale(iDec, BigDecimal.ROUND_HALF_UP);
 			fValor = bdValor.floatValue();
-		}
-		finally {
+		} finally {
 			bdValor = null;
 		}
 		return fValor;
@@ -354,7 +341,7 @@ public class Funcoes {
 	public static void espera(int iSec) {
 		long iIni = getSeconds();
 		long iFim = getSeconds();
-		while (( iFim - iIni ) < iSec) {
+		while ((iFim - iIni) < iSec) {
 			iFim = getSeconds();
 		}
 	}
@@ -384,8 +371,7 @@ public class Funcoes {
 			iRetorno[0] = gcSel.get(Calendar.YEAR);
 			iRetorno[1] = gcSel.get(Calendar.MONTH) + 1;
 			iRetorno[2] = gcSel.get(Calendar.DAY_OF_MONTH);
-		}
-		finally {
+		} finally {
 			gcSel = null;
 		}
 		return iRetorno;
@@ -400,8 +386,7 @@ public class Funcoes {
 			gcSel.set(Calendar.MONTH, iMes - 1);
 			gcSel.set(Calendar.DAY_OF_MONTH, iDia);
 			dtRetorno = gcSel.getTime();
-		}
-		finally {
+		} finally {
 			gcSel = null;
 		}
 		return dtRetorno;
@@ -415,34 +400,30 @@ public class Funcoes {
 		try {
 			try {
 				hora = Integer.parseInt(sTime.substring(0, 2)) * 60 * 60 * 1000;
-			}
-			catch (Exception e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			try {
 				minuto = Integer.parseInt(sTime.substring(3, 5)) * 60 * 1000;
-			}
-			catch (Exception e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			try {
 				segundo = Integer.parseInt(sTime.substring(6, 8)) * 1000;
-			}
-			catch (Exception e) {
+			} catch (Exception e) {
 				e.printStackTrace();
-			}
-			finally {
+			} finally {
 				retorno = new Date(hora + minuto + segundo);
 			}
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			retorno = null;
 		}
 		return retorno;
 	}
 
-	public static java.util.Date encodeTime(Date dtSel, int iHora, int iMinuto, int iSegundo, int iMilesegundo) {
+	public static java.util.Date encodeTime(Date dtSel, int iHora, int iMinuto,
+			int iSegundo, int iMilesegundo) {
 		Date dtRetorno = dtSel;
 		GregorianCalendar gcSel = new GregorianCalendar();
 		try {
@@ -452,32 +433,39 @@ public class Funcoes {
 			gcSel.set(Calendar.SECOND, iSegundo);
 			gcSel.set(Calendar.MILLISECOND, iMilesegundo);
 			dtSel = gcSel.getTime();
-		}
-		finally {
+		} finally {
 			gcSel = null;
 		}
 		return dtRetorno;
 	}
 
-	public synchronized static int mensagemConfirma(Component frame, String sMensagem) {
+	public synchronized static int mensagemConfirma(Component frame,
+			String sMensagem) {
 		String opt[] = { "Sim", "Não" };
 		if (frame == null) {
-			return JOptionPane.showOptionDialog(frame, sMensagem, "Confirmação", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, opt, opt[0]);
+			return JOptionPane.showOptionDialog(frame, sMensagem,
+					"Confirmação", JOptionPane.YES_NO_OPTION,
+					JOptionPane.QUESTION_MESSAGE, null, opt, opt[0]);
 		} else {
-			return JOptionPane.showInternalOptionDialog(frame, sMensagem, "Confirmação", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, opt, opt[0]);
+			return JOptionPane.showInternalOptionDialog(frame, sMensagem,
+					"Confirmação", JOptionPane.YES_NO_OPTION,
+					JOptionPane.QUESTION_MESSAGE, null, opt, opt[0]);
 		}
 	}
 
 	public static String adicEspacosEsquerda(String sTexto, int iEspacos) {
 		if (iEspacos > sTexto.length()) {
-			sTexto = StringFunctions.replicate(" ", iEspacos - sTexto.length()) + sTexto;
+			sTexto = StringFunctions.replicate(" ", iEspacos - sTexto.length())
+					+ sTexto;
 		}
 		return sTexto;
 	}
 
 	public static String adicEspacosDireita(String sTexto, int iEspacos) {
 		if (iEspacos > sTexto.length()) {
-			sTexto = sTexto + StringFunctions.replicate(" ", iEspacos - sTexto.length());
+			sTexto = sTexto
+					+ StringFunctions
+							.replicate(" ", iEspacos - sTexto.length());
 		}
 		return sTexto;
 	}
@@ -505,8 +493,7 @@ public class Funcoes {
 					}
 				}
 			}
-		}
-		finally {
+		} finally {
 			sValor = null;
 			sLinha = null;
 		}
@@ -519,12 +506,16 @@ public class Funcoes {
 		try {
 			if (v != null) {
 				for (int i1 = 1; i1 < v.size(); i1++) {
-					s1 = adicEspacosEsquerda(v.elementAt(i1).toString().trim(), iEspacos);
-					s2 = adicEspacosEsquerda(v.elementAt(i1 - 1).toString().trim(), iEspacos);
+					s1 = adicEspacosEsquerda(v.elementAt(i1).toString().trim(),
+							iEspacos);
+					s2 = adicEspacosEsquerda(v.elementAt(i1 - 1).toString()
+							.trim(), iEspacos);
 					if (s1.compareTo(s2) < 0) {
 						for (int i2 = 0; i2 < i1; i2++) {
-							s1 = adicEspacosEsquerda(v.elementAt(i1).toString(), iEspacos);
-							s2 = adicEspacosEsquerda(v.elementAt(i2).toString(), iEspacos);
+							s1 = adicEspacosEsquerda(
+									v.elementAt(i1).toString(), iEspacos);
+							s2 = adicEspacosEsquerda(
+									v.elementAt(i2).toString(), iEspacos);
 							if (s1.compareTo(s2) < 0) {
 								for (int i3 = i2; i3 < i1; i3++) {
 									// mostraVector(v);
@@ -539,8 +530,7 @@ public class Funcoes {
 					}
 				}
 			}
-		}
-		finally {
+		} finally {
 			s1 = null;
 			s2 = null;
 		}
@@ -554,8 +544,7 @@ public class Funcoes {
 				sMostra += v.elementAt(i).toString() + ";";
 			}
 			mensagemInforma(null, sMostra);
-		}
-		finally {
+		} finally {
 			sMostra = null;
 		}
 	}
@@ -567,14 +556,16 @@ public class Funcoes {
 		GregorianCalendar cal1 = new GregorianCalendar();
 		GregorianCalendar cal2 = new GregorianCalendar();
 		cal1.setTime(dt1);
-		cal1.set(cal1.get(Calendar.YEAR), cal1.get(Calendar.MONTH), cal1.get(Calendar.DATE), 0, 0, 0);
+		cal1.set(cal1.get(Calendar.YEAR), cal1.get(Calendar.MONTH),
+				cal1.get(Calendar.DATE), 0, 0, 0);
 		cal2.setTime(dt2);
-		cal2.set(cal2.get(Calendar.YEAR), cal2.get(Calendar.MONTH), cal2.get(Calendar.DATE), 0, 0, 0);
+		cal2.set(cal2.get(Calendar.YEAR), cal2.get(Calendar.MONTH),
+				cal2.get(Calendar.DATE), 0, 0, 0);
 
 		lDias1 = cal1.getTimeInMillis();
 		lDias2 = cal2.getTimeInMillis();
 
-		lResult = ( lDias2 - lDias1 ) / ( 60 * 24 * 60 * 1000 );
+		lResult = (lDias2 - lDias1) / (60 * 24 * 60 * 1000);
 		return lResult;
 	}
 
@@ -585,16 +576,18 @@ public class Funcoes {
 		GregorianCalendar cal1 = new GregorianCalendar();
 		GregorianCalendar cal2 = new GregorianCalendar();
 		cal1.setTime(dt1);
-		cal1.set(cal1.get(Calendar.YEAR), cal1.get(Calendar.MONTH), cal1.get(Calendar.DATE), 0, 0, 0);
+		cal1.set(cal1.get(Calendar.YEAR), cal1.get(Calendar.MONTH),
+				cal1.get(Calendar.DATE), 0, 0, 0);
 		cal2.setTime(dt2);
-		cal2.set(cal2.get(Calendar.YEAR), cal2.get(Calendar.MONTH), cal2.get(Calendar.DATE), 0, 0, 0);
+		cal2.set(cal2.get(Calendar.YEAR), cal2.get(Calendar.MONTH),
+				cal2.get(Calendar.DATE), 0, 0, 0);
 
 		lDias1 = cal1.getTimeInMillis();
 		lDias2 = cal2.getTimeInMillis();
 		if (lDias1 > lDias2)
-			lResult = ( lDias1 - lDias2 ) / ( 60 * 24 * 60 * 1000 );
+			lResult = (lDias1 - lDias2) / (60 * 24 * 60 * 1000);
 		else
-			lResult = ( lDias2 - lDias1 ) / ( 60 * 24 * 60 * 1000 );
+			lResult = (lDias2 - lDias1) / (60 * 24 * 60 * 1000);
 		return lResult;
 	}
 
@@ -651,7 +644,8 @@ public class Funcoes {
 
 			if (rs.next()) {
 
-				cidade = rs.getString("NOMEMUNIC") != null ? rs.getString("NOMEMUNIC").trim() : null;
+				cidade = rs.getString("NOMEMUNIC") != null ? rs.getString(
+						"NOMEMUNIC").trim() : null;
 			}
 
 			rs.close();
@@ -659,9 +653,9 @@ public class Funcoes {
 
 			con.commit();
 
-		}
-		catch (Exception e) {
-			Funcoes.mensagemErro(null, "Erro ao buscar cidade da filial!\n" + e.getMessage());
+		} catch (Exception e) {
+			Funcoes.mensagemErro(null,
+					"Erro ao buscar cidade da filial!\n" + e.getMessage());
 			e.printStackTrace();
 		}
 
@@ -688,8 +682,7 @@ public class Funcoes {
 				casasDec = rs.getString("CASASDEC");
 			}
 
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
@@ -700,9 +693,10 @@ public class Funcoes {
 		String retorno = "";
 		try {
 
-			retorno = cidade + ", " + getDiaMes(data) + " de " + ( getMesExtenso(data).toLowerCase() ) + " de " + getAno(data);
-		}
-		catch (Exception e) {
+			retorno = cidade + ", " + getDiaMes(data) + " de "
+					+ (getMesExtenso(data).toLowerCase()) + " de "
+					+ getAno(data);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return retorno;
@@ -713,38 +707,27 @@ public class Funcoes {
 		int mes = getMes(data);
 		if (mes == 1) {
 			retorno = "JANEIRO";
-		}
-		else if (mes == 2) {
+		} else if (mes == 2) {
 			retorno = "FEVEREIRO";
-		}
-		else if (mes == 3) {
+		} else if (mes == 3) {
 			retorno = "MARÇO";
-		}
-		else if (mes == 4) {
+		} else if (mes == 4) {
 			retorno = "ABRIL";
-		}
-		else if (mes == 5) {
+		} else if (mes == 5) {
 			retorno = "MAIO";
-		}
-		else if (mes == 6) {
+		} else if (mes == 6) {
 			retorno = "JUNHO";
-		}
-		else if (mes == 7) {
+		} else if (mes == 7) {
 			retorno = "JULHO";
-		}
-		else if (mes == 8) {
+		} else if (mes == 8) {
 			retorno = "AGOSTO";
-		}
-		else if (mes == 9) {
+		} else if (mes == 9) {
 			retorno = "SETEMBRO";
-		}
-		else if (mes == 10) {
+		} else if (mes == 10) {
 			retorno = "OUTUBRO";
-		}
-		else if (mes == 11) {
+		} else if (mes == 11) {
 			retorno = "NOVEMBRO";
-		}
-		else if (mes == 12) {
+		} else if (mes == 12) {
 			retorno = "DEZEMBRO";
 		}
 		return retorno;
@@ -758,14 +741,17 @@ public class Funcoes {
 		return cal.getTime();
 	}
 
-	public synchronized static void mensagem(Component frame, String sMensagem, String sTitulo, int iOpcao) {
+	public synchronized static void mensagem(Component frame, String sMensagem,
+			String sTitulo, int iOpcao) {
 		// imgIcone = Aplicativo.imgIcone;
-		//if (frame==null) {
-			//JOptionPane.showMessageDialog(Aplicativo.telaPrincipal, sMensagem, sTitulo, iOpcao);
-			JOptionPane.showMessageDialog(frame, sMensagem, sTitulo, iOpcao);
-		/*} else {
-			JOptionPane.showInternalMessageDialog(frame, sMensagem, sTitulo, iOpcao);
-		}*/
+		// if (frame==null) {
+		// JOptionPane.showMessageDialog(Aplicativo.telaPrincipal, sMensagem,
+		// sTitulo, iOpcao);
+		JOptionPane.showMessageDialog(frame, sMensagem, sTitulo, iOpcao);
+		/*
+		 * } else { JOptionPane.showInternalMessageDialog(frame, sMensagem,
+		 * sTitulo, iOpcao); }
+		 */
 	}
 
 	// Retorna a data sem os valores de hora minuto e segundo, para comparação
@@ -775,11 +761,11 @@ public class Funcoes {
 		Date ret = null;
 		try {
 			Calendar cal = new GregorianCalendar();
-			cal.set(getAno(dtantes), getMes(dtantes) - 1, getDiaMes(dtantes), 0, 0, 0);
+			cal.set(getAno(dtantes), getMes(dtantes) - 1, getDiaMes(dtantes),
+					0, 0, 0);
 			cal.set(Calendar.MILLISECOND, 0);
 			ret = cal.getTime();
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return ret;
@@ -800,7 +786,8 @@ public class Funcoes {
 	 * 
 	 * @see #mensagemTemp(String,String,int)
 	 */
-	public synchronized static FFDialogo mensagemTemp(JFrame fOrig, final String sMensagem, final String sTitulo, int iTempoShow) {
+	public synchronized static FFDialogo mensagemTemp(JFrame fOrig,
+			final String sMensagem, final String sTitulo, int iTempoShow) {
 		final FFDialogo diag = new FFDialogo(fOrig, false);
 		try {
 			fOrig = fOrig == null ? fOrig = Aplicativo.telaPrincipal : fOrig;
@@ -822,22 +809,26 @@ public class Funcoes {
 			});
 			tim.start();
 
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return diag;
 	}
 
-	public synchronized static void mensagemInforma(Component frame, String sMensagem) {
-		mensagem(frame, sMensagem, "Informação", JOptionPane.INFORMATION_MESSAGE);
+	public synchronized static void mensagemInforma(Component frame,
+			String sMensagem) {
+		mensagem(frame, sMensagem, "Informação",
+				JOptionPane.INFORMATION_MESSAGE);
 	}
 
-	public synchronized static void mensagemErro(Component frame, String sMensagem, boolean bEnviar, Exception err) {
-		mensagemErro(frame, sMensagem, bEnviar, Aplicativo.getInstace().getConexao(), err);
+	public synchronized static void mensagemErro(Component frame,
+			String sMensagem, boolean bEnviar, Exception err) {
+		mensagemErro(frame, sMensagem, bEnviar, Aplicativo.getInstace()
+				.getConexao(), err);
 	}
 
-	public static void mensagemErro(Component frame, String sMensagem, boolean bEnviar, DbConnection con, Exception err) {
+	public static void mensagemErro(Component frame, String sMensagem,
+			boolean bEnviar, DbConnection con, Exception err) {
 		mensagem(frame, sMensagem, "Erro", JOptionPane.ERROR_MESSAGE);
 		if (bEnviar)
 			;
@@ -860,26 +851,27 @@ public class Funcoes {
 		}
 	}
 
-	public synchronized static void mensagemErro(Component frame, String sMensagem) {
+	public synchronized static void mensagemErro(Component frame,
+			String sMensagem) {
 		mensagem(frame, sMensagem, "Erro", JOptionPane.ERROR_MESSAGE);
 	}
 
 	public static String trimFinal(String sVal) {
-		if (sVal == null){
+		if (sVal == null) {
 			return null;
 		}
-		
+
 		char[] cVal = sVal.toCharArray();
-		
+
 		String sRetorno = sVal;
-		
+
 		for (int i = sVal.length() - 1; i >= 0; i--) {
 			if (cVal[i] != ' ') {
 				sRetorno = sVal.substring(0, i + 1);
 				break;
 			}
 		}
-		
+
 		return sRetorno;
 	}
 
@@ -890,19 +882,25 @@ public class Funcoes {
 	public static void setBordReq(JComponent comp, boolean bReq) {
 		if (bReq) {
 
-			comp.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.red), BorderFactory.createEtchedBorder()));
-		}
-		else {
-			comp.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, Color.darkGray), BorderFactory.createEtchedBorder()));
+			comp.setBorder(BorderFactory.createCompoundBorder(
+					BorderFactory.createMatteBorder(1, 1, 1, 1, Color.red),
+					BorderFactory.createEtchedBorder()));
+		} else {
+			comp.setBorder(BorderFactory.createCompoundBorder(
+					BorderFactory.createMatteBorder(0, 0, 0, 0, Color.darkGray),
+					BorderFactory.createEtchedBorder()));
 		}
 	}
 
 	public static void setBorder(JComponent comp, Color color, boolean border) {
 		if (border) {
-			comp.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, color), BorderFactory.createEtchedBorder()));
-		}
-		else {
-			comp.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, Color.darkGray), BorderFactory.createEtchedBorder()));
+			comp.setBorder(BorderFactory.createCompoundBorder(
+					BorderFactory.createMatteBorder(1, 1, 1, 1, color),
+					BorderFactory.createEtchedBorder()));
+		} else {
+			comp.setBorder(BorderFactory.createCompoundBorder(
+					BorderFactory.createMatteBorder(0, 0, 0, 0, Color.darkGray),
+					BorderFactory.createEtchedBorder()));
 		}
 	}
 
@@ -911,7 +909,8 @@ public class Funcoes {
 	}
 
 	public static String setPontoDec(String sVal) {
-		int iLocal = sVal.indexOf('.') >= 0 ? sVal.indexOf('.') : sVal.indexOf(',');
+		int iLocal = sVal.indexOf('.') >= 0 ? sVal.indexOf('.') : sVal
+				.indexOf(',');
 		if (iLocal >= 0) {
 			char[] cVal = new char[sVal.length()];
 			cVal = sVal.toCharArray();
@@ -931,9 +930,8 @@ public class Funcoes {
 					break;
 				sRetorno += cStr[i];
 			}
-		}
-		else {
-			for (int i = ( sVal.length() - 1 ); i >= 0; i--) {
+		} else {
+			for (int i = (sVal.length() - 1); i >= 0; i--) {
 				if (cStr[i] == cVal)
 					break;
 				sRetorno = cStr[i] + sRetorno;
@@ -945,10 +943,9 @@ public class Funcoes {
 	public static String copy(String sTmp, int iPos, int iTam) {
 		if (sTmp == null)
 			sTmp = "";
-		if (sTmp.length() < ( iTam + 1 )) {
+		if (sTmp.length() < (iTam + 1)) {
 			sTmp = sTmp + StringFunctions.replicate(" ", iTam - sTmp.length());
-		}
-		else {
+		} else {
 			sTmp = sTmp.substring(iPos, iTam);
 		}
 		return sTmp;
@@ -966,9 +963,10 @@ public class Funcoes {
 		cFim.setTime(dDataFim);
 
 		try {
-			iMeses = 1 + ( cFim.get(Calendar.MONTH) + ( 12 * ( ( cFim.get(Calendar.YEAR) - cIni.get(Calendar.YEAR) - 1 ) ) + ( 12 - cIni.get(Calendar.MONTH) ) ) );
-		}
-		catch (Exception e) {
+			iMeses = 1 + (cFim.get(Calendar.MONTH) + (12 * ((cFim
+					.get(Calendar.YEAR) - cIni.get(Calendar.YEAR) - 1)) + (12 - cIni
+					.get(Calendar.MONTH))));
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return iMeses;
@@ -986,7 +984,8 @@ public class Funcoes {
 			iMes = cal.get(Calendar.MONTH) + 1;
 			iAno = cal.get(Calendar.YEAR);
 		}
-		sRet = StringFunctions.strZero("" + iDia, 2) + " de " + strMes(iMes).toLowerCase() + " de " + iAno;
+		sRet = StringFunctions.strZero("" + iDia, 2) + " de "
+				+ strMes(iMes).toLowerCase() + " de " + iAno;
 		return sRet;
 	}
 
@@ -1044,7 +1043,9 @@ public class Funcoes {
 			iMes = cal.get(Calendar.MONTH) + 1;
 			iAno = cal.get(Calendar.YEAR);
 		}
-		return StringFunctions.strZero(iAno + "", 4) + StringFunctions.strZero(iMes + "", 2) + StringFunctions.strZero(iDia + "", 2);
+		return StringFunctions.strZero(iAno + "", 4)
+				+ StringFunctions.strZero(iMes + "", 2)
+				+ StringFunctions.strZero(iDia + "", 2);
 	}
 
 	public static String dataDDMMAAAA(Date data) {
@@ -1058,12 +1059,14 @@ public class Funcoes {
 			iMes = cal.get(Calendar.MONTH) + 1;
 			iAno = cal.get(Calendar.YEAR);
 		}
-		return StringFunctions.strZero(iDia + "", 2) + StringFunctions.strZero(iMes + "", 2) + StringFunctions.strZero(iAno + "", 4);
+		return StringFunctions.strZero(iDia + "", 2)
+				+ StringFunctions.strZero(iMes + "", 2)
+				+ StringFunctions.strZero(iAno + "", 4);
 	}
 
 	public static String doubleToStrCurExtenso(double dVal, String sMoeda[]) {
 		String sRet = "";
-		String sVals[] = ( "" + dVal ).split("\\.");
+		String sVals[] = ("" + dVal).split("\\.");
 		String sTmp = intToStrExtenso(new Integer(sVals[0]).intValue());
 		if (!sTmp.trim().equals("")) {
 			sRet = sTmp;
@@ -1077,7 +1080,7 @@ public class Funcoes {
 				sRet += " " + sMoeda[3];
 		}
 
-		if (!sVals[1].equals("") && ( new Integer(sVals[1]) ).intValue() > 0) {
+		if (!sVals[1].equals("") && (new Integer(sVals[1])).intValue() > 0) {
 			if (!sRet.equals(""))
 				sTmp = " e ";
 			else
@@ -1098,9 +1101,15 @@ public class Funcoes {
 		String sRet = "";
 		int iTmp = 0;
 		String sNomes[][] = {
-				{ "", "um", "dois", "três", "quatro", "cinco", "seis", "sete", "oito", "nove", "dez", "onze", "doze", "treze", "quatorze", "quinze", "dezesseis", "dezesete", "dezoito", "dezenove" },
-				{ "", "", "vinte", "trinta", "quarenta", "cinquenta", "sessenta", "setenta", "oitenta", "noventa" },
-				{ "", "cem", "duzentos", "trezentos", "quatrocentos", "quinhentos", "seiscentos", "setecentos", "oitocentos", "novecentos" } };
+				{ "", "um", "dois", "três", "quatro", "cinco", "seis", "sete",
+						"oito", "nove", "dez", "onze", "doze", "treze",
+						"quatorze", "quinze", "dezesseis", "dezesete",
+						"dezoito", "dezenove" },
+				{ "", "", "vinte", "trinta", "quarenta", "cinquenta",
+						"sessenta", "setenta", "oitenta", "noventa" },
+				{ "", "cem", "duzentos", "trezentos", "quatrocentos",
+						"quinhentos", "seiscentos", "setecentos", "oitocentos",
+						"novecentos" } };
 		if (iVal == 1000000000) {
 			sRet += sNomes[0][1] + " bilhão";
 			iVal = 0;
@@ -1123,19 +1132,18 @@ public class Funcoes {
 		}
 		if (iVal > 999) {
 			iTmp = iVal / 1000;
-			sRet += ( iTmp > 1 ) ? intToStrExtenso(iTmp) + " mil" : "mil";
+			sRet += (iTmp > 1) ? intToStrExtenso(iTmp) + " mil" : "mil";
 			iVal -= iTmp * 1000;
 			// Regra do 'e':
 			if (iVal != 0) {
-				int iCent = ( iVal / 100 );
-				int iDez = ( iVal - ( iCent * 100 ) ) / 10;
-				int iUnid = ( iVal - ( ( iDez * 10 ) + ( iCent * 100 ) ) );
-				if (iCent == 0 || ( iDez == 0 && iUnid == 0 ))
+				int iCent = (iVal / 100);
+				int iDez = (iVal - (iCent * 100)) / 10;
+				int iUnid = (iVal - ((iDez * 10) + (iCent * 100)));
+				if (iCent == 0 || (iDez == 0 && iUnid == 0))
 					sRet += " e ";
 				else
 					sRet += " ";
-			}
-			else
+			} else
 				sRet += "";
 		}
 		if (iVal > 99) {
@@ -1170,13 +1178,14 @@ public class Funcoes {
 		return result;
 	}
 
-	public static String arrayTraceToString(StackTraceElement[] lista, String sep, Integer lines) {
+	public static String arrayTraceToString(StackTraceElement[] lista,
+			String sep, Integer lines) {
 		String result = "";
-		
-		if(lines == null || lines > lista.length ) {
+
+		if (lines == null || lines > lista.length) {
 			lines = lista.length;
 		}
-		
+
 		if (lines > 0) {
 			result = lista[0].toString(); // start with the first element
 			for (int i = 1; i < lines; i++) {
@@ -1185,7 +1194,7 @@ public class Funcoes {
 		}
 		return result;
 	}
-	
+
 	public static String vectorToString(Vector<?> lista, String sep) {
 		String result = "";
 		if (lista.size() > 0) {
@@ -1197,7 +1206,6 @@ public class Funcoes {
 		return result;
 	}
 
-
 	public static String adicionaEspacos(String sTexto, int iTamanho) {
 		int iTamIni = 0;
 		String sRetorno = "";
@@ -1206,8 +1214,7 @@ public class Funcoes {
 		iTamIni = sTexto.length();
 		if (iTamIni > iTamanho) {
 			sRetorno = sTexto.substring(0, iTamanho);
-		}
-		else {
+		} else {
 			sRetorno = sTexto;
 			for (int i = iTamIni; i < iTamanho; i++) {
 				sRetorno = sRetorno + ' ';
@@ -1229,8 +1236,9 @@ public class Funcoes {
 		if (iTamStr > iTam)
 			sVal = sVal.substring(iTam);
 		else {
-			int iSpaceAdic = ( iTam - iTamStr - 1 ) / 2;
-			sVal = StringFunctions.replicate(" ", iSpaceAdic) + sVal + StringFunctions.replicate(" ", iSpaceAdic);
+			int iSpaceAdic = (iTam - iTamStr - 1) / 2;
+			sVal = StringFunctions.replicate(" ", iSpaceAdic) + sVal
+					+ StringFunctions.replicate(" ", iSpaceAdic);
 		}
 		return sVal;
 	}
@@ -1256,14 +1264,17 @@ public class Funcoes {
 		if (sVal == null)
 			return bigRet;
 		if (sVal.length() < 3)
-			sVal = "0" + StringFunctions.replicate("0", 2 - sVal.length()) + sVal;
+			sVal = "0" + StringFunctions.replicate("0", 2 - sVal.length())
+					+ sVal;
 
-		sVal = sVal.substring(0, sVal.length() - 2) + "." + sVal.substring(sVal.length() - 2);
+		sVal = sVal.substring(0, sVal.length() - 2) + "."
+				+ sVal.substring(sVal.length() - 2);
 		bigRet = new BigDecimal(sVal);
 		return bigRet;
 	}
 
-	public static String transValor(String sValor, int iTam, int iDec, boolean bZeroEsq) {
+	public static String transValor(String sValor, int iTam, int iDec,
+			boolean bZeroEsq) {
 		if (sValor == null) {
 			sValor = "0";
 		}
@@ -1271,14 +1282,16 @@ public class Funcoes {
 		String sDec = "";
 		String sResult = sValor;
 		for (int i = 0; i < sValor.length(); i++) {
-			if (( sValor.substring(i, i + 1).equals(".") ) | ( sValor.substring(i, i + 1).equals(",") )) {
+			if ((sValor.substring(i, i + 1).equals("."))
+					| (sValor.substring(i, i + 1).equals(","))) {
 				sResult = sValor.substring(0, i);
 				sDec = sValor.substring(i + 1, sValor.length());
 				if (sDec.length() < iDec) {
 					// System.out.println("sDec e menor que idec");
-					sDec = sDec + StringFunctions.replicate("0", iDec - sDec.length());
-				}
-				else if (sDec.length() > iDec) {
+					sDec = sDec
+							+ StringFunctions.replicate("0",
+									iDec - sDec.length());
+				} else if (sDec.length() > iDec) {
 					// System.out.println("sDec e maior que idec");
 					sDec = sDec.substring(0, iDec);
 				}
@@ -1286,15 +1299,18 @@ public class Funcoes {
 			}
 		}
 
-		if (( sDec.trim().equals("") ) & ( iDec > 0 )) {
+		if ((sDec.trim().equals("")) & (iDec > 0)) {
 			sDec = StringFunctions.replicate("0", iDec);
 		}
-		if (sResult.length() > ( iTam - iDec )) {
-			sResult = sResult.substring(sResult.length() - ( iTam - iDec ) - 1, ( iTam - iDec ));
+		if (sResult.length() > (iTam - iDec)) {
+			sResult = sResult.substring(sResult.length() - (iTam - iDec) - 1,
+					(iTam - iDec));
 		}
 		if (bZeroEsq) {
-			if (sResult.length() < ( iTam - iDec ))
-				sResult = StringFunctions.replicate("0", ( iTam - iDec ) - sResult.length()) + sResult;
+			if (sResult.length() < (iTam - iDec))
+				sResult = StringFunctions.replicate("0", (iTam - iDec)
+						- sResult.length())
+						+ sResult;
 		}
 		// System.out.println("Depois de converter: "+sResult+sDec);
 
@@ -1311,8 +1327,7 @@ public class Funcoes {
 					maior = numeros[i];
 				}
 			}
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -1332,8 +1347,7 @@ public class Funcoes {
 					}
 				}
 			}
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -1342,7 +1356,7 @@ public class Funcoes {
 	}
 
 	public static void setImpAtrib(PrintRequestAttributeSet p) {
-		HashPrintRequestAttributeSet pra = ( HashPrintRequestAttributeSet ) p;
+		HashPrintRequestAttributeSet pra = (HashPrintRequestAttributeSet) p;
 		File fArq = new File("impres.cfg");
 		try {
 			if (!fArq.exists())
@@ -1353,8 +1367,7 @@ public class Funcoes {
 			obj.writeObject(pra);
 			obj.flush();
 			foArq.close();
-		}
-		catch (IOException err) {
+		} catch (IOException err) {
 			err.printStackTrace();
 		}
 	}
@@ -1367,10 +1380,9 @@ public class Funcoes {
 				return pra;
 			FileInputStream foArq = new FileInputStream(fArq);
 			ObjectInputStream obj = new ObjectInputStream(foArq);
-			pra = ( HashPrintRequestAttributeSet ) obj.readObject();
+			pra = (HashPrintRequestAttributeSet) obj.readObject();
 			foArq.close();
-		}
-		catch (Exception err) {
+		} catch (Exception err) {
 			err.printStackTrace();
 		}
 		return pra;
@@ -1382,7 +1394,9 @@ public class Funcoes {
 		cFrame = comp.getParent();
 		if (cFrame != null) {
 			for (int i = 1; 1 <= 10; i++) {
-				if (( cFrame instanceof JFrame ) || ( cFrame instanceof JInternalFrame ) || ( cFrame instanceof JDialog )) {
+				if ((cFrame instanceof JFrame)
+						|| (cFrame instanceof JInternalFrame)
+						|| (cFrame instanceof JDialog)) {
 					cRetorno = cFrame;
 					break;
 				}
@@ -1399,7 +1413,7 @@ public class Funcoes {
 			int iPos = sTexto.indexOf(sSep);
 			int iPosIni = 0;
 			int iTam = sTexto.length();
-			if (( iPos == -1 ) & ( sTexto != null ))
+			if ((iPos == -1) & (sTexto != null))
 				vRetorno.addElement(sTexto);
 			while (iPos >= 0) {
 				sLinha = sTexto.substring(iPosIni, iPos);
@@ -1407,7 +1421,7 @@ public class Funcoes {
 				iPosIni = iPos + sSep.length();
 
 				iPos = sTexto.indexOf(sSep, iPosIni);
-				if (( iPos == -1 ) & ( iTam > iPosIni )) {
+				if ((iPos == -1) & (iTam > iPosIni)) {
 					sLinha = sTexto.substring(iPosIni);
 					vRetorno.addElement(sLinha);
 					break;
@@ -1420,15 +1434,15 @@ public class Funcoes {
 	public static Vector<String> stringToVector(String sTexto) {
 		Vector<String> vRetorno = new Vector<String>();
 		String sLinha = "";
-		char c10 = ( char ) 10;
-		char c13 = ( char ) 13;
+		char c10 = (char) 10;
+		char c13 = (char) 13;
 		if (sTexto != null) {
 			int iPos = sTexto.indexOf(c13);
 			int iPosIni = 0;
 			int iTam = sTexto.length();
 			if (iPos == -1)
 				iPos = sTexto.indexOf(c10);
-			if (( iPos == -1 ) & ( sTexto != null ))
+			if ((iPos == -1) & (sTexto != null))
 				vRetorno.addElement(sTexto);
 			while (iPos >= 0) {
 				// System.out.println("PosIni: "+iPosIni);
@@ -1436,14 +1450,14 @@ public class Funcoes {
 				sLinha = sTexto.substring(iPosIni, iPos);
 				vRetorno.addElement(sLinha);
 				iPosIni = iPos + 1;
-				if (( iPosIni ) < iTam) {
+				if ((iPosIni) < iTam) {
 					if (sTexto.charAt(iPosIni) == c10)
 						iPosIni++;
 				}
 				iPos = sTexto.indexOf(c13, iPosIni);
 				if (iPos == -1)
 					iPos = sTexto.indexOf(c10, iPosIni);
-				if (( iPos == -1 ) & ( iTam > iPosIni )) {
+				if ((iPos == -1) & (iTam > iPosIni)) {
 					sLinha = sTexto.substring(iPosIni);
 					vRetorno.addElement(sLinha);
 					break;
@@ -1458,7 +1472,7 @@ public class Funcoes {
 		sVal = sVal.trim();
 		int iPos = sVal.indexOf(sChar);
 		if (iPos >= 0) {
-			if (iPos < ( sVal.length() - 1 ))
+			if (iPos < (sVal.length() - 1))
 				sRetorno = sVal.substring(0, iPos) + sVal.substring(iPos + 1);
 			else
 				sRetorno = sVal.substring(0, iPos);
@@ -1473,7 +1487,9 @@ public class Funcoes {
 			while (iPos > -1) {
 				iPos = sRetorno.indexOf(sParc);
 				if (iPos > -1) {
-					sRetorno = sRetorno.substring(0, iPos) + sRetorno.substring(iPos + sParc.length(), sRetorno.length());
+					sRetorno = sRetorno.substring(0, iPos)
+							+ sRetorno.substring(iPos + sParc.length(),
+									sRetorno.length());
 				}
 			}
 		}
@@ -1548,9 +1564,11 @@ public class Funcoes {
 	 * @return - Path para o arquivo.
 	 */
 	public static String arquivoTemp() {
-		int iNum = ( new Random() ).nextInt();
+		int iNum = (new Random()).nextInt();
 		String sNum = "" + iNum;
-		return Aplicativo.strTemp + sNum.substring(0, ( sNum.length() > 8 ) ? 8 : sNum.length()) + ".tmp";
+		return Aplicativo.strTemp
+				+ sNum.substring(0, (sNum.length() > 8) ? 8 : sNum.length())
+				+ ".tmp";
 	}
 
 	/**
@@ -1574,14 +1592,14 @@ public class Funcoes {
 		}
 		try {
 			if (fRet.exists()) {
-				if (Funcoes.mensagemConfirma(pai, "Arquivo já existe, sobrescrever?") != JOptionPane.YES_OPTION)
+				if (Funcoes.mensagemConfirma(pai,
+						"Arquivo já existe, sobrescrever?") != JOptionPane.YES_OPTION)
 					return null;
-			}
-			else
+			} else
 				fRet.createNewFile();
-		}
-		catch (IOException err) {
-			Funcoes.mensagemErro(pai, "Erro ao verificar o arquivo!\n" + err.getMessage());
+		} catch (IOException err) {
+			Funcoes.mensagemErro(pai,
+					"Erro ao verificar o arquivo!\n" + err.getMessage());
 			err.printStackTrace();
 		}
 		return fRet;
@@ -1643,9 +1661,9 @@ public class Funcoes {
 		File fRet = null;
 		try {
 			fRet = File.createTempFile("arq", "." + sExt);
-		}
-		catch (IOException err) {
-			JOptionPane.showMessageDialog(null, "Erro ao criar arquivo temporário!!" + err.getMessage());
+		} catch (IOException err) {
+			JOptionPane.showMessageDialog(null,
+					"Erro ao criar arquivo temporário!!" + err.getMessage());
 		}
 		fRet.deleteOnExit();
 		return fRet;
@@ -1656,7 +1674,7 @@ public class Funcoes {
 		GregorianCalendar cal = new GregorianCalendar(iAno, iMes, 1);
 		dRets[0] = cal.getTime();
 		cal.set(Calendar.DAY_OF_MONTH, cal.getMaximum(Calendar.DAY_OF_MONTH));
-		dRets[1] = ( cal.getTime() );
+		dRets[1] = (cal.getTime());
 		return dRets;
 	}
 
@@ -1665,31 +1683,30 @@ public class Funcoes {
 			return null;
 		int iSrcIdx; // index into source (byteData)
 		int iDestIdx; // index into destination (byteDest)
-		byte byteDest[] = new byte[( ( byteData.length + 2 ) / 3 ) * 4];
+		byte byteDest[] = new byte[((byteData.length + 2) / 3) * 4];
 
 		for (iSrcIdx = 0, iDestIdx = 0; iSrcIdx < byteData.length - 2; iSrcIdx += 3) {
-			byteDest[iDestIdx++] = ( byte ) ( ( byteData[iSrcIdx] >>> 2 ) & 077 );
-			byteDest[iDestIdx++] = ( byte ) ( ( byteData[iSrcIdx + 1] >>> 4 ) & 017 | ( byteData[iSrcIdx] << 4 ) & 077 );
-			byteDest[iDestIdx++] = ( byte ) ( ( byteData[iSrcIdx + 2] >>> 6 ) & 003 | ( byteData[iSrcIdx + 1] << 2 ) & 077 );
-			byteDest[iDestIdx++] = ( byte ) ( byteData[iSrcIdx + 2] & 077 );
+			byteDest[iDestIdx++] = (byte) ((byteData[iSrcIdx] >>> 2) & 077);
+			byteDest[iDestIdx++] = (byte) ((byteData[iSrcIdx + 1] >>> 4) & 017 | (byteData[iSrcIdx] << 4) & 077);
+			byteDest[iDestIdx++] = (byte) ((byteData[iSrcIdx + 2] >>> 6) & 003 | (byteData[iSrcIdx + 1] << 2) & 077);
+			byteDest[iDestIdx++] = (byte) (byteData[iSrcIdx + 2] & 077);
 
 			if (iSrcIdx < byteData.length) {
-				byteDest[iDestIdx++] = ( byte ) ( ( byteData[iSrcIdx] >>> 2 ) & 077 );
+				byteDest[iDestIdx++] = (byte) ((byteData[iSrcIdx] >>> 2) & 077);
 				if (iSrcIdx < byteData.length - 1) {
-					byteDest[iDestIdx++] = ( byte ) ( ( byteData[iSrcIdx + 1] >>> 4 ) & 017 | ( byteData[iSrcIdx] << 4 ) & 077 );
-					byteDest[iDestIdx++] = ( byte ) ( ( byteData[iSrcIdx + 1] << 2 ) & 077 );
-				}
-				else
-					byteDest[iDestIdx++] = ( byte ) ( ( byteData[iSrcIdx] << 4 ) & 077 );
+					byteDest[iDestIdx++] = (byte) ((byteData[iSrcIdx + 1] >>> 4) & 017 | (byteData[iSrcIdx] << 4) & 077);
+					byteDest[iDestIdx++] = (byte) ((byteData[iSrcIdx + 1] << 2) & 077);
+				} else
+					byteDest[iDestIdx++] = (byte) ((byteData[iSrcIdx] << 4) & 077);
 			}
 
 			for (iSrcIdx = 0; iSrcIdx < iDestIdx; iSrcIdx++) {
 				if (byteDest[iSrcIdx] < 26)
-					byteDest[iSrcIdx] = ( byte ) ( byteDest[iSrcIdx] + 'A' );
+					byteDest[iSrcIdx] = (byte) (byteDest[iSrcIdx] + 'A');
 				else if (byteDest[iSrcIdx] < 52)
-					byteDest[iSrcIdx] = ( byte ) ( byteDest[iSrcIdx] + 'a' - 26 );
+					byteDest[iSrcIdx] = (byte) (byteDest[iSrcIdx] + 'a' - 26);
 				else if (byteDest[iSrcIdx] < 62)
-					byteDest[iSrcIdx] = ( byte ) ( byteDest[iSrcIdx] + '0' - 52 );
+					byteDest[iSrcIdx] = (byte) (byteDest[iSrcIdx] + '0' - 52);
 				else if (byteDest[iSrcIdx] < 63)
 					byteDest[iSrcIdx] = '+';
 				else
@@ -1719,13 +1736,15 @@ public class Funcoes {
 			dia = 32;
 		GregorianCalendar cal = new GregorianCalendar(ano, mes - 1, dia);
 
-		if (mes != ( cal.get(Calendar.MONTH) + 1 )) {
+		if (mes != (cal.get(Calendar.MONTH) + 1)) {
 			cal.set(Calendar.DAY_OF_MONTH, 0);
 			iDia = cal.get(Calendar.DAY_OF_MONTH);
 			iMes = cal.get(Calendar.MONTH) + 1;
 			iAno = cal.get(Calendar.YEAR);
 		}
-		return StringFunctions.strZero("" + iDia, 2) + "/" + StringFunctions.strZero("" + iMes, 2) + "/" + StringFunctions.strZero("" + iAno, 4);
+		return StringFunctions.strZero("" + iDia, 2) + "/"
+				+ StringFunctions.strZero("" + iMes, 2) + "/"
+				+ StringFunctions.strZero("" + iAno, 4);
 	}
 
 	public static boolean validaData(String data) {
@@ -1739,12 +1758,11 @@ public class Funcoes {
 
 		cal = new GregorianCalendar(ano, mes - 1, dia);
 
-		if (( mes > 12 ) | ( ano == 0 ))
+		if ((mes > 12) | (ano == 0))
 			retorno = false;
-		else if (( mes != ( cal.get(Calendar.MONTH) + 1 ) ) | ( dia == 0 )) {
+		else if ((mes != (cal.get(Calendar.MONTH) + 1)) | (dia == 0)) {
 			retorno = false;
-		}
-		else if (( ano != ( cal.get(Calendar.YEAR) ) ) | ( mes == 0 ))
+		} else if ((ano != (cal.get(Calendar.YEAR))) | (mes == 0))
 			retorno = false;
 		return retorno;
 	}
@@ -1756,13 +1774,14 @@ public class Funcoes {
 
 		int hora = Integer.parseInt(time.substring(0, 2));
 		int minuto = Integer.parseInt(time.substring(3, 5));
-		int segundo = time.length() == 5 ? 0 : Integer.parseInt(time.substring(6, 8));
+		int segundo = time.length() == 5 ? 0 : Integer.parseInt(time.substring(
+				6, 8));
 
-		if (( hora > 23 ) || ( hora < 0 ))
+		if ((hora > 23) || (hora < 0))
 			retorno = false;
-		else if (( minuto > 59 ) || ( minuto < 0 ))
+		else if ((minuto > 59) || (minuto < 0))
 			retorno = false;
-		else if (( segundo > 59 ) || ( segundo < 0 ) && time.length() == 8)
+		else if ((segundo > 59) || (segundo < 0) && time.length() == 8)
 			retorno = false;
 		return retorno;
 	}
@@ -1770,9 +1789,12 @@ public class Funcoes {
 	public static String timeStampToStrDate(Timestamp tVal) {
 		GregorianCalendar cal = new GregorianCalendar();
 		cal.setTime(tVal);
-		String sRetorno = StringFunctions.strZero("" + cal.get(Calendar.DATE), 2);
-		sRetorno += "/" + StringFunctions.strZero("" + ( cal.get(Calendar.MONTH) + 1 ), 2);
-		sRetorno += "/" + ( cal.get(Calendar.YEAR) );
+		String sRetorno = StringFunctions.strZero("" + cal.get(Calendar.DATE),
+				2);
+		sRetorno += "/"
+				+ StringFunctions
+						.strZero("" + (cal.get(Calendar.MONTH) + 1), 2);
+		sRetorno += "/" + (cal.get(Calendar.YEAR));
 		return sRetorno;
 	}
 
@@ -1792,7 +1814,8 @@ public class Funcoes {
 		return dRetorno;
 	}
 
-	public static GregorianCalendar sqlDateToGregorianCalendar(java.sql.Date dVal) {
+	public static GregorianCalendar sqlDateToGregorianCalendar(
+			java.sql.Date dVal) {
 		GregorianCalendar cal = new GregorianCalendar();
 		cal.setTimeInMillis(dVal.getTime());
 		return cal;
@@ -1822,11 +1845,9 @@ public class Funcoes {
 					sTemp = sTemp.substring(iPos + 1, sTemp.length());
 				else
 					sTemp = "";
-			}
-			else if (( iPos == -1 ) && ( sTemp.length() == 0 )) {
+			} else if ((iPos == -1) && (sTemp.length() == 0)) {
 				sRetorno[i] = "";
-			}
-			else {
+			} else {
 				sRetorno[i] = sTemp;
 				sTemp = "";
 			}
@@ -1846,7 +1867,8 @@ public class Funcoes {
 		return strToStrArray(sVals, iConta, sSep);
 	}
 
-	public static String[] strToStrArray(String sVals, int iNumLinhas, String sSep) {
+	public static String[] strToStrArray(String sVals, int iNumLinhas,
+			String sSep) {
 		String[] sRetorno = new String[iNumLinhas];
 		String sTemp = sVals != null ? sVals : "";
 		int iPos;
@@ -1859,11 +1881,9 @@ public class Funcoes {
 					sTemp = sTemp.substring(iPos + iTamSep, sTemp.length());
 				else
 					sTemp = "";
-			}
-			else if (( iPos == -1 ) && ( sTemp.length() == 0 )) {
+			} else if ((iPos == -1) && (sTemp.length() == 0)) {
 				sRetorno[i] = "";
-			}
-			else {
+			} else {
 				sRetorno[i] = sTemp;
 				sTemp = "";
 			}
@@ -1878,40 +1898,43 @@ public class Funcoes {
 		int iPosEnter = 0;
 		String sBusca = sVals;
 		String sResto = "";
-		if (( sVals != null ) && ( sVals.length() > iNumChar )) {
-			while (( sBusca.length() > iNumChar )
-					&& ( ( ( sBusca.indexOf(" ") > iNumChar ) || ( sBusca.indexOf("\n") > iNumChar ) ) || ( ( sBusca.indexOf(" ") < 0 ) || ( sBusca.indexOf("\n") < 0 ) ) )) {
+		if ((sVals != null) && (sVals.length() > iNumChar)) {
+			while ((sBusca.length() > iNumChar)
+					&& (((sBusca.indexOf(" ") > iNumChar) || (sBusca
+							.indexOf("\n") > iNumChar)) || ((sBusca
+							.indexOf(" ") < 0) || (sBusca.indexOf("\n") < 0)))) {
 				iPos = 0;
 				iPosBranco = sBusca.lastIndexOf(" ");
 				iPosEnter = sBusca.lastIndexOf("\n");
-				if (( ( iPosBranco < iPosEnter ) && ( iPosBranco > 0 ) ) || ( ( iPosEnter < 0 ) && ( iPosBranco > 0 ) )) {
+				if (((iPosBranco < iPosEnter) && (iPosBranco > 0))
+						|| ((iPosEnter < 0) && (iPosBranco > 0))) {
 					iPos = iPosBranco;
-				}
-				else if (( ( iPosBranco > iPosEnter ) || ( iPosBranco == 0 ) ) && ( iPosEnter > 0 )) {
+				} else if (((iPosBranco > iPosEnter) || (iPosBranco == 0))
+						&& (iPosEnter > 0)) {
 					iPos = iPosEnter;
 				}
-				if (( iPosEnter == iPosBranco ) || ( iPos > iNumChar ) || ( iPos == 0 )) {
+				if ((iPosEnter == iPosBranco) || (iPos > iNumChar)
+						|| (iPos == 0)) {
 					iPos = iNumChar;
 				}
 				if (iPos > iNumChar) {
 					sResto = sBusca.substring(0, iPos);
 					sBusca = sBusca.substring(iPos, sBusca.length());
 					sRetorno += sResto + " ";
-				}
-				else {
+				} else {
 					sRetorno = sVals;
 					sBusca = "";
 				}
 			}
 			sRetorno += sBusca;
-		}
-		else {
+		} else {
 			return sBusca;
 		}
 		return sRetorno;
 	}
 
-	public static Vector<String> strToVectorSilabas(String sVals, int iNumColunas) {
+	public static Vector<String> strToVectorSilabas(String sVals,
+			int iNumColunas) {
 		sVals = strTostrQuebra(sVals, iNumColunas);
 		Vector<String> vRetorno = new Vector<String>();
 		String[] sSeparadaPorEnter = null;
@@ -1927,20 +1950,22 @@ public class Funcoes {
 				else
 					sLinhaAnt = sSeparadaPorEnter[i];
 				if (sLinhaAnt.length() > iNumColunas) {
-					sLinhaCortada = sLinhaAnt.substring(0, iNumColunas < sLinhaAnt.length() ? iNumColunas : sLinhaAnt.length());
+					sLinhaCortada = sLinhaAnt.substring(0,
+							iNumColunas < sLinhaAnt.length() ? iNumColunas
+									: sLinhaAnt.length());
 					if (sLinhaCortada.lastIndexOf(" ") > 0)
-						sLinhaNova = sLinhaCortada.substring(0, sLinhaCortada.lastIndexOf(' '));
+						sLinhaNova = sLinhaCortada.substring(0,
+								sLinhaCortada.lastIndexOf(' '));
 					else
 						sLinhaNova = sLinhaCortada.substring(0, iNumColunas);
 
 					sResto = sLinhaAnt.substring(sLinhaNova.length());
 
-				}
-				else {
+				} else {
 					sLinhaNova = sLinhaAnt;
 					sResto = "";
 				}
-				sLinhaNova = ( sLinhaNova.replaceAll(" +", " ") );
+				sLinhaNova = (sLinhaNova.replaceAll(" +", " "));
 				if (sLinhaNova.indexOf(" ") == 0)
 					vRetorno.addElement(sLinhaNova.substring(1));
 				else
@@ -1949,27 +1974,29 @@ public class Funcoes {
 			if (sResto.length() > 0) {
 				while (sResto.length() > 0) {
 					sLinhaAnt = sResto;
-					sLinhaCortada = sLinhaAnt.substring(0, iNumColunas < sLinhaAnt.length() ? iNumColunas : sLinhaAnt.length());
+					sLinhaCortada = sLinhaAnt.substring(0,
+							iNumColunas < sLinhaAnt.length() ? iNumColunas
+									: sLinhaAnt.length());
 					if (sLinhaAnt.length() > iNumColunas) {
 						if (sLinhaCortada.lastIndexOf(" ") > 0) {
-							sLinhaNova = sLinhaCortada.substring(0, sLinhaCortada.lastIndexOf(' '));
-						}
-						else if (sLinhaCortada.length() > iNumColunas)
-							sLinhaNova = sLinhaCortada.substring(0, iNumColunas);
+							sLinhaNova = sLinhaCortada.substring(0,
+									sLinhaCortada.lastIndexOf(' '));
+						} else if (sLinhaCortada.length() > iNumColunas)
+							sLinhaNova = sLinhaCortada
+									.substring(0, iNumColunas);
 						else
 							sLinhaNova = sLinhaCortada;
 
 						sResto = sLinhaAnt.substring(sLinhaNova.length());
 
-						sLinhaNova = ( sLinhaNova.replaceAll(" +", " ") );
+						sLinhaNova = (sLinhaNova.replaceAll(" +", " "));
 						if (sLinhaNova.indexOf(" ") == 0)
 							vRetorno.addElement(sLinhaNova.substring(1));
 						else
 							vRetorno.addElement(sLinhaNova);
 
-					}
-					else {
-						sLinhaCortada = ( sLinhaCortada.replaceAll(" +", " ") );
+					} else {
+						sLinhaCortada = (sLinhaCortada.replaceAll(" +", " "));
 						if (sLinhaCortada.indexOf(" ") == 0)
 							vRetorno.addElement(sLinhaCortada.substring(1));
 						else {
@@ -1986,30 +2013,34 @@ public class Funcoes {
 	public static String sqlTimeToStrTime(java.sql.Time t) {
 		if (t == null)
 			return "";
-		//System.out.println("Data " + t);
+		// System.out.println("Data " + t);
 		GregorianCalendar cal = new GregorianCalendar();
 		cal.setTime(t);
 		int iHora = cal.get(Calendar.HOUR_OF_DAY);
 		int iMinuto = cal.get(Calendar.MINUTE);
 		int iSegundo = cal.get(Calendar.SECOND);
-		//System.out.println(StringFunctions.strZero("" + iHora, 2) + ":" + StringFunctions.strZero("" + iMinuto, 2) + ":" + StringFunctions.strZero("" + iSegundo, 2));
+		// System.out.println(StringFunctions.strZero("" + iHora, 2) + ":" +
+		// StringFunctions.strZero("" + iMinuto, 2) + ":" +
+		// StringFunctions.strZero("" + iSegundo, 2));
 
-		return StringFunctions.strZero("" + iHora, 2) + ":" + StringFunctions.strZero("" + iMinuto, 2) + ":" + StringFunctions.strZero("" + iSegundo, 2);
+		return StringFunctions.strZero("" + iHora, 2) + ":"
+				+ StringFunctions.strZero("" + iMinuto, 2) + ":"
+				+ StringFunctions.strZero("" + iSegundo, 2);
 	}
 
-	public static java.sql.Time strTimeTosqlTime(String stime ) {
-		return strTimeToSqlTime(stime, true); 
+	public static java.sql.Time strTimeTosqlTime(String stime) {
+		return strTimeToSqlTime(stime, true);
 	}
-	
+
 	public static java.sql.Time strTimeToSqlTime(String stime, boolean mileseg) {
 		java.sql.Time ttime = null;
 
 		try {
 
-			if ( (stime == null) || "".equals(stime.trim() ) )
+			if ((stime == null) || "".equals(stime.trim()))
 				return ttime;
 
-//			System.out.println("Time: " + stime);
+			// System.out.println("Time: " + stime);
 			GregorianCalendar cal = new GregorianCalendar();
 			cal.setTime(new Date());
 
@@ -2017,41 +2048,39 @@ public class Funcoes {
 
 			try {
 				cal.set(Calendar.HOUR_OF_DAY, new Integer(sstime[0]).intValue());
-			}
-			catch (Exception e) {
+			} catch (Exception e) {
 				cal.set(Calendar.HOUR_OF_DAY, 0);
 				e.printStackTrace();
 			}
 			try {
 				cal.set(Calendar.MINUTE, new Integer(sstime[1]).intValue());
-			}
-			catch (Exception e) {
+			} catch (Exception e) {
 				cal.set(Calendar.MINUTE, 0);
 				e.printStackTrace();
 			}
 			try {
 				cal.set(Calendar.SECOND, new Integer(sstime[2]).intValue());
-			}
-			catch (Exception e) {
-//				System.out.println("Tempo sem contagem de segundos.");
+			} catch (Exception e) {
+				// System.out.println("Tempo sem contagem de segundos.");
 				cal.set(Calendar.SECOND, 0);
 			}
-			if ( ! mileseg) {
+			if (!mileseg) {
 				try {
-					cal.set(Calendar.MILLISECOND,0);
+					cal.set(Calendar.MILLISECOND, 0);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
-			//int iHora = cal.get(Calendar.HOUR_OF_DAY);
-			//int iMinuto = cal.get(Calendar.MINUTE);
-			//int iSegundo = cal.get(Calendar.SECOND);
+			// int iHora = cal.get(Calendar.HOUR_OF_DAY);
+			// int iMinuto = cal.get(Calendar.MINUTE);
+			// int iSegundo = cal.get(Calendar.SECOND);
 
 			ttime = Funcoes.dateToSQLTime(cal.getTime());
 
-	//		System.out.println(StringFunctions.strZero("" + iHora, 2) + ":" + StringFunctions.strZero("" + iMinuto, 2) + ":" + StringFunctions.strZero("" + iSegundo, 2));
-		}
-		catch (Exception e) {
+			// System.out.println(StringFunctions.strZero("" + iHora, 2) + ":" +
+			// StringFunctions.strZero("" + iMinuto, 2) + ":" +
+			// StringFunctions.strZero("" + iSegundo, 2));
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -2067,12 +2096,10 @@ public class Funcoes {
 				int iMes = Integer.parseInt(sVal.substring(3, 5)) - 1;
 				int iDia = Integer.parseInt(sVal.substring(0, 2));
 				cal = new GregorianCalendar(iAno, iMes, iDia);
-			}
-			catch (Exception err) {
+			} catch (Exception err) {
 				cal = null;
 			}
-		}
-		else
+		} else
 			cal = null;
 		if (cal == null)
 			return null;
@@ -2092,12 +2119,15 @@ public class Funcoes {
 		int iHora = cal.get(Calendar.HOUR_OF_DAY);
 		int iMinuto = cal.get(Calendar.MINUTE);
 		int iSegundo = cal.get(Calendar.SECOND);
-		return StringFunctions.strZero("" + iDia, 2) + "/" + StringFunctions.strZero("" + iMes, 2) + "/" + iAno + " - " + StringFunctions.strZero("" + iHora, 2) + ":"
-				+ StringFunctions.strZero("" + iMinuto, 2) + ":" + StringFunctions.strZero("" + iSegundo, 2);
+		return StringFunctions.strZero("" + iDia, 2) + "/"
+				+ StringFunctions.strZero("" + iMes, 2) + "/" + iAno + " - "
+				+ StringFunctions.strZero("" + iHora, 2) + ":"
+				+ StringFunctions.strZero("" + iMinuto, 2) + ":"
+				+ StringFunctions.strZero("" + iSegundo, 2);
 	}
 
 	public static String dateToStrDate(Date dVal) {
-		
+
 		return ConversionFunctions.dateToStrDate(dVal);
 
 	}
@@ -2108,7 +2138,9 @@ public class Funcoes {
 		int iHora = cal.get(Calendar.HOUR_OF_DAY);
 		int iMinuto = cal.get(Calendar.MINUTE);
 		int iSegundo = cal.get(Calendar.SECOND);
-		return StringFunctions.strZero(String.valueOf(iHora), 2) + ":" + StringFunctions.strZero(String.valueOf(iMinuto), 2) + ":" + iSegundo;
+		return StringFunctions.strZero(String.valueOf(iHora), 2) + ":"
+				+ StringFunctions.strZero(String.valueOf(iMinuto), 2) + ":"
+				+ iSegundo;
 	}
 
 	public static String strDateToStrDB(String sVal) {
@@ -2120,12 +2152,10 @@ public class Funcoes {
 				int iMes = Integer.parseInt(sVal.substring(3, 5));
 				int iDia = Integer.parseInt(sVal.substring(0, 2));
 				sRet = iAno + "-" + iMes + "-" + iDia;
-			}
-			catch (Exception err) {
+			} catch (Exception err) {
 				sRet = "";
 			}
-		}
-		else
+		} else
 			sRet = "";
 		return sRet;
 	}
@@ -2134,7 +2164,7 @@ public class Funcoes {
 		GregorianCalendar cal = new GregorianCalendar();
 		cal.setTime(d);
 		String sDia = "" + cal.get(Calendar.DAY_OF_MONTH);
-		String sMes = "" + ( cal.get(Calendar.MONTH) + 1 );
+		String sMes = "" + (cal.get(Calendar.MONTH) + 1);
 		String sAno = "" + cal.get(Calendar.YEAR);
 		return sAno + "-" + sMes + "-" + sDia;
 	}
@@ -2150,8 +2180,8 @@ public class Funcoes {
 		int iPos = sVal.lastIndexOf('.');
 		int iPosTmp = -1;
 		if (iPos >= 0) {
-			while (iPos != ( iPosTmp = sVal.indexOf('.') )) {// Tirando os
-																// pontos
+			while (iPos != (iPosTmp = sVal.indexOf('.'))) {// Tirando os
+															// pontos
 				// de milhar.
 				sVal = sVal.substring(0, iPosTmp) + sVal.substring(iPosTmp + 1);
 				iPos--;
@@ -2184,32 +2214,30 @@ public class Funcoes {
 			return "";
 		String texto = "";
 		int i2 = 0;
-		
+
 		try {
-		
-			if (( sVal.length() > 0 ) & ( sMasc.length() > 0 ) & ( sMasc.length() > sVal.length() )) {
+
+			if ((sVal.length() > 0) & (sMasc.length() > 0)
+					& (sMasc.length() > sVal.length())) {
 				char[] va = sVal.toCharArray();
 				char[] ma = sMasc.toCharArray();
 				for (int i = 0; i < sVal.length(); i++) {
 					if (ma[i2] == '#') {
 						texto += va[i];
-					}
-					else {
+					} else {
 						texto += ma[i2];
-	
+
 						if (!Character.isDigit(ma[i2])) {
 							texto += va[i];
 							i2++;
 						}
-	
+
 					}
 					i2++;
 				}
-			}
-			else
+			} else
 				texto = sVal;
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return texto;
@@ -2223,8 +2251,7 @@ public class Funcoes {
 				sVal = "0";
 			deVal = Float.parseFloat(sVal);
 			deVal = Funcoes.arredDouble(deVal, iDec);
-		}
-		finally {
+		} finally {
 			bigRet = new BigDecimal(deVal);
 		}
 		return bigRet;
@@ -2249,28 +2276,27 @@ public class Funcoes {
 			return sRetorno;
 		int iPonto = sVal.indexOf('.');
 		char[] cVal = sVal.toCharArray();
-		int iCont = ( iDec + 1 ) * -1;
+		int iCont = (iDec + 1) * -1;
 		if (iPonto != -1) {
 			cVal[iPonto] = ',';
 			sVal = new String(cVal);
-			sVal += StringFunctions.replicate("0", iDec - ( sVal.length() - ( iPonto + 1 ) ));
+			sVal += StringFunctions.replicate("0", iDec
+					- (sVal.length() - (iPonto + 1)));
 			sVal = sVal.substring(0, iPonto + 1 + iDec);
 			cVal = sVal.toCharArray();
-			for (int i = ( sVal.length() - 1 ); i >= 0; i--) {
+			for (int i = (sVal.length() - 1); i >= 0; i--) {
 				if (iCont == 3) {
 					if (cVal[i] == '-')
 						sRetorno = cVal[i] + sRetorno;
 					else
 						sRetorno = cVal[i] + "." + sRetorno;
 					iCont = 1;
-				}
-				else {
+				} else {
 					sRetorno = cVal[i] + sRetorno;
 					iCont++;
 				}
 			}
-		}
-		else {
+		} else {
 			sRetorno = sVal + ',' + StringFunctions.replicate("0", iDec);
 		}
 		if (iDec == 0) {
@@ -2333,27 +2359,31 @@ public class Funcoes {
 				else
 					bRetorno = false;
 			if (bRetorno) {
-				DF1 = 5 * D1[1] + 4 * D1[2] + 3 * D1[3] + 2 * D1[4] + 9 * D1[5] + 8 * D1[6] + 7 * D1[7] + 6 * D1[8] + 5 * D1[9] + 4 * D1[10] + 3 * D1[11] + 2 * D1[12];
+				DF1 = 5 * D1[1] + 4 * D1[2] + 3 * D1[3] + 2 * D1[4] + 9 * D1[5]
+						+ 8 * D1[6] + 7 * D1[7] + 6 * D1[8] + 5 * D1[9] + 4
+						* D1[10] + 3 * D1[11] + 2 * D1[12];
 				DF2 = DF1 / 11;
 				DF3 = DF2 * 11;
 				Resto1 = DF1 - DF3;
-				if (( Resto1 == 0 ) | ( Resto1 == 1 ))
+				if ((Resto1 == 0) | (Resto1 == 1))
 					PrimeiroDigito = 0;
 				else
 					PrimeiroDigito = 11 - Resto1;
-				DF4 = 6 * D1[1] + 5 * D1[2] + 4 * D1[3] + 3 * D1[4] + 2 * D1[5] + 9 * D1[6] + 8 * D1[7] + 7 * D1[8] + 6 * D1[9] + 5 * D1[10] + 4 * D1[11] + 3 * D1[12] + 2 * PrimeiroDigito;
+				DF4 = 6 * D1[1] + 5 * D1[2] + 4 * D1[3] + 3 * D1[4] + 2 * D1[5]
+						+ 9 * D1[6] + 8 * D1[7] + 7 * D1[8] + 6 * D1[9] + 5
+						* D1[10] + 4 * D1[11] + 3 * D1[12] + 2 * PrimeiroDigito;
 				DF5 = DF4 / 11;
 				DF6 = DF5 * 11;
 				Resto2 = DF4 - DF6;
-				if (( Resto2 == 0 ) | ( Resto2 == 1 ))
+				if ((Resto2 == 0) | (Resto2 == 1))
 					SegundoDigito = 0;
 				else
 					SegundoDigito = 11 - Resto2;
-				if (( PrimeiroDigito != Integer.parseInt("" + Dado[13]) ) | ( SegundoDigito != Integer.parseInt("" + Dado[14]) ))
+				if ((PrimeiroDigito != Integer.parseInt("" + Dado[13]))
+						| (SegundoDigito != Integer.parseInt("" + Dado[14])))
 					bRetorno = false;
 			}
-		}
-		else if (sDado.trim().length() != 0)
+		} else if (sDado.trim().length() != 0)
 			bRetorno = false;
 		return bRetorno;
 	}
@@ -2371,27 +2401,30 @@ public class Funcoes {
 				else
 					bRetorno = false;
 			if (bRetorno) {
-				DF1 = 10 * D1[1] + 9 * D1[2] + 8 * D1[3] + 7 * D1[4] + 6 * D1[5] + 5 * D1[6] + 4 * D1[7] + 3 * D1[8] + 2 * D1[9];
+				DF1 = 10 * D1[1] + 9 * D1[2] + 8 * D1[3] + 7 * D1[4] + 6
+						* D1[5] + 5 * D1[6] + 4 * D1[7] + 3 * D1[8] + 2 * D1[9];
 				DF2 = DF1 / 11;
 				DF3 = DF2 * 11;
 				Resto1 = DF1 - DF3;
-				if (( Resto1 == 0 ) || ( Resto1 == 1 ))
+				if ((Resto1 == 0) || (Resto1 == 1))
 					PrimeiroDigito = 0;
 				else
 					PrimeiroDigito = 11 - Resto1;
-				DF4 = 11 * D1[1] + 10 * D1[2] + 9 * D1[3] + 8 * D1[4] + 7 * D1[5] + 6 * D1[6] + 5 * D1[7] + 4 * D1[8] + 3 * D1[9] + 2 * PrimeiroDigito;
+				DF4 = 11 * D1[1] + 10 * D1[2] + 9 * D1[3] + 8 * D1[4] + 7
+						* D1[5] + 6 * D1[6] + 5 * D1[7] + 4 * D1[8] + 3 * D1[9]
+						+ 2 * PrimeiroDigito;
 				DF5 = DF4 / 11;
 				DF6 = DF5 * 11;
 				Resto2 = DF4 - DF6;
-				if (( Resto2 == 0 ) || ( Resto2 == 1 ))
+				if ((Resto2 == 0) || (Resto2 == 1))
 					SegundoDigito = 0;
 				else
 					SegundoDigito = 11 - Resto2;
-				if (( PrimeiroDigito != Integer.parseInt(Dado[9] + "") ) || ( SegundoDigito != Integer.parseInt(Dado[10] + "") ))
+				if ((PrimeiroDigito != Integer.parseInt(Dado[9] + ""))
+						|| (SegundoDigito != Integer.parseInt(Dado[10] + "")))
 					bRetorno = false;
 			}
-		}
-		else if (sDado.trim().length() != 0)
+		} else if (sDado.trim().length() != 0)
 			bRetorno = false;
 		return bRetorno;
 	}
@@ -2404,7 +2437,7 @@ public class Funcoes {
 			if ("ISENTO".equals(sIE.trim())) {
 				return true;
 			}
-			if ( uf == null ) {
+			if (uf == null) {
 				bRetorno = false;
 			} else {
 				InscricaoEstadual ie = uf.getInscricaoEstadual();
@@ -2412,23 +2445,24 @@ public class Funcoes {
 				bRetorno = ie.isValid();
 			}
 			// testaCasoIE( sIE, ie );
-		}
-		catch (Exception e) {
-			Funcoes.mensagemErro(null, "Erro ao validar a inscrição estadual!\n" + e.getMessage());
+		} catch (Exception e) {
+			Funcoes.mensagemErro(null,
+					"Erro ao validar a inscrição estadual!\n" + e.getMessage());
 			e.printStackTrace();
 		}
 		return bRetorno;
 	}
 
-	public static boolean validaEmail(String email){    
-		Pattern validaemail = Pattern.compile("^[\\w-]+(\\.[\\w-]+)*@([\\w-]+\\.)+[a-zA-Z]{2,7}$");
-		if (email==null) {
+	public static boolean validaEmail(String email) {
+		Pattern validaemail = Pattern
+				.compile("^[\\w-]+(\\.[\\w-]+)*@([\\w-]+\\.)+[a-zA-Z]{2,7}$");
+		if (email == null) {
 			return false;
 		} else {
 			return validaemail.matcher(email.trim()).matches();
 		}
 	}
-	
+
 	public static String formataIE(String sIE, String estado) {
 		String ret = "";
 
@@ -2442,8 +2476,7 @@ public class Funcoes {
 
 			return setMascara(StringFunctions.clearString(sIE), mascara);
 
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -3095,7 +3128,8 @@ public class Funcoes {
 	 * linha34.addElement("0/9"); linha34.addElement("DVX");
 	 * linha34.addElement("##.##.######.#"); vIE.addElement(linha34); }
 	 */
-	public static String transValor(BigDecimal bdValor, int iTam, int iDec, boolean bZeroEsq) {
+	public static String transValor(BigDecimal bdValor, int iTam, int iDec,
+			boolean bZeroEsq) {
 		String sValor;
 		sValor = strDecimalToStrCurrency(iTam + 1, iDec, "" + bdValor);
 
@@ -3165,15 +3199,14 @@ public class Funcoes {
 
 			lIni = inicio.getTime() - clLimpaDiasIni.getTimeInMillis();
 			lFim = fim.getTime() - clLimpaDiasFim.getTimeInMillis();
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return lIni + lFim;
 	}
 
 	public static long subtraiTime(Time inicio, Time fim) {
-		if (fim!=null && inicio!=null) {
+		if (fim != null && inicio != null) {
 			return fim.getTime() - inicio.getTime();
 		} else {
 			return 0;
@@ -3184,16 +3217,16 @@ public class Funcoes {
 		StringBuffer resultado = new StringBuffer();
 
 		// verifica quantidade de dias.
-		long dias = time / ( 1000 * 60 * 60 * 24 );
-		time = time % ( 1000 * 60 * 60 * 24 );
+		long dias = time / (1000 * 60 * 60 * 24);
+		time = time % (1000 * 60 * 60 * 24);
 
 		if (dias > 0) {
 			resultado.append(dias);
 			resultado.append(" DD ");
 		}
 
-		long horas = time / ( 1000 * 60 * 60 );
-		time = time % ( 1000 * 60 * 60 );
+		long horas = time / (1000 * 60 * 60);
+		time = time % (1000 * 60 * 60);
 
 		if (horas < 10) {
 			resultado.append("0");
@@ -3201,8 +3234,8 @@ public class Funcoes {
 		resultado.append(horas);
 		resultado.append(":");
 
-		long minutos = time / ( 1000 * 60 );
-		time = time % ( 1000 * 60 );
+		long minutos = time / (1000 * 60);
+		time = time % (1000 * 60);
 
 		if (minutos < 10) {
 			resultado.append("0");
@@ -3222,30 +3255,30 @@ public class Funcoes {
 		return resultado.toString();
 
 	}
-	
+
 	public static String longTostrTimeHoras(long time) {
 		StringBuffer resultado = new StringBuffer();
 
 		// verifica quantidade de dias.
-		long dias = time / ( 1000 * 60 * 60 * 24 );
-		time = time % ( 1000 * 60 * 60 * 24 );
+		long dias = time / (1000 * 60 * 60 * 24);
+		time = time % (1000 * 60 * 60 * 24);
 		long horadia = 0;
 
 		if (dias > 0) {
 			horadia = dias * 24;
 		}
 
-		long horas = time / ( 1000 * 60 * 60 );
-		time = time % ( 1000 * 60 * 60 );
+		long horas = time / (1000 * 60 * 60);
+		time = time % (1000 * 60 * 60);
 
-		if (horas+horadia < 10) {
+		if (horas + horadia < 10) {
 			resultado.append("0");
 		}
 		resultado.append(horas + horadia);
 		resultado.append(":");
 
-		long minutos = time / ( 1000 * 60 );
-		time = time % ( 1000 * 60 );
+		long minutos = time / (1000 * 60);
+		time = time % (1000 * 60);
 
 		if (minutos < 10) {
 			resultado.append("0");
@@ -3273,8 +3306,7 @@ public class Funcoes {
 			cl.setTime(dt);
 			cl.add(Calendar.MONTH, imeses);
 			dt2 = cl.getTime();
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return dt2;
@@ -3287,8 +3319,7 @@ public class Funcoes {
 			cl.setTime(dt);
 			cl.add(Calendar.MONTH, imeses * -1);
 			dt2 = cl.getTime();
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return dt2;
@@ -3318,8 +3349,7 @@ public class Funcoes {
 				media = total.divide(new BigDecimal(qtd));
 			}
 
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -3327,7 +3357,8 @@ public class Funcoes {
 
 	}
 
-	public static boolean entreValores(Integer valor, Integer faixa1, Integer faixa2) {
+	public static boolean entreValores(Integer valor, Integer faixa1,
+			Integer faixa2) {
 
 		boolean ret = false;
 		Integer valormenor = null;
@@ -3340,16 +3371,15 @@ public class Funcoes {
 				valormenor = faixa1.compareTo(faixa2) <= 0 ? faixa1 : faixa2;
 				valormaior = faixa1.compareTo(faixa2) <= 0 ? faixa2 : faixa1;
 
-				if (valor.compareTo(valormenor) >= 0 && valor.compareTo(valormaior) <= 0) {
+				if (valor.compareTo(valormenor) >= 0
+						&& valor.compareTo(valormaior) <= 0) {
 					ret = true;
-				}
-				else {
+				} else {
 					ret = false;
 				}
 			}
 
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -3381,9 +3411,11 @@ public class Funcoes {
 			sql.append("and am.codemp=? and am.codfilial=? and am.idusu=? and mn.acaomenu=? ");
 			sql.append("and am.tpacessomu != 'A' ");
 
-			System.out.println("sql para verificação de acesso:" + sql.toString());
+			System.out.println("sql para verificação de acesso:"
+					+ sql.toString());
 
-			ps = Aplicativo.getInstace().getConexao().prepareStatement(sql.toString());
+			ps = Aplicativo.getInstace().getConexao()
+					.prepareStatement(sql.toString());
 
 			ps.setInt(1, Aplicativo.iCodEmp);
 			ps.setInt(2, Aplicativo.iCodFilial);
@@ -3392,180 +3424,200 @@ public class Funcoes {
 
 			rs = ps.executeQuery();
 
-			if (rs.next() || "SYSDBA".equals(Aplicativo.getUsuario().getIdusu().toUpperCase())) {
+			if (rs.next()
+					|| "SYSDBA".equals(Aplicativo.getUsuario().getIdusu()
+							.toUpperCase())) {
 				ret = true;
 			}
 
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		return ret;
 	}
-	
-    public static String completaTexto( String valor, int tam, String completa ) {
-    	StringBuffer valorTexto = new StringBuffer( valor );
-    	while ( valorTexto.length()<tam ) {
-    		valorTexto.append( completa );
-    	}
-    	if ( valorTexto.length()>tam ) {
-    		valorTexto.delete( tam, valorTexto.length() );
-    	}
-    	return valorTexto.toString();
-    }
-    /*
-	public static boolean moveFile(File origem, String destino ) throws IOException {
 
-		boolean movido = false;
-		
-		File dest = new File( destino );
-		
-		dest.createNewFile();
+	public static String completaTexto(String valor, int tam, String completa) {
+		StringBuffer valorTexto = new StringBuffer(valor);
+		while (valorTexto.length() < tam) {
+			valorTexto.append(completa);
+		}
+		if (valorTexto.length() > tam) {
+			valorTexto.delete(tam, valorTexto.length());
+		}
+		return valorTexto.toString();
+	}
 
-		InputStream in = null;
+	/*
+	 * public static boolean moveFile(File origem, String destino ) throws
+	 * IOException {
+	 * 
+	 * boolean movido = false;
+	 * 
+	 * File dest = new File( destino );
+	 * 
+	 * dest.createNewFile();
+	 * 
+	 * InputStream in = null;
+	 * 
+	 * OutputStream out = null;
+	 * 
+	 * try{
+	 * 
+	 * in = new FileInputStream( origem );
+	 * 
+	 * out = new FileOutputStream(dest);
+	 * 
+	 * byte[] buf = new byte[1024];
+	 * 
+	 * int len;
+	 * 
+	 * while((len = in.read(buf)) > 0){
+	 * 
+	 * out.write(buf, 0, len);
+	 * 
+	 * }
+	 * 
+	 * origem.delete();
+	 * 
+	 * movido = true;
+	 * 
+	 * } catch ( Exception e ) { e.printStackTrace(); mensagemErro( null,
+	 * "Erro ao mover arquivo!\n" + e.getMessage() ); }
+	 * 
+	 * finally{
+	 * 
+	 * in.close();
+	 * 
+	 * out.close(); }
+	 * 
+	 * return movido;
+	 * 
+	 * }
+	 */
 
-		OutputStream out = null;
+	public static boolean moveFiles(String dirorigem, String dirdestino,
+			String prefixo) {
 
-		try{
+		boolean movidos = false;
 
-			in = new FileInputStream( origem );
+		try {
 
-			out = new FileOutputStream(dest);
+			File diretorio_origem = new File(dirorigem);
 
-			byte[] buf = new byte[1024];
+			File arquivos[] = diretorio_origem.listFiles();
 
-			int len;
+			for (int i = 0; i < arquivos.length; i++) {
 
-			while((len = in.read(buf)) > 0){
+				if (!arquivos[i].isDirectory()) {
+					System.out.println("Movendo arquivo: "
+							+ arquivos[i].getName() + " ");
 
-				out.write(buf, 0, len);
+					moveFile(arquivos[i].toString(),
+							dirdestino + "/" + (prefixo != null ? prefixo : "")
+									+ arquivos[i].getName());
+				}
 
 			}
-			
-			origem.delete();
-		
-			movido = true;
-			
-		}
-		catch ( Exception e ) {
+
+			movidos = true;
+
+		} catch (Exception e) {
 			e.printStackTrace();
-			mensagemErro( null, "Erro ao mover arquivo!\n"  + e.getMessage() );
 		}
 
-		finally{
-
-			in.close();
-
-			out.close();
-		}
-		
-		return movido;
+		return movidos;
 
 	}
-	*/
-	
-    public static boolean moveFiles( String dirorigem, String dirdestino, String prefixo ) {
-    	
-    	boolean movidos = false;
-    	
-    	try {
-    		
 
-    		File diretorio_origem = new File(dirorigem);
-    		
-    		File arquivos[] = diretorio_origem.listFiles();
+	public static boolean moveFile(String origem, String destino) {
 
-    		for ( int i = 0; i < arquivos.length; i++ ) {
-    			
-    			if (!arquivos[i].isDirectory()) {
-    				System.out.println( "Movendo arquivo: " + arquivos[i].getName() + " " );
-    	
-    				moveFile(arquivos[i].toString(), dirdestino + "/" + (prefixo!=null ?prefixo : "") + arquivos[i].getName() );
-    			}
-    			
-    		}
-    	
-    		movidos = true;
-    		
-    	}
-    	catch (Exception e) {
-    		e.printStackTrace();
-		}
-    	
-    	return movidos;
-    	
-    }
-    
-	public static boolean moveFile( String origem, String destino) {
-		
 		boolean movido = false;
-		
+
 		try {
-		
+
 			// Cria channel na origem
-			FileChannel oriChannel = new FileInputStream( origem ).getChannel();
+			FileChannel oriChannel = new FileInputStream(origem).getChannel();
 
 			// Cria channel no destino
-			FileChannel destChannel = new FileOutputStream( destino ).getChannel();
-			
+			FileChannel destChannel = new FileOutputStream(destino)
+					.getChannel();
+
 			// Copia conteúdo da origem no destino
-			
-			destChannel.transferFrom( oriChannel, 0, oriChannel.size());
-	
-			//	Fecha channels
+
+			destChannel.transferFrom(oriChannel, 0, oriChannel.size());
+
+			// Fecha channels
 			oriChannel.close();
 			destChannel.close();
-						
+
 			File arquivo = new File(origem);
-			
+
 			arquivo.delete();
-			
+
 			movido = true;
-			
-		}
-		catch (Exception e) {
+
+		} catch (Exception e) {
 			e.printStackTrace();
-			mensagemErro( null, "Erro ao mover arquivo!\n"  + e.getMessage() );
+			mensagemErro(null, "Erro ao mover arquivo!\n" + e.getMessage());
 		}
-		
+
 		return movido;
-		
+
 	}
-	
+
+	public static Vector<String> getMeses(Date dataini, Date datafim) {
+		Vector<String> result = new Vector<String>();
+		Calendar calini = Calendar.getInstance();
+		calini.setTime(dataini);
+		Calendar calfim = Calendar.getInstance();
+		calfim.setTime(datafim);
+		while (calini.get(Calendar.YEAR) < calfim.get(Calendar.YEAR)
+				|| calini.get(Calendar.MONTH) < calfim.get(Calendar.MONTH)) {
+			String ano = String.valueOf(calini.get(Calendar.YEAR));
+			String mes = String.valueOf(calini.get(Calendar.MONTH) + 1);
+			if (mes.length() == 1) {
+				mes = "0" + mes;
+			}
+			result.add(ano + mes);
+			calini.add(Calendar.MONTH, 1);
+		}
+		return result;
+	}
+
 	public static String getWeek(java.sql.Date date) {
-		
+
 		String ret = "";
 		Integer week = null;
 		Integer year = null;
 		Integer month = null;
-		
+
 		try {
-			
+
 			Calendar cal = new GregorianCalendar();
 			cal.setTime(date);
-			
-			month = cal.get( Calendar.MONTH );
-			week = cal.get( Calendar.WEEK_OF_YEAR );
-			year = cal.get( Calendar.YEAR );
-			
+
+			month = cal.get(Calendar.MONTH);
+			week = cal.get(Calendar.WEEK_OF_YEAR);
+			year = cal.get(Calendar.YEAR);
+
 			// Loucuras do Java
-			// Se for dezembro e a semana estiver retornando 1 deve corrigir para 53 
-			if(month.equals(11) && week.equals(1) ) {
+			// Se for dezembro e a semana estiver retornando 1 deve corrigir
+			// para 53
+			if (month.equals(11) && week.equals(1)) {
 				week = 53;
 			}
-			
-			ret = year + " - " + StringFunctions.strZero( (week-1) + "", 2 );
-			
-		}
-		catch (Exception e) {
+
+			ret = year + " - " + StringFunctions.strZero((week - 1) + "", 2);
+
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		System.out.println( "Data:" + date.toString() + " semana:" + week);
-		
+
+		System.out.println("Data:" + date.toString() + " semana:" + week);
+
 		return ret;
-		
+
 	}
 
 }
