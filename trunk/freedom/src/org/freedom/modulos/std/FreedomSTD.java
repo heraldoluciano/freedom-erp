@@ -343,13 +343,13 @@ public class FreedomSTD extends AplicativoPD {
 		addOpcao( 100204000, TP_OPCAO_ITEM, "Contabil/Livros Fiscais", "Contabil/Livros Fiscais", 'C', 100204010, 3, true, FExporta.class );
 		addOpcao( 100204000, TP_OPCAO_ITEM, "SVV", "SVV", 'S', 100204020, 3, true, FSVV.class );
 		addOpcao( 100200000, TP_OPCAO_MENU, "Etiquetas", "", 't', 100205000, 2, false, null );
-		addOpcao( 100250000, TP_OPCAO_ITEM, "Modelo", "Modelo de etiquetas", 'M', 100205010, 3, true, FModEtiqueta.class );
-		addOpcao( 100250000, TP_OPCAO_ITEM, "Imprimir", "Etiquetas", 'I', 100205020, 3, true, FREtiqueta.class ); // LOM
+		addOpcao( 100205000, TP_OPCAO_ITEM, "Modelo", "Modelo de etiquetas", 'M', 100205010, 3, true, FModEtiqueta.class );
+		addOpcao( 100205000, TP_OPCAO_ITEM, "Imprimir", "Etiquetas", 'I', 100205020, 3, true, FREtiqueta.class ); // LOM
 		addOpcao( 100200000, TP_OPCAO_ITEM, "Imp. tabelas de fornecedores", "Imp. tabelas de fornecedores", 'I', 100206000, 2, true, FImpTabFor.class );
 		addOpcao( 100200000, TP_OPCAO_ITEM, "Ajuste do item do orçamento", "Ajuste do item do orçamento", 'A', 100207000, 2, true, FStatusItOrc.class );
 		addOpcao( 100200000, TP_OPCAO_MENU, "Bloqueios e desbloqueios", "", 'B', 100208000, 2, false, null );
-		addOpcao( 100280000, TP_OPCAO_ITEM, "Compras", "Bloqueio e desbloqueio de compras", 'C', 100208010, 3, true, FBloqCompra.class );
-		addOpcao( 100280000, TP_OPCAO_ITEM, "Vendas", "Bloqueio e desbloqueio de vendas", 'V', 100208020, 3, true, FBloqVenda.class );
+		addOpcao( 100208000, TP_OPCAO_ITEM, "Compras", "Bloqueio e desbloqueio de compras", 'C', 100208010, 3, true, FBloqCompra.class );
+		addOpcao( 100208000, TP_OPCAO_ITEM, "Vendas", "Bloqueio e desbloqueio de vendas", 'V', 100208020, 3, true, FBloqVenda.class );
 		addOpcao( 100200000, TP_OPCAO_ITEM, "Canc. de vínc. venda x orçamento", "Canc. de vínc. venda x orçamento", 'v', 100209000, 2, true, FCancVendaOrc.class );
 		addOpcao( 100200000, TP_OPCAO_ITEM, "Reorganização de seq. de itens", "Reorganização de seq. de itens", 'R', 100210000, 2, true, FTrocaSeqItens.class );
 		addOpcao( 100200000, TP_OPCAO_ITEM, "Troca referência dos produtos", "Troca referência dos produtos", 'T', 100211000, 2, true, FTrocaRefprod.class );
