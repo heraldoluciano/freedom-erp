@@ -955,7 +955,7 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 			sql.append( "codempse, codfilialse, serie, doccompra, " );
 			sql.append( "codemptm, codfilialtm, codtipomov, " );
 			sql.append( "dtentcompra, dtemitcompra, tipofretecompra," );
-			sql.append( "codemptn, codfilialtn, codtran, codemprm, codfilialrm, ticket, calctrib, obscompra " );
+			sql.append( "codemptn, codfilialtn, codtran, codemprm, codfilialrm, ticket, calctrib, observacao " );
 			sql.append( ") values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" );
 
 			ps = getConn().prepareStatement( sql.toString() );
