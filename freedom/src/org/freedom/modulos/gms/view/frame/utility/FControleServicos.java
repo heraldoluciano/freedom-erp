@@ -988,7 +988,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 
 					if ( Funcoes.mensagemConfirma( this, "Confirma a geração do pedido de compra para o ticket nro.:" + ticket.toString() + " ?" ) == JOptionPane.YES_OPTION ) {
 
-						Integer codcompra = recmerc.geraCompra(false);
+						Integer codcompra = recmerc.geraCompra(false, null, null);
 
 						if ( codcompra != null && codcompra > 0 ) {
 

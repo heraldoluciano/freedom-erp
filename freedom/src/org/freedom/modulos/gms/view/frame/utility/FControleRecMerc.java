@@ -862,7 +862,7 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 					
 						if ( Funcoes.mensagemConfirma( this, "Confirma a geração do pedido de compra para o ticket nro.:" + ticket.toString() + " ?" ) == JOptionPane.YES_OPTION ) {
 
-							codcompra = recmerc.geraCompra(false);
+							codcompra = recmerc.geraCompra(false, null, null);
 
 							if ( codcompra != null && codcompra > 0 ) {
 

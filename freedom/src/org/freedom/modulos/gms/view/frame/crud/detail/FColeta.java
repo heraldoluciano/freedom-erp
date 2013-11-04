@@ -863,7 +863,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 				daorecmerc.CarregaRecMerc();
 				daorecmerc.setCodfor( codfor );
 				if(Funcoes.mensagemConfirma( this, "Confirmar geração da compra ?" ) == JOptionPane.YES_OPTION	){
-					codcompra = daorecmerc.geraCompra(true);
+					codcompra = daorecmerc.geraCompra(true, txtDocRecMerc.getVlrString(), txtDtEnt.getVlrDate());
 					if (Funcoes.mensagemConfirma( this, "Gerada a compra número " + codcompra + ", deseja edita-la ?" )==JOptionPane.YES_OPTION) {
 						editaCompra(codcompra);
 					}

@@ -918,9 +918,10 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 	}
 
-	public Integer geraCompra( boolean iscoleta ) {
+	public Integer geraCompra( boolean iscoleta, String doccoleta, Date dtentrada ) {
 
 		StringBuilder sql = new StringBuilder();
+		StringBuilder obscompra = new StringBuilder();
 
 		Integer ticket = null;
 		BigDecimal pesoliq = null;
@@ -938,6 +939,13 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 				}
 			}
 
+			if (iscoleta && doccoleta!=null) {
+				obscompra.append( "NOTA DE ENTRADA REF. A NOTA DE COLETA NRO. ");
+				obscompra.append( doccoleta );
+				obscompra.append( " DE " );
+				obscompra.append( Funcoes.dateToStrDate( dtentrada ) );
+			} 
+			
 			geraCodCompra();
 
 			sql.append( "insert into cpcompra (" );
@@ -947,8 +955,8 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 			sql.append( "codempse, codfilialse, serie, doccompra, " );
 			sql.append( "codemptm, codfilialtm, codtipomov, " );
 			sql.append( "dtentcompra, dtemitcompra, tipofretecompra," );
-			sql.append( "codemptn, codfilialtn, codtran, codemprm, codfilialrm, ticket, calctrib " );
-			sql.append( ") values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" );
+			sql.append( "codemptn, codfilialtn, codtran, codemprm, codfilialrm, ticket, calctrib, obscompra " );
+			sql.append( ") values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" );
 
 			ps = getConn().prepareStatement( sql.toString() );
 
@@ -988,6 +996,8 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 			ps.setInt( param++, ListaCampos.getMasterFilial( "EQRECMERC" ) );
 			ps.setInt( param++, getTicket() );
 			ps.setString( param++, getCalctrib() );
+			
+			ps.setString( param++, obscompra.toString() );
 
 			ps.execute();
 
