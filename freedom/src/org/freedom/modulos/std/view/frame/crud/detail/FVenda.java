@@ -4744,12 +4744,12 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			sql.append( "left outer join eqproduto pd on " );
 			sql.append( "pd.codemp=rm.codemppd and pd.codfilial=rm.codfilialpd and pd.codprod=rm.codprod " );
 
-			sql.append( "left outer join cpitcompra icp on ");
-			sql.append( "icp.codemp=cp.codemp and icp.codfilial=cp.codfilial and icp.codcompra=cp.codcompra " );
-
 			sql.append( "left outer join eqitrecmercitcp rcp on " );
-			sql.append( "rcp.codemp=icp.codemp and rcp.codfilial=icp.codfilial and rcp.codcompra=icp.codcompra  and ");
+			sql.append( "rcp.codemp=cp.codemp and cp.codfilial=cp.codfilial and cp.codcompra=cp.codcompra  and ");
 			sql.append( "rcp.codempcp=rm.codemp and rcp.codfilialcp=rm.codfilial and rcp.coditrecmerc=rm.coditrecmerc  AND rcp.ticket=rm.ticket ");
+
+			sql.append( "left outer join cpitcompra icp on ");
+			sql.append( "icp.codemp=rcp.codempcp and icp.codfilial=rcp.codfilialcp and icp.codcompra=rcp.codcompra and icp.coditcompra=rcp.coditcompra " );
 
 			sql.append( "where " );
 			sql.append( "vo.codemp=? and vo.codfilial=? and vo.codvenda=? and vo.tipovenda=?" );
