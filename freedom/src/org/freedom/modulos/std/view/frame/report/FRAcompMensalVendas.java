@@ -167,6 +167,7 @@ public class FRAcompMensalVendas extends FRelatorio implements FocusListener {
 
 		adic( rgFinanceiro, 153, 180, 120, 70 );
 		
+		btExportXLS.setEnabled( true );
 		txtDataini.setEditable( false );
 		txtDatafim.setEditable( false );
 		
@@ -180,10 +181,10 @@ public class FRAcompMensalVendas extends FRelatorio implements FocusListener {
 
 	private StringBuilder getQuerReport( Integer codemp, Integer codfilialcl, Integer codcli
 			, Integer codfilialva, Integer codvend, Date dataini, Date datafim, String faturado
-			, String financeiro, StringBuilder filtros, Vector<String> meses ) {
+			, String financeiro, StringBuilder filtros, Vector<String> meses, TYPE_PRINT visualizar  ) {
 
 		StringBuilder sql = new StringBuilder();
-		sql.append( "select c.codcli, c.razcli, sum(v.vlrliqvenda) subtotal " );
+		sql.append( "select c.codcli, c.razcli " );
 		for ( int i = 0; i < meses.size(); i++ ) {
 			String anomes = meses.elementAt( i );
 			String ano = anomes.substring( 0, 4 );
@@ -193,8 +194,15 @@ public class FRAcompMensalVendas extends FRelatorio implements FocusListener {
 			sql.append( " and extract(year from v.dtemitvenda)=" );
 			sql.append( ano );
 			sql.append( " then v.vlrliqvenda else 0 end)) vlr_" );
-			sql.append( i + 1 );
+			if (visualizar==TYPE_PRINT.EXPORT) {
+				sql.append(mes);
+				sql.append("_");
+				sql.append(ano);
+			} else {
+				sql.append( i + 1 );
+			}
 		}
+		sql.append( " , sum(v.vlrliqvenda) subtotal " );
 		sql.append( " from vdcliente c " );
 		sql.append( " inner join vdvenda v on " );
 		sql.append( " v.codempcl=c.codemp and v.codfilialcl=c.codfilial" );
@@ -267,7 +275,7 @@ public class FRAcompMensalVendas extends FRelatorio implements FocusListener {
 			
 			StringBuilder sql = getQuerReport( codemp, codfilialcl, codcli
 					, codfilialva, codvend	, txtDataini.getVlrDate(), txtDatafim.getVlrDate()
-					, rgFaturados.getVlrString(), rgFinanceiro.getVlrString(), filtros, meses );
+					, rgFaturados.getVlrString(), rgFinanceiro.getVlrString(), filtros, meses, bVisualizar );
 
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			int param = 1;
@@ -288,8 +296,13 @@ public class FRAcompMensalVendas extends FRelatorio implements FocusListener {
 
 			ResultSet rs = ps.executeQuery();
 
-			imprimirGrafico( bVisualizar, rs, filtros, meses );
-
+			if (bVisualizar==TYPE_PRINT.EXPORT) {
+				if (btExportXLS.execute(rs, getTitle())) {
+					Funcoes.mensagemInforma( this, "Arquivo exportado com sucesso !" );
+				}
+			} else {
+				imprimirGrafico( bVisualizar, rs, filtros, meses );
+			}
 			rs.close();
 			ps.close();
 
