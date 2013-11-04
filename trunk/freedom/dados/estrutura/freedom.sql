@@ -8029,6 +8029,7 @@ CREATE TABLE SGPREFERE8 (CODEMP INTEGER NOT NULL,
         UTILRENDACOT CHAR(1) DEFAULT 'S' NOT NULL,
         PERMITDOCCOLDUPL CHAR(1) DEFAULT 'S' NOT NULL,
         OBSPADOC VARCHAR(500),
+        PERMITITEMREPCP CHAR(1) DEFAULT 'N' NOT NULL,
         DTINS DATE DEFAULT 'now' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
@@ -16909,6 +16910,7 @@ declare variable codempns integer;
 declare variable codfilialns smallint;
 declare variable numserietmp varchar(30);
 declare variable percprecocoletacp numeric(15,5);
+declare variable permititemrepcp char(1);
 begin
     
     -- Carregamdo variaveis
@@ -16922,9 +16924,10 @@ begin
     
     -- Buscando preferências GMS
     select coalesce(p8.percprecocoletacp,100) percprecocoletacp
+    , coalesce(permititemrepcp, 'N') 
     from sgprefere8 p8
     where p8.codemp=:codemp and p8.codfilial=:codfilial
-    into :percprecocoletacp;
+    into :percprecocoletacp, :permititemrepcp;
 
     -- Buscando informações da compra
     select cp.codfilialtm, cp.codtipomov,
@@ -16944,7 +16947,7 @@ begin
         do
         begin
 
-            if(:codprod <> :codprodant or :codprodant is null) then
+            if(:permititemrepcp='S' or :codprod <> :codprodant or :codprodant is null) then
             begin
 
                 -- Buscando a natureza da operação
