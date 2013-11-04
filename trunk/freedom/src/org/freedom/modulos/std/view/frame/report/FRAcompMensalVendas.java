@@ -183,7 +183,7 @@ public class FRAcompMensalVendas extends FRelatorio implements FocusListener {
 			, String financeiro, StringBuilder filtros, Vector<String> meses ) {
 
 		StringBuilder sql = new StringBuilder();
-		sql.append( "select c.codcli, c.razcli " );
+		sql.append( "select c.codcli, c.razcli, sum(v.vlrliqvenda) subtotal " );
 		for ( int i = 0; i < meses.size(); i++ ) {
 			String anomes = meses.elementAt( i );
 			String ano = anomes.substring( 0, 4 );
@@ -201,6 +201,8 @@ public class FRAcompMensalVendas extends FRelatorio implements FocusListener {
 		sql.append( " and v.codcli=c.codcli" );
 		sql.append( " inner join eqtipomov tm on" );
 		sql.append( " tm.codemp=v.codemptm and tm.codfilial=v.codfilialtm and tm.codtipomov=v.codtipomov" );
+		sql.append( " inner join fnplanopag pp on " );
+		sql.append( " pp.codemp=v.codemppg and pp.codfilial=v.codfilialpg and pp.codplanopag=v.codplanopag ");
 		sql.append( " where c.codemp=? and c.codfilial=?" );
 		sql.append( " and v.dtemitvenda between ? and ?" );
 		sql.append( " and substring(v.statusvenda from 1 for 1)<>'C'" );
@@ -213,7 +215,7 @@ public class FRAcompMensalVendas extends FRelatorio implements FocusListener {
 			filtros.append( ", não faturados" );
 		}
 		if ( "S".equalsIgnoreCase( financeiro ) ) {
-			sql.append( " and tm.somavdtipomov='S' " );
+			sql.append( " and tm.somavdtipomov='S' and pp.parcplanopag>0 " );
 			filtros.append( ", financeiros" );
 
 		}
@@ -303,7 +305,7 @@ public class FRAcompMensalVendas extends FRelatorio implements FocusListener {
 	private void imprimirGrafico( final TYPE_PRINT bVisualizar, final ResultSet rs, final StringBuilder filtros, Vector<String> meses ) {
 
 		HashMap<String, Object> params = new HashMap<String, Object>();
-		params.put( "meses", meses );
+		params.put( "MESES", meses );
 		
 		FPrinterJob dlGr = null;
 
