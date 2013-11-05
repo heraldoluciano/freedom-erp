@@ -12,7 +12,7 @@
 	<queryString>
 		<![CDATA[select e.CODPROD, p.descprod, p.codbarprod, p.precobaseprod from eqproduto p, eqetiqprod e
 where e.codemp=p.codemp and e.codfilial=p.codfilial and e.codprod=p.codprod
-and e.nrconexao=106]]>
+and e.nrconexao=3096]]>
 	</queryString>
 	<field name="CODPROD" class="java.lang.Integer"/>
 	<field name="DESCPROD" class="java.lang.String"/>
@@ -33,7 +33,7 @@ and e.nrconexao=106]]>
 	<detail>
 		<band height="71" splitType="Stretch">
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-2" x="5" y="36" width="153" height="11"/>
+				<reportElement key="textField-2" x="0" y="41" width="188" height="9"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -46,7 +46,7 @@ and e.nrconexao=106]]>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCPROD}.trim()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement key="staticText-3" x="5" y="49" width="26" height="11">
+				<reportElement key="staticText-3" x="23" y="50" width="26" height="11">
 					<printWhenExpression><![CDATA[new Boolean( $P{MOSTRAPRECO}.equals("S"))]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -61,7 +61,7 @@ and e.nrconexao=106]]>
 				<text><![CDATA[ Preço]]></text>
 			</staticText>
 			<textField pattern="###0.00;-###0.00" isBlankWhenNull="false">
-				<reportElement key="textField-3" x="33" y="49" width="96" height="11">
+				<reportElement key="textField-3" x="53" y="50" width="96" height="11">
 					<printWhenExpression><![CDATA[new Boolean( $P{MOSTRAPRECO}.equals("S") )]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -76,7 +76,7 @@ and e.nrconexao=106]]>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{PRECOBASEPROD}]]></textFieldExpression>
 			</textField>
 			<componentElement>
-				<reportElement key="barcode-1" mode="Opaque" x="4" y="1" width="152" height="32" forecolor="#000000" backcolor="#FFFFFF">
+				<reportElement key="barcode-1" mode="Opaque" x="11" y="10" width="167" height="16" forecolor="#000000" backcolor="#FFFFFF">
 					<printWhenExpression><![CDATA[!$F{CODBARPROD}.equals("0")]]></printWhenExpression>
 				</reportElement>
 				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code39" drawText="false" checksumRequired="false">
@@ -85,7 +85,7 @@ and e.nrconexao=106]]>
 				</jr:barbecue>
 			</componentElement>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-4" x="3" y="24" width="153" height="9">
+				<reportElement key="textField-4" x="0" y="32" width="188" height="9">
 					<printWhenExpression><![CDATA[!$F{CODBARPROD}.equals("0")]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -100,7 +100,7 @@ and e.nrconexao=106]]>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{CODBARPROD}.trim()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-4" x="3" y="24" width="153" height="9">
+				<reportElement key="textField-4" x="0" y="32" width="188" height="9">
 					<printWhenExpression><![CDATA[$F{CODBARPROD}.equals("0")]]></printWhenExpression>
 				</reportElement>
 				<box>
