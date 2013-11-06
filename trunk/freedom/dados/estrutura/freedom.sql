@@ -16911,11 +16911,19 @@ declare variable codfilialns smallint;
 declare variable numserietmp varchar(30);
 declare variable percprecocoletacp numeric(15,5);
 declare variable permititemrepcp char(1);
+declare variable trocaqtd char(1);
 begin
     
     -- Carregamdo variaveis
     aprovpreco = 'N';
 
+    -- Verificando se é para buscar as quantidades
+    if ( (qtditcompra is null) or (qtditcompra=0)) then
+       trocaqtd = 'S';
+    else 
+       trocaqtd = 'N';
+    
+    
     -- Buscando preferências
     select coalesce(p1.usaprecocot,'N') usaprecocot
     from sgprefere1 p1
@@ -16946,7 +16954,8 @@ begin
         :codempns, :codfilialns, :numserietmp
         do
         begin
-
+            if (:trocaqtd='S') then
+                 qtditcompra = 0;  
             if(:permititemrepcp='S' or :codprod <> :codprodant or :codprodant is null) then
             begin
 
@@ -16994,7 +17003,6 @@ begin
                         -- Indica que o preço é aprovado (cotado anteriormente);
                         aprovpreco = 'S';
                     end
-
                 end
 
                 -- Se não conseguiu obter o preço das cotações
