@@ -4695,8 +4695,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			String seriecp = null;
 			Integer doccompra = null;
 			Date dtemitcompra = null;
-			Date dtemitvenda = txtDtEmitVenda.getVlrDate();
-			Date dtsaidavenda = txtDtSaidaVenda.getVlrDate();
+			Date dtemitvenda = new Date();
+			Date dtsaidavenda = new Date();
 			String nfecompr = null;
 			StringBuilder obsvenda = new StringBuilder( "" );
 			Integer docrecmerc = null;
