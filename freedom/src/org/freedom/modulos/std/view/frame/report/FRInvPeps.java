@@ -320,7 +320,7 @@ public class FRInvPeps extends FRelatorio {
 		String comestoque = "";
 		String codmarca = "";
 		String codgrup = "";
-		String imprimetexto = "";
+		String imprimetexto = cbRelTexto.getVlrString();
 		int codalmox = 0;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
