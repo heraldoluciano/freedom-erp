@@ -57,6 +57,8 @@ public class FRBalancete extends FRelatorio {
 
 	private JTextFieldPad txtCodConta = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
 
+	private JTextFieldPad txtCodplanConta = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
+	
 	private JTextFieldFK txtSiglaCC = new JTextFieldFK( JTextFieldPad.TP_STRING, 19, 0 );
 
 	private JTextFieldPad txtDataini = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
@@ -66,6 +68,8 @@ public class FRBalancete extends FRelatorio {
 	private JTextFieldFK txtDescConta = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JTextFieldPad txtCodCC = new JTextFieldPad( JTextFieldPad.TP_STRING, 19, 0 );
+	
+	private JTextFieldPad txtAnocc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 4, 0);
 
 	private JTextFieldFK txtDescCC = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 	
@@ -96,6 +100,7 @@ public class FRBalancete extends FRelatorio {
 		
 		lcConta.add( new GuardaCampo( txtCodConta, "NumConta", "Cód.conta", ListaCampos.DB_PK, false ) );
 		lcConta.add( new GuardaCampo( txtDescConta, "DescConta", "Descrição da conta", ListaCampos.DB_SI, false ) );
+		lcConta.add( new GuardaCampo( txtCodplanConta, "CodPlan", "Cód.planej.", ListaCampos.DB_SI, false ) );
 		lcConta.montaSql( false, "CONTA", "FN" );
 		lcConta.setReadOnly( true );
 		txtCodConta.setTabelaExterna( lcConta, null );
@@ -103,8 +108,9 @@ public class FRBalancete extends FRelatorio {
 		txtCodConta.setNomeCampo( "NumConta" );
 
 		lcCC.add( new GuardaCampo( txtCodCC, "CodCC", "Cód.cc.", ListaCampos.DB_PK, false ) );
-		lcCC.add( new GuardaCampo( txtSiglaCC, "SiglaCC", "Sigla", ListaCampos.DB_SI, false ) );
 		lcCC.add( new GuardaCampo( txtDescCC, "DescCC", "Descrição do centro de custos", ListaCampos.DB_SI, false ) );
+		lcCC.add( new GuardaCampo( txtAnocc, "AnoCC", "Ano.cc.", ListaCampos.DB_PK, false ) );
+		lcCC.add( new GuardaCampo( txtSiglaCC, "SiglaCC", "Sigla", ListaCampos.DB_SI, false ) );
 		lcCC.setReadOnly( true );
 		lcCC.montaSql( false, "CC", "FN" );
 		txtCodCC.setTabelaExterna( lcCC, null );
@@ -163,96 +169,71 @@ public class FRBalancete extends FRelatorio {
 	}
 
 	public void imprimir( TYPE_PRINT bVisualizar ) {
-		String sCodConta = txtCodConta.getVlrString();
-		String sCodCC = txtCodCC.getVlrString().trim();
-		String sDataini = txtDataini.getVlrString();
-		String sDatafim = txtDatafim.getVlrString();
+		String codconta = txtCodConta.getVlrString();
+		String codcc = txtCodCC.getVlrString().trim();
+		String dataini = txtDataini.getVlrString();
+		String datafim = txtDatafim.getVlrString();
+		String codplanconta = txtCodplanConta.getVlrString();
+		Integer anocc = txtAnocc.getVlrInteger();
         StringBuffer sql = new StringBuffer();
         StringBuilder filtros = new StringBuilder();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		int iParam = 1;
-
+		int param = 1;
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
 			return;
 		}
-		sql.append( "SELECT P.CODPLAN,P.DESCPLAN,P.NIVELPLAN," );
-		sql.append( "(SELECT SUM(SL.VLRSUBLANCA*-1) FROM FNSUBLANCA SL,FNLANCA L WHERE L.FLAG IN " );
-		sql.append(  AplicativoPD.carregaFiltro( con, org.freedom.library.swing.frame.Aplicativo.iCodEmp ) );
-		sql.append( " AND SL.CODPLAN LIKE RTRIM(P.CODPLAN)||'%' AND SL.CODLANCA=L.CODLANCA AND " );
+		sql.append( "select p.codplan, p.descplan, p.nivelplan " );
+		sql.append( ", sum(sl.vlrsublanca*-1) valor ");
+		sql.append( "from fnplanejamento p ");
+		sql.append( "inner join fnsublanca sl on ");
+		sql.append( "sl.codemppn=p.codemp and sl.codfilialpn=p.codfilial and sl.codplan like rtrim(p.codplan)||'%' ");
+		sql.append( "and ");
 		if ("S".equals( cbDataCompetencia.getVlrString() )) {
-			sql.append( "SL.DTCOMPSUBLANCA " );	
+			sql.append( "sl.dtcompsublanca" );	
 			filtros.append( "FILTROS: DATA DE COMPETÊNCIA" );
 		} else {
-			sql.append( "SL.DATASUBLANCA " );
+			sql.append( "sl.datasublanca");
 			filtros.append( "FILTROS: DATA DE EXECUÇÃO" );
 		}
-		sql.append( " BETWEEN ? AND ? AND " );
-		sql.append( "SL.CODEMP=L.CODEMP AND SL.CODFILIAL=L.CODFILIAL " );
-		if (! "".equals(sCodConta.trim())) {
-			sql.append( " AND L.CODPLAN=(SELECT C.CODPLAN FROM FNCONTA C WHERE C.CODEMP=P.CODEMP AND ");
-			sql.append( "C.CODFILIAL=? AND C.NUMCONTA=?) " );	
-			filtros.append( " - CONTA: " );
-			filtros.append(sCodConta);
-		}
-		if (! "".equals( sCodCC.trim() )) {
-			sql.append( " AND SL.CODCC=(SELECT CC.CODCC FROM FNCC CC WHERE SL.CODEMPCC=CC.CODEMP AND "); 
-			sql.append(" SL.CODFILIALCC=CC.CODFILIAL AND CC.CODFILIAL=? AND CC.CODCC=? ) " );
+		sql.append( " between ? and ? ");
+		if (! "".equals( codcc.trim() )) {
+			sql.append( " and sl.codempcc=? and sl.codfilialcc=? and sl.codcc=? and sl.anocc=? " );
 			filtros.append(" - CENTRO DE CUSTO: ");
-			filtros.append(sCodCC);
+			filtros.append(codcc);
 		}
-	    sql.append( " AND L.CODEMP=P.CODEMP AND L.CODFILIAL=? ) VALOR " );
-	    sql.append( " FROM FNPLANEJAMENTO P  WHERE P.TIPOPLAN IN ('R','D')" ); 
-		sql.append( " AND P.CODEMP=? AND P.CODFILIAL=? AND " );
-		// Condição exists para evitar linhas em branco
-		sql.append( "EXISTS ");
-		sql.append( "(SELECT * FROM FNSUBLANCA SL,FNLANCA L WHERE L.FLAG IN " );
+		sql.append( "inner join fnlanca l on ");
+		sql.append( "l.codemp=sl.codemp and l.codfilial=sl.codfilial and l.codlanca=sl.codlanca ");
+		sql.append( "and l.flag in ");
 		sql.append(  AplicativoPD.carregaFiltro( con, org.freedom.library.swing.frame.Aplicativo.iCodEmp ) );
-		sql.append( " AND SL.CODPLAN LIKE RTRIM(P.CODPLAN)||'%' AND SL.CODLANCA=L.CODLANCA AND " );
-		sql.append( "S".equals( cbDataCompetencia.getVlrString() ) ? "SL.DTCOMPSUBLANCA " : "SL.DATASUBLANCA " );
-		sql.append( " BETWEEN ? AND ? AND " );
-		sql.append( "SL.CODEMP=L.CODEMP AND SL.CODFILIAL=L.CODFILIAL " );
-		if (! "".equals(sCodConta.trim())) {
-			sql.append( " AND L.CODPLAN=(SELECT C.CODPLAN FROM FNCONTA C WHERE C.CODEMP=P.CODEMP AND ");
-			sql.append( "C.CODFILIAL=? AND C.NUMCONTA=?) " );			
+		if (! "".equals(codconta.trim())) {
+			sql.append( " and l.codemppn=? and l.codfilialpn=? and l.codplan=? ");	
+			filtros.append( " - CONTA: " );
+			filtros.append(codconta);
 		}
-		if (! "".equals( sCodCC.trim() )) {
-			sql.append( " AND SL.CODCC=(SELECT CC.CODCC FROM FNCC CC WHERE SL.CODEMPCC=CC.CODEMP AND "); 
-			sql.append(" SL.CODFILIALCC=CC.CODFILIAL AND CC.CODFILIAL=? AND CC.CODCC=? ) " );
-		}
-	    sql.append( " AND L.CODEMP=P.CODEMP AND L.CODFILIAL=? )" );
-	    //Fim da condição exists
-		sql.append( " ORDER BY P.CODPLAN,P.DESCPLAN,P.NIVELPLAN " );
+		sql.append( " where p.codemp=? and p.codfilial=? and p.tipoplan in ('R','D') ");
+		sql.append( "group by p.codplan, p.descplan, p.nivelplan ");
+		sql.append( "order by p.codplan, p.descplan, p.nivelplan ");
 
 		try {
 			ps = con.prepareStatement( sql.toString() );
-			ps.setDate( iParam++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
-			ps.setDate( iParam++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
-			if ( !sCodConta.trim().equals( "" ) ) {
-				ps.setInt( iParam++, ListaCampos.getMasterFilial( "FNCONTA" ) );
-				ps.setString( iParam++, sCodConta );
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+			if ( !codcc.trim().equals( "" ) ) {
+				ps.setInt( param++, Aplicativo.iCodEmp );
+				ps.setInt( param++, ListaCampos.getMasterFilial( "FNCC" ) );
+				ps.setString( param++, codcc );
+				ps.setInt( param++, anocc );
 			}
-			if ( !sCodCC.trim().equals( "" ) ) {
-				ps.setInt( iParam++, ListaCampos.getMasterFilial( "FNCC" ) );
-				ps.setString( iParam++, sCodCC );
+			if ( !codconta.trim().equals( "" ) ) {
+				// Planejamento da conta bancária
+				ps.setInt( param++, Aplicativo.iCodEmp );
+				ps.setInt( param++, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
+				ps.setString( param++, codplanconta );
 			}
-			ps.setInt( iParam++, ListaCampos.getMasterFilial( "FNLANCA" ) );
-			ps.setInt( iParam++, Aplicativo.iCodEmp );
-			ps.setInt( iParam++, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
-			// Condições para exists
-			ps.setDate( iParam++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
-			ps.setDate( iParam++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
-			if ( !sCodConta.trim().equals( "" ) ) {
-				ps.setInt( iParam++, ListaCampos.getMasterFilial( "FNCONTA" ) );
-				ps.setString( iParam++, sCodConta );
-			}
-			if ( !sCodCC.trim().equals( "" ) ) {
-				ps.setInt( iParam++, ListaCampos.getMasterFilial( "FNCC" ) );
-				ps.setString( iParam++, sCodCC );
-			}
-			ps.setInt( iParam++, ListaCampos.getMasterFilial( "FNLANCA" ) );
-            // Fim das condições para exists		
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
 			rs = ps.executeQuery();
 			
 			if (bVisualizar==TYPE_PRINT.EXPORT) {
@@ -266,10 +247,10 @@ public class FRBalancete extends FRelatorio {
 
 				if ("G".equals( rgOpcao.getVlrString()) ) {
 					
-					imprimirGrafico(bVisualizar, rs, sDataini, sDatafim, sCodConta, sCodCC, filtros );
+					imprimirGrafico(bVisualizar, rs, dataini, datafim, codconta, codcc, filtros );
 					
 				} else {
-					imprimirTexto(bVisualizar, rs, sDataini, sDatafim, sCodConta, sCodCC );
+					imprimirTexto(bVisualizar, rs, dataini, datafim, codconta, codcc );
 				}
 			}
 
