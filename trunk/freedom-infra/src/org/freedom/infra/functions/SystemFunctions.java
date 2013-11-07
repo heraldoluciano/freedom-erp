@@ -281,12 +281,12 @@ public class SystemFunctions {
 				}
 			}
 			catch (IOException err) {
-				JOptionPane.showMessageDialog(null, "Erro ao carregar arquivo de configuração!\n", "Erro", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Erro ao carregar arquivo de configuração!\nArquivo: "+sNomeArq+"\n"+err.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
 				System.exit(0);
 			}
 		}
 		catch (FileNotFoundException err) {
-			JOptionPane.showMessageDialog(null, "Erro ao carregar arquivo de configuração!\n" + err.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Erro ao carregar arquivo de configuração!\nArquivo: "+ sNomeArq + "\n" + err.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
 			System.exit(0);
 		}
 		return vRetorno;
