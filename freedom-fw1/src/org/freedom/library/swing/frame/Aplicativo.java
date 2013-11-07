@@ -1040,13 +1040,13 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 			}
 			catch (IOException err) {
-				Funcoes.mensagemErro(null, "Erro ao carregar arquivo de configuração!\n" + err.getMessage());
+				Funcoes.mensagemErro(null, "Erro ao carregar arquivo de configuração!\nArquivo: "+sArqIni+"\n" + err.getMessage());
 				System.exit(0);
 			}
 			
 		}
 		catch (FileNotFoundException err) {
-			Funcoes.mensagemErro(null, "Erro ao carregar arquivo de configuração!\n" + err.getMessage());
+			Funcoes.mensagemErro(null, "Erro ao carregar arquivo de configuração!\nArquivo: "+sArqIni+"\n" + err.getMessage());
 			System.exit(0);
 		}
 		Funcoes.mensagemErro(null, "TESTE: " + vSessao.size() + " ~ " + iMaxCampo);
