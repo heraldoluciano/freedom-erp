@@ -32,6 +32,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowStateListener;
+import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -66,8 +67,8 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 			Imagem.dirImages = sDirImagem;
 			Icone.dirImages = sDirImagem;
 		}
-		if (System.getProperty("ARQLOG") != null)
-			ligaLog(System.getProperty("ARQLOG"));
+		File logfile = Aplicativo.loadLog("ARQLOG", sDescModu.toLowerCase());
+		ligaLog(logfile);
 		strSplash = sSplash;
 		Locale.setDefault(new Locale("pt", "BR"));
 		vOpcoes = new Vector<JMenuItem>();
