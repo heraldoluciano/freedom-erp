@@ -24,6 +24,8 @@
 
 package org.freedom.modulos.gms;
 
+import java.io.File;
+
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.AplicativoPD;
@@ -432,7 +434,8 @@ public class FreedomGMS extends AplicativoPD {
 	public static void main( String sParams[] ) {
 
 		try {
-			Aplicativo.setLookAndFeel( "freedom.ini" );
+			File fileini = loadIni( "ARQINI", "freedom.ini" );
+			Aplicativo.setLookAndFeel( fileini );
 			FreedomGMS freedom = new FreedomGMS();
 			freedom.show();
 		} catch ( Throwable e ) {

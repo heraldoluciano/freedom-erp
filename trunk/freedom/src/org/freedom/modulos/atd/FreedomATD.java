@@ -25,6 +25,7 @@
 package org.freedom.modulos.atd;
 
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.swing.frame.Aplicativo;
@@ -111,9 +112,9 @@ public class FreedomATD extends AplicativoPD implements ActionListener {
 	}
 
 	public static void main( String sParams[] ) {
-
 		try {
-			Aplicativo.setLookAndFeel( "freedom.ini" );
+			File fileini = Aplicativo.loadIni("ARQINI", "freedom.ini");
+			Aplicativo.setLookAndFeel( fileini );
 			FreedomATD freedomatd = new FreedomATD();
 			freedomatd.show();
 		} catch ( Throwable e ) {

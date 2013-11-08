@@ -24,6 +24,8 @@
 
 package org.freedom.modulos.grh;
 
+import java.io.File;
+
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.AplicativoPD;
@@ -86,7 +88,7 @@ public class FreedomGRH extends AplicativoPD {
 		addOpcao( 100100000, TP_OPCAO_ITEM, "Tabela de IRRF", "Tabela de IRRF", 'I', 100101300, 1, true, FTabelaIRRF.class );
 		addOpcao( 100100000, TP_OPCAO_ITEM, "Tabela de INSS", "Tabela de INSS", 'S', 100101400, 1, true, FTabelaINSS.class );
 		addOpcao( 100100000, TP_OPCAO_ITEM, "Feriados", "Cadastro de Feriados", 'r', 100101500, 2, true, FFeriados.class );
-		
+
 		addOpcao( -1, TP_OPCAO_MENU, "Vagas", "", 'V', 200000000, 0, false, null );
 		addOpcao( 200000000, TP_OPCAO_ITEM, "Cadastro de vagas", "Cadastro de vagas", 'V', 200100000, 1, true, FVaga.class );
 		addSeparador( 200000000 );
@@ -96,7 +98,7 @@ public class FreedomGRH extends AplicativoPD {
 		addOpcao( 200300000, TP_OPCAO_ITEM, "Relatório de atividade por vaga", "Relatório de atividade por vaga", 'a', 200301000, 1, true, FRRelAtiv.class );
 		addOpcao( 200300000, TP_OPCAO_ITEM, "Relatório de Vagas", "Relatório de Vagas", 'a', 200302000, 1, true, FRVagas.class );
 		addOpcao( 200300000, TP_OPCAO_ITEM, "Relatório de atividade", "Relatório de atividade", 'e', 200303000, 1, true, FRAtividade.class );
-		
+
 		addBotao( "btForneced.png", "Empregadores", "Empregadores", 100100600, FEmpregadores.class );
 		addBotao( "btMedida.png", "Características", "Características", 100101000, FCaracteristica.class );
 		addBotao( "barraConveniados.png", "Empregados", "Empregados", 100100500, FEmpregado.class );
@@ -114,7 +116,8 @@ public class FreedomGRH extends AplicativoPD {
 	public static void main( String sParams[] ) {
 
 		try {
-			Aplicativo.setLookAndFeel( "freedom.ini" );
+			File fileini = Aplicativo.loadIni( "ARQINI", "freedom.ini" );
+			Aplicativo.setLookAndFeel( fileini );
 			FreedomGRH freedom = new FreedomGRH();
 			freedom.show();
 		} catch ( Throwable e ) {

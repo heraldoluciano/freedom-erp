@@ -43,13 +43,16 @@ import java.io.PrintStream;
 import java.lang.reflect.Method;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Enumeration;
 import java.util.Locale;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JTextArea;
 import javax.swing.UIManager;
 
 import org.freedom.bmps.Icone;
@@ -354,13 +357,78 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		return con_nfe;
 	}
 
-	public static void setLookAndFeel(String sNomeArqIni) {
+	public static File loadIni(String varini, String defini) {
+		if (varini==null) {
+			varini = "ARQINI";
+		}
+		String strfile = System.getProperty(varini);
+		if (strfile==null) {
+			strfile = defini;
+		}
+		File fileini = Aplicativo.getArqIni( strfile );
+		vArqINI = SystemFunctions.getIniFile(fileini);
+		return fileini;
+	}
+	
+	public static File getArqIni(String fileini) {
+		File result = null;
+		String fullfileini = null;
+		StringBuilder path = new StringBuilder();
+		String sep = null;
+		String drive = null;
+		if (SystemFunctions.getOS()==SystemFunctions.OS_LINUX) {
+			sep = "/";
+			drive = "";
+		} else {
+			sep = "\\";
+			drive = "c:";
+		}
+		path.append(drive);
+		path.append(sep);
+		path.append("opt");
+		path.append(sep);
+		path.append("freedom");
+		path.append(sep);
+		path.append("ini");
+		if (fileini==null) {
+			fileini = "freedom.ini";
+		}
+		if (fileini.indexOf(sep)<0) {
+			fullfileini = path+sep+fileini;
+		} else {
+			fullfileini = fileini;
+		}
+		result = new File(fullfileini);
+		if (!result.exists()) {
+			result = new File(fileini);
+			if (!result.exists()) {
+				result = new File(fullfileini);
+			}
+		}
+		return result;
+	}
+	
+	public static void setLookAndFeel(File fileini) {
 
-		if (sNomeArqIni == null)
+/*		if (sNomeArqIni == null)
 			sNomeArqIni = "freedom.ini";
 		sArqIni = sNomeArqIni;
-		sArqINI = System.getProperty("ARQINI") != null ? System.getProperty("ARQINI") : sNomeArqIni;
-		vArqINI = SystemFunctions.getIniFile(sArqINI);
+		StringBuilder prop = new StringBuilder();
+		Enumeration<Object> keys = System.getProperties().keys(); 
+		while (keys.hasMoreElements()) {
+			Object key = keys.nextElement();
+			prop.append(key.toString()+"="+System.getProperties().get(key)+"\n");
+		}
+	*/	
+		//Funcoes.mensagemInforma(null, "Propriedades\n"+prop.toString());
+		//ClasseExterna.ClasseInterna ci = new ClasseExterna().new ClasseInterna(); 
+		/*FrameMensagem fmens = new FrameMensagem();
+		fmens.setTexto(prop.toString()); */
+		//fmens.setm
+		//fmens.setVisible(true);
+		
+		//String teste = System.getProperty("freedom.arqini");
+		//Funcoes.mensagemInforma(null, "Propriedade ini: "+ teste);
 
 		try {
 			strLookAndFeel = getParameter("lookandfeel");
@@ -1142,5 +1210,4 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	public static void setUsuario(Usuario usuarioobj) {
 		usuario = usuarioobj;
 	}
-
 }

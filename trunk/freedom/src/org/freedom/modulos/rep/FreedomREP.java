@@ -26,6 +26,7 @@
 package org.freedom.modulos.rep;
 
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.swing.frame.Aplicativo;
@@ -124,7 +125,8 @@ public class FreedomREP extends AplicativoRep implements ActionListener {
 	public static void main( String sParams[] ) {
 
 		try {
-			Aplicativo.setLookAndFeel( "freedom.ini" );
+			File fileini = Aplicativo.loadIni( "ARQINI", "freedom.ini" );
+			Aplicativo.setLookAndFeel( fileini );
 			FreedomREP freedom = new FreedomREP();
 			freedom.show();
 		} catch ( Throwable e ) {
