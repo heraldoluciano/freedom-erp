@@ -67,7 +67,7 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 			Imagem.dirImages = sDirImagem;
 			Icone.dirImages = sDirImagem;
 		}
-		File logfile = Aplicativo.loadLog("ARQLOG", sDescModu.toLowerCase());
+		File logfile = Aplicativo.loadLog("ARQLOG", (sDescSis+sDescModu+".log").toLowerCase());
 		ligaLog(logfile);
 		strSplash = sSplash;
 		Locale.setDefault(new Locale("pt", "BR"));
