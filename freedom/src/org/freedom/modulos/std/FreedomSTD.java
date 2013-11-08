@@ -24,6 +24,8 @@
 
 package org.freedom.modulos.std;
 
+import java.io.File;
+
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.AplicativoPD;
@@ -370,7 +372,6 @@ public class FreedomSTD extends AplicativoPD {
 		addOpcao( 100500000, TP_OPCAO_ITEM, "Empresa", "Empresa", 'E', 100560000, 2, true, FEmpresa.class );
 		addSeparador( 100500000 );
 		addOpcao( 100500000, TP_OPCAO_ITEM, "Proxy web", "Proxy web", 'E', 100570000, 2, true, FProxyWeb.class );
-		
 
 		addOpcao( -1, TP_OPCAO_MENU, "Entrada", "", 'E', 200000000, 0, false, null );
 		addOpcao( 200000000, TP_OPCAO_ITEM, "Compra", "Compras", 'C', 200100000, 1, true, FCompra.class );
@@ -390,7 +391,6 @@ public class FreedomSTD extends AplicativoPD {
 		addSeparador( 200400000 );
 		addOpcao( 200400000, TP_OPCAO_ITEM, "Ordens de compra pendentes", "Ordens de compra pendentes", 's', 200407000, 2, true, FROCEntregaPrevista.class );
 		addOpcao( 200400000, TP_OPCAO_ITEM, "Média de compras por item", "Média de compras por item", 'i', 200408000, 2, true, FRComprasMedia.class );
-		
 
 		addOpcao( -1, TP_OPCAO_MENU, "Saída", "", 'S', 300000000, 0, false, null );
 		addOpcao( 300000000, TP_OPCAO_ITEM, "Venda", "Venda", 'V', 300100000, 1, true, FVenda.class );
@@ -429,8 +429,8 @@ public class FreedomSTD extends AplicativoPD {
 		addSeparador( 301000000 );
 		addOpcao( 301000000, TP_OPCAO_MENU, "Orçamentos", "", 'O', 301002100, 2, false, null );
 		addOpcao( 301002100, TP_OPCAO_ITEM, "Situação de Orçamentos", "Situação de Orçamentos", 'O', 301002110, 3, true, FROrcamento.class );
-	    addOpcao( 301002100, TP_OPCAO_ITEM, "Resumo por Clientes", "Resumo por Clientes", 'O', 301001720, 3, true, FROrcamentoCliente.class );
-	    addOpcao( 301002100, TP_OPCAO_ITEM, "Resumo por Produto", "Resumo por Produto", 'O', 301001730, 3, true, FROrcamentoProduto.class );
+		addOpcao( 301002100, TP_OPCAO_ITEM, "Resumo por Clientes", "Resumo por Clientes", 'O', 301001720, 3, true, FROrcamentoCliente.class );
+		addOpcao( 301002100, TP_OPCAO_ITEM, "Resumo por Produto", "Resumo por Produto", 'O', 301001730, 3, true, FROrcamentoProduto.class );
 		addSeparador( 301000000 );
 		addOpcao( 301000000, TP_OPCAO_ITEM, "Clientes sem movimento", "Clientes sem movimento", 'm', 301002200, 2, true, FRClientesSemVendas.class );
 		addOpcao( 301000000, TP_OPCAO_ITEM, "Carteira de Clientes por Comissionado", "Carteira de Clientes por Comissionado", 'm', 301002300, 2, true, FRCarteiraComissionado.class );
@@ -439,7 +439,7 @@ public class FreedomSTD extends AplicativoPD {
 		addOpcao( 301000000, TP_OPCAO_ITEM, "Vendas por tipo de cliente", "Vendas por tipo de cliente", 't', 301002500, 2, true, FRVendasTipoCli.class );
 		addOpcao( 301000000, TP_OPCAO_ITEM, "Vendas por grupo / comissionado", "Vendas por grupo / comissionado", 'g', 301002600, 2, true, FRVendasGrupo.class );
 		addOpcao( 301000000, TP_OPCAO_ITEM, "Acompanhamento mensal de vendas", "Acompanhamento mensal de vendas", 'A', 301002700, 2, true, FRAcompMensalVendas.class );
-		
+
 		addOpcao( 300000000, TP_OPCAO_MENU, "Gráficos", "", 'G', 301100000, 1, false, null );
 		addOpcao( 301100000, TP_OPCAO_ITEM, "Evolução de vendas", "Evolução de vendas", 'E', 301100100, 2, true, FREvoluVendas.class );
 		addSeparador( 300000000 );
@@ -513,7 +513,7 @@ public class FreedomSTD extends AplicativoPD {
 		addOpcao( 600000000, TP_OPCAO_MENU, "Gráficos", "Fluxo de caixa", 'G', 601500000, 1, false, null );
 		addOpcao( 601500000, TP_OPCAO_ITEM, "Balancete Gráfico", "Balancete Gráfico", 'G', 601501000, 2, true, FRBalanceteGrafico.class );
 		addOpcao( 601500000, TP_OPCAO_ITEM, "Gráfico financeiro por C.C", "Gráfico Financeiro por C.C", 'f', 601502000, 2, true, FRGraficoCC.class );
-		
+
 		addSeparador( 600000000 );
 		addOpcao( 600000000, TP_OPCAO_ITEM, "Talonário de cheques", "Talonário de cheques", 'h', 601503000, 1, true, FTalaoCheq.class );
 		addOpcao( 600000000, TP_OPCAO_ITEM, "Cheques", "Cheques", 'h', 601504000, 1, true, FCheque.class );
@@ -549,7 +549,7 @@ public class FreedomSTD extends AplicativoPD {
 		addOpcao( 700700000, TP_OPCAO_ITEM, "Contagem de estoque", "Contagem de estoque", 's', 700707000, 2, true, FRContaEstoque.class );
 		addOpcao( 700700000, TP_OPCAO_ITEM, "Valor em estoque", "Valor em estoque", 'v', 700708000, 2, true, FRValorEstoque.class );
 		addOpcao( 700700000, TP_OPCAO_ITEM, "Inventário + OP", "Inventário + OP", 'O', 700709000, 2, true, FRInventario.class );
-		
+
 		addSeparador( 700000000 );
 		addOpcao( 700000000, TP_OPCAO_ITEM, "Transferência de produtos", "Tranferência de produtos/almoxarifados", 'T', 700800000, 1, true, FTransfEstoque.class );
 		addOpcao( 700000000, TP_OPCAO_ITEM, "Exportar/Importar Saldo", "Exportar/Importar Saldo", 'x', 700900000, 1, true, FExpImpEstoq.class );
@@ -627,15 +627,17 @@ public class FreedomSTD extends AplicativoPD {
 	public static void main( String sParams[] ) {
 
 		try {
-			Aplicativo.setLookAndFeel( "freedom.ini" );
+			File fileini = Aplicativo.loadIni( "ARQINI", "freedom.ini" );
+			Aplicativo.setLookAndFeel( fileini );
+
 			FreedomSTD freedom = new FreedomSTD();
-			
-			if(FPrincipalPD.exibeAgendaFPrincipal()) {
+
+			if ( FPrincipalPD.exibeAgendaFPrincipal() ) {
 				telaPrincipal.adicAgenda();
 				FPrincipalPD.carregaAgenda();
-				
-				if(FPrincipalPD.getAtualizaAgenda()) {
-				  telaPrincipal.criaThreadAtualiza();
+
+				if ( FPrincipalPD.getAtualizaAgenda() ) {
+					telaPrincipal.criaThreadAtualiza();
 				}
 			}
 			freedom.show();

@@ -24,6 +24,8 @@
 
 package org.freedom.modulos.std;
 
+import java.io.File;
+
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FPrincipal2;
@@ -41,7 +43,8 @@ public class FreedomSTD2 extends FreedomSTD {
 	public static void main( String sParams[] ) {
 
 		try {
-			Aplicativo.setLookAndFeel( "freedom.ini" );
+			File fileini = Aplicativo.loadIni( "ARQINI", "freedom.ini" );
+			Aplicativo.setLookAndFeel( fileini );
 			FreedomSTD2 freedom = new FreedomSTD2();
 			FPrincipal2.carregaAgenda();
 			freedom.show();

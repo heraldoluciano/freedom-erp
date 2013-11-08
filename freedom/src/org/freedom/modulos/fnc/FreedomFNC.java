@@ -24,6 +24,8 @@
 
 package org.freedom.modulos.fnc;
 
+import java.io.File;
+
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.AplicativoPD;
@@ -157,7 +159,7 @@ public class FreedomFNC extends AplicativoPD {
 		addOpcao( 200200000, TP_OPCAO_ITEM, "Razão", "Razão", 'R', 200202000, 2, true, FRRazFor.class );
 		addSeparador( 200000000 );
 		addOpcao( 200000000, TP_OPCAO_ITEM, "Emissão de cheques", "Emissão de cheques", 'm', 200300000, 2, true, FPagCheque.class );
-		
+
 		addOpcao( -1, TP_OPCAO_MENU, "Receber", "", 'R', 300000000, 0, false, null );
 		addOpcao( 300000000, TP_OPCAO_ITEM, "Manutenção", "Manutenção de contas a receber", 'M', 300100000, 1, true, FManutRec.class );
 		addOpcao( 300000000, TP_OPCAO_ITEM, "Bordero", "Bordero", 'B', 300200000, 1, true, FBordero.class );
@@ -177,7 +179,7 @@ public class FreedomFNC extends AplicativoPD {
 		addOpcao( 300400000, TP_OPCAO_ITEM, "Recebimentos por Mês", "Recebimentos por Mês", 'M', 300407000, 2, true, FRReceberMes.class );
 		addOpcao( 300400000, TP_OPCAO_ITEM, "Relatório de cobrança", "Relatório de cobrança", 'o', 300408000, 2, true, FRCobranca.class );
 		addOpcao( 300400000, TP_OPCAO_ITEM, "Carta de cobrança", "Carta de cobrança", 'C', 300409000, 2, true, FRCartaCobranca.class );
-	
+
 		addSeparador( 300000000 );
 		addOpcao( 300000000, TP_OPCAO_MENU, "Projetos/Contratos", "", 'P', 300500000, 1, false, null );
 		addOpcao( 300500000, TP_OPCAO_ITEM, "Projetos", "Projetos/Contratos", 'P', 300501000, 2, true, FContrato.class );
@@ -226,7 +228,7 @@ public class FreedomFNC extends AplicativoPD {
 		addOpcao( 401200000, TP_OPCAO_ITEM, "Ponto de equilibrio", "Ponto de equilibrio", 'P', 401208000, 2, true, FRPontoEqui.class );
 		addOpcao( 401200000, TP_OPCAO_ITEM, "Fluxo de caixa realizado", "Fluxo de caixa realizado", 'c', 401209000, 2, true, FRFluxoCaixaReal.class );
 		addOpcao( 401200000, TP_OPCAO_ITEM, "Fluxo de caixa por período", "Fluxo de caixa por período", 'p', 401210000, 2, true, FRFluxoCaixaPeriodo.class );
-		
+
 		addOpcao( 400000000, TP_OPCAO_MENU, "Gráficos", "", 'G', 401300000, 1, false, null );
 		addOpcao( 401300000, TP_OPCAO_ITEM, "Balancete Gráfico", "Balancete Gráfico", 'B', 401301000, 2, true, FRBalanceteGrafico.class );
 		addOpcao( 401300000, TP_OPCAO_ITEM, "Gráfico financeiro por C.C", "Gráfico Financeiro por C.C", 'F', 401302000, 2, true, FRGraficoCC.class );
@@ -238,24 +240,25 @@ public class FreedomFNC extends AplicativoPD {
 		addOpcao( 400000000, TP_OPCAO_ITEM, "Consulta cheques", "Consulta cheques", 's', 401700000, 1, true, FConsultaCheque.class );
 		addSeparador( 400000000 );
 		addOpcao( 400000000, TP_OPCAO_ITEM, "Sinalizadores", "Sinalizadores", 'S', 401700000, 1, true, FSinalizadores.class );
-		
+
 		addBotao( "barraUsuario.png", "Cliente", "Clientes", 100101050, FCliente.class );
 		addBotao( "btContaPagar.png", "Contas a pagar", "Manutenção de contas a pagar", 200100000, FManutPag.class );
 		addBotao( "btContaReceber.png", "Contas a receber", "Manutenção de contas a receber", 300100000, FManutRec.class );
 		addBotao( "btLancamentoFin.png", "Lançamentos financeiros", "Lançamentos", 400600000, FLanca.class );
 		addBotao( "btRemessaCNAB.png", "Remessa CNAB", "Remessa CNAB", 300302010, FRemCnab.class );
 		addBotao( "btRetornoCNAB.png", "Retorno CNAB", "Retorno CNAB", 300302020, FRetCnab.class );
-		
+
 		ajustaMenu();
 
-		nomemodulo = "Financeiro"; 
+		nomemodulo = "Financeiro";
 
 	}
 
 	public static void main( String sParams[] ) {
 
 		try {
-			Aplicativo.setLookAndFeel( "freedom.ini" );
+			File fileini = Aplicativo.loadIni( "ARQINI", "freedom.ini" );
+			Aplicativo.setLookAndFeel( fileini );
 			FreedomFNC freedom = new FreedomFNC();
 			freedom.show();
 		} catch ( Throwable e ) {

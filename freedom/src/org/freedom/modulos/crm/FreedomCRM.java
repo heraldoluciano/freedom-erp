@@ -27,6 +27,7 @@ package org.freedom.modulos.crm;
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
 import java.awt.event.ActionEvent;
+import java.io.File;
 
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.swing.frame.Aplicativo;
@@ -163,17 +164,17 @@ public class FreedomCRM extends AplicativoPD {
 		addOpcao( 100100000, TP_OPCAO_ITEM, "Email", "Email", 'M', 100105000, 2, true, FEmail.class );
 		addOpcao( 100100000, TP_OPCAO_ITEM, "Tipo de agendamento", "Tipo de agendamento", 'g', 100106000, 2, true, FTipoAgenda.class );
 		addSeparador( 100100000 );
-		
+
 		addOpcao( 100100000, TP_OPCAO_MENU, "Grade de produtos", "", 'G', 100107000, 3, false, null );
 		addOpcao( 100107000, TP_OPCAO_ITEM, "Variantes", "Variantes", 'V', 100107010, 4, true, FVariantes.class );
 		addOpcao( 100107000, TP_OPCAO_ITEM, "Modelo", "Modelo de Grade", 'M', 100107020, 4, true, FModGrade.class );
 		addOpcao( 100107000, TP_OPCAO_ITEM, "Grade", "Grade", 'G', 100107030, 4, true, FGrade.class );
-		
+
 		addSeparador( 100100000 );
 		addOpcao( 100100000, TP_OPCAO_MENU, "Imagem", "", 'g', 100108000, 2, false, null );
 		addOpcao( 100108000, TP_OPCAO_ITEM, "Categoria", "Categoria de Imagens", 'C', 100108010, 2, true, FCategoriaImg.class );
 		addOpcao( 100108000, TP_OPCAO_ITEM, "Imagem", "Imagens", 'a', 100108020, 2, true, FImagem.class );
-		
+
 		addOpcao( 100000000, TP_OPCAO_MENU, "Preferências", "", 'P', 100200000, 1, false, null );
 		addOpcao( 100200000, TP_OPCAO_ITEM, "Preferências CRM", "Preferências CRM", 'P', 100201000, 2, true, FPrefere.class );
 		addOpcao( 100000000, TP_OPCAO_MENU, "Ferramentas", "", 'F', 100300000, 1, false, null );
@@ -181,7 +182,7 @@ public class FreedomCRM extends AplicativoPD {
 		addOpcao( 100300000, TP_OPCAO_ITEM, "Cadastro de org.freedom.layout", "Cadastro de org.freedom.layout", 'C', 100302000, 2, true, FTipoImp.class );
 		addOpcao( 100300000, TP_OPCAO_ITEM, "Envio de e-mail aos contatos", "Envia e-mail", 'E', 100303000, 2, true, FEnviaMail.class );
 		addOpcao( 100300000, TP_OPCAO_ITEM, "Gerenciamento de campanhas", "Gerenciamento de campanhas", 'G', 100304000, 2, true, FGerencCampanhas.class );
-		addOpcao( 100300000, TP_OPCAO_ITEM, "Modelos de atendimento", "Modelos de atendimento", 'M', 100305000,2, true, FModAtendo.class );
+		addOpcao( 100300000, TP_OPCAO_ITEM, "Modelos de atendimento", "Modelos de atendimento", 'M', 100305000, 2, true, FModAtendo.class );
 
 		addOpcao( -1, TP_OPCAO_MENU, "Contatos", "", 'C', 200000000, 0, false, null );
 		addOpcao( 200000000, TP_OPCAO_ITEM, "Histórico", "Historico", 'H', 200100000, 1, true, FHistorico.class );
@@ -189,7 +190,6 @@ public class FreedomCRM extends AplicativoPD {
 		addOpcao( 200000000, TP_OPCAO_MENU, "Listagens", "", 'L', 200300000, 1, false, null );
 		addOpcao( 200300000, TP_OPCAO_ITEM, "Relatório diário", "Relatório diário", 'R', 200301000, 1, true, FRDiario.class );
 		addOpcao( 200300000, TP_OPCAO_ITEM, "Relatório de feedback", "Relatório de feedback", 'f', 200302000, 1, true, FRFeedback.class );
-		
 
 		addOpcao( -1, TP_OPCAO_MENU, "Atendimento", "", 'A', 300000000, 0, false, null );
 		addOpcao( 300000000, TP_OPCAO_ITEM, "Gestão de relacionamento com clientes", "Gestão de relacionamento com clientes", 'G', 300100000, 1, true, FCRM.class );
@@ -205,7 +205,7 @@ public class FreedomCRM extends AplicativoPD {
 		addOpcao( 300000000, TP_OPCAO_ITEM, "Tipo de chamado", "Tipo de chamado", 'h', 300270000, 1, true, FTipoChamado.class );
 		addOpcao( 300000000, TP_OPCAO_ITEM, "Especificação de atendimentos", "Especificação de atendimentos", 'E', 300280000, 1, true, FEspecAtend.class );
 		addOpcao( 300000000, TP_OPCAO_ITEM, "Consistência/Ponto", "Consistência/Ponto", 'P', 300290000, 2, true, FConsisteCRM.class );
-		
+
 		addSeparador( 300000000 );
 
 		addOpcao( 300000000, TP_OPCAO_MENU, "Listagens", "", 'L', 300300000, 1, false, null );
@@ -277,17 +277,15 @@ public class FreedomCRM extends AplicativoPD {
 		addOpcao( 500100000, TP_OPCAO_ITEM, "Situação Projeto/Contratos", "Situação Projeto/Contratos", 'S', 500105000, 2, true, FSitContr.class );
 		addOpcao( 500100000, TP_OPCAO_ITEM, "Gestão de Projetos/Contratos", "Gestão de Projetos/Contratos", 'G', 500106000, 2, true, FGestaoProj.class );
 		addOpcao( 500100000, TP_OPCAO_ITEM, "Modelo do Contrato", "Modelo do Contrato", 'M', 500107000, 2, true, FModContr.class );
-		
-		
+
 		addOpcao( 500000000, TP_OPCAO_MENU, "Listagens", "", 'L', 500200000, 1, false, null );
 		addOpcao( 500200000, TP_OPCAO_ITEM, "Detalhamento de custos", "Custos de Projeto", 'u', 500201000, 2, true, FRCustoProj.class );
 		addOpcao( 500200000, TP_OPCAO_ITEM, "Projetos / Contratos", "Projetos / Contratos", 'P', 500202000, 2, true, FRProjCon.class );
 		addOpcao( 500200000, TP_OPCAO_ITEM, "Situação Projetos / Contratos", "Situação Projetos / Contratos", 'S', 500203000, 2, true, FRSitContr.class );
-		addOpcao( 500200000, TP_OPCAO_ITEM, "Cronograma Sintético", "Cronograma Sintético", 'C', 500204000, 2, true, FRCronograma.class);
-		addOpcao( 500200000, TP_OPCAO_ITEM, "Ações realizadas", "Ações realizadas", 'A', 500205000, 2, true, FRAcoesRealizadas.class);
-		addOpcao( 500200000, TP_OPCAO_ITEM, "Balanço de projeto", "Balanço de projeto", 'B', 500206000, 2, true, FRBalancoProj.class);
-		
-		
+		addOpcao( 500200000, TP_OPCAO_ITEM, "Cronograma Sintético", "Cronograma Sintético", 'C', 500204000, 2, true, FRCronograma.class );
+		addOpcao( 500200000, TP_OPCAO_ITEM, "Ações realizadas", "Ações realizadas", 'A', 500205000, 2, true, FRAcoesRealizadas.class );
+		addOpcao( 500200000, TP_OPCAO_ITEM, "Balanço de projeto", "Balanço de projeto", 'B', 500206000, 2, true, FRBalancoProj.class );
+
 		addOpcao( -1, TP_OPCAO_MENU, "Serviços", "", 'S', 600000000, 0, false, null );
 		addOpcao( 600000000, TP_OPCAO_ITEM, "Painel de controle", "Painel de controle de Serviços", 'e', 600100000, 1, true, FControleServicos.class );
 		addOpcao( 600000000, TP_OPCAO_ITEM, "Ordem de Serviço", "Ordem de Serviço", 'e', 600200000, 1, true, FOrdemServico.class );
@@ -337,14 +335,14 @@ public class FreedomCRM extends AplicativoPD {
 	public static void main( String sParams[] ) {
 
 		try {
-			Aplicativo.setLookAndFeel( "freedom.ini" );
+			File fileini = Aplicativo.loadIni( "ARQINI", "freedom.ini" );
+			Aplicativo.setLookAndFeel( fileini );
 			FreedomCRM fFreedomtmk = new FreedomCRM();
 			fFreedomtmk.show();
 		} catch ( Throwable e ) {
 			Funcoes.criaTelaErro( "Erro de execução" );
 			e.printStackTrace();
-		} 
+		}
 	}
-	
 
 }

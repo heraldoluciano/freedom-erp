@@ -25,6 +25,7 @@
 package org.freedom.modulos.pcp;
 
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.swing.frame.Aplicativo;
@@ -63,7 +64,7 @@ import org.freedom.modulos.pcp.view.frame.report.fsc.FRBalancoProdGrupoFSC;
 import org.freedom.modulos.pcp.view.frame.report.fsc.FRConsumoMatFSC;
 import org.freedom.modulos.pcp.view.frame.report.fsc.FREncomendasProducaoFSC;
 import org.freedom.modulos.pcp.view.frame.report.fsc.FRExtratoPorProdutoFSC;
-//import org.freedom.modulos.pcp.view.frame.report.fsc.FRProducaoGrupoFSC;
+// import org.freedom.modulos.pcp.view.frame.report.fsc.FRProducaoGrupoFSC;
 import org.freedom.modulos.pcp.view.frame.utility.FAcompanhaProd;
 import org.freedom.modulos.pcp.view.frame.utility.FBaixaRMACodBar;
 import org.freedom.modulos.pcp.view.frame.utility.FPMP_Pull;
@@ -133,15 +134,15 @@ public class FreedomPCP extends AplicativoPD implements ActionListener {
 		addOpcao( 200900000, TP_OPCAO_ITEM, "Produção", "Produção", 'P', 200900400, 1, true, FRProducao.class );
 		addOpcao( 200900000, TP_OPCAO_ITEM, "Estruturas por item", "Estruturas por item", 'E', 200900500, 1, true, FREstruturaItem.class );
 		addOpcao( 200900000, TP_OPCAO_ITEM, "Comissionamento/produtividade", "Comissionamento/produtividade", 'M', 200900600, 1, true, FRComisProd.class );
-		
+
 		addOpcao( 200900000, TP_OPCAO_MENU, "Listagens FSC", "", 'F', 201000000, 1, false, null );
 		addOpcao( 201000000, TP_OPCAO_ITEM, "Consumo de matéria prima", "Consumo de matéria prima", 'C', 201000100, 1, true, FRConsumoMatFSC.class );
-		//addOpcao( 201000000, TP_OPCAO_ITEM, "Produção por grupo", "Produção por grupo", 'P', 201000200, 1, true, FRProducaoGrupoFSC.class );
+		// addOpcao( 201000000, TP_OPCAO_ITEM, "Produção por grupo", "Produção por grupo", 'P', 201000200, 1, true, FRProducaoGrupoFSC.class );
 		addOpcao( 201000000, TP_OPCAO_ITEM, "Balanço de produção", "Balanço de produção", 'B', 201000300, 1, true, FRBalancoProdFSC.class );
 		addOpcao( 201000000, TP_OPCAO_ITEM, "Balanço de produção por grupo", "Balanço de produção por grupo", 'A', 201000400, 1, true, FRBalancoProdGrupoFSC.class );
 		addOpcao( 201000000, TP_OPCAO_ITEM, "Ordens de produção", "Ordens de produção", 'O', 201000500, 1, true, FREncomendasProducaoFSC.class );
 		addOpcao( 201000000, TP_OPCAO_ITEM, "Extrato por produto", "Extrato por produto", 'E', 201000600, 1, true, FRExtratoPorProdutoFSC.class );
-		
+
 		addOpcao( -1, TP_OPCAO_MENU, "Estoque", "", 'E', 400000000, 0, false, null );
 		addOpcao( 400000000, TP_OPCAO_ITEM, "Kardex", "Kardex", 'K', 400100000, 1, true, FKardex.class );
 		addOpcao( 400000000, TP_OPCAO_ITEM, "Inventário", "Inventário", 'I', 400200000, 1, true, FInventario.class );
@@ -162,7 +163,7 @@ public class FreedomPCP extends AplicativoPD implements ActionListener {
 		addOpcao( 400700000, TP_OPCAO_ITEM, "Custo de Produção", "Custo de Produção", 'U', 400708000, 2, true, FRCustoProducao.class );
 		addOpcao( 400700000, TP_OPCAO_ITEM, "Inventário + OP", "Inventário + OP", 'U', 400709000, 2, true, FRInventario.class );
 		addOpcao( 400700000, TP_OPCAO_ITEM, "Necessidade de Produção", "Necessidade de Produção", 'N', 400710000, 2, true, FRNecesProducao.class );
-		
+
 		addSeparador( 400000000 );
 		addOpcao( 400000000, TP_OPCAO_ITEM, "Manutenção de previsão de estoque", "Manutenção de previsão de estoque", 'M', 400800000, 1, true, FManutPrevEstoque.class );
 
@@ -184,7 +185,8 @@ public class FreedomPCP extends AplicativoPD implements ActionListener {
 	public static void main( String sParams[] ) {
 
 		try {
-			Aplicativo.setLookAndFeel( "freedom.ini" );
+			File fileini = Aplicativo.loadIni( "ARQINI", "freedom.ini" );
+			Aplicativo.setLookAndFeel( fileini );
 			FreedomPCP freedom = new FreedomPCP();
 			freedom.show();
 		} catch ( Throwable e ) {

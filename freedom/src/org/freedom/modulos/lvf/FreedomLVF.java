@@ -24,6 +24,8 @@
 
 package org.freedom.modulos.lvf;
 
+import java.io.File;
+
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.AplicativoPD;
@@ -106,13 +108,13 @@ public class FreedomLVF extends AplicativoPD {
 
 		addOpcao( 200600000, TP_OPCAO_ITEM, "Modelo de NFs", "Modelo de NFs", 'M', 200607000, 2, true, FModNota.class );
 		addOpcao( 200600000, TP_OPCAO_ITEM, "Modelo de Doc. Fiscais", "Modelo de Doc. Fiscais", 'i', 200608000, 2, true, FModDocFisc.class );
-		
+
 		addOpcao( -1, TP_OPCAO_MENU, "Entrada", "", 'E', 300000000, 0, false, null );
 		addOpcao( 300000000, TP_OPCAO_ITEM, "Registro de Entrada", "Registro de Entrada", 'E', 300100000, 1, true, FRRegitroEntrada.class );
 
 		addOpcao( -1, TP_OPCAO_MENU, "Saida", "", 'S', 400000000, 0, false, null );
 		addOpcao( 400000000, TP_OPCAO_ITEM, "Registro de Saida", "Registro de Saida", 'S', 400100000, 1, true, FRRegitroSaida.class );
-		addOpcao( 400000000, TP_OPCAO_ITEM, "Registro de Duplicatas", "Registro de Duplicatas", 'S', 400200000, 1, true, FRRegDuplicatas.class);
+		addOpcao( 400000000, TP_OPCAO_ITEM, "Registro de Duplicatas", "Registro de Duplicatas", 'S', 400200000, 1, true, FRRegDuplicatas.class );
 
 		addOpcao( -1, TP_OPCAO_MENU, "Estoque", "", 't', 500000000, 0, false, null );
 		addOpcao( 500000000, TP_OPCAO_ITEM, "Registro de Inventário", "Registro de Inventário", 'E', 500100000, 1, true, FRRegitroInventario.class );
@@ -129,7 +131,8 @@ public class FreedomLVF extends AplicativoPD {
 	public static void main( String sParams[] ) {
 
 		try {
-			Aplicativo.setLookAndFeel( "freedom.ini" );
+			File fileini = Aplicativo.loadIni( "ARQINI", "freedom.ini" );
+			Aplicativo.setLookAndFeel( fileini );
 			FreedomLVF freedom = new FreedomLVF();
 			freedom.show();
 		} catch ( Throwable e ) {

@@ -239,17 +239,16 @@ public class SystemFunctions {
 		return ret;
 	}
 
-	public static Vector<String> getIniFile(String sNomeArq) {
+	public static Vector<String> getIniFile(File fileini) {
 
 		Vector<String> vRetorno = new Vector<String>();
 		String sTemp = "";
 		int iTam = 0;
 		char c = ( char ) 0;
 		try {
-			File fArq = new File(sNomeArq);
-			FileReader frArq = new FileReader(fArq);
+			FileReader frArq = new FileReader(fileini);
 			try {
-				iTam = ( int ) fArq.length();
+				iTam = ( int ) fileini.length();
 				for (int i = 0; i < iTam; i++) {
 					c = ( char ) frArq.read();
 					if (c == ( char ) 10) {
@@ -281,12 +280,12 @@ public class SystemFunctions {
 				}
 			}
 			catch (IOException err) {
-				JOptionPane.showMessageDialog(null, "Erro ao carregar arquivo de configuração!\nArquivo: "+sNomeArq+"\n"+err.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Erro ao carregar arquivo de configuração!\nArquivo: "+fileini.getAbsolutePath()+"\n"+err.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
 				System.exit(0);
 			}
 		}
 		catch (FileNotFoundException err) {
-			JOptionPane.showMessageDialog(null, "Erro ao carregar arquivo de configuração!\nArquivo: "+ sNomeArq + "\n" + err.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Erro ao carregar arquivo de configuração!\nArquivo: "+ fileini.getAbsolutePath() + "\n" + err.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
 			System.exit(0);
 		}
 		return vRetorno;

@@ -24,8 +24,11 @@
 
 package org.freedom.modulos.pdv;
 
+import java.io.File;
+
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.swing.component.JButtonPad;
+import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.AplicativoPDV;
 import org.freedom.modulos.fnc.view.frame.crud.plain.FBanco;
 import org.freedom.modulos.gms.view.frame.crud.special.FGrupoProd;
@@ -126,7 +129,8 @@ public class FreedomPDV extends AplicativoPDV {
 	public static void main( String sParams[] ) {
 
 		try {
-			AplicativoPDV.setLookAndFeel( "freedom.ini" );
+			File fileini = Aplicativo.loadIni( "ARQINI", "freedom.ini" );
+			AplicativoPDV.setLookAndFeel( fileini );
 			FreedomPDV freedom = new FreedomPDV();
 			freedom.setECF();
 			FreedomPDV.loadEcflayout();
