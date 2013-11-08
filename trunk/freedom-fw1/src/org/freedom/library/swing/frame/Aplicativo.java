@@ -43,16 +43,13 @@ import java.io.PrintStream;
 import java.lang.reflect.Method;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.Enumeration;
 import java.util.Locale;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
-import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JTextArea;
 import javax.swing.UIManager;
 
 import org.freedom.bmps.Icone;
@@ -76,37 +73,38 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	public final static int TP_OPCAO_MENU = 0;
 
 	public final static int TP_OPCAO_ITEM = 1;
-	
+
 	public final static String FIREBIRD_15 = "15";
-	
+
 	public final static String FIREBIRD_25 = "25";
 
 	public static int casasDec = 2;
 
 	public static int casasDecFin = 2;
-	
+
 	public static String codmoeda = "";
-	
+
 	public static Boolean simples = false;
-	
+
 	public static int casasDecPre = 2;
 
 	public DbConnection con = null; // Variavel de conexao com o banco de dados
 
-	public DbConnection con_nfe = null; // Variavel de conexao com o banco deconNFE
+	public DbConnection con_nfe = null; // Variavel de conexao com o banco
+										// deconNFE
 	// dados de nfe
 
 	public static FPrincipal telaPrincipal = null;
 
 	public static Component framePrinc = null;
 
-//	public static String strUsuario = "";
+	// public static String strUsuario = "";
 
-//	public static String strSenha = "";
+	// public static String strSenha = "";
 
-//	public static String strCodCCUsu = "";
+	// public static String strCodCCUsu = "";
 
-//	public static String strAnoCCUsu = "";
+	// public static String strAnoCCUsu = "";
 
 	public static String strTemp = "";
 
@@ -121,7 +119,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	public static String strLookAndFeel = "";
 
 	public static String strTamanhoFonte = "";
-	
+
 	public static String strFbVersao = "";
 
 	public static int iCodEmp = 0;
@@ -139,7 +137,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	public static int iNumEst = 0;
 
 	public static String strBanco = "";
-	
+
 	public static String strBancoNFE = "";
 
 	public static String strDriver = "";
@@ -178,7 +176,8 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 	protected String sSplashImg = "";
 
-	protected JButtonPad btAtualMenu = new JButtonPad(Icone.novo("btAtualMenu.png"));
+	protected JButtonPad btAtualMenu = new JButtonPad(
+			Icone.novo("btAtualMenu.png"));
 
 	protected Vector<JMenuItem> vOpcoes = null;
 
@@ -204,8 +203,6 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 	public static String sArqIni = "";
 
-	private static String sArqINI = "";
-
 	private static String emailsuporte = "";
 
 	public static Empresa empresa = null;
@@ -219,24 +216,24 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	private static EmailBean emailbean = null;
 
 	private static Aplicativo instance = null;
-	
+
 	private String httpproxy;
-	
+
 	private String portaproxy;
-	
+
 	private String usuarioproxy;
-	
+
 	private String senhaproxy;
-	
+
 	private Boolean autproxy = false;
-	
+
 	private static Usuario usuario;
 
 	public Boolean isAutproxy() {
 		return autproxy;
 	}
 
-	public void isAutproxy(Boolean autproxy) { 
+	public void isAutproxy(Boolean autproxy) {
 		this.autproxy = autproxy;
 	}
 
@@ -246,14 +243,14 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 	public void setHttpproxy(String httpproxy) {
 		this.httpproxy = httpproxy;
-		
+
 		System.setProperty("http.proxySet", "true");
-        System.setProperty("http.proxyHost", httpproxy);
-      
+		System.setProperty("http.proxyHost", httpproxy);
+
 	}
 
 	public String getPortaproxy() {
-		return portaproxy;		  
+		return portaproxy;
 	}
 
 	public void setPortaproxy(String portaproxy) {
@@ -290,7 +287,6 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		setEmailSuporte("suporte@stpinf.com");
 		setNomeSis("Freedom-ERP");
 		setMantenedor("Setpoint Informática Ltda.");
-				
 
 	}
 
@@ -313,7 +309,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		vEquipeSis.add("Fabiano Frizzo: Desenvolvimento");
 		vEquipeSis.add("Vinícius Cintra Domingos: Colaborador/Desenvolvimento");
 		vEquipeSis.add("Sergio Diogo Toews: Designer/Web Designer");
-		
+
 	}
 
 	protected void setEmailSuporte(String emailsuporte) {
@@ -358,27 +354,27 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	}
 
 	public static File loadIni(String varini, String defini) {
-		if (varini==null) {
+		if (varini == null) {
 			varini = "ARQINI";
 		}
 		String strfile = System.getProperty(varini);
-		if (strfile==null) {
+		if (strfile == null) {
 			strfile = defini;
 		}
-		File fileini = Aplicativo.getArqIni( strfile );
+		File fileini = Aplicativo.getArqIni(strfile);
 		vArqINI = SystemFunctions.getIniFile(fileini);
 		return fileini;
 	}
 
 	public static File loadLog(String varlog, String deflog) {
-		if (varlog==null) {
+		if (varlog == null) {
 			varlog = "ARQLOG";
 		}
 		String strfile = System.getProperty(varlog);
-		if (strfile==null) {
+		if (strfile == null) {
 			strfile = deflog;
 		}
-		File logfile = Aplicativo.getArqLog( strfile );
+		File logfile = Aplicativo.getArqLog(strfile);
 		return logfile;
 	}
 
@@ -388,7 +384,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		StringBuilder path = new StringBuilder();
 		String sep = null;
 		String drive = null;
-		if (SystemFunctions.getOS()==SystemFunctions.OS_LINUX) {
+		if (SystemFunctions.getOS() == SystemFunctions.OS_LINUX) {
 			sep = "/";
 			drive = "";
 		} else {
@@ -402,21 +398,19 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		path.append("freedom");
 		path.append(sep);
 		path.append("log");
-		if (filelog==null) {
+		if (filelog == null) {
 			filelog = "freedom.log";
 		}
-		if (filelog.indexOf(sep)<0) {
-			fullfilelog = path+sep+filelog;
+		if (filelog.indexOf(sep) < 0) {
+			fullfilelog = path + sep + filelog;
 		} else {
 			fullfilelog = filelog;
 		}
-		result = new File(fullfilelog);
-		if (!result.exists()) {
-			result = new File(filelog);
-			if (!result.exists()) {
-				result = new File(fullfilelog);
-			}
+		File pathfile = new File(path.toString());
+		if (!pathfile.exists()) {
+			pathfile.mkdir();
 		}
+		result = new File(fullfilelog);
 		return result;
 	}
 
@@ -426,7 +420,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		StringBuilder path = new StringBuilder();
 		String sep = null;
 		String drive = null;
-		if (SystemFunctions.getOS()==SystemFunctions.OS_LINUX) {
+		if (SystemFunctions.getOS() == SystemFunctions.OS_LINUX) {
 			sep = "/";
 			drive = "";
 		} else {
@@ -440,11 +434,11 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		path.append("freedom");
 		path.append(sep);
 		path.append("ini");
-		if (fileini==null) {
+		if (fileini == null) {
 			fileini = "freedom.ini";
 		}
-		if (fileini.indexOf(sep)<0) {
-			fullfileini = path+sep+fileini;
+		if (fileini.indexOf(sep) < 0) {
+			fullfileini = path + sep + fileini;
 		} else {
 			fullfileini = fileini;
 		}
@@ -457,28 +451,29 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		}
 		return result;
 	}
-	
+
 	public static void setLookAndFeel(File fileini) {
 
-/*		if (sNomeArqIni == null)
-			sNomeArqIni = "freedom.ini";
-		sArqIni = sNomeArqIni;
-		StringBuilder prop = new StringBuilder();
-		Enumeration<Object> keys = System.getProperties().keys(); 
-		while (keys.hasMoreElements()) {
-			Object key = keys.nextElement();
-			prop.append(key.toString()+"="+System.getProperties().get(key)+"\n");
-		}
-	*/	
-		//Funcoes.mensagemInforma(null, "Propriedades\n"+prop.toString());
-		//ClasseExterna.ClasseInterna ci = new ClasseExterna().new ClasseInterna(); 
-		/*FrameMensagem fmens = new FrameMensagem();
-		fmens.setTexto(prop.toString()); */
-		//fmens.setm
-		//fmens.setVisible(true);
-		
-		//String teste = System.getProperty("freedom.arqini");
-		//Funcoes.mensagemInforma(null, "Propriedade ini: "+ teste);
+		/*
+		 * if (sNomeArqIni == null) sNomeArqIni = "freedom.ini"; sArqIni =
+		 * sNomeArqIni; StringBuilder prop = new StringBuilder();
+		 * Enumeration<Object> keys = System.getProperties().keys(); while
+		 * (keys.hasMoreElements()) { Object key = keys.nextElement();
+		 * prop.append(key.toString()+"="+System.getProperties().get(key)+"\n");
+		 * }
+		 */
+		// Funcoes.mensagemInforma(null, "Propriedades\n"+prop.toString());
+		// ClasseExterna.ClasseInterna ci = new ClasseExterna().new
+		// ClasseInterna();
+		/*
+		 * FrameMensagem fmens = new FrameMensagem();
+		 * fmens.setTexto(prop.toString());
+		 */
+		// fmens.setm
+		// fmens.setVisible(true);
+
+		// String teste = System.getProperty("freedom.arqini");
+		// Funcoes.mensagemInforma(null, "Propriedade ini: "+ teste);
 
 		try {
 			strLookAndFeel = getParameter("lookandfeel");
@@ -486,14 +481,15 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 			if (!strLookAndFeel.equals("")) {
 				UIManager.setLookAndFeel(strLookAndFeel);
-			}
-			else {
+			} else {
 
 				if (!"".equals(strTamanhoFonte)) {
-					SwingParams.TAMANHO_FONTE = Integer.parseInt(strTamanhoFonte);
+					SwingParams.TAMANHO_FONTE = Integer
+							.parseInt(strTamanhoFonte);
 				}
 
-				UIManager.put("InternalFrame.titleFont", SwingParams.getFontbold());
+				UIManager.put("InternalFrame.titleFont",
+						SwingParams.getFontbold());
 				UIManager.put("ToolTip.font", SwingParams.getFontitalicmed());
 				UIManager.put("Label.font", SwingParams.getFontbold());
 				UIManager.put("Button.font", SwingParams.getFontbold());
@@ -505,7 +501,8 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 				UIManager.put("ComboBox.font", SwingParams.getFontpad());
 				UIManager.put("TabbedPane.font", SwingParams.getFontbold());
 				UIManager.put("MenuItem.font", SwingParams.getFontbold());
-				UIManager.put("PasswordField.font", SwingParams.getFontboldmax());
+				UIManager.put("PasswordField.font",
+						SwingParams.getFontboldmax());
 				UIManager.put("PasswordField.foreground", Color.RED);
 				UIManager.put("RadioButton.font", SwingParams.getFontbold());
 				UIManager.put("TextArea.font", SwingParams.getFontpad());
@@ -514,8 +511,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 			}
 
-		}
-		catch (Exception err) {
+		} catch (Exception err) {
 			err.printStackTrace();
 		}
 
@@ -535,17 +531,16 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 				miTemp = vOpcoes.elementAt(i);
 				if (miTemp != null) {
 					if (miTemp instanceof JMenuPad)
-						iCodMenu = ( ( JMenuPad ) miTemp ).getCodMenu();
+						iCodMenu = ((JMenuPad) miTemp).getCodMenu();
 					else if (miTemp instanceof JMenuItemPad)
-						iCodMenu = ( ( JMenuItemPad ) miTemp ).getCodItem();
+						iCodMenu = ((JMenuItemPad) miTemp).getCodItem();
 					if (iCodMenu == iOpcao) {
 						miRetorno = miTemp;
 						break;
 					}
 				}
 			}
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return miRetorno;
@@ -557,22 +552,23 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 				logfile.createNewFile();
 			FileOutputStream foArq = new FileOutputStream(logfile, true);
 			System.setErr(new PrintStream(foArq));
-		}
-		catch (Exception err) {
+		} catch (Exception err) {
 			err.printStackTrace();
 		}
 	}
 
-	public void addOpcao(int iSuperMenu, int iTipo, String sCaption, String titulo, char cAtalho, int iOpcao, int iNivel, boolean bExec, Class<? extends IFilho> tela) {
+	public void addOpcao(int iSuperMenu, int iTipo, String sCaption,
+			String titulo, char cAtalho, int iOpcao, int iNivel, boolean bExec,
+			Class<? extends IFilho> tela) {
 
 		JMenuItem mOpcao = null;
 		JMenuPad mpMaster = null;
 		try {
 			if (iTipo == TP_OPCAO_MENU) {
-				mOpcao = ( new JMenuPad(iCodSis, iCodModu, iOpcao, iNivel) );
-			}
-			else if (iTipo == TP_OPCAO_ITEM) {
-				mOpcao = ( new JMenuItemPad(iCodSis, iCodModu, iOpcao, iNivel, tela, titulo) );
+				mOpcao = (new JMenuPad(iCodSis, iCodModu, iOpcao, iNivel));
+			} else if (iTipo == TP_OPCAO_ITEM) {
+				mOpcao = (new JMenuItemPad(iCodSis, iCodModu, iOpcao, iNivel,
+						tela, titulo));
 			}
 			mOpcao.setText(sCaption);
 			mOpcao.setMnemonic(cAtalho);
@@ -580,19 +576,18 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 			if (bExec)
 				mOpcao.addActionListener(this);
 			if (iSuperMenu == -1) {
-				telaPrincipal.adicMenu(( JMenuPad ) mOpcao);
-			}
-			else {
-				mpMaster = ( JMenuPad ) getOpcao(iSuperMenu);
+				telaPrincipal.adicMenu((JMenuPad) mOpcao);
+			} else {
+				mpMaster = (JMenuPad) getOpcao(iSuperMenu);
 				if (mpMaster != null) {
 					if (bExec)
-						( ( JMenuItemPad ) mOpcao ).setEnabled(verifAcesso(iCodSis, iCodModu, iOpcao));
+						((JMenuItemPad) mOpcao).setEnabled(verifAcesso(iCodSis,
+								iCodModu, iOpcao));
 					mpMaster.add(mOpcao);
 				}
 			}
 			vOpcoes.addElement(mOpcao);
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			Funcoes.mensagemInforma(null, e.getMessage());
 			e.printStackTrace();
 		}
@@ -606,26 +601,26 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 				oSuper = getOpcao(iSuperMenu);
 				if (oSuper != null) {
 					if (oSuper instanceof JMenu) {
-						( ( JMenu ) oSuper ).addSeparator();
+						((JMenu) oSuper).addSeparator();
 					}
 				}
-			}
-			catch (Exception e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}
-		finally {
+		} finally {
 			oSuper = null;
 		}
 
 	}
 
-	public JButtonPad addBotao(String sImagem, String sToolTip, String titulo, int iCodMenu, Class<? extends IFilho> tela) {
+	public JButtonPad addBotao(String sImagem, String sToolTip, String titulo,
+			int iCodMenu, Class<? extends IFilho> tela) {
 
 		JButtonPad btOpcao = null;
 		try {
 
-			btOpcao = new JButtonPad(iCodSis, iCodModu, iCodMenu, tela, titulo, false);
+			btOpcao = new JButtonPad(iCodSis, iCodModu, iCodMenu, tela, titulo,
+					false);
 
 			btOpcao.setIcon(Icone.novo(sImagem));
 
@@ -639,8 +634,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 			vBotoes.add(btOpcao);
 			adicTelaBotao(btOpcao);
 			return btOpcao;
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
@@ -656,7 +650,8 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 		pinBotoes.setBorder(null);
 
-		bt.setEnabled(verifAcesso(bt.getCodSistema(), bt.getCodModulo(), bt.getCodItem()));
+		bt.setEnabled(verifAcesso(bt.getCodSistema(), bt.getCodModulo(),
+				bt.getCodItem()));
 
 		pinBotoes.adic(bt, iXPanel, 0, 30, 30);
 
@@ -667,11 +662,13 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 	protected abstract void buscaInfoUsuAtual();
 
-	public abstract boolean verifAcesso(int iCodSisP, int iCodModuP, int iCodMenuP);
+	public abstract boolean verifAcesso(int iCodSisP, int iCodModuP,
+			int iCodMenuP);
 
 	public void adicTelaMenu(JMenuPad menu, JMenuItemPad item) {
 
-		item.setEnabled(verifAcesso(item.getCodSistema(), item.getCodModulo(), item.getCodItem()));
+		item.setEnabled(verifAcesso(item.getCodSistema(), item.getCodModulo(),
+				item.getCodItem()));
 		menu.add(item);
 		item.addActionListener(this);
 	}
@@ -681,35 +678,32 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		int iCodMenu = -1;
 		if (oTemp != null) {
 			if (oTemp instanceof JButtonPad) {
-				if (( ( JButtonPad ) oTemp ) == btAtualMenu) {
+				if (((JButtonPad) oTemp) == btAtualMenu) {
 					atualizaMenus();
+				} else {
+					iCodMenu = ((JButtonPad) oTemp).getCodItem();
 				}
-				else {
-					iCodMenu = ( ( JButtonPad ) oTemp ).getCodItem();
-				}
-			}
-			else if (oTemp instanceof JMenuItemPad && !( ( ( JMenuItem ) oTemp ).getText().equals("Sair") ) && !( ( ( JMenuItem ) oTemp ).getText().equals("Sobre") )
-					&& !( ( ( JMenuItem ) oTemp ).getText().equals("Atalhos") ) && !( ( ( JMenuItem ) oTemp ).getText().equals("Suporte") )) {
-				iCodMenu = ( ( JMenuItemPad ) oTemp ).getCodItem();
-			}
-			else if (oTemp instanceof JMenuPad && !( ( ( JMenuItem ) oTemp ).getText().equals("Sobre") )) {
-				iCodMenu = ( ( JMenuPad ) oTemp ).getCodMenu();
-			}
-			else if (oTemp instanceof JMenuItemPad) {
-				if (( ( JMenuItem ) oTemp ).getText().equals("Sair")) {
+			} else if (oTemp instanceof JMenuItemPad
+					&& !(((JMenuItem) oTemp).getText().equals("Sair"))
+					&& !(((JMenuItem) oTemp).getText().equals("Sobre"))
+					&& !(((JMenuItem) oTemp).getText().equals("Atalhos"))
+					&& !(((JMenuItem) oTemp).getText().equals("Suporte"))) {
+				iCodMenu = ((JMenuItemPad) oTemp).getCodItem();
+			} else if (oTemp instanceof JMenuPad
+					&& !(((JMenuItem) oTemp).getText().equals("Sobre"))) {
+				iCodMenu = ((JMenuPad) oTemp).getCodMenu();
+			} else if (oTemp instanceof JMenuItemPad) {
+				if (((JMenuItem) oTemp).getText().equals("Sair")) {
 					telaPrincipal.fecharJanela();
-				}
-				else if (( ( JMenuItem ) oTemp ).getText().equals("Sobre")) {
+				} else if (((JMenuItem) oTemp).getText().equals("Sobre")) {
 					FSobre tela = new FSobre();
 					tela.setVisible(true);
 					tela.dispose();
-				}
-				else if (( ( JMenuItem ) oTemp ).getText().equals("Atalhos")) {
+				} else if (((JMenuItem) oTemp).getText().equals("Atalhos")) {
 					FAtalhos tela = new FAtalhos();
 					tela.setVisible(true);
 					tela.dispose();
-				}
-				else if (( ( JMenuItem ) oTemp ).getText().equals("Suporte")) {
+				} else if (((JMenuItem) oTemp).getText().equals("Suporte")) {
 					FSuporte tela = new FSuporte();
 					tela.setConexao(con);
 					tela.setVisible(true);
@@ -720,15 +714,14 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 				Class<? extends IFilho> telaClass = null;
 				String titulo = "";
 				if (oTemp instanceof JMenuItemPad) {
-					telaClass = ( ( JMenuItemPad ) oTemp ).getTela();
+					telaClass = ((JMenuItemPad) oTemp).getTela();
 					if (telaClass != null) {
-						titulo = ( ( JMenuItemPad ) oTemp ).getTitulo();
+						titulo = ((JMenuItemPad) oTemp).getTitulo();
 					}
-				}
-				else if (oTemp instanceof JButtonPad) {
-					telaClass = ( ( JButtonPad ) oTemp ).getTela();
+				} else if (oTemp instanceof JButtonPad) {
+					telaClass = ((JButtonPad) oTemp).getTela();
 					if (telaClass != null) {
-						titulo = ( ( JButtonPad ) oTemp ).getTitulo();
+						titulo = ((JButtonPad) oTemp).getTitulo();
 					}
 				}
 				if (telaClass != null) {
@@ -750,7 +743,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 			try {
 				obj = telaClass.newInstance();
 				if (obj instanceof FFDialogo) {
-					FFDialogo tela = ( FFDialogo ) obj;
+					FFDialogo tela = (FFDialogo) obj;
 
 					Class<?> partypes[] = new Class[2];
 					partypes[0] = DbConnection.class;
@@ -758,8 +751,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 					Method meth = null;
 					try {
 						meth = telaClass.getMethod("setConexao", partypes);
-					}
-					catch (NoSuchMethodException e) {
+					} catch (NoSuchMethodException e) {
 					}
 
 					telaPrincipal.criatela(titulo, tela, con);
@@ -773,9 +765,8 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 					}
 					result = tela;
-				}
-				else if (obj instanceof FFilho) {
-					FFilho tela = ( FFilho ) obj;
+				} else if (obj instanceof FFilho) {
+					FFilho tela = (FFilho) obj;
 
 					Class<?> partypes[] = new Class[2];
 					partypes[0] = DbConnection.class;
@@ -783,8 +774,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 					Method meth = null;
 					try {
 						meth = telaClass.getMethod("setConexao", partypes);
-					}
-					catch (NoSuchMethodException e) {
+					} catch (NoSuchMethodException e) {
 					}
 
 					telaPrincipal.criatela(titulo, tela, con);
@@ -797,9 +787,8 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 						meth.invoke(obj, arglist);
 					}
 					result = tela;
-				}
-				else if (obj instanceof FDialogo) {
-					FDialogo tela = ( FDialogo ) obj;
+				} else if (obj instanceof FDialogo) {
+					FDialogo tela = (FDialogo) obj;
 
 					Class<?> partypes[] = new Class[2];
 					partypes[0] = DbConnection.class;
@@ -807,8 +796,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 					Method meth = null;
 					try {
 						meth = telaClass.getMethod("setConexao", partypes);
-					}
-					catch (NoSuchMethodException e) {
+					} catch (NoSuchMethodException e) {
 					}
 
 					telaPrincipal.criatela(titulo, tela, con);
@@ -820,13 +808,12 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 						meth.invoke(obj, arglist);
 					}
 					result = tela;
-				}
-				else {
-					Funcoes.mensagemInforma(framePrinc, "Tela construída com " + telaClass.getName() + "\n Não pode ser inciada.");
+				} else {
+					Funcoes.mensagemInforma(framePrinc, "Tela construída com "
+							+ telaClass.getName() + "\n Não pode ser inciada.");
 				}
 				obj = null;
-			}
-			catch (NullPointerException err) {
+			} catch (NullPointerException err) {
 
 				StackTraceElement ste = err.getStackTrace()[0];
 
@@ -834,12 +821,15 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 				String classe = ste.getClassName();
 				String metodo = ste.getMethodName();
 
-				Funcoes.mensagemErro(framePrinc, "Erro de ponteiro nulo ao abrir a tela!\n" + "Classe:" + classe + "\n" + "Metodo:" + metodo + "\n" + "Linha:" + linha, true, con, err);
+				Funcoes.mensagemErro(framePrinc,
+						"Erro de ponteiro nulo ao abrir a tela!\n" + "Classe:"
+								+ classe + "\n" + "Metodo:" + metodo + "\n"
+								+ "Linha:" + linha, true, con, err);
 
 				err.printStackTrace();
-			}
-			catch (Exception err) {
-				Funcoes.mensagemErro(framePrinc, err.getMessage(), true, con, err);
+			} catch (Exception err) {
+				Funcoes.mensagemErro(framePrinc, err.getMessage(), true, con,
+						err);
 
 				err.printStackTrace();
 			}
@@ -862,10 +852,10 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 				buscaMenuItem(menuBar.getMenu(i));
 
 			}
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-			Funcoes.mensagemErro(null, "Erro ao atualizar menus!\n" + e.getMessage());
+			Funcoes.mensagemErro(null,
+					"Erro ao atualizar menus!\n" + e.getMessage());
 		}
 
 		Funcoes.mensagemInforma(null, "Menus atualizados com sucesso!");
@@ -877,12 +867,11 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		for (int i = 0; i < men.getItemCount(); i++) {
 			JMenuItem it = men.getItem(i);
 			if (it instanceof JMenuPad) {
-				if (!upMenuDB(it, ( JMenuPad ) men))
+				if (!upMenuDB(it, (JMenuPad) men))
 					break;
-				buscaMenuItem(( JMenu ) it);
-			}
-			else if (it instanceof JMenuItemPad) {
-				if (!upMenuDB(( JMenuItemPad ) it, ( JMenuPad ) men))
+				buscaMenuItem((JMenu) it);
+			} else if (it instanceof JMenuItemPad) {
+				if (!upMenuDB((JMenuItemPad) it, (JMenuPad) men))
 					break;
 			}
 		}
@@ -898,22 +887,21 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 		try {
 			if (men instanceof JMenuItemPad) {
-				iCodMenu = ( ( JMenuItemPad ) men ).getCodItem();
-				tela = ( ( JMenuItemPad ) men ).getTela();
-			}
-			else if (men instanceof JMenuPad) {
-				iCodMenu = ( ( JMenuPad ) men ).getCodMenu();
+				iCodMenu = ((JMenuItemPad) men).getCodItem();
+				tela = ((JMenuItemPad) men).getTela();
+			} else if (men instanceof JMenuPad) {
+				iCodMenu = ((JMenuPad) men).getCodMenu();
 			}
 			if (tela != null) {
 				sNomeMenu = tela.getName();
 				sAcaoMenu = tela.getName();
-			}
-			else {
+			} else {
 				sNomeMenu = "" + iCodMenu;
 				sAcaoMenu = "" + iCodMenu;
 			}
 			if (iCodMenu != 0) {
-				PreparedStatement ps = con.prepareStatement("EXECUTE PROCEDURE SGUPMENUSP01(?,?,?,?,?,?,?,?,?,?,?)");
+				PreparedStatement ps = con
+						.prepareStatement("EXECUTE PROCEDURE SGUPMENUSP01(?,?,?,?,?,?,?,?,?,?,?)");
 				ps.setInt(1, this.iCodSis);
 				ps.setString(2, this.sDescSis);
 				ps.setInt(3, this.iCodModu);
@@ -927,8 +915,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 					ps.setNull(9, java.sql.Types.INTEGER);
 					ps.setNull(10, java.sql.Types.INTEGER);
 					ps.setNull(11, java.sql.Types.INTEGER);
-				}
-				else {
+				} else {
 					ps.setInt(9, menPai.getCodModulo());
 					ps.setInt(10, menPai.getCodModulo());
 					ps.setInt(11, menPai.getCodMenu());
@@ -938,12 +925,15 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 				con.commit();
 			}
 			bRet = true;
-		}
-		catch (SQLException err) {
-			Funcoes.mensagemInforma(telaPrincipal, "Não foi possível atualizar a base de menus!\n" + err + "\n" + this.iCodSis + "," + this.sDescSis + "\n" + this.iCodModu + "," + this.sDescModu
-					+ "\n" + "acao: " + sAcaoMenu + "\n" + "nome:" + sNomeMenu + "\n" + iCodMenu + "," + men.getText() + "\n" + "," + menPai.getCodMenu());
-		}
-		finally {
+		} catch (SQLException err) {
+			Funcoes.mensagemInforma(telaPrincipal,
+					"Não foi possível atualizar a base de menus!\n" + err
+							+ "\n" + this.iCodSis + "," + this.sDescSis + "\n"
+							+ this.iCodModu + "," + this.sDescModu + "\n"
+							+ "acao: " + sAcaoMenu + "\n" + "nome:" + sNomeMenu
+							+ "\n" + iCodMenu + "," + men.getText() + "\n"
+							+ "," + menPai.getCodMenu());
+		} finally {
 			tela = null;
 			sNomeMenu = null;
 			sAcaoMenu = null;
@@ -955,7 +945,8 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	public void adicTelaMenu(JButtonPad bt) {
 
 		iXPanel += 30;
-		bt.setEnabled(verifAcesso(bt.getCodSistema(), bt.getCodModulo(), bt.getCodItem()));
+		bt.setEnabled(verifAcesso(bt.getCodSistema(), bt.getCodModulo(),
+				bt.getCodItem()));
 		pinBotoes.adic(bt, iXPanel, 0, 30, 30);
 		bt.addActionListener(this);
 	}
@@ -969,8 +960,8 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 			if (oMenu instanceof JMenuPad) {
 				miSair = new JMenuItemPad("Sair", 'r');
 				miSair.addActionListener(this);
-				( ( JMenuPad ) oMenu ).addSeparator();
-				( ( JMenuPad ) oMenu ).add(miSair);
+				((JMenuPad) oMenu).addSeparator();
+				((JMenuPad) oMenu).add(miSair);
 			}
 		}
 		JMenuPad mAjuda = new JMenuPad("Ajuda");
@@ -1011,8 +1002,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		Object retorno = null;
 		try {
 			retorno = cLoginExec.newInstance();
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return retorno;
@@ -1024,8 +1014,8 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		strBanco = getParameter("banco");
 		strDriver = getParameter("driver");
 
-		if (getUsuario()==null) {
-			Login lgBanco = ( Login ) criaLogin();
+		if (getUsuario() == null) {
+			Login lgBanco = (Login) criaLogin();
 			lgBanco.execLogin(strBanco, strDriver, sSplashImg, iNumEst);
 			if (!lgBanco.OK)
 				System.exit(0);
@@ -1034,22 +1024,21 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 			sNomeFilial = lgBanco.getNomeFilial();
 			iCodFilialMz = lgBanco.getFilialMz();
 			iCodFilialPad = lgBanco.getFilialPad();
-			
+
 			try {
 				conRetorno = lgBanco.getConection();
 				con_nfe = lgBanco.conNFE;
-			}
-			catch (Exception e) {
-				Funcoes.mensagemErro(null, "Erro de conexão!\n" + e.getMessage());
+			} catch (Exception e) {
+				Funcoes.mensagemErro(null,
+						"Erro de conexão!\n" + e.getMessage());
 				e.printStackTrace();
 			}
 			lgBanco.dispose();
 		}
 
-		if (getUsuario()==null) {
+		if (getUsuario() == null) {
 			return null;
-		}
-		else if (getUsuario().getSenha()==null) {
+		} else if (getUsuario().getSenha() == null) {
 			return null;
 		}
 
@@ -1067,18 +1056,21 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 	public DbConnection conexaoIB(String strDriverP, String strBancoP) {
 		try {
-			conIB = new DbConnection(strDriverP, strBancoP, getUsuario().getIdusu(), getUsuario().getSenha());
-		}
-		catch (java.sql.SQLException e) {
+			conIB = new DbConnection(strDriverP, strBancoP, getUsuario()
+					.getIdusu(), getUsuario().getSenha());
+		} catch (java.sql.SQLException e) {
 			if (e.getErrorCode() == 335544472)
 				return null;
-			Funcoes.mensagemErro(null, "[internal]:Não foi possível estabelecer conexão com o banco de dados.\n" + e.getMessage());
+			Funcoes.mensagemErro(null,
+					"[internal]:Não foi possível estabelecer conexão com o banco de dados.\n"
+							+ e.getMessage());
 			return null;
 		}
 		return conIB;
 
 	}
 
+	@SuppressWarnings("rawtypes")
 	public String[][][] getConfig2() {
 
 		Vector<Vector<Object>> vSessao = new Vector<Vector<Object>>();
@@ -1091,24 +1083,23 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		int i = 0;
 		int iContaCampo = 0;
 		int iMaxCampo = 0;
-		char c = ( char ) 0;
+		char c = (char) 0;
 		File fArq = null;
 		FileReader frArq = null;
 		try {
 			fArq = new File(sArqIni);
 			frArq = new FileReader(fArq);
-			iTam = ( int ) fArq.length();
+			iTam = (int) fArq.length();
 			try {
 				while (i < iTam) {
 					// Vector vValSessao = null;
-					if (c != ( char ) 10)
-						c = ( char ) frArq.read();
+					if (c != (char) 10)
+						c = (char) frArq.read();
 					// System.out.println("N. Char SES:"+(new
 					// Character(c)).hashCode()+"\n");
-					if (( !bLeSessao ) & ( !bLeCampo ) & ( c == '[' )) {
+					if ((!bLeSessao) & (!bLeCampo) & (c == '[')) {
 						bLeSessao = true;
-					}
-					else if (( c == ']' ) & ( bLeSessao )) {
+					} else if ((c == ']') & (bLeSessao)) {
 						vValSessao = new Vector<Object>();
 						bLeSessao = false;
 						vValSessao.addElement(new String(sTmp));
@@ -1116,18 +1107,16 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 						// System.out.println("Sessao: "+sTmp);
 						sTmp = "";
 						iContaCampo = 0;
-					}
-					else if (bLeSessao) {
+					} else if (bLeSessao) {
 						sTmp += c;
-					}
-					else if (!bLeSessao) {
+					} else if (!bLeSessao) {
 						bLeCampo = true;
 						while (i < iTam) {
-							c = ( char ) frArq.read();
+							c = (char) frArq.read();
 							// System.out.println("N. Char CAM:"+(new
 							// Character(c)).hashCode()+(bLeCampo ? " OK" : "
 							// NO"));
-							if (( c == ( char ) 10 ) & ( bLeCampo )) {
+							if ((c == (char) 10) & (bLeCampo)) {
 								bLeCampo = false;
 								vValCampo.addElement(new String(sTmp));
 								vValSessao.addElement(vValCampo);
@@ -1135,13 +1124,11 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 								sTmp = "";
 								iContaCampo++;
 								break;
-							}
-							else if (( c == '=' ) & ( bLeCampo )) {
+							} else if ((c == '=') & (bLeCampo)) {
 								vValCampo.addElement(sTmp);
 								System.out.println("Campo: " + sTmp);
 								sTmp = "";
-							}
-							else if (bLeCampo) {
+							} else if (bLeCampo) {
 								sTmp += c;
 							}
 							i++;
@@ -1154,24 +1141,29 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 				}
 				frArq.close();
 
-			}
-			catch (IOException err) {
-				Funcoes.mensagemErro(null, "Erro ao carregar arquivo de configuração!\nArquivo: "+sArqIni+"\n" + err.getMessage());
+			} catch (IOException err) {
+				Funcoes.mensagemErro(null,
+						"Erro ao carregar arquivo de configuração!\nArquivo: "
+								+ sArqIni + "\n" + err.getMessage());
 				System.exit(0);
 			}
-			
-		}
-		catch (FileNotFoundException err) {
-			Funcoes.mensagemErro(null, "Erro ao carregar arquivo de configuração!\nArquivo: "+sArqIni+"\n" + err.getMessage());
+
+		} catch (FileNotFoundException err) {
+			Funcoes.mensagemErro(null,
+					"Erro ao carregar arquivo de configuração!\nArquivo: "
+							+ sArqIni + "\n" + err.getMessage());
 			System.exit(0);
 		}
-		Funcoes.mensagemErro(null, "TESTE: " + vSessao.size() + " ~ " + iMaxCampo);
+		Funcoes.mensagemErro(null, "TESTE: " + vSessao.size() + " ~ "
+				+ iMaxCampo);
 		String[][][] sRetorno = new String[vSessao.size()][iMaxCampo][2];
-		for (int iS = 0; iS < ( vSessao.size() ); iS++) {
-			sRetorno[iS][0][0] = ( String ) vSessao.elementAt(iS).elementAt(0);
+		for (int iS = 0; iS < (vSessao.size()); iS++) {
+			sRetorno[iS][0][0] = (String) vSessao.elementAt(iS).elementAt(0);
 			for (int iC = 1; iC < iMaxCampo; iC++) {
-				sRetorno[iS][iC][0] = ( String ) ( ( Vector ) vSessao.elementAt(iS).elementAt(iC) ).elementAt(0);
-				sRetorno[iS][iC][1] = ( String ) ( ( Vector ) vSessao.elementAt(iS).elementAt(iC) ).elementAt(1);
+				sRetorno[iS][iC][0] = (String) ((Vector) vSessao.elementAt(iS)
+						.elementAt(iC)).elementAt(0);
+				sRetorno[iS][iC][1] = (String) ((Vector) vSessao.elementAt(iS)
+						.elementAt(iC)).elementAt(1);
 			}
 		}
 		return sRetorno;
@@ -1183,7 +1175,8 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 	}
 
-	public static String getValorSecao(String sSecao, String sParam, Vector<String> vArq) {
+	public static String getValorSecao(String sSecao, String sParam,
+			Vector<String> vArq) {
 
 		String sLinha = "";
 		String sLabel = "";
@@ -1195,8 +1188,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 					sLinha = vArq.elementAt(i2);
 					if (sLinha.indexOf('[') > 0) {
 						break;
-					}
-					else if (sLinha.indexOf('=') > 0) {
+					} else if (sLinha.indexOf('=') > 0) {
 						iLocal = sLinha.indexOf('=');
 						sLabel = sLinha.substring(0, iLocal).trim();
 						if (sLabel.equals(sParam.trim())) {
