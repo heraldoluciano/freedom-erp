@@ -12,17 +12,17 @@
     </manifest>
     <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std.view.frame.crud.tabbed"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std.dao"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std.business.constant"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std.dao"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std.view.frame.utility"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std.view.frame.report"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std.view.frame.crud.special"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.doc.release_notes"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std.view.frame.crud.special"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std.view.background"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std.business.object"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std.view.dialog.utility"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std.view.frame.crud.detail"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std.view.dialog.utility"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std.view.frame.special"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std.business.component"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std.view.frame.crud.plain"/>
