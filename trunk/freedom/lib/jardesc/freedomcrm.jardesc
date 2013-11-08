@@ -13,16 +13,13 @@
     <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm.business.component"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm.business.object"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.gpe.business.object"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm.view.dialog.report"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm.view.frame.main"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm.dao"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm.view.frame.crud.special"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm.view.frame.crud.special"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm.view.frame.report"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm.view.frame.crud.detail"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.doc.release_notes"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.gpe.dao"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm.view.frame.crud.tabbed"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm.view.frame.utility"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm.view.dialog.utility"/>
