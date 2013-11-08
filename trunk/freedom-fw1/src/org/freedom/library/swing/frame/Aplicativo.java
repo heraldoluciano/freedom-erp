@@ -401,7 +401,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		path.append(sep);
 		path.append("freedom");
 		path.append(sep);
-		path.append("ini");
+		path.append("log");
 		if (filelog==null) {
 			filelog = "freedom.log";
 		}
