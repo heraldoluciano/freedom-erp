@@ -369,7 +369,57 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		vArqINI = SystemFunctions.getIniFile(fileini);
 		return fileini;
 	}
-	
+
+	public static File loadLog(String varlog, String deflog) {
+		if (varlog==null) {
+			varlog = "ARQLOG";
+		}
+		String strfile = System.getProperty(varlog);
+		if (strfile==null) {
+			strfile = deflog;
+		}
+		File logfile = Aplicativo.getArqLog( strfile );
+		return logfile;
+	}
+
+	public static File getArqLog(String filelog) {
+		File result = null;
+		String fullfilelog = null;
+		StringBuilder path = new StringBuilder();
+		String sep = null;
+		String drive = null;
+		if (SystemFunctions.getOS()==SystemFunctions.OS_LINUX) {
+			sep = "/";
+			drive = "";
+		} else {
+			sep = "\\";
+			drive = "c:";
+		}
+		path.append(drive);
+		path.append(sep);
+		path.append("opt");
+		path.append(sep);
+		path.append("freedom");
+		path.append(sep);
+		path.append("ini");
+		if (filelog==null) {
+			filelog = "freedom.log";
+		}
+		if (filelog.indexOf(sep)<0) {
+			fullfilelog = path+sep+filelog;
+		} else {
+			fullfilelog = filelog;
+		}
+		result = new File(fullfilelog);
+		if (!result.exists()) {
+			result = new File(filelog);
+			if (!result.exists()) {
+				result = new File(fullfilelog);
+			}
+		}
+		return result;
+	}
+
 	public static File getArqIni(String fileini) {
 		File result = null;
 		String fullfileini = null;
@@ -501,13 +551,11 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		return miRetorno;
 	}
 
-	protected void ligaLog(String sArq) {
-
-		File fArq = new File(sArq);
+	protected void ligaLog(File logfile) {
 		try {
-			if (!fArq.exists())
-				fArq.createNewFile();
-			FileOutputStream foArq = new FileOutputStream(fArq, true);
+			if (!logfile.exists())
+				logfile.createNewFile();
+			FileOutputStream foArq = new FileOutputStream(logfile, true);
 			System.setErr(new PrintStream(foArq));
 		}
 		catch (Exception err) {
