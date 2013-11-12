@@ -102,6 +102,8 @@ public class FRAtendimentos extends FRelatorio {
 
 	private JCheckBoxPad cbTodos = new JCheckBoxPad( "Todos os atendimentos", "S", "N" );
 
+	private JCheckBoxPad cbSuprimirResumo = new JCheckBoxPad( "Suprimir resumo", "S", "N" );
+
 	private boolean bComp = false;
 
 	private Component tela = null;
@@ -111,7 +113,7 @@ public class FRAtendimentos extends FRelatorio {
 	public FRAtendimentos() {
 
 		setTitulo( "Relatório de atendimentos/cobrança" );
-		setAtribos( 80, 80, 350	, 360 );
+		setAtribos( 80, 80, 350	, 390 );
 
 		montaListaCampos();
 		montaTela();
@@ -152,6 +154,8 @@ public class FRAtendimentos extends FRelatorio {
 		adic( txtNomeAtend, 90, 210, 225, 20, "Nome do atendente" );
 
 		adic( cbTodos, 7, 250, 300, 20 );
+
+		adic( cbSuprimirResumo, 7, 270, 300, 20 );
 
 		Calendar cPeriodo = Calendar.getInstance();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
@@ -341,6 +345,7 @@ public class FRAtendimentos extends FRelatorio {
 		hParam.put( "DESCCONTR", txtDescContr.getVlrString() );
 		hParam.put( "DESCITCONTR", txtDescItContr.getVlrString() );
 		hParam.put( "CONEXAO", con.getConnection() );
+		hParam.put( "SUPRIMIRRESUMO", cbSuprimirResumo.getVlrString() );
 
 		if ( txtCodCli.getVlrInteger().intValue() > 0 ) {
 			hParam.put( "CLIENTE", txtCodCli.getVlrString().trim() + "-" + txtRazCli.getVlrString().trim() );
