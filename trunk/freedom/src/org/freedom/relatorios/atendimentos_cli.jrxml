@@ -32,7 +32,7 @@
 	<parameter name="DTINI" class="java.util.Date"/>
 	<parameter name="DTFIM" class="java.util.Date"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["\\opt\\eclipse\\workspace\\freedom\\src\\org\\freedom\\relatorios\\"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["/home/robson/workspace/freedom/src/org/freedom/relatorios/"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODCONTR" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[new Integer(0)]]></defaultValueExpression>
@@ -63,12 +63,17 @@ and a.dataatendo between '01.02.2009' and '28.02.2009']]>
 	<field name="NOMEATEND" class="java.lang.String"/>
 	<field name="DESCTPATENDO" class="java.lang.String"/>
 	<field name="RAZCLI" class="java.lang.String"/>
+	<field name="TOTALCOBCLI" class="java.math.BigDecimal"/>
 	<variable name="TOTALHORAS" class="java.sql.Time" calculation="Sum"/>
 	<variable name="HORAATEND" class="java.lang.Long" resetType="None">
 		<variableExpression><![CDATA[new Long(org.freedom.library.functions.Funcoes.subtraiTime($F{HORAATENDO},$F{HORAATENDOFIN}))]]></variableExpression>
 	</variable>
 	<variable name="HORAATENDSUM" class="java.lang.Long" calculation="Sum">
 		<variableExpression><![CDATA[$V{HORAATEND}]]></variableExpression>
+	</variable>
+	<variable name="TOTALCOBCLI" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{TOTALCOBCLI}]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
 	<group name="GERAL">
 		<groupExpression><![CDATA[]]></groupExpression>
@@ -213,7 +218,7 @@ and a.dataatendo between '01.02.2009' and '28.02.2009']]>
 					<reportElement key="rectangle-2" x="0" y="1" width="786" height="18" forecolor="#2F2F7D" backcolor="#2F2F7D"/>
 				</rectangle>
 				<staticText>
-					<reportElement key="staticText-8" x="2" y="2" width="85" height="16" forecolor="#FFFFFF"/>
+					<reportElement key="staticText-8" x="2" y="2" width="106" height="16" forecolor="#FFFFFF"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -241,6 +246,32 @@ and a.dataatendo between '01.02.2009' and '28.02.2009']]>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[org.freedom.library.functions.Funcoes.longTostrTime($V{HORAATENDSUM}.longValue())]]></textFieldExpression>
 				</textField>
+				<textField pattern="###0.00;-###0.00" isBlankWhenNull="false">
+					<reportElement key="textField-8" x="332" y="2" width="96" height="17" forecolor="#FFFFFF"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TOTALCOBCLI}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-8" x="222" y="2" width="106" height="16" forecolor="#FFFFFF"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[Total cob. cli:]]></text>
+				</staticText>
 			</band>
 		</groupFooter>
 	</group>
