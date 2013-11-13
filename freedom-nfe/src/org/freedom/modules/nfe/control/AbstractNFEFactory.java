@@ -92,8 +92,14 @@ public abstract class AbstractNFEFactory {
 	
 	public static String KIND_APP_FISCO = "3";
 	
-	private String kindTransmission = KIND_APP_FISCO;
+	public static String KIND_ENV_PROD = "1";
 	
+	public static String KIND_ENV_HOMOLOG = "2";
+	
+	private String kindTransmission = KIND_APP_FISCO;
+
+	private String KindEnv = KIND_ENV_HOMOLOG;
+
 	public enum SYSTEM {
 		FREEDOM
 	};
@@ -259,5 +265,14 @@ public abstract class AbstractNFEFactory {
 	public void setKindTransmission(String kindTransmission) {
 		this.kindTransmission = kindTransmission;
 	}
+
+	public String getKindEnv() {
+		return KindEnv;
+	}
+
+	public void setKindEnv(String kindEnv) {
+		KindEnv = kindEnv;
+	}
+
 	
 }

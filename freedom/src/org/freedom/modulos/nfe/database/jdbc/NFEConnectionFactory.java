@@ -58,12 +58,16 @@ public class NFEConnectionFactory implements NFEListener {
 	private boolean service;
 	
 	private String kindTransmission = AbstractNFEFactory.KIND_APP_FISCO;
+	
+	private String kindEnv = AbstractNFEFactory.KIND_ENV_HOMOLOG;
 
-	public NFEConnectionFactory( final DbConnection conFreedom, final DbConnection conSped, Constant TP_NF, boolean service, String kindTransmission ) {
+	public NFEConnectionFactory( final DbConnection conFreedom, final DbConnection conSped
+			, Constant TP_NF, boolean service, String kindTransmission, String kindEnv ) {
 
 		this.con = conFreedom;
 		this.service = service;
 		this.kindTransmission = kindTransmission;
+		this.kindEnv = kindEnv;
 		
 		if ( TP_NF == null ) {
 			setTpNF( AbstractNFEFactory.TP_NF_OUT );
@@ -90,6 +94,7 @@ public class NFEConnectionFactory implements NFEListener {
 					getObjNFEFactory().setConNFE( getConNFE() );
 					getObjNFEFactory().setTpNF( getTpNF() );
 					getObjNFEFactory().setService( isService() );
+					getObjNFEFactory().setKindEnv( getKindEnv() );
 
 				}
 				else {
@@ -383,6 +388,18 @@ public class NFEConnectionFactory implements NFEListener {
 	public void setKindTransmission( String kindTransmission ) {
 	
 		this.kindTransmission = kindTransmission;
+	}
+
+	
+	public String getKindEnv() {
+	
+		return kindEnv;
+	}
+
+	
+	public void setKindEnv( String kindEnv ) {
+	
+		this.kindEnv = kindEnv;
 	}
 
 }
