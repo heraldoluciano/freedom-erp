@@ -1412,8 +1412,6 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 
 	public void keyTyped( KeyEvent arg0 ) {
 
-		// TODO Auto-generated method stub
-
 	}
 
 }
