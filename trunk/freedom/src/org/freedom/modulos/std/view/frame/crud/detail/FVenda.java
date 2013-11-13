@@ -603,10 +603,11 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
     private DAOBuscaOrc daobuscaorc = null;
 
 	private enum POS_PREFS {
-		USAREFPROD, USAPEDSEQ, USALIQREL, TIPOPRECOCUSTO, USACLASCOMIS, TRAVATMNFVD, NATVENDA, BLOQVENDA, VENDAMATPRIM, DESCCOMPPED, TAMDESCPROD, 
-		OBSCLIVEND, IPIVENDA, CONTESTOQ, DIASPEDT, RECALCCPVENDA, USALAYOUTPED, ICMSVENDA, USAPRECOZERO, MULTICOMIS, CONS_CRED_ITEM, CONS_CRED_FECHA, 
-		TIPOCLASPED, VENDAIMOBILIZADO, VISUALIZALUCR, INFCPDEVOLUCAO, INFVDREMESSA, TIPOCUSTO, BUSCACODPRODGEN, CODPLANOPAGSV, CODTIPOMOVDS, COMISSAODESCONTO,
-		VENDAMATCONSUM, OBSITVENDAPED, BLOQSEQIVD, VDPRODQQCLAS, CONSISTENDENTVD, BLOQDESCCOMPVD, BLOQPRECOVD, BLOQCOMISSVD, BLOQPEDVD, SOLDTSAIDA, PROCEMINFE
+		USAREFPROD, USAPEDSEQ, USALIQREL, TIPOPRECOCUSTO, USACLASCOMIS, TRAVATMNFVD, NATVENDA, BLOQVENDA, VENDAMATPRIM, DESCCOMPPED, TAMDESCPROD
+		, OBSCLIVEND, IPIVENDA, CONTESTOQ, DIASPEDT, RECALCCPVENDA, USALAYOUTPED, ICMSVENDA, USAPRECOZERO, MULTICOMIS, CONS_CRED_ITEM, CONS_CRED_FECHA
+		, TIPOCLASPED, VENDAIMOBILIZADO, VISUALIZALUCR, INFCPDEVOLUCAO, INFVDREMESSA, TIPOCUSTO, BUSCACODPRODGEN, CODPLANOPAGSV, CODTIPOMOVDS, COMISSAODESCONTO
+		, VENDAMATCONSUM, OBSITVENDAPED, BLOQSEQIVD, VDPRODQQCLAS, CONSISTENDENTVD, BLOQDESCCOMPVD, BLOQPRECOVD, BLOQCOMISSVD, BLOQPEDVD, SOLDTSAIDA
+		, PROCEMINFE, AMBIENTENFE
 	}
 
 	private enum ECOL_ITENS{
@@ -3571,7 +3572,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			sSQL.append( ", P1.INFCPDEVOLUCAO, P1.INFVDREMESSA, P1.TIPOCUSTOLUC, P1.BUSCACODPRODGEN, P1.CODPLANOPAGSV " );
 			sSQL.append( ", P1.COMISSAODESCONTO, P8.CODTIPOMOVDS, P1.VENDACONSUM, P1.OBSITVENDAPED, P1.BLOQSEQIVD, P1.LOCALSERV ");
 			sSQL.append( ", P1.VDPRODQQCLAS, P1.CONSISTENDENTVD, P1.BLOQDESCCOMPVD, P1.BLOQPRECOVD, P1.BLOQCOMISSVD ");
-			sSQL.append( ", P1.BLOQPEDVD, P1.SOLDTSAIDA, COALESCE(P1.PROCEMINFE,'3') PROCEMINFE " );
+			sSQL.append( ", P1.BLOQPEDVD, P1.SOLDTSAIDA, COALESCE(P1.PROCEMINFE,'3') PROCEMINFE, COALESCE(P1.AMBIENTENFE,'2') AMBIENTENFE " );
 
 			sSQL.append( "FROM SGPREFERE1 P1 LEFT OUTER JOIN SGPREFERE8 P8 ON " );
 			sSQL.append( "P1.CODEMP=P8.CODEMP AND P1.CODFILIAL=P8.CODFILIAL " );
@@ -3635,6 +3636,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				retorno[ POS_PREFS.BLOQPEDVD.ordinal()] = "S".equals( rs.getString( POS_PREFS.BLOQPEDVD.toString() ) );
 				retorno[ POS_PREFS.SOLDTSAIDA.ordinal()] = "S".equals( rs.getString( POS_PREFS.SOLDTSAIDA.toString() ) );
 				retorno[ POS_PREFS.PROCEMINFE.ordinal()] = rs.getString( POS_PREFS.PROCEMINFE.toString() ); 
+				retorno[ POS_PREFS.AMBIENTENFE.ordinal()] = rs.getString( POS_PREFS.AMBIENTENFE.toString() ); 
 				
 				localServ = rs.getString( "LOCALSERV" );
 			}
@@ -4167,11 +4169,19 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 
 				if ( txtTipoMov.getVlrString().equals( TipoMov.TM_VENDA_SERVICO.getValue() ) ) {
-					setNfecf( new NFEConnectionFactory( con, Aplicativo.getInstace().getConexaoNFE(), AbstractNFEFactory.TP_NF_OUT, true, (String) oPrefs[POS_PREFS.PROCEMINFE.ordinal()] ) );
+					setNfecf( new NFEConnectionFactory( con, Aplicativo.getInstace().getConexaoNFE()
+							, AbstractNFEFactory.TP_NF_OUT, true
+							, (String) oPrefs[POS_PREFS.PROCEMINFE.ordinal()] 
+							, (String) oPrefs[POS_PREFS.AMBIENTENFE.ordinal()]
+									) );
 
 				}
 				else {
-					setNfecf( new NFEConnectionFactory( con, Aplicativo.getInstace().getConexaoNFE(), AbstractNFEFactory.TP_NF_OUT, false, (String) oPrefs[POS_PREFS.PROCEMINFE.ordinal()] ) );
+					setNfecf( new NFEConnectionFactory( con, Aplicativo.getInstace().getConexaoNFE()
+							, AbstractNFEFactory.TP_NF_OUT, false
+							, (String) oPrefs[POS_PREFS.PROCEMINFE.ordinal()]
+							, (String) oPrefs[POS_PREFS.AMBIENTENFE.ordinal()]
+									) );
 				}
 
 				recriaSqlWhereLcProdutos();
@@ -5095,7 +5105,11 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcColeta.setConexao( cn );
 		lcItRemessa.setConexao( cn );
 		lcNumSerie.setConexao( cn );
-		setNfecf( new NFEConnectionFactory( con, Aplicativo.getInstace().getConexaoNFE(), AbstractNFEFactory.TP_NF_OUT, false, (String) oPrefs[POS_PREFS.PROCEMINFE.ordinal()] ) );
+		setNfecf( new NFEConnectionFactory( con, Aplicativo.getInstace().getConexaoNFE()
+				, AbstractNFEFactory.TP_NF_OUT, false
+				, (String) oPrefs[POS_PREFS.PROCEMINFE.ordinal()]
+				, (String) oPrefs[POS_PREFS.AMBIENTENFE.ordinal()]
+						) );
 		daobuscaorc = new DAOBuscaOrc( cn );
 		
 	}

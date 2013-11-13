@@ -498,6 +498,8 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 	
 	private String proceminfe = "3";
 
+	private String ambientenfe = AbstractNFEFactory.KIND_ENV_HOMOLOG;
+	
 	private Integer codtipomovim = null;
 
 	private String abaTransp = "N";
@@ -1572,7 +1574,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		nfecf.setTpNF( AbstractNFEFactory.TP_NF_IN );
 
 		nfecf.setKey( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPCOMPRA" ), txtCodCompra.getVlrInteger(), txtDocCompra.getVlrInteger() );
-
+		
 		nfecf.post();
 
 	}
@@ -1761,7 +1763,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 			sql.append( "P1.TABTRANSPCP, P1.TABSOLCP,P1.TABIMPORTCP, P1.CLASSCP, P1.LABELOBS01CP, P1.LABELOBS02CP, " );
 			sql.append( "P1.LABELOBS03CP, P1.LABELOBS04CP, P5.HABCONVCP, P1.USABUSCAGENPRODCP, COALESCE(P1.BLOQPRECOAPROV, 'N') BLOQPRECOAPROV, " );
 			sql.append( "P1.CODTIPOMOVIM, P1.BLOQSEQICP, P1.UTILORDCPINT, P1.TOTCPSFRETE, P1.UTILIZATBCALCCA, P1.CCNFECP, P1.HABCOMPRACOMPL ");
-			sql.append( ", P1.NPERMITDTMAIOR, P1.PROCEMINFE " );
+			sql.append( ", P1.NPERMITDTMAIOR, P1.PROCEMINFE, P1.AMBIENTENFE " );
 			sql.append( "FROM SGPREFERE1 P1 LEFT OUTER JOIN SGPREFERE5 P5 ON " );
 			sql.append( "P1.CODEMP=P5.CODEMP AND P1.CODFILIAL=P5.CODFILIAL " );
 			sql.append( "WHERE P1.CODEMP=? AND P1.CODFILIAL=?" );
@@ -1799,7 +1801,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 				habcompracompl = rs.getString( "HABCOMPRACOMPL" ) == null ? false : rs.getString( "HABCOMPRACOMPL" ).equals( "S" );
 				npermitdtmaior = rs.getString( "NPERMITDTMAIOR" ) == null ? false : rs.getString( "NPERMITDTMAIOR" ).equals( "S" );
 				proceminfe = rs.getString( "PROCEMINFE" ) == null ? "3" : rs.getString("PROCEMINFE");
-
+				ambientenfe = rs.getString( "AMBIENTENFE" ) == null ? AbstractNFEFactory.KIND_ENV_HOMOLOG : rs.getString("AMBIENTENFE");
 			}
 			con.commit();
 		} catch ( Exception e ) {
@@ -3734,7 +3736,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		super.setConexao( cn );
 		getPrefere();
 
-		setNfecf( new NFEConnectionFactory( cn, Aplicativo.getInstace().getConexaoNFE(), AbstractNFEFactory.TP_NF_IN, false, proceminfe ) );
+		setNfecf( new NFEConnectionFactory( cn, Aplicativo.getInstace().getConexaoNFE(), AbstractNFEFactory.TP_NF_IN, false, proceminfe, ambientenfe ) );
 
 		lcTipoMov.setConexao( cn );
 		lcSerie.setConexao( cn );
