@@ -613,11 +613,6 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 	private void montaTabs() {
 
 		tpn.setTabPlacement( SwingConstants.BOTTOM );
-		/*
-		 * String sSQL = "SELECT (SELECT COUNT(C1.NUMCONTA) FROM FNCONTA C1,FNPLANEJAMENTO P1 "+ "WHERE C1.ATIVACONTA='S' AND P1.NIVELPLAN = 6 AND P1.TIPOPLAN IN ('B','C') AND C1.CODPLAN=P1.CODPLAN" + " AND C1.CODEMP=P1.CODEMP AND C1.CODFILIAL=P1.CODFILIAL AND P1.CODEMP=P.CODEMP" +
-		 * " AND P1.CODFILIAL=P.CODFILIAL),P.CODPLAN,C.NUMCONTA,C.DESCCONTA"+ " FROM FNPLANEJAMENTO P,FNCONTA C WHERE C.ATIVACONTA='S' AND P.NIVELPLAN = 6"+ " AND P.TIPOPLAN IN ('B','C') AND C.CODPLAN = P.CODPLAN" +
-		 * " AND C.CODEMP = P.CODEMP AND C.CODFILIAL=P.CODFILIAL AND P.CODEMP=? AND P.CODFILIAL=? ORDER BY 4";
-		 */
 
 		StringBuilder sql1 = new StringBuilder();
 		sql1.append( "select count(*) qtd " );
@@ -642,12 +637,6 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 		sqlcta.append( sql3 );
 		sqlcta.append( sql4 );
 
-		/*
-		 * String sSQL = "SELECT (SELECT COUNT(C1.NUMCONTA) FROM FNCONTA C1,FNPLANEJAMENTO P1 " + "WHERE C1.ATIVACONTA='S' AND P1.NIVELPLAN = 6 AND P1.TIPOPLAN IN ('B','C') AND C1.CODPLAN=P1.CODPLAN " + "AND C1.CODEMP=P1.CODEMP AND C1.CODFILIAL=P1.CODFILIAL AND P1.CODEMP=P.CODEMP " +
-		 * "AND P1.CODFILIAL=P.CODFILIAL),P.CODPLAN,C.NUMCONTA,C.DESCCONTA " + "FROM FNPLANEJAMENTO P,FNCONTA C WHERE C.ATIVACONTA='S' AND P.NIVELPLAN = 6 " + "AND P.TIPOPLAN IN ('B','C') AND C.CODPLAN = P.CODPLAN " +
-		 * "AND C.CODEMP = P.CODEMP AND C.CODFILIAL=P.CODFILIAL AND P.CODEMP=? AND P.CODFILIAL=? " + "AND ( TUSUCONTA='S' OR EXISTS (SELECT * FROM FNCONTAUSU CU " + "WHERE CU.CODEMP=C.CODEMP AND CU.CODFILIAL=C.CODFILIAL AND " + "CU.NUMCONTA=C.NUMCONTA AND CU.CODEMPUS=" + Aplicativo.iCodEmp +
-		 * " AND CU.CODFILIALUS=" + ListaCampos.getMasterFilial( "SGUSUARIO" ) + "AND CU.IDUSU='" + Aplicativo.getUsuario().getIdusu() + "') ) " + "ORDER BY 4";
-		 */
 		try {
 			loadingForm = true;
 			PreparedStatement ps = con.prepareStatement( sqlqtd.toString() );
@@ -757,10 +746,6 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 		sql.append( " and s.datasl <= ? " );
 		sql.append( " order by s.datasl desc " );
 
-		/*
-		 * String sSQL = "SELECT S.DATASL,S.SALDOSL FROM FNSALDOLANCA S WHERE S.CODPLAN=?" + " AND S.CODEMP=? AND S.CODFILIAL=? AND S.CODEMPPN=? AND S.CODFILIALPN=?" + " AND S.DATASL=(SELECT MAX(S1.DATASL)" + " FROM FNSALDOLANCA S1 WHERE S1.DATASL <= ? AND S1.CODPLAN=S.CODPLAN" +
-		 * " AND S1.CODEMP=S.CODEMP AND S1.CODFILIAL=S.CODFILIAL" + " AND S1.CODEMPPN=S.CODEMPPN AND S1.CODFILIALPN=S.CODFILIALPN)";
-		 */
 		try {
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			int param = 1;
@@ -785,7 +770,7 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 			}
 			rs.close();
 			ps.close();
-			// con.commit();
+			con.commit();
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao atualizar o saldo!\n" + err.getMessage(), true, con, err );
 		}
