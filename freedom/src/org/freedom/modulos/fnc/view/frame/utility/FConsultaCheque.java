@@ -724,18 +724,20 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 		try {
 			StringBuilder sql = new StringBuilder();
 			
-			sql.append( "select ");
-			sql.append( "ip.statusitpag, pg.codfor, fr.razfor, ip.codpag, ip.nparcpag, ip.doclancaitpag, ip.obsitpag, ");
-			sql.append( "ip.dtitpag, ip.dtvencitpag, ip.dtpagoitpag, ip.vlrparcitpag, ip.vlrpagoitpag, ip.vlrpagoitpag, ");
-			sql.append( "ip.vlrapagitpag ");
-			sql.append( "from fnpagcheq pc, fnpagar pg, cpforneced fr, fnitpagar ip ");
-			sql.append( "where ");
-			sql.append( "pg.codemp=ip.codemp and pg.codfilial=ip.codfilial and pg.codpag=ip.codpag ");
-			sql.append( "and fr.codemp=pg.codempfr and fr.codfilial=pg.codfilialfr and fr.codfor=pg.codfor ");
-			sql.append( "and pc.codemp=ip.codemp and pc.codfilial=ip.codfilial and pc.codpag=ip.codpag and pc.nparcpag=ip.nparcpag ");
-			sql.append( "and pc.codempch=? and pc.codfilial=? and pc.seqcheq=? " );
-			
-			sql.append( "order by ip.dtitpag " );
+			sql.append( " select ");
+			sql.append( " ip.statusitpag, pg.codfor, fr.razfor, ip.codpag, ip.nparcpag, ip.doclancaitpag, ip.obsitpag, ");
+			sql.append( " ip.dtitpag, ip.dtvencitpag, ip.dtpagoitpag, ip.vlrparcitpag, ip.vlrpagoitpag, ip.vlrpagoitpag, ");
+			sql.append( " ip.vlrapagitpag ");
+			sql.append( " from fnpagcheq pc ");
+			sql.append( " inner join fnitpagar ip on ");
+			sql.append( " ip.codpag=pc.codpag and ip.nparcpag=pc.nparcpag and ip.codfilial=pc.codfilial and ip.codemp=pc.codemp ");
+			sql.append( " inner join fnpagar pg on ");
+			sql.append( " pg.codpag=ip.codpag and pg.codfilial=ip.codfilial and pg.codemp=ip.codemp ");
+			sql.append( " inner join cpforneced fr on ");
+			sql.append( " fr.codemp=pg.codempfr and fr.codfilial=pg.codfilialfr and fr.codfor=pg.codfor ");
+			sql.append( " where ");
+			sql.append( " pc.codempch=? and pc.codfilial=? and pc.seqcheq=? ");
+			sql.append( " order by ip.dtitpag ");
 
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 
@@ -860,6 +862,7 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 
 			rs.close();
 			ps.close();
+			con.commit();
 		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
