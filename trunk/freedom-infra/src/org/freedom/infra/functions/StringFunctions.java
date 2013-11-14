@@ -60,26 +60,25 @@ public final class StringFunctions {
 
 	public static String properCase(String text) {
 		String ret = text;
-		
+
 		try {
-			if(text!=null) {
-			
-				if(text.length()>0) {
-					
-					ret = ( (text.charAt(0) + "" ).toUpperCase() ) + text.toLowerCase().substring(1);
-					
+			if (text != null) {
+
+				if (text.length() > 0) {
+
+					ret = ((text.charAt(0) + "").toUpperCase())
+							+ text.toLowerCase().substring(1);
+
 				}
-			
-			
+
 			}
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return ret;
 	}
-	
+
 	public static String sqlDateToStrDate(java.sql.Date d) {
 
 		String ret = "";
@@ -101,10 +100,10 @@ public final class StringFunctions {
 			iMes = cal.get(Calendar.MONTH) + 1;
 			iAno = cal.get(Calendar.YEAR);
 
-			ret = StringFunctions.strZero("" + iDia, 2) + "/" + StringFunctions.strZero("" + iMes, 2) + "/" + iAno;
+			ret = StringFunctions.strZero("" + iDia, 2) + "/"
+					+ StringFunctions.strZero("" + iMes, 2) + "/" + iAno;
 
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -152,8 +151,7 @@ public final class StringFunctions {
 			for (int i = 0; i < times; i++) {
 				ret.append(text);
 			}
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -166,18 +164,15 @@ public final class StringFunctions {
 		String ret = null;
 
 		try {
-			if (text.length() > times) {
-				return text.substring(0, times);
-			}
 			if (text == null) {
 				ret = replicate("0", times);
-			}
-			else {
+			} else if (text.length() > times) {
+				return text.substring(0, times);
+			} else {
 				ret = replicate("0", times - text.trim().length());
 				ret += text.trim();
 			}
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -215,7 +210,7 @@ public final class StringFunctions {
 			cTmp = 'C';
 		else if (isContained(cTmp, "&"))
 			cTmp = 'E';
-		return cTmp;    
+		return cTmp;
 	}
 
 	public static boolean isContained(char cTexto, String sTexto) {
@@ -230,53 +225,54 @@ public final class StringFunctions {
 	}
 
 	public static String clearAccents(String sTexto) {
-		if ( sTexto == null ){
+		if (sTexto == null) {
 			return "";
 		}
-		
+
 		String sRet = "";
 		char cVals[] = sTexto.toCharArray();
-		
+
 		for (int i = 0; i < cVals.length; i++) {
 			cVals[i] = clearAccent(cVals[i]);
 		}
-		
+
 		sRet = new String(cVals);
-		
+
 		return sRet;
 	}
-	
-	   public static String[] REPLACES = { "a", "e", "i", "o", "u", "c", "A", "E", "I", "O", "U", "C" };  
-	   
-	   public static Pattern[] PATTERNS = null;  
-	  
-	   public static void compilePatterns() {  
-	      PATTERNS = new Pattern[REPLACES.length];  
-	      PATTERNS[0]  = Pattern.compile("[âãáàä]");  
-	      PATTERNS[1]  = Pattern.compile("[éèêë]");  
-	      PATTERNS[2]  = Pattern.compile("[íìîï]");  
-	      PATTERNS[3]  = Pattern.compile("[óòôõö]");  
-	      PATTERNS[4]  = Pattern.compile("[úùûü]");  
-	      PATTERNS[5]  = Pattern.compile("[ç]");  
-	      PATTERNS[6]  = Pattern.compile("[ÂÃÁÀÄ]");  
-	      PATTERNS[7]  = Pattern.compile("[ÉÈÊË]");  
-	      PATTERNS[8]  = Pattern.compile("[ÍÌÎÏ]");  
-	      PATTERNS[9]  = Pattern.compile("[ÓÒÔÕÖ]");  
-	      PATTERNS[10] = Pattern.compile("[ÚÙÛÜ]");  
-	      PATTERNS[11] = Pattern.compile("[Ç]");  
-	   }  
-	
-	   public static String tiraCaracEspecias(String text) {  
-	      if (PATTERNS == null) {  
-	         compilePatterns();  
-	      }  
-	  
-	      String result = text;  
-	      for (int i = 0; i < PATTERNS.length; i++) {  
-	         Matcher matcher = PATTERNS[i].matcher(result);  
-	         result = matcher.replaceAll(REPLACES[i]);  
-	      }  
-	      return result;  
-	   }  
+
+	public static String[] REPLACES = { "a", "e", "i", "o", "u", "c", "A", "E",
+			"I", "O", "U", "C" };
+
+	public static Pattern[] PATTERNS = null;
+
+	public static void compilePatterns() {
+		PATTERNS = new Pattern[REPLACES.length];
+		PATTERNS[0] = Pattern.compile("[âãáàä]");
+		PATTERNS[1] = Pattern.compile("[éèêë]");
+		PATTERNS[2] = Pattern.compile("[íìîï]");
+		PATTERNS[3] = Pattern.compile("[óòôõö]");
+		PATTERNS[4] = Pattern.compile("[úùûü]");
+		PATTERNS[5] = Pattern.compile("[ç]");
+		PATTERNS[6] = Pattern.compile("[ÂÃÁÀÄ]");
+		PATTERNS[7] = Pattern.compile("[ÉÈÊË]");
+		PATTERNS[8] = Pattern.compile("[ÍÌÎÏ]");
+		PATTERNS[9] = Pattern.compile("[ÓÒÔÕÖ]");
+		PATTERNS[10] = Pattern.compile("[ÚÙÛÜ]");
+		PATTERNS[11] = Pattern.compile("[Ç]");
+	}
+
+	public static String tiraCaracEspecias(String text) {
+		if (PATTERNS == null) {
+			compilePatterns();
+		}
+
+		String result = text;
+		for (int i = 0; i < PATTERNS.length; i++) {
+			Matcher matcher = PATTERNS[i].matcher(result);
+			result = matcher.replaceAll(REPLACES[i]);
+		}
+		return result;
+	}
 
 }

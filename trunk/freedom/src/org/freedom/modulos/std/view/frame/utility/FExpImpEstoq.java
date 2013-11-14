@@ -415,11 +415,6 @@ public class FExpImpEstoq extends FFilho implements ActionListener, RadioGroupLi
 
 				FileReader fileReader = new FileReader( file );
 
-				if ( fileReader == null ) {
-					Funcoes.mensagemInforma( this, "Arquivo não encontrado" );
-					return;
-				}
-
 				BufferedReader bufferedReader = new BufferedReader( fileReader );
 				List<String> saldoImportacao = new ArrayList<String>();
 				String tmp = null;
