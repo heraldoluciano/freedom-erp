@@ -104,17 +104,12 @@ public class FRetSiacc extends FRetFBN {
 
 						fileReaderSiacc = new FileReader( fileSiacc );
 
-						if ( fileReaderSiacc == null ) {
-							Funcoes.mensagemInforma( this, "Arquivo não encontrado" );
-						}
-						else {
-							if ( leArquivo( fileReaderSiacc, list ) ) {
+						if ( leArquivo( fileReaderSiacc, list ) ) {
 
-								if ( !montaGrid( list ) ) {
-									Funcoes.mensagemInforma( this, "Nenhum registro de retorno encontrado." );
-									lbStatus.setText( "" );
-									retorno = false;
-								}
+							if ( !montaGrid( list ) ) {
+								Funcoes.mensagemInforma( this, "Nenhum registro de retorno encontrado." );
+								lbStatus.setText( "" );
+								retorno = false;
 							}
 						}
 					} catch ( IOException ioError ) {
