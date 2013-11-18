@@ -834,7 +834,7 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 
 			PreparedStatement ps = null;
 			ResultSet rs = null;
-			StringBuffer sSQL = new StringBuffer();
+			StringBuilder sql = new StringBuilder();
 			BigDecimal vlrtotcheq = new BigDecimal(0);
 			BigDecimal vlrtotsel = new BigDecimal(0);
 			int seqtalao = txtSeqtalao.getVlrInteger();
@@ -856,27 +856,25 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 //					sSQL.append( "CH.SITCHEQ='CA' AND CH.CONTACHEQ=? " );
 //					sSQL.append( "ORDER BY CH.DTEMITCHEQ, CH.SEQCHEQ" );
 					
-					sSQL.append( "SELECT CH.SEQCHEQ, CH.DTEMITCHEQ, CH.DTVENCTOCHEQ, CH.NUMCHEQ, "); 
-					sSQL.append( "CH.NOMEFAVCHEQ, CH.SITCHEQ, CH.VLRCHEQ, CH.CONTACHEQ, CH.HISTCHEQ, P.CODFOR "); 
-					sSQL.append( "FROM FNCHEQUE CH "); 
-					sSQL.append( "INNER JOIN FNPAGCHEQ PCH ON "); 
-					sSQL.append( "(PCH.CODEMP = CH.CODEMP AND PCH.CODFILIAL = CH.CODFILIAL AND PCH.SEQCHEQ = CH.SEQCHEQ) "); 
-					sSQL.append( "INNER JOIN FNITPAGAR IP ON "); 
-					sSQL.append( "(IP.CODEMP = PCH.CODEMP AND IP.CODFILIAL = PCH.CODFILIAL AND IP.CODPAG = PCH.CODPAG AND IP.NPARCPAG = PCH.NPARCPAG) "); 
-					sSQL.append( "INNER JOIN FNPAGAR P ON "); 
-					sSQL.append( "(P.CODEMP = IP.CODEMP AND P.CODFILIAL = IP.CODFILIAL AND P.CODPAG = IP.CODPAG) "); 
-//					sSQL.append( "INNER JOIN CPFORNECED F ON "); 
-//					sSQL.append( "(F.CODEMP = P.CODEMP AND F.CODFILIAL = P.CODFILIAL AND F.CODFOR = P.CODFOR) " );
-					sSQL.append( "WHERE CH.CODEMP=? AND CH.CODFILIAL=? AND " );
-					sSQL.append( "CH.DTEMITCHEQ BETWEEN ? AND ? AND CH.TIPOCHEQ='PF' AND " );
-					sSQL.append( "CH.SITCHEQ='CA' AND CH.CONTACHEQ=? " );
-					sSQL.append( "ORDER BY CH.DTEMITCHEQ, CH.SEQCHEQ" );
+					sql.append( "select ch.seqcheq, ch.dtemitcheq, ch.dtvenctocheq, ch.numcheq, "); 
+					sql.append( "ch.nomefavcheq, ch.sitcheq, ch.vlrcheq, ch.contacheq, ch.histcheq, p.codfor "); 
+					sql.append( "from fncheque ch "); 
+					sql.append( "inner join fnpagcheq pch on "); 
+					sql.append( "pch.codempch=ch.codemp and pch.codfilialch=ch.codfilial and pch.seqcheq=ch.seqcheq "); 
+					sql.append( "inner join fnitpagar ip on "); 
+					sql.append( "ip.codemp=pch.codemp and ip.codfilial=pch.codfilial and ip.codpag=pch.codpag and ip.nparcpag=pch.nparcpag "); 
+					sql.append( "inner join fnpagar p on "); 
+					sql.append( "p.codpag=ip.codpag and p.codfilial=ip.codfilial and p.codemp=ip.codemp  "); 
+					sql.append( "where ch.codemp=? and ch.codfilial=? and " );
+					sql.append( "ch.dtemitcheq between ? and ? and ch.tipocheq='PF' and " );
+					sql.append( "ch.sitcheq='CA' and ch.contacheq=? " );
+					sql.append( "order by ch.dtemitcheq, ch.seqcheq" );
 
 					try {
 
 						cheqatualtalao = getCheqatualtalao( numconta, seqtalao );
 						numcheqtab = cheqatualtalao;
-						ps = con.prepareStatement( sSQL.toString() );
+						ps = con.prepareStatement( sql.toString() );
 						ps.setInt( SQL_PARAMS_CHEQ.CODEMP.ordinal(), Aplicativo.iCodEmp );
 						ps.setInt( SQL_PARAMS_CHEQ.CODFILIAL.ordinal(), ListaCampos.getMasterFilial( "FNPAGAR" ) );
 						ps.setDate( SQL_PARAMS_CHEQ.DATAINI.ordinal(), Funcoes.dateToSQLDate( dIniCheq ) );
@@ -924,7 +922,7 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 			} finally {
 				ps = null;
 				rs = null;
-				sSQL = null;
+				sql = null;
 				carregandoTabela = false;
 			}
 
