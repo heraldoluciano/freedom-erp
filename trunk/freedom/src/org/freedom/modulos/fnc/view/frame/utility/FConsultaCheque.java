@@ -484,7 +484,7 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 				
 			}
 			
-			Funcoes.mensagemInforma( this, compensados + " cheques compesados!" );
+			Funcoes.mensagemInforma( this, compensados + " cheques compensados!" );
 			
 			buscaCheques();
 			
