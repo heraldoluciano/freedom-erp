@@ -663,7 +663,7 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 							vlrtotsel  = vlrtotsel.add( rs.getBigDecimal( "VLRAPAGITPAG" )  ) ;
 							
 							tabPagar.adicLinha();
-							tabPagar.setValor( new Boolean(true), i, COLS_PAG.SEL.ordinal() );
+							tabPagar.setValor( new Boolean(false), i, COLS_PAG.SEL.ordinal() );
 							tabPagar.setValor( rs.getString( enum_tab_manut.STATUSITPAG.name() ),	i, enum_tab_manut.STATUSITPAG.ordinal() );
 							tabPagar.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( COLS_PAG.DTVENCITPAG.name() ) ), i, COLS_PAG.DTVENCITPAG.ordinal() );
 							tabPagar.setValor( rs.getString( COLS_PAG.STATUSITPAG.name() ),	i, COLS_PAG.STATUSITPAG.ordinal() );
@@ -856,7 +856,7 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 //					sSQL.append( "CH.SITCHEQ='CA' AND CH.CONTACHEQ=? " );
 //					sSQL.append( "ORDER BY CH.DTEMITCHEQ, CH.SEQCHEQ" );
 					
-					sql.append( "select ch.seqcheq, ch.dtemitcheq, ch.dtvenctocheq, ch.numcheq, "); 
+					sql.append( "select distinct ch.seqcheq, ch.dtemitcheq, ch.dtvenctocheq, ch.numcheq, "); 
 					sql.append( "ch.nomefavcheq, ch.sitcheq, ch.vlrcheq, ch.contacheq, ch.histcheq, p.codfor "); 
 					sql.append( "from fncheque ch "); 
 					sql.append( "inner join fnpagcheq pch on "); 
@@ -1185,19 +1185,21 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 			PreparedStatement ps = null;
 			StringBuffer sqlcheq = new StringBuffer();
 			StringBuffer sqltalao = new StringBuffer();
-			sqlcheq.append( "UPDATE FNCHEQUE SET NUMCHEQ=?, SITCHEQ=?, VLRCHEQ=? " );
-			sqlcheq.append( "WHERE CODEMP=? AND CODFILIAL=? AND SEQCHEQ=?" );
+			sqlcheq.append( "update fncheque set numcheq=?, sitcheq=?, vlrcheq=? " );
+			sqlcheq.append( "where seqcheq=? and codfilial=? and codemp=?" );
 			sqltalao.append( "UPDATE FNTALAOCHEQ SET CHEQATUALTALAO=? " );
 			sqltalao.append( "WHERE CODEMP=? AND CODFILIAL=? AND NUMCONTA=? AND SEQTALAO=?" );
 			try {
+				con.commit();
 				for ( int i=0; i<listacheq.size(); i++ ) {
 					ps = con.prepareStatement( sqlcheq.toString() );
-					ps.setInt( 1, (Integer) listacheq.get( i ).elementAt( Cheque.COLS_CHEQ.NUMCHEQ.ordinal() ) );
-					ps.setString( 2, "ED" );
-					ps.setBigDecimal( 3, ConversionFunctions.stringCurrencyToBigDecimal( (String) listacheq.get( i ).elementAt( Cheque.COLS_CHEQ.VLRCHEQ.ordinal()+1 ) ) );
-					ps.setInt( 4, Aplicativo.iCodEmp );
-					ps.setInt( 5, ListaCampos.getMasterFilial( "FNCHEQUE" ) );
-					ps.setInt( 6, (Integer) listacheq.get( i ).elementAt( Cheque.COLS_CHEQ.SEQ.ordinal() ) );
+					int param = 1;
+					ps.setInt( param++, (Integer) listacheq.get( i ).elementAt( Cheque.COLS_CHEQ.NUMCHEQ.ordinal() ) );
+					ps.setString( param++, "ED" );
+					ps.setBigDecimal( param++, ConversionFunctions.stringCurrencyToBigDecimal( (String) listacheq.get( i ).elementAt( Cheque.COLS_CHEQ.VLRCHEQ.ordinal()+1 ) ) );
+					ps.setInt( param++, (Integer) listacheq.get( i ).elementAt( Cheque.COLS_CHEQ.SEQ.ordinal() ) );
+					ps.setInt( param++, ListaCampos.getMasterFilial( "FNCHEQUE" ) );
+					ps.setInt( param++, Aplicativo.iCodEmp );
 					ps.executeUpdate();
 					ps.close();
 				}
@@ -1222,7 +1224,7 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 
 		private boolean confirmaImpressao() {
 			boolean result = false;
-			if ( Funcoes.mensagemConfirma( this, "Confirma impressão dos cheques?" ) == JOptionPane.YES_OPTION ) {
+			if ( Funcoes.mensagemConfirma( this, "A impressão foi executada com sucesso?" ) == JOptionPane.YES_OPTION ) {
 				result = true;
 			} 
 			return result;
