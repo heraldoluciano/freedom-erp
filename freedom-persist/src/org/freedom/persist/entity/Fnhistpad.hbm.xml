@@ -1,0 +1,116 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Fnhistpad" table="FNHISTPAD">
+        <comment>Tabela de hist&#195;&#179;rico padr&#195;&#163;o.</comment>
+        <composite-id name="id" class="org.freedom.persist.entity.FnhistpadId">
+            <key-property name="codhist" type="int">
+                <column name="CODHIST" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <property name="deschist" type="string">
+            <column name="DESCHIST" length="80" not-null="true" />
+        </property>
+        <property name="txahistpad" type="string">
+            <column name="TXAHISTPAD" length="500" not-null="true">
+                <comment>Campo para cria&#195;&#167;&#195;&#163;o de modelo din&#195;&#162;mico de hist&#195;&#179;rico padr&#195;&#163;o.</comment>
+            </column>
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" not-null="true" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" not-null="true" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" not-null="true" />
+        </property>
+        <set name="cpforneceds" table="CPFORNECED" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODHIST" />
+                <column name="CODFILIALHP" />
+                <column name="CODEMPHP" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Cpforneced" />
+        </set>
+        <set name="vdclientes" table="VDCLIENTE" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODHIST" />
+                <column name="CODFILIALHP" />
+                <column name="CODEMPHP" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdcliente" />
+        </set>
+        <set name="sgprefere1sForSgprefere1fkfnhistp" table="SGPREFERE1" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODHISTPAG">
+                    <comment>C&#195;&#179;digo do hist&#195;&#179;rico padr&#195;&#163;o para lan&#195;&#167;amentos financeiros provenientes do contas a pagar.</comment>
+                </column>
+                <column name="CODFILIALHISTPAG">
+                    <comment>C&#195;&#179;digo da filial do hist&#195;&#179;rico padr&#195;&#163;o para lan&#195;&#167;amentos financeiros provenientes do contas a
+                    pagar.</comment>
+                </column>
+                <column name="CODEMPHISTPAG">
+                    <comment>C&#195;&#179;digo da empresa do hist&#195;&#179;rico padr&#195;&#163;o para lan&#195;&#167;amentos financeiros provenientes do contas a
+                    pagar.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgprefere1" />
+        </set>
+        <set name="fncontas" table="FNCONTA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODHIST">
+                    <comment>C&#195;&#179;digo do hist&#195;&#179;rico padr&#195;&#163;o.</comment>
+                </column>
+                <column name="CODFILIALHP">
+                    <comment>C&#195;&#179;digo da filial na tabela de hist&#195;&#179;rico padr&#195;&#163;o.</comment>
+                </column>
+                <column name="CODEMPHP">
+                    <comment>C&#195;&#179;digo da empresa na tabela de hist&#195;&#179;rico padr&#195;&#163;o.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnconta" />
+        </set>
+        <set name="sgprefere1sForSgprefere1fkfnhistr" table="SGPREFERE1" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODHISTREC">
+                    <comment>C&#195;&#179;digo do hist&#195;&#179;rico padr&#195;&#163;o para lan&#195;&#167;amentos financeiros provenientes do contas a receber.</comment>
+                </column>
+                <column name="CODFILIALHISTREC">
+                    <comment>C&#195;&#179;digo da filial do hist&#195;&#179;rico padr&#195;&#163;o para lan&#195;&#167;amentos financeiros provenientes do contas a
+                    receber.</comment>
+                </column>
+                <column name="CODEMPHISTREC">
+                    <comment>C&#195;&#179;digo da empresa do hist&#195;&#179;rico padr&#195;&#163;o para lan&#195;&#167;amentos financeiros provenientes do contas a
+                    receber.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgprefere1" />
+        </set>
+        <set name="fnplanejamentos" table="FNPLANEJAMENTO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODHIST" />
+                <column name="CODFILIALHP" />
+                <column name="CODEMPHP" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnplanejamento" />
+        </set>
+    </class>
+</hibernate-mapping>

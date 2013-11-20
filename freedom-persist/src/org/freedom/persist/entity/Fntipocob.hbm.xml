@@ -1,0 +1,161 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Fntipocob" table="FNTIPOCOB">
+        <composite-id name="id" class="org.freedom.persist.entity.FntipocobId">
+            <key-property name="codtipocob" type="int">
+                <column name="CODTIPOCOB" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="sgfilial" class="org.freedom.persist.entity.Sgfilial" update="false" insert="false" fetch="select">
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <many-to-one name="fntalaocheq" class="org.freedom.persist.entity.Fntalaocheq" update="false" insert="false" fetch="select">
+            <column name="NUMCONTA" length="10">
+                <comment>N&#195;&#186;mero da conta para impress&#195;&#163;o de cheques.</comment>
+            </column>
+            <column name="SEQTALAO">
+                <comment>Sequencia do talon&#195;&#161;rio.</comment>
+            </column>
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <property name="desctipocob" type="string">
+            <column name="DESCTIPOCOB" length="40" not-null="true" />
+        </property>
+        <property name="tipofebraban" type="string">
+            <column name="TIPOFEBRABAN" length="2" not-null="true">
+                <comment>Define se &#195;&#169; febraban. 00=n&#195;&#163;o / 01-SIACC / 02-CNAB</comment>
+            </column>
+        </property>
+        <property name="tiposped" type="string">
+            <column name="TIPOSPED" length="2">
+                <comment>Indicador do tipo de t&#195;&#173;tulo de cr&#195;&#169;dito para o SPED: 00 - Duplicata 01 - Cheque 02 - Promiss&#195;&#179;ria 03 - recibo</comment>
+            </column>
+        </property>
+        <property name="duplcob" type="string">
+            <column name="DUPLCOB" length="8" />
+        </property>
+        <property name="obrigcartcob" type="char">
+            <column name="OBRIGCARTCOB" length="1" not-null="true">
+                <comment>Define se &#195;&#169; obrigat&#195;&#179;rio carteira de cobran&#195;&#167;a.</comment>
+            </column>
+        </property>
+        <property name="codempct" type="java.lang.Integer">
+            <column name="CODEMPCT">
+                <comment>C&#195;&#179;digo da empresa na tabela de contas.</comment>
+            </column>
+        </property>
+        <property name="codfilialct" type="java.lang.Short">
+            <column name="CODFILIALCT">
+                <comment>C&#195;&#179;digo da filial na tabela de contas.</comment>
+            </column>
+        </property>
+        <property name="nrodiascomp" type="java.lang.Short">
+            <column name="NRODIASCOMP">
+                <comment>Numero de dias para compensa&#195;&#167;&#195;&#163;o do valor.</comment>
+            </column>
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+        <set name="vdclientes" table="VDCLIENTE" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTIPOCOB" />
+                <column name="CODFILIALTC" />
+                <column name="CODEMPTC" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdcliente" />
+        </set>
+        <set name="fnitrecebers" table="FNITRECEBER" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTIPOCOB">
+                    <comment>C&#195;&#179;digo do tipo de cobran&#195;&#167;a.</comment>
+                </column>
+                <column name="CODFILIALTC">
+                    <comment>C&#195;&#179;digo filial em FNTIPOCOB.</comment>
+                </column>
+                <column name="CODEMPTC">
+                    <comment>C&#195;&#179;digo da filial em FNTIPOCOB.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnitreceber" />
+        </set>
+        <set name="fnitpagars" table="FNITPAGAR" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTIPOCOB" />
+                <column name="CODFILIALTC" />
+                <column name="CODEMPTC" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnitpagar" />
+        </set>
+        <set name="vdvendas" table="VDVENDA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTIPOCOB" />
+                <column name="CODFILIALTC" />
+                <column name="CODEMPTC" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdvenda" />
+        </set>
+        <set name="fnrecebers" table="FNRECEBER" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTIPOCOB">
+                    <comment>C&#195;&#179;digo do tipo de cobran&#195;&#167;a.</comment>
+                </column>
+                <column name="CODFILIALTC">
+                    <comment>C&#195;&#179;digo da filial em FNTIPOCOB.</comment>
+                </column>
+                <column name="CODEMPTC">
+                    <comment>C&#195;&#179;digo da empresa em FNTIPOCOB.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnreceber" />
+        </set>
+        <set name="cpcompras" table="CPCOMPRA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTIPOCOB">
+                    <comment>C&#195;&#179;digo do tipo de cobran&#195;&#167;a.</comment>
+                </column>
+                <column name="CODFILIALTC">
+                    <comment>C&#195;&#179;digo da filial na tabela tipo de cobran&#195;&#167;a.</comment>
+                </column>
+                <column name="CODEMPTC">
+                    <comment>C&#195;&#179;digo da empresa na tabela tipo de cobran&#195;&#167;a.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Cpcompra" />
+        </set>
+        <set name="fnpagars" table="FNPAGAR" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTIPOCOB" />
+                <column name="CODFILIALTC" />
+                <column name="CODEMPTC" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnpagar" />
+        </set>
+    </class>
+</hibernate-mapping>

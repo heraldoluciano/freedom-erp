@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Vwtmpcustoitrma" table="VWTMPCUSTOITRMA">
+        <composite-id name="id" class="org.freedom.persist.entity.VwtmpcustoitrmaId">
+            <key-property name="codemp" type="java.lang.Integer">
+                <column name="CODEMP" />
+            </key-property>
+            <key-property name="codfilial" type="java.lang.Short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codrma" type="java.lang.Integer">
+                <column name="CODRMA" />
+            </key-property>
+            <key-property name="coditrma" type="java.lang.Short">
+                <column name="CODITRMA" />
+            </key-property>
+            <key-property name="codprod" type="java.lang.Integer">
+                <column name="CODPROD" />
+            </key-property>
+            <key-property name="custodata" type="big_decimal">
+                <column name="CUSTODATA" precision="0" scale="5" />
+            </key-property>
+        </composite-id>
+    </class>
+</hibernate-mapping>

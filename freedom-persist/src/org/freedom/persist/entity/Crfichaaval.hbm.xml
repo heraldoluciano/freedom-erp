@@ -1,0 +1,126 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Crfichaaval" table="CRFICHAAVAL">
+        <composite-id name="id" class="org.freedom.persist.entity.CrfichaavalId">
+            <key-property name="seqfichaaval" type="int">
+                <column name="SEQFICHAAVAL" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="tkcontato" class="org.freedom.persist.entity.Tkcontato" update="false" insert="false" fetch="select">
+            <column name="CODCTO" not-null="true" />
+            <column name="CODFILIALCO" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <many-to-one name="crmotivoaval" class="org.freedom.persist.entity.Crmotivoaval" fetch="select">
+            <column name="CODMOTAVAL" not-null="true" />
+            <column name="CODFILIALMA" not-null="true" />
+            <column name="CODEMPMA" not-null="true" />
+        </many-to-one>
+        <many-to-one name="vdvendedor" class="org.freedom.persist.entity.Vdvendedor" fetch="select">
+            <column name="CODVEND" />
+            <column name="CODFILIALVD" />
+            <column name="CODEMPVD" />
+        </many-to-one>
+        <property name="codempco" type="int">
+            <column name="CODEMPCO" not-null="true" />
+        </property>
+        <property name="dtfichaaval" type="date">
+            <column name="DTFICHAAVAL" length="10" not-null="true" />
+        </property>
+        <property name="localfichaaval" type="java.lang.Character">
+            <column name="LOCALFICHAAVAL" length="1" />
+        </property>
+        <property name="finalicrifichaaval" type="char">
+            <column name="FINALICRIFICHAAVAL" length="1" not-null="true" />
+        </property>
+        <property name="finalianifichaaval" type="char">
+            <column name="FINALIANIFICHAAVAL" length="1" not-null="true" />
+        </property>
+        <property name="finalioutfichaaval" type="char">
+            <column name="FINALIOUTFICHAAVAL" length="1" not-null="true" />
+        </property>
+        <property name="predentrfichaaval" type="char">
+            <column name="PREDENTRFICHAAVAL" length="1" not-null="true" />
+        </property>
+        <property name="andarfichaaval" type="short">
+            <column name="ANDARFICHAAVAL" not-null="true" />
+        </property>
+        <property name="cobertfichaaval" type="char">
+            <column name="COBERTFICHAAVAL" length="1" not-null="true" />
+        </property>
+        <property name="estrutfichaaval" type="char">
+            <column name="ESTRUTFICHAAVAL" length="1" not-null="true" />
+        </property>
+        <property name="ocupadofichaaval" type="char">
+            <column name="OCUPADOFICHAAVAL" length="1" not-null="true" />
+        </property>
+        <property name="mobilfichaaval" type="char">
+            <column name="MOBILFICHAAVAL" length="1" not-null="true" />
+        </property>
+        <property name="janelafichaaval" type="char">
+            <column name="JANELAFICHAAVAL" length="1" not-null="true" />
+        </property>
+        <property name="qtdjanelafichaaval" type="java.lang.Integer">
+            <column name="QTDJANELAFICHAAVAL" />
+        </property>
+        <property name="sacadafichaaval" type="char">
+            <column name="SACADAFICHAAVAL" length="1" not-null="true" />
+        </property>
+        <property name="qtdsacadafichaaval" type="java.lang.Integer">
+            <column name="QTDSACADAFICHAAVAL" />
+        </property>
+        <property name="outrosfichaaval" type="char">
+            <column name="OUTROSFICHAAVAL" length="1" not-null="true" />
+        </property>
+        <property name="dtvisitafichaaval" type="date">
+            <column name="DTVISITAFICHAAVAL" length="10" />
+        </property>
+        <property name="hvisitafichaaval" type="time">
+            <column name="HVISITAFICHAAVAL" length="8" />
+        </property>
+        <property name="descoutrosfichaaval" type="string">
+            <column name="DESCOUTROSFICHAAVAL" length="30" />
+        </property>
+        <property name="obsfichaaval" type="string">
+            <column name="OBSFICHAAVAL" length="1000" />
+        </property>
+        <property name="pontoreffichaaval" type="string">
+            <column name="PONTOREFFICHAAVAL" length="100" />
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="128" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" not-null="true" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" not-null="true" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="128" />
+        </property>
+        <set name="critfichaavals" table="CRITFICHAAVAL" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="SEQFICHAAVAL" not-null="true" />
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Critfichaaval" />
+        </set>
+    </class>
+</hibernate-mapping>

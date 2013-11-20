@@ -1,0 +1,254 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Fnconta" table="FNCONTA">
+        <composite-id name="id" class="org.freedom.persist.entity.FncontaId">
+            <key-property name="numconta" type="string">
+                <column name="NUMCONTA" length="10" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="sgfilial" class="org.freedom.persist.entity.Sgfilial" update="false" insert="false" fetch="select">
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <many-to-one name="fnmoeda" class="org.freedom.persist.entity.Fnmoeda" fetch="select">
+            <column name="CODMOEDA" length="4" not-null="true" />
+            <column name="CODFILIALMA" not-null="true" />
+            <column name="CODEMPMA" not-null="true" />
+        </many-to-one>
+        <many-to-one name="fnhistpad" class="org.freedom.persist.entity.Fnhistpad" fetch="select">
+            <column name="CODHIST">
+                <comment>C&#195;&#179;digo do hist&#195;&#179;rico padr&#195;&#163;o.</comment>
+            </column>
+            <column name="CODFILIALHP">
+                <comment>C&#195;&#179;digo da filial na tabela de hist&#195;&#179;rico padr&#195;&#163;o.</comment>
+            </column>
+            <column name="CODEMPHP">
+                <comment>C&#195;&#179;digo da empresa na tabela de hist&#195;&#179;rico padr&#195;&#163;o.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="fnplanejamento" class="org.freedom.persist.entity.Fnplanejamento" fetch="select">
+            <column name="CODPLAN" length="13" not-null="true" />
+            <column name="CODFILIALPN" not-null="true" />
+            <column name="CODEMPPN" not-null="true" />
+        </many-to-one>
+        <many-to-one name="fnbanco" class="org.freedom.persist.entity.Fnbanco" fetch="select">
+            <column name="CODBANCO" length="3" />
+            <column name="CODFILIALBO" />
+            <column name="CODEMPBO" />
+        </many-to-one>
+        <property name="descconta" type="string">
+            <column name="DESCCONTA" length="50" not-null="true" />
+        </property>
+        <property name="tipoconta" type="char">
+            <column name="TIPOCONTA" length="1" not-null="true">
+                <comment>Indica o tipo de conta: "C" - Baixa "B" - Bancos</comment>
+            </column>
+        </property>
+        <property name="dataconta" type="date">
+            <column name="DATACONTA" length="10" not-null="true" />
+        </property>
+        <property name="codcontdeb" type="string">
+            <column name="CODCONTDEB" length="20">
+                <comment>C&#195;&#179;digo da conta d&#195;&#169;bito cont&#195;&#161;bil.</comment>
+            </column>
+        </property>
+        <property name="codcontcred" type="string">
+            <column name="CODCONTCRED" length="20">
+                <comment>C&#195;&#179;digo da conta cr&#195;&#169;dito cont&#195;&#161;bil.</comment>
+            </column>
+        </property>
+        <property name="agenciaconta" type="string">
+            <column name="AGENCIACONTA" length="6" />
+        </property>
+        <property name="convcobconta" type="string">
+            <column name="CONVCOBCONTA" length="20">
+                <comment>Conv&#195;&#170;nio de cobran&#195;&#167;a</comment>
+            </column>
+        </property>
+        <property name="ativaconta" type="char">
+            <column name="ATIVACONTA" length="1" not-null="true">
+                <comment>Indica se a conta est&#195;&#161; ativa.</comment>
+            </column>
+        </property>
+        <property name="tusuconta" type="char">
+            <column name="TUSUCONTA" length="1" not-null="true" />
+        </property>
+        <property name="tipocaixa" type="char">
+            <column name="TIPOCAIXA" length="1" not-null="true">
+                <comment>Indica o tipo de caixa "F" - F&#195;&#173;sico "P" - Previsionamentos</comment>
+            </column>
+        </property>
+        <property name="postoconta" type="string">
+            <column name="POSTOCONTA" length="2" />
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+        <set name="fnrecebers" table="FNRECEBER" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="NUMCONTA" length="10" />
+                <column name="CODFILIALCA" />
+                <column name="CODEMPCA" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnreceber" />
+        </set>
+        <set name="fnborderosForFnborderofkfnconta" table="FNBORDERO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="NUMCONTA" length="10" not-null="true" />
+                <column name="CODFILIALCC" not-null="true" />
+                <column name="CODEMPCC" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnbordero" />
+        </set>
+        <set name="vdvendedors" table="VDVENDEDOR" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="NUMCONTA" length="10">
+                    <comment>Numero da conta do vendedor.</comment>
+                </column>
+                <column name="CODFILIALCA">
+                    <comment>C&#195;&#179;digo da filial da conta do vendedor.</comment>
+                </column>
+                <column name="CODEMPCA">
+                    <comment>C&#195;&#179;digo da empresa da conta do vendedor.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdvendedor" />
+        </set>
+        <set name="fnmodboletos" table="FNMODBOLETO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="NUMCONTA" length="10" />
+                <column name="CODFILIALCC" />
+                <column name="CODEMPCC" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnmodboleto" />
+        </set>
+        <set name="fncontausus" table="FNCONTAUSU" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="NUMCONTA" length="10" not-null="true" />
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fncontausu" />
+        </set>
+        <set name="fnpagtocomis" table="FNPAGTOCOMI" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="NUMCONTA" length="10" not-null="true" />
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnpagtocomi" />
+        </set>
+        <set name="fnpagars" table="FNPAGAR" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="NUMCONTA" length="10" />
+                <column name="CODFILIALCA" />
+                <column name="CODEMPCA" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnpagar" />
+        </set>
+        <set name="fnborderosForFnborderofkfncontabor" table="FNBORDERO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="NUMCONTABOR" length="10" not-null="true" />
+                <column name="CODFILIALCB" not-null="true" />
+                <column name="CODEMPCB" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnbordero" />
+        </set>
+        <set name="fnitpagars" table="FNITPAGAR" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="NUMCONTA" length="10" />
+                <column name="CODFILIALCA" />
+                <column name="CODEMPCA" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnitpagar" />
+        </set>
+        <set name="fnfbnclis" table="FNFBNCLI" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="NUMCONTA" length="10" />
+                <column name="CODFILIALCA" />
+                <column name="CODEMPCA" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnfbncli" />
+        </set>
+        <set name="fnitrecebers" table="FNITRECEBER" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="NUMCONTA" length="10" />
+                <column name="CODFILIALCA" />
+                <column name="CODEMPCA" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnitreceber" />
+        </set>
+        <set name="cpcompras" table="CPCOMPRA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="NUMCONTA" length="10">
+                    <comment>N&#195;&#186;mero da conta.</comment>
+                </column>
+                <column name="CODFILIALCT">
+                    <comment>C&#195;&#179;digo da filial da compra.</comment>
+                </column>
+                <column name="CODEMPCT">
+                    <comment>C&#195;&#179;digo da empresa da conta.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Cpcompra" />
+        </set>
+        <set name="vdvendas" table="VDVENDA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="NUMCONTA" length="10" />
+                <column name="CODFILIALCA" />
+                <column name="CODEMPCA" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdvenda" />
+        </set>
+        <set name="fnitmodboletos" table="FNITMODBOLETO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="NUMCONTA" length="10" />
+                <column name="CODFILIALCT" />
+                <column name="CODEMPCT" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnitmodboleto" />
+        </set>
+        <set name="fnplanopags" table="FNPLANOPAG" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="NUMCONTA" length="10" />
+                <column name="CODFILIALCA" />
+                <column name="CODEMPCA" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnplanopag" />
+        </set>
+        <set name="sgitprefere6s" table="SGITPREFERE6" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="NUMCONTA" length="10">
+                    <comment>N&#195;&#186;mero da conta corrente.</comment>
+                </column>
+                <column name="CODFILIALCA" />
+                <column name="CODEMPCA" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgitprefere6" />
+        </set>
+    </class>
+</hibernate-mapping>

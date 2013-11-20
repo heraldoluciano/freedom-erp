@@ -1,0 +1,142 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Lflivrofiscal" table="LFLIVROFISCAL">
+        <composite-id name="id" class="org.freedom.persist.entity.LflivrofiscalId">
+            <key-property name="codlf" type="int">
+                <column name="CODLF" />
+            </key-property>
+            <key-property name="anomeslf" type="string">
+                <column name="ANOMESLF" length="6" />
+            </key-property>
+            <key-property name="tipolf" type="char">
+                <column name="TIPOLF" length="1" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="sgfilial" class="org.freedom.persist.entity.Sgfilial" update="false" insert="false" fetch="select">
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <many-to-one name="lfnatoper" class="org.freedom.persist.entity.Lfnatoper" fetch="select">
+            <column name="CODNAT" length="4" />
+            <column name="CODFILIALNT" />
+            <column name="CODEMPNT" />
+        </many-to-one>
+        <property name="codempet" type="int">
+            <column name="CODEMPET" not-null="true" />
+        </property>
+        <property name="codfilialet" type="short">
+            <column name="CODFILIALET" not-null="true" />
+        </property>
+        <property name="codemitlf" type="int">
+            <column name="CODEMITLF" not-null="true" />
+        </property>
+        <property name="serielf" type="string">
+            <column name="SERIELF" length="4" not-null="true" />
+        </property>
+        <property name="docinilf" type="int">
+            <column name="DOCINILF" not-null="true" />
+        </property>
+        <property name="dtemitlf" type="date">
+            <column name="DTEMITLF" length="10" not-null="true" />
+        </property>
+        <property name="dteslf" type="date">
+            <column name="DTESLF" length="10" not-null="true" />
+        </property>
+        <property name="docfimlf" type="int">
+            <column name="DOCFIMLF" not-null="true" />
+        </property>
+        <property name="especielf" type="string">
+            <column name="ESPECIELF" length="3" not-null="true" />
+        </property>
+        <property name="uflf" type="string">
+            <column name="UFLF" length="2" not-null="true" />
+        </property>
+        <property name="vlrcontabillf" type="big_decimal">
+            <column name="VLRCONTABILLF" precision="15" scale="5" />
+        </property>
+        <property name="vlrbaseicmslf" type="big_decimal">
+            <column name="VLRBASEICMSLF" precision="15" scale="5" />
+        </property>
+        <property name="aliqicmslf" type="big_decimal">
+            <column name="ALIQICMSLF" precision="7" scale="3" />
+        </property>
+        <property name="vlricmslf" type="big_decimal">
+            <column name="VLRICMSLF" precision="15" scale="5" />
+        </property>
+        <property name="vlrisentasicmslf" type="big_decimal">
+            <column name="VLRISENTASICMSLF" precision="15" scale="5" />
+        </property>
+        <property name="vlroutrasicmslf" type="big_decimal">
+            <column name="VLROUTRASICMSLF" precision="15" scale="5" />
+        </property>
+        <property name="vlrbaseipilf" type="big_decimal">
+            <column name="VLRBASEIPILF" precision="15" scale="5" />
+        </property>
+        <property name="aliqipilf" type="big_decimal">
+            <column name="ALIQIPILF" precision="7" scale="3" />
+        </property>
+        <property name="vlripilf" type="big_decimal">
+            <column name="VLRIPILF" precision="15" scale="5" />
+        </property>
+        <property name="vlrisentasipilf" type="big_decimal">
+            <column name="VLRISENTASIPILF" precision="15" scale="5" />
+        </property>
+        <property name="vlroutrasipilf" type="big_decimal">
+            <column name="VLROUTRASIPILF" precision="15" scale="5" />
+        </property>
+        <property name="obslf" type="string">
+            <column name="OBSLF" length="30" />
+        </property>
+        <property name="codempmn" type="java.lang.Integer">
+            <column name="CODEMPMN" />
+        </property>
+        <property name="codfilialmn" type="java.lang.Short">
+            <column name="CODFILIALMN" />
+        </property>
+        <property name="codmodnota" type="java.lang.Integer">
+            <column name="CODMODNOTA" />
+        </property>
+        <property name="situacaolf" type="char">
+            <column name="SITUACAOLF" length="1" not-null="true">
+                <comment>Situa&#195;&#167;&#195;&#163;o do registro: "N" - Documento fiscal normal; "S" - Documento fiscal cancelado; "E" - Documento fiscal
+                extempor&#195;&#162;neo; "X" - Documento fiscal extempor&#195;&#162;neo cancelado;</comment>
+            </column>
+        </property>
+        <property name="vlrbaseicmsstlf" type="big_decimal">
+            <column name="VLRBASEICMSSTLF" precision="15" scale="5" />
+        </property>
+        <property name="vlricmsstlf" type="big_decimal">
+            <column name="VLRICMSSTLF" precision="15" scale="5" />
+        </property>
+        <property name="vlracessoriaslf" type="big_decimal">
+            <column name="VLRACESSORIASLF" precision="15" scale="5" />
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+    </class>
+</hibernate-mapping>

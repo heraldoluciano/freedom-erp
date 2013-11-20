@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Cpsumsol" table="CPSUMSOL">
+        <composite-id name="id" class="org.freedom.persist.entity.CpsumsolId">
+            <key-property name="codsumsol" type="int">
+                <column name="CODSUMSOL" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="eqproduto" class="org.freedom.persist.entity.Eqproduto" fetch="select">
+            <column name="CODPROD" not-null="true" />
+            <column name="CODFILIALPD" not-null="true" />
+            <column name="CODEMPPD" not-null="true" />
+        </many-to-one>
+        <property name="refprod" type="string">
+            <column name="REFPROD" length="20" not-null="true" />
+        </property>
+        <property name="qtditsol" type="big_decimal">
+            <column name="QTDITSOL" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="qtdaprovitsol" type="big_decimal">
+            <column name="QTDAPROVITSOL" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="sititsol" type="string">
+            <column name="SITITSOL" length="2" not-null="true" />
+        </property>
+        <property name="dtaprovitsol" type="date">
+            <column name="DTAPROVITSOL" length="10" />
+        </property>
+        <property name="idusuaprovitsol" type="string">
+            <column name="IDUSUAPROVITSOL" length="8" />
+        </property>
+        <property name="sitaprovitsol" type="string">
+            <column name="SITAPROVITSOL" length="2" />
+        </property>
+        <property name="motivocotabaix" type="string">
+            <column name="MOTIVOCOTABAIX" length="10000" />
+        </property>
+        <property name="emmanut" type="char">
+            <column name="EMMANUT" length="1" not-null="true" />
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+    </class>
+</hibernate-mapping>

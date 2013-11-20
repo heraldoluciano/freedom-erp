@@ -1,0 +1,113 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Sgempresa" table="SGEMPRESA">
+        <id name="codemp" type="int">
+            <column name="CODEMP" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="sgmunicipio" class="org.freedom.persist.entity.Sgmunicipio" fetch="select">
+            <column name="CODMUNIC" length="7" />
+            <column name="SIGLAUF" length="2" />
+            <column name="CODPAIS" />
+        </many-to-one>
+        <property name="razemp" type="string">
+            <column name="RAZEMP" length="50" />
+        </property>
+        <property name="nomeemp" type="string">
+            <column name="NOMEEMP" length="50" />
+        </property>
+        <property name="cnpjemp" type="string">
+            <column name="CNPJEMP" length="14" />
+        </property>
+        <property name="inscemp" type="string">
+            <column name="INSCEMP" length="20" />
+        </property>
+        <property name="endemp" type="string">
+            <column name="ENDEMP" length="50" />
+        </property>
+        <property name="numemp" type="java.lang.Integer">
+            <column name="NUMEMP" />
+        </property>
+        <property name="complemp" type="string">
+            <column name="COMPLEMP" length="20" />
+        </property>
+        <property name="bairemp" type="string">
+            <column name="BAIREMP" length="30" />
+        </property>
+        <property name="cepemp" type="string">
+            <column name="CEPEMP" length="8" />
+        </property>
+        <property name="cidemp" type="string">
+            <column name="CIDEMP" length="30" />
+        </property>
+        <property name="ufemp" type="string">
+            <column name="UFEMP" length="2" />
+        </property>
+        <property name="dddemp" type="string">
+            <column name="DDDEMP" length="4" />
+        </property>
+        <property name="foneemp" type="string">
+            <column name="FONEEMP" length="12" />
+        </property>
+        <property name="faxemp" type="string">
+            <column name="FAXEMP" length="9" />
+        </property>
+        <property name="emailemp" type="string">
+            <column name="EMAILEMP" length="50" />
+        </property>
+        <property name="wwwemp" type="string">
+            <column name="WWWEMP" length="50" />
+        </property>
+        <property name="codeanemp" type="string">
+            <column name="CODEANEMP" length="10" />
+        </property>
+        <property name="nomecontemp" type="string">
+            <column name="NOMECONTEMP" length="40" />
+        </property>
+        <property name="multialmoxemp" type="char">
+            <column name="MULTIALMOXEMP" length="1" not-null="true">
+                <comment>Flag que indica se o estoque ser&#195;&#161; controlado por multiplos almoxarifados.</comment>
+            </column>
+        </property>
+        <property name="fotoemp" type="binary">
+            <column name="FOTOEMP" />
+        </property>
+        <property name="percissemp" type="big_decimal">
+            <column name="PERCISSEMP" precision="6">
+                <comment>Campo inutilizado (transfer&#195;&#170;ncia para a tabela SGFILIAL)</comment>
+            </column>
+        </property>
+        <property name="codpaisemp" type="string">
+            <column name="CODPAISEMP" length="3">
+                <comment>Campo inutilizado (transfer&#195;&#170;ncia para a tabela SGPAIS)</comment>
+            </column>
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+        <set name="sgobjetos" table="SGOBJETO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgobjeto" />
+        </set>
+    </class>
+</hibernate-mapping>

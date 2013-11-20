@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Fnmovimento" table="FNMOVIMENTO">
+        <id name="id" type="long">
+            <column name="ID" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="fnitpagar" class="org.freedom.persist.entity.Fnitpagar" fetch="select">
+            <column name="CODPAG" />
+            <column name="NPARCPAG" />
+            <column name="CODFILIALPG" />
+            <column name="CODEMPPG" />
+        </many-to-one>
+        <many-to-one name="fnitreceber" class="org.freedom.persist.entity.Fnitreceber" fetch="select">
+            <column name="CODREC" />
+            <column name="NPARCITREC" />
+            <column name="CODFILIALRC" />
+            <column name="CODEMPRC" />
+        </many-to-one>
+        <property name="tipomov" type="char">
+            <column name="TIPOMOV" length="1" not-null="true">
+                <comment>Tipo de movimento: "R" - Receber "P" - Pagar</comment>
+            </column>
+        </property>
+        <property name="sitmov" type="char">
+            <column name="SITMOV" length="1" not-null="true">
+                <comment>Situa&#195;&#167;&#195;&#163;o do movimento: "E" - Edi&#195;&#167;&#195;&#163;o "B" - Baixa "D" - Devolu&#195;&#167;&#195;&#163;o "C" - Cancelada "P" -
+                Pagar</comment>
+            </column>
+        </property>
+        <property name="dtmov" type="date">
+            <column name="DTMOV" length="10" not-null="true" />
+        </property>
+        <property name="statusold" type="string">
+            <column name="STATUSOLD" length="2" not-null="true">
+                <comment>Status antigo.</comment>
+            </column>
+        </property>
+        <property name="vlrtitulo" type="big_decimal">
+            <column name="VLRTITULO" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="vlrparc" type="big_decimal">
+            <column name="VLRPARC" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="vlrapag" type="big_decimal">
+            <column name="VLRAPAG" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="vlrpago" type="big_decimal">
+            <column name="VLRPAGO" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="vlrdev" type="big_decimal">
+            <column name="VLRDEV" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="vlrjuros" type="big_decimal">
+            <column name="VLRJUROS" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="vlrdesc" type="big_decimal">
+            <column name="VLRDESC" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="emmanut" type="char">
+            <column name="EMMANUT" length="1" not-null="true" />
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="128" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" not-null="true" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" not-null="true" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="128" />
+        </property>
+    </class>
+</hibernate-mapping>

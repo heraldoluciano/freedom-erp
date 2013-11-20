@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Vdregracomis" table="VDREGRACOMIS">
+        <comment>Regras de comiss&#195;&#181;es</comment>
+        <composite-id name="id" class="org.freedom.persist.entity.VdregracomisId">
+            <key-property name="codregrcomis" type="int">
+                <column name="CODREGRCOMIS" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="eqsecao" class="org.freedom.persist.entity.Eqsecao" fetch="select">
+            <column name="CODSECAO" length="13" />
+            <column name="CODFILIALSC" />
+            <column name="CODEMPSC" />
+        </many-to-one>
+        <property name="descregrcomis" type="string">
+            <column name="DESCREGRCOMIS" length="50" not-null="true" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" not-null="true" />
+        </property>
+        <property name="perccomisgeral" type="big_decimal">
+            <column name="PERCCOMISGERAL" precision="15" scale="5">
+                <comment>Percentual de comiss&#195;&#163;o para o grupo de comissionados (comissionamento especial por producao)</comment>
+            </column>
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" not-null="true" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" not-null="true" />
+        </property>
+        <set name="eqtipomovs" table="EQTIPOMOV" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODREGRCOMIS" />
+                <column name="CODFILIALRC" />
+                <column name="CODEMPRC" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqtipomov" />
+        </set>
+        <set name="vditregracomises" table="VDITREGRACOMIS" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODREGRCOMIS" not-null="true" />
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vditregracomis" />
+        </set>
+    </class>
+</hibernate-mapping>

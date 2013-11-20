@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Sgestacaobal" table="SGESTACAOBAL">
+        <composite-id name="id" class="org.freedom.persist.entity.SgestacaobalId">
+            <key-property name="codest" type="int">
+                <column name="CODEST" />
+            </key-property>
+            <key-property name="nrobal" type="short">
+                <column name="NROBAL" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="sgestacao" class="org.freedom.persist.entity.Sgestacao" update="false" insert="false" fetch="select">
+            <column name="CODEST" not-null="true" />
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <property name="driverbal" type="string">
+            <column name="DRIVERBAL" length="50" not-null="true">
+                <comment>Driver de comunica&#195;&#167;&#195;&#163;o com a balan&#195;&#167;a.</comment>
+            </column>
+        </property>
+        <property name="portabal" type="short">
+            <column name="PORTABAL" not-null="true" />
+        </property>
+        <property name="speedbal" type="short">
+            <column name="SPEEDBAL" not-null="true" />
+        </property>
+        <property name="bitsbal" type="short">
+            <column name="BITSBAL" not-null="true" />
+        </property>
+        <property name="stopbitbal" type="short">
+            <column name="STOPBITBAL" not-null="true" />
+        </property>
+        <property name="paritybal" type="short">
+            <column name="PARITYBAL" not-null="true" />
+        </property>
+        <property name="tipoprocrecmerc" type="string">
+            <column name="TIPOPROCRECMERC" length="2" not-null="true">
+                <comment>Indica o uso principal da balan&#195;&#167;a. "TO" - Todos; "PI" - Pesagem inicial; "TR" - Tiragem de renda/descarregamento; "PF" - Pesagem
+                final;</comment>
+            </column>
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+    </class>
+</hibernate-mapping>

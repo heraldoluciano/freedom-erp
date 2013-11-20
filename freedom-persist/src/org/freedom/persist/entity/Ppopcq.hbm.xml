@@ -1,0 +1,118 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Ppopcq" table="PPOPCQ">
+        <comment>Cadastros de lan&#195;&#167;amento de resultados de an&#195;&#161;lises de controle de qualidade.</comment>
+        <composite-id name="id" class="org.freedom.persist.entity.PpopcqId">
+            <key-property name="codop" type="int">
+                <column name="CODOP" />
+            </key-property>
+            <key-property name="seqop" type="short">
+                <column name="SEQOP" />
+            </key-property>
+            <key-property name="seqopcq" type="int">
+                <column name="SEQOPCQ" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="ppopacaocorret" class="org.freedom.persist.entity.Ppopacaocorret" update="false" insert="false" fetch="select">
+            <column name="CODOP" not-null="true">
+                <comment>C&#195;&#179;digo da ordem de produ&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+            <column name="SEQOP" not-null="true">
+                <comment>Sequ&#195;&#170;ncia da ordem de produ&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+            <column name="SEQAC">
+                <comment>Sequencial da a&#195;&#167;&#195;&#163;o corretiva para o problema detectado.</comment>
+            </column>
+            <column name="CODFILIAL" not-null="true">
+                <comment>C&#195;&#179;digo da filial.</comment>
+            </column>
+            <column name="CODEMP" not-null="true">
+                <comment>C&#195;&#179;digo da empresa.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="ppop" class="org.freedom.persist.entity.Ppop" update="false" insert="false" fetch="select">
+            <column name="CODOP" not-null="true">
+                <comment>C&#195;&#179;digo da ordem de produ&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+            <column name="SEQOP" not-null="true">
+                <comment>Sequ&#195;&#170;ncia da ordem de produ&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+            <column name="CODFILIAL" not-null="true">
+                <comment>C&#195;&#179;digo da filial.</comment>
+            </column>
+            <column name="CODEMP" not-null="true">
+                <comment>C&#195;&#179;digo da empresa.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="ppestruanalise" class="org.freedom.persist.entity.Ppestruanalise" fetch="select">
+            <column name="CODESTANALISE" not-null="true">
+                <comment>C&#195;&#179;digo da estrutura x analise.</comment>
+            </column>
+            <column name="CODFILIALEA" not-null="true">
+                <comment>C&#195;&#179;digo da filial da estrutura x analise.</comment>
+            </column>
+            <column name="CODEMPEA" not-null="true">
+                <comment>C&#195;&#179;digo da empresa da estrutura x analise.</comment>
+            </column>
+        </many-to-one>
+        <property name="seqef" type="java.lang.Short">
+            <column name="SEQEF">
+                <comment>Sequencial da fase na estrutura.</comment>
+            </column>
+        </property>
+        <property name="vlrafer" type="big_decimal">
+            <column name="VLRAFER" precision="15" scale="5">
+                <comment>Valor da aferi&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+        </property>
+        <property name="descafer" type="string">
+            <column name="DESCAFER" length="80">
+                <comment>Descritivo da aferi&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+        </property>
+        <property name="status" type="string">
+            <column name="STATUS" length="2" not-null="true">
+                <comment>Status da an&#195;&#161;lise de controle de qualidade. "PE" - Pendente; "AP" - Aprovado; "RC" - Recusado; "CO" - Corrigido.</comment>
+            </column>
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true">
+                <comment>Data de inser&#195;&#167;&#195;&#163;o do registro.</comment>
+            </column>
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true">
+                <comment>Hora de inser&#195;&#167;&#195;&#163;o do registro.</comment>
+            </column>
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true">
+                <comment>Usu&#195;&#161;rio que inseriu o registro.</comment>
+            </column>
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" not-null="true">
+                <comment>Data de altera&#195;&#167;&#195;&#163;o no registro.</comment>
+            </column>
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" not-null="true">
+                <comment>Hora de altera&#195;&#167;&#195;&#163;o do registro.</comment>
+            </column>
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" not-null="true">
+                <comment>Usu&#195;&#161;rio que alterou o registro.</comment>
+            </column>
+        </property>
+    </class>
+</hibernate-mapping>

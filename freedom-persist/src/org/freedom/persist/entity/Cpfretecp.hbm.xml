@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Cpfretecp" table="CPFRETECP">
+        <composite-id name="id" class="org.freedom.persist.entity.CpfretecpId">
+            <key-property name="codcompra" type="int">
+                <column name="CODCOMPRA" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <one-to-one name="cpcompra" class="org.freedom.persist.entity.Cpcompra" constrained="true"></one-to-one>
+        <many-to-one name="vdtransp" class="org.freedom.persist.entity.Vdtransp" fetch="select">
+            <column name="CODTRAN" />
+            <column name="CODFILIALTN" />
+            <column name="CODEMPTN" />
+        </many-to-one>
+        <property name="tipofretecp" type="char">
+            <column name="TIPOFRETECP" length="1" not-null="true" />
+        </property>
+        <property name="placafretecp" type="string">
+            <column name="PLACAFRETECP" length="10" not-null="true" />
+        </property>
+        <property name="uffretecp" type="string">
+            <column name="UFFRETECP" length="2" not-null="true" />
+        </property>
+        <property name="vlrfretecp" type="big_decimal">
+            <column name="VLRFRETECP" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="qtdfretecp" type="big_decimal">
+            <column name="QTDFRETECP" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="pesobrutcp" type="big_decimal">
+            <column name="PESOBRUTCP" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="pesoliqcp" type="big_decimal">
+            <column name="PESOLIQCP" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="espfretecp" type="string">
+            <column name="ESPFRETECP" length="10" not-null="true" />
+        </property>
+        <property name="marcafretecp" type="string">
+            <column name="MARCAFRETECP" length="10" not-null="true" />
+        </property>
+        <property name="conhecfretecp" type="string">
+            <column name="CONHECFRETECP" length="13" />
+        </property>
+        <property name="perccomprafretecp" type="big_decimal">
+            <column name="PERCCOMPRAFRETECP" precision="9" />
+        </property>
+        <property name="adicfretecp" type="char">
+            <column name="ADICFRETECP" length="1" not-null="true" />
+        </property>
+        <property name="adicfretebaseicm" type="char">
+            <column name="ADICFRETEBASEICM" length="1" not-null="true" />
+        </property>
+        <property name="aliqicmsfretecp" type="big_decimal">
+            <column name="ALIQICMSFRETECP" precision="15" scale="5" />
+        </property>
+        <property name="vlricmsfretecp" type="big_decimal">
+            <column name="VLRICMSFRETECP" precision="15" scale="5" />
+        </property>
+        <property name="vlrsegfretecp" type="big_decimal">
+            <column name="VLRSEGFRETECP" precision="15" scale="5">
+                <comment>Valor do seguro no frete.</comment>
+            </column>
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+    </class>
+</hibernate-mapping>

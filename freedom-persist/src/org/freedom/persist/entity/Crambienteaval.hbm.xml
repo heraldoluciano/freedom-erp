@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Crambienteaval" table="CRAMBIENTEAVAL">
+        <composite-id name="id" class="org.freedom.persist.entity.CrambienteavalId">
+            <key-property name="codambaval" type="int">
+                <column name="CODAMBAVAL" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <property name="descambaval" type="string">
+            <column name="DESCAMBAVAL" length="50" not-null="true" />
+        </property>
+        <property name="siglaambaval" type="string">
+            <column name="SIGLAAMBAVAL" length="10" not-null="true" />
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="128" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" not-null="true" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" not-null="true" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="128" />
+        </property>
+        <set name="critfichaavals" table="CRITFICHAAVAL" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODAMBAVAL" not-null="true" />
+                <column name="CODFILIALAM" not-null="true" />
+                <column name="CODEMPAM" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Critfichaaval" />
+        </set>
+    </class>
+</hibernate-mapping>

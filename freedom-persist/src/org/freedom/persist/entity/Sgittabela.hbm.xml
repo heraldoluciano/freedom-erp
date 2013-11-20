@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Sgittabela" table="SGITTABELA">
+        <composite-id name="id" class="org.freedom.persist.entity.SgittabelaId">
+            <key-property name="codittb" type="int">
+                <column name="CODITTB" />
+            </key-property>
+            <key-property name="codtb" type="short">
+                <column name="CODTB" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="sgtabela" class="org.freedom.persist.entity.Sgtabela" update="false" insert="false" fetch="select">
+            <column name="CODTB" not-null="true" />
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <property name="descittb" type="string">
+            <column name="DESCITTB" length="50" not-null="true" />
+        </property>
+        <property name="padraoittb" type="char">
+            <column name="PADRAOITTB" length="1" not-null="true" />
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+        <set name="vdclientes" table="VDCLIENTE" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODITTBEC">
+                    <comment>C&#195;&#179;digo do estado civil.</comment>
+                </column>
+                <column name="CODTBEC">
+                    <comment>C&#195;&#179;digo da tabela de estado civil.</comment>
+                </column>
+                <column name="CODFILIALEC">
+                    <comment>C&#195;&#179;digo da filial para tabela de estado civil.</comment>
+                </column>
+                <column name="CODEMPEC">
+                    <comment>C&#195;&#179;digo da empresa para tabela de estado civil.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdcliente" />
+        </set>
+        <set name="vdstatusorcs" table="VDSTATUSORC" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODITTB" not-null="true" />
+                <column name="CODTB" not-null="true" />
+                <column name="CODFILIALTB" not-null="true" />
+                <column name="CODEMPTB" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdstatusorc" />
+        </set>
+        <set name="sgprefere2sForSgprefere2fksgitt2" table="SGPREFERE2" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODITTBV" />
+                <column name="CODTBV" />
+                <column name="CODFILIALTV" />
+                <column name="CODEMPTV" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgprefere2" />
+        </set>
+        <set name="atconvatribtbs" table="ATCONVATRIBTB" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODITTB" not-null="true" />
+                <column name="CODTB" not-null="true" />
+                <column name="CODFILIALTB" not-null="true" />
+                <column name="CODEMPTB" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Atconvatribtb" />
+        </set>
+        <set name="sgprefere2sForSgprefere2fksgitta" table="SGPREFERE2" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODITTBA" />
+                <column name="CODTBA" />
+                <column name="CODFILIALTA" />
+                <column name="CODEMPTA" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgprefere2" />
+        </set>
+    </class>
+</hibernate-mapping>

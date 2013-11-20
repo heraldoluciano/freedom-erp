@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Sgimpressora" table="SGIMPRESSORA">
+        <composite-id name="id" class="org.freedom.persist.entity.SgimpressoraId">
+            <key-property name="codimp" type="int">
+                <column name="CODIMP" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="sgfilial" class="org.freedom.persist.entity.Sgfilial" update="false" insert="false" fetch="select">
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <property name="descimp" type="string">
+            <column name="DESCIMP" length="40" not-null="true" />
+        </property>
+        <property name="tipoimp" type="string">
+            <column name="TIPOIMP" length="2" not-null="true" />
+        </property>
+        <property name="linpagimp" type="java.lang.Integer">
+            <column name="LINPAGIMP" />
+        </property>
+        <property name="nserieimp" type="string">
+            <column name="NSERIEIMP" length="20" />
+        </property>
+        <property name="portawinimp" type="string">
+            <column name="PORTAWINIMP" length="4" />
+        </property>
+        <property name="portalinimp" type="string">
+            <column name="PORTALINIMP" length="60" />
+        </property>
+        <property name="codemppl" type="java.lang.Integer">
+            <column name="CODEMPPL" />
+        </property>
+        <property name="codfilialpl" type="java.lang.Short">
+            <column name="CODFILIALPL" />
+        </property>
+        <property name="codpapel" type="string">
+            <column name="CODPAPEL" length="10" />
+        </property>
+        <property name="destimp" type="string">
+            <column name="DESTIMP" length="2" />
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+        <set name="pvcaixaimps" table="PVCAIXAIMP" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODIMP" not-null="true" />
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Pvcaixaimp" />
+        </set>
+        <set name="sgestacaoimps" table="SGESTACAOIMP" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODIMP" not-null="true">
+                    <comment>C&#195;&#179;digo da impressora.</comment>
+                </column>
+                <column name="CODFILIALIP" not-null="true">
+                    <comment>C&#195;&#179;digo da filial na tabela de impressoras.</comment>
+                </column>
+                <column name="CODEMPIP" not-null="true">
+                    <comment>C&#195;&#179;digo da empresa na tabela de impressoras.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgestacaoimp" />
+        </set>
+    </class>
+</hibernate-mapping>

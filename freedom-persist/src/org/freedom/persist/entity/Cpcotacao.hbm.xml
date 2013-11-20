@@ -1,0 +1,129 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Cpcotacao" table="CPCOTACAO">
+        <composite-id name="id" class="org.freedom.persist.entity.CpcotacaoId">
+            <key-property name="codsol" type="int">
+                <column name="CODSOL" />
+            </key-property>
+            <key-property name="coditsol" type="short">
+                <column name="CODITSOL" />
+            </key-property>
+            <key-property name="codcot" type="short">
+                <column name="CODCOT" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="fnplanopag" class="org.freedom.persist.entity.Fnplanopag" fetch="select">
+            <column name="CODPLANOPAG">
+                <comment>C&#195;&#179;digo do plano de pagamento.</comment>
+            </column>
+            <column name="CODFILIALPP">
+                <comment>C&#195;&#179;digo da filial do plano de pagamento.</comment>
+            </column>
+            <column name="CODEMPPP">
+                <comment>C&#195;&#179;digo da empresa do plano de pagamento.</comment>
+            </column>
+        </many-to-one>
+        <property name="dtcot" type="date">
+            <column name="DTCOT" length="10" not-null="true" />
+        </property>
+        <property name="dtvalidcot" type="date">
+            <column name="DTVALIDCOT" length="10" not-null="true">
+                <comment>Data de validade da proposta de pre&#195;&#167;o.</comment>
+            </column>
+        </property>
+        <property name="idusucot" type="string">
+            <column name="IDUSUCOT" length="8" not-null="true" />
+        </property>
+        <property name="codempfr" type="int">
+            <column name="CODEMPFR" not-null="true" />
+        </property>
+        <property name="codfilialfr" type="short">
+            <column name="CODFILIALFR" not-null="true" />
+        </property>
+        <property name="codfor" type="int">
+            <column name="CODFOR" not-null="true" />
+        </property>
+        <property name="qtdcot" type="big_decimal">
+            <column name="QTDCOT" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="qtdaprovcot" type="big_decimal">
+            <column name="QTDAPROVCOT" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="precocot" type="big_decimal">
+            <column name="PRECOCOT" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="sitcompitsol" type="string">
+            <column name="SITCOMPITSOL" length="2">
+                <comment>"PE" - Pendente; "FN" - Finalizada;</comment>
+            </column>
+        </property>
+        <property name="sitaprovitsol" type="string">
+            <column name="SITAPROVITSOL" length="2">
+                <comment>"PE" - Pendente; "AP" - Aprovada;</comment>
+            </column>
+        </property>
+        <property name="sititsol" type="string">
+            <column name="SITITSOL" length="2">
+                <comment>"PE" - Pendente; "FN" - Finalizada;</comment>
+            </column>
+        </property>
+        <property name="motivocanccot" type="string">
+            <column name="MOTIVOCANCCOT" length="10000" />
+        </property>
+        <property name="motivocotabaixo" type="string">
+            <column name="MOTIVOCOTABAIXO" length="10000" />
+        </property>
+        <property name="usarendacot" type="java.lang.Character">
+            <column name="USARENDACOT" length="1">
+                <comment>Indica se deve usar o crit&#195;&#169;rio da renda na busca do pre&#195;&#167;o de cota&#195;&#167;&#195;&#181;es.</comment>
+            </column>
+        </property>
+        <property name="rendacot" type="java.lang.Short">
+            <column name="RENDACOT">
+                <comment>Indica a renda (qualidade) do produto cotado.</comment>
+            </column>
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+        <property name="vlrfreteitcompra" type="big_decimal">
+            <column name="VLRFRETEITCOMPRA" precision="15" scale="5" />
+        </property>
+        <property name="percipiitcompra" type="big_decimal">
+            <column name="PERCIPIITCOMPRA" precision="9" />
+        </property>
+        <property name="vlrbaseipiitcompra" type="big_decimal">
+            <column name="VLRBASEIPIITCOMPRA" precision="15" scale="5" />
+        </property>
+        <property name="vlripiitcompra" type="big_decimal">
+            <column name="VLRIPIITCOMPRA" precision="15" scale="5" />
+        </property>
+        <property name="vlrliqitcompra" type="big_decimal">
+            <column name="VLRLIQITCOMPRA" precision="15" scale="5" />
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+    </class>
+</hibernate-mapping>

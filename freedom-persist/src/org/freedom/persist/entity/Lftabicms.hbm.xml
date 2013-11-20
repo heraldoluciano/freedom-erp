@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Lftabicms" table="LFTABICMS">
+        <composite-id name="id" class="org.freedom.persist.entity.LftabicmsId">
+            <key-property name="ufti" type="string">
+                <column name="UFTI" length="2" />
+            </key-property>
+            <key-property name="codfilial" type="int">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <property name="aliqti" type="big_decimal">
+            <column name="ALIQTI" precision="9" not-null="true">
+                <comment>Aliquota de icms interestadual</comment>
+            </column>
+        </property>
+        <property name="aliqintrati" type="java.lang.Short">
+            <column name="ALIQINTRATI">
+                <comment>Aliquota de icms intraestadual.</comment>
+            </column>
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+        <set name="lfitnatopers" table="LFITNATOPER" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="UFTI" length="2" not-null="true" />
+                <column name="CODFILIALTI" not-null="true" />
+                <column name="CODEMPTI" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Lfitnatoper" />
+        </set>
+    </class>
+</hibernate-mapping>

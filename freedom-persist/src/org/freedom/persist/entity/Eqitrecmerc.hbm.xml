@@ -1,0 +1,197 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Eqitrecmerc" table="EQITRECMERC">
+        <comment>M&#195;&#169;dia entre as amostragens.</comment>
+        <composite-id name="id" class="org.freedom.persist.entity.EqitrecmercId">
+            <key-property name="ticket" type="int">
+                <column name="TICKET" />
+            </key-property>
+            <key-property name="coditrecmerc" type="int">
+                <column name="CODITRECMERC" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="eqproduto" class="org.freedom.persist.entity.Eqproduto" fetch="select">
+            <column name="CODPROD" not-null="true" />
+            <column name="CODFILIALPD" not-null="true" />
+            <column name="CODEMPPD" not-null="true" />
+        </many-to-one>
+        <many-to-one name="sgfilial" class="org.freedom.persist.entity.Sgfilial" update="false" insert="false" fetch="select">
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <many-to-one name="eqserie" class="org.freedom.persist.entity.Eqserie" update="false" insert="false" fetch="select">
+            <column name="NUMSERIE" length="30">
+                <comment>N&#195;&#186;mero de s&#195;&#169;rie.</comment>
+            </column>
+            <column name="CODPROD" not-null="true" />
+            <column name="CODFILIALNS" />
+            <column name="CODEMPNS" />
+        </many-to-one>
+        <many-to-one name="eqrecmerc" class="org.freedom.persist.entity.Eqrecmerc" update="false" insert="false" fetch="select">
+            <column name="TICKET" not-null="true" />
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <many-to-one name="eqprocrecmerc" class="org.freedom.persist.entity.Eqprocrecmerc" fetch="select">
+            <column name="CODTIPORECMERC" not-null="true">
+                <comment>C&#195;&#179;digo do tipo de recebimento de mercadorial.</comment>
+            </column>
+            <column name="CODPROCRECMERC" not-null="true">
+                <comment>C&#195;&#179;digo do processo de recep&#195;&#167;&#195;&#163;o de mercadoria.</comment>
+            </column>
+            <column name="CODFILIALTP" not-null="true">
+                <comment>C&#195;&#179;digo da filial do processo de recebimento.</comment>
+            </column>
+            <column name="CODEMPTP" not-null="true">
+                <comment>C&#195;&#179;digo da empresa do processo de recebimento.</comment>
+            </column>
+        </many-to-one>
+        <property name="descitrecmerc" type="string">
+            <column name="DESCITRECMERC" length="1000">
+                <comment>Descri&#195;&#167;&#195;&#163;o detalhada do item recebido.</comment>
+            </column>
+        </property>
+        <property name="garantia" type="char">
+            <column name="GARANTIA" length="1" not-null="true">
+                <comment>Indica se o produto recebido est&#195;&#161; na garantia - (S/N)</comment>
+            </column>
+        </property>
+        <property name="refprod" type="string">
+            <column name="REFPROD" length="20" not-null="true">
+                <comment>Refer&#195;&#170;ncia do produto</comment>
+            </column>
+        </property>
+        <property name="mediaamostragem" type="big_decimal">
+            <column name="MEDIAAMOSTRAGEM" precision="15" scale="5" not-null="true">
+                <comment>0</comment>
+            </column>
+        </property>
+        <property name="rendaamostragem" type="short">
+            <column name="RENDAAMOSTRAGEM" not-null="true">
+                <comment>Renda amostragem *</comment>
+            </column>
+        </property>
+        <property name="qtditrecmerc" type="big_decimal">
+            <column name="QTDITRECMERC" precision="15" scale="5" not-null="true">
+                <comment>Quantidade de itens recebidos (Coleta)</comment>
+            </column>
+        </property>
+        <property name="statusitrecmerc" type="string">
+            <column name="STATUSITRECMERC" length="2" not-null="true">
+                <comment>Status do processo de recebimento. PE - Pendente; AN - Em analise; EA - Em andamento; FN - Finalizado;</comment>
+            </column>
+        </property>
+        <property name="defeitoitrecmerc" type="string">
+            <column name="DEFEITOITRECMERC" length="1000">
+                <comment>Indica o defeito reclamado do item recebido para concerto.</comment>
+            </column>
+        </property>
+        <property name="condicoesitrecmerc" type="string">
+            <column name="CONDICOESITRECMERC" length="1000">
+                <comment>Campo para informar as condicoes do item para concerto no momento da recepcao.</comment>
+            </column>
+        </property>
+        <property name="servicosolicitrecmerc" type="string">
+            <column name="SERVICOSOLICITRECMERC" length="1000">
+                <comment>Campo para informar o servi&#195;&#167;o solicitado pelo cliente no item recebido.</comment>
+            </column>
+        </property>
+        <property name="obsitrecmerc" type="string">
+            <column name="OBSITRECMERC" length="1000">
+                <comment>Campo para informar os acess&#195;&#179;rios que acompanham o item recebido.</comment>
+            </column>
+        </property>
+        <property name="placaveiculo" type="string">
+            <column name="PLACAVEICULO" length="10" />
+        </property>
+        <property name="nrofrota" type="string">
+            <column name="NROFROTA" length="20" />
+        </property>
+        <property name="garagem" type="string">
+            <column name="GARAGEM" length="20" />
+        </property>
+        <property name="emmanut" type="char">
+            <column name="EMMANUT" length="1" not-null="true" />
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+        <set name="eqrecamostragems" table="EQRECAMOSTRAGEM" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="TICKET" not-null="true" />
+                <column name="CODITRECMERC" not-null="true" />
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqrecamostragem" />
+        </set>
+        <set name="eqitrecmercitoses" table="EQITRECMERCITOS" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="TICKET" not-null="true" />
+                <column name="CODITRECMERC" not-null="true" />
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqitrecmercitos" />
+        </set>
+        <set name="eqmovseries" table="EQMOVSERIE" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="TICKET">
+                    <comment>C&#195;&#179;digo do recebimento de mercadoria.</comment>
+                </column>
+                <column name="CODITRECMERC">
+                    <comment>C&#195;&#179;digo do &#195;&#173;tem de recebimento de mercadoria.</comment>
+                </column>
+                <column name="CODFILIALRC">
+                    <comment>C&#195;&#179;digo da filial do recebimento de mercadoria.</comment>
+                </column>
+                <column name="CODEMPRC">
+                    <comment>C&#195;&#179;digo da empresa do recebimento de mercadoria.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqmovserie" />
+        </set>
+        <set name="eqitrecmercitcps" table="EQITRECMERCITCP" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="TICKET" not-null="true" />
+                <column name="CODITRECMERC" not-null="true" />
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqitrecmercitcp" />
+        </set>
+        <set name="eqitrecmercseries" table="EQITRECMERCSERIE" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="TICKET" not-null="true" />
+                <column name="CODITRECMERC" not-null="true" />
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqitrecmercserie" />
+        </set>
+    </class>
+</hibernate-mapping>

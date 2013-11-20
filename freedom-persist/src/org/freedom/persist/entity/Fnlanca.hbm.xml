@@ -1,0 +1,147 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Fnlanca" table="FNLANCA">
+        <composite-id name="id" class="org.freedom.persist.entity.FnlancaId">
+            <key-property name="codlanca" type="int">
+                <column name="CODLANCA" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="sgfilial" class="org.freedom.persist.entity.Sgfilial" update="false" insert="false" fetch="select">
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <many-to-one name="fnitpagar" class="org.freedom.persist.entity.Fnitpagar" fetch="select">
+            <column name="CODPAG" />
+            <column name="NPARCPAG" />
+            <column name="CODFILIALPG" />
+            <column name="CODEMPPG" />
+        </many-to-one>
+        <many-to-one name="fnitreceber" class="org.freedom.persist.entity.Fnitreceber" fetch="select">
+            <column name="CODREC" />
+            <column name="NPARCITREC" />
+            <column name="CODFILIALRC" />
+            <column name="CODEMPRC" />
+        </many-to-one>
+        <many-to-one name="fnsinal" class="org.freedom.persist.entity.Fnsinal" fetch="select">
+            <column name="CODSINAL" />
+            <column name="CODEMPSN" />
+            <column name="CODFILIALSN" />
+        </many-to-one>
+        <many-to-one name="cpforneced" class="org.freedom.persist.entity.Cpforneced" fetch="select">
+            <column name="CODFOR" />
+            <column name="CODFILIALFR" />
+            <column name="CODEMPFR" />
+        </many-to-one>
+        <many-to-one name="vdcliente" class="org.freedom.persist.entity.Vdcliente" fetch="select">
+            <column name="CODCLI">
+                <comment>C&#195;&#179;digo do cliente, para v&#195;&#173;nculo com contas a receber.</comment>
+            </column>
+            <column name="CODFILIALCL">
+                <comment>C&#195;&#179;digo da filial do cliente.</comment>
+            </column>
+            <column name="CODEMPCL">
+                <comment>C&#195;&#179;digo da empresa do cliente</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="fnplanejamento" class="org.freedom.persist.entity.Fnplanejamento" fetch="select">
+            <column name="CODPLAN" length="13" not-null="true" />
+            <column name="CODFILIALPN" not-null="true" />
+            <column name="CODEMPPN" not-null="true" />
+        </many-to-one>
+        <many-to-one name="fnpagtocomi" class="org.freedom.persist.entity.Fnpagtocomi" fetch="select">
+            <column name="CODPCOMI" />
+            <column name="CODFILIALCI" />
+            <column name="CODEMPCI" />
+        </many-to-one>
+        <many-to-one name="vdcomissao" class="org.freedom.persist.entity.Vdcomissao" update="false" insert="false" fetch="select">
+            <column name="CODCOMI" />
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <property name="dtcomplanca" type="date">
+            <column name="DTCOMPLANCA" length="10" not-null="true">
+                <comment>Data de compet&#195;&#170;ncia.</comment>
+            </column>
+        </property>
+        <property name="datalanca" type="date">
+            <column name="DATALANCA" length="10" not-null="true" />
+        </property>
+        <property name="doclanca" type="string">
+            <column name="DOCLANCA" length="15" />
+        </property>
+        <property name="histblanca" type="string">
+            <column name="HISTBLANCA" length="250" not-null="true">
+                <comment>Hist&#195;&#179;rico banc&#195;&#161;rio.</comment>
+            </column>
+        </property>
+        <property name="histlanca" type="string">
+            <column name="HISTLANCA" length="10000" />
+        </property>
+        <property name="transflanca" type="java.lang.Character">
+            <column name="TRANSFLANCA" length="1" />
+        </property>
+        <property name="statuslanca" type="string">
+            <column name="STATUSLANCA" length="2" />
+        </property>
+        <property name="dtprevlanca" type="date">
+            <column name="DTPREVLANCA" length="10" />
+        </property>
+        <property name="dtprevsublanca" type="date">
+            <column name="DTPREVSUBLANCA" length="10" />
+        </property>
+        <property name="vlrlanca" type="big_decimal">
+            <column name="VLRLANCA" precision="15" scale="5" />
+        </property>
+        <property name="flag" type="java.lang.Character">
+            <column name="FLAG" length="1" />
+        </property>
+        <property name="tipolanca" type="char">
+            <column name="TIPOLANCA" length="1" not-null="true" />
+        </property>
+        <property name="pdvitrec" type="char">
+            <column name="PDVITREC" length="1" not-null="true">
+                <comment>Indica se foi recebido pelo PDV</comment>
+            </column>
+        </property>
+        <property name="emmanut" type="char">
+            <column name="EMMANUT" length="1" not-null="true">
+                <comment>Estado de manuten&#195;&#167;&#195;&#163;o (S/N).</comment>
+            </column>
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+        <set name="fnsublancas" table="FNSUBLANCA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODLANCA" not-null="true" />
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnsublanca" />
+        </set>
+    </class>
+</hibernate-mapping>

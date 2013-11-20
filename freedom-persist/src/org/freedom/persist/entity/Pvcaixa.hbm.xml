@@ -1,0 +1,114 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Pvcaixa" table="PVCAIXA">
+        <composite-id name="id" class="org.freedom.persist.entity.PvcaixaId">
+            <key-property name="codcaixa" type="int">
+                <column name="CODCAIXA" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="sgestacao" class="org.freedom.persist.entity.Sgestacao" fetch="select">
+            <column name="CODEST" not-null="true">
+                <comment>C&#195;&#179;digo da esta&#195;&#167;&#195;&#163;o de trabalho.</comment>
+            </column>
+            <column name="CODFILIALET" not-null="true">
+                <comment>C&#195;&#179;digo da filial na tabela de esta&#195;&#167;&#195;&#181;es de trabalho.</comment>
+            </column>
+            <column name="CODEMPET" not-null="true">
+                <comment>C&#195;&#179;digo da empresa na tabela de esta&#195;&#167;&#195;&#163;o de trabalho.</comment>
+            </column>
+        </many-to-one>
+        <property name="desccaixa" type="string">
+            <column name="DESCCAIXA" length="40" not-null="true" />
+        </property>
+        <property name="seqini" type="java.lang.Integer">
+            <column name="SEQINI">
+                <comment>FAIXA INICIAL PARA SEQUENCIA DE VENDA DE ECF</comment>
+            </column>
+        </property>
+        <property name="seqmax" type="java.lang.Integer">
+            <column name="SEQMAX">
+                <comment>FAIXA FINAL PARA SEQUENCIA DE VENDA DE ECF</comment>
+            </column>
+        </property>
+        <property name="ecfcaixa" type="char">
+            <column name="ECFCAIXA" length="1" not-null="true" />
+        </property>
+        <property name="tefcaixa" type="java.lang.Character">
+            <column name="TEFCAIXA" length="1" />
+        </property>
+        <property name="orccaixa" type="char">
+            <column name="ORCCAIXA" length="1" not-null="true">
+                <comment>Habilita a venda para pdv somente com or&#195;&#167;amento.</comment>
+            </column>
+        </property>
+        <property name="mododemo" type="char">
+            <column name="MODODEMO" length="1" not-null="true" />
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+        <set name="eqprodacessos" table="EQPRODACESSO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCAIXA">
+                    <comment>C&#195;&#179;digo do caixa ECF.</comment>
+                </column>
+                <column name="CODFILIALCX">
+                    <comment>C&#195;&#179;digo da filial na tabela de caixa ECF.</comment>
+                </column>
+                <column name="CODEMPCX">
+                    <comment>C&#195;&#179;digo da empresa na tabela de caixa ECF.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqprodacesso" />
+        </set>
+        <one-to-one name="pvsequencia" class="org.freedom.persist.entity.Pvsequencia"></one-to-one>
+        <set name="vdvendas" table="VDVENDA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCAIXA" />
+                <column name="CODFILIALCX" />
+                <column name="CODEMPCX" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdvenda" />
+        </set>
+        <set name="sglogs" table="SGLOG" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCAIXA" not-null="true" />
+                <column name="CODFILIALCX" not-null="true" />
+                <column name="CODEMPCX" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sglog" />
+        </set>
+        <set name="pvcaixaimps" table="PVCAIXAIMP" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCAIXA" not-null="true" />
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Pvcaixaimp" />
+        </set>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Sgferiado" table="SGFERIADO">
+        <composite-id name="id" class="org.freedom.persist.entity.SgferiadoId">
+            <key-property name="datafer" type="date">
+                <column name="DATAFER" length="10" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <property name="descfer" type="string">
+            <column name="DESCFER" length="50" not-null="true" />
+        </property>
+        <property name="bancfer" type="char">
+            <column name="BANCFER" length="1" not-null="true">
+                <comment>Indica se &#195;&#169; um feriado banc&#195;&#161;rio.</comment>
+            </column>
+        </property>
+        <property name="trabfer" type="char">
+            <column name="TRABFER" length="1" not-null="true">
+                <comment>Indica se &#195;&#169; um feriado trabalhista.</comment>
+            </column>
+        </property>
+        <property name="optfer" type="char">
+            <column name="OPTFER" length="1" not-null="true" />
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="128" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" not-null="true" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" not-null="true" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="128" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

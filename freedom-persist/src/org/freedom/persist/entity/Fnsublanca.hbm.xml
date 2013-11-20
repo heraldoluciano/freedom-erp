@@ -1,0 +1,196 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Fnsublanca" table="FNSUBLANCA">
+        <composite-id name="id" class="org.freedom.persist.entity.FnsublancaId">
+            <key-property name="codsublanca" type="int">
+                <column name="CODSUBLANCA" />
+            </key-property>
+            <key-property name="codlanca" type="int">
+                <column name="CODLANCA" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="fnitpagar" class="org.freedom.persist.entity.Fnitpagar" fetch="select">
+            <column name="CODPAG" />
+            <column name="NPARCPAG" />
+            <column name="CODFILIALPG" />
+            <column name="CODEMPPG" />
+        </many-to-one>
+        <many-to-one name="fnitreceber" class="org.freedom.persist.entity.Fnitreceber" fetch="select">
+            <column name="CODREC" />
+            <column name="NPARCITREC" />
+            <column name="CODFILIALRC" />
+            <column name="CODEMPRC" />
+        </many-to-one>
+        <many-to-one name="cpforneced" class="org.freedom.persist.entity.Cpforneced" fetch="select">
+            <column name="CODFOR" />
+            <column name="CODFILIALFR" />
+            <column name="CODEMPFR" />
+        </many-to-one>
+        <many-to-one name="vdcliente" class="org.freedom.persist.entity.Vdcliente" fetch="select">
+            <column name="CODCLI" />
+            <column name="CODFILIALCL" />
+            <column name="CODEMPCL" />
+        </many-to-one>
+        <many-to-one name="fnplanejamento" class="org.freedom.persist.entity.Fnplanejamento" fetch="select">
+            <column name="CODPLAN" length="13" not-null="true" />
+            <column name="CODFILIALPN" not-null="true" />
+            <column name="CODEMPPN" not-null="true" />
+        </many-to-one>
+        <many-to-one name="vditcontrato" class="org.freedom.persist.entity.Vditcontrato" fetch="select">
+            <column name="CODCONTR">
+                <comment>C&#195;&#179;digo do contrato/projeto</comment>
+            </column>
+            <column name="CODITCONTR">
+                <comment>C&#195;&#179;digo do &#195;&#173;tem de contrato/projeto</comment>
+            </column>
+            <column name="CODFILIALCT">
+                <comment>C&#195;&#179;digo da filial da empresa/contrato</comment>
+            </column>
+            <column name="CODEMPCT">
+                <comment>C&#195;&#179;digo da empresa do contrato/projeto</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="fnlanca" class="org.freedom.persist.entity.Fnlanca" update="false" insert="false" fetch="select">
+            <column name="CODLANCA" not-null="true" />
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <many-to-one name="fncc" class="org.freedom.persist.entity.Fncc" fetch="select">
+            <column name="CODCC" length="19" />
+            <column name="ANOCC" />
+            <column name="CODFILIALCC" />
+            <column name="CODEMPCC" />
+        </many-to-one>
+        <property name="statussublanca" type="string">
+            <column name="STATUSSUBLANCA" length="2" not-null="true" />
+        </property>
+        <property name="origsublanca" type="java.lang.Character">
+            <column name="ORIGSUBLANCA" length="1" />
+        </property>
+        <property name="dtcompsublanca" type="date">
+            <column name="DTCOMPSUBLANCA" length="10" not-null="true">
+                <comment>Data de compet&#195;&#170;ncia.</comment>
+            </column>
+        </property>
+        <property name="dtprevsublanca" type="date">
+            <column name="DTPREVSUBLANCA" length="10" />
+        </property>
+        <property name="tiposublanca" type="char">
+            <column name="TIPOSUBLANCA" length="1" not-null="true">
+                <comment>Tipo de lan&#195;&#167;amento (P-Padr&#195;&#163;o, D-Desconto, J-Juros, M-Multa)</comment>
+            </column>
+        </property>
+        <property name="datasublanca" type="date">
+            <column name="DATASUBLANCA" length="10" />
+        </property>
+        <property name="vlrsublanca" type="big_decimal">
+            <column name="VLRSUBLANCA" precision="15" scale="5" />
+        </property>
+        <property name="flag" type="java.lang.Character">
+            <column name="FLAG" length="1" />
+        </property>
+        <property name="histsublanca" type="string">
+            <column name="HISTSUBLANCA" length="250" />
+        </property>
+        <property name="emmanut" type="char">
+            <column name="EMMANUT" length="1" not-null="true">
+                <comment>Estado de manuten&#195;&#167;&#195;&#163;o (S/N).</comment>
+            </column>
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+        <set name="vdconsignacaosForVdconsigfkfnsublancadev" table="VDCONSIGNACAO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODSUBLANCASD">
+                    <comment>C&#195;&#179;digo do sub-lan&#195;&#167;amento financeiro de devolu&#195;&#167;&#195;&#163;o.</comment>
+                </column>
+                <column name="CODLANCASD">
+                    <comment>C&#195;&#179;digo do lan&#195;&#167;amento financeiro de devolu&#195;&#167;&#195;&#163;o.</comment>
+                </column>
+                <column name="CODFILIALSD">
+                    <comment>C&#195;&#179;digo da filial do sub-lan&#195;&#167;amento financeiro de devolu&#195;&#167;&#195;&#163;o.</comment>
+                </column>
+                <column name="CODEMPSD">
+                    <comment>C&#195;&#179;digo da empresa do sub-lan&#195;&#167;amento financeiro de devolu&#195;&#167;&#195;&#163;o.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdconsignacao" />
+        </set>
+        <set name="vdvendaconsigsForVdvendaconsigfkfnsublanca" table="VDVENDACONSIG" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODSUBLANCA">
+                    <comment>C&#195;&#179;digo do sub-lan&#195;&#167;amento financeiro.</comment>
+                </column>
+                <column name="CODLANCA">
+                    <comment>C&#195;&#179;digo do lan&#195;&#167;amento financeiro.</comment>
+                </column>
+                <column name="CODFILIALSL">
+                    <comment>C&#195;&#179;digo da filial do sub-lan&#195;&#167;amento financeiro.</comment>
+                </column>
+                <column name="CODEMPSL">
+                    <comment>C&#195;&#179;digo da empresa do sub-lan&#195;&#167;amento financeiro.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdvendaconsig" />
+        </set>
+        <set name="vdconsignacaosForVdconsigfkfnsublanca" table="VDCONSIGNACAO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODSUBLANCA">
+                    <comment>C&#195;&#179;digo do sub-lan&#195;&#167;amento financeiro.</comment>
+                </column>
+                <column name="CODLANCA">
+                    <comment>C&#195;&#179;digo do lan&#195;&#167;amento financeiro.</comment>
+                </column>
+                <column name="CODFILIALSL">
+                    <comment>C&#195;&#179;digo da filial do sub-lan&#195;&#167;amento financeiro.</comment>
+                </column>
+                <column name="CODEMPSL">
+                    <comment>C&#195;&#179;digo da empresa do sub-lan&#195;&#167;amento financeiro.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdconsignacao" />
+        </set>
+        <set name="vdvendaconsigsForVdvendaconsigfkfnsublancasc" table="VDVENDACONSIG" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODSUBLANCASC">
+                    <comment>C&#195;&#179;digo do sub-lan&#195;&#167;amento financeiro de contra-partida.</comment>
+                </column>
+                <column name="CODLANCASC">
+                    <comment>C&#195;&#179;digo do lan&#195;&#167;amento financeiro de contra-partida.</comment>
+                </column>
+                <column name="CODFILIALSC">
+                    <comment>C&#195;&#179;digo da filial do sub-lan&#195;&#167;amento financeiro de contra-partida.</comment>
+                </column>
+                <column name="CODEMPSC">
+                    <comment>C&#195;&#179;digo da empresa do sub-lan&#195;&#167;amento financeiro de contra-partida.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdvendaconsig" />
+        </set>
+    </class>
+</hibernate-mapping>

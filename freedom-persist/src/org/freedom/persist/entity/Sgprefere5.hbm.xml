@@ -1,0 +1,167 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Sgprefere5" table="SGPREFERE5">
+        <comment>Prefer&#195;&#170;ncias do m&#195;&#179;dulo de PCP</comment>
+        <composite-id name="id" class="org.freedom.persist.entity.Sgprefere5Id">
+            <key-property name="codfilial" type="int">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <one-to-one name="sgfilial" class="org.freedom.persist.entity.Sgfilial" constrained="true"></one-to-one>
+        <many-to-one name="eqtipomovBySgprefere5fktipomoven" class="org.freedom.persist.entity.Eqtipomov" fetch="select">
+            <column name="CODTIPOMOVEN">
+                <comment>C&#195;&#179;digo do tipo de movimento padr&#195;&#163;o para envio de remessa para produ&#195;&#167;&#195;&#163;o externa.</comment>
+            </column>
+            <column name="CODFILIALEN">
+                <comment>C&#195;&#179;digo da filial do tipo de movimento padr&#195;&#163;o para envio de remessa para produ&#195;&#167;&#195;&#163;o externa.</comment>
+            </column>
+            <column name="CODEMPEN">
+                <comment>C&#195;&#179;digo da empresa do tipo de movimento padr&#195;&#163;o para envio de remessa para produ&#195;&#167;&#195;&#163;o externa.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="eqtipomovBySgprefere5fkeqtipo" class="org.freedom.persist.entity.Eqtipomov" fetch="select">
+            <column name="CODTIPOMOV">
+                <comment>C&#195;&#179;digo do tipo de movimento padr&#195;&#163;o para Ordem de produ&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+            <column name="CODFILIALTM">
+                <comment>C&#195;&#179;digo da filial do tipo de movimento padr&#195;&#163;o para Ordem de Produ&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+            <column name="CODEMPTM">
+                <comment>C&#195;&#179;digo da empresa do tipo de movimento padr&#195;&#163;o para Ordem de Produ&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="eqtipomovBySgprefere5fktipomovsp" class="org.freedom.persist.entity.Eqtipomov" fetch="select">
+            <column name="CODTIPOMOVSP">
+                <comment>C&#195;&#179;digo do tipo de movimento para entrada de subprodutos.</comment>
+            </column>
+            <column name="CODFILIALTS">
+                <comment>C&#195;&#179;digo da filial para tipo de movimento para entrada de subprodutos.</comment>
+            </column>
+            <column name="CODEMPTS">
+                <comment>C&#195;&#179;digo da empresa para tipo de movimento para entrada de subprodutos.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="eqtipomovBySgprefere5fktipomovre" class="org.freedom.persist.entity.Eqtipomov" fetch="select">
+            <column name="CODTIPOMOVRE">
+                <comment>C&#195;&#179;digo do tipo de movimento padr&#195;&#163;o para retorno de produ&#195;&#167;&#195;&#163;o externa.</comment>
+            </column>
+            <column name="CODFILIALRE">
+                <comment>C&#195;&#179;digo da filial do tipo de movimento padr&#195;&#163;o para retorno de produ&#195;&#167;&#195;&#163;o externa.</comment>
+            </column>
+            <column name="CODEMPRE">
+                <comment>C&#195;&#179;digo da empresa do tipo de movimento padr&#195;&#163;o para retorno de produ&#195;&#167;&#195;&#163;o externa.</comment>
+            </column>
+        </many-to-one>
+        <property name="classop" type="string">
+            <column name="CLASSOP" length="20" />
+        </property>
+        <property name="nomeresp" type="string">
+            <column name="NOMERESP" length="50" />
+        </property>
+        <property name="identprofresp" type="string">
+            <column name="IDENTPROFRESP" length="30" />
+        </property>
+        <property name="cargoresp" type="string">
+            <column name="CARGORESP" length="30" />
+        </property>
+        <property name="mesesdesccp" type="short">
+            <column name="MESESDESCCP" not-null="true">
+                <comment>N&#195;&#186;mero de meses para descarte de an&#195;&#161;lises de contra-prova.</comment>
+            </column>
+        </property>
+        <property name="sitrmaop" type="string">
+            <column name="SITRMAOP" length="2">
+                <comment>Situa&#195;&#167;&#195;&#163;o da RMA gerada pela OP. Pode ser: "PE" - Pendente "AF" - Aprovada "EF" - Expedida</comment>
+            </column>
+        </property>
+        <property name="imgassresp" type="binary">
+            <column name="IMGASSRESP">
+                <comment>Imagem da assinatura do respons&#195;&#161;vel t&#195;&#169;cnico.</comment>
+            </column>
+        </property>
+        <property name="baixarmaaprov" type="char">
+            <column name="BAIXARMAAPROV" length="1" not-null="true">
+                <comment>Indica se deve baixar o estoque de insumos em RMA"s aprovadas n&#195;&#163;o expedidas.</comment>
+            </column>
+        </property>
+        <property name="ratauto" type="char">
+            <column name="RATAUTO" length="1" not-null="true">
+                <comment>Defini rateio automatico de itens de OP.</comment>
+            </column>
+        </property>
+        <property name="apagarmaop" type="char">
+            <column name="APAGARMAOP" length="1" not-null="true">
+                <comment>Indica se deve permitir a exclus&#195;&#163;o de RMAs geradas por outro usu&#195;&#161;rio. Regra se aplica apenas em RMA vinculadas a Ordens de
+                produ&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+        </property>
+        <property name="nomerelanal" type="char">
+            <column name="NOMERELANAL" length="1" not-null="true">
+                <comment>Indica qual o nome a ser impresso no relat&#195;&#179;rio de an&#195;&#161;lise. "U" - Usu&#195;&#161;rio de cadastrou a an&#195;&#161;se; "R" -
+                Respons&#195;&#161;vel pela produ&#195;&#167;&#195;&#163;o;</comment>
+            </column>
+        </property>
+        <property name="sitpadop" type="string">
+            <column name="SITPADOP" length="2" not-null="true">
+                <comment>Status padr&#195;&#163;o da OP ap&#195;&#179;s inser&#195;&#167;&#195;&#163;o. "PE" Pendente "FN" Finalizada</comment>
+            </column>
+        </property>
+        <property name="sitpadopconv" type="string">
+            <column name="SITPADOPCONV" length="2" not-null="true">
+                <comment>Status padr&#195;&#163;o da OP de convers&#195;&#163;o de produtos ap&#195;&#179;s inser&#195;&#167;&#195;&#163;o. "PE" Pendente "FN" Finalizada</comment>
+            </column>
+        </property>
+        <property name="habconvcp" type="char">
+            <column name="HABCONVCP" length="1" not-null="true">
+                <comment>Indica se deve habilitar convers&#195;&#163;o de produtos na compra.</comment>
+            </column>
+        </property>
+        <property name="opseq" type="char">
+            <column name="OPSEQ" length="1" not-null="true" />
+        </property>
+        <property name="prodetapas" type="java.lang.Character">
+            <column name="PRODETAPAS" length="1">
+                <comment>Indica se deve permitir a finaliza&#195;&#167;&#195;&#163;o de Ops em etapas.</comment>
+            </column>
+        </property>
+        <property name="expedirrma" type="char">
+            <column name="EXPEDIRRMA" length="1" not-null="true" />
+        </property>
+        <property name="validaqtdop" type="char">
+            <column name="VALIDAQTDOP" length="1" not-null="true" />
+        </property>
+        <property name="validafaseop" type="char">
+            <column name="VALIDAFASEOP" length="1" not-null="true" />
+        </property>
+        <property name="editqtdop" type="char">
+            <column name="EDITQTDOP" length="1" not-null="true" />
+        </property>
+        <property name="bloqopsemsaldo" type="char">
+            <column name="BLOQOPSEMSALDO" length="1" not-null="true" />
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+    </class>
+</hibernate-mapping>

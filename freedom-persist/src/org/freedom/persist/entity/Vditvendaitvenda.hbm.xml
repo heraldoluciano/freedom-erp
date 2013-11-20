@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Vditvendaitvenda" table="VDITVENDAITVENDA">
+        <id name="id" type="long">
+            <column name="ID" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="vditvendaByVditvendafkitvend1" class="org.freedom.persist.entity.Vditvenda" fetch="select">
+            <column name="CODVENDA" not-null="true" />
+            <column name="CODITVENDA" not-null="true" />
+            <column name="TIPOVENDA" length="1" not-null="true" />
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <many-to-one name="vditvendaByVditvendafkitvend2" class="org.freedom.persist.entity.Vditvenda" fetch="select">
+            <column name="CODVENDAVO" not-null="true" />
+            <column name="CODITVENDAVO" not-null="true" />
+            <column name="TIPOVENDAVO" length="1" not-null="true" />
+            <column name="CODFILIALVO" not-null="true" />
+            <column name="CODEMPVO" not-null="true" />
+        </many-to-one>
+        <property name="qtditvenda" type="big_decimal">
+            <column name="QTDITVENDA" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="128" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="128" />
+        </property>
+    </class>
+</hibernate-mapping>

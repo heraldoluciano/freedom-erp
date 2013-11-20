@@ -1,0 +1,99 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Eqprodplan" table="EQPRODPLAN">
+        <comment>Tabela de v&#195;&#173;nculo produto x planejamento, para uso nos rateios.</comment>
+        <composite-id name="id" class="org.freedom.persist.entity.EqprodplanId">
+            <key-property name="codprod" type="int">
+                <column name="CODPROD" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+            <key-property name="seqpp" type="short">
+                <column name="SEQPP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="eqproduto" class="org.freedom.persist.entity.Eqproduto" update="false" insert="false" fetch="select">
+            <column name="CODPROD" not-null="true">
+                <comment>C&#195;&#179;digo do produto.</comment>
+            </column>
+            <column name="CODFILIAL" not-null="true">
+                <comment>C&#195;&#179;digo da filial na tabela EQPRODUTO</comment>
+            </column>
+            <column name="CODEMP" not-null="true">
+                <comment>C&#195;&#179;digo da empresa na tabela EQPRODUTO</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="fnplanejamento" class="org.freedom.persist.entity.Fnplanejamento" fetch="select">
+            <column name="CODPLAN" length="13" not-null="true">
+                <comment>C&#195;&#179;digo do planejamento.</comment>
+            </column>
+            <column name="CODFILIALPN" not-null="true">
+                <comment>C&#195;&#179;digo da filial na tabela EQPLANEJAMENTO.</comment>
+            </column>
+            <column name="CODEMPPN" not-null="true">
+                <comment>C&#195;&#179;digo da empresa na tabela EQPLANEJAMENTO.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="fncc" class="org.freedom.persist.entity.Fncc" fetch="select">
+            <column name="CODCC" length="19" not-null="true">
+                <comment>C&#195;&#179;digo do centro de custo.</comment>
+            </column>
+            <column name="ANOCC" not-null="true">
+                <comment>Ano do centro de custo.</comment>
+            </column>
+            <column name="CODFILIALCC" not-null="true">
+                <comment>C&#195;&#179;digo da filial na tabela FNCC.</comment>
+            </column>
+            <column name="CODEMPCC" not-null="true">
+                <comment>C&#195;&#179;digo da empresa na tabela FNCC.</comment>
+            </column>
+        </many-to-one>
+        <property name="tipopp" type="char">
+            <column name="TIPOPP" length="1" not-null="true">
+                <comment>Tipo (R-Receita / D-Despesa).</comment>
+            </column>
+        </property>
+        <property name="percpp" type="big_decimal">
+            <column name="PERCPP" precision="6" not-null="true">
+                <comment>Percentual de rateio.</comment>
+            </column>
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true">
+                <comment>Data de inser&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true">
+                <comment>Hora de inser&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true">
+                <comment>ID do usu&#195;&#161;rio que inseriu.</comment>
+            </column>
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10">
+                <comment>Data da &#195;&#186;ltima altera&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8">
+                <comment>Hora da &#195;&#186;ltima altera&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8">
+                <comment>Id do usu&#195;&#161;rio da &#195;&#186;ltima altera&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+        </property>
+    </class>
+</hibernate-mapping>

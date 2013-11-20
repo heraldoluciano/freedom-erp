@@ -1,0 +1,154 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Lftipofisccli" table="LFTIPOFISCCLI">
+        <composite-id name="id" class="org.freedom.persist.entity.LftipofisccliId">
+            <key-property name="codfisccli" type="int">
+                <column name="CODFISCCLI" />
+            </key-property>
+            <key-property name="codfilial" type="int">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="eqtipomov" class="org.freedom.persist.entity.Eqtipomov" fetch="select">
+            <column name="CODTIPOMOVOC">
+                <comment>C&#195;&#179;digo do tipo de movimento de or&#195;&#167;amento para o tipo fiscal de cliente.</comment>
+            </column>
+            <column name="CODFILIALOC">
+                <comment>C&#195;&#179;digo da filial para o tipo de movimento de or&#195;&#167;amento para o tipo fiscal de cliente.</comment>
+            </column>
+            <column name="CODEMPOC">
+                <comment>C&#195;&#179;digo da empresa para o tipo de movimento de or&#195;&#167;amento para o tipo fiscal de cliente.</comment>
+            </column>
+        </many-to-one>
+        <property name="descfisccli" type="string">
+            <column name="DESCFISCCLI" length="40" not-null="true" />
+        </property>
+        <property name="calccofinstf" type="char">
+            <column name="CALCCOFINSTF" length="1" not-null="true">
+                <comment>Indica se deve calcular o cofins.</comment>
+            </column>
+        </property>
+        <property name="calccsocialtf" type="char">
+            <column name="CALCCSOCIALTF" length="1" not-null="true">
+                <comment>Indica se calcula a contribui&#195;&#167;&#195;&#163;o social.</comment>
+            </column>
+        </property>
+        <property name="calcicmstf" type="char">
+            <column name="CALCICMSTF" length="1" not-null="true">
+                <comment>Indica se calcula o ICMS.</comment>
+            </column>
+        </property>
+        <property name="calcipitf" type="char">
+            <column name="CALCIPITF" length="1" not-null="true">
+                <comment>Indica se calcula o IPI.</comment>
+            </column>
+        </property>
+        <property name="calcirtf" type="char">
+            <column name="CALCIRTF" length="1" not-null="true">
+                <comment>Indica se calcula o IR.</comment>
+            </column>
+        </property>
+        <property name="calcisstf" type="char">
+            <column name="CALCISSTF" length="1" not-null="true">
+                <comment>Indica se calcula o iss.</comment>
+            </column>
+        </property>
+        <property name="calcpistf" type="char">
+            <column name="CALCPISTF" length="1" not-null="true">
+                <comment>Indica se calcula o PIS.</comment>
+            </column>
+        </property>
+        <property name="impcofinstf" type="char">
+            <column name="IMPCOFINSTF" length="1" not-null="true">
+                <comment>Indica se imprime o cofins.</comment>
+            </column>
+        </property>
+        <property name="impcsocialtf" type="char">
+            <column name="IMPCSOCIALTF" length="1" not-null="true">
+                <comment>indica se imprime a contribui&#195;&#167;&#195;&#163;o social.</comment>
+            </column>
+        </property>
+        <property name="impicmstf" type="char">
+            <column name="IMPICMSTF" length="1" not-null="true">
+                <comment>indica se imprime o ICMS.</comment>
+            </column>
+        </property>
+        <property name="impisstf" type="char">
+            <column name="IMPISSTF" length="1" not-null="true">
+                <comment>indica se imprime o ISS.</comment>
+            </column>
+        </property>
+        <property name="impipitf" type="char">
+            <column name="IMPIPITF" length="1" not-null="true">
+                <comment>indica se imprime o IPI.</comment>
+            </column>
+        </property>
+        <property name="impirtf" type="char">
+            <column name="IMPIRTF" length="1" not-null="true">
+                <comment>indica se imprime o IR.</comment>
+            </column>
+        </property>
+        <property name="imppistf" type="char">
+            <column name="IMPPISTF" length="1" not-null="true">
+                <comment>indica se imprime o PIS.</comment>
+            </column>
+        </property>
+        <property name="leitransp" type="char">
+            <column name="LEITRANSP" length="1" not-null="true" />
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+        <set name="vdclientes" table="VDCLIENTE" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFISCCLI" />
+                <column name="CODFILIALFC" />
+                <column name="CODEMPFC" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdcliente" />
+        </set>
+        <set name="cpforneceds" table="CPFORNECED" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFISCFOR">
+                    <comment>C&#195;&#179;digo do tipo fiscal do fornecedor</comment>
+                </column>
+                <column name="CODFILIALFF">
+                    <comment>C&#195;&#179;digo da filial do tipo fiscal do fornecedor.</comment>
+                </column>
+                <column name="CODEMPFF">
+                    <comment>C&#195;&#179;digo da empresa do tipo fiscal do fornecedor.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Cpforneced" />
+        </set>
+        <set name="lfitclfiscals" table="LFITCLFISCAL" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFISCCLI" />
+                <column name="CODFILIALFC" />
+                <column name="CODEMPFC" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Lfitclfiscal" />
+        </set>
+    </class>
+</hibernate-mapping>

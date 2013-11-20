@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Vdcontratovw01" table="VDCONTRATOVW01">
+        <composite-id name="id" class="org.freedom.persist.entity.Vdcontratovw01Id">
+            <key-property name="idx" type="java.lang.Integer">
+                <column name="IDX" />
+            </key-property>
+            <key-property name="indice" type="string">
+                <column name="INDICE" length="100" />
+            </key-property>
+            <key-property name="idx01" type="java.lang.Integer">
+                <column name="IDX01" />
+            </key-property>
+            <key-property name="idx02" type="java.lang.Integer">
+                <column name="IDX02" />
+            </key-property>
+            <key-property name="idx03" type="java.lang.Integer">
+                <column name="IDX03" />
+            </key-property>
+            <key-property name="idx04" type="java.lang.Integer">
+                <column name="IDX04" />
+            </key-property>
+            <key-property name="idx05" type="java.lang.Integer">
+                <column name="IDX05" />
+            </key-property>
+            <key-property name="tipo" type="string">
+                <column name="TIPO" length="2" />
+            </key-property>
+            <key-property name="codempct" type="java.lang.Integer">
+                <column name="CODEMPCT" />
+            </key-property>
+            <key-property name="codfilialct" type="java.lang.Short">
+                <column name="CODFILIALCT" />
+            </key-property>
+            <key-property name="codcontr" type="java.lang.Integer">
+                <column name="CODCONTR" />
+            </key-property>
+            <key-property name="desccontr" type="string">
+                <column name="DESCCONTR" length="80" />
+            </key-property>
+            <key-property name="codempsc" type="java.lang.Integer">
+                <column name="CODEMPSC" />
+            </key-property>
+            <key-property name="codfilialsc" type="java.lang.Short">
+                <column name="CODFILIALSC" />
+            </key-property>
+            <key-property name="codcontrsc" type="java.lang.Integer">
+                <column name="CODCONTRSC" />
+            </key-property>
+            <key-property name="desccontrsc" type="string">
+                <column name="DESCCONTRSC" length="80" />
+            </key-property>
+            <key-property name="coditcontr" type="java.lang.Short">
+                <column name="CODITCONTR" />
+            </key-property>
+            <key-property name="descitcontr" type="string">
+                <column name="DESCITCONTR" length="80" />
+            </key-property>
+            <key-property name="codempta" type="java.lang.Integer">
+                <column name="CODEMPTA" />
+            </key-property>
+            <key-property name="codfilialta" type="java.lang.Short">
+                <column name="CODFILIALTA" />
+            </key-property>
+            <key-property name="codtarefa" type="java.lang.Integer">
+                <column name="CODTAREFA" />
+            </key-property>
+            <key-property name="desctarefa" type="string">
+                <column name="DESCTAREFA" length="100" />
+            </key-property>
+            <key-property name="codempst" type="java.lang.Integer">
+                <column name="CODEMPST" />
+            </key-property>
+            <key-property name="codfilialst" type="java.lang.Short">
+                <column name="CODFILIALST" />
+            </key-property>
+            <key-property name="codtarefast" type="java.lang.Integer">
+                <column name="CODTAREFAST" />
+            </key-property>
+            <key-property name="desctarefast" type="string">
+                <column name="DESCTAREFAST" length="100" />
+            </key-property>
+        </composite-id>
+    </class>
+</hibernate-mapping>

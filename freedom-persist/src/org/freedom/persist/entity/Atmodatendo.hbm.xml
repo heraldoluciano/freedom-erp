@@ -1,0 +1,150 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Atmodatendo" table="ATMODATENDO">
+        <composite-id name="id" class="org.freedom.persist.entity.AtmodatendoId">
+            <key-property name="codmodel" type="int">
+                <column name="CODMODEL" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="sgfilial" class="org.freedom.persist.entity.Sgfilial" update="false" insert="false" fetch="select">
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <many-to-one name="attipoatendo" class="org.freedom.persist.entity.Attipoatendo" fetch="select">
+            <column name="CODTPATENDO" />
+            <column name="CODFILIALTO" />
+            <column name="CODEMPTO" />
+        </many-to-one>
+        <many-to-one name="atsetor" class="org.freedom.persist.entity.Atsetor" fetch="select">
+            <column name="CODSETAT" />
+            <column name="CODFILIALSA" />
+            <column name="CODEMPSA" />
+        </many-to-one>
+        <many-to-one name="vdcliente" class="org.freedom.persist.entity.Vdcliente" fetch="select">
+            <column name="CODCLI" />
+            <column name="CODFILIALCL" />
+            <column name="CODEMPCL" />
+        </many-to-one>
+        <many-to-one name="atespecatend" class="org.freedom.persist.entity.Atespecatend" fetch="select">
+            <column name="CODESPEC" />
+            <column name="CODFILIALEA" />
+            <column name="CODEMPEA" />
+        </many-to-one>
+        <many-to-one name="crchamado" class="org.freedom.persist.entity.Crchamado" fetch="select">
+            <column name="CODCHAMADO" />
+            <column name="CODFILIALCH" />
+            <column name="CODEMPCH" />
+        </many-to-one>
+        <many-to-one name="vditcontrato" class="org.freedom.persist.entity.Vditcontrato" fetch="select">
+            <column name="CODCONTR" />
+            <column name="CODITCONTR" />
+            <column name="CODFILIALCT" />
+            <column name="CODEMPCT" />
+        </many-to-one>
+        <many-to-one name="atclasatendo" class="org.freedom.persist.entity.Atclasatendo" fetch="select">
+            <column name="CODCLASATENDO" />
+            <column name="CODFILIALCA" />
+            <column name="CODEMPCA" />
+        </many-to-one>
+        <many-to-one name="atconveniado" class="org.freedom.persist.entity.Atconveniado" fetch="select">
+            <column name="CODCONV" />
+            <column name="CODFILIALCV" />
+            <column name="CODEMPCV" />
+        </many-to-one>
+        <property name="descmodel" type="string">
+            <column name="DESCMODEL" length="100" not-null="true" />
+        </property>
+        <property name="obsatendo" type="string">
+            <column name="OBSATENDO" length="10000" />
+        </property>
+        <property name="obsinterno" type="string">
+            <column name="OBSINTERNO" length="10000" />
+        </property>
+        <property name="statusatendo" type="string">
+            <column name="STATUSATENDO" length="2" />
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+        <set name="sgprefere3sForSgprefere3atmodmc" table="SGPREFERE3" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODMODELMC" />
+                <column name="CODFILIALMC" />
+                <column name="CODEMPMC" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgprefere3" />
+        </set>
+        <set name="sgprefere3sForSgprefere3atmodme" table="SGPREFERE3" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODMODELME" />
+                <column name="CODFILIALME" />
+                <column name="CODEMPME" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgprefere3" />
+        </set>
+        <set name="sgprefere3sForSgprefere3atmodor" table="SGPREFERE3" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODMODELOR" />
+                <column name="CODFILIALOR" />
+                <column name="CODEMPOR" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgprefere3" />
+        </set>
+        <set name="sgprefere3sForSgprefere3atmodfi" table="SGPREFERE3" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODMODELFI" />
+                <column name="CODFILIALFI" />
+                <column name="CODEMPMI" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgprefere3" />
+        </set>
+        <set name="sgprefere3sForSgprefere3atmodfj" table="SGPREFERE3" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODMODELFJ" />
+                <column name="CODFILIALFJ" />
+                <column name="CODEMPFJ" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgprefere3" />
+        </set>
+        <set name="sgprefere3sForSgprefere3atmodmi" table="SGPREFERE3" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODMODELMI" />
+                <column name="CODFILIALMI" />
+                <column name="CODEMPMI" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgprefere3" />
+        </set>
+        <set name="sgprefere3sForSgprefere3atmodap" table="SGPREFERE3" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODMODELAP" />
+                <column name="CODFILIALAP" />
+                <column name="CODEMPAP" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgprefere3" />
+        </set>
+    </class>
+</hibernate-mapping>

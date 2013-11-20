@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Fnpagtocomi" table="FNPAGTOCOMI">
+        <composite-id name="id" class="org.freedom.persist.entity.FnpagtocomiId">
+            <key-property name="codpcomi" type="int">
+                <column name="CODPCOMI" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="sgfilial" class="org.freedom.persist.entity.Sgfilial" update="false" insert="false" fetch="select">
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <many-to-one name="fnplanejamento" class="org.freedom.persist.entity.Fnplanejamento" fetch="select">
+            <column name="CODPLAN" length="13" not-null="true" />
+            <column name="CODFILIALPN" not-null="true" />
+            <column name="CODEMPPN" not-null="true" />
+        </many-to-one>
+        <many-to-one name="fnconta" class="org.freedom.persist.entity.Fnconta" update="false" insert="false" fetch="select">
+            <column name="NUMCONTA" length="10" not-null="true" />
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <property name="codempca" type="int">
+            <column name="CODEMPCA" not-null="true" />
+        </property>
+        <property name="codfilialca" type="short">
+            <column name="CODFILIALCA" not-null="true" />
+        </property>
+        <property name="vlrpcomi" type="big_decimal">
+            <column name="VLRPCOMI" precision="15" scale="5" />
+        </property>
+        <property name="docpcomi" type="int">
+            <column name="DOCPCOMI" not-null="true" />
+        </property>
+        <property name="obspcomi" type="string">
+            <column name="OBSPCOMI" length="300" />
+        </property>
+        <property name="dtcomppcomi" type="date">
+            <column name="DTCOMPPCOMI" length="10" not-null="true">
+                <comment>Data de compet&#195;&#170;ncia.</comment>
+            </column>
+        </property>
+        <property name="datapcomi" type="date">
+            <column name="DATAPCOMI" length="10" not-null="true" />
+        </property>
+        <property name="flag" type="java.lang.Character">
+            <column name="FLAG" length="1" />
+        </property>
+        <property name="emmanut" type="char">
+            <column name="EMMANUT" length="1" not-null="true">
+                <comment>Estado de manuten&#195;&#167;&#195;&#163;o (S/N).</comment>
+            </column>
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+        <set name="fnlancas" table="FNLANCA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODPCOMI" />
+                <column name="CODFILIALCI" />
+                <column name="CODEMPCI" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnlanca" />
+        </set>
+        <set name="vdcomissaos" table="VDCOMISSAO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODPCOMI" />
+                <column name="CODFILIALCI" />
+                <column name="CODEMPCI" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdcomissao" />
+        </set>
+    </class>
+</hibernate-mapping>

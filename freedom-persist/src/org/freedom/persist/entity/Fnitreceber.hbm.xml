@@ -1,0 +1,322 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Fnitreceber" table="FNITRECEBER">
+        <composite-id name="id" class="org.freedom.persist.entity.FnitreceberId">
+            <key-property name="codrec" type="int">
+                <column name="CODREC" />
+            </key-property>
+            <key-property name="nparcitrec" type="int">
+                <column name="NPARCITREC" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="fnconta" class="org.freedom.persist.entity.Fnconta" fetch="select">
+            <column name="NUMCONTA" length="10" />
+            <column name="CODFILIALCA" />
+            <column name="CODEMPCA" />
+        </many-to-one>
+        <many-to-one name="fntipocob" class="org.freedom.persist.entity.Fntipocob" fetch="select">
+            <column name="CODTIPOCOB">
+                <comment>C&#195;&#179;digo do tipo de cobran&#195;&#167;a.</comment>
+            </column>
+            <column name="CODFILIALTC">
+                <comment>C&#195;&#179;digo filial em FNTIPOCOB.</comment>
+            </column>
+            <column name="CODEMPTC">
+                <comment>C&#195;&#179;digo da filial em FNTIPOCOB.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="fnsinal" class="org.freedom.persist.entity.Fnsinal" fetch="select">
+            <column name="CODSINAL" />
+            <column name="CODEMPSN" />
+            <column name="CODFILIALSN" />
+        </many-to-one>
+        <many-to-one name="fnplanejamento" class="org.freedom.persist.entity.Fnplanejamento" fetch="select">
+            <column name="CODPLAN" length="13" />
+            <column name="CODFILIALPN" />
+            <column name="CODEMPPN" />
+        </many-to-one>
+        <many-to-one name="fnreceber" class="org.freedom.persist.entity.Fnreceber" update="false" insert="false" fetch="select">
+            <column name="CODREC" not-null="true" />
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <many-to-one name="vditcontrato" class="org.freedom.persist.entity.Vditcontrato" fetch="select">
+            <column name="CODCONTR" />
+            <column name="CODITCONTR" />
+            <column name="CODFILIALCT" />
+            <column name="CODEMPCT" />
+        </many-to-one>
+        <many-to-one name="fnbanco" class="org.freedom.persist.entity.Fnbanco" fetch="select">
+            <column name="CODBANCO" length="3" />
+            <column name="CODFILIALBO" />
+            <column name="CODEMPBO" />
+        </many-to-one>
+        <many-to-one name="fncartcob" class="org.freedom.persist.entity.Fncartcob" update="false" insert="false" fetch="select">
+            <column name="CODCARTCOB" length="3">
+                <comment>C&#195;&#179;digo da carteira de cobran&#195;&#167;a.</comment>
+            </column>
+            <column name="CODFILIALCB">
+                <comment>C&#195;&#179;digo filial na tabela FNCARTCOB.</comment>
+            </column>
+            <column name="CODEMPCB">
+                <comment>C&#195;&#179;digo da empresa na tabela FNCARTCOB.</comment>
+            </column>
+            <column name="CODBANCO" length="3" />
+            <column name="CODFILIALBO" />
+            <column name="CODEMPBO" />
+        </many-to-one>
+        <property name="vlritrec" type="big_decimal">
+            <column name="VLRITREC" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="vlrdescitrec" type="big_decimal">
+            <column name="VLRDESCITREC" precision="15" scale="5">
+                <comment>Valor do desconto.</comment>
+            </column>
+        </property>
+        <property name="vlrmultaitrec" type="big_decimal">
+            <column name="VLRMULTAITREC" precision="15" scale="5">
+                <comment>Valor da multa.</comment>
+            </column>
+        </property>
+        <property name="vlrjurositrec" type="big_decimal">
+            <column name="VLRJUROSITREC" precision="15" scale="5">
+                <comment>Valor dos juros.</comment>
+            </column>
+        </property>
+        <property name="vlrdevitrec" type="big_decimal">
+            <column name="VLRDEVITREC" precision="15" scale="5" not-null="true">
+                <comment>Valor de devolu&#195;&#167;&#195;&#163;o da parcela.</comment>
+            </column>
+        </property>
+        <property name="vlrparcitrec" type="big_decimal">
+            <column name="VLRPARCITREC" precision="15" scale="5">
+                <comment>Valor original da parcela.</comment>
+            </column>
+        </property>
+        <property name="vlrpagoitrec" type="big_decimal">
+            <column name="VLRPAGOITREC" precision="15" scale="5">
+                <comment>Valor pago da parcela.</comment>
+            </column>
+        </property>
+        <property name="vlrapagitrec" type="big_decimal">
+            <column name="VLRAPAGITREC" precision="15" scale="5">
+                <comment>Valor a pagar.</comment>
+            </column>
+        </property>
+        <property name="vlrcomiitrec" type="big_decimal">
+            <column name="VLRCOMIITREC" precision="15" scale="5">
+                <comment>Valor de comiss&#195;&#163;o por parcela.</comment>
+            </column>
+        </property>
+        <property name="vlrcancitrec" type="big_decimal">
+            <column name="VLRCANCITREC" precision="15" scale="5" />
+        </property>
+        <property name="vlrbasecomis" type="big_decimal">
+            <column name="VLRBASECOMIS" precision="15" scale="5">
+                <comment>Valor base para comissionamento especial</comment>
+            </column>
+        </property>
+        <property name="descpont" type="char">
+            <column name="DESCPONT" length="1" not-null="true">
+                <comment>Indica se o desconto e do tipo pontualidade.</comment>
+            </column>
+        </property>
+        <property name="dtitrec" type="date">
+            <column name="DTITREC" length="10" not-null="true" />
+        </property>
+        <property name="dtcompitrec" type="date">
+            <column name="DTCOMPITREC" length="10" not-null="true">
+                <comment>Data de compet&#195;&#170;ncia.</comment>
+            </column>
+        </property>
+        <property name="dtvencitrec" type="date">
+            <column name="DTVENCITREC" length="10" not-null="true" />
+        </property>
+        <property name="dtprevitrec" type="date">
+            <column name="DTPREVITREC" length="10">
+                <comment>Data prevista para o recebimento.</comment>
+            </column>
+        </property>
+        <property name="dtpagoitrec" type="date">
+            <column name="DTPAGOITREC" length="10">
+                <comment>Data de pagamento ou data de compensa&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+        </property>
+        <property name="dtliqitrec" type="date">
+            <column name="DTLIQITREC" length="10">
+                <comment>Data de liquida&#195;&#167;&#195;&#163;o do t&#195;&#173;tulo.</comment>
+            </column>
+        </property>
+        <property name="statusitrec" type="string">
+            <column name="STATUSITREC" length="2" not-null="true">
+                <comment>R1 (Conta em aberto) RP (Recebimento total) RB (Em Bordero) RL (Recebimento parcial) RN (Recebimento Renegociado) RR (Recebimento em
+                Renegociacao)</comment>
+            </column>
+        </property>
+        <property name="obsitrec" type="string">
+            <column name="OBSITREC" length="250" />
+        </property>
+        <property name="doclancaitrec" type="string">
+            <column name="DOCLANCAITREC" length="15" />
+        </property>
+        <property name="flag" type="java.lang.Character">
+            <column name="FLAG" length="1" />
+        </property>
+        <property name="codempcc" type="java.lang.Integer">
+            <column name="CODEMPCC" />
+        </property>
+        <property name="codfilialcc" type="java.lang.Short">
+            <column name="CODFILIALCC" />
+        </property>
+        <property name="anocc" type="java.lang.Short">
+            <column name="ANOCC" />
+        </property>
+        <property name="codcc" type="string">
+            <column name="CODCC" length="19" />
+        </property>
+        <property name="impreciboitrec" type="char">
+            <column name="IMPRECIBOITREC" length="1" not-null="true">
+                <comment>Flag que indica se ser&#195;&#161; impresso recibo.</comment>
+            </column>
+        </property>
+        <property name="reciboitrec" type="java.lang.Integer">
+            <column name="RECIBOITREC">
+                <comment>Armazena o n&#195;&#186;mero do recibo.</comment>
+            </column>
+        </property>
+        <property name="altusuitrec" type="char">
+            <column name="ALTUSUITREC" length="1" not-null="true">
+                <comment>Flag que indica se est&#195;&#161; sendo feita altera&#195;&#167;&#195;&#163;o de item de contas a receber pelo usu&#195;&#161;rio.</comment>
+            </column>
+        </property>
+        <property name="pdvitrec" type="char">
+            <column name="PDVITREC" length="1" not-null="true">
+                <comment>Indica se foi recebido pelo PDV.</comment>
+            </column>
+        </property>
+        <property name="recemcob" type="char">
+            <column name="RECEMCOB" length="1" not-null="true">
+                <comment>Definie se recebimento est&#195;&#161; em processo de cobran&#195;&#167;a</comment>
+            </column>
+        </property>
+        <property name="dtiniemcob" type="date">
+            <column name="DTINIEMCOB" length="10">
+                <comment>Data de inicio de cobran&#195;&#167;a</comment>
+            </column>
+        </property>
+        <property name="dtfimemcob" type="date">
+            <column name="DTFIMEMCOB" length="10">
+                <comment>Fim do processo de cobran&#195;&#167;a</comment>
+            </column>
+        </property>
+        <property name="seqnossonumero" type="java.lang.Integer">
+            <column name="SEQNOSSONUMERO">
+                <comment>Sequencial do nosso n&#195;&#186;mero.</comment>
+            </column>
+        </property>
+        <property name="nossonumero" type="string">
+            <column name="NOSSONUMERO" length="20">
+                <comment>Nosso n&#195;&#186;mero (utilizado para armazenar o nosso n&#195;&#186;mero quando gerado pelo banco e retornado atrav&#195;&#169;s do CNAB)</comment>
+            </column>
+        </property>
+        <property name="emmanut" type="char">
+            <column name="EMMANUT" length="1" not-null="true">
+                <comment>Coloca registro em estado de manuten&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+        </property>
+        <property name="multibaixa" type="java.lang.Character">
+            <column name="MULTIBAIXA" length="1" />
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+        <set name="fnmovimentos" table="FNMOVIMENTO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODREC" />
+                <column name="NPARCITREC" />
+                <column name="CODFILIALRC" />
+                <column name="CODEMPRC" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnmovimento" />
+        </set>
+        <set name="fnitrenegrecs" table="FNITRENEGREC" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODREC" not-null="true" />
+                <column name="NPARCITREC" not-null="true" />
+                <column name="CODFILIALIR" not-null="true" />
+                <column name="CODEMPIR" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnitrenegrec" />
+        </set>
+        <set name="fnlancas" table="FNLANCA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODREC" />
+                <column name="NPARCITREC" />
+                <column name="CODFILIALRC" />
+                <column name="CODEMPRC" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnlanca" />
+        </set>
+        <set name="vdcomissaos" table="VDCOMISSAO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODREC" />
+                <column name="NPARCITREC" />
+                <column name="CODFILIALRC" />
+                <column name="CODEMPRC" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdcomissao" />
+        </set>
+        <set name="fnitborderos" table="FNITBORDERO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODREC" not-null="true" />
+                <column name="NPARCITREC" not-null="true" />
+                <column name="CODFILIALRC" not-null="true" />
+                <column name="CODEMPRC" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnitbordero" />
+        </set>
+        <set name="fnsublancas" table="FNSUBLANCA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODREC" />
+                <column name="NPARCITREC" />
+                <column name="CODFILIALRC" />
+                <column name="CODEMPRC" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnsublanca" />
+        </set>
+        <one-to-one name="fnfbnrec" class="org.freedom.persist.entity.Fnfbnrec"></one-to-one>
+        <set name="atatendimentoitrecs" table="ATATENDIMENTOITREC" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODREC" not-null="true" />
+                <column name="NPARCITREC" not-null="true" />
+                <column name="CODFILIALIR" not-null="true" />
+                <column name="CODEMPIR" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Atatendimentoitrec" />
+        </set>
+    </class>
+</hibernate-mapping>

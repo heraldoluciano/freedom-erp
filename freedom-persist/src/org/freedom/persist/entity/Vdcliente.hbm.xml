@@ -1,0 +1,798 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Vdcliente" table="VDCLIENTE">
+        <comment>Clientes.</comment>
+        <composite-id name="id" class="org.freedom.persist.entity.VdclienteId">
+            <key-property name="codcli" type="int">
+                <column name="CODCLI" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="vdtipocli" class="org.freedom.persist.entity.Vdtipocli" fetch="select">
+            <column name="CODTIPOCLI" not-null="true" />
+            <column name="CODFILIALTI" not-null="true" />
+            <column name="CODEMPTI" not-null="true" />
+        </many-to-one>
+        <many-to-one name="sgmunicipioByVdclientefksgmuniccob" class="org.freedom.persist.entity.Sgmunicipio" fetch="select">
+            <column name="CODMUNICCOB" length="7">
+                <comment>C&#195;&#179;digo do municipio (IBGE) do endere&#195;&#167;o de cobran&#195;&#167;a.</comment>
+            </column>
+            <column name="SIGLAUFCOB" length="2">
+                <comment>Sigla da Unidade da Federa&#195;&#167;&#195;&#163;o do endere&#195;&#167;o de cobran&#195;&#167;a.</comment>
+            </column>
+            <column name="CODPAISCOB">
+                <comment>C&#195;&#179;digo do pa&#195;&#173;s do endere&#195;&#167;o de cobran&#195;&#167;a.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="fnbanco" class="org.freedom.persist.entity.Fnbanco" fetch="select">
+            <column name="CODBANCO" length="3" />
+            <column name="CODFILIALBO" />
+            <column name="CODEMPBO" />
+        </many-to-one>
+        <many-to-one name="vdclascli" class="org.freedom.persist.entity.Vdclascli" fetch="select">
+            <column name="CODCLASCLI" />
+            <column name="CODFILIALCC" />
+            <column name="CODEMPCC" />
+        </many-to-one>
+        <many-to-one name="sgmunicipioByVdclientefksgmunic" class="org.freedom.persist.entity.Sgmunicipio" fetch="select">
+            <column name="CODMUNIC" length="7">
+                <comment>C&#195;&#179;digo do municipio (IBGE)</comment>
+            </column>
+            <column name="SIGLAUF" length="2">
+                <comment>Sigla da Unidade da Federe&#195;&#167;&#195;&#163;o (Estado)</comment>
+            </column>
+            <column name="CODPAIS">
+                <comment>C&#195;&#179;digo do pais.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="fntipocred" class="org.freedom.persist.entity.Fntipocred" fetch="select">
+            <column name="CODTPCRED" />
+            <column name="CODFILIALTR" />
+            <column name="CODEMPTR" />
+        </many-to-one>
+        <many-to-one name="sgfilial" class="org.freedom.persist.entity.Sgfilial" update="false" insert="false" fetch="select">
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <many-to-one name="fntipocob" class="org.freedom.persist.entity.Fntipocob" fetch="select">
+            <column name="CODTIPOCOB" />
+            <column name="CODFILIALTC" />
+            <column name="CODEMPTC" />
+        </many-to-one>
+        <many-to-one name="sgmunicipioByVdclientefksgmunicent" class="org.freedom.persist.entity.Sgmunicipio" fetch="select">
+            <column name="CODMUNICENT" length="7">
+                <comment>C&#195;&#179;digo do municipio (IBGE) do endere&#195;&#167;o de entrega.</comment>
+            </column>
+            <column name="SIGLAUFENT" length="2">
+                <comment>Sigla da Unidade da Federa&#195;&#167;&#195;&#163;o do endere&#195;&#167;o de entrega.</comment>
+            </column>
+            <column name="CODPAISENT">
+                <comment>C&#195;&#179;digo do pa&#195;&#173;s do endere&#195;&#167;o de entrega.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="fnhistpad" class="org.freedom.persist.entity.Fnhistpad" fetch="select">
+            <column name="CODHIST" />
+            <column name="CODFILIALHP" />
+            <column name="CODEMPHP" />
+        </many-to-one>
+        <many-to-one name="sgunifcod" class="org.freedom.persist.entity.Sgunifcod" fetch="select">
+            <column name="CODUNIFCOD">
+                <comment>C&#195;&#179;digo na tabela de unifica&#195;&#167;&#195;&#163;o de c&#195;&#179;digos (SGUNIFCOD).</comment>
+            </column>
+            <column name="CODFILIALUC" />
+            <column name="CODEMPUC" />
+        </many-to-one>
+        <many-to-one name="fnplanopag" class="org.freedom.persist.entity.Fnplanopag" fetch="select">
+            <column name="CODPLANOPAG" />
+            <column name="CODFILIALPG" />
+            <column name="CODEMPPG" />
+        </many-to-one>
+        <many-to-one name="lftipofisccli" class="org.freedom.persist.entity.Lftipofisccli" fetch="select">
+            <column name="CODFISCCLI" />
+            <column name="CODFILIALFC" />
+            <column name="CODEMPFC" />
+        </many-to-one>
+        <many-to-one name="vdvendedor" class="org.freedom.persist.entity.Vdvendedor" fetch="select">
+            <column name="CODVEND" />
+            <column name="CODFILIALVD" />
+            <column name="CODEMPVD" />
+        </many-to-one>
+        <many-to-one name="vdsetor" class="org.freedom.persist.entity.Vdsetor" fetch="select">
+            <column name="CODSETOR" />
+            <column name="CODFILIALSR" />
+            <column name="CODEMPSR" />
+        </many-to-one>
+        <many-to-one name="vdtransp" class="org.freedom.persist.entity.Vdtransp" fetch="select">
+            <column name="CODTRAN" />
+            <column name="CODFILIALTN" />
+            <column name="CODEMPTN" />
+        </many-to-one>
+        <many-to-one name="fncartcob" class="org.freedom.persist.entity.Fncartcob" update="false" insert="false" fetch="select">
+            <column name="CODCARTCOB" length="3">
+                <comment>C&#195;&#179;digo da carteira de cobran&#195;&#167;a.</comment>
+            </column>
+            <column name="CODFILIALCB">
+                <comment>C&#195;&#179;digo da filial na tabela FNCARTCOB.</comment>
+            </column>
+            <column name="CODEMPCB">
+                <comment>C&#195;&#179;digo da empresa na tabela FNCARTCOB.</comment>
+            </column>
+            <column name="CODBANCO" length="3" />
+            <column name="CODFILIALBO" />
+            <column name="CODEMPBO" />
+        </many-to-one>
+        <many-to-one name="sgittabela" class="org.freedom.persist.entity.Sgittabela" fetch="select">
+            <column name="CODITTBEC">
+                <comment>C&#195;&#179;digo do estado civil.</comment>
+            </column>
+            <column name="CODTBEC">
+                <comment>C&#195;&#179;digo da tabela de estado civil.</comment>
+            </column>
+            <column name="CODFILIALEC">
+                <comment>C&#195;&#179;digo da filial para tabela de estado civil.</comment>
+            </column>
+            <column name="CODEMPEC">
+                <comment>C&#195;&#179;digo da empresa para tabela de estado civil.</comment>
+            </column>
+        </many-to-one>
+        <property name="razcli" type="string">
+            <column name="RAZCLI" length="60" not-null="true" />
+        </property>
+        <property name="nomecli" type="string">
+            <column name="NOMECLI" length="50" not-null="true" />
+        </property>
+        <property name="datacli" type="date">
+            <column name="DATACLI" length="10" not-null="true" />
+        </property>
+        <property name="pessoacli" type="char">
+            <column name="PESSOACLI" length="1" not-null="true" />
+        </property>
+        <property name="ativocli" type="char">
+            <column name="ATIVOCLI" length="1" not-null="true" />
+        </property>
+        <property name="cnpjcli" type="string">
+            <column name="CNPJCLI" length="14" />
+        </property>
+        <property name="insccli" type="string">
+            <column name="INSCCLI" length="20">
+                <comment>Inscri&#195;&#167;&#195;&#163;o estadual do cliente.</comment>
+            </column>
+        </property>
+        <property name="cpfcli" type="string">
+            <column name="CPFCLI" length="11" />
+        </property>
+        <property name="rgcli" type="string">
+            <column name="RGCLI" length="13" />
+        </property>
+        <property name="sspcli" type="string">
+            <column name="SSPCLI" length="10">
+                <comment>Org&#195;&#163;o de espedi&#195;&#167;&#195;&#163;o do RG.</comment>
+            </column>
+        </property>
+        <property name="endcli" type="string">
+            <column name="ENDCLI" length="50" />
+        </property>
+        <property name="numcli" type="java.lang.Integer">
+            <column name="NUMCLI" />
+        </property>
+        <property name="complcli" type="string">
+            <column name="COMPLCLI" length="20" />
+        </property>
+        <property name="edificiocli" type="string">
+            <column name="EDIFICIOCLI" length="30" />
+        </property>
+        <property name="baircli" type="string">
+            <column name="BAIRCLI" length="30" />
+        </property>
+        <property name="cidcli" type="string">
+            <column name="CIDCLI" length="30" />
+        </property>
+        <property name="ufcli" type="string">
+            <column name="UFCLI" length="2" />
+        </property>
+        <property name="cepcli" type="string">
+            <column name="CEPCLI" length="8" />
+        </property>
+        <property name="dddcli" type="string">
+            <column name="DDDCLI" length="4" />
+        </property>
+        <property name="fonecli" type="string">
+            <column name="FONECLI" length="12" />
+        </property>
+        <property name="ramalcli" type="string">
+            <column name="RAMALCLI" length="6" />
+        </property>
+        <property name="dddfaxcli" type="string">
+            <column name="DDDFAXCLI" length="4" />
+        </property>
+        <property name="faxcli" type="string">
+            <column name="FAXCLI" length="9" />
+        </property>
+        <property name="emailcli" type="string">
+            <column name="EMAILCLI" length="50" />
+        </property>
+        <property name="emailcob" type="string">
+            <column name="EMAILCOB" length="50">
+                <comment>Email de conbran&#195;&#167;a.</comment>
+            </column>
+        </property>
+        <property name="emailent" type="string">
+            <column name="EMAILENT" length="50">
+                <comment>Email de entrega</comment>
+            </column>
+        </property>
+        <property name="emailnfecli" type="string">
+            <column name="EMAILNFECLI" length="50">
+                <comment>Email para envio de nota fiscal eletronica</comment>
+            </column>
+        </property>
+        <property name="contcli" type="string">
+            <column name="CONTCLI" length="40" />
+        </property>
+        <property name="endcob" type="string">
+            <column name="ENDCOB" length="50" />
+        </property>
+        <property name="numcob" type="java.lang.Integer">
+            <column name="NUMCOB" />
+        </property>
+        <property name="complcob" type="string">
+            <column name="COMPLCOB" length="20" />
+        </property>
+        <property name="baircob" type="string">
+            <column name="BAIRCOB" length="30" />
+        </property>
+        <property name="cidcob" type="string">
+            <column name="CIDCOB" length="30" />
+        </property>
+        <property name="ufcob" type="string">
+            <column name="UFCOB" length="2" />
+        </property>
+        <property name="cepcob" type="string">
+            <column name="CEPCOB" length="8" />
+        </property>
+        <property name="dddfonecob" type="string">
+            <column name="DDDFONECOB" length="4" />
+        </property>
+        <property name="fonecob" type="string">
+            <column name="FONECOB" length="12" />
+        </property>
+        <property name="dddfaxcob" type="string">
+            <column name="DDDFAXCOB" length="4" />
+        </property>
+        <property name="faxcob" type="string">
+            <column name="FAXCOB" length="9" />
+        </property>
+        <property name="endent" type="string">
+            <column name="ENDENT" length="50" />
+        </property>
+        <property name="nument" type="java.lang.Integer">
+            <column name="NUMENT" />
+        </property>
+        <property name="complent" type="string">
+            <column name="COMPLENT" length="20" />
+        </property>
+        <property name="bairent" type="string">
+            <column name="BAIRENT" length="30" />
+        </property>
+        <property name="cident" type="string">
+            <column name="CIDENT" length="30" />
+        </property>
+        <property name="ufent" type="string">
+            <column name="UFENT" length="2" />
+        </property>
+        <property name="cepent" type="string">
+            <column name="CEPENT" length="8" />
+        </property>
+        <property name="dddfoneent" type="string">
+            <column name="DDDFONEENT" length="4" />
+        </property>
+        <property name="foneent" type="string">
+            <column name="FONEENT" length="12" />
+        </property>
+        <property name="dddfaxent" type="string">
+            <column name="DDDFAXENT" length="4" />
+        </property>
+        <property name="faxent" type="string">
+            <column name="FAXENT" length="9" />
+        </property>
+        <property name="dddcelent" type="string">
+            <column name="DDDCELENT" length="4" />
+        </property>
+        <property name="celent" type="string">
+            <column name="CELENT" length="9" />
+        </property>
+        <property name="obscli" type="string">
+            <column name="OBSCLI" length="10000" />
+        </property>
+        <property name="agenciacli" type="string">
+            <column name="AGENCIACLI" length="6" />
+        </property>
+        <property name="ncontabcocli" type="string">
+            <column name="NCONTABCOCLI" length="20" />
+        </property>
+        <property name="codemppq" type="java.lang.Integer">
+            <column name="CODEMPPQ" />
+        </property>
+        <property name="codfilialpq" type="java.lang.Short">
+            <column name="CODFILIALPQ" />
+        </property>
+        <property name="codpesq" type="java.lang.Integer">
+            <column name="CODPESQ" />
+        </property>
+        <property name="incracli" type="string">
+            <column name="INCRACLI" length="15" />
+        </property>
+        <property name="dtinitr" type="date">
+            <column name="DTINITR" length="10">
+                <comment>Data de abertura do cr&#195;&#169;dito</comment>
+            </column>
+        </property>
+        <property name="dtvenctotr" type="date">
+            <column name="DTVENCTOTR" length="10" />
+        </property>
+        <property name="nirfcli" type="string">
+            <column name="NIRFCLI" length="15" />
+        </property>
+        <property name="simplescli" type="java.lang.Character">
+            <column name="SIMPLESCLI" length="1" />
+        </property>
+        <property name="dddcelcli" type="string">
+            <column name="DDDCELCLI" length="4" />
+        </property>
+        <property name="celcli" type="string">
+            <column name="CELCLI" length="9">
+                <comment>N&#195;&#186;mero do Celular</comment>
+            </column>
+        </property>
+        <property name="natcli" type="string">
+            <column name="NATCLI" length="30">
+                <comment>Naturalidade do cliente</comment>
+            </column>
+        </property>
+        <property name="ufnatcli" type="string">
+            <column name="UFNATCLI" length="2">
+                <comment>UF ref. a naturalizade.</comment>
+            </column>
+        </property>
+        <property name="temporescli" type="string">
+            <column name="TEMPORESCLI" length="20">
+                <comment>Tempo de resid&#195;&#170;ncia do cliente</comment>
+            </column>
+        </property>
+        <property name="apelidocli" type="string">
+            <column name="APELIDOCLI" length="30">
+                <comment>Apelido do cliente.</comment>
+            </column>
+        </property>
+        <property name="sitecli" type="string">
+            <column name="SITECLI" length="50">
+                <comment>Endere&#195;&#167;o eletr&#195;&#180;nico do site do cliente.</comment>
+            </column>
+        </property>
+        <property name="codcontdeb" type="string">
+            <column name="CODCONTDEB" length="20">
+                <comment>C&#195;&#179;digo contabil de debito.</comment>
+            </column>
+        </property>
+        <property name="codcontcred" type="string">
+            <column name="CODCONTCRED" length="20">
+                <comment>C&#195;&#179;digo contabil de credito</comment>
+            </column>
+        </property>
+        <property name="codclicontab" type="string">
+            <column name="CODCLICONTAB" length="20">
+                <comment>C&#195;&#179;digo contabil</comment>
+            </column>
+        </property>
+        <property name="fotocli" type="binary">
+            <column name="FOTOCLI">
+                <comment>Foto do cliente.</comment>
+            </column>
+        </property>
+        <property name="imgasscli" type="binary">
+            <column name="IMGASSCLI">
+                <comment>Imagem da assinatura do cliente</comment>
+            </column>
+        </property>
+        <property name="suframacli" type="string">
+            <column name="SUFRAMACLI" length="9">
+                <comment>C&#195;&#179;digo do SUFRAMA do cliente.</comment>
+            </column>
+        </property>
+        <property name="prodruralcli" type="char">
+            <column name="PRODRURALCLI" length="1" not-null="true" />
+        </property>
+        <property name="ctocli" type="char">
+            <column name="CTOCLI" length="1" not-null="true">
+                <comment>C - Cliente O - Contato</comment>
+            </column>
+        </property>
+        <property name="codcnae" type="string">
+            <column name="CODCNAE" length="15">
+                <comment>C&#195;&#179;digo da atividade principal, padr&#195;&#163;o CNAE.</comment>
+            </column>
+        </property>
+        <property name="inscmuncli" type="string">
+            <column name="INSCMUNCLI" length="20">
+                <comment>Inscri&#195;&#167;&#195;&#163;o municipal do cliente.</comment>
+            </column>
+        </property>
+        <property name="percdesccli" type="big_decimal">
+            <column name="PERCDESCCLI" precision="3">
+                <comment>Percentual padr&#195;&#163;o de desconto para o cliente.</comment>
+            </column>
+        </property>
+        <property name="contclicob" type="string">
+            <column name="CONTCLICOB" length="40">
+                <comment>Contato no cliente, para cobran&#195;&#167;a.</comment>
+            </column>
+        </property>
+        <property name="contclient" type="string">
+            <column name="CONTCLIENT" length="40">
+                <comment>Contato no cliente, para entrega.</comment>
+            </column>
+        </property>
+        <property name="descipi" type="java.lang.Character">
+            <column name="DESCIPI" length="1">
+                <comment>Indica se deve haver o desconto do IPI ao pre&#195;&#167;o da mercadoria.</comment>
+            </column>
+        </property>
+        <property name="identclibco" type="char">
+            <column name="IDENTCLIBCO" length="1" not-null="true">
+                <comment>Identifica&#195;&#167;&#195;&#163;o cliente (SIACC)- D - Documento - CPF/CNPJ / C - C&#195;&#179;digo do cliente</comment>
+            </column>
+        </property>
+        <property name="dtnasccli" type="date">
+            <column name="DTNASCCLI" length="10" />
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+        <set name="atatendimentos" table="ATATENDIMENTO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCLI" />
+                <column name="CODFILIALCL" />
+                <column name="CODEMPCL" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Atatendimento" />
+        </set>
+        <set name="tkcampanhactos" table="TKCAMPANHACTO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCLI" />
+                <column name="CODFILIALCL" />
+                <column name="CODEMPCL" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Tkcampanhacto" />
+        </set>
+        <set name="atmodatendos" table="ATMODATENDO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCLI" />
+                <column name="CODFILIALCL" />
+                <column name="CODEMPCL" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Atmodatendo" />
+        </set>
+        <set name="tkhistoricos" table="TKHISTORICO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCLI" />
+                <column name="CODFILIALCL" />
+                <column name="CODEMPCL" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Tkhistorico" />
+        </set>
+        <set name="tkcontclis" table="TKCONTCLI" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCLI" not-null="true" />
+                <column name="CODFILIALCLI" not-null="true" />
+                <column name="CODEMPCLI" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Tkcontcli" />
+        </set>
+        <set name="vdclirefps" table="VDCLIREFP" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCLI" not-null="true">
+                    <comment>Codigo do cliente.</comment>
+                </column>
+                <column name="CODFILIAL" not-null="true">
+                    <comment>Codigo da filial.</comment>
+                </column>
+                <column name="CODEMP" not-null="true">
+                    <comment>Codigo da empresa.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdclirefp" />
+        </set>
+        <set name="eqrecmercs" table="EQRECMERC" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCLI">
+                    <comment>C&#195;&#179;digo do cliente (coleta)</comment>
+                </column>
+                <column name="CODFILIALCL">
+                    <comment>C&#195;&#179;digo da filial do cliente (coleta)</comment>
+                </column>
+                <column name="CODEMPCL">
+                    <comment>C&#195;&#179;digo da empresa do cliente (coleta)</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqrecmerc" />
+        </set>
+        <set name="vdclirefcs" table="VDCLIREFC" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCLI" not-null="true" />
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdclirefc" />
+        </set>
+        <set name="vdcliimovs" table="VDCLIIMOV" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCLI" not-null="true" />
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdcliimov" />
+        </set>
+        <set name="fnrestricaos" table="FNRESTRICAO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCLI" not-null="true" />
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnrestricao" />
+        </set>
+        <set name="eqmovexps" table="EQMOVEXP" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCLI" not-null="true" />
+                <column name="CODFILIALCL" not-null="true" />
+                <column name="CODEMPCL" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqmovexp" />
+        </set>
+        <set name="eqclifors" table="EQCLIFOR" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCLI" not-null="true" />
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqclifor" />
+        </set>
+        <set name="fnlibcreds" table="FNLIBCRED" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCLI" not-null="true" />
+                <column name="CODFILIALCL" not-null="true" />
+                <column name="CODEMPCL" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnlibcred" />
+        </set>
+        <set name="fnsublancas" table="FNSUBLANCA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCLI" />
+                <column name="CODFILIALCL" />
+                <column name="CODEMPCL" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnsublanca" />
+        </set>
+        <set name="vdclicontases" table="VDCLICONTAS" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCLI" not-null="true" />
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdclicontas" />
+        </set>
+        <set name="vdclimetavends" table="VDCLIMETAVEND" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCLI" not-null="true" />
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdclimetavend" />
+        </set>
+        <set name="vdcliterras" table="VDCLITERRA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCLI" not-null="true" />
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdcliterra" />
+        </set>
+        <set name="crchamados" table="CRCHAMADO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCLI" not-null="true" />
+                <column name="CODFILIALCL" not-null="true" />
+                <column name="CODEMPCL" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Crchamado" />
+        </set>
+        <set name="sgprefere4s" table="SGPREFERE4" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCLI">
+                    <comment>C&#195;&#179;digo do cliente padr&#195;&#163;o para venda.</comment>
+                </column>
+                <column name="CODFILIALCL">
+                    <comment>C&#195;&#179;digo filial para cliente.</comment>
+                </column>
+                <column name="CODEMPCL">
+                    <comment>C&#195;&#179;digo da empresa para cliente.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgprefere4" />
+        </set>
+        <set name="vdsetorrotas" table="VDSETORROTA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCLI" not-null="true" />
+                <column name="CODFILIALCL" not-null="true" />
+                <column name="CODEMPCL" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdsetorrota" />
+        </set>
+        <set name="vdvendas" table="VDVENDA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCLI" not-null="true" />
+                <column name="CODFILIALCL" not-null="true" />
+                <column name="CODEMPCL" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdvenda" />
+        </set>
+        <set name="sgeqvclifors" table="SGEQVCLIFOR" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCLI" not-null="true" />
+                <column name="CODFILIALCL" not-null="true" />
+                <column name="CODEMPCL" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgeqvclifor" />
+        </set>
+        <set name="vdvendaconsigs" table="VDVENDACONSIG" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCLI" not-null="true">
+                    <comment>C&#195;&#179;digo do cliente.</comment>
+                </column>
+                <column name="CODFILIALCL" not-null="true" />
+                <column name="CODEMPCL" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdvendaconsig" />
+        </set>
+        <set name="vdobsclis" table="VDOBSCLI" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCLI" not-null="true" />
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdobscli" />
+        </set>
+        <set name="vdcliautps" table="VDCLIAUTP" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCLI" not-null="true" />
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdcliautp" />
+        </set>
+        <set name="tksitcamps" table="TKSITCAMP" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCLI" />
+                <column name="CODFILIALCL" />
+                <column name="CODEMPCL" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Tksitcamp" />
+        </set>
+        <set name="vdorcamentos" table="VDORCAMENTO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCLI" not-null="true" />
+                <column name="CODFILIALCL" not-null="true" />
+                <column name="CODEMPCL" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdorcamento" />
+        </set>
+        <set name="fnfbnclis" table="FNFBNCLI" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCLI" not-null="true" />
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnfbncli" />
+        </set>
+        <set name="vdcliveics" table="VDCLIVEIC" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCLI" not-null="true" />
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdcliveic" />
+        </set>
+        <set name="fnlancas" table="FNLANCA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCLI">
+                    <comment>C&#195;&#179;digo do cliente, para v&#195;&#173;nculo com contas a receber.</comment>
+                </column>
+                <column name="CODFILIALCL">
+                    <comment>C&#195;&#179;digo da filial do cliente.</comment>
+                </column>
+                <column name="CODEMPCL">
+                    <comment>C&#195;&#179;digo da empresa do cliente</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnlanca" />
+        </set>
+        <one-to-one name="vdclicompl" class="org.freedom.persist.entity.Vdclicompl"></one-to-one>
+        <set name="vdcontratos" table="VDCONTRATO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCLI" not-null="true">
+                    <comment>C&#195;&#179;digo do cliente.</comment>
+                </column>
+                <column name="CODFILIALCL" not-null="true">
+                    <comment>C&#195;&#179;digo da filial do cliente.</comment>
+                </column>
+                <column name="CODEMPCL" not-null="true">
+                    <comment>C&#195;&#179;digo da empresa do cliente</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdcontrato" />
+        </set>
+        <set name="vdclisocioses" table="VDCLISOCIOS" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCLI" not-null="true" />
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdclisocios" />
+        </set>
+        <set name="tkcampanhaclis" table="TKCAMPANHACLI" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCLI" not-null="true">
+                    <comment>C&#195;&#179;digo do cliente.</comment>
+                </column>
+                <column name="CODFILIALCL" not-null="true" />
+                <column name="CODEMPCL" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Tkcampanhacli" />
+        </set>
+        <set name="svoses" table="SVOS" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCLI" not-null="true" />
+                <column name="CODFILIALCL" not-null="true" />
+                <column name="CODEMPCL" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Svos" />
+        </set>
+        <set name="fnrecebers" table="FNRECEBER" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCLI" not-null="true" />
+                <column name="CODFILIALCL" not-null="true" />
+                <column name="CODEMPCL" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnreceber" />
+        </set>
+        <set name="eqlanctoexps" table="EQLANCTOEXP" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCLI" not-null="true" />
+                <column name="CODFILIALCL" not-null="true" />
+                <column name="CODEMPCL" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqlanctoexp" />
+        </set>
+    </class>
+</hibernate-mapping>

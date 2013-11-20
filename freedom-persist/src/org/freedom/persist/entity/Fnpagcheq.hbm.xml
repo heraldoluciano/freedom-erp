@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Fnpagcheq" table="FNPAGCHEQ">
+        <composite-id name="id" class="org.freedom.persist.entity.FnpagcheqId">
+            <key-property name="seqcheq" type="int">
+                <column name="SEQCHEQ" />
+            </key-property>
+            <key-property name="codpag" type="int">
+                <column name="CODPAG" />
+            </key-property>
+            <key-property name="nparcpag" type="short">
+                <column name="NPARCPAG" />
+            </key-property>
+            <key-property name="codfilialch" type="short">
+                <column name="CODFILIALCH" />
+            </key-property>
+            <key-property name="codempch" type="int">
+                <column name="CODEMPCH" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="fnitpagar" class="org.freedom.persist.entity.Fnitpagar" update="false" insert="false" fetch="select">
+            <column name="CODPAG" not-null="true">
+                <comment>C&#195;&#179;digo do pagamento.</comment>
+            </column>
+            <column name="NPARCPAG" not-null="true">
+                <comment>N&#195;&#186;mero sequencial.</comment>
+            </column>
+            <column name="CODFILIAL" not-null="true">
+                <comment>C&#195;&#179;digo da filial na tabela FNPAGAR.</comment>
+            </column>
+            <column name="CODEMP" not-null="true">
+                <comment>C&#195;&#179;digo da empresa na tabela FNPAGAR.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="fncheque" class="org.freedom.persist.entity.Fncheque" update="false" insert="false" fetch="select">
+            <column name="SEQCHEQ" not-null="true">
+                <comment>Sequencia de cheque.</comment>
+            </column>
+            <column name="CODFILIALCH" not-null="true">
+                <comment>C&#195;&#179;digo filial na tabela FNCHEQUE.</comment>
+            </column>
+            <column name="CODEMPCH" not-null="true">
+                <comment>C&#195;&#179;digo da empresa na tabela FNCHEQUE.</comment>
+            </column>
+        </many-to-one>
+        <property name="baixa" type="java.lang.Character">
+            <column name="BAIXA" length="1">
+                <comment>Indica se deve realizar a baixa do titulo vinculado (gatilho cheque emitido) S - Sim; N - N&#195;&#163;o;</comment>
+            </column>
+        </property>
+        <property name="transfere" type="java.lang.Character">
+            <column name="TRANSFERE" length="1">
+                <comment>Indica se deve transferir o titulo vinculado da conta de cheques para conta real (gatilho cheque compensado) S - Sim; N - N&#195;&#163;o;</comment>
+            </column>
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true">
+                <comment>Data de inser&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true">
+                <comment>Hora de inser&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="128" not-null="true">
+                <comment>Id. do usu&#195;&#161;rio que inseriu.</comment>
+            </column>
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" not-null="true">
+                <comment>Data de altera&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" not-null="true">
+                <comment>Hora de altera&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="128" not-null="true">
+                <comment>Id. do usu&#195;&#161;rio que alterou.</comment>
+            </column>
+        </property>
+    </class>
+</hibernate-mapping>

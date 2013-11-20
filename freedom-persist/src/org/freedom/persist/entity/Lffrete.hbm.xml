@@ -1,0 +1,193 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Lffrete" table="LFFRETE">
+        <comment>Tabela para lan&#195;&#167;amento de conhecimentos de frete.</comment>
+        <composite-id name="id" class="org.freedom.persist.entity.LffreteId">
+            <key-property name="codfrete" type="int">
+                <column name="CODFRETE" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="fnpagar" class="org.freedom.persist.entity.Fnpagar" fetch="select">
+            <column name="CODPAG">
+                <comment>Codigo no contas a pagar.</comment>
+            </column>
+            <column name="CODFILIALPA" />
+            <column name="CODEMPPA" />
+        </many-to-one>
+        <many-to-one name="eqrecmerc" class="org.freedom.persist.entity.Eqrecmerc" fetch="select">
+            <column name="TICKET">
+                <comment>Ticket do recebimento de mercadoria.</comment>
+            </column>
+            <column name="CODFILIALRM">
+                <comment>C&#195;&#179;digo da filial do recebimento de mercadorias.</comment>
+            </column>
+            <column name="CODEMPRM">
+                <comment>C&#195;&#179;digo da empresa do recebimento de mercadorias.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="sgunifcodByLffretefksgunifcodd" class="org.freedom.persist.entity.Sgunifcod" fetch="select">
+            <column name="CODDESTINAT" not-null="true">
+                <comment>C&#195;&#179;digo do destinatario. Relacionada &#195;&#160; tabela de c&#195;&#179;digos unificados SGUNIFCOD Pode ser cliente, fornecedor, empresa,
+                etc...</comment>
+            </column>
+            <column name="CODFILIALDE" not-null="true" />
+            <column name="CODEMPDE" not-null="true" />
+        </many-to-one>
+        <many-to-one name="lfnatoper" class="org.freedom.persist.entity.Lfnatoper" fetch="select">
+            <column name="CODNAT" length="4">
+                <comment>Natureza da opera&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+            <column name="CODFILIALNT" />
+            <column name="CODEMPNT" />
+        </many-to-one>
+        <many-to-one name="eqexpedicao" class="org.freedom.persist.entity.Eqexpedicao" fetch="select">
+            <column name="TICKETEX" />
+            <column name="CODFILIALEX" />
+            <column name="CODEMPEX" />
+        </many-to-one>
+        <many-to-one name="lftrattrib" class="org.freedom.persist.entity.Lftrattrib" fetch="select">
+            <column name="CODTRATTRIB" length="2">
+                <comment>C&#195;&#179;digo do tratamento tribut&#195;&#161;rio do ICMS</comment>
+            </column>
+            <column name="CODFILIALTT">
+                <comment>C&#195;&#179;digo da filial do tratamento tribut&#195;&#161;rio do ICMS</comment>
+            </column>
+            <column name="CODEMPTT">
+                <comment>C&#195;&#179;digo da empresa do tratamento tributario do icms.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="eqtipomov" class="org.freedom.persist.entity.Eqtipomov" fetch="select">
+            <column name="CODTIPOMOV" not-null="true" />
+            <column name="CODFILIALTM" not-null="true" />
+            <column name="CODEMPTM" not-null="true" />
+        </many-to-one>
+        <many-to-one name="vdtransp" class="org.freedom.persist.entity.Vdtransp" fetch="select">
+            <column name="CODTRAN" not-null="true" />
+            <column name="CODFILIALTN" not-null="true" />
+            <column name="CODEMPTN" not-null="true" />
+        </many-to-one>
+        <many-to-one name="sgunifcodByLffretefksgunifcodr" class="org.freedom.persist.entity.Sgunifcod" fetch="select">
+            <column name="CODREMET" not-null="true">
+                <comment>C&#195;&#179;digo do remetente. Relacionada &#195;&#160; tabela de c&#195;&#179;digos unificados SGUNIFCOD Pode ser cliente, fornecedor, empresa,
+                etc...</comment>
+            </column>
+            <column name="CODFILIALRE" not-null="true" />
+            <column name="CODEMPRE" not-null="true" />
+        </many-to-one>
+        <property name="docfrete" type="string">
+            <column name="DOCFRETE" length="13" />
+        </property>
+        <property name="tipofrete" type="char">
+            <column name="TIPOFRETE" length="1" not-null="true">
+                <comment>Modalidade do frete "1" CIF ou "2" FOB.</comment>
+            </column>
+        </property>
+        <property name="tipopgto" type="char">
+            <column name="TIPOPGTO" length="1" not-null="true">
+                <comment>Tipo de pagamento do frete "P" pago ou "A" a pagar.</comment>
+            </column>
+        </property>
+        <property name="dtemitfrete" type="date">
+            <column name="DTEMITFRETE" length="10" not-null="true">
+                <comment>Data de emiss&#195;&#163;o do conhecimento de frete.</comment>
+            </column>
+        </property>
+        <property name="dtpagfrete" type="date">
+            <column name="DTPAGFRETE" length="10" />
+        </property>
+        <property name="qtdfrete" type="big_decimal">
+            <column name="QTDFRETE" precision="15" scale="5" not-null="true">
+                <comment>Quantidade de volumes.</comment>
+            </column>
+        </property>
+        <property name="vlrmercadoria" type="big_decimal">
+            <column name="VLRMERCADORIA" precision="15" scale="5" not-null="true">
+                <comment>Valor da mercadoria transportada.</comment>
+            </column>
+        </property>
+        <property name="vlrfrete" type="big_decimal">
+            <column name="VLRFRETE" precision="15" scale="5" not-null="true">
+                <comment>Valor cobrado pelo frete.</comment>
+            </column>
+        </property>
+        <property name="vlrfretenota" type="big_decimal">
+            <column name="VLRFRETENOTA" precision="15" scale="5">
+                <comment>Valor do frete destacado na nota fiscal.</comment>
+            </column>
+        </property>
+        <property name="pesobruto" type="big_decimal">
+            <column name="PESOBRUTO" precision="15" scale="5" not-null="true">
+                <comment>Peso bruto da mercadoria transportada.</comment>
+            </column>
+        </property>
+        <property name="pesoliquido" type="big_decimal">
+            <column name="PESOLIQUIDO" precision="15" scale="5" not-null="true">
+                <comment>Peso liquido da mercadoria transportada.</comment>
+            </column>
+        </property>
+        <property name="aliqicmsfrete" type="big_decimal">
+            <column name="ALIQICMSFRETE" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="vlricmsfrete" type="big_decimal">
+            <column name="VLRICMSFRETE" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="vlrbaseicmsfrete" type="big_decimal">
+            <column name="VLRBASEICMSFRETE" precision="15" scale="5" not-null="true">
+                <comment>Base do ICMS.</comment>
+            </column>
+        </property>
+        <property name="serie" type="string">
+            <column name="SERIE" length="4">
+                <comment>S&#195;&#169;rie do documento de conhecimento de frete.</comment>
+            </column>
+        </property>
+        <property name="chavecte" type="string">
+            <column name="CHAVECTE" length="44">
+                <comment>Chave do conhecimento de transporte eletronico.</comment>
+            </column>
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+        <set name="lffretecompras" table="LFFRETECOMPRA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFRETE" not-null="true" />
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Lffretecompra" />
+        </set>
+        <set name="lffretevendas" table="LFFRETEVENDA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFRETE" not-null="true" />
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Lffretevenda" />
+        </set>
+    </class>
+</hibernate-mapping>

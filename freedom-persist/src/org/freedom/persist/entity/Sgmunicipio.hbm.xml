@@ -1,0 +1,154 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Sgmunicipio" table="SGMUNICIPIO">
+        <comment>Tabela de municipios.</comment>
+        <composite-id name="id" class="org.freedom.persist.entity.SgmunicipioId">
+            <key-property name="codmunic" type="string">
+                <column name="CODMUNIC" length="7" />
+            </key-property>
+            <key-property name="siglauf" type="string">
+                <column name="SIGLAUF" length="2" />
+            </key-property>
+            <key-property name="codpais" type="short">
+                <column name="CODPAIS" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="sguf" class="org.freedom.persist.entity.Sguf" update="false" insert="false" fetch="select">
+            <column name="SIGLAUF" length="2" not-null="true" />
+            <column name="CODPAIS" not-null="true" />
+        </many-to-one>
+        <property name="nomemunic" type="string">
+            <column name="NOMEMUNIC" length="80" not-null="true" />
+        </property>
+        <property name="dddmunic" type="string">
+            <column name="DDDMUNIC" length="4" not-null="true" />
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+        <set name="vdtransps" table="VDTRANSP" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODMUNIC" length="7" />
+                <column name="SIGLAUF" length="2" />
+                <column name="CODPAIS" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdtransp" />
+        </set>
+        <set name="sgbairros" table="SGBAIRRO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODMUNIC" length="7" not-null="true" />
+                <column name="SIGLAUF" length="2" not-null="true" />
+                <column name="CODPAIS" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgbairro" />
+        </set>
+        <set name="vdclientesForVdclientefksgmunicent" table="VDCLIENTE" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODMUNICENT" length="7">
+                    <comment>C&#195;&#179;digo do municipio (IBGE) do endere&#195;&#167;o de entrega.</comment>
+                </column>
+                <column name="SIGLAUFENT" length="2">
+                    <comment>Sigla da Unidade da Federa&#195;&#167;&#195;&#163;o do endere&#195;&#167;o de entrega.</comment>
+                </column>
+                <column name="CODPAISENT">
+                    <comment>C&#195;&#179;digo do pa&#195;&#173;s do endere&#195;&#167;o de entrega.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdcliente" />
+        </set>
+        <set name="sgempresas" table="SGEMPRESA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODMUNIC" length="7" />
+                <column name="SIGLAUF" length="2" />
+                <column name="CODPAIS" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgempresa" />
+        </set>
+        <set name="tkcontatos" table="TKCONTATO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODMUNIC" length="7" />
+                <column name="SIGLAUF" length="2" />
+                <column name="CODPAIS" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Tkcontato" />
+        </set>
+        <set name="cpforneceds" table="CPFORNECED" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODMUNIC" length="7" />
+                <column name="SIGLAUF" length="2" />
+                <column name="CODPAIS" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Cpforneced" />
+        </set>
+        <set name="vdveiculos" table="VDVEICULO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODMUNIC" length="7" />
+                <column name="SIGLAUF" length="2" />
+                <column name="CODPAIS" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdveiculo" />
+        </set>
+        <set name="vdclientesForVdclientefksgmuniccob" table="VDCLIENTE" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODMUNICCOB" length="7">
+                    <comment>C&#195;&#179;digo do municipio (IBGE) do endere&#195;&#167;o de cobran&#195;&#167;a.</comment>
+                </column>
+                <column name="SIGLAUFCOB" length="2">
+                    <comment>Sigla da Unidade da Federa&#195;&#167;&#195;&#163;o do endere&#195;&#167;o de cobran&#195;&#167;a.</comment>
+                </column>
+                <column name="CODPAISCOB">
+                    <comment>C&#195;&#179;digo do pa&#195;&#173;s do endere&#195;&#167;o de cobran&#195;&#167;a.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdcliente" />
+        </set>
+        <set name="sgfilials" table="SGFILIAL" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODMUNIC" length="7" />
+                <column name="SIGLAUF" length="2" />
+                <column name="CODPAIS" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgfilial" />
+        </set>
+        <set name="vdclientesForVdclientefksgmunic" table="VDCLIENTE" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODMUNIC" length="7">
+                    <comment>C&#195;&#179;digo do municipio (IBGE)</comment>
+                </column>
+                <column name="SIGLAUF" length="2">
+                    <comment>Sigla da Unidade da Federe&#195;&#167;&#195;&#163;o (Estado)</comment>
+                </column>
+                <column name="CODPAIS">
+                    <comment>C&#195;&#179;digo do pais.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdcliente" />
+        </set>
+        <set name="vdmotoristas" table="VDMOTORISTA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODMUNIC" length="7" />
+                <column name="SIGLAUF" length="2" />
+                <column name="CODPAIS" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdmotorista" />
+        </set>
+    </class>
+</hibernate-mapping>

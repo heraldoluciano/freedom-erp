@@ -1,0 +1,494 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Cpcompra" table="CPCOMPRA">
+        <composite-id name="id" class="org.freedom.persist.entity.CpcompraId">
+            <key-property name="codcompra" type="int">
+                <column name="CODCOMPRA" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="ppop" class="org.freedom.persist.entity.Ppop" fetch="select">
+            <column name="CODOP" />
+            <column name="SEQOP" />
+            <column name="CODFILIALOP" />
+            <column name="CODEMPOP" />
+        </many-to-one>
+        <many-to-one name="fnconta" class="org.freedom.persist.entity.Fnconta" fetch="select">
+            <column name="NUMCONTA" length="10">
+                <comment>N&#195;&#186;mero da conta.</comment>
+            </column>
+            <column name="CODFILIALCT">
+                <comment>C&#195;&#179;digo da filial da compra.</comment>
+            </column>
+            <column name="CODEMPCT">
+                <comment>C&#195;&#179;digo da empresa da conta.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="cpsolicitacao" class="org.freedom.persist.entity.Cpsolicitacao" fetch="select">
+            <column name="CODSOL" />
+            <column name="CODFILIALSOL" />
+            <column name="CODEMPSOL" />
+        </many-to-one>
+        <many-to-one name="fnbanco" class="org.freedom.persist.entity.Fnbanco" fetch="select">
+            <column name="CODBANCO" length="3" />
+            <column name="CODFILIALBO" />
+            <column name="CODEMPBO" />
+        </many-to-one>
+        <many-to-one name="fncc" class="org.freedom.persist.entity.Fncc" fetch="select">
+            <column name="CODCC" length="19">
+                <comment>C&#195;&#179;digo do centro de custos</comment>
+            </column>
+            <column name="ANOCC">
+                <comment>Ano do centro de custo</comment>
+            </column>
+            <column name="CODFILIALCC">
+                <comment>C&#195;&#179;digo da filial do centro de custos.</comment>
+            </column>
+            <column name="CODEMPCC">
+                <comment>C&#195;&#179;digo da empresa do centro de custos</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="eqrecmerc" class="org.freedom.persist.entity.Eqrecmerc" fetch="select">
+            <column name="TICKET">
+                <comment>Ticket do recebimento de mercadoria vinculado.</comment>
+            </column>
+            <column name="CODFILIALRM">
+                <comment>C&#195;&#179;digo da filial do recebimento de mercadoria vinculado.</comment>
+            </column>
+            <column name="CODEMPRM">
+                <comment>C&#195;&#179;digo da empresa do recebimento de mercadoria vinculado.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="sgfilial" class="org.freedom.persist.entity.Sgfilial" update="false" insert="false" fetch="select">
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <many-to-one name="cpimportacao" class="org.freedom.persist.entity.Cpimportacao" fetch="select">
+            <column name="CODIMP">
+                <comment>C&#195;&#179;digo da importa&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+            <column name="CODFILIALIM">
+                <comment>C&#195;&#179;digo da filial da importa&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+            <column name="CODEMPIM">
+                <comment>C&#195;&#179;digo da empresa de importa&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="fntipocob" class="org.freedom.persist.entity.Fntipocob" fetch="select">
+            <column name="CODTIPOCOB">
+                <comment>C&#195;&#179;digo do tipo de cobran&#195;&#167;a.</comment>
+            </column>
+            <column name="CODFILIALTC">
+                <comment>C&#195;&#179;digo da filial na tabela tipo de cobran&#195;&#167;a.</comment>
+            </column>
+            <column name="CODEMPTC">
+                <comment>C&#195;&#179;digo da empresa na tabela tipo de cobran&#195;&#167;a.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="cpforneced" class="org.freedom.persist.entity.Cpforneced" fetch="select">
+            <column name="CODFOR" not-null="true" />
+            <column name="CODFILIALFR" not-null="true" />
+            <column name="CODEMPFR" not-null="true" />
+        </many-to-one>
+        <many-to-one name="fnplanopag" class="org.freedom.persist.entity.Fnplanopag" fetch="select">
+            <column name="CODPLANOPAG" not-null="true" />
+            <column name="CODFILIALPG" not-null="true" />
+            <column name="CODEMPPG" not-null="true" />
+        </many-to-one>
+        <many-to-one name="eqtipomov" class="org.freedom.persist.entity.Eqtipomov" fetch="select">
+            <column name="CODTIPOMOV" not-null="true" />
+            <column name="CODFILIALTM" not-null="true" />
+            <column name="CODEMPTM" not-null="true" />
+        </many-to-one>
+        <many-to-one name="fnplanejamento" class="org.freedom.persist.entity.Fnplanejamento" fetch="select">
+            <column name="CODPLAN" length="13">
+                <comment>C&#195;&#179;digo do planejamento financeiro.</comment>
+            </column>
+            <column name="CODFILIALPN">
+                <comment>C&#195;&#179;digo do filial do planejamento financeiro.</comment>
+            </column>
+            <column name="CODEMPPN">
+                <comment>C&#195;&#179;digo da empresa do planejamento financeiro.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="cpordcompra" class="org.freedom.persist.entity.Cpordcompra" fetch="select">
+            <column name="CODEMPOC" />
+            <column name="CODFILIALOC" />
+            <column name="CODORDCP" />
+        </many-to-one>
+        <many-to-one name="vdtransp" class="org.freedom.persist.entity.Vdtransp" fetch="select">
+            <column name="CODTRAN" />
+            <column name="CODFILIALTN" />
+            <column name="CODEMPTN" />
+        </many-to-one>
+        <property name="codempse" type="int">
+            <column name="CODEMPSE" not-null="true" />
+        </property>
+        <property name="codfilialse" type="short">
+            <column name="CODFILIALSE" not-null="true" />
+        </property>
+        <property name="serie" type="string">
+            <column name="SERIE" length="4" not-null="true" />
+        </property>
+        <property name="doccompra" type="int">
+            <column name="DOCCOMPRA" not-null="true" />
+        </property>
+        <property name="dtentcompra" type="date">
+            <column name="DTENTCOMPRA" length="10" not-null="true" />
+        </property>
+        <property name="dtemitcompra" type="date">
+            <column name="DTEMITCOMPRA" length="10" not-null="true" />
+        </property>
+        <property name="dtcompcompra" type="date">
+            <column name="DTCOMPCOMPRA" length="10" not-null="true">
+                <comment>Data de compet&#195;&#170;ncia.</comment>
+            </column>
+        </property>
+        <property name="percdesccompra" type="big_decimal">
+            <column name="PERCDESCCOMPRA" precision="15" scale="5" />
+        </property>
+        <property name="percipicompra" type="big_decimal">
+            <column name="PERCIPICOMPRA" precision="6" />
+        </property>
+        <property name="vlrprodcompra" type="big_decimal">
+            <column name="VLRPRODCOMPRA" precision="15" scale="5" />
+        </property>
+        <property name="vlrliqcompra" type="big_decimal">
+            <column name="VLRLIQCOMPRA" precision="15" scale="5" />
+        </property>
+        <property name="vlrcompra" type="big_decimal">
+            <column name="VLRCOMPRA" precision="15" scale="5" />
+        </property>
+        <property name="vlrdesccompra" type="big_decimal">
+            <column name="VLRDESCCOMPRA" precision="15" scale="5" />
+        </property>
+        <property name="vlrdescitcompra" type="big_decimal">
+            <column name="VLRDESCITCOMPRA" precision="15" scale="5" />
+        </property>
+        <property name="vlradiccompra" type="big_decimal">
+            <column name="VLRADICCOMPRA" precision="15" scale="5" />
+        </property>
+        <property name="vlrbaseicmscompra" type="big_decimal">
+            <column name="VLRBASEICMSCOMPRA" precision="15" scale="5" />
+        </property>
+        <property name="vlrbaseicmsstcompra" type="big_decimal">
+            <column name="VLRBASEICMSSTCOMPRA" precision="15" scale="5">
+                <comment>Valor da base de c&#195;&#161;lculo do ICMS de substitui&#195;&#167;&#195;&#163;o tribut&#195;&#161;ria.</comment>
+            </column>
+        </property>
+        <property name="vlrbaseipicompra" type="big_decimal">
+            <column name="VLRBASEIPICOMPRA" precision="15" scale="5" />
+        </property>
+        <property name="vlrbasepiscompra" type="big_decimal">
+            <column name="VLRBASEPISCOMPRA" precision="15" scale="5" />
+        </property>
+        <property name="vlrbasecofinscompra" type="big_decimal">
+            <column name="VLRBASECOFINSCOMPRA" precision="15" scale="5" />
+        </property>
+        <property name="vlricmscompra" type="big_decimal">
+            <column name="VLRICMSCOMPRA" precision="15" scale="5" />
+        </property>
+        <property name="vlricmsstcompra" type="big_decimal">
+            <column name="VLRICMSSTCOMPRA" precision="15" scale="5">
+                <comment>Valor do ICMS de substitui&#195;&#167;&#195;&#163;o tribut&#195;&#161;ria.</comment>
+            </column>
+        </property>
+        <property name="vlripicompra" type="big_decimal">
+            <column name="VLRIPICOMPRA" precision="15" scale="5" />
+        </property>
+        <property name="vlrpiscompra" type="big_decimal">
+            <column name="VLRPISCOMPRA" precision="15" scale="5" />
+        </property>
+        <property name="vlrcofinscompra" type="big_decimal">
+            <column name="VLRCOFINSCOMPRA" precision="15" scale="5" />
+        </property>
+        <property name="vlrfunruralcompra" type="big_decimal">
+            <column name="VLRFUNRURALCOMPRA" precision="15" scale="5">
+                <comment>Valor da reten&#195;&#167;&#195;&#163;o referente ao Funrural.</comment>
+            </column>
+        </property>
+        <property name="vlrfretecompra" type="big_decimal">
+            <column name="VLRFRETECOMPRA" precision="15" scale="5" />
+        </property>
+        <property name="vlroutrascompra" type="big_decimal">
+            <column name="VLROUTRASCOMPRA" precision="15" scale="5" />
+        </property>
+        <property name="vlrisentascompra" type="big_decimal">
+            <column name="VLRISENTASCOMPRA" precision="15" scale="5" />
+        </property>
+        <property name="impnotacompra" type="char">
+            <column name="IMPNOTACOMPRA" length="1" not-null="true">
+                <comment>Flag que indica se a nota fiscal foi impressa (S/N).</comment>
+            </column>
+        </property>
+        <property name="bloqcompra" type="char">
+            <column name="BLOQCOMPRA" length="1" not-null="true">
+                <comment>Flag de bloqueio de compra.</comment>
+            </column>
+        </property>
+        <property name="emmanut" type="char">
+            <column name="EMMANUT" length="1" not-null="true">
+                <comment>Flag que indica se a tabela est&#195;&#161; em manuten&#195;&#167;&#195;&#163;o (S/N).</comment>
+            </column>
+        </property>
+        <property name="flag" type="java.lang.Character">
+            <column name="FLAG" length="1" />
+        </property>
+        <property name="adicfretecompra" type="char">
+            <column name="ADICFRETECOMPRA" length="1" not-null="true">
+                <comment>Flag que indica se soma o valor do frete ao custo do produto.</comment>
+            </column>
+        </property>
+        <property name="tipofretecompra" type="java.lang.Character">
+            <column name="TIPOFRETECOMPRA" length="1">
+                <comment>Tipo do frete na compra.</comment>
+            </column>
+        </property>
+        <property name="observacao" type="string">
+            <column name="OBSERVACAO" length="10000" />
+        </property>
+        <property name="obs01" type="string">
+            <column name="OBS01" length="1024">
+                <comment>Campo "coringa" para outras observa&#195;&#167;&#195;&#181;es.</comment>
+            </column>
+        </property>
+        <property name="obs02" type="string">
+            <column name="OBS02" length="1024">
+                <comment>Campo "coringa" para outras observa&#195;&#167;&#195;&#181;es.</comment>
+            </column>
+        </property>
+        <property name="obs03" type="string">
+            <column name="OBS03" length="1024">
+                <comment>Campo "coringa" para outras observa&#195;&#167;&#195;&#181;es.</comment>
+            </column>
+        </property>
+        <property name="obs04" type="string">
+            <column name="OBS04" length="1024">
+                <comment>Campo "coringa" para outras observa&#195;&#167;&#195;&#181;es.</comment>
+            </column>
+        </property>
+        <property name="adicadiccompra" type="char">
+            <column name="ADICADICCOMPRA" length="1" not-null="true">
+                <comment>Flag que indica se soma o valor adicional ao custo do produto.</comment>
+            </column>
+        </property>
+        <property name="qtdfretecompra" type="big_decimal">
+            <column name="QTDFRETECOMPRA" precision="15" scale="5">
+                <comment>Quantidade de volumes na nota de entrada.</comment>
+            </column>
+        </property>
+        <property name="adicfretebaseicms" type="java.lang.Character">
+            <column name="ADICFRETEBASEICMS" length="1">
+                <comment>Indica se deve adicionar o valor do frete &#195;&#160; base de calculo do icms.</comment>
+            </column>
+        </property>
+        <property name="adicadicbaseicms" type="java.lang.Character">
+            <column name="ADICADICBASEICMS" length="1">
+                <comment>Indica se deve somar os valores adicionais &#195;&#160; base de calculo do ICMS.</comment>
+            </column>
+        </property>
+        <property name="adicipibaseicms" type="java.lang.Character">
+            <column name="ADICIPIBASEICMS" length="1">
+                <comment>Indica se deve adicionar o valor do IPI &#195;&#160; base de calculo do ICMS.</comment>
+            </column>
+        </property>
+        <property name="chavenfecompra" type="string">
+            <column name="CHAVENFECOMPRA" length="44">
+                <comment>Chave de acesso da nota fiscal eletr&#195;&#180;nica de compra.</comment>
+            </column>
+        </property>
+        <property name="statuscompra" type="string">
+            <column name="STATUSCOMPRA" length="2" not-null="true">
+                <comment>P1 - Pendente; P2 - Em aberto; P3 - Em aberto; C2 - Emitida; C3 - Emitida; EP - Pedido de compra emitida parcialmente em outra compra; ET - Pedido de
+                compra emitido totalmente em outra compra; X - Cancelada;</comment>
+            </column>
+        </property>
+        <property name="nrodi" type="string">
+            <column name="NRODI" length="10">
+                <comment>N&#195;&#186;mero do documento de importa&#195;&#167;&#195;&#163;o DI/DSI/DA</comment>
+            </column>
+        </property>
+        <property name="dtregdi" type="date">
+            <column name="DTREGDI" length="10">
+                <comment>Data de registro da DI</comment>
+            </column>
+        </property>
+        <property name="locdesembdi" type="string">
+            <column name="LOCDESEMBDI" length="60">
+                <comment>Loca de desembara&#195;&#167;&#195;&#181; da DI</comment>
+            </column>
+        </property>
+        <property name="siglaufdesembdi" type="string">
+            <column name="SIGLAUFDESEMBDI" length="2">
+                <comment>Estado onde ocorreu o desembara&#195;&#167;o da DI</comment>
+            </column>
+        </property>
+        <property name="codpaisdesembdi" type="java.lang.Integer">
+            <column name="CODPAISDESEMBDI">
+                <comment>C&#195;&#179;digo do pa&#195;&#173;s onde ocorreu o desembara&#195;&#167;o da DI (ser&#195;&#161; sempre o pais da filial, mantido por integridade
+                referencial tabela SGUF)</comment>
+            </column>
+        </property>
+        <property name="dtdesembdi" type="date">
+            <column name="DTDESEMBDI" length="10">
+                <comment>Data do desembara&#195;&#167;o da DI</comment>
+            </column>
+        </property>
+        <property name="identcontainer" type="string">
+            <column name="IDENTCONTAINER" length="20">
+                <comment>Identifica&#195;&#167;&#195;&#163;o do container da compra (importa&#195;&#167;&#195;&#163;o)</comment>
+            </column>
+        </property>
+        <property name="calctrib" type="char">
+            <column name="CALCTRIB" length="1" not-null="true">
+                <comment>Indica se deve realizar o calculo de tributos</comment>
+            </column>
+        </property>
+        <property name="infcompl" type="string">
+            <column name="INFCOMPL" length="10000">
+                <comment>Informa&#195;&#167;&#195;&#181;es complementares (interesse do fisco)</comment>
+            </column>
+        </property>
+        <property name="numacdraw" type="string">
+            <column name="NUMACDRAW" length="20">
+                <comment>N&#195;&#186;mero do ato concess&#195;&#179;rio do regime drawback (importa&#195;&#167;&#195;&#163;o)</comment>
+            </column>
+        </property>
+        <property name="tipodocimp" type="java.lang.Character">
+            <column name="TIPODOCIMP" length="1">
+                <comment>Tipo de documento de importa&#195;&#167;&#195;&#163;o: 0 - Declara&#195;&#167;&#195;&#163;o de importa&#195;&#167;&#195;&#163;o 1 -
+                Declara&#195;&#167;&#195;&#163;o simplificada de importa&#195;&#167;&#195;&#163;o</comment>
+            </column>
+        </property>
+        <property name="sitdoc" type="string">
+            <column name="SITDOC" length="2">
+                <comment>Situa&#195;&#167;&#195;&#163;o do documento fiscal: 00-Documento regular; 01-Documento regular expont&#195;&#162;neo; 02-Documento cancelado; 03-Documento
+                cancelado expont&#195;&#162;neo 04-NFE Denegada; 05-NFE Numera&#195;&#167;&#195;&#163;o inutilizada; 06-Documento fiscal complementar; 07-Documento fiscal
+                complementar expont&#195;&#162;neo; 08-Documento emitido com base em Regime Especial ou Norma Espec&#195;&#173;fica;</comment>
+            </column>
+        </property>
+        <property name="obsnfe" type="string">
+            <column name="OBSNFE" length="10000">
+                <comment>Observacao gerada na emissao de nfe.</comment>
+            </column>
+        </property>
+        <property name="vlrbaseiicompra" type="big_decimal">
+            <column name="VLRBASEIICOMPRA" precision="15" scale="5">
+                <comment>Valor da base de calculo do imposto de importa&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+        </property>
+        <property name="vlriicompra" type="big_decimal">
+            <column name="VLRIICOMPRA" precision="15" scale="5">
+                <comment>Valor do imposto de importa&#195;&#167;&#195;&#163;o da compra.</comment>
+            </column>
+        </property>
+        <property name="vlricmsdiferido" type="big_decimal">
+            <column name="VLRICMSDIFERIDO" precision="15" scale="5" />
+        </property>
+        <property name="vlricmsdevido" type="big_decimal">
+            <column name="VLRICMSDEVIDO" precision="15" scale="5" />
+        </property>
+        <property name="vlricmscredpresum" type="big_decimal">
+            <column name="VLRICMSCREDPRESUM" precision="15" scale="5" />
+        </property>
+        <property name="obspag" type="string">
+            <column name="OBSPAG" length="250" />
+        </property>
+        <property name="vlrisscompra" type="big_decimal">
+            <column name="VLRISSCOMPRA" precision="15" scale="5" />
+        </property>
+        <property name="nroordemcompra" type="string">
+            <column name="NROORDEMCOMPRA" length="20" />
+        </property>
+        <property name="vlroutrasdesp" type="big_decimal">
+            <column name="VLROUTRASDESP" precision="15" scale="5" />
+        </property>
+        <property name="cnf" type="java.lang.Long">
+            <column name="CNF" />
+        </property>
+        <property name="chavenfevalida" type="string">
+            <column name="CHAVENFEVALIDA" length="20" not-null="true" />
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+        <set name="eqguiatrafs" table="EQGUIATRAF" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCOMPRA" not-null="true" />
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqguiatraf" />
+        </set>
+        <set name="cprateios" table="CPRATEIO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCOMPRA" not-null="true">
+                    <comment>C&#195;&#179;digo da compra.</comment>
+                </column>
+                <column name="CODFILIAL" not-null="true">
+                    <comment>C&#195;&#179;digo da filial.</comment>
+                </column>
+                <column name="CODEMP" not-null="true">
+                    <comment>C&#195;&#179;digo da empresa.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Cprateio" />
+        </set>
+        <set name="ppitops" table="PPITOP" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCOMPRA" />
+                <column name="CODFILIALCP" />
+                <column name="CODEMPCP" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Ppitop" />
+        </set>
+        <set name="lffretecompras" table="LFFRETECOMPRA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCOMPRA" not-null="true" />
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Lffretecompra" />
+        </set>
+        <set name="fnpagars" table="FNPAGAR" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCOMPRA" />
+                <column name="CODFILIALCP" />
+                <column name="CODEMPCP" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnpagar" />
+        </set>
+        <set name="cpitcompras" table="CPITCOMPRA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCOMPRA" not-null="true" />
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Cpitcompra" />
+        </set>
+        <one-to-one name="cpfretecp" class="org.freedom.persist.entity.Cpfretecp"></one-to-one>
+    </class>
+</hibernate-mapping>

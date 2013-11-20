@@ -1,0 +1,119 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Atespecatend" table="ATESPECATEND">
+        <comment>Especifica&#195;&#167;&#195;&#163;o dos atendimentos</comment>
+        <composite-id name="id" class="org.freedom.persist.entity.AtespecatendId">
+            <key-property name="codespec" type="int">
+                <column name="CODESPEC" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <property name="descespec" type="string">
+            <column name="DESCESPEC" length="100" not-null="true">
+                <comment>Descri&#195;&#167;&#195;&#163;o da especifica&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+        </property>
+        <property name="pgcomiespec" type="char">
+            <column name="PGCOMIESPEC" length="1" not-null="true">
+                <comment>Paga comiss&#195;&#163;o (S/N).</comment>
+            </column>
+        </property>
+        <property name="cobcliespec" type="char">
+            <column name="COBCLIESPEC" length="1" not-null="true">
+                <comment>Cobrar do cliente (S/N).</comment>
+            </column>
+        </property>
+        <property name="contmetaespec" type="char">
+            <column name="CONTMETAESPEC" length="1" not-null="true">
+                <comment>Contabiliza para meta (S/N).</comment>
+            </column>
+        </property>
+        <property name="tempomincobespec" type="int">
+            <column name="TEMPOMINCOBESPEC" not-null="true">
+                <comment>Tempo m&#195;&#173;nimo a contabilizar.</comment>
+            </column>
+        </property>
+        <property name="tempomaxcobespec" type="int">
+            <column name="TEMPOMAXCOBESPEC" not-null="true">
+                <comment>Tempo m&#195;&#161;ximo a contabilizar.</comment>
+            </column>
+        </property>
+        <property name="perccomiespec" type="big_decimal">
+            <column name="PERCCOMIESPEC" precision="15" scale="5" not-null="true">
+                <comment>Percentual de comiss&#195;&#163;o do atendente.</comment>
+            </column>
+        </property>
+        <property name="mrelcobespec" type="char">
+            <column name="MRELCOBESPEC" length="1" not-null="true" />
+        </property>
+        <property name="bhespec" type="char">
+            <column name="BHESPEC" length="1" not-null="true" />
+        </property>
+        <property name="obrigchamespec" type="char">
+            <column name="OBRIGCHAMESPEC" length="1" not-null="true" />
+        </property>
+        <property name="obrigprojespec" type="char">
+            <column name="OBRIGPROJESPEC" length="1" not-null="true" />
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true">
+                <comment>Data de inser&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="128" not-null="true">
+                <comment>Id do usu&#195;&#161;rio que inseriu.</comment>
+            </column>
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" not-null="true">
+                <comment>Data da &#195;&#186;ltima altera&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="128" not-null="true">
+                <comment>Id do usu&#195;&#161;rio que fez a &#195;&#186;ltima altera&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true">
+                <comment>Hora de inser&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" not-null="true">
+                <comment>Hora da &#195;&#186;ltima altera&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+        </property>
+        <set name="atatendimentos" table="ATATENDIMENTO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODESPEC">
+                    <comment>C&#195;&#179;digo de especifica&#195;&#167;&#195;&#163;o.</comment>
+                </column>
+                <column name="CODFILIALEA">
+                    <comment>C&#195;&#179;digo da filial na tabela de especifica&#195;&#167;&#195;&#163;o.</comment>
+                </column>
+                <column name="CODEMPEA">
+                    <comment>C&#195;&#179;digo da empresa na tabela de especifica&#195;&#167;&#195;&#163;o.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Atatendimento" />
+        </set>
+        <set name="atmodatendos" table="ATMODATENDO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODESPEC" />
+                <column name="CODFILIALEA" />
+                <column name="CODEMPEA" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Atmodatendo" />
+        </set>
+    </class>
+</hibernate-mapping>

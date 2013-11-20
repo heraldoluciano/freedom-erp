@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Crtarefa" table="CRTAREFA">
+        <composite-id name="id" class="org.freedom.persist.entity.CrtarefaId">
+            <key-property name="codtarefa" type="int">
+                <column name="CODTAREFA" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="crmarcador" class="org.freedom.persist.entity.Crmarcador" fetch="select">
+            <column name="CODMARCOR" />
+            <column name="CODFILIALMO" />
+            <column name="CODEMPMO" />
+        </many-to-one>
+        <many-to-one name="crtarefa" class="org.freedom.persist.entity.Crtarefa" fetch="select">
+            <column name="CODTAREFATA" />
+            <column name="CODFILIALTA" />
+            <column name="CODEMPTA" />
+        </many-to-one>
+        <many-to-one name="crchamado" class="org.freedom.persist.entity.Crchamado" fetch="select">
+            <column name="CODCHAMADO" />
+            <column name="CODFILIALCH" />
+            <column name="CODEMPCH" />
+        </many-to-one>
+        <many-to-one name="vditcontrato" class="org.freedom.persist.entity.Vditcontrato" fetch="select">
+            <column name="CODCONTR" not-null="true" />
+            <column name="CODITCONTR" not-null="true" />
+            <column name="CODFILIALCT" not-null="true" />
+            <column name="CODEMPCT" not-null="true" />
+        </many-to-one>
+        <property name="desctarefa" type="string">
+            <column name="DESCTAREFA" length="100" not-null="true" />
+        </property>
+        <property name="tipotarefa" type="char">
+            <column name="TIPOTAREFA" length="1" not-null="true" />
+        </property>
+        <property name="lanctotarefa" type="char">
+            <column name="LANCTOTAREFA" length="1" not-null="true" />
+        </property>
+        <property name="descdettarefa" type="string">
+            <column name="DESCDETTAREFA" length="2000" not-null="true" />
+        </property>
+        <property name="indextarefa" type="int">
+            <column name="INDEXTAREFA" not-null="true" />
+        </property>
+        <property name="tempoesttarefa" type="string">
+            <column name="TEMPOESTTAREFA" length="10" not-null="true" />
+        </property>
+        <property name="tempodectarefa" type="big_decimal">
+            <column name="TEMPODECTAREFA" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="notastarefa" type="string">
+            <column name="NOTASTAREFA" length="2000" />
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="128" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="128" />
+        </property>
+        <set name="atatendimentos" table="ATATENDIMENTO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTAREFA" />
+                <column name="CODFILIALTA" />
+                <column name="CODEMPTA" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Atatendimento" />
+        </set>
+        <set name="crtarefapers" table="CRTAREFAPER" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTAREFA" not-null="true" />
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Crtarefaper" />
+        </set>
+        <set name="crtarefas" table="CRTAREFA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTAREFATA" />
+                <column name="CODFILIALTA" />
+                <column name="CODEMPTA" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Crtarefa" />
+        </set>
+    </class>
+</hibernate-mapping>

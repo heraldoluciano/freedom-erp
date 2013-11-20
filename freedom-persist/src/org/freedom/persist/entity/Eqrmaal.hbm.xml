@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Eqrmaal" table="EQRMAAL">
+        <composite-id name="id" class="org.freedom.persist.entity.EqrmaalId">
+            <key-property name="codrma" type="int">
+                <column name="CODRMA" />
+            </key-property>
+            <key-property name="tipormaal" type="char">
+                <column name="TIPORMAAL" length="1" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+            <key-property name="idusu" type="string">
+                <column name="IDUSU" length="8" />
+            </key-property>
+            <key-property name="codfilialuu" type="short">
+                <column name="CODFILIALUU" />
+            </key-property>
+            <key-property name="codempuu" type="int">
+                <column name="CODEMPUU" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="sgusuario" class="org.freedom.persist.entity.Sgusuario" update="false" insert="false" fetch="select">
+            <column name="IDUSU" length="8" not-null="true" />
+            <column name="CODFILIALUU" not-null="true" />
+            <column name="CODEMPUU" not-null="true" />
+        </many-to-one>
+        <many-to-one name="eqrma" class="org.freedom.persist.entity.Eqrma" update="false" insert="false" fetch="select">
+            <column name="CODRMA" not-null="true" />
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+    </class>
+</hibernate-mapping>

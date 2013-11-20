@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Eqsaldolote" table="EQSALDOLOTE">
+        <comment>Tabelas de saldos por lote e almoxarifado.</comment>
+        <composite-id name="id" class="org.freedom.persist.entity.EqsaldoloteId">
+            <key-property name="codlote" type="string">
+                <column name="CODLOTE" length="20" />
+            </key-property>
+            <key-property name="codprod" type="int">
+                <column name="CODPROD" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+            <key-property name="codalmox" type="int">
+                <column name="CODALMOX" />
+            </key-property>
+            <key-property name="codfilialax" type="short">
+                <column name="CODFILIALAX" />
+            </key-property>
+            <key-property name="codempax" type="int">
+                <column name="CODEMPAX" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="eqlote" class="org.freedom.persist.entity.Eqlote" update="false" insert="false" fetch="select">
+            <column name="CODLOTE" length="20" not-null="true" />
+            <column name="CODPROD" not-null="true" />
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <many-to-one name="eqalmox" class="org.freedom.persist.entity.Eqalmox" update="false" insert="false" fetch="select">
+            <column name="CODALMOX" not-null="true" />
+            <column name="CODFILIALAX" not-null="true" />
+            <column name="CODEMPAX" not-null="true" />
+        </many-to-one>
+        <property name="sldlote" type="big_decimal">
+            <column name="SLDLOTE" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="sldreslote" type="big_decimal">
+            <column name="SLDRESLOTE" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="sldconsiglote" type="big_decimal">
+            <column name="SLDCONSIGLOTE" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="sldliqlote" type="big_decimal">
+            <column name="SLDLIQLOTE" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+    </class>
+</hibernate-mapping>

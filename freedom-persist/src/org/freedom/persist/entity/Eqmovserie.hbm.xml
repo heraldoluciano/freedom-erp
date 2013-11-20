@@ -1,0 +1,161 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Eqmovserie" table="EQMOVSERIE">
+        <comment>Tabela de controle de movimenta&#195;&#167;&#195;&#181;es de nemeros de s&#195;&#169;rie de produtos.</comment>
+        <composite-id name="id" class="org.freedom.persist.entity.EqmovserieId">
+            <key-property name="codmovserie" type="int">
+                <column name="CODMOVSERIE" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="eqrecmerc" class="org.freedom.persist.entity.Eqrecmerc" fetch="select">
+            <column name="TICKET">
+                <comment>C&#195;&#179;digo do recebimento de mercadoria.</comment>
+            </column>
+            <column name="CODFILIALRC">
+                <comment>C&#195;&#179;digo da filial do recebimento de mercadoria.</comment>
+            </column>
+            <column name="CODEMPRC">
+                <comment>C&#195;&#179;digo da empresa do recebimento de mercadoria.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="sgfilial" class="org.freedom.persist.entity.Sgfilial" update="false" insert="false" fetch="select">
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <many-to-one name="ppop" class="org.freedom.persist.entity.Ppop" fetch="select">
+            <column name="CODOP" />
+            <column name="SEQOP" />
+            <column name="CODFILIALOP" />
+            <column name="CODEMPOP" />
+        </many-to-one>
+        <many-to-one name="eqserie" class="org.freedom.persist.entity.Eqserie" fetch="select">
+            <column name="NUMSERIE" length="30" not-null="true">
+                <comment>N&#195;&#186;mero de s&#195;&#169;rie.</comment>
+            </column>
+            <column name="CODPROD" not-null="true">
+                <comment>C&#195;&#179;digo do produto.</comment>
+            </column>
+            <column name="CODFILIALPD" not-null="true" />
+            <column name="CODEMPPD" not-null="true" />
+        </many-to-one>
+        <many-to-one name="eqtipomov" class="org.freedom.persist.entity.Eqtipomov" fetch="select">
+            <column name="CODTIPOMOV" />
+            <column name="CODFILIALTM" />
+            <column name="CODEMPTM" />
+        </many-to-one>
+        <many-to-one name="cpitcompra" class="org.freedom.persist.entity.Cpitcompra" fetch="select">
+            <column name="CODCOMPRA">
+                <comment>C&#195;&#179;digo da compra.</comment>
+            </column>
+            <column name="CODITCOMPRA" />
+            <column name="CODFILIALCP" />
+            <column name="CODEMPCP" />
+        </many-to-one>
+        <many-to-one name="vditvenda" class="org.freedom.persist.entity.Vditvenda" fetch="select">
+            <column name="CODVENDA">
+                <comment>C&#195;&#179;digo da venda</comment>
+            </column>
+            <column name="CODITVENDA" />
+            <column name="TIPOVENDA" length="1" />
+            <column name="CODFILIALVD" />
+            <column name="CODEMPVD" />
+        </many-to-one>
+        <many-to-one name="eqitrecmerc" class="org.freedom.persist.entity.Eqitrecmerc" update="false" insert="false" fetch="select">
+            <column name="TICKET">
+                <comment>C&#195;&#179;digo do recebimento de mercadoria.</comment>
+            </column>
+            <column name="CODITRECMERC">
+                <comment>C&#195;&#179;digo do &#195;&#173;tem de recebimento de mercadoria.</comment>
+            </column>
+            <column name="CODFILIALRC">
+                <comment>C&#195;&#179;digo da filial do recebimento de mercadoria.</comment>
+            </column>
+            <column name="CODEMPRC">
+                <comment>C&#195;&#179;digo da empresa do recebimento de mercadoria.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="eqitrma" class="org.freedom.persist.entity.Eqitrma" fetch="select">
+            <column name="CODRMA" />
+            <column name="CODITRMA" />
+            <column name="CODFILIALRM" />
+            <column name="CODEMPRM" />
+        </many-to-one>
+        <many-to-one name="eqinvprod" class="org.freedom.persist.entity.Eqinvprod" fetch="select">
+            <column name="CODINVPROD">
+                <comment>C&#195;&#179;digo do invent&#195;&#161;rio.</comment>
+            </column>
+            <column name="CODFILIALIV" />
+            <column name="CODEMPIV" />
+        </many-to-one>
+        <property name="dtmovserie" type="date">
+            <column name="DTMOVSERIE" length="10" not-null="true">
+                <comment>Data da movimenta&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+        </property>
+        <property name="tipomovserie" type="short">
+            <column name="TIPOMOVSERIE" not-null="true">
+                <comment>Quantidade movimentada: 1 - Entrada em estoque; 0 - Sem movimenta&#195;&#167;&#195;&#163;o de estoque; -1 - Sa&#195;&#173;da de estoque;</comment>
+            </column>
+        </property>
+        <property name="docmovserie" type="java.lang.Integer">
+            <column name="DOCMOVSERIE" />
+        </property>
+        <property name="codlote" type="string">
+            <column name="CODLOTE" length="20">
+                <comment>C&#195;&#179;digo do lote do produto.</comment>
+            </column>
+        </property>
+        <property name="codemple" type="java.lang.Integer">
+            <column name="CODEMPLE">
+                <comment>C&#195;&#179;digo da empresa do lote.</comment>
+            </column>
+        </property>
+        <property name="codfilialle" type="java.lang.Short">
+            <column name="CODFILIALLE">
+                <comment>Codigo da filial do lote.</comment>
+            </column>
+        </property>
+        <property name="codalmox" type="java.lang.Integer">
+            <column name="CODALMOX">
+                <comment>C&#195;&#179;digo do almoxarifado.</comment>
+            </column>
+        </property>
+        <property name="codempax" type="java.lang.Integer">
+            <column name="CODEMPAX">
+                <comment>C&#195;&#179;digo da empresa do almoxarifado.</comment>
+            </column>
+        </property>
+        <property name="codfilialax" type="java.lang.Short">
+            <column name="CODFILIALAX">
+                <comment>C&#195;&#179;digo da filial do almoxarifado.</comment>
+            </column>
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+    </class>
+</hibernate-mapping>

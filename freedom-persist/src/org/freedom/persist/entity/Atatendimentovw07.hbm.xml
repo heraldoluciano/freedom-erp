@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Atatendimentovw07" table="ATATENDIMENTOVW07">
+        <composite-id name="id" class="org.freedom.persist.entity.Atatendimentovw07Id">
+            <key-property name="codempcl" type="java.lang.Integer">
+                <column name="CODEMPCL" />
+            </key-property>
+            <key-property name="codfilialcl" type="java.lang.Short">
+                <column name="CODFILIALCL" />
+            </key-property>
+            <key-property name="codcli" type="java.lang.Integer">
+                <column name="CODCLI" />
+            </key-property>
+            <key-property name="razcli" type="string">
+                <column name="RAZCLI" length="60" />
+            </key-property>
+            <key-property name="codempct" type="java.lang.Integer">
+                <column name="CODEMPCT" />
+            </key-property>
+            <key-property name="codfilialct" type="java.lang.Short">
+                <column name="CODFILIALCT" />
+            </key-property>
+            <key-property name="codcontr" type="java.lang.Integer">
+                <column name="CODCONTR" />
+            </key-property>
+            <key-property name="desccontr" type="string">
+                <column name="DESCCONTR" length="80" />
+            </key-property>
+            <key-property name="descsitcontr" type="string">
+                <column name="DESCSITCONTR" length="2000" />
+            </key-property>
+            <key-property name="sitcontr" type="string">
+                <column name="SITCONTR" length="2" />
+            </key-property>
+            <key-property name="tpcontr" type="java.lang.Character">
+                <column name="TPCONTR" length="1" />
+            </key-property>
+            <key-property name="tpcobcontr" type="string">
+                <column name="TPCOBCONTR" length="2" />
+            </key-property>
+            <key-property name="qtdcontr" type="big_decimal">
+                <column name="QTDCONTR" precision="0" scale="5" />
+            </key-property>
+            <key-property name="tothoras" type="big_decimal">
+                <column name="TOTHORAS" precision="0" scale="4" />
+            </key-property>
+        </composite-id>
+    </class>
+</hibernate-mapping>

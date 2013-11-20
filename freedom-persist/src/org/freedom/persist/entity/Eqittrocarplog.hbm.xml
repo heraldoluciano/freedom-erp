@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Eqittrocarplog" table="EQITTROCARPLOG">
+        <id name="id" type="long">
+            <column name="ID" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="eqittrocarefprod" class="org.freedom.persist.entity.Eqittrocarefprod" fetch="select">
+            <column name="ID_IT_TROCA" not-null="true" />
+        </many-to-one>
+        <property name="dtexec" type="date">
+            <column name="DTEXEC" length="10" not-null="true" />
+        </property>
+        <property name="hexec" type="time">
+            <column name="HEXEC" length="8" not-null="true" />
+        </property>
+        <property name="situacao" type="string">
+            <column name="SITUACAO" length="2" not-null="true" />
+        </property>
+        <property name="tabela" type="string">
+            <column name="TABELA" length="50" not-null="true" />
+        </property>
+        <property name="mensagem" type="string">
+            <column name="MENSAGEM" length="2000" />
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="128" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" not-null="true" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" not-null="true" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="128" />
+        </property>
+    </class>
+</hibernate-mapping>

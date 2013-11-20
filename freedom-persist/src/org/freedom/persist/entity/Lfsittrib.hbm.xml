@@ -1,0 +1,148 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Lfsittrib" table="LFSITTRIB">
+        <comment>Tabela de situa&#195;&#167;&#195;&#181;es tribut&#195;&#161;rias para os impostos: PIS e Cofins.</comment>
+        <composite-id name="id" class="org.freedom.persist.entity.LfsittribId">
+            <key-property name="codsittrib" type="string">
+                <column name="CODSITTRIB" length="2" />
+            </key-property>
+            <key-property name="impsittrib" type="string">
+                <column name="IMPSITTRIB" length="2" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="sgfilial" class="org.freedom.persist.entity.Sgfilial" update="false" insert="false" fetch="select">
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <property name="descsittrib" type="string">
+            <column name="DESCSITTRIB" length="200" not-null="true" />
+        </property>
+        <property name="operacao" type="char">
+            <column name="OPERACAO" length="1" not-null="true">
+                <comment>Operacao de (S) - Saida, (E) - Entrada</comment>
+            </column>
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+        <set name="lfitvendasForLfitvendafklfsittribipi" table="LFITVENDA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODSITTRIBIPI" length="2" />
+                <column name="IMPSITTRIBIPI" length="2" />
+                <column name="CODFILIALSI" />
+                <column name="CODEMPSI" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Lfitvenda" />
+        </set>
+        <set name="lfitclfiscalsForLfitclsfiscalfklfsittribpis" table="LFITCLFISCAL" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODSITTRIBPIS" length="2">
+                    <comment>C&#195;&#179;digo da situa&#195;&#167;&#195;&#163;o tribut&#195;&#161;rio do PIS.</comment>
+                </column>
+                <column name="IMPSITTRIBPIS" length="2">
+                    <comment>C&#195;&#179;digo do imposto da situa&#195;&#167;&#195;&#163;o tribut&#195;&#161;ria do PIS.</comment>
+                </column>
+                <column name="CODFILIALSP">
+                    <comment>C&#195;&#179;digo da filial da situa&#195;&#167;&#195;&#163;o tribut&#195;&#161;ria do PIS</comment>
+                </column>
+                <column name="CODEMPSP">
+                    <comment>C&#195;&#179;digo da empresa da situa&#195;&#167;&#195;&#163;o tribut&#195;&#161;ria do PIS.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Lfitclfiscal" />
+        </set>
+        <set name="lfitvendasForLfitvendafklfsittribpis" table="LFITVENDA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODSITTRIBPIS" length="2" />
+                <column name="IMPSITTRIBPIS" length="2" />
+                <column name="CODFILIALSP" />
+                <column name="CODEMPSP" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Lfitvenda" />
+        </set>
+        <set name="lfitclfiscalsForLfitclsfiscalfklfsittribiss" table="LFITCLFISCAL" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODSITTRIBISS" length="2">
+                    <comment>C&#195;&#179;digo da situa&#195;&#167;&#195;&#163;o tribut&#195;&#161;ria para o ISS</comment>
+                </column>
+                <column name="IMPSITTRIBISS" length="2">
+                    <comment>Sigla do imposto definido para situa&#195;&#167;&#195;&#163;o tribut&#195;&#161;ria do ISS</comment>
+                </column>
+                <column name="CODFILIALIS">
+                    <comment>C&#195;&#179;digo da filial para a situa&#195;&#167;&#195;&#163;o tribut&#195;&#161;ria do ISS</comment>
+                </column>
+                <column name="CODEMPIS">
+                    <comment>C&#195;&#179;digo da empresa da situa&#195;&#167;&#195;&#163;o tribut&#195;&#161;rio para o ISS.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Lfitclfiscal" />
+        </set>
+        <set name="lfitclfiscalsForLfitclsfiscalfklfsittribcof" table="LFITCLFISCAL" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODSITTRIBCOF" length="2">
+                    <comment>C&#195;&#179;digo da situa&#195;&#167;&#195;&#163;o tribut&#195;&#161;ria do COFINS.</comment>
+                </column>
+                <column name="IMPSITTRIBCOF" length="2">
+                    <comment>C&#195;&#179;digo do imposto da situa&#195;&#167;&#195;&#163;o tribut&#195;&#161;ria do COFINS.</comment>
+                </column>
+                <column name="CODFILIALSC">
+                    <comment>C&#195;&#179;digo da situa&#195;&#167;&#195;&#163;o tribut&#195;&#161;ria do COFINS.</comment>
+                </column>
+                <column name="CODEMPSC">
+                    <comment>C&#195;&#179;digo da empresa da situa&#195;&#167;&#195;&#163;o tribut&#195;&#161;ria do COFINS.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Lfitclfiscal" />
+        </set>
+        <set name="lfitvendasForLfitvendafklfsittribcof" table="LFITVENDA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODSITTRIBCOF" length="2" />
+                <column name="IMPSITTRIBCOF" length="2" />
+                <column name="CODFILIALSC" />
+                <column name="CODEMPSC" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Lfitvenda" />
+        </set>
+        <set name="lfitclfiscalsForLfitclsfiscalfklfsittribipi" table="LFITCLFISCAL" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODSITTRIBIPI" length="2">
+                    <comment>C&#195;&#179;digo da situa&#195;&#167;&#195;&#163;o tribut&#195;&#161;ria do IPI</comment>
+                </column>
+                <column name="IMPSITTRIBIPI" length="2">
+                    <comment>C&#195;&#179;digo do imposto da situa&#195;&#167;&#195;&#163;o tribut&#195;&#161;ria do IPI</comment>
+                </column>
+                <column name="CODFILIALSI">
+                    <comment>C&#195;&#179;digo da filial da situa&#195;&#167;&#195;&#163;o tribut&#195;&#161;ria do IPI</comment>
+                </column>
+                <column name="CODEMPSI">
+                    <comment>C&#195;&#179;digo da empresa da situa&#195;&#167;&#195;&#163;o tribut&#195;&#161;ria do IPI</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Lfitclfiscal" />
+        </set>
+    </class>
+</hibernate-mapping>

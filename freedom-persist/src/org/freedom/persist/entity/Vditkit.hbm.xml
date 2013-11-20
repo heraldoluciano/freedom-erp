@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Vditkit" table="VDITKIT">
+        <composite-id name="id" class="org.freedom.persist.entity.VditkitId">
+            <key-property name="codkit" type="int">
+                <column name="CODKIT" />
+            </key-property>
+            <key-property name="seqitkit" type="short">
+                <column name="SEQITKIT" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="eqproduto" class="org.freedom.persist.entity.Eqproduto" fetch="select">
+            <column name="CODPROD" not-null="true" />
+            <column name="CODFILIALPD" not-null="true" />
+            <column name="CODEMPPD" not-null="true" />
+        </many-to-one>
+        <many-to-one name="vdkit" class="org.freedom.persist.entity.Vdkit" update="false" insert="false" fetch="select">
+            <column name="CODKIT" not-null="true" />
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <property name="refprod" type="string">
+            <column name="REFPROD" length="20" not-null="true" />
+        </property>
+        <property name="qtditkit" type="big_decimal">
+            <column name="QTDITKIT" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="precoitkit" type="big_decimal">
+            <column name="PRECOITKIT" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="vlrtotitkit" type="big_decimal">
+            <column name="VLRTOTITKIT" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="emmanut" type="char">
+            <column name="EMMANUT" length="1" not-null="true" />
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" not-null="true" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+    </class>
+</hibernate-mapping>

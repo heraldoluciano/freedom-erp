@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Vditregracomis" table="VDITREGRACOMIS">
+        <composite-id name="id" class="org.freedom.persist.entity.VditregracomisId">
+            <key-property name="codregrcomis" type="int">
+                <column name="CODREGRCOMIS" />
+            </key-property>
+            <key-property name="seqitrc" type="short">
+                <column name="SEQITRC" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="vdregracomis" class="org.freedom.persist.entity.Vdregracomis" update="false" insert="false" fetch="select">
+            <column name="CODREGRCOMIS" not-null="true" />
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <many-to-one name="vdvendedor" class="org.freedom.persist.entity.Vdvendedor" fetch="select">
+            <column name="CODVEND">
+                <comment>C&#195;&#179;digo do vendedor.</comment>
+            </column>
+            <column name="CODFILIALVD">
+                <comment>C&#195;&#179;digo da filial do vendedor</comment>
+            </column>
+            <column name="CODEMPVD">
+                <comment>C&#195;&#179;digo da empresa do vendedor.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="vdtipovend" class="org.freedom.persist.entity.Vdtipovend" fetch="select">
+            <column name="CODTIPOVEND" not-null="true" />
+            <column name="CODFILIALTV" not-null="true" />
+            <column name="CODEMPTV" not-null="true" />
+        </many-to-one>
+        <property name="obrigitrc" type="char">
+            <column name="OBRIGITRC" length="1" not-null="true" />
+        </property>
+        <property name="perccomisitrc" type="big_decimal">
+            <column name="PERCCOMISITRC" precision="7" scale="3" not-null="true" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" not-null="true" />
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" not-null="true" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" not-null="true" />
+        </property>
+        <set name="vdvendacomises" table="VDVENDACOMIS" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODREGRCOMIS" not-null="true" />
+                <column name="SEQITRC" not-null="true" />
+                <column name="CODFILIALRC" not-null="true" />
+                <column name="CODEMPRC" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdvendacomis" />
+        </set>
+    </class>
+</hibernate-mapping>

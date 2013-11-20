@@ -1,0 +1,151 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Sgagenda" table="SGAGENDA">
+        <composite-id name="id" class="org.freedom.persist.entity.SgagendaId">
+            <key-property name="codage" type="int">
+                <column name="CODAGE" />
+            </key-property>
+            <key-property name="tipoage" type="string">
+                <column name="TIPOAGE" length="5" />
+            </key-property>
+            <key-property name="codagd" type="int">
+                <column name="CODAGD" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="sgagenda" class="org.freedom.persist.entity.Sgagenda" fetch="select">
+            <column name="CODAGEAR">
+                <comment>C&#195;&#179;digo do agente do agendamento vinculado (repetitivos).</comment>
+            </column>
+            <column name="TIPOAGEAR" length="5">
+                <comment>C&#195;&#179;digo da tipo do agendamento vinculado (repetitivos).</comment>
+            </column>
+            <column name="CODAGDAR">
+                <comment>C&#195;&#179;digo do agendamento vinculado (repetitivos).</comment>
+            </column>
+            <column name="CODFILIALAR">
+                <comment>C&#195;&#179;digo da filial do agendamento vinculado (repetitivos).</comment>
+            </column>
+            <column name="CODEMPAR">
+                <comment>C&#195;&#179;digo da empresa do agendamento vinculado (repetitivos).</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="sgagente" class="org.freedom.persist.entity.Sgagente" fetch="select">
+            <column name="CODAGEEMIT" not-null="true">
+                <comment>C&#195;&#179;digo do agente criador do agendamento</comment>
+            </column>
+            <column name="TIPOAGEEMIT" length="5" not-null="true" />
+            <column name="CODFILIALAE" not-null="true" />
+            <column name="CODEMPAE" not-null="true" />
+        </many-to-one>
+        <property name="dataagd" type="date">
+            <column name="DATAAGD" length="10" not-null="true" />
+        </property>
+        <property name="dtainiagd" type="date">
+            <column name="DTAINIAGD" length="10" not-null="true" />
+        </property>
+        <property name="hriniagd" type="time">
+            <column name="HRINIAGD" length="8" not-null="true" />
+        </property>
+        <property name="dtafimagd" type="date">
+            <column name="DTAFIMAGD" length="10" not-null="true" />
+        </property>
+        <property name="hrfimagd" type="time">
+            <column name="HRFIMAGD" length="8" not-null="true" />
+        </property>
+        <property name="assuntoagd" type="string">
+            <column name="ASSUNTOAGD" length="150" not-null="true" />
+        </property>
+        <property name="descagd" type="string">
+            <column name="DESCAGD" length="10000" not-null="true" />
+        </property>
+        <property name="prioragd" type="short">
+            <column name="PRIORAGD" not-null="true" />
+        </property>
+        <property name="sitagd" type="string">
+            <column name="SITAGD" length="2" not-null="true">
+                <comment>Status do agendamento: "PE" - Pendente; "CA" - Cancelado; "FN" - Finalizado;</comment>
+            </column>
+        </property>
+        <property name="caagd" type="string">
+            <column name="CAAGD" length="2" not-null="true">
+                <comment>Controle de acesso ao agendamento "PU" - publico "PR" - privado</comment>
+            </column>
+        </property>
+        <property name="codempta" type="int">
+            <column name="CODEMPTA" not-null="true" />
+        </property>
+        <property name="codfilialta" type="short">
+            <column name="CODFILIALTA" not-null="true" />
+        </property>
+        <property name="codtipoagd" type="int">
+            <column name="CODTIPOAGD" not-null="true">
+                <comment>C&#195;&#179;digo do tipo de agendamento.</comment>
+            </column>
+        </property>
+        <property name="resolucaomotivo" type="string">
+            <column name="RESOLUCAOMOTIVO" length="10000" />
+        </property>
+        <property name="diatodo" type="char">
+            <column name="DIATODO" length="1" not-null="true">
+                <comment>Indica se compromisso ocupar&#195;&#161; o dia inteiro.</comment>
+            </column>
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+        <set name="atatendoagendas" table="ATATENDOAGENDA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODAGE" not-null="true" />
+                <column name="TIPOAGE" length="5" not-null="true" />
+                <column name="CODAGD" not-null="true" />
+                <column name="CODFILIALAG" not-null="true" />
+                <column name="CODEMPAG" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Atatendoagenda" />
+        </set>
+        <set name="sgagendas" table="SGAGENDA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODAGEAR">
+                    <comment>C&#195;&#179;digo do agente do agendamento vinculado (repetitivos).</comment>
+                </column>
+                <column name="TIPOAGEAR" length="5">
+                    <comment>C&#195;&#179;digo da tipo do agendamento vinculado (repetitivos).</comment>
+                </column>
+                <column name="CODAGDAR">
+                    <comment>C&#195;&#179;digo do agendamento vinculado (repetitivos).</comment>
+                </column>
+                <column name="CODFILIALAR">
+                    <comment>C&#195;&#179;digo da filial do agendamento vinculado (repetitivos).</comment>
+                </column>
+                <column name="CODEMPAR">
+                    <comment>C&#195;&#179;digo da empresa do agendamento vinculado (repetitivos).</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgagenda" />
+        </set>
+    </class>
+</hibernate-mapping>

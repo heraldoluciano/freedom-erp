@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Tkcontclivw02" table="TKCONTCLIVW02">
+        <composite-id name="id" class="org.freedom.persist.entity.Tkcontclivw02Id">
+            <key-property name="tipocto" type="java.lang.Character">
+                <column name="TIPOCTO" length="1" />
+            </key-property>
+            <key-property name="codemp" type="java.lang.Integer">
+                <column name="CODEMP" />
+            </key-property>
+            <key-property name="codfilial" type="java.lang.Short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codcto" type="java.lang.Integer">
+                <column name="CODCTO" />
+            </key-property>
+            <key-property name="razcto" type="string">
+                <column name="RAZCTO" length="60" />
+            </key-property>
+            <key-property name="nomecto" type="string">
+                <column name="NOMECTO" length="50" />
+            </key-property>
+            <key-property name="contcto" type="string">
+                <column name="CONTCTO" length="40" />
+            </key-property>
+            <key-property name="emailcto" type="string">
+                <column name="EMAILCTO" length="50" />
+            </key-property>
+            <key-property name="obscto" type="string">
+                <column name="OBSCTO" length="10000" />
+            </key-property>
+            <key-property name="codempto" type="java.lang.Integer">
+                <column name="CODEMPTO" />
+            </key-property>
+            <key-property name="codfilialto" type="java.lang.Short">
+                <column name="CODFILIALTO" />
+            </key-property>
+            <key-property name="codtipocont" type="java.lang.Integer">
+                <column name="CODTIPOCONT" />
+            </key-property>
+            <key-property name="codempsr" type="java.lang.Integer">
+                <column name="CODEMPSR" />
+            </key-property>
+            <key-property name="codfilialsr" type="java.lang.Short">
+                <column name="CODFILIALSR" />
+            </key-property>
+            <key-property name="codsetor" type="java.lang.Integer">
+                <column name="CODSETOR" />
+            </key-property>
+            <key-property name="codempoc" type="java.lang.Integer">
+                <column name="CODEMPOC" />
+            </key-property>
+            <key-property name="codfilialoc" type="java.lang.Short">
+                <column name="CODFILIALOC" />
+            </key-property>
+            <key-property name="codorigcont" type="java.lang.Integer">
+                <column name="CODORIGCONT" />
+            </key-property>
+            <key-property name="codempti" type="java.lang.Integer">
+                <column name="CODEMPTI" />
+            </key-property>
+            <key-property name="codfilialti" type="java.lang.Short">
+                <column name="CODFILIALTI" />
+            </key-property>
+            <key-property name="codtipocli" type="java.lang.Integer">
+                <column name="CODTIPOCLI" />
+            </key-property>
+            <key-property name="codempcc" type="java.lang.Integer">
+                <column name="CODEMPCC" />
+            </key-property>
+            <key-property name="codfilialcc" type="java.lang.Short">
+                <column name="CODFILIALCC" />
+            </key-property>
+            <key-property name="codclascli" type="java.lang.Integer">
+                <column name="CODCLASCLI" />
+            </key-property>
+            <key-property name="ativo" type="java.lang.Character">
+                <column name="ATIVO" length="1" />
+            </key-property>
+            <key-property name="dtins" type="date">
+                <column name="DTINS" length="10" />
+            </key-property>
+            <key-property name="dtalt" type="date">
+                <column name="DTALT" length="10" />
+            </key-property>
+            <key-property name="dtinscc" type="date">
+                <column name="DTINSCC" length="10" />
+            </key-property>
+            <key-property name="dtaltcc" type="date">
+                <column name="DTALTCC" length="10" />
+            </key-property>
+        </composite-id>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,256 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Vditorcamento" table="VDITORCAMENTO">
+        <composite-id name="id" class="org.freedom.persist.entity.VditorcamentoId">
+            <key-property name="codorc" type="int">
+                <column name="CODORC" />
+            </key-property>
+            <key-property name="coditorc" type="int">
+                <column name="CODITORC" />
+            </key-property>
+            <key-property name="tipoorc" type="char">
+                <column name="TIPOORC" length="1" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="eqproduto" class="org.freedom.persist.entity.Eqproduto" fetch="select">
+            <column name="CODPROD" not-null="true" />
+            <column name="CODFILIALPD" not-null="true" />
+            <column name="CODEMPPD" not-null="true" />
+        </many-to-one>
+        <many-to-one name="sglog" class="org.freedom.persist.entity.Sglog" fetch="select">
+            <column name="CODLOG" />
+            <column name="CODFILIALLG" />
+            <column name="CODEMPLG" />
+        </many-to-one>
+        <many-to-one name="eqalmox" class="org.freedom.persist.entity.Eqalmox" fetch="select">
+            <column name="CODALMOX" not-null="true">
+                <comment>C&#195;&#179;digo do almoxarifado.</comment>
+            </column>
+            <column name="CODFILIALAX" not-null="true">
+                <comment>C&#195;&#179;digo da filial na tabela de almoxarifados.</comment>
+            </column>
+            <column name="CODEMPAX" not-null="true">
+                <comment>C&#195;&#179;digo da empresa na tabela de almoxarifados.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="eqlote" class="org.freedom.persist.entity.Eqlote" update="false" insert="false" fetch="select">
+            <column name="CODLOTE" length="20" />
+            <column name="CODPROD" not-null="true" />
+            <column name="CODFILIALLE" />
+            <column name="CODEMPLE" />
+        </many-to-one>
+        <many-to-one name="vdorcamento" class="org.freedom.persist.entity.Vdorcamento" update="false" insert="false" fetch="select">
+            <column name="CODORC" not-null="true" />
+            <column name="TIPOORC" length="1" not-null="true" />
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <many-to-one name="vdprazoent" class="org.freedom.persist.entity.Vdprazoent" fetch="select">
+            <column name="CODPE">
+                <comment>C&#195;&#179;digo do prazo de entrega.</comment>
+            </column>
+            <column name="CODFILIALPE">
+                <comment>C&#195;&#179;digo da filial do prazo de entrega.</comment>
+            </column>
+            <column name="CODEMPPE">
+                <comment>C&#195;&#179;digo da empresa do prazo de entrega.</comment>
+            </column>
+        </many-to-one>
+        <property name="qtditorc" type="big_decimal">
+            <column name="QTDITORC" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="qtdaprovitorc" type="big_decimal">
+            <column name="QTDAPROVITORC" precision="15" scale="5">
+                <comment>Quantidade aprovada.</comment>
+            </column>
+        </property>
+        <property name="qtdafatitorc" type="big_decimal">
+            <column name="QTDAFATITORC" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="qtdfatitorc" type="big_decimal">
+            <column name="QTDFATITORC" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="precoitorc" type="big_decimal">
+            <column name="PRECOITORC" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="percdescitorc" type="big_decimal">
+            <column name="PERCDESCITORC" precision="15" scale="5" />
+        </property>
+        <property name="vlrdescitorc" type="big_decimal">
+            <column name="VLRDESCITORC" precision="15" scale="5" />
+        </property>
+        <property name="vlrliqitorc" type="big_decimal">
+            <column name="VLRLIQITORC" precision="15" scale="5" />
+        </property>
+        <property name="vlrproditorc" type="big_decimal">
+            <column name="VLRPRODITORC" precision="15" scale="5" />
+        </property>
+        <property name="refprod" type="string">
+            <column name="REFPROD" length="20" />
+        </property>
+        <property name="numautorizorc" type="string">
+            <column name="NUMAUTORIZORC" length="15" />
+        </property>
+        <property name="aceiteitorc" type="char">
+            <column name="ACEITEITORC" length="1" not-null="true" />
+        </property>
+        <property name="aprovitorc" type="char">
+            <column name="APROVITORC" length="1" not-null="true" />
+        </property>
+        <property name="emititorc" type="char">
+            <column name="EMITITORC" length="1" not-null="true" />
+        </property>
+        <property name="vencautorizorc" type="date">
+            <column name="VENCAUTORIZORC" length="10" />
+        </property>
+        <property name="strdescitorc" type="string">
+            <column name="STRDESCITORC" length="50" />
+        </property>
+        <property name="obsitorc" type="string">
+            <column name="OBSITORC" length="10000" />
+        </property>
+        <property name="statusitorc" type="string">
+            <column name="STATUSITORC" length="2">
+                <comment>"*" - Or&#195;&#167;amento em aberto; "OA" - Or&#195;&#167;amento em aberto; "OC" - Or&#195;&#167;amento completo/impresso; "OL" - Or&#195;&#167;amento
+                liberado/aprovado; "OV" - Or&#195;&#167;amento faturado. "OP" - Or&#195;&#167;amento produzido. "CA" - Or&#195;&#167;amento Cancelado/N&#195;&#163;o
+                Aprovado.</comment>
+            </column>
+        </property>
+        <property name="diaspe" type="java.lang.Short">
+            <column name="DIASPE">
+                <comment>Prazo de entrega (em dias) no &#195;&#173;tem.</comment>
+            </column>
+        </property>
+        <property name="emmanut" type="java.lang.Character">
+            <column name="EMMANUT" length="1">
+                <comment>Flag para por a tabela em manuten&#195;&#167;ao (S/N).</comment>
+            </column>
+        </property>
+        <property name="sitentitorc" type="char">
+            <column name="SITENTITORC" length="1" not-null="true">
+                <comment>Situa&#195;&#167;&#195;&#163;o da entrega N - N&#195;&#163;o entregue E - Entregue</comment>
+            </column>
+        </property>
+        <property name="sittermritorc" type="char">
+            <column name="SITTERMRITORC" length="1" not-null="true">
+                <comment>Situa&#195;&#167;&#195;&#163;o do termo de recebimento. E - Emitir N - N&#195;&#163;o emitir O - Emitido</comment>
+            </column>
+        </property>
+        <property name="cancitorc" type="char">
+            <column name="CANCITORC" length="1" not-null="true">
+                <comment>Flag de cancelamento S/N.</comment>
+            </column>
+        </property>
+        <property name="fatitorc" type="char">
+            <column name="FATITORC" length="1" not-null="true">
+                <comment>Flag de faturamento S/N/P (Sim, n&#195;&#163;o, parcial)</comment>
+            </column>
+        </property>
+        <property name="vlrcomisitorc" type="big_decimal">
+            <column name="VLRCOMISITORC" precision="15" scale="5">
+                <comment>Valor previsto de comiss&#195;&#163;o no item de or&#195;&#167;amento.</comment>
+            </column>
+        </property>
+        <property name="perccomisitorc" type="big_decimal">
+            <column name="PERCCOMISITORC" precision="9">
+                <comment>Percentual previsto de comiss&#195;&#163;o no item de or&#195;&#167;amento.</comment>
+            </column>
+        </property>
+        <property name="vlrfreteitorc" type="big_decimal">
+            <column name="VLRFRETEITORC" precision="15" scale="5">
+                <comment>Valor previsto de frete por item do or&#195;&#167;amento.</comment>
+            </column>
+        </property>
+        <property name="dtaprovitorc" type="date">
+            <column name="DTAPROVITORC" length="10">
+                <comment>Data de aprova&#195;&#167;&#195;&#163;o do &#195;&#173;tem de or&#195;&#167;amento.</comment>
+            </column>
+        </property>
+        <property name="sitproditorc" type="string">
+            <column name="SITPRODITORC" length="2" not-null="true">
+                <comment>Situa&#195;&#167;&#195;&#163;o da produ&#195;&#167;&#195;&#163;o do &#195;&#173;tem de or&#195;&#167;amento. PE - Pendente EP - Em
+                produ&#195;&#167;&#195;&#163;o NP - N&#195;&#163;o produzir PD - Produzido</comment>
+            </column>
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+        <set name="vdvendaorcs" table="VDVENDAORC" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODORC" not-null="true" />
+                <column name="CODITORC" not-null="true" />
+                <column name="TIPOORC" length="1" not-null="true" />
+                <column name="CODFILIALOR" not-null="true" />
+                <column name="CODEMPOR" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdvendaorc" />
+        </set>
+        <set name="vdcontrorcs" table="VDCONTRORC" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODORC" not-null="true" />
+                <column name="CODITORC" not-null="true" />
+                <column name="TIPOORC" length="1" not-null="true" />
+                <column name="CODFILIALOR" not-null="true" />
+                <column name="CODEMPOR" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdcontrorc" />
+        </set>
+        <set name="crfichaorcs" table="CRFICHAORC" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODORC" not-null="true" />
+                <column name="CODITORC" not-null="true" />
+                <column name="TIPOORC" length="1" not-null="true" />
+                <column name="CODFILIALOR" not-null="true" />
+                <column name="CODEMPOR" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Crfichaorc" />
+        </set>
+        <one-to-one name="vdprevtribitorc" class="org.freedom.persist.entity.Vdprevtribitorc"></one-to-one>
+        <set name="ppopitorcs" table="PPOPITORC" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODORC" not-null="true" />
+                <column name="CODITORC" not-null="true" />
+                <column name="TIPOORC" length="1" not-null="true" />
+                <column name="CODFILIALOC" not-null="true" />
+                <column name="CODEMPOC" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Ppopitorc" />
+        </set>
+        <one-to-one name="vditcustoorc" class="org.freedom.persist.entity.Vditcustoorc"></one-to-one>
+        <one-to-one name="ppprocessaoptmp" class="org.freedom.persist.entity.Ppprocessaoptmp"></one-to-one>
+        <set name="eqitrecmercitositorcs" table="EQITRECMERCITOSITORC" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODORC" not-null="true" />
+                <column name="CODITORC" not-null="true" />
+                <column name="TIPOORC" length="1" not-null="true" />
+                <column name="CODFILIALOC" not-null="true" />
+                <column name="CODEMPOC" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqitrecmercitositorc" />
+        </set>
+    </class>
+</hibernate-mapping>

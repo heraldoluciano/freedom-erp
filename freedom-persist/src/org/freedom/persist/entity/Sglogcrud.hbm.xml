@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Sglogcrud" table="SGLOGCRUD">
+        <comment>Log das a&#195;&#167;&#195;&#181;es de insert, update e delete.</comment>
+        <id name="id" type="long">
+            <column name="ID" />
+            <generator class="assigned" />
+        </id>
+        <property name="tablename" type="string">
+            <column name="TABLENAME" length="100" not-null="true">
+                <comment>Nome da tabela</comment>
+            </column>
+        </property>
+        <property name="operation" type="char">
+            <column name="OPERATION" length="1" not-null="true">
+                <comment>Opera&#195;&#167;&#195;&#163;o: U - Update D - Delete I - Insert</comment>
+            </column>
+        </property>
+        <property name="eventlog" type="char">
+            <column name="EVENTLOG" length="1" not-null="true">
+                <comment>Evento: B - Before antes da operac&#195;&#163;o A - After ap&#195;&#179;s a opera&#195;&#167;&#195;&#163;o</comment>
+            </column>
+        </property>
+        <property name="dtlog" type="date">
+            <column name="DTLOG" length="10" not-null="true">
+                <comment>Data da opera&#195;&#167;&#195;&#163;o</comment>
+            </column>
+        </property>
+        <property name="hlog" type="time">
+            <column name="HLOG" length="8" not-null="true">
+                <comment>Hora da opera&#195;&#167;&#195;&#163;o</comment>
+            </column>
+        </property>
+        <property name="idusu" type="string">
+            <column name="IDUSU" length="128" not-null="true">
+                <comment>ID do usu&#195;&#161;rio</comment>
+            </column>
+        </property>
+        <property name="xml" type="string">
+            <column name="XML" length="0" not-null="true">
+                <comment>Conte&#195;&#186;do do registro antes ou depois da altera&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+        </property>
+    </class>
+</hibernate-mapping>

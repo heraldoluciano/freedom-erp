@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Sgdebug" table="SGDEBUG">
+        <composite-id name="id" class="org.freedom.persist.entity.SgdebugId">
+            <key-property name="seq" type="int">
+                <column name="SEQ" />
+            </key-property>
+            <key-property name="data" type="date">
+                <column name="DATA" length="10" />
+            </key-property>
+            <key-property name="hora" type="time">
+                <column name="HORA" length="8" />
+            </key-property>
+            <key-property name="rotina" type="string">
+                <column name="ROTINA" length="60" />
+            </key-property>
+            <key-property name="texto" type="string">
+                <column name="TEXTO" length="100" />
+            </key-property>
+        </composite-id>
+    </class>
+</hibernate-mapping>

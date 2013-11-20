@@ -1,0 +1,228 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Lfitcompra" table="LFITCOMPRA">
+        <comment>Tabela auxiliar de informa&#195;&#167;&#195;&#181;es fiscais do item de compra.</comment>
+        <composite-id name="id" class="org.freedom.persist.entity.LfitcompraId">
+            <key-property name="codcompra" type="int">
+                <column name="CODCOMPRA" />
+            </key-property>
+            <key-property name="coditcompra" type="int">
+                <column name="CODITCOMPRA" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <one-to-one name="cpitcompra" class="org.freedom.persist.entity.Cpitcompra" constrained="true"></one-to-one>
+        <property name="aliqcofins" type="big_decimal">
+            <column name="ALIQCOFINS" precision="15" scale="5" />
+        </property>
+        <property name="codempsp" type="java.lang.Integer">
+            <column name="CODEMPSP" />
+        </property>
+        <property name="codfilialsp" type="java.lang.Short">
+            <column name="CODFILIALSP" />
+        </property>
+        <property name="codsittribpis" type="string">
+            <column name="CODSITTRIBPIS" length="2" />
+        </property>
+        <property name="impsittribpis" type="string">
+            <column name="IMPSITTRIBPIS" length="2" />
+        </property>
+        <property name="codempsc" type="java.lang.Integer">
+            <column name="CODEMPSC" />
+        </property>
+        <property name="codfilialsc" type="java.lang.Short">
+            <column name="CODFILIALSC" />
+        </property>
+        <property name="codsittribcof" type="string">
+            <column name="CODSITTRIBCOF" length="2" />
+        </property>
+        <property name="impsittribcof" type="string">
+            <column name="IMPSITTRIBCOF" length="2" />
+        </property>
+        <property name="codempsi" type="java.lang.Integer">
+            <column name="CODEMPSI" />
+        </property>
+        <property name="codfilialsi" type="java.lang.Short">
+            <column name="CODFILIALSI" />
+        </property>
+        <property name="codsittribipi" type="string">
+            <column name="CODSITTRIBIPI" length="2" />
+        </property>
+        <property name="impsittribipi" type="string">
+            <column name="IMPSITTRIBIPI" length="2" />
+        </property>
+        <property name="vlripiunidtrib" type="big_decimal">
+            <column name="VLRIPIUNIDTRIB" precision="15" scale="5" />
+        </property>
+        <property name="modbcicms" type="java.lang.Short">
+            <column name="MODBCICMS" />
+        </property>
+        <property name="modbcicmsst" type="java.lang.Short">
+            <column name="MODBCICMSST" />
+        </property>
+        <property name="aliqredbcicms" type="big_decimal">
+            <column name="ALIQREDBCICMS" precision="15" scale="5">
+                <comment>Al&#195;&#173;quota da redu&#195;&#167;&#195;&#163;o da base de calculo do ICMS.</comment>
+            </column>
+        </property>
+        <property name="aliqredbcicmsst" type="big_decimal">
+            <column name="ALIQREDBCICMSST" precision="15" scale="5">
+                <comment>Aliquota da redu&#195;&#167;&#195;&#163;o da base de calculo do ICMS Substitui&#195;&#167;&#195;&#163;o tribut&#195;&#161;ria.</comment>
+            </column>
+        </property>
+        <property name="aliqicmsst" type="big_decimal">
+            <column name="ALIQICMSST" precision="15" scale="5">
+                <comment>Aliquota do icms de substitui&#195;&#167;&#195;&#163;o tribut&#195;&#161;ria.</comment>
+            </column>
+        </property>
+        <property name="aliqpis" type="big_decimal">
+            <column name="ALIQPIS" precision="15" scale="5">
+                <comment>Al&#195;&#173;quota do PIS</comment>
+            </column>
+        </property>
+        <property name="vlrpisunidtrib" type="big_decimal">
+            <column name="VLRPISUNIDTRIB" precision="15" scale="5">
+                <comment>Valor tribut&#195;&#161;vel para o PIS</comment>
+            </column>
+        </property>
+        <property name="vlrbasepis" type="big_decimal">
+            <column name="VLRBASEPIS" precision="15" scale="5">
+                <comment>Valor da base de c&#195;&#161;lculo do PIS</comment>
+            </column>
+        </property>
+        <property name="vlrbasecofins" type="big_decimal">
+            <column name="VLRBASECOFINS" precision="15" scale="5">
+                <comment>Valor da base de c&#195;&#161;lculo do COFINS</comment>
+            </column>
+        </property>
+        <property name="vlrcofunidtrib" type="big_decimal">
+            <column name="VLRCOFUNIDTRIB" precision="15" scale="5">
+                <comment>Valor tribut&#195;&#161;vel do pis por unidade comprada.</comment>
+            </column>
+        </property>
+        <property name="vlrir" type="big_decimal">
+            <column name="VLRIR" precision="15" scale="5">
+                <comment>Valor do IR sobre o &#195;&#173;tem de compra.</comment>
+            </column>
+        </property>
+        <property name="vlrpis" type="big_decimal">
+            <column name="VLRPIS" precision="15" scale="5">
+                <comment>Valor do PIS sobre o &#195;&#173;tem de compra.</comment>
+            </column>
+        </property>
+        <property name="vlrcofins" type="big_decimal">
+            <column name="VLRCOFINS" precision="15" scale="5">
+                <comment>Valor do COFINS sobre o item de compra.</comment>
+            </column>
+        </property>
+        <property name="vlrcsocial" type="big_decimal">
+            <column name="VLRCSOCIAL" precision="15" scale="5">
+                <comment>Valor da Contribui&#195;&#167;&#195;&#163;o Social sobre o item de venda.</comment>
+            </column>
+        </property>
+        <property name="origfisc" type="java.lang.Character">
+            <column name="ORIGFISC" length="1">
+                <comment>Origem da mercadoria: 0 - Nacional 1 - Estrangeira Importa&#195;&#167;&#195;&#163;o direta 2 - Estrangeira - Adquirida no mercado interno</comment>
+            </column>
+        </property>
+        <property name="codtrattrib" type="string">
+            <column name="CODTRATTRIB" length="2">
+                <comment>C&#195;&#179;digo do tratamento tribut&#195;&#161;rio.</comment>
+            </column>
+        </property>
+        <property name="margemvlagritcompra" type="big_decimal">
+            <column name="MARGEMVLAGRITCOMPRA" precision="15" scale="5" />
+        </property>
+        <property name="vlrbaseicmsstitcompra" type="big_decimal">
+            <column name="VLRBASEICMSSTITCOMPRA" precision="15" scale="5" />
+        </property>
+        <property name="vlricmsstitcompra" type="big_decimal">
+            <column name="VLRICMSSTITCOMPRA" precision="15" scale="5" />
+        </property>
+        <property name="percissitcompra" type="big_decimal">
+            <column name="PERCISSITCOMPRA" precision="15" scale="5" />
+        </property>
+        <property name="vlrbaseissitcompra" type="big_decimal">
+            <column name="VLRBASEISSITCOMPRA" precision="15" scale="5" />
+        </property>
+        <property name="vlrissitcompra" type="big_decimal">
+            <column name="VLRISSITCOMPRA" precision="15" scale="5" />
+        </property>
+        <property name="percicmssimples" type="big_decimal">
+            <column name="PERCICMSSIMPLES" precision="15" scale="5">
+                <comment>Percentual de cr&#195;&#169;dito de icms (simples)</comment>
+            </column>
+        </property>
+        <property name="emmanut" type="char">
+            <column name="EMMANUT" length="1" not-null="true">
+                <comment>Indica se a tabela est&#195;&#161; em manuten&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+        </property>
+        <property name="vlrbaseicmsstitretcompra" type="big_decimal">
+            <column name="VLRBASEICMSSTITRETCOMPRA" precision="15" scale="5">
+                <comment>Base de calculo do icms st retido na opera&#195;&#167;&#195;&#163;o anterior.</comment>
+            </column>
+        </property>
+        <property name="vlricmsstretitcompra" type="big_decimal">
+            <column name="VLRICMSSTRETITCOMPRA" precision="15" scale="5">
+                <comment>Valor do ICMS ST retido na opera&#195;&#167;&#195;&#163;o anterior.</comment>
+            </column>
+        </property>
+        <property name="aliqii" type="big_decimal">
+            <column name="ALIQII" precision="15" scale="5">
+                <comment>Aliquota do imposto de importa&#195;&#167;&#195;&#163;o do item.</comment>
+            </column>
+        </property>
+        <property name="vlrbaseii" type="big_decimal">
+            <column name="VLRBASEII" precision="15" scale="5">
+                <comment>Valor da base de calculo do imposto de importa&#195;&#167;&#195;&#163;o do item.</comment>
+            </column>
+        </property>
+        <property name="vlrii" type="big_decimal">
+            <column name="VLRII" precision="15" scale="5">
+                <comment>Valor do imposto de importa&#195;&#167;&#195;&#163;o do item.</comment>
+            </column>
+        </property>
+        <property name="vlricmsdiferido" type="big_decimal">
+            <column name="VLRICMSDIFERIDO" precision="15" scale="5">
+                <comment>Valor do ICMS diferido.</comment>
+            </column>
+        </property>
+        <property name="vlricmsdevido" type="big_decimal">
+            <column name="VLRICMSDEVIDO" precision="15" scale="5">
+                <comment>Valor do ICMS devido.</comment>
+            </column>
+        </property>
+        <property name="vlricmscredpresum" type="big_decimal">
+            <column name="VLRICMSCREDPRESUM" precision="15" scale="5">
+                <comment>Valor do cr&#195;&#169;dito presumido do ICMS</comment>
+            </column>
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+    </class>
+</hibernate-mapping>

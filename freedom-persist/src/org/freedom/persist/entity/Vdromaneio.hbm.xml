@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Vdromaneio" table="VDROMANEIO">
+        <composite-id name="id" class="org.freedom.persist.entity.VdromaneioId">
+            <key-property name="codroma" type="int">
+                <column name="CODROMA" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="sgfilial" class="org.freedom.persist.entity.Sgfilial" update="false" insert="false" fetch="select">
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <many-to-one name="eqexpedicao" class="org.freedom.persist.entity.Eqexpedicao" fetch="select">
+            <column name="TICKET" />
+            <column name="CODFILIALEX" />
+            <column name="CODEMPEX" />
+        </many-to-one>
+        <many-to-one name="vdtransp" class="org.freedom.persist.entity.Vdtransp" fetch="select">
+            <column name="CODTRAN" />
+            <column name="CODFILIALTN" />
+            <column name="CODEMPTN" />
+        </many-to-one>
+        <property name="dataroma" type="date">
+            <column name="DATAROMA" length="10" not-null="true" />
+        </property>
+        <property name="dtsaidaroma" type="date">
+            <column name="DTSAIDAROMA" length="10" not-null="true" />
+        </property>
+        <property name="dtprevroma" type="date">
+            <column name="DTPREVROMA" length="10" not-null="true" />
+        </property>
+        <property name="dtentregaroma" type="date">
+            <column name="DTENTREGAROMA" length="10" />
+        </property>
+        <property name="statusroma" type="string">
+            <column name="STATUSROMA" length="2" not-null="true" />
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+        <set name="eqexpedicaos" table="EQEXPEDICAO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODROMA" />
+                <column name="CODFILIALRO" />
+                <column name="CODEMPRO" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqexpedicao" />
+        </set>
+        <set name="vditromaneios" table="VDITROMANEIO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODROMA" not-null="true" />
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vditromaneio" />
+        </set>
+    </class>
+</hibernate-mapping>

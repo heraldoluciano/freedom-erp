@@ -1,0 +1,152 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Eqserie" table="EQSERIE">
+        <comment>Tabela para controle de n&#195;&#186;meros de s&#195;&#169;rie de produtos.</comment>
+        <composite-id name="id" class="org.freedom.persist.entity.EqserieId">
+            <key-property name="numserie" type="string">
+                <column name="NUMSERIE" length="30" />
+            </key-property>
+            <key-property name="codprod" type="int">
+                <column name="CODPROD" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="sgfilial" class="org.freedom.persist.entity.Sgfilial" update="false" insert="false" fetch="select">
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <many-to-one name="eqproduto" class="org.freedom.persist.entity.Eqproduto" update="false" insert="false" fetch="select">
+            <column name="CODPROD" not-null="true" />
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <property name="dtfabricserie" type="date">
+            <column name="DTFABRICSERIE" length="10">
+                <comment>Data de fabrica&#195;&#167;&#195;&#163;o do produto</comment>
+            </column>
+        </property>
+        <property name="dtvalidserie" type="date">
+            <column name="DTVALIDSERIE" length="10">
+                <comment>Data de validade do produto</comment>
+            </column>
+        </property>
+        <property name="obsserie" type="string">
+            <column name="OBSSERIE" length="500">
+                <comment>Observa&#195;&#167;&#195;&#181;es</comment>
+            </column>
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+        <set name="cpitcompraseries" table="CPITCOMPRASERIE" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="NUMSERIE" length="30" />
+                <column name="CODPROD" />
+                <column name="CODFILIALPD" />
+                <column name="CODEMPPD" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Cpitcompraserie" />
+        </set>
+        <set name="eqmovseries" table="EQMOVSERIE" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="NUMSERIE" length="30" not-null="true">
+                    <comment>N&#195;&#186;mero de s&#195;&#169;rie.</comment>
+                </column>
+                <column name="CODPROD" not-null="true">
+                    <comment>C&#195;&#179;digo do produto.</comment>
+                </column>
+                <column name="CODFILIALPD" not-null="true" />
+                <column name="CODEMPPD" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqmovserie" />
+        </set>
+        <set name="eqitrecmercitoses" table="EQITRECMERCITOS" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="NUMSERIE" length="30" />
+                <column name="CODPRODPD" not-null="true" />
+                <column name="CODFILIALNS" />
+                <column name="CODEMPNS" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqitrecmercitos" />
+        </set>
+        <set name="eqitrecmercs" table="EQITRECMERC" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="NUMSERIE" length="30">
+                    <comment>N&#195;&#186;mero de s&#195;&#169;rie.</comment>
+                </column>
+                <column name="CODPROD" not-null="true" />
+                <column name="CODFILIALNS" />
+                <column name="CODEMPNS" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqitrecmerc" />
+        </set>
+        <set name="vditvendas" table="VDITVENDA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="NUMSERIETMP" length="30">
+                    <comment>Campo para abrigar temporariamente o n&#195;&#186;mero de s&#195;&#169;rie do produto (para uso do trigger quando produto for
+                    unit&#195;&#161;rio)</comment>
+                </column>
+                <column name="CODPROD" not-null="true" />
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vditvenda" />
+        </set>
+        <set name="cpitcompras" table="CPITCOMPRA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="NUMSERIETMP" length="30">
+                    <comment>Campo para abrigar temporariamente o n&#195;&#186;mero de serie do produto (para uso do trigger quando produto for unit&#195;&#161;rio)</comment>
+                </column>
+                <column name="CODPROD" not-null="true" />
+                <column name="CODFILIALNS">
+                    <comment>C&#195;&#179;digo da filial do n&#195;&#186;mero de s&#195;&#169;rie</comment>
+                </column>
+                <column name="CODEMPNS">
+                    <comment>C&#195;&#179;digo da empresa do n&#195;&#186;mero de s&#195;&#169;rie</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Cpitcompra" />
+        </set>
+        <set name="vditvendaseries" table="VDITVENDASERIE" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="NUMSERIE" length="30" />
+                <column name="CODPROD" />
+                <column name="CODFILIALPD" />
+                <column name="CODEMPPD" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vditvendaserie" />
+        </set>
+        <set name="eqitrecmercseries" table="EQITRECMERCSERIE" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="NUMSERIE" length="30" />
+                <column name="CODPROD" />
+                <column name="CODFILIALPD" />
+                <column name="CODEMPPD" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqitrecmercserie" />
+        </set>
+    </class>
+</hibernate-mapping>

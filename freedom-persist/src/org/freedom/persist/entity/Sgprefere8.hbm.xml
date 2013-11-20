@@ -1,0 +1,148 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Sgprefere8" table="SGPREFERE8">
+        <comment>Tabela de preferencias do m&#195;&#179;dulo GMS.</comment>
+        <composite-id name="id" class="org.freedom.persist.entity.Sgprefere8Id">
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="eqtiporecmercBySgpref8fkeqtiporecmercos" class="org.freedom.persist.entity.Eqtiporecmerc" fetch="select">
+            <column name="CODTIPORECMERCOS" />
+            <column name="CODFILIALTO" />
+            <column name="CODEMPTO" />
+        </many-to-one>
+        <many-to-one name="eqtiporecmercBySgpref8fkeqtiporecmerc" class="org.freedom.persist.entity.Eqtiporecmerc" fetch="select">
+            <column name="CODTIPORECMERC">
+                <comment>C&#195;&#179;digo do tipo de recep&#195;&#167;&#195;&#163;o padr&#195;&#163;o para recebimento com pesagem.</comment>
+            </column>
+            <column name="CODFILIALTR">
+                <comment>C&#195;&#179;digo da filial para o tipo de recep&#195;&#167;&#195;&#163;o padr&#195;&#163;o para recebimento com pesagem.</comment>
+            </column>
+            <column name="CODEMPTR">
+                <comment>C&#195;&#179;digo da empresa para o tipo de recep&#195;&#167;&#195;&#163;o padr&#195;&#163;o para recebimento com pesagem.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="eqtiporecmercBySgpref8fkeqtiporecmerccm" class="org.freedom.persist.entity.Eqtiporecmerc" fetch="select">
+            <column name="CODTIPORECMERCCM">
+                <comment>C&#195;&#179;digo do tipo de recebimento para coleta.</comment>
+            </column>
+            <column name="CODFILIALCM">
+                <comment>C&#195;&#179;digo da filial do tipo de recebimento para coleta.</comment>
+            </column>
+            <column name="CODEMPCM">
+                <comment>C&#195;&#179;digo da empresa to tipo de recebimento para coletas</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="eqtipoexpedicao" class="org.freedom.persist.entity.Eqtipoexpedicao" fetch="select">
+            <column name="CODTIPOEXPED" />
+            <column name="CODFILIALTE" />
+            <column name="CODEMPTE" />
+        </many-to-one>
+        <many-to-one name="eqtipomovBySgpref8fkeqtipomovtc" class="org.freedom.persist.entity.Eqtipomov" fetch="select">
+            <column name="CODTIPOMOVTC">
+                <comment>C&#195;&#179;digo do tipo de movimento padr&#195;&#163;o para compra, gerada a partir de pedidos de compra.</comment>
+            </column>
+            <column name="CODFILIALTC">
+                <comment>C&#195;&#179;digo da filial para o tipo de movimento de compra gerada a partir de pedidos de compra.</comment>
+            </column>
+            <column name="CODEMPTC">
+                <comment>C&#195;&#179;digo da empresa para o tipo de movimento de compra gera a partir de pedidos de compra.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="fnplanopag" class="org.freedom.persist.entity.Fnplanopag" fetch="select">
+            <column name="CODPLANOPAG" />
+            <column name="CODFILIALPP" />
+            <column name="CODEMPPP" />
+        </many-to-one>
+        <many-to-one name="eqtipomovBySgprefere8fkeqtipomovds" class="org.freedom.persist.entity.Eqtipomov" fetch="select">
+            <column name="CODTIPOMOVDS">
+                <comment>C&#195;&#179;digo do tipo de movimento padr&#195;&#163;o para devolu&#195;&#167;&#195;&#163;o de pe&#195;&#167;as consertadas.</comment>
+            </column>
+            <column name="CODFILIALDS">
+                <comment>C&#195;&#179;digo da filial para o tipo de movimento padr&#195;&#163;o devolu&#195;&#167;&#195;&#163;o de pe&#195;&#167;as consertadas.</comment>
+            </column>
+            <column name="CODEMPDS">
+                <comment>C&#195;&#179;digo da empresa para o tipo de movimento padr&#195;&#163;o para devolu&#195;&#167;&#195;&#163;o de pe&#195;&#167;as consertadas.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="vdtransp" class="org.freedom.persist.entity.Vdtransp" fetch="select">
+            <column name="CODTRAN" />
+            <column name="CODFILIALTN" />
+            <column name="CODEMPTN" />
+        </many-to-one>
+        <property name="gerachamadoos" type="char">
+            <column name="GERACHAMADOOS" length="1" not-null="true">
+                <comment>Indica se deve gerar chamado (CRM) a partir de itens de ordem de servi&#195;&#167;o.</comment>
+            </column>
+        </property>
+        <property name="usaprecopecaserv" type="java.lang.Character">
+            <column name="USAPRECOPECASERV" length="1">
+                <comment>Indica se deve utilizar o pre&#195;&#167;o do pe&#195;&#167;a consertada no or&#195;&#167;amento de servi&#195;&#167;os.</comment>
+            </column>
+        </property>
+        <property name="codempse" type="java.lang.Integer">
+            <column name="CODEMPSE">
+                <comment>C&#195;&#179;digo da empresa do produto padr&#195;&#163;o para servi&#195;&#167;os.</comment>
+            </column>
+        </property>
+        <property name="codfilialse" type="java.lang.Short">
+            <column name="CODFILIALSE">
+                <comment>C&#195;&#179;digo da filial para produto padr&#195;&#163;o para servi&#195;&#167;o.</comment>
+            </column>
+        </property>
+        <property name="codprodse" type="java.lang.Integer">
+            <column name="CODPRODSE">
+                <comment>C&#195;&#179;digo do produto padr&#195;&#163;o para servi&#195;&#167;o.</comment>
+            </column>
+        </property>
+        <property name="sincticket" type="java.lang.Character">
+            <column name="SINCTICKET" length="1" />
+        </property>
+        <property name="solcphomologfor" type="char">
+            <column name="SOLCPHOMOLOGFOR" length="1" not-null="true" />
+        </property>
+        <property name="utilrendacot" type="char">
+            <column name="UTILRENDACOT" length="1" not-null="true" />
+        </property>
+        <property name="permitdoccoldupl" type="char">
+            <column name="PERMITDOCCOLDUPL" length="1" not-null="true" />
+        </property>
+        <property name="obspadoc" type="string">
+            <column name="OBSPADOC" length="500" />
+        </property>
+        <property name="permititemrepcp" type="char">
+            <column name="PERMITITEMREPCP" length="1" not-null="true" />
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" not-null="true" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" not-null="true" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" not-null="true" />
+        </property>
+        <property name="percprecocoletacp" type="big_decimal">
+            <column name="PERCPRECOCOLETACP" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="detitempainelserv" type="char">
+            <column name="DETITEMPAINELSERV" length="1" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>
