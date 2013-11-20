@@ -413,14 +413,14 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 		sql.append( "from fnsublanca s " );
 		sql.append( "inner join fnlanca l on " );
 		sql.append( "l.codemp=s.codemp and l.codfilial=s.codfilial and l.codlanca=s.codlanca " );
-		/*
-		 * sql.append( "left outer join fnsublanca s1 on " ); sql.append( "s1.codlanca=s.codlanca and s1.codemp=s.codemp and s1.codfilial=s.codfilial " ); sql.append( "and s1.codsublanca=0 " );
-		 */
+		sql.append( "left outer join fnsublanca s1 on " ); 
+		sql.append( "s1.codlanca=s.codlanca and s1.codemp=s.codemp and s1.codfilial=s.codfilial " ); 
+		sql.append( "and s1.codsublanca=0 " );
 		sql.append( "left outer join fnconta c on " );
-		sql.append( "c.codemp=s.codemppn and c.codfilial=s.codfilialpn and c.codplan=s.codplan " );
+		sql.append( "c.codplan=s1.codplan and c.codfilial=s1.codfilialpn and c.codemp=s1.codemppn " );
 		sql.append( "left outer join fnsinal sn on " );
 		sql.append( "sn.codemp=l.codempsn and sn.codfilial=l.codfilialsn and sn.codsinal=l.codsinal " );
-		sql.append( "where s.codplan=? and s.codemp=? and s.codfilial=? and s.codsublanca=0 " );
+		sql.append( "where s.codplan=? and s.codemp=? and s.codfilial=? " );
 
 		if ( filtraperiodo ) {
 			sql.append( " and s.datasublanca between ? and ? " );
