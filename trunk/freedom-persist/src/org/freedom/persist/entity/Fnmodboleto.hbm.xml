@@ -1,0 +1,112 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Fnmodboleto" table="FNMODBOLETO">
+        <composite-id name="id" class="org.freedom.persist.entity.FnmodboletoId">
+            <key-property name="codmodbol" type="int">
+                <column name="CODMODBOL" />
+            </key-property>
+            <key-property name="codfilial" type="int">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="fnconta" class="org.freedom.persist.entity.Fnconta" fetch="select">
+            <column name="NUMCONTA" length="10" />
+            <column name="CODFILIALCC" />
+            <column name="CODEMPCC" />
+        </many-to-one>
+        <property name="descmodbol" type="string">
+            <column name="DESCMODBOL" length="30" not-null="true" />
+        </property>
+        <property name="txamodbol" type="string">
+            <column name="TXAMODBOL" length="10000" not-null="true" />
+        </property>
+        <property name="preimpmodbol" type="char">
+            <column name="PREIMPMODBOL" length="1" not-null="true">
+                <comment>Flag para indicar se usa boleto pre-impresso.[ S ]</comment>
+            </column>
+        </property>
+        <property name="cartcob" type="string">
+            <column name="CARTCOB" length="2" not-null="true">
+                <comment>Carteira de cobran&#195;&#167;a.</comment>
+            </column>
+        </property>
+        <property name="mdecob" type="string">
+            <column name="MDECOB" length="8" not-null="true">
+                <comment>Modalidade de cobran&#195;&#167;a.</comment>
+            </column>
+        </property>
+        <property name="aceitemodbol" type="char">
+            <column name="ACEITEMODBOL" length="1" not-null="true">
+                <comment>Flag indicador para aceita&#195;&#167;&#195;&#163;o do boleto pelo cliente.</comment>
+            </column>
+        </property>
+        <property name="classmodbol" type="string">
+            <column name="CLASSMODBOL" length="80" />
+        </property>
+        <property name="espdocmodbol" type="string">
+            <column name="ESPDOCMODBOL" length="3" />
+        </property>
+        <property name="desclpmodbol" type="string">
+            <column name="DESCLPMODBOL" length="80">
+                <comment>Descri&#195;&#167;&#195;&#163;o do local de pagamento do boleto.</comment>
+            </column>
+        </property>
+        <property name="instpagmodbol" type="string">
+            <column name="INSTPAGMODBOL" length="500">
+                <comment>Instru&#195;&#167;&#195;&#181;es para o pagamento do boleto.</comment>
+            </column>
+        </property>
+        <property name="impinfoparc" type="char">
+            <column name="IMPINFOPARC" length="1" not-null="true">
+                <comment>Indica se deve imprimir informa&#195;&#167;&#195;&#181;es da parcela nas intru&#195;&#167;&#195;&#181;es de cobran&#195;&#167;a para boletos
+                gr&#195;&#161;ficos.</comment>
+            </column>
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+        <set name="fnbancos" table="FNBANCO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODMODBOL" />
+                <column name="CODFILIALMB" />
+                <column name="CODEMPMB" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnbanco" />
+        </set>
+        <set name="fnitmodboletos" table="FNITMODBOLETO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODMODBOL" not-null="true">
+                    <comment>C&#195;&#179;digo do modelo de boleto.</comment>
+                </column>
+                <column name="CODFILIAL" not-null="true">
+                    <comment>C&#195;&#179;digo filial.</comment>
+                </column>
+                <column name="CODEMP" not-null="true">
+                    <comment>C&#195;&#179;digo da empresa</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnitmodboleto" />
+        </set>
+    </class>
+</hibernate-mapping>

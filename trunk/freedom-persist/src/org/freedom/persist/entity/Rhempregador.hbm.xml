@@ -1,0 +1,127 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Rhempregador" table="RHEMPREGADOR">
+        <comment>Cadastro de empregadores conveniados para m&#195;&#179;dulo de recrutamento e sele&#195;&#167;&#195;&#163;o.</comment>
+        <composite-id name="id" class="org.freedom.persist.entity.RhempregadorId">
+            <key-property name="codempr" type="int">
+                <column name="CODEMPR" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="sgfilial" class="org.freedom.persist.entity.Sgfilial" update="false" insert="false" fetch="select">
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <property name="nomeempr" type="string">
+            <column name="NOMEEMPR" length="60" not-null="true">
+                <comment>Nome do empregador conveniado.</comment>
+            </column>
+        </property>
+        <property name="ativoempr" type="char">
+            <column name="ATIVOEMPR" length="1" not-null="true">
+                <comment>Indica se empregador est&#195;&#161; (A) ativo ou inativo (I).</comment>
+            </column>
+        </property>
+        <property name="cnpjempr" type="string">
+            <column name="CNPJEMPR" length="14">
+                <comment>CNPJ do empregador conveniado.</comment>
+            </column>
+        </property>
+        <property name="inscempr" type="string">
+            <column name="INSCEMPR" length="20">
+                <comment>Inscri&#195;&#167;&#195;&#163;o estadual do empregador conveniado.</comment>
+            </column>
+        </property>
+        <property name="endempr" type="string">
+            <column name="ENDEMPR" length="50">
+                <comment>Endere&#195;&#167;o do empregador conveniado.</comment>
+            </column>
+        </property>
+        <property name="numempr" type="java.lang.Integer">
+            <column name="NUMEMPR">
+                <comment>N&#195;&#186;mero do endere&#195;&#167;o do empregador conveniado.</comment>
+            </column>
+        </property>
+        <property name="bairempr" type="string">
+            <column name="BAIREMPR" length="30" />
+        </property>
+        <property name="cidempr" type="string">
+            <column name="CIDEMPR" length="30" />
+        </property>
+        <property name="ufempr" type="string">
+            <column name="UFEMPR" length="2" />
+        </property>
+        <property name="cepempr" type="string">
+            <column name="CEPEMPR" length="8" />
+        </property>
+        <property name="dddempr" type="string">
+            <column name="DDDEMPR" length="4" />
+        </property>
+        <property name="foneempr" type="string">
+            <column name="FONEEMPR" length="12" />
+        </property>
+        <property name="ramalempr" type="string">
+            <column name="RAMALEMPR" length="6" />
+        </property>
+        <property name="dddfaxempr" type="string">
+            <column name="DDDFAXEMPR" length="4" />
+        </property>
+        <property name="faxempr" type="string">
+            <column name="FAXEMPR" length="9" />
+        </property>
+        <property name="emailempr" type="string">
+            <column name="EMAILEMPR" length="50" />
+        </property>
+        <property name="contempr" type="string">
+            <column name="CONTEMPR" length="40" />
+        </property>
+        <property name="obsempr" type="string">
+            <column name="OBSEMPR" length="10000" />
+        </property>
+        <property name="dddcelempr" type="string">
+            <column name="DDDCELEMPR" length="4" />
+        </property>
+        <property name="celempr" type="string">
+            <column name="CELEMPR" length="9" />
+        </property>
+        <property name="siteempr" type="string">
+            <column name="SITEEMPR" length="50" />
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+        <set name="rhvagas" table="RHVAGA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODEMPR" not-null="true">
+                    <comment>C&#195;&#179;digo do empregador.</comment>
+                </column>
+                <column name="CODFILIALEM" not-null="true" />
+                <column name="CODEMPEM" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Rhvaga" />
+        </set>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Rhcurso" table="RHCURSO">
+        <comment>Cadastro de cursos para utiliza&#195;&#167;&#195;&#163;o no m&#195;&#179;dulo de RH (Recrutamento e sele&#195;&#167;&#195;&#163;o).</comment>
+        <composite-id name="id" class="org.freedom.persist.entity.RhcursoId">
+            <key-property name="codcurso" type="int">
+                <column name="CODCURSO" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="sgfilial" class="org.freedom.persist.entity.Sgfilial" update="false" insert="false" fetch="select">
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <many-to-one name="rharea" class="org.freedom.persist.entity.Rharea" fetch="select">
+            <column name="CODAREA">
+                <comment>C&#195;&#179;digo da &#195;&#161;rea</comment>
+            </column>
+            <column name="CODFILIALAR">
+                <comment>C&#195;&#179;digo da filial da &#195;&#161;rea.</comment>
+            </column>
+            <column name="CODEMPAR">
+                <comment>C&#195;&#179;digo da empresa da &#195;&#161;rea.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="rhnivelcurso" class="org.freedom.persist.entity.Rhnivelcurso" fetch="select">
+            <column name="CODNIVELCURSO" not-null="true">
+                <comment>N&#195;&#173;vel do curso</comment>
+            </column>
+            <column name="CODFILIALNC" not-null="true">
+                <comment>C&#195;&#179;digo da filial do n&#195;&#173;vel do curso.</comment>
+            </column>
+            <column name="CODEMPNC" not-null="true">
+                <comment>C&#195;&#179;digo da empresa do n&#195;&#173;vel do curso.</comment>
+            </column>
+        </many-to-one>
+        <property name="desccurso" type="string">
+            <column name="DESCCURSO" length="60" not-null="true">
+                <comment>Descri&#195;&#167;&#195;&#163;o do curso.</comment>
+            </column>
+        </property>
+        <property name="contprogcurso" type="string">
+            <column name="CONTPROGCURSO" length="1000">
+                <comment>Conte&#195;&#186;do program&#195;&#161;tico do curso.</comment>
+            </column>
+        </property>
+        <property name="instituicaocurso" type="string">
+            <column name="INSTITUICAOCURSO" length="80">
+                <comment>Institui&#195;&#167;&#195;&#163;o de ensino onde foi realizado o curso.</comment>
+            </column>
+        </property>
+        <property name="duracaocurso" type="java.lang.Short">
+            <column name="DURACAOCURSO">
+                <comment>Dura&#195;&#167;&#195;&#163;o do curso (em meses).</comment>
+            </column>
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+        <set name="rhvagacursos" table="RHVAGACURSO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCURSO" not-null="true" />
+                <column name="CODFILIALCS" not-null="true" />
+                <column name="CODEMPCS" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Rhvagacurso" />
+        </set>
+        <set name="rhcandidatocursos" table="RHCANDIDATOCURSO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCURSO" not-null="true" />
+                <column name="CODFILIALCS" not-null="true" />
+                <column name="CODEMPCS" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Rhcandidatocurso" />
+        </set>
+    </class>
+</hibernate-mapping>

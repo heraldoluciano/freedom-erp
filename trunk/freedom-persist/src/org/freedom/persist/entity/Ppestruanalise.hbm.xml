@@ -1,0 +1,121 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Ppestruanalise" table="PPESTRUANALISE">
+        <comment>Cadastro de etapas de analise e controle de qualidade, previstas para a estrutura de um produto.</comment>
+        <composite-id name="id" class="org.freedom.persist.entity.PpestruanaliseId">
+            <key-property name="codestanalise" type="int">
+                <column name="CODESTANALISE" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="pptipoanalise" class="org.freedom.persist.entity.Pptipoanalise" fetch="select">
+            <column name="CODTPANALISE" not-null="true">
+                <comment>C&#195;&#179;digo do tipo de an&#195;&#161;lise.</comment>
+            </column>
+            <column name="CODFILIALTA" not-null="true">
+                <comment>C&#195;&#179;digo da filial do tipo de analise.</comment>
+            </column>
+            <column name="CODEMPTA" not-null="true">
+                <comment>C&#195;&#179;digo da empresa do tipo de analise.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="ppestrufase" class="org.freedom.persist.entity.Ppestrufase" update="false" insert="false" fetch="select">
+            <column name="CODPROD" not-null="true">
+                <comment>C&#195;&#179;digo do produto vinculado a estrutura.</comment>
+            </column>
+            <column name="SEQEST" not-null="true">
+                <comment>Sequ&#195;&#170;ncia da estrutura.</comment>
+            </column>
+            <column name="SEQEF" not-null="true">
+                <comment>Sequ&#195;&#170;ncia da estrutura x fase.</comment>
+            </column>
+            <column name="CODFILIAL" not-null="true">
+                <comment>C&#195;&#179;digo da filial.</comment>
+            </column>
+            <column name="CODEMP" not-null="true">
+                <comment>C&#195;&#179;digo da empresa.</comment>
+            </column>
+            <column name="CODFASE" not-null="true">
+                <comment>C&#195;&#179;digo da fase.</comment>
+            </column>
+            <column name="CODFILIALFS" not-null="true">
+                <comment>C&#195;&#179;digo da filial da estrutura x fase.</comment>
+            </column>
+            <column name="CODEMPFS" not-null="true">
+                <comment>C&#195;&#179;digo da emprea da estrutura x fase.</comment>
+            </column>
+        </many-to-one>
+        <property name="vlrmin" type="big_decimal">
+            <column name="VLRMIN" precision="15" scale="5">
+                <comment>Valor m&#195;&#173;nimo de toler&#195;&#162;ncia.</comment>
+            </column>
+        </property>
+        <property name="vlrmax" type="big_decimal">
+            <column name="VLRMAX" precision="15" scale="5">
+                <comment>Valor m&#195;&#161;ximo de toler&#195;&#162;ncia.</comment>
+            </column>
+        </property>
+        <property name="especificacao" type="string">
+            <column name="ESPECIFICACAO" length="50">
+                <comment>Espessifica&#195;&#167;&#195;&#163;o padr&#195;&#163;o da an&#195;&#161;lise, utilizada quando a an&#195;&#161;lise &#195;&#169; descritiva.</comment>
+            </column>
+        </property>
+        <property name="emitcert" type="char">
+            <column name="EMITCERT" length="1" not-null="true">
+                <comment>Indica se a analise deve sair no certificado de analises.</comment>
+            </column>
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true">
+                <comment>Data de inser&#195;&#167;&#195;&#163;o do registro.</comment>
+            </column>
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true">
+                <comment>Hora de inser&#195;&#167;&#195;&#163;o do registro.</comment>
+            </column>
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true">
+                <comment>Usu&#195;&#161;rio que inseriu o registro.</comment>
+            </column>
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" not-null="true">
+                <comment>Data de altera&#195;&#167;&#195;&#163;o do registro.</comment>
+            </column>
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" not-null="true">
+                <comment>Hora da ultima altera&#195;&#167;&#195;&#163;o no registro.</comment>
+            </column>
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" not-null="true">
+                <comment>Usu&#195;&#161;rio que alterou o registro.</comment>
+            </column>
+        </property>
+        <set name="ppopcqs" table="PPOPCQ" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODESTANALISE" not-null="true">
+                    <comment>C&#195;&#179;digo da estrutura x analise.</comment>
+                </column>
+                <column name="CODFILIALEA" not-null="true">
+                    <comment>C&#195;&#179;digo da filial da estrutura x analise.</comment>
+                </column>
+                <column name="CODEMPEA" not-null="true">
+                    <comment>C&#195;&#179;digo da empresa da estrutura x analise.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Ppopcq" />
+        </set>
+    </class>
+</hibernate-mapping>

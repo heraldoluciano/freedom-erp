@@ -1,0 +1,138 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Vdcomissao" table="VDCOMISSAO">
+        <composite-id name="id" class="org.freedom.persist.entity.VdcomissaoId">
+            <key-property name="codcomi" type="int">
+                <column name="CODCOMI" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="sgfilial" class="org.freedom.persist.entity.Sgfilial" update="false" insert="false" fetch="select">
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <many-to-one name="fnitreceber" class="org.freedom.persist.entity.Fnitreceber" fetch="select">
+            <column name="CODREC" />
+            <column name="NPARCITREC" />
+            <column name="CODFILIALRC" />
+            <column name="CODEMPRC" />
+        </many-to-one>
+        <many-to-one name="vdvenda" class="org.freedom.persist.entity.Vdvenda" fetch="select">
+            <column name="CODVENDA">
+                <comment>C&#195;&#179;digo da venda (comissionamento especial)</comment>
+            </column>
+            <column name="TIPOVENDA" length="1">
+                <comment>Tipo da venda</comment>
+            </column>
+            <column name="CODFILIALVE">
+                <comment>C&#195;&#179;digo da filial da venda vinculada (comissionamento especial)</comment>
+            </column>
+            <column name="CODEMPVE">
+                <comment>C&#195;&#179;digo da empresa da venda vinculada (comissionamento especial)</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="vdvendedor" class="org.freedom.persist.entity.Vdvendedor" fetch="select">
+            <column name="CODVEND">
+                <comment>C&#195;&#179;digo do vendedor.</comment>
+            </column>
+            <column name="CODFILIALVD">
+                <comment>C&#195;&#179;digo da filial do vendedor.</comment>
+            </column>
+            <column name="CODEMPVD">
+                <comment>C&#195;&#179;digo da empresa do vendedor.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="fnpagtocomi" class="org.freedom.persist.entity.Fnpagtocomi" fetch="select">
+            <column name="CODPCOMI" />
+            <column name="CODFILIALCI" />
+            <column name="CODEMPCI" />
+        </many-to-one>
+        <property name="tipocomi" type="char">
+            <column name="TIPOCOMI" length="1" not-null="true">
+                <comment>Tipo de comiss&#195;&#163;o: F-Valor gerado no faturamento R-Valor gerado no recebimento E-Valor gerado no estorno de contas a receber</comment>
+            </column>
+        </property>
+        <property name="vlrvendacomi" type="big_decimal">
+            <column name="VLRVENDACOMI" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="vlrcomi" type="big_decimal">
+            <column name="VLRCOMI" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="vlrpagocomi" type="big_decimal">
+            <column name="VLRPAGOCOMI" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="vlrapagcomi" type="big_decimal">
+            <column name="VLRAPAGCOMI" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="datacomi" type="date">
+            <column name="DATACOMI" length="10" not-null="true" />
+        </property>
+        <property name="dtcompcomi" type="date">
+            <column name="DTCOMPCOMI" length="10" not-null="true">
+                <comment>Data de compet&#195;&#170;ncia.</comment>
+            </column>
+        </property>
+        <property name="dtvenccomi" type="date">
+            <column name="DTVENCCOMI" length="10" not-null="true" />
+        </property>
+        <property name="dtpagtocomi" type="date">
+            <column name="DTPAGTOCOMI" length="10" />
+        </property>
+        <property name="statuscomi" type="string">
+            <column name="STATUSCOMI" length="2" not-null="true">
+                <comment>Situa&#195;&#167;&#195;&#163;o da comiss&#195;&#163;o: C1 - Em aberto C2 - Liberada CP - Paga</comment>
+            </column>
+        </property>
+        <property name="flag" type="java.lang.Character">
+            <column name="FLAG" length="1" />
+        </property>
+        <property name="codempct" type="java.lang.Integer">
+            <column name="CODEMPCT" />
+        </property>
+        <property name="codfilialct" type="java.lang.Short">
+            <column name="CODFILIALCT" />
+        </property>
+        <property name="codpcomiant" type="java.lang.Integer">
+            <column name="CODPCOMIANT" />
+        </property>
+        <property name="emmanut" type="char">
+            <column name="EMMANUT" length="1" not-null="true">
+                <comment>Estado de manuten&#195;&#167;&#195;&#163;o (S/N).</comment>
+            </column>
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+        <set name="fnlancas" table="FNLANCA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCOMI" />
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnlanca" />
+        </set>
+    </class>
+</hibernate-mapping>

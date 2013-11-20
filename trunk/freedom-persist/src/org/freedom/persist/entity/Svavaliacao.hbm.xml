@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Svavaliacao" table="SVAVALIACAO">
+        <composite-id name="id" class="org.freedom.persist.entity.SvavaliacaoId">
+            <key-property name="codos" type="int">
+                <column name="CODOS" />
+            </key-property>
+            <key-property name="coditos" type="short">
+                <column name="CODITOS" />
+            </key-property>
+            <key-property name="codaval" type="short">
+                <column name="CODAVAL" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="eqproduto" class="org.freedom.persist.entity.Eqproduto" fetch="select">
+            <column name="CODPROD" not-null="true" />
+            <column name="CODFILIALPD" not-null="true" />
+            <column name="CODEMPPD" not-null="true" />
+        </many-to-one>
+        <many-to-one name="svitos" class="org.freedom.persist.entity.Svitos" update="false" insert="false" fetch="select">
+            <column name="CODOS" not-null="true" />
+            <column name="CODITOS" not-null="true" />
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <property name="refprod" type="string">
+            <column name="REFPROD" length="20" not-null="true" />
+        </property>
+        <property name="qtdaval" type="big_decimal">
+            <column name="QTDAVAL" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="precoaval" type="big_decimal">
+            <column name="PRECOAVAL" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="vlrtotaval" type="big_decimal">
+            <column name="VLRTOTAVAL" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="vlrdescaval" type="big_decimal">
+            <column name="VLRDESCAVAL" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="vlrliqaval" type="big_decimal">
+            <column name="VLRLIQAVAL" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="sitaval" type="string">
+            <column name="SITAVAL" length="2" not-null="true" />
+        </property>
+        <property name="sitaprovaval" type="string">
+            <column name="SITAPROVAVAL" length="2" not-null="true" />
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+    </class>
+</hibernate-mapping>

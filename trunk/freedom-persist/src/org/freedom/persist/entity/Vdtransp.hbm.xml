@@ -1,0 +1,343 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Vdtransp" table="VDTRANSP">
+        <comment>Transportadoras.</comment>
+        <composite-id name="id" class="org.freedom.persist.entity.VdtranspId">
+            <key-property name="codtran" type="int">
+                <column name="CODTRAN" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="sgfilial" class="org.freedom.persist.entity.Sgfilial" update="false" insert="false" fetch="select">
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <many-to-one name="cpforneced" class="org.freedom.persist.entity.Cpforneced" fetch="select">
+            <column name="CODFOR">
+                <comment>Correspondente na tabela de fornecedores.</comment>
+            </column>
+            <column name="CODFILIALFR" />
+            <column name="CODEMPFR" />
+        </many-to-one>
+        <many-to-one name="sgunifcod" class="org.freedom.persist.entity.Sgunifcod" fetch="select">
+            <column name="CODUNIFCOD" />
+            <column name="CODFILIALUC">
+                <comment>C&#195;&#179;digo na tabela de unifica&#195;&#167;&#195;&#163;o de c&#195;&#179;digos (SGUNIFCOD).</comment>
+            </column>
+            <column name="CODEMPUC" />
+        </many-to-one>
+        <many-to-one name="sgmunicipio" class="org.freedom.persist.entity.Sgmunicipio" fetch="select">
+            <column name="CODMUNIC" length="7" />
+            <column name="SIGLAUF" length="2" />
+            <column name="CODPAIS" />
+        </many-to-one>
+        <many-to-one name="rhcodgps" class="org.freedom.persist.entity.Rhcodgps" fetch="select">
+            <column name="CODGPS" length="4">
+                <comment>C&#195;&#179;digo de pagamento do gps/inss.</comment>
+            </column>
+        </many-to-one>
+        <property name="raztran" type="string">
+            <column name="RAZTRAN" length="50" not-null="true" />
+        </property>
+        <property name="nometran" type="string">
+            <column name="NOMETRAN" length="40" not-null="true" />
+        </property>
+        <property name="cnpjtran" type="string">
+            <column name="CNPJTRAN" length="14" />
+        </property>
+        <property name="cpftran" type="string">
+            <column name="CPFTRAN" length="11">
+                <comment>CPF do transportador</comment>
+            </column>
+        </property>
+        <property name="insctran" type="string">
+            <column name="INSCTRAN" length="20" />
+        </property>
+        <property name="endtran" type="string">
+            <column name="ENDTRAN" length="50" />
+        </property>
+        <property name="numtran" type="java.lang.Integer">
+            <column name="NUMTRAN" />
+        </property>
+        <property name="compltran" type="string">
+            <column name="COMPLTRAN" length="20" />
+        </property>
+        <property name="bairtran" type="string">
+            <column name="BAIRTRAN" length="30" />
+        </property>
+        <property name="cidtran" type="string">
+            <column name="CIDTRAN" length="30" />
+        </property>
+        <property name="ceptran" type="string">
+            <column name="CEPTRAN" length="8" />
+        </property>
+        <property name="fonetran" type="string">
+            <column name="FONETRAN" length="12" />
+        </property>
+        <property name="faxtran" type="string">
+            <column name="FAXTRAN" length="9" />
+        </property>
+        <property name="uftran" type="string">
+            <column name="UFTRAN" length="2" />
+        </property>
+        <property name="tipotran" type="java.lang.Character">
+            <column name="TIPOTRAN" length="1" />
+        </property>
+        <property name="celtran" type="string">
+            <column name="CELTRAN" length="9" />
+        </property>
+        <property name="conttran" type="string">
+            <column name="CONTTRAN" length="40" />
+        </property>
+        <property name="dddfonetran" type="string">
+            <column name="DDDFONETRAN" length="4">
+                <comment>DDD do telefone principal.</comment>
+            </column>
+        </property>
+        <property name="dddfaxtran" type="string">
+            <column name="DDDFAXTRAN" length="4">
+                <comment>DDD do Fax.</comment>
+            </column>
+        </property>
+        <property name="dddceltran" type="string">
+            <column name="DDDCELTRAN" length="4">
+                <comment>DDD do celular da transportadora.</comment>
+            </column>
+        </property>
+        <property name="conjugetran" type="string">
+            <column name="CONJUGETRAN" length="50">
+                <comment>Nome do conjuge do transportado (pessoa f&#195;&#173;sica)</comment>
+            </column>
+        </property>
+        <property name="codempbo" type="java.lang.Integer">
+            <column name="CODEMPBO" />
+        </property>
+        <property name="codfilialbo" type="java.lang.Short">
+            <column name="CODFILIALBO" />
+        </property>
+        <property name="codbanco" type="string">
+            <column name="CODBANCO" length="3" />
+        </property>
+        <property name="agenciatran" type="string">
+            <column name="AGENCIATRAN" length="10" />
+        </property>
+        <property name="numcontatran" type="string">
+            <column name="NUMCONTATRAN" length="10" />
+        </property>
+        <property name="placatran" type="string">
+            <column name="PLACATRAN" length="7">
+                <comment>Placa do ve&#195;&#173;culo do transportador (pessoa f&#195;&#173;sica)</comment>
+            </column>
+        </property>
+        <property name="nrodependtran" type="java.lang.Short">
+            <column name="NRODEPENDTRAN">
+                <comment>N&#195;&#186;mero de dependentes do transportador (pessoa f&#195;&#173;sica)</comment>
+            </column>
+        </property>
+        <property name="rgtran" type="string">
+            <column name="RGTRAN" length="13">
+                <comment>N&#195;&#186;mero da Identidade.</comment>
+            </column>
+        </property>
+        <property name="ssptran" type="string">
+            <column name="SSPTRAN" length="10" />
+        </property>
+        <property name="nropistran" type="string">
+            <column name="NROPISTRAN" length="20">
+                <comment>N&#195;&#186;mero do PIS.</comment>
+            </column>
+        </property>
+        <property name="obstran" type="string">
+            <column name="OBSTRAN" length="10000">
+                <comment>Observa&#195;&#167;&#195;&#181;es.</comment>
+            </column>
+        </property>
+        <property name="emailtran" type="string">
+            <column name="EMAILTRAN" length="60" />
+        </property>
+        <property name="emailnfetran" type="string">
+            <column name="EMAILNFETRAN" length="60">
+                <comment>Email para envio do XML da Nfe.</comment>
+            </column>
+        </property>
+        <property name="rntctran" type="string">
+            <column name="RNTCTRAN" length="20" />
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+        <set name="vdveiculos" table="VDTRANSPVEIC" inverse="false" lazy="true" fetch="select">
+            <key>
+                <column name="CODTRAN" not-null="true" />
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <many-to-many entity-name="org.freedom.persist.entity.Vdveiculo">
+                <column name="CODVEIC" not-null="true" />
+            </many-to-many>
+        </set>
+        <set name="sgprefere1s" table="SGPREFERE1" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTRAN">
+                    <comment>C&#195;&#179;digo da transportadora.</comment>
+                </column>
+                <column name="CODFILIALTN">
+                    <comment>C&#195;&#179;digo da filial para transportadora.</comment>
+                </column>
+                <column name="CODEMPTN">
+                    <comment>C&#195;&#179;digo da empresa para transportadora</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgprefere1" />
+        </set>
+        <set name="eqrecmercs" table="EQRECMERC" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTRAN" />
+                <column name="CODFILIALTN" />
+                <column name="CODEMPTN" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqrecmerc" />
+        </set>
+        <set name="lffretes" table="LFFRETE" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTRAN" not-null="true" />
+                <column name="CODFILIALTN" not-null="true" />
+                <column name="CODEMPTN" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Lffrete" />
+        </set>
+        <set name="vdfretevds" table="VDFRETEVD" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTRAN" />
+                <column name="CODFILIALTN" />
+                <column name="CODEMPTN" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdfretevd" />
+        </set>
+        <set name="vdromaneios" table="VDROMANEIO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTRAN" />
+                <column name="CODFILIALTN" />
+                <column name="CODEMPTN" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdromaneio" />
+        </set>
+        <set name="vdmotoristas" table="VDTRANSPMOT" inverse="false" lazy="true" fetch="select">
+            <key>
+                <column name="CODTRAN" not-null="true" />
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <many-to-many entity-name="org.freedom.persist.entity.Vdmotorista">
+                <column name="CODMOT" not-null="true" />
+            </many-to-many>
+        </set>
+        <set name="eqtipomovs" table="EQTIPOMOV" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTRAN">
+                    <comment>C&#195;&#179;digo da transportadora padr&#195;&#163;o para o tipo de movimento.</comment>
+                </column>
+                <column name="CODFILIALTN">
+                    <comment>C&#195;&#179;digo da filial da transportadora padr&#195;&#163;o para o tipo de movimento.</comment>
+                </column>
+                <column name="CODEMPTN">
+                    <comment>C&#195;&#179;digo da empresa da transportadora padr&#195;&#163;o para o tipo de movimento.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqtipomov" />
+        </set>
+        <set name="vdveiculos_1" table="VDVEICULO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTRAN" />
+                <column name="CODFILIALTN" />
+                <column name="CODEMPTN" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdveiculo" />
+        </set>
+        <set name="vdmotoristas_1" table="VDMOTORISTA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTRAN" />
+                <column name="CODFILIALTN" />
+                <column name="CODEMPTN" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdmotorista" />
+        </set>
+        <set name="cpfretecps" table="CPFRETECP" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTRAN" />
+                <column name="CODFILIALTN" />
+                <column name="CODEMPTN" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Cpfretecp" />
+        </set>
+        <set name="sgprefere8s" table="SGPREFERE8" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTRAN" />
+                <column name="CODFILIALTN" />
+                <column name="CODEMPTN" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgprefere8" />
+        </set>
+        <set name="vdorcamentos" table="VDORCAMENTO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTRAN">
+                    <comment>C&#195;&#179;digo da transportadora.</comment>
+                </column>
+                <column name="CODFILIALTN">
+                    <comment>C&#195;&#179;digo da filial da transportadora.</comment>
+                </column>
+                <column name="CODEMPTN">
+                    <comment>C&#195;&#179;digo da empresa da transportadora.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdorcamento" />
+        </set>
+        <set name="eqexpedicaos" table="EQEXPEDICAO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTRAN" />
+                <column name="CODFILIALTN" />
+                <column name="CODEMPTN" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqexpedicao" />
+        </set>
+        <set name="vdclientes" table="VDCLIENTE" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTRAN" />
+                <column name="CODFILIALTN" />
+                <column name="CODEMPTN" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdcliente" />
+        </set>
+        <set name="cpcompras" table="CPCOMPRA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTRAN" />
+                <column name="CODFILIALTN" />
+                <column name="CODEMPTN" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Cpcompra" />
+        </set>
+    </class>
+</hibernate-mapping>

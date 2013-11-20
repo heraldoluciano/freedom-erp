@@ -1,0 +1,123 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Eqitvargrade" table="EQITVARGRADE">
+        <composite-id name="id" class="org.freedom.persist.entity.EqitvargradeId">
+            <key-property name="codvarg" type="int">
+                <column name="CODVARG" />
+            </key-property>
+            <key-property name="seqitvarg" type="short">
+                <column name="SEQITVARG" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="eqvargrade" class="org.freedom.persist.entity.Eqvargrade" update="false" insert="false" fetch="select">
+            <column name="CODVARG" not-null="true" />
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <property name="descitvarg" type="string">
+            <column name="DESCITVARG" length="50" not-null="true" />
+        </property>
+        <property name="siglaitvarg" type="string">
+            <column name="SIGLAITVARG" length="10" not-null="true" />
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="128" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="128" />
+        </property>
+        <set name="critfichaavalsForCritfichaavalfkvg1" table="CRITFICHAAVAL" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODVARG1" />
+                <column name="SEQITVARG1" />
+                <column name="CODFILIALV1" />
+                <column name="CODEMPV1" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Critfichaaval" />
+        </set>
+        <set name="critfichaavalsForCritfichaavalfkvg2" table="CRITFICHAAVAL" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODVARG2" />
+                <column name="SEQITVARG2" />
+                <column name="CODFILIALV2" />
+                <column name="CODEMPV2" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Critfichaaval" />
+        </set>
+        <set name="critfichaavalsForCritfichaavalfkvg3" table="CRITFICHAAVAL" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODVARG3" />
+                <column name="SEQITVARG3" />
+                <column name="CODFILIALV3" />
+                <column name="CODEMPV3" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Critfichaaval" />
+        </set>
+        <set name="critfichaavalsForCritfichaavalfkvg4" table="CRITFICHAAVAL" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODVARG4" />
+                <column name="SEQITVARG4" />
+                <column name="CODFILIALV4" />
+                <column name="CODEMPV4" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Critfichaaval" />
+        </set>
+        <set name="critfichaavalsForCritfichaavalfkvg8" table="CRITFICHAAVAL" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODVARG8" />
+                <column name="SEQITVARG8" />
+                <column name="CODFILIALV8" />
+                <column name="CODEMPV8" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Critfichaaval" />
+        </set>
+        <set name="critfichaavalsForCritfichaavalfkvg7" table="CRITFICHAAVAL" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODVARG7" />
+                <column name="SEQITVARG7" />
+                <column name="CODFILIALV7" />
+                <column name="CODEMPV7" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Critfichaaval" />
+        </set>
+        <set name="critfichaavalsForCritfichaavalfkvg6" table="CRITFICHAAVAL" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODVARG6" />
+                <column name="SEQITVARG6" />
+                <column name="CODFILIALV6" />
+                <column name="CODEMPV6" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Critfichaaval" />
+        </set>
+        <set name="critfichaavalsForCritfichaavalfkvg5" table="CRITFICHAAVAL" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODVARG5" />
+                <column name="SEQITVARG5" />
+                <column name="CODFILIALV5" />
+                <column name="CODEMPV5" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Critfichaaval" />
+        </set>
+    </class>
+</hibernate-mapping>

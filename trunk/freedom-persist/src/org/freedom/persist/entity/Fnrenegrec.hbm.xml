@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Fnrenegrec" table="FNRENEGREC">
+        <comment>Tabela para gerenciamento de t&#195;&#173;tulos renegociados.</comment>
+        <composite-id name="id" class="org.freedom.persist.entity.FnrenegrecId">
+            <key-property name="codrenegrec" type="int">
+                <column name="CODRENEGREC" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="fnplanopag" class="org.freedom.persist.entity.Fnplanopag" fetch="select">
+            <column name="CODPLANOPAG" not-null="true" />
+            <column name="CODFILIALPG" not-null="true" />
+            <column name="CODEMPPG" not-null="true" />
+        </many-to-one>
+        <property name="dtrenegrec" type="date">
+            <column name="DTRENEGREC" length="10" not-null="true" />
+        </property>
+        <property name="vlroriginal" type="big_decimal">
+            <column name="VLRORIGINAL" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="vlrdesconto" type="big_decimal">
+            <column name="VLRDESCONTO" precision="15" scale="5" />
+        </property>
+        <property name="vlradicional" type="big_decimal">
+            <column name="VLRADICIONAL" precision="15" scale="5" />
+        </property>
+        <property name="vlrjuros" type="big_decimal">
+            <column name="VLRJUROS" precision="15" scale="5" />
+        </property>
+        <property name="vlrliqrenegrec" type="big_decimal">
+            <column name="VLRLIQRENEGREC" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="obsrenegrec" type="string">
+            <column name="OBSRENEGREC" length="250" />
+        </property>
+        <property name="dtini" type="date">
+            <column name="DTINI" length="10" />
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+        <set name="fnrecebers" table="FNRECEBER" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODRENEGREC">
+                    <comment>C&#195;&#179;digo da renegocia&#195;&#167;&#195;&#163;o.</comment>
+                </column>
+                <column name="CODFILIALRR">
+                    <comment>C&#195;&#179;digo da filial da renegocia&#195;&#167;&#195;&#163;o.</comment>
+                </column>
+                <column name="CODEMPRR">
+                    <comment>C&#195;&#179;digo da empresa da renegocia&#195;&#167;&#195;&#163;o.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnreceber" />
+        </set>
+    </class>
+</hibernate-mapping>

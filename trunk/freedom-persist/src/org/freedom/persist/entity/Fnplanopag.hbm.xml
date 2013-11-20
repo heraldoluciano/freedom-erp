@@ -1,0 +1,295 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Fnplanopag" table="FNPLANOPAG">
+        <composite-id name="id" class="org.freedom.persist.entity.FnplanopagId">
+            <key-property name="codplanopag" type="int">
+                <column name="CODPLANOPAG" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="sgfilial" class="org.freedom.persist.entity.Sgfilial" update="false" insert="false" fetch="select">
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <many-to-one name="fnconta" class="org.freedom.persist.entity.Fnconta" fetch="select">
+            <column name="NUMCONTA" length="10" />
+            <column name="CODFILIALCA" />
+            <column name="CODEMPCA" />
+        </many-to-one>
+        <many-to-one name="fnplanejamento" class="org.freedom.persist.entity.Fnplanejamento" fetch="select">
+            <column name="CODPLAN" length="13" />
+            <column name="CODFILIALPN" />
+            <column name="CODEMPPN" />
+        </many-to-one>
+        <many-to-one name="fntbjuros" class="org.freedom.persist.entity.Fntbjuros" fetch="select">
+            <column name="CODTBJ">
+                <comment>C&#195;&#179;digo da tabela de juros.</comment>
+            </column>
+            <column name="CODFILIALTBJ">
+                <comment>C&#195;&#179;digo da filial da tabela de juros.</comment>
+            </column>
+            <column name="CODEMPTBJ">
+                <comment>C&#195;&#179;digo da empresa da tabela de juros.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="fncc" class="org.freedom.persist.entity.Fncc" fetch="select">
+            <column name="CODCC" length="19" />
+            <column name="ANOCC" />
+            <column name="CODFILIALCC" />
+            <column name="CODEMPCC" />
+        </many-to-one>
+        <property name="descplanopag" type="string">
+            <column name="DESCPLANOPAG" length="40" />
+        </property>
+        <property name="parcplanopag" type="int">
+            <column name="PARCPLANOPAG" not-null="true" />
+        </property>
+        <property name="aporcplanopag" type="char">
+            <column name="APORCPLANOPAG" length="1" not-null="true">
+                <comment>Flag que indica se or&#195;&#167;amento ser&#195;&#161; aprovado por padr&#195;&#163;o na tela de fechamento de or&#195;&#167;amento.</comment>
+            </column>
+        </property>
+        <property name="autobaixaplanopag" type="java.lang.Character">
+            <column name="AUTOBAIXAPLANOPAG" length="1" />
+        </property>
+        <property name="ativoplanopag" type="char">
+            <column name="ATIVOPLANOPAG" length="1" not-null="true">
+                <comment>Flag que indica se o plano de pagamento est&#195;&#161; ativo "S" ou inativo "N".</comment>
+            </column>
+        </property>
+        <property name="cvplanopag" type="char">
+            <column name="CVPLANOPAG" length="1" not-null="true">
+                <comment>Indica se o plano de pagamento &#195;&#169; para compra "C", venda "V" ou ambos "A", deve ser usado como filtro nas telas correspondentes.</comment>
+            </column>
+        </property>
+        <property name="percdesc" type="big_decimal">
+            <column name="PERCDESC" precision="15" scale="5">
+                <comment>Percentual de desconto.</comment>
+            </column>
+        </property>
+        <property name="regrvctoplanopag" type="char">
+            <column name="REGRVCTOPLANOPAG" length="1" not-null="true">
+                <comment>Regra de para vencimento. N - Nenhuma A - Antecipar P - Prorrogar</comment>
+            </column>
+        </property>
+        <property name="rvsabplanopag" type="char">
+            <column name="RVSABPLANOPAG" length="1" not-null="true">
+                <comment>Define se a regra de vencimento vale para os s&#195;&#161;bados.</comment>
+            </column>
+        </property>
+        <property name="rvdomplanopag" type="char">
+            <column name="RVDOMPLANOPAG" length="1" not-null="true">
+                <comment>Define se a regra de vencimento vale para os domingos.</comment>
+            </column>
+        </property>
+        <property name="rvferplanopag" type="char">
+            <column name="RVFERPLANOPAG" length="1" not-null="true">
+                <comment>Define se a regra de vencimento vale para os feriados.</comment>
+            </column>
+        </property>
+        <property name="rvdiaplanopag" type="char">
+            <column name="RVDIAPLANOPAG" length="1" not-null="true">
+                <comment>Regra do dia de vencimento A - Autom&#195;&#161;tico F - Dia fixo U - Dia util</comment>
+            </column>
+        </property>
+        <property name="diavctoplanopag" type="short">
+            <column name="DIAVCTOPLANOPAG" not-null="true">
+                <comment>Dia fixo ou &#195;&#186;til para o vencimento.</comment>
+            </column>
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+        <set name="vdprecoprods" table="VDPRECOPROD" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODPLANOPAG" />
+                <column name="CODFILIALPG" />
+                <column name="CODEMPPG" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdprecoprod" />
+        </set>
+        <set name="fnrenegrecs" table="FNRENEGREC" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODPLANOPAG" not-null="true" />
+                <column name="CODFILIALPG" not-null="true" />
+                <column name="CODEMPPG" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnrenegrec" />
+        </set>
+        <set name="vdclientes" table="VDCLIENTE" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODPLANOPAG" />
+                <column name="CODFILIALPG" />
+                <column name="CODEMPPG" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdcliente" />
+        </set>
+        <set name="fnrecebers" table="FNRECEBER" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODPLANOPAG" not-null="true" />
+                <column name="CODFILIALPG" not-null="true" />
+                <column name="CODEMPPG" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnreceber" />
+        </set>
+        <set name="sgprefere4s" table="SGPREFERE4" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODPLANOPAG" />
+                <column name="CODFILIALPP" />
+                <column name="CODEMPPP" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgprefere4" />
+        </set>
+        <set name="sgprefere8s" table="SGPREFERE8" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODPLANOPAG" />
+                <column name="CODFILIALPP" />
+                <column name="CODEMPPP" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgprefere8" />
+        </set>
+        <set name="cpcompras" table="CPCOMPRA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODPLANOPAG" not-null="true" />
+                <column name="CODFILIALPG" not-null="true" />
+                <column name="CODEMPPG" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Cpcompra" />
+        </set>
+        <set name="fnpagars" table="FNPAGAR" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODPLANOPAG" not-null="true" />
+                <column name="CODFILIALPG" not-null="true" />
+                <column name="CODEMPPG" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnpagar" />
+        </set>
+        <set name="sgprefere1sForSgprefere1fkfnplan" table="SGPREFERE1" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODPLANOPAG" />
+                <column name="CODFILIALPG" />
+                <column name="CODEMPPG" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgprefere1" />
+        </set>
+        <set name="cpordcompras" table="CPORDCOMPRA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODPLANOPAG" not-null="true" />
+                <column name="CODFILIALPG" not-null="true" />
+                <column name="CODEMPPG" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Cpordcompra" />
+        </set>
+        <set name="cpcotacaos" table="CPCOTACAO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODPLANOPAG">
+                    <comment>C&#195;&#179;digo do plano de pagamento.</comment>
+                </column>
+                <column name="CODFILIALPP">
+                    <comment>C&#195;&#179;digo da filial do plano de pagamento.</comment>
+                </column>
+                <column name="CODEMPPP">
+                    <comment>C&#195;&#179;digo da empresa do plano de pagamento.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Cpcotacao" />
+        </set>
+        <set name="sgprefere1sForSgprefere1fkplanopagsv" table="SGPREFERE1" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODPLANOPAGSV">
+                    <comment>C&#195;&#179;digo de plano de pagamento sem valor financeiro para uso em devolu&#195;&#167;&#195;&#181;es e afins.</comment>
+                </column>
+                <column name="CODFILIALSV">
+                    <comment>C&#195;&#179;digo da filial de plano de pagamento sem valor financeiro para uso em devolu&#195;&#167;&#195;&#181;es e afins.</comment>
+                </column>
+                <column name="CODEMPSV">
+                    <comment>C&#195;&#179;digo da empresa de plano de pagamento sem valor financeiro para uso em devolu&#195;&#167;&#195;&#181;es e afins.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgprefere1" />
+        </set>
+        <set name="fnparcpags" table="FNPARCPAG" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODPLANOPAG" not-null="true" />
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnparcpag" />
+        </set>
+        <set name="eqtipomovs" table="EQTIPOMOV" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODPLANOPAG">
+                    <comment>C&#195;&#179;digo do plano de pagamento preferencial</comment>
+                </column>
+                <column name="CODFILIALPP">
+                    <comment>C&#195;&#179;digo da filial para o plano de pagamento preferencial</comment>
+                </column>
+                <column name="CODEMPPP">
+                    <comment>C&#195;&#179;digo da empresa para o plano de pagamento preferencial</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqtipomov" />
+        </set>
+        <set name="vdvendaconsigs" table="VDVENDACONSIG" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODPLANOPAG" not-null="true" />
+                <column name="CODFILIALPG" not-null="true" />
+                <column name="CODEMPPG" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdvendaconsig" />
+        </set>
+        <set name="vdvendas" table="VDVENDA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODPLANOPAG" not-null="true" />
+                <column name="CODFILIALPG" not-null="true" />
+                <column name="CODEMPPG" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdvenda" />
+        </set>
+        <set name="vdorcamentos" table="VDORCAMENTO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODPLANOPAG" />
+                <column name="CODFILIALPG" />
+                <column name="CODEMPPG" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdorcamento" />
+        </set>
+        <set name="cpimportacaos" table="CPIMPORTACAO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODPLANOPAG" not-null="true">
+                    <comment>C&#195;&#179;digo do plano de pagamento acordado no invoice.</comment>
+                </column>
+                <column name="CODFILIALPG" not-null="true">
+                    <comment>C&#195;&#179;digo da filial do plano de pagamento</comment>
+                </column>
+                <column name="CODEMPPG" not-null="true">
+                    <comment>C&#195;&#179;digo da empresa do plano de pagamento.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Cpimportacao" />
+        </set>
+    </class>
+</hibernate-mapping>

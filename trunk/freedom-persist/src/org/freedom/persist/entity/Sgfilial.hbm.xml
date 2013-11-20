@@ -1,0 +1,976 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Sgfilial" table="SGFILIAL">
+        <composite-id name="id" class="org.freedom.persist.entity.SgfilialId">
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="cpforneced" class="org.freedom.persist.entity.Cpforneced" fetch="select">
+            <column name="CODFOR">
+                <comment>C&#195;&#179;digo do fornecedor (contador)</comment>
+            </column>
+            <column name="CODFILIALCO">
+                <comment>C&#195;&#179;digo da filial do fornecedor (contador)</comment>
+            </column>
+            <column name="CODEMPCO">
+                <comment>C&#195;&#179;digo da empresa do fornecedor (contador)</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="sgunifcod" class="org.freedom.persist.entity.Sgunifcod" fetch="select">
+            <column name="CODUNIFCOD">
+                <comment>C&#195;&#179;digo na tabela de unifica&#195;&#167;&#195;&#163;o de c&#195;&#179;digos (SGUNIFCOD).</comment>
+            </column>
+            <column name="CODFILIALUC" />
+            <column name="CODEMPUC" />
+        </many-to-one>
+        <many-to-one name="sgmunicipio" class="org.freedom.persist.entity.Sgmunicipio" fetch="select">
+            <column name="CODMUNIC" length="7" />
+            <column name="SIGLAUF" length="2" />
+            <column name="CODPAIS" />
+        </many-to-one>
+        <property name="razfilial" type="string">
+            <column name="RAZFILIAL" length="50" not-null="true" />
+        </property>
+        <property name="nomefilial" type="string">
+            <column name="NOMEFILIAL" length="50" not-null="true" />
+        </property>
+        <property name="mzfilial" type="char">
+            <column name="MZFILIAL" length="1" not-null="true" />
+        </property>
+        <property name="cnpjfilial" type="string">
+            <column name="CNPJFILIAL" length="14" />
+        </property>
+        <property name="inscfilial" type="string">
+            <column name="INSCFILIAL" length="20" />
+        </property>
+        <property name="endfilial" type="string">
+            <column name="ENDFILIAL" length="50" />
+        </property>
+        <property name="numfilial" type="java.lang.Integer">
+            <column name="NUMFILIAL" />
+        </property>
+        <property name="complfilial" type="string">
+            <column name="COMPLFILIAL" length="20" />
+        </property>
+        <property name="bairfilial" type="string">
+            <column name="BAIRFILIAL" length="30" />
+        </property>
+        <property name="cepfilial" type="string">
+            <column name="CEPFILIAL" length="8" />
+        </property>
+        <property name="cidfilial" type="string">
+            <column name="CIDFILIAL" length="30" />
+        </property>
+        <property name="uffilial" type="string">
+            <column name="UFFILIAL" length="2" />
+        </property>
+        <property name="dddfilial" type="string">
+            <column name="DDDFILIAL" length="4">
+                <comment>DDD da filial</comment>
+            </column>
+        </property>
+        <property name="fonefilial" type="string">
+            <column name="FONEFILIAL" length="12" />
+        </property>
+        <property name="faxfilial" type="string">
+            <column name="FAXFILIAL" length="9" />
+        </property>
+        <property name="emailfilial" type="string">
+            <column name="EMAILFILIAL" length="50" />
+        </property>
+        <property name="wwwfilial" type="string">
+            <column name="WWWFILIAL" length="50" />
+        </property>
+        <property name="coddistfilial" type="java.lang.Integer">
+            <column name="CODDISTFILIAL" />
+        </property>
+        <property name="percpisfilial" type="big_decimal">
+            <column name="PERCPISFILIAL" precision="5" />
+        </property>
+        <property name="perccofinsfilial" type="big_decimal">
+            <column name="PERCCOFINSFILIAL" precision="5" />
+        </property>
+        <property name="percirfilial" type="big_decimal">
+            <column name="PERCIRFILIAL" precision="5" />
+        </property>
+        <property name="perccsocialfilial" type="big_decimal">
+            <column name="PERCCSOCIALFILIAL" precision="5" />
+        </property>
+        <property name="simplesfilial" type="java.lang.Character">
+            <column name="SIMPLESFILIAL" length="1" />
+        </property>
+        <property name="percsimplesfilial" type="big_decimal">
+            <column name="PERCSIMPLESFILIAL" precision="9">
+                <comment>Percentual de tributa&#195;&#167;&#195;&#163;o da empresa, no caso de enquadramento no simples.</comment>
+            </column>
+        </property>
+        <property name="inscmunfilial" type="string">
+            <column name="INSCMUNFILIAL" length="15">
+                <comment>Inscri&#195;&#167;&#195;&#163;o municipal</comment>
+            </column>
+        </property>
+        <property name="cnaefilial" type="string">
+            <column name="CNAEFILIAL" length="7">
+                <comment>Classifica&#195;&#167;&#195;&#163;o Nacional de Atividades Econ&#195;&#180;micas (CNAE).</comment>
+            </column>
+        </property>
+        <property name="percissfilial" type="big_decimal">
+            <column name="PERCISSFILIAL" precision="5">
+                <comment>Percentual de ISS pago pela filial.</comment>
+            </column>
+        </property>
+        <property name="contribipifilial" type="char">
+            <column name="CONTRIBIPIFILIAL" length="1" not-null="true">
+                <comment>Indica se a filial &#195;&#169; contribuinte do IPI.</comment>
+            </column>
+        </property>
+        <property name="timbrefilial" type="binary">
+            <column name="TIMBREFILIAL" />
+        </property>
+        <property name="perfilfilial" type="java.lang.Character">
+            <column name="PERFILFILIAL" length="1">
+                <comment>Perfil de apresentacao do arquivo fiscal (SPED-EFD) A - Perfil A B - Perfil B C - Perfil C</comment>
+            </column>
+        </property>
+        <property name="indativfilial" type="java.lang.Character">
+            <column name="INDATIVFILIAL" length="1">
+                <comment>Indicador de tipo de atividadade (SPED-EFD) 0 - Industrial ou equiparado a industrial 1 - Outros</comment>
+            </column>
+        </property>
+        <property name="indnatpjfilial" type="string">
+            <column name="INDNATPJFILIAL" length="2" />
+        </property>
+        <property name="suframa" type="string">
+            <column name="SUFRAMA" length="9">
+                <comment>C&#195;&#179;digo da filial no suframa</comment>
+            </column>
+        </property>
+        <property name="codinctrib" type="java.lang.Character">
+            <column name="CODINCTRIB" length="1" />
+        </property>
+        <property name="indaprocred" type="java.lang.Character">
+            <column name="INDAPROCRED" length="1" />
+        </property>
+        <property name="codtipocont" type="java.lang.Character">
+            <column name="CODTIPOCONT" length="1" />
+        </property>
+        <property name="indregcum" type="java.lang.Character">
+            <column name="INDREGCUM" length="1" />
+        </property>
+        <property name="unidfranqueada" type="string">
+            <column name="UNIDFRANQUEADA" length="30" />
+        </property>
+        <property name="marcafranqueadora" type="string">
+            <column name="MARCAFRANQUEADORA" length="30" />
+        </property>
+        <property name="wwwfranqueadora" type="string">
+            <column name="WWWFRANQUEADORA" length="50" />
+        </property>
+        <property name="codreceita" type="string">
+            <column name="CODRECEITA" length="20" />
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+        <set name="vdromaneios" table="VDROMANEIO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdromaneio" />
+        </set>
+        <set name="eqseries" table="EQSERIE" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqserie" />
+        </set>
+        <set name="vdtransps" table="VDTRANSP" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdtransp" />
+        </set>
+        <set name="lfcsosns" table="LFCSOSN" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Lfcsosn" />
+        </set>
+        <set name="eqitrecmercitoses" table="EQITRECMERCITOS" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqitrecmercitos" />
+        </set>
+        <set name="attipoatends" table="ATTIPOATEND" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Attipoatend" />
+        </set>
+        <set name="vdtabprecos" table="VDTABPRECO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdtabpreco" />
+        </set>
+        <set name="eqtrocarefprods" table="EQTROCAREFPROD" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqtrocarefprod" />
+        </set>
+        <set name="fnmoedas" table="FNMOEDA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnmoeda" />
+        </set>
+        <set name="sggrauinsts" table="SGGRAUINST" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sggrauinst" />
+        </set>
+        <set name="atmodatendos" table="ATMODATENDO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Atmodatendo" />
+        </set>
+        <set name="eqalmoxfilials" table="EQALMOXFILIAL" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIALAF" not-null="true">
+                    <comment>C&#195;&#179;digo da filial na tabela SGFILIAL.</comment>
+                </column>
+                <column name="CODEMPAF" not-null="true">
+                    <comment>C&#195;&#179;digo da empresa na tabela SGFILIAL.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqalmoxfilial" />
+        </set>
+        <set name="sgatribuicaos" table="SGATRIBUICAO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgatribuicao" />
+        </set>
+        <set name="tktipoconts" table="TKTIPOCONT" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Tktipocont" />
+        </set>
+        <set name="fncontas" table="FNCONTA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnconta" />
+        </set>
+        <set name="vdvendedors" table="VDVENDEDOR" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdvendedor" />
+        </set>
+        <set name="pprecursos" table="PPRECURSO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Pprecurso" />
+        </set>
+        <set name="vdregcomisdescs" table="VDREGCOMISDESC" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdregcomisdesc" />
+        </set>
+        <set name="eqprodutos" table="EQPRODUTO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqproduto" />
+        </set>
+        <set name="atatendimentos" table="ATATENDIMENTO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Atatendimento" />
+        </set>
+        <set name="eqfatconvs" table="EQFATCONV" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqfatconv" />
+        </set>
+        <set name="lfclfiscals" table="LFCLFISCAL" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Lfclfiscal" />
+        </set>
+        <set name="tkorigconts" table="TKORIGCONT" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Tkorigcont" />
+        </set>
+        <set name="fnborderos" table="FNBORDERO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnbordero" />
+        </set>
+        <set name="vdsetors" table="VDSETOR" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdsetor" />
+        </set>
+        <set name="cptipofors" table="CPTIPOFOR" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Cptipofor" />
+        </set>
+        <set name="fnlancas" table="FNLANCA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnlanca" />
+        </set>
+        <set name="eqtipoexps" table="EQTIPOEXP" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqtipoexp" />
+        </set>
+        <set name="fnplanopags" table="FNPLANOPAG" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnplanopag" />
+        </set>
+        <set name="lflivrofiscals" table="LFLIVROFISCAL" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Lflivrofiscal" />
+        </set>
+        <set name="lfsittribs" table="LFSITTRIB" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Lfsittrib" />
+        </set>
+        <set name="eqittrocarefprods" table="EQITTROCAREFPROD" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqittrocarefprod" />
+        </set>
+        <set name="sgconexaos" table="SGCONEXAO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgconexao" />
+        </set>
+        <set name="cpsolicitacaos" table="CPSOLICITACAO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true">
+                    <comment>C&#195;&#179;digo da filial</comment>
+                </column>
+                <column name="CODEMP" not-null="true">
+                    <comment>C&#195;&#179;digo da empresa</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Cpsolicitacao" />
+        </set>
+        <set name="atencaminhadors" table="ATENCAMINHADOR" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true">
+                    <comment>C&#195;&#179;digo da filial</comment>
+                </column>
+                <column name="CODEMP" not-null="true">
+                    <comment>C&#195;&#179;digo da empresa</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Atencaminhador" />
+        </set>
+        <set name="ppestrufases" table="PPESTRUFASE" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Ppestrufase" />
+        </set>
+        <set name="cpforneceds" table="CPFORNECED" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Cpforneced" />
+        </set>
+        <set name="ppfases" table="PPFASE" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Ppfase" />
+        </set>
+        <set name="sgsequencias" table="SGSEQUENCIA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgsequencia" />
+        </set>
+        <set name="sgusuarios" table="SGUSUARIO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgusuario" />
+        </set>
+        <set name="sggrpusus" table="SGGRPUSU" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sggrpusu" />
+        </set>
+        <set name="sgacessomgs" table="SGACESSOMG" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgacessomg" />
+        </set>
+        <set name="sgacessomus" table="SGACESSOMU" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgacessomu" />
+        </set>
+        <set name="eqrecmercs" table="EQRECMERC" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqrecmerc" />
+        </set>
+        <set name="eqprocrecmercs" table="EQPROCRECMERC" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqprocrecmerc" />
+        </set>
+        <one-to-one name="sgprefere4" class="org.freedom.persist.entity.Sgprefere4"></one-to-one>
+        <set name="vdclientes" table="VDCLIENTE" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdcliente" />
+        </set>
+        <set name="fnpagars" table="FNPAGAR" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnpagar" />
+        </set>
+        <set name="vdclasclis" table="VDCLASCLI" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdclascli" />
+        </set>
+        <set name="atclasatendos" table="ATCLASATENDO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Atclasatendo" />
+        </set>
+        <set name="crmotivofbs" table="CRMOTIVOFB" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Crmotivofb" />
+        </set>
+        <set name="attipoconvs" table="ATTIPOCONV" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Attipoconv" />
+        </set>
+        <set name="fntbjuroses" table="FNTBJUROS" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fntbjuros" />
+        </set>
+        <set name="lfmodnotas" table="LFMODNOTA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Lfmodnota" />
+        </set>
+        <set name="eqtipomovs" table="EQTIPOMOV" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqtipomov" />
+        </set>
+        <set name="eqtiporecmercs" table="EQTIPORECMERC" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqtiporecmerc" />
+        </set>
+        <set name="eqalmoxes" table="EQALMOX" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqalmox" />
+        </set>
+        <set name="sgpapels" table="SGPAPEL" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgpapel" />
+        </set>
+        <set name="crfeedbacks" table="CRFEEDBACK" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Crfeedback" />
+        </set>
+        <set name="fnplanejamentos" table="FNPLANEJAMENTO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnplanejamento" />
+        </set>
+        <set name="lfnatopers" table="LFNATOPER" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Lfnatoper" />
+        </set>
+        <set name="rhcursos" table="RHCURSO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Rhcurso" />
+        </set>
+        <set name="fnlibcreds" table="FNLIBCRED" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnlibcred" />
+        </set>
+        <set name="sgimpressoras" table="SGIMPRESSORA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgimpressora" />
+        </set>
+        <set name="rhnivelcursos" table="RHNIVELCURSO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Rhnivelcurso" />
+        </set>
+        <set name="eqmodgrades" table="EQMODGRADE" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqmodgrade" />
+        </set>
+        <set name="eqlocdescargas" table="EQLOCDESCARGA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqlocdescarga" />
+        </set>
+        <set name="sgtabelas" table="SGTABELA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgtabela" />
+        </set>
+        <set name="fnccs" table="FNCC" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fncc" />
+        </set>
+        <set name="rhareas" table="RHAREA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Rharea" />
+        </set>
+        <set name="sgcatimgs" table="SGCATIMG" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgcatimg" />
+        </set>
+        <set name="vdvendas" table="VDVENDA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdvenda" />
+        </set>
+        <set name="eqlanctoexps" table="EQLANCTOEXP" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqlanctoexp" />
+        </set>
+        <set name="atconveniados" table="ATCONVENIADO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Atconveniado" />
+        </set>
+        <one-to-one name="sgprefere5" class="org.freedom.persist.entity.Sgprefere5"></one-to-one>
+        <set name="eqinvprods" table="EQINVPROD" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqinvprod" />
+        </set>
+        <set name="lftrattribs" table="LFTRATTRIB" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Lftrattrib" />
+        </set>
+        <set name="fnsaldolancas" table="FNSALDOLANCA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnsaldolanca" />
+        </set>
+        <set name="equnidades" table="EQUNIDADE" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Equnidade" />
+        </set>
+        <set name="fnrecebers" table="FNRECEBER" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnreceber" />
+        </set>
+        <set name="fnbancos" table="FNBANCO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnbanco" />
+        </set>
+        <set name="eqmovexps" table="EQMOVEXP" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqmovexp" />
+        </set>
+        <set name="vdcomissaos" table="VDCOMISSAO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdcomissao" />
+        </set>
+        <one-to-one name="sgprefere1" class="org.freedom.persist.entity.Sgprefere1"></one-to-one>
+        <set name="eqgrupos" table="EQGRUPO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqgrupo" />
+        </set>
+        <set name="eqmovseries" table="EQMOVSERIE" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqmovserie" />
+        </set>
+        <set name="sgacessoeus" table="SGACESSOEU" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIALFL" not-null="true" />
+                <column name="CODEMPFL" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgacessoeu" />
+        </set>
+        <set name="atatendentes" table="ATATENDENTE" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Atatendente" />
+        </set>
+        <set name="rhcaracteristicas" table="RHCARACTERISTICA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Rhcaracteristica" />
+        </set>
+        <set name="rhcandidatos" table="RHCANDIDATO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Rhcandidato" />
+        </set>
+        <set name="sgestcivils" table="SGESTCIVIL" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgestcivil" />
+        </set>
+        <set name="cpcompras" table="CPCOMPRA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Cpcompra" />
+        </set>
+        <set name="rhempregadors" table="RHEMPREGADOR" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Rhempregador" />
+        </set>
+        <set name="lfseries" table="LFSERIE" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Lfserie" />
+        </set>
+        <set name="vdtipoclis" table="VDTIPOCLI" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdtipocli" />
+        </set>
+        <set name="attipoatendos" table="ATTIPOATENDO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Attipoatendo" />
+        </set>
+        <set name="lfregrafiscals" table="LFREGRAFISCAL" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Lfregrafiscal" />
+        </set>
+        <set name="eqmarcas" table="EQMARCA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqmarca" />
+        </set>
+        <set name="eqlotes" table="EQLOTE" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqlote" />
+        </set>
+        <set name="vdgruporcs" table="VDGRUPORC" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdgruporc" />
+        </set>
+        <set name="fncotmoedas" table="FNCOTMOEDA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fncotmoeda" />
+        </set>
+        <set name="eqtipoexpedicaos" table="EQTIPOEXPEDICAO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqtipoexpedicao" />
+        </set>
+        <set name="eqitrecmercs" table="EQITRECMERC" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqitrecmerc" />
+        </set>
+        <set name="eqvargrades" table="EQVARGRADE" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqvargrade" />
+        </set>
+        <set name="atatribuicaos" table="ATATRIBUICAO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Atatribuicao" />
+        </set>
+        <set name="fntipocobs" table="FNTIPOCOB" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fntipocob" />
+        </set>
+        <set name="atsetors" table="ATSETOR" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Atsetor" />
+        </set>
+        <set name="eqmovprods" table="EQMOVPROD" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqmovprod" />
+        </set>
+        <set name="pptiporecs" table="PPTIPOREC" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Pptiporec" />
+        </set>
+        <set name="lfmoddocfiscs" table="LFMODDOCFISC" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Lfmoddocfisc" />
+        </set>
+        <set name="fnpagtocomis" table="FNPAGTOCOMI" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnpagtocomi" />
+        </set>
+        <set name="necontingencias" table="NECONTINGENCIA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Necontingencia" />
+        </set>
+    </class>
+</hibernate-mapping>

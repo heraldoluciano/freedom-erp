@@ -1,0 +1,113 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Vdfretevd" table="VDFRETEVD">
+        <composite-id name="id" class="org.freedom.persist.entity.VdfretevdId">
+            <key-property name="codvenda" type="int">
+                <column name="CODVENDA" />
+            </key-property>
+            <key-property name="tipovenda" type="char">
+                <column name="TIPOVENDA" length="1" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <one-to-one name="vdvenda" class="org.freedom.persist.entity.Vdvenda" constrained="true"></one-to-one>
+        <many-to-one name="vdtransp" class="org.freedom.persist.entity.Vdtransp" fetch="select">
+            <column name="CODTRAN" />
+            <column name="CODFILIALTN" />
+            <column name="CODEMPTN" />
+        </many-to-one>
+        <property name="tipofretevd" type="char">
+            <column name="TIPOFRETEVD" length="1" not-null="true" />
+        </property>
+        <property name="placafretevd" type="string">
+            <column name="PLACAFRETEVD" length="10" not-null="true" />
+        </property>
+        <property name="uffretevd" type="string">
+            <column name="UFFRETEVD" length="2" not-null="true" />
+        </property>
+        <property name="vlrfretevd" type="big_decimal">
+            <column name="VLRFRETEVD" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="qtdfretevd" type="big_decimal">
+            <column name="QTDFRETEVD" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="pesobrutvd" type="big_decimal">
+            <column name="PESOBRUTVD" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="pesoliqvd" type="big_decimal">
+            <column name="PESOLIQVD" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="espfretevd" type="string">
+            <column name="ESPFRETEVD" length="10" not-null="true" />
+        </property>
+        <property name="marcafretevd" type="string">
+            <column name="MARCAFRETEVD" length="10" not-null="true" />
+        </property>
+        <property name="conhecfretevd" type="string">
+            <column name="CONHECFRETEVD" length="13" />
+        </property>
+        <property name="percvendafretevd" type="big_decimal">
+            <column name="PERCVENDAFRETEVD" precision="9" />
+        </property>
+        <property name="flag" type="java.lang.Character">
+            <column name="FLAG" length="1" />
+        </property>
+        <property name="adicfretevd" type="char">
+            <column name="ADICFRETEVD" length="1" not-null="true">
+                <comment>FLAG QUE INDICA SE ADICIONA O VALOR DO FRETE NA NOTA</comment>
+            </column>
+        </property>
+        <property name="adicfretebaseicm" type="char">
+            <column name="ADICFRETEBASEICM" length="1" not-null="true">
+                <comment>Indica se deve adicionar o valor do frete na base de calculo do icms da venda.</comment>
+            </column>
+        </property>
+        <property name="vlrbaseicmsfretevd" type="big_decimal">
+            <column name="VLRBASEICMSFRETEVD" precision="15" scale="5">
+                <comment>Base de calculo do icms do frete.</comment>
+            </column>
+        </property>
+        <property name="aliqicmsfretevd" type="big_decimal">
+            <column name="ALIQICMSFRETEVD" precision="15" scale="5">
+                <comment>Aliquota de icms incidente no frete.</comment>
+            </column>
+        </property>
+        <property name="vlricmsfretevd" type="big_decimal">
+            <column name="VLRICMSFRETEVD" precision="15" scale="5" />
+        </property>
+        <property name="vlrsegfretevd" type="big_decimal">
+            <column name="VLRSEGFRETEVD" precision="15" scale="5">
+                <comment>Valor do seguro do frete.</comment>
+            </column>
+        </property>
+        <property name="rntcvd" type="string">
+            <column name="RNTCVD" length="20" />
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+    </class>
+</hibernate-mapping>

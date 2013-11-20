@@ -1,0 +1,216 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Vdorcamento" table="VDORCAMENTO">
+        <composite-id name="id" class="org.freedom.persist.entity.VdorcamentoId">
+            <key-property name="codorc" type="int">
+                <column name="CODORC" />
+            </key-property>
+            <key-property name="tipoorc" type="char">
+                <column name="TIPOORC" length="1" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="atatendente" class="org.freedom.persist.entity.Atatendente" fetch="select">
+            <column name="CODATEND" />
+            <column name="CODFILIALAE" />
+            <column name="CODEMPAE" />
+        </many-to-one>
+        <many-to-one name="vdcliente" class="org.freedom.persist.entity.Vdcliente" fetch="select">
+            <column name="CODCLI" not-null="true" />
+            <column name="CODFILIALCL" not-null="true" />
+            <column name="CODEMPCL" not-null="true" />
+        </many-to-one>
+        <many-to-one name="fnplanopag" class="org.freedom.persist.entity.Fnplanopag" fetch="select">
+            <column name="CODPLANOPAG" />
+            <column name="CODFILIALPG" />
+            <column name="CODEMPPG" />
+        </many-to-one>
+        <many-to-one name="vdclcomis" class="org.freedom.persist.entity.Vdclcomis" fetch="select">
+            <column name="CODCLCOMIS">
+                <comment>CODIGO DA CLASSIFICA&#195;&#135;&#195;&#131;O DA COMISS&#195;&#131;O</comment>
+            </column>
+            <column name="CODFILIALCM" />
+            <column name="CODEMPCM" />
+        </many-to-one>
+        <many-to-one name="eqtipomov" class="org.freedom.persist.entity.Eqtipomov" fetch="select">
+            <column name="CODTIPOMOV">
+                <comment>C&#195;&#179;digo do tipo de movimento previsto para o faturamento do or&#195;&#167;amento.</comment>
+            </column>
+            <column name="CODFILIALTM">
+                <comment>C&#195;&#179;digo da filial do tipo de movimento previsto para o faturamento do or&#195;&#167;amento.</comment>
+            </column>
+            <column name="CODEMPTM">
+                <comment>C&#195;&#179;digo da empresa do tipo de movimento previsto para o faturamento do or&#195;&#167;amento.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="attipoconv" class="org.freedom.persist.entity.Attipoconv" fetch="select">
+            <column name="CODTPCONV" />
+            <column name="CODFILIALTC" />
+            <column name="CODEMPTC" />
+        </many-to-one>
+        <many-to-one name="vdvendedor" class="org.freedom.persist.entity.Vdvendedor" fetch="select">
+            <column name="CODVEND" not-null="true" />
+            <column name="CODFILIALVD" not-null="true" />
+            <column name="CODEMPVD" not-null="true" />
+        </many-to-one>
+        <many-to-one name="vdtransp" class="org.freedom.persist.entity.Vdtransp" fetch="select">
+            <column name="CODTRAN">
+                <comment>C&#195;&#179;digo da transportadora.</comment>
+            </column>
+            <column name="CODFILIALTN">
+                <comment>C&#195;&#179;digo da filial da transportadora.</comment>
+            </column>
+            <column name="CODEMPTN">
+                <comment>C&#195;&#179;digo da empresa da transportadora.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="atconveniado" class="org.freedom.persist.entity.Atconveniado" fetch="select">
+            <column name="CODCONV" />
+            <column name="CODFILIALCV" />
+            <column name="CODEMPCV" />
+        </many-to-one>
+        <property name="dtorc" type="date">
+            <column name="DTORC" length="10" not-null="true" />
+        </property>
+        <property name="dtvencorc" type="date">
+            <column name="DTVENCORC" length="10" not-null="true" />
+        </property>
+        <property name="vlrprodorc" type="big_decimal">
+            <column name="VLRPRODORC" precision="15" scale="5" />
+        </property>
+        <property name="percdescorc" type="big_decimal">
+            <column name="PERCDESCORC" precision="15" scale="5" />
+        </property>
+        <property name="vlrdescorc" type="big_decimal">
+            <column name="VLRDESCORC" precision="15" scale="5" />
+        </property>
+        <property name="percadicorc" type="big_decimal">
+            <column name="PERCADICORC" precision="15" scale="5" />
+        </property>
+        <property name="vlradicorc" type="big_decimal">
+            <column name="VLRADICORC" precision="15" scale="5" />
+        </property>
+        <property name="vlrdescitorc" type="big_decimal">
+            <column name="VLRDESCITORC" precision="15" scale="5" />
+        </property>
+        <property name="vlrliqorc" type="big_decimal">
+            <column name="VLRLIQORC" precision="15" scale="5" />
+        </property>
+        <property name="statusorc" type="string">
+            <column name="STATUSORC" length="2" not-null="true">
+                <comment>"*" - Or&#195;&#167;amento em aberto; "OA" - Or&#195;&#167;amento em aberto; "OC" - Or&#195;&#167;amento completo/impresso; "OL" - Or&#195;&#167;amento
+                liberado/aprovado; "OV" - Or&#195;&#167;amento faturado. "OP" - Or&#195;&#167;amento produzido. "CA" - Or&#195;&#167;amento Cancelado/N&#195;&#163;o
+                Aprovado.</comment>
+            </column>
+        </property>
+        <property name="obsorc" type="string">
+            <column name="OBSORC" length="10000" />
+        </property>
+        <property name="txt01" type="string">
+            <column name="TXT01" length="20" />
+        </property>
+        <property name="prazoentorc" type="java.lang.Short">
+            <column name="PRAZOENTORC" />
+        </property>
+        <property name="emmanut" type="java.lang.Character">
+            <column name="EMMANUT" length="1">
+                <comment>Flag para por a tabela em manuten&#195;&#167;ao (S/N).</comment>
+            </column>
+        </property>
+        <property name="tipofrete" type="java.lang.Character">
+            <column name="TIPOFRETE" length="1">
+                <comment>C - CIF ; F - FOB</comment>
+            </column>
+        </property>
+        <property name="adicfrete" type="java.lang.Character">
+            <column name="ADICFRETE" length="1">
+                <comment>Indica se deve adicionar o valor do frete ao total dos produtos.</comment>
+            </column>
+        </property>
+        <property name="vlrfreteorc" type="big_decimal">
+            <column name="VLRFRETEORC" precision="15" scale="5">
+                <comment>Valor previsto em despesa com frete.</comment>
+            </column>
+        </property>
+        <property name="vlrcomisorc" type="big_decimal">
+            <column name="VLRCOMISORC" precision="15" scale="5">
+                <comment>Valor previsto de comiss&#195;&#163;o no or&#195;&#167;amento.</comment>
+            </column>
+        </property>
+        <property name="dtaprovorc" type="date">
+            <column name="DTAPROVORC" length="10">
+                <comment>Data da aprova&#195;&#167;&#195;&#163;o do or&#195;&#167;amento.</comment>
+            </column>
+        </property>
+        <property name="dtpreventorc" type="date">
+            <column name="DTPREVENTORC" length="10" />
+        </property>
+        <property name="hpreventorc" type="time">
+            <column name="HPREVENTORC" length="8" />
+        </property>
+        <property name="justificcancorc" type="string">
+            <column name="JUSTIFICCANCORC" length="500">
+                <comment>Justificativa pelo cancelamento do or&#195;&#167;amento.</comment>
+            </column>
+        </property>
+        <property name="acorc" type="string">
+            <column name="ACORC" length="80">
+                <comment>Indica o recebedor do or&#195;&#167;amento (Aos cuidados de)</comment>
+            </column>
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+        <set name="vdstatusorcs" table="VDSTATUSORC" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODORC" not-null="true" />
+                <column name="TIPOORC" length="1" not-null="true" />
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdstatusorc" />
+        </set>
+        <set name="atatendimentoorcs" table="ATATENDIMENTOORC" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODORC" not-null="true" />
+                <column name="TIPOORC" length="1" not-null="true" />
+                <column name="CODFILIALOC" not-null="true" />
+                <column name="CODEMPOC" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Atatendimentoorc" />
+        </set>
+        <one-to-one name="vddetorc" class="org.freedom.persist.entity.Vddetorc"></one-to-one>
+        <set name="vditorcamentos" table="VDITORCAMENTO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODORC" not-null="true" />
+                <column name="TIPOORC" length="1" not-null="true" />
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vditorcamento" />
+        </set>
+    </class>
+</hibernate-mapping>

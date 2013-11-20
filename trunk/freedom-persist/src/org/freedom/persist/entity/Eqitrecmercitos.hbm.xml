@@ -1,0 +1,170 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Eqitrecmercitos" table="EQITRECMERCITOS">
+        <comment>Tabela para lan&#195;&#167;amento de componentes e servi&#195;&#167;os utilizando em ordem de produ&#195;&#167;&#195;&#163;o /eqitrecmerc.</comment>
+        <composite-id name="id" class="org.freedom.persist.entity.EqitrecmercitosId">
+            <key-property name="ticket" type="int">
+                <column name="TICKET" />
+            </key-property>
+            <key-property name="coditrecmerc" type="int">
+                <column name="CODITRECMERC" />
+            </key-property>
+            <key-property name="coditos" type="short">
+                <column name="CODITOS" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="sgfilial" class="org.freedom.persist.entity.Sgfilial" update="false" insert="false" fetch="select">
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <many-to-one name="eqserie" class="org.freedom.persist.entity.Eqserie" fetch="select">
+            <column name="NUMSERIE" length="30" />
+            <column name="CODPRODPD" not-null="true" />
+            <column name="CODFILIALNS" />
+            <column name="CODEMPNS" />
+        </many-to-one>
+        <many-to-one name="eqitrecmerc" class="org.freedom.persist.entity.Eqitrecmerc" update="false" insert="false" fetch="select">
+            <column name="TICKET" not-null="true" />
+            <column name="CODITRECMERC" not-null="true" />
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <many-to-one name="eqproduto" class="org.freedom.persist.entity.Eqproduto" update="false" insert="false" fetch="select">
+            <column name="CODPRODPD" not-null="true" />
+            <column name="CODFILIALPD" not-null="true" />
+            <column name="CODEMPPD" not-null="true" />
+        </many-to-one>
+        <property name="refprodpd" type="string">
+            <column name="REFPRODPD" length="20" not-null="true" />
+        </property>
+        <property name="qtditos" type="big_decimal">
+            <column name="QTDITOS" precision="15" scale="5" not-null="true">
+                <comment>Quantidade de produtos ou servicos</comment>
+            </column>
+        </property>
+        <property name="obsitos" type="string">
+            <column name="OBSITOS" length="1000" />
+        </property>
+        <property name="statusitos" type="string">
+            <column name="STATUSITOS" length="2" not-null="true">
+                <comment>"PE" - Item pendente / previsto / Or&#195;&#167;ado "EC" - Encaminhado / Chamado aberto / RMA aberta "EA" - Em andamento "CO" - Item
+                Conclu&#195;&#173;do;</comment>
+            </column>
+        </property>
+        <property name="gerarma" type="java.lang.Character">
+            <column name="GERARMA" length="1">
+                <comment>Indica se deve gerar RMA para o &#195;&#173;tem de O.S.</comment>
+            </column>
+        </property>
+        <property name="gerachamado" type="java.lang.Character">
+            <column name="GERACHAMADO" length="1">
+                <comment>Indica se deve gerar chamado para esse item.</comment>
+            </column>
+        </property>
+        <property name="geranovo" type="java.lang.Character">
+            <column name="GERANOVO" length="1">
+                <comment>Indica se o item de OS &#195;&#169; um produto novo para substitui&#195;&#167;&#195;&#163;o, ao com defeito;</comment>
+            </column>
+        </property>
+        <property name="emmanut" type="char">
+            <column name="EMMANUT" length="1" not-null="true" />
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+        <set name="ppops" table="PPOP" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="TICKET">
+                    <comment>Ticket da ordem de servi&#195;&#167;o vinculada.</comment>
+                </column>
+                <column name="CODITRECMERC">
+                    <comment>C&#195;&#179;digo do item de recebimento da OS vinculada.</comment>
+                </column>
+                <column name="CODITOS">
+                    <comment>C&#195;&#179;digo do item da OS vinculada.</comment>
+                </column>
+                <column name="CODFILIALOS">
+                    <comment>C&#195;&#179;digo da filial da ordem de servi&#195;&#167;o vinculada.</comment>
+                </column>
+                <column name="CODEMPOS">
+                    <comment>C&#195;&#179;digo da empresa da Ordem de servi&#195;&#167;o vinculada.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Ppop" />
+        </set>
+        <set name="eqitrmas" table="EQITRMA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="TICKET">
+                    <comment>Ticket da ordem de servi&#195;&#167;o vinculada.</comment>
+                </column>
+                <column name="CODITRECMERC">
+                    <comment>Item de recebimento da ordem de servi&#195;&#167;o vinculada</comment>
+                </column>
+                <column name="CODITOS">
+                    <comment>Item de suplemento da ordem de servi&#195;&#167;o vinculada.</comment>
+                </column>
+                <column name="CODFILIALOS">
+                    <comment>C&#195;&#179;digo da filial da ordem de servi&#195;&#167;o vinculada.</comment>
+                </column>
+                <column name="CODEMPOS">
+                    <comment>C&#195;&#179;digo da empresa da ordem de servi&#195;&#167;o vinculada.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqitrma" />
+        </set>
+        <set name="eqitrecmercitositorcs" table="EQITRECMERCITOSITORC" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="TICKET" not-null="true" />
+                <column name="CODITRECMERC" not-null="true" />
+                <column name="CODITOS" not-null="true" />
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqitrecmercitositorc" />
+        </set>
+        <set name="crchamados" table="CRCHAMADO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="TICKET">
+                    <comment>Ticket da ordem de servi&#195;&#167;o.</comment>
+                </column>
+                <column name="CODITRECMERC">
+                    <comment>C&#195;&#179;digo do &#195;&#173;tem de recebimento de mercadorias.</comment>
+                </column>
+                <column name="CODITOS">
+                    <comment>C&#195;&#179;digo do &#195;&#173;tem da ordem de servi&#195;&#167;o.</comment>
+                </column>
+                <column name="CODFILIALOS">
+                    <comment>C&#195;&#179;digo da filial da ordem de servi&#195;&#167;o.</comment>
+                </column>
+                <column name="CODEMPOS">
+                    <comment>C&#195;&#179;digo da empresa do item de ordem de servi&#195;&#167;o.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Crchamado" />
+        </set>
+    </class>
+</hibernate-mapping>

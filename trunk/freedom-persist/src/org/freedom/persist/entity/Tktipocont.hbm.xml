@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Tktipocont" table="TKTIPOCONT">
+        <composite-id name="id" class="org.freedom.persist.entity.TktipocontId">
+            <key-property name="codtipocont" type="int">
+                <column name="CODTIPOCONT" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="sgfilial" class="org.freedom.persist.entity.Sgfilial" update="false" insert="false" fetch="select">
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <property name="desctipocont" type="string">
+            <column name="DESCTIPOCONT" length="40" />
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+        <set name="sgprefere3sForSgprefere3fktktip1" table="SGPREFERE3" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTIPOCONT1" />
+                <column name="CODFILIALT1" />
+                <column name="CODEMPT1" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgprefere3" />
+        </set>
+        <set name="sgprefere3sForSgprefere3fktktip2" table="SGPREFERE3" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTIPOCONT2" />
+                <column name="CODFILIALT2" />
+                <column name="CODEMPT2" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgprefere3" />
+        </set>
+        <set name="tkcontatos" table="TKCONTATO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTIPOCONT">
+                    <comment>C&#195;&#179;digo do tipo de contato.</comment>
+                </column>
+                <column name="CODFILIALTO">
+                    <comment>C&#195;&#179;digo da filial do tipo de contato.</comment>
+                </column>
+                <column name="CODEMPTO">
+                    <comment>C&#195;&#179;digo da empresa do tipo de contato.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Tkcontato" />
+        </set>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,218 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Atatendente" table="ATATENDENTE">
+        <comment>Atendentes.</comment>
+        <composite-id name="id" class="org.freedom.persist.entity.AtatendenteId">
+            <key-property name="codatend" type="int">
+                <column name="CODATEND" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="sgfilial" class="org.freedom.persist.entity.Sgfilial" update="false" insert="false" fetch="select">
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <many-to-one name="rhempregado" class="org.freedom.persist.entity.Rhempregado" fetch="select">
+            <column name="MATEMPR" />
+            <column name="CODFILIALEP" />
+            <column name="CODEMPEP" />
+        </many-to-one>
+        <many-to-one name="vdvendedor" class="org.freedom.persist.entity.Vdvendedor" fetch="select">
+            <column name="CODVEND" />
+            <column name="CODFILIALVE" />
+            <column name="CODEMPVE" />
+        </many-to-one>
+        <many-to-one name="sgusuario" class="org.freedom.persist.entity.Sgusuario" fetch="select">
+            <column name="IDUSU" length="8" />
+            <column name="CODFILIALUS" />
+            <column name="CODEMPUS" />
+        </many-to-one>
+        <property name="nomeatend" type="string">
+            <column name="NOMEATEND" length="50" not-null="true" />
+        </property>
+        <property name="codempta" type="int">
+            <column name="CODEMPTA" not-null="true" />
+        </property>
+        <property name="codfilialta" type="short">
+            <column name="CODFILIALTA" not-null="true" />
+        </property>
+        <property name="codtpatend" type="int">
+            <column name="CODTPATEND" not-null="true" />
+        </property>
+        <property name="rgatend" type="string">
+            <column name="RGATEND" length="13" />
+        </property>
+        <property name="endatend" type="string">
+            <column name="ENDATEND" length="50" />
+        </property>
+        <property name="bairatend" type="string">
+            <column name="BAIRATEND" length="30" />
+        </property>
+        <property name="cidatend" type="string">
+            <column name="CIDATEND" length="30" />
+        </property>
+        <property name="cepatend" type="string">
+            <column name="CEPATEND" length="8" />
+        </property>
+        <property name="foneatend" type="string">
+            <column name="FONEATEND" length="12" />
+        </property>
+        <property name="faxatend" type="string">
+            <column name="FAXATEND" length="9" />
+        </property>
+        <property name="emailatend" type="string">
+            <column name="EMAILATEND" length="60" />
+        </property>
+        <property name="numatend" type="java.lang.Integer">
+            <column name="NUMATEND" />
+        </property>
+        <property name="ufatend" type="string">
+            <column name="UFATEND" length="2" />
+        </property>
+        <property name="celatend" type="string">
+            <column name="CELATEND" length="9" />
+        </property>
+        <property name="identificatend" type="string">
+            <column name="IDENTIFICATEND" length="18" />
+        </property>
+        <property name="cpfatend" type="string">
+            <column name="CPFATEND" length="11" />
+        </property>
+        <property name="metaatend" type="big_decimal">
+            <column name="METAATEND" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="partpremiatend" type="char">
+            <column name="PARTPREMIATEND" length="1" not-null="true" />
+        </property>
+        <property name="acesatdolerout" type="char">
+            <column name="ACESATDOLEROUT" length="1" not-null="true" />
+        </property>
+        <property name="acesatdoaltout" type="char">
+            <column name="ACESATDOALTOUT" length="1" not-null="true" />
+        </property>
+        <property name="acesatdodellan" type="char">
+            <column name="ACESATDODELLAN" length="1" not-null="true" />
+        </property>
+        <property name="acesatdodelout" type="char">
+            <column name="ACESATDODELOUT" length="1" not-null="true" />
+        </property>
+        <property name="acesrelestout" type="char">
+            <column name="ACESRELESTOUT" length="1" not-null="true" />
+        </property>
+        <property name="acestrocomis" type="char">
+            <column name="ACESTROCOMIS" length="1" not-null="true" />
+        </property>
+        <property name="acestrocomisout" type="char">
+            <column name="ACESTROCOMISOUT" length="1" not-null="true" />
+        </property>
+        <property name="aceschamlerout" type="char">
+            <column name="ACESCHAMLEROUT" length="1" not-null="true" />
+        </property>
+        <property name="aceschamaltout" type="char">
+            <column name="ACESCHAMALTOUT" length="1" not-null="true" />
+        </property>
+        <property name="aceschamdellan" type="char">
+            <column name="ACESCHAMDELLAN" length="1" not-null="true" />
+        </property>
+        <property name="aceschamaltpro" type="char">
+            <column name="ACESCHAMALTPRO" length="1" not-null="true" />
+        </property>
+        <property name="aceschamdelout" type="char">
+            <column name="ACESCHAMDELOUT" length="1" not-null="true" />
+        </property>
+        <property name="aceschamfinpro" type="char">
+            <column name="ACESCHAMFINPRO" length="1" not-null="true" />
+        </property>
+        <property name="aceschamfinout" type="char">
+            <column name="ACESCHAMFINOUT" length="1" not-null="true" />
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <set name="tkhistoricos" table="TKHISTORICO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODATEND" not-null="true" />
+                <column name="CODFILIALAE" not-null="true" />
+                <column name="CODEMPAE" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Tkhistorico" />
+        </set>
+        <set name="eqrecmercs" table="EQRECMERC" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODATENDREC" />
+                <column name="CODFILIALAR" />
+                <column name="CODEMPAR" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqrecmerc" />
+        </set>
+        <set name="atsetoratendentes" table="ATSETORATENDENTE" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODATEND" not-null="true" />
+                <column name="CODFILIALAE" not-null="true" />
+                <column name="CODEMPAE" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Atsetoratendente" />
+        </set>
+        <set name="crchamados" table="CRCHAMADO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODATEND">
+                    <comment>C&#195;&#179;digo do atendente designado.</comment>
+                </column>
+                <column name="CODFILIALAE">
+                    <comment>Codigo da filial do atendente designado.</comment>
+                </column>
+                <column name="CODEMPAE">
+                    <comment>C&#195;&#179;digo da empresa do atendente designado.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Crchamado" />
+        </set>
+        <set name="vdorcamentos" table="VDORCAMENTO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODATEND" />
+                <column name="CODFILIALAE" />
+                <column name="CODEMPAE" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdorcamento" />
+        </set>
+        <set name="sgprefere2s" table="SGPREFERE2" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODATEND" />
+                <column name="CODFILIALAE" />
+                <column name="CODEMPAE" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgprefere2" />
+        </set>
+        <set name="atatendimentos" table="ATATENDIMENTO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODATEND" not-null="true" />
+                <column name="CODFILIALAE" not-null="true" />
+                <column name="CODEMPAE" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Atatendimento" />
+        </set>
+    </class>
+</hibernate-mapping>

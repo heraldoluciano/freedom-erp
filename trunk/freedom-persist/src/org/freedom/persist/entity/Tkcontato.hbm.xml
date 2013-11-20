@@ -1,0 +1,235 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Tkcontato" table="TKCONTATO">
+        <comment>Tabela de contatos.</comment>
+        <composite-id name="id" class="org.freedom.persist.entity.TkcontatoId">
+            <key-property name="codcto" type="int">
+                <column name="CODCTO" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="tktipocont" class="org.freedom.persist.entity.Tktipocont" fetch="select">
+            <column name="CODTIPOCONT">
+                <comment>C&#195;&#179;digo do tipo de contato.</comment>
+            </column>
+            <column name="CODFILIALTO">
+                <comment>C&#195;&#179;digo da filial do tipo de contato.</comment>
+            </column>
+            <column name="CODEMPTO">
+                <comment>C&#195;&#179;digo da empresa do tipo de contato.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="tksetorcto" class="org.freedom.persist.entity.Tksetorcto" fetch="select">
+            <column name="CODSETORCTO" />
+            <column name="CODFILIALSO" />
+            <column name="CODEMPSO" />
+        </many-to-one>
+        <many-to-one name="vdtipocli" class="org.freedom.persist.entity.Vdtipocli" fetch="select">
+            <column name="CODTIPOCLI" />
+            <column name="CODFILIALTC" />
+            <column name="CODEMPTC" />
+        </many-to-one>
+        <many-to-one name="vdvendedor" class="org.freedom.persist.entity.Vdvendedor" fetch="select">
+            <column name="CODVEND" />
+            <column name="CODFILIALVD" />
+            <column name="CODEMPVD" />
+        </many-to-one>
+        <many-to-one name="vdsetor" class="org.freedom.persist.entity.Vdsetor" fetch="select">
+            <column name="CODSETOR" not-null="true" />
+            <column name="CODFILIALSR" not-null="true" />
+            <column name="CODEMPSR" not-null="true" />
+        </many-to-one>
+        <many-to-one name="tkorigcont" class="org.freedom.persist.entity.Tkorigcont" fetch="select">
+            <column name="CODORIGCONT" not-null="true">
+                <comment>C&#195;&#179;digo da origem do contato.</comment>
+            </column>
+            <column name="CODFILIALOC" not-null="true" />
+            <column name="CODEMPOC" not-null="true" />
+        </many-to-one>
+        <many-to-one name="tktipoimp" class="org.freedom.persist.entity.Tktipoimp" fetch="select">
+            <column name="CODTPIMP" />
+            <column name="CODFILIALTI" />
+            <column name="CODEMPTI" />
+        </many-to-one>
+        <many-to-one name="sgmunicipio" class="org.freedom.persist.entity.Sgmunicipio" fetch="select">
+            <column name="CODMUNIC" length="7" />
+            <column name="SIGLAUF" length="2" />
+            <column name="CODPAIS" />
+        </many-to-one>
+        <property name="razcto" type="string">
+            <column name="RAZCTO" length="60" not-null="true" />
+        </property>
+        <property name="nomecto" type="string">
+            <column name="NOMECTO" length="50" not-null="true" />
+        </property>
+        <property name="datacto" type="date">
+            <column name="DATACTO" length="10" not-null="true" />
+        </property>
+        <property name="pessoacto" type="char">
+            <column name="PESSOACTO" length="1" not-null="true" />
+        </property>
+        <property name="ativocto" type="char">
+            <column name="ATIVOCTO" length="1" not-null="true" />
+        </property>
+        <property name="cnpjcto" type="string">
+            <column name="CNPJCTO" length="14" />
+        </property>
+        <property name="insccto" type="string">
+            <column name="INSCCTO" length="20" />
+        </property>
+        <property name="cpfcto" type="string">
+            <column name="CPFCTO" length="11" />
+        </property>
+        <property name="rgcto" type="string">
+            <column name="RGCTO" length="13" />
+        </property>
+        <property name="endcto" type="string">
+            <column name="ENDCTO" length="50" />
+        </property>
+        <property name="numcto" type="java.lang.Integer">
+            <column name="NUMCTO" />
+        </property>
+        <property name="complcto" type="string">
+            <column name="COMPLCTO" length="20" />
+        </property>
+        <property name="edificiocto" type="string">
+            <column name="EDIFICIOCTO" length="30" />
+        </property>
+        <property name="baircto" type="string">
+            <column name="BAIRCTO" length="30" />
+        </property>
+        <property name="cidcto" type="string">
+            <column name="CIDCTO" length="30" />
+        </property>
+        <property name="ufcto" type="string">
+            <column name="UFCTO" length="2" />
+        </property>
+        <property name="cepcto" type="string">
+            <column name="CEPCTO" length="8" />
+        </property>
+        <property name="dddcto" type="string">
+            <column name="DDDCTO" length="4" />
+        </property>
+        <property name="fonecto" type="string">
+            <column name="FONECTO" length="12" />
+        </property>
+        <property name="faxcto" type="string">
+            <column name="FAXCTO" length="9" />
+        </property>
+        <property name="emailcto" type="string">
+            <column name="EMAILCTO" length="50" />
+        </property>
+        <property name="contcto" type="string">
+            <column name="CONTCTO" length="40" />
+        </property>
+        <property name="cargocontcto" type="string">
+            <column name="CARGOCONTCTO" length="30" />
+        </property>
+        <property name="obscto" type="string">
+            <column name="OBSCTO" length="10000" />
+        </property>
+        <property name="removcto" type="char">
+            <column name="REMOVCTO" length="1" not-null="true" />
+        </property>
+        <property name="numempcto" type="java.lang.Integer">
+            <column name="NUMEMPCTO" />
+        </property>
+        <property name="celcto" type="string">
+            <column name="CELCTO" length="12">
+                <comment>Nro de telefone celular do contato</comment>
+            </column>
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+        <set name="crfichaavals" table="CRFICHAAVAL" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCTO" not-null="true" />
+                <column name="CODFILIALCO" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Crfichaaval" />
+        </set>
+        <set name="tkhistoricos" table="TKHISTORICO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCTO" />
+                <column name="CODFILIALCO" />
+                <column name="CODEMPCO" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Tkhistorico" />
+        </set>
+        <set name="tkcontclis" table="TKCONTCLI" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCTO" not-null="true" />
+                <column name="CODFILIALCTO" not-null="true" />
+                <column name="CODEMPCTO" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Tkcontcli" />
+        </set>
+        <set name="tksitcamps" table="TKSITCAMP" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCTO" />
+                <column name="CODFILIALCO" />
+                <column name="CODEMPCO" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Tksitcamp" />
+        </set>
+        <set name="tkcontpessoas" table="TKCONTPESSOA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCTO" not-null="true" />
+                <column name="CODFILIALCTO" not-null="true" />
+                <column name="CODEMPCTO" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Tkcontpessoa" />
+        </set>
+        <set name="tkctogrpints" table="TKCTOGRPINT" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCTO" not-null="true" />
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Tkctogrpint" />
+        </set>
+        <set name="tkctoativs" table="TKCTOATIV" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCTO" not-null="true" />
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Tkctoativ" />
+        </set>
+        <set name="tkcampanhactos" table="TKCAMPANHACTO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCTO">
+                    <comment>C&#195;&#179;digo do contato.</comment>
+                </column>
+                <column name="CODFILIALCO" />
+                <column name="CODEMPCO" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Tkcampanhacto" />
+        </set>
+    </class>
+</hibernate-mapping>

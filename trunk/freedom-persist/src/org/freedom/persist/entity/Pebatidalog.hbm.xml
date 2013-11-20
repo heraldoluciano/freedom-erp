@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Pebatidalog" table="PEBATIDALOG">
+        <composite-id name="id" class="org.freedom.persist.entity.PebatidalogId">
+            <key-property name="hbat" type="time">
+                <column name="HBAT" length="8" />
+            </key-property>
+            <key-property name="dtbat" type="date">
+                <column name="DTBAT" length="10" />
+            </key-property>
+            <key-property name="seqlog" type="short">
+                <column name="SEQLOG" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+            <key-property name="matempr" type="int">
+                <column name="MATEMPR" />
+            </key-property>
+            <key-property name="codempep" type="int">
+                <column name="CODEMPEP" />
+            </key-property>
+            <key-property name="codfilialep" type="short">
+                <column name="CODFILIALEP" />
+            </key-property>
+        </composite-id>
+        <property name="tipolog" type="char">
+            <column name="TIPOLOG" length="1" not-null="true" />
+        </property>
+        <property name="tipobat" type="char">
+            <column name="TIPOBAT" length="1" not-null="true" />
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="128" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" not-null="true" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" not-null="true" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="128" not-null="true" />
+        </property>
+        <property name="idusulog" type="string">
+            <column name="IDUSULOG" length="128" not-null="true" />
+        </property>
+        <property name="dtinslog" type="date">
+            <column name="DTINSLOG" length="10" not-null="true" />
+        </property>
+        <property name="hinslog" type="date">
+            <column name="HINSLOG" length="10" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

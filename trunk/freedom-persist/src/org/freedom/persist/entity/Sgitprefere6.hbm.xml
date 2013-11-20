@@ -1,0 +1,248 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Sgitprefere6" table="SGITPREFERE6">
+        <comment>Tabela de prefer&#195;&#170;ncias Febraban detalhada por banco e tipo (SIACC E CNAB)</comment>
+        <composite-id name="id" class="org.freedom.persist.entity.Sgitprefere6Id">
+            <key-property name="codbanco" type="string">
+                <column name="CODBANCO" length="3" />
+            </key-property>
+            <key-property name="tipofebraban" type="string">
+                <column name="TIPOFEBRABAN" length="2" />
+            </key-property>
+            <key-property name="codfilialbo" type="short">
+                <column name="CODFILIALBO" />
+            </key-property>
+            <key-property name="codempbo" type="int">
+                <column name="CODEMPBO" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="sgprefere6" class="org.freedom.persist.entity.Sgprefere6" update="false" insert="false" fetch="select">
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <many-to-one name="fnconta" class="org.freedom.persist.entity.Fnconta" fetch="select">
+            <column name="NUMCONTA" length="10">
+                <comment>N&#195;&#186;mero da conta corrente.</comment>
+            </column>
+            <column name="CODFILIALCA" />
+            <column name="CODEMPCA" />
+        </many-to-one>
+        <many-to-one name="fnbanco" class="org.freedom.persist.entity.Fnbanco" update="false" insert="false" fetch="select">
+            <column name="CODBANCO" length="3" not-null="true" />
+            <column name="CODFILIALBO" not-null="true" />
+            <column name="CODEMPBO" not-null="true" />
+        </many-to-one>
+        <property name="mdecob" type="string">
+            <column name="MDECOB" length="2" not-null="true" />
+        </property>
+        <property name="codconv" type="string">
+            <column name="CODCONV" length="20">
+                <comment>C&#195;&#179;digo do conv&#195;&#170;nio.</comment>
+            </column>
+        </property>
+        <property name="convcob" type="string">
+            <column name="CONVCOB" length="20">
+                <comment>Conv&#195;&#170;nio de cobran&#195;&#167;a do bloqueto.</comment>
+            </column>
+        </property>
+        <property name="verlayout" type="string">
+            <column name="VERLAYOUT" length="2">
+                <comment>Vers&#195;&#163;o do layout.</comment>
+            </column>
+        </property>
+        <property name="identserv" type="string">
+            <column name="IDENTSERV" length="17">
+                <comment>Identifica&#195;&#167;&#195;&#163;o do servi&#195;&#167;o.</comment>
+            </column>
+        </property>
+        <property name="contacompr" type="string">
+            <column name="CONTACOMPR" length="16">
+                <comment>Conta compromisso.</comment>
+            </column>
+        </property>
+        <property name="identambcli" type="string">
+            <column name="IDENTAMBCLI" length="1">
+                <comment>Identifica&#195;&#167;&#195;&#163;o de ambiente do cliente. P=Produ&#195;&#167;&#195;&#163;o - T=Teste.</comment>
+            </column>
+        </property>
+        <property name="identambbco" type="string">
+            <column name="IDENTAMBBCO" length="1">
+                <comment>Identifica&#195;&#167;&#195;&#163;o do ambiente do banco. P=Produ&#195;&#167;&#195;&#163;o - T=Teste.</comment>
+            </column>
+        </property>
+        <property name="nroseq" type="java.lang.Integer">
+            <column name="NROSEQ" />
+        </property>
+        <property name="forcadtit" type="java.lang.Short">
+            <column name="FORCADTIT">
+                <comment>Forma de cadastramento do titulo. 1 - Com cadastro. 2 - Sem cadastro.</comment>
+            </column>
+        </property>
+        <property name="tipodoc" type="java.lang.Short">
+            <column name="TIPODOC">
+                <comment>Tipo de documento. 1 - Tradicional. 2 - Escrutiral.</comment>
+            </column>
+        </property>
+        <property name="identemitbol" type="java.lang.Short">
+            <column name="IDENTEMITBOL">
+                <comment>Identifica&#195;&#167;&#195;&#163;o da emiss&#195;&#163;o de bloqueto. 1 - Banco emite. 2 - Cliente emite. 3 - Banco pr&#195;&#169;-emite e o cliente
+                completa. 4 - Banco reemite. 5 - Banco n&#195;&#163;o reemite. 6 - Cobran&#195;&#167;a sem papel. Obs.: Os campos 4 e 5 s&#195;&#179; ser&#195;&#163;o aceitos para
+                c&#195;&#179;digo de movimento para remessa 31.</comment>
+            </column>
+        </property>
+        <property name="identdistbol" type="java.lang.Short">
+            <column name="IDENTDISTBOL">
+                <comment>Identifica&#195;&#167;&#195;&#163;o da distribui&#195;&#167;&#195;&#163;o. 1 - Banco. 2 - Cliente.</comment>
+            </column>
+        </property>
+        <property name="espectit" type="java.lang.Short">
+            <column name="ESPECTIT">
+                <comment>Especie do titulo. 01 - CH Cheque. 02 - DM Duplicata mercant&#195;&#173;l. 03 - DMI Duplicata mercant&#195;&#173;l p/ indica&#195;&#167;&#195;&#163;o. 04
+                - DS Duplicata de servi&#195;&#167;o. 05 - DSI DUplicata de servi&#195;&#167;&#195;&#181; p/ indica&#195;&#167;&#195;&#163;o. 06 - DR Duplicata rural. 07 - LC
+                Letra de cambio. 08 - NCC Nota de cr&#195;&#169;dito comercial. 09 - NCE Nota de cr&#195;&#169;dito a exporta&#195;&#167;&#195;&#163;o. 10 - NCI Nota de
+                cr&#195;&#169;dito ind&#195;&#186;stria. 11 - NCR Nota de cr&#195;&#169;dito rural. 12 - NP Nota promiss&#195;&#179;ria. 13 - NPR Nota promiss&#195;&#179;ria
+                rural. 14 - TM Triplicata mercant&#195;&#173;l. 15 - TS Triplicata de servi&#195;&#167;o. 16 - NS Nota de seguro. 17 - RC Recibo. 18 - FAT Fatura. 19 - ND Nota de
+                d&#195;&#169;bito. 20 - AP Apolice de seguro. 21 - ME Mensalidade escolar. 22 - PC Parcela de cons&#195;&#179;rcio. 99 - Outros.</comment>
+            </column>
+        </property>
+        <property name="codjuros" type="java.lang.Short">
+            <column name="CODJUROS">
+                <comment>C&#195;&#179;digo do juros de mora. 1 - Valor por dia. 2 - Taxa nensal. 3 - Isento.</comment>
+            </column>
+        </property>
+        <property name="vlrpercjuros" type="big_decimal">
+            <column name="VLRPERCJUROS" precision="15" scale="5">
+                <comment>Valor ou percentual do juros.</comment>
+            </column>
+        </property>
+        <property name="coddesc" type="java.lang.Short">
+            <column name="CODDESC">
+                <comment>C&#195;&#179;digo do desconto. 1 - Valor fixo at&#195;&#169; a data informada. 2 - Percentual at&#195;&#169; a data informada. 3 - Valor por
+                antecipa&#195;&#167;&#195;&#163;o por dia corrido. 4 - Valor por antecipa&#195;&#167;&#195;&#163;o por dia util. 5 - Percentual sobre o valor nominal dia corrido.
+                6 - Percentual sobre o valor nominal dia util. Obs.: Para as op&#195;&#167;&#195;&#181;es 1 e 2 ser&#195;&#161; obrigat&#195;&#179;rio a
+                informa&#195;&#167;&#195;&#163;o da data.</comment>
+            </column>
+        </property>
+        <property name="vlrpercdesc" type="big_decimal">
+            <column name="VLRPERCDESC" precision="15" scale="5">
+                <comment>Valor ou percentual do desconto.</comment>
+            </column>
+        </property>
+        <property name="vlrpercmulta" type="big_decimal">
+            <column name="VLRPERCMULTA" precision="15" scale="5" />
+        </property>
+        <property name="codprot" type="java.lang.Short">
+            <column name="CODPROT">
+                <comment>C&#195;&#179;digo para protesto. 1 - Dias corridos. 2 - Dias ut&#195;&#169;is. 3 - N&#195;&#163;o protestar.</comment>
+            </column>
+        </property>
+        <property name="diasprot" type="java.lang.Short">
+            <column name="DIASPROT">
+                <comment>N&#195;&#186;mero de dias para protesto.</comment>
+            </column>
+        </property>
+        <property name="codbaixadev" type="java.lang.Short">
+            <column name="CODBAIXADEV">
+                <comment>C&#195;&#179;digo para baixa/devolu&#195;&#167;&#195;&#163;o. 1 - Baixar/Devolver. 2 - N&#195;&#163;o baixar/ N&#195;&#163;o devolver.</comment>
+            </column>
+        </property>
+        <property name="diasbaixadev" type="java.lang.Short">
+            <column name="DIASBAIXADEV">
+                <comment>N&#195;&#186;mero de dias para a Baixa / Devolu&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+        </property>
+        <property name="aceite" type="java.lang.Character">
+            <column name="ACEITE" length="1">
+                <comment>Defini o aceite do arquivo de cnab S - sim e N - n&#195;&#163;o</comment>
+            </column>
+        </property>
+        <property name="padraocnab" type="string">
+            <column name="PADRAOCNAB" length="4" not-null="true">
+                <comment>Indica o padr&#195;&#163;o CNAB, pode ser: 240 ou 400</comment>
+            </column>
+        </property>
+        <property name="caminhoremessa" type="string">
+            <column name="CAMINHOREMESSA" length="300" />
+        </property>
+        <property name="caminhoretorno" type="string">
+            <column name="CAMINHORETORNO" length="300" />
+        </property>
+        <property name="backupremessa" type="string">
+            <column name="BACKUPREMESSA" length="300" />
+        </property>
+        <property name="backupretorno" type="string">
+            <column name="BACKUPRETORNO" length="300" />
+        </property>
+        <property name="codinstr" type="java.lang.Short">
+            <column name="CODINSTR" />
+        </property>
+        <property name="codoutinstr" type="java.lang.Short">
+            <column name="CODOUTINSTR" />
+        </property>
+        <property name="padraosiacc" type="string">
+            <column name="PADRAOSIACC" length="4" not-null="true">
+                <comment>Indica o padr&#195;&#163;o SIACC, pode ser: 150 ou 240</comment>
+            </column>
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" not-null="true" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" not-null="true" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" not-null="true" />
+        </property>
+        <set name="fnfbnclis" table="FNFBNCLI" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODBANCO" length="3" not-null="true" />
+                <column name="TIPOFEBRABAN" length="2" not-null="true" />
+                <column name="CODFILIALBO" not-null="true" />
+                <column name="CODEMPBO" not-null="true" />
+                <column name="CODFILIALPF" not-null="true" />
+                <column name="CODEMPPF" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnfbncli" />
+        </set>
+        <set name="fnfbnrecs" table="FNFBNREC" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODBANCO" length="3" not-null="true" />
+                <column name="TIPOFEBRABAN" length="2" not-null="true" />
+                <column name="CODFILIALBO" not-null="true" />
+                <column name="CODEMPBO" not-null="true" />
+                <column name="CODFILIALPF" not-null="true" />
+                <column name="CODEMPPF" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnfbnrec" />
+        </set>
+        <set name="fnfbncodrets" table="FNFBNCODRET" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODBANCO" length="3" not-null="true" />
+                <column name="TIPOFEBRABAN" length="2" not-null="true" />
+                <column name="CODFILIALBO" not-null="true" />
+                <column name="CODEMPBO" not-null="true" />
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnfbncodret" />
+        </set>
+    </class>
+</hibernate-mapping>

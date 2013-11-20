@@ -1,0 +1,353 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Cpforneced" table="CPFORNECED">
+        <composite-id name="id" class="org.freedom.persist.entity.CpfornecedId">
+            <key-property name="codfor" type="int">
+                <column name="CODFOR" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="sgfilial" class="org.freedom.persist.entity.Sgfilial" update="false" insert="false" fetch="select">
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <many-to-one name="fnhistpad" class="org.freedom.persist.entity.Fnhistpad" fetch="select">
+            <column name="CODHIST" />
+            <column name="CODFILIALHP" />
+            <column name="CODEMPHP" />
+        </many-to-one>
+        <many-to-one name="sgunifcod" class="org.freedom.persist.entity.Sgunifcod" fetch="select">
+            <column name="CODUNIFCOD">
+                <comment>C&#195;&#179;digo na tabela de unifica&#195;&#167;&#195;&#163;o de c&#195;&#179;digos (SGUNIFCOD).</comment>
+            </column>
+            <column name="CODFILIALUC" />
+            <column name="CODEMPUC" />
+        </many-to-one>
+        <many-to-one name="lftipofisccli" class="org.freedom.persist.entity.Lftipofisccli" fetch="select">
+            <column name="CODFISCFOR">
+                <comment>C&#195;&#179;digo do tipo fiscal do fornecedor</comment>
+            </column>
+            <column name="CODFILIALFF">
+                <comment>C&#195;&#179;digo da filial do tipo fiscal do fornecedor.</comment>
+            </column>
+            <column name="CODEMPFF">
+                <comment>C&#195;&#179;digo da empresa do tipo fiscal do fornecedor.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="cptipofor" class="org.freedom.persist.entity.Cptipofor" fetch="select">
+            <column name="CODTIPOFOR" not-null="true" />
+            <column name="CODFILIALTF" not-null="true" />
+            <column name="CODEMPTF" not-null="true" />
+        </many-to-one>
+        <many-to-one name="fnbanco" class="org.freedom.persist.entity.Fnbanco" fetch="select">
+            <column name="CODBANCO" length="3" />
+            <column name="CODFILIALBO" />
+            <column name="CODEMPBO" />
+        </many-to-one>
+        <many-to-one name="sgmunicipio" class="org.freedom.persist.entity.Sgmunicipio" fetch="select">
+            <column name="CODMUNIC" length="7" />
+            <column name="SIGLAUF" length="2" />
+            <column name="CODPAIS" />
+        </many-to-one>
+        <property name="razfor" type="string">
+            <column name="RAZFOR" length="60" not-null="true" />
+        </property>
+        <property name="nomefor" type="string">
+            <column name="NOMEFOR" length="50" not-null="true" />
+        </property>
+        <property name="datafor" type="date">
+            <column name="DATAFOR" length="10" not-null="true" />
+        </property>
+        <property name="ativofor" type="java.lang.Character">
+            <column name="ATIVOFOR" length="1" />
+        </property>
+        <property name="pessoafor" type="char">
+            <column name="PESSOAFOR" length="1" not-null="true" />
+        </property>
+        <property name="cnpjfor" type="string">
+            <column name="CNPJFOR" length="14" />
+        </property>
+        <property name="cpffor" type="string">
+            <column name="CPFFOR" length="11" />
+        </property>
+        <property name="inscfor" type="string">
+            <column name="INSCFOR" length="20" />
+        </property>
+        <property name="rgfor" type="string">
+            <column name="RGFOR" length="13" />
+        </property>
+        <property name="endfor" type="string">
+            <column name="ENDFOR" length="50" />
+        </property>
+        <property name="numfor" type="java.lang.Integer">
+            <column name="NUMFOR" />
+        </property>
+        <property name="complfor" type="string">
+            <column name="COMPLFOR" length="20" />
+        </property>
+        <property name="bairfor" type="string">
+            <column name="BAIRFOR" length="30" />
+        </property>
+        <property name="cepfor" type="string">
+            <column name="CEPFOR" length="8" />
+        </property>
+        <property name="cidfor" type="string">
+            <column name="CIDFOR" length="30" />
+        </property>
+        <property name="uffor" type="string">
+            <column name="UFFOR" length="2" />
+        </property>
+        <property name="contfor" type="string">
+            <column name="CONTFOR" length="40" />
+        </property>
+        <property name="fonefor" type="string">
+            <column name="FONEFOR" length="12" />
+        </property>
+        <property name="faxfor" type="string">
+            <column name="FAXFOR" length="9" />
+        </property>
+        <property name="agenciafor" type="string">
+            <column name="AGENCIAFOR" length="6" />
+        </property>
+        <property name="contafor" type="string">
+            <column name="CONTAFOR" length="10" />
+        </property>
+        <property name="emailfor" type="string">
+            <column name="EMAILFOR" length="50" />
+        </property>
+        <property name="obsfor" type="string">
+            <column name="OBSFOR" length="10000" />
+        </property>
+        <property name="celfor" type="string">
+            <column name="CELFOR" length="9">
+                <comment>N&#195;&#186;mero do celular</comment>
+            </column>
+        </property>
+        <property name="clifor" type="java.lang.Character">
+            <column name="CLIFOR" length="1" />
+        </property>
+        <property name="sspfor" type="string">
+            <column name="SSPFOR" length="10">
+                <comment>Org&#195;&#163;o de espedi&#195;&#167;&#195;&#163;o do rg.</comment>
+            </column>
+        </property>
+        <property name="dddfonefor" type="string">
+            <column name="DDDFONEFOR" length="4">
+                <comment>DDD do telefone principal.</comment>
+            </column>
+        </property>
+        <property name="dddfaxfor" type="string">
+            <column name="DDDFAXFOR" length="4">
+                <comment>DDD do fax do fornecedor.</comment>
+            </column>
+        </property>
+        <property name="dddcelfor" type="string">
+            <column name="DDDCELFOR" length="4">
+                <comment>DDD do celular do fornecedor.</comment>
+            </column>
+        </property>
+        <property name="sitefor" type="string">
+            <column name="SITEFOR" length="50">
+                <comment>Endere&#195;&#167;o eletr&#195;&#180;nico do site do fornecedor.</comment>
+            </column>
+        </property>
+        <property name="codcontdeb" type="string">
+            <column name="CODCONTDEB" length="20" />
+        </property>
+        <property name="codcontcred" type="string">
+            <column name="CODCONTCRED" length="20" />
+        </property>
+        <property name="codforcontab" type="string">
+            <column name="CODFORCONTAB" length="20">
+                <comment>C&#195;&#179;digo contabil</comment>
+            </column>
+        </property>
+        <property name="suframafor" type="string">
+            <column name="SUFRAMAFOR" length="9">
+                <comment>C&#195;&#179;digo do SUFRAMA do fornecedor.</comment>
+            </column>
+        </property>
+        <property name="nrodependfor" type="java.lang.Short">
+            <column name="NRODEPENDFOR">
+                <comment>N&#195;&#186;mero de dependes do fornecedor (pessoa f&#195;&#173;sica) (calculo de irrf)</comment>
+            </column>
+        </property>
+        <property name="inscconreg" type="string">
+            <column name="INSCCONREG" length="15">
+                <comment>Inscri&#195;&#167;&#195;&#163;o no conselho regional (contabilidae, administra&#195;&#167;&#195;&#163;o, medicina, etc..)</comment>
+            </column>
+        </property>
+        <property name="codexportador" type="string">
+            <column name="CODEXPORTADOR" length="20" />
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+        <set name="eqclifors" table="EQCLIFOR" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFOR" not-null="true" />
+                <column name="CODFILIALFR" not-null="true" />
+                <column name="CODEMPFR" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqclifor" />
+        </set>
+        <set name="eqrecmercs" table="EQRECMERC" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFOR" />
+                <column name="CODFILIALFR" />
+                <column name="CODEMPFR" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqrecmerc" />
+        </set>
+        <set name="fnsublancas" table="FNSUBLANCA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFOR" />
+                <column name="CODFILIALFR" />
+                <column name="CODEMPFR" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnsublanca" />
+        </set>
+        <set name="cptabfors" table="CPTABFOR" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFOR" not-null="true" />
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Cptabfor" />
+        </set>
+        <set name="sgfilials" table="SGFILIAL" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFOR">
+                    <comment>C&#195;&#179;digo do fornecedor (contador)</comment>
+                </column>
+                <column name="CODFILIALCO">
+                    <comment>C&#195;&#179;digo da filial do fornecedor (contador)</comment>
+                </column>
+                <column name="CODEMPCO">
+                    <comment>C&#195;&#179;digo da empresa do fornecedor (contador)</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgfilial" />
+        </set>
+        <set name="cpcompras" table="CPCOMPRA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFOR" not-null="true" />
+                <column name="CODFILIALFR" not-null="true" />
+                <column name="CODEMPFR" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Cpcompra" />
+        </set>
+        <set name="cpimportacaos" table="CPIMPORTACAO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFOR" not-null="true">
+                    <comment>C&#195;&#179;digo do fornecedor na importa&#195;&#167;&#195;&#163;o.</comment>
+                </column>
+                <column name="CODFILIALFR" not-null="true">
+                    <comment>C&#195;&#179;digo da filial do fornecedor.</comment>
+                </column>
+                <column name="CODEMPFR" not-null="true">
+                    <comment>C&#195;&#179;digo da empresa do fornecedor.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Cpimportacao" />
+        </set>
+        <set name="cpordcompras" table="CPORDCOMPRA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFOR" not-null="true" />
+                <column name="CODFILIALFR" not-null="true" />
+                <column name="CODEMPFR" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Cpordcompra" />
+        </set>
+        <set name="vditcontratofors" table="VDITCONTRATOFOR" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFOR" not-null="true" />
+                <column name="CODFILIALFR" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vditcontratofor" />
+        </set>
+        <set name="fnpagars" table="FNPAGAR" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFOR" not-null="true" />
+                <column name="CODFILIALFR" not-null="true" />
+                <column name="CODEMPFR" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnpagar" />
+        </set>
+        <set name="vdtransps" table="VDTRANSP" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFOR">
+                    <comment>Correspondente na tabela de fornecedores.</comment>
+                </column>
+                <column name="CODFILIALFR" />
+                <column name="CODEMPFR" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdtransp" />
+        </set>
+        <set name="sgprefere1s" table="SGPREFERE1" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFOR" />
+                <column name="CODFILIALFR" />
+                <column name="CODEMPFR" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgprefere1" />
+        </set>
+        <one-to-one name="cphomologfor" class="org.freedom.persist.entity.Cphomologfor"></one-to-one>
+        <set name="vdclientefors" table="VDCLIENTEFOR" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFOR" not-null="true" />
+                <column name="CODFILIALFR" not-null="true" />
+                <column name="CODEMPFR" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdclientefor" />
+        </set>
+        <set name="cpprodfors" table="CPPRODFOR" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFOR" not-null="true" />
+                <column name="CODFILIALFR" not-null="true" />
+                <column name="CODEMPFR" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Cpprodfor" />
+        </set>
+        <set name="fnlancas" table="FNLANCA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFOR" />
+                <column name="CODFILIALFR" />
+                <column name="CODEMPFR" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnlanca" />
+        </set>
+        <set name="sgeqvclifors" table="SGEQVCLIFOR" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODFOR" not-null="true" />
+                <column name="CODFILIALFR" not-null="true" />
+                <column name="CODEMPFR" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgeqvclifor" />
+        </set>
+    </class>
+</hibernate-mapping>

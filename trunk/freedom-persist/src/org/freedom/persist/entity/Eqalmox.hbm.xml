@@ -1,0 +1,213 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Eqalmox" table="EQALMOX">
+        <comment>Tabela de almoxarifados.</comment>
+        <composite-id name="id" class="org.freedom.persist.entity.EqalmoxId">
+            <key-property name="codalmox" type="int">
+                <column name="CODALMOX" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="sgfilial" class="org.freedom.persist.entity.Sgfilial" update="false" insert="false" fetch="select">
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <property name="descalmox" type="string">
+            <column name="DESCALMOX" length="40" not-null="true" />
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+        <set name="eqmovprods" table="EQMOVPROD" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODALMOX" not-null="true">
+                    <comment>C&#195;&#179;digo do almoxarifado.</comment>
+                </column>
+                <column name="CODFILIALAX" not-null="true">
+                    <comment>C&#195;&#179;digo da filial na tabela de almoxarifados.</comment>
+                </column>
+                <column name="CODEMPAX" not-null="true">
+                    <comment>C&#195;&#179;digo da empresa na tabela de almoxarifados.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqmovprod" />
+        </set>
+        <set name="sgusuarios" table="SGUSUARIO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODALMOX" />
+                <column name="CODFILIALAM" />
+                <column name="CODEMPAM" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgusuario" />
+        </set>
+        <set name="eqrecmercs" table="EQRECMERC" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODALMOX">
+                    <comment>C&#195;&#179;digo do almoxarifado de descarregamento da mercadoria.</comment>
+                </column>
+                <column name="CODFILIALAX">
+                    <comment>C&#195;&#179;digo da filial do almoxarifado de descarregamento da mercadoria.</comment>
+                </column>
+                <column name="CODEMPAX">
+                    <comment>C&#195;&#179;digo da empresa do almoxarifado de descarregamento da mercadoria.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqrecmerc" />
+        </set>
+        <set name="eqsaldoprods" table="EQSALDOPROD" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODALMOX" not-null="true" />
+                <column name="CODFILIALAX" not-null="true" />
+                <column name="CODEMPAX" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqsaldoprod" />
+        </set>
+        <set name="ppops" table="PPOP" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODALMOX" not-null="true">
+                    <comment>C&#195;&#179;digo do almoxarifado</comment>
+                </column>
+                <column name="CODFILIALAX" not-null="true">
+                    <comment>Codigo da filial do almoxarifado.</comment>
+                </column>
+                <column name="CODEMPAX" not-null="true">
+                    <comment>C&#195;&#179;digo da empresa do almoxarifado.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Ppop" />
+        </set>
+        <set name="eqinvprods" table="EQINVPROD" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODALMOX" not-null="true" />
+                <column name="CODFILIALAX" not-null="true" />
+                <column name="CODEMPAX" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqinvprod" />
+        </set>
+        <set name="cpitsolicitacaos" table="CPITSOLICITACAO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODALMOX" not-null="true" />
+                <column name="CODFILIALAM" not-null="true" />
+                <column name="CODEMPAM" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Cpitsolicitacao" />
+        </set>
+        <set name="eqalmoxfilials" table="EQALMOXFILIAL" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODALMOX" not-null="true">
+                    <comment>C&#195;&#179;digo do almoxarifado.</comment>
+                </column>
+                <column name="CODFILIAL" not-null="true">
+                    <comment>C&#195;&#179;digo da filial na tabela EQALMOX.</comment>
+                </column>
+                <column name="CODEMP" not-null="true">
+                    <comment>C&#195;&#179;digo da empresa na tabela EQALMOX.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqalmoxfilial" />
+        </set>
+        <set name="eqprodutos" table="EQPRODUTO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODALMOX" not-null="true" />
+                <column name="CODFILIALAX" not-null="true" />
+                <column name="CODEMPAX" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqproduto" />
+        </set>
+        <set name="cpitcompras" table="CPITCOMPRA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODALMOX" not-null="true">
+                    <comment>C&#195;&#179;digo do almoxarifado.</comment>
+                </column>
+                <column name="CODFILIALAX" not-null="true">
+                    <comment>C&#195;&#179;digo da filial na tabela de almoxarifados.</comment>
+                </column>
+                <column name="CODEMPAX" not-null="true">
+                    <comment>C&#195;&#179;digo da empresa na tabela de almoxarifados.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Cpitcompra" />
+        </set>
+        <set name="vditvendas" table="VDITVENDA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODALMOX" not-null="true">
+                    <comment>C&#195;&#179;digo do almoxarifado.</comment>
+                </column>
+                <column name="CODFILIALAX" not-null="true">
+                    <comment>C&#195;&#179;digo da filial na tabela de almoxarifados.</comment>
+                </column>
+                <column name="CODEMPAX" not-null="true">
+                    <comment>C&#195;&#179;digo da empresa na tabela de almoxarifados.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vditvenda" />
+        </set>
+        <set name="eqsaldolotes" table="EQSALDOLOTE" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODALMOX" not-null="true" />
+                <column name="CODFILIALAX" not-null="true" />
+                <column name="CODEMPAX" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqsaldolote" />
+        </set>
+        <set name="eqexpedicaos" table="EQEXPEDICAO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODALMOX" />
+                <column name="CODFILIALAX" />
+                <column name="CODEMPAX" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqexpedicao" />
+        </set>
+        <set name="eqitrmas" table="EQITRMA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODALMOX">
+                    <comment>C&#195;&#179;digo do almoxarifado.</comment>
+                </column>
+                <column name="CODFILIALAX" not-null="true">
+                    <comment>C&#195;&#179;digo da filail na tabela de almoxarifados.</comment>
+                </column>
+                <column name="CODEMPAX" not-null="true">
+                    <comment>C&#195;&#179;digo da empresa na tabela de almoxarifados.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqitrma" />
+        </set>
+        <set name="vditorcamentos" table="VDITORCAMENTO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODALMOX" not-null="true">
+                    <comment>C&#195;&#179;digo do almoxarifado.</comment>
+                </column>
+                <column name="CODFILIALAX" not-null="true">
+                    <comment>C&#195;&#179;digo da filial na tabela de almoxarifados.</comment>
+                </column>
+                <column name="CODEMPAX" not-null="true">
+                    <comment>C&#195;&#179;digo da empresa na tabela de almoxarifados.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vditorcamento" />
+        </set>
+    </class>
+</hibernate-mapping>

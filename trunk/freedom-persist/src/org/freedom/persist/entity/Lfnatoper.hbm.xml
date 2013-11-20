@@ -1,0 +1,109 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Lfnatoper" table="LFNATOPER">
+        <composite-id name="id" class="org.freedom.persist.entity.LfnatoperId">
+            <key-property name="codnat" type="string">
+                <column name="CODNAT" length="4" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="sgfilial" class="org.freedom.persist.entity.Sgfilial" update="false" insert="false" fetch="select">
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <property name="descnat" type="string">
+            <column name="DESCNAT" length="60" not-null="true" />
+        </property>
+        <property name="impdtsaidanat" type="char">
+            <column name="IMPDTSAIDANAT" length="1" not-null="true">
+                <comment>Flag para impress&#195;&#163;o de data de saida na nota fiscal.</comment>
+            </column>
+        </property>
+        <property name="aliqenat" type="big_decimal">
+            <column name="ALIQENAT" precision="6" not-null="true" />
+        </property>
+        <property name="aliqfnat" type="big_decimal">
+            <column name="ALIQFNAT" precision="6" not-null="true" />
+        </property>
+        <property name="txtnat" type="string">
+            <column name="TXTNAT" length="500" />
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+        <set name="lfitregrafiscals" table="LFITREGRAFISCAL" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODNAT" length="4" not-null="true" />
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Lfitregrafiscal" />
+        </set>
+        <set name="lffretes" table="LFFRETE" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODNAT" length="4">
+                    <comment>Natureza da opera&#195;&#167;&#195;&#163;o.</comment>
+                </column>
+                <column name="CODFILIALNT" />
+                <column name="CODEMPNT" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Lffrete" />
+        </set>
+        <set name="cpequivcfopsForCpequivcfopfklfnan" table="CPEQUIVCFOP" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODNATND" length="4" not-null="true" />
+                <column name="CODFILIALND" not-null="true" />
+                <column name="CODEMPND" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Cpequivcfop" />
+        </set>
+        <set name="cpitcompras" table="CPITCOMPRA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODNAT" length="4" not-null="true" />
+                <column name="CODFILIALNT" not-null="true" />
+                <column name="CODEMPNT" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Cpitcompra" />
+        </set>
+        <set name="vditvendas" table="VDITVENDA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODNAT" length="4" not-null="true" />
+                <column name="CODFILIALNT" not-null="true" />
+                <column name="CODEMPNT" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vditvenda" />
+        </set>
+        <set name="lflivrofiscals" table="LFLIVROFISCAL" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODNAT" length="4" />
+                <column name="CODFILIALNT" />
+                <column name="CODEMPNT" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Lflivrofiscal" />
+        </set>
+        <one-to-one name="cpequivcfopByCpequivcfopfklfnat" class="org.freedom.persist.entity.Cpequivcfop"></one-to-one>
+    </class>
+</hibernate-mapping>

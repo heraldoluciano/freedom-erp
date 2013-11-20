@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Spnatoper" table="SPNATOPER">
+        <composite-id name="id" class="org.freedom.persist.entity.SpnatoperId">
+            <key-property name="codigo" type="string">
+                <column name="CODIGO" length="10" />
+            </key-property>
+            <key-property name="cst" type="string">
+                <column name="CST" length="2" />
+            </key-property>
+        </composite-id>
+        <property name="descProd" type="string">
+            <column name="DESC_PROD" length="500" not-null="true" />
+        </property>
+        <property name="dtIni" type="date">
+            <column name="DT_INI" length="10" />
+        </property>
+        <property name="dtFim" type="date">
+            <column name="DT_FIM" length="10" />
+        </property>
+        <property name="ncm" type="string">
+            <column name="NCM" length="1000" />
+        </property>
+        <property name="ncmEx" type="string">
+            <column name="NCM_EX" length="1000" />
+        </property>
+        <property name="exIpi" type="string">
+            <column name="EX_IPI" length="1000" />
+        </property>
+        <property name="unid" type="string">
+            <column name="UNID" length="250" />
+        </property>
+        <property name="aliqPis" type="big_decimal">
+            <column name="ALIQ_PIS" precision="10" />
+        </property>
+        <property name="aliqCofin" type="big_decimal">
+            <column name="ALIQ_COFIN" precision="10" />
+        </property>
+        <property name="exTabOperSemCsl" type="string">
+            <column name="EX_TAB_OPER_SEM_CSL" length="1000" />
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="128" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" not-null="true" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" not-null="true" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="128" />
+        </property>
+        <set name="lfclfiscals" table="LFCLFISCAL" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODIGO" length="10" />
+                <column name="CST" length="2" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Lfclfiscal" />
+        </set>
+    </class>
+</hibernate-mapping>

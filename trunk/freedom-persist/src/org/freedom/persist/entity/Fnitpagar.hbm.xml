@@ -1,0 +1,202 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Fnitpagar" table="FNITPAGAR">
+        <composite-id name="id" class="org.freedom.persist.entity.FnitpagarId">
+            <key-property name="codpag" type="int">
+                <column name="CODPAG" />
+            </key-property>
+            <key-property name="nparcpag" type="int">
+                <column name="NPARCPAG" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="fnconta" class="org.freedom.persist.entity.Fnconta" fetch="select">
+            <column name="NUMCONTA" length="10" />
+            <column name="CODFILIALCA" />
+            <column name="CODEMPCA" />
+        </many-to-one>
+        <many-to-one name="fntipocob" class="org.freedom.persist.entity.Fntipocob" fetch="select">
+            <column name="CODTIPOCOB" />
+            <column name="CODFILIALTC" />
+            <column name="CODEMPTC" />
+        </many-to-one>
+        <many-to-one name="fnsinal" class="org.freedom.persist.entity.Fnsinal" fetch="select">
+            <column name="CODSINAL">
+                <comment>C&#195;&#179;digo do sinalizador.</comment>
+            </column>
+            <column name="CODEMPSN">
+                <comment>C&#195;&#179;digo da empresa do sinalizador.</comment>
+            </column>
+            <column name="CODFILIALSN">
+                <comment>C&#195;&#179;digo da filial do sinalizador.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="fnplanejamento" class="org.freedom.persist.entity.Fnplanejamento" fetch="select">
+            <column name="CODPLAN" length="13" />
+            <column name="CODFILIALPN" />
+            <column name="CODEMPPN" />
+        </many-to-one>
+        <many-to-one name="vditcontrato" class="org.freedom.persist.entity.Vditcontrato" fetch="select">
+            <column name="CODCONTR" />
+            <column name="CODITCONTR" />
+            <column name="CODFILIALCT" />
+            <column name="CODEMPCT" />
+        </many-to-one>
+        <many-to-one name="fnpagar" class="org.freedom.persist.entity.Fnpagar" update="false" insert="false" fetch="select">
+            <column name="CODPAG" not-null="true" />
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <property name="vlritpag" type="big_decimal">
+            <column name="VLRITPAG" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="vlrdescitpag" type="big_decimal">
+            <column name="VLRDESCITPAG" precision="15" scale="5" />
+        </property>
+        <property name="vlrmultaitpag" type="big_decimal">
+            <column name="VLRMULTAITPAG" precision="15" scale="5" />
+        </property>
+        <property name="vlrjurositpag" type="big_decimal">
+            <column name="VLRJUROSITPAG" precision="15" scale="5" />
+        </property>
+        <property name="vlrdevitpag" type="big_decimal">
+            <column name="VLRDEVITPAG" precision="15" scale="5" not-null="true">
+                <comment>Valor das devolu&#195;&#167;&#195;&#181;es de compra da parcela.</comment>
+            </column>
+        </property>
+        <property name="vlrparcitpag" type="big_decimal">
+            <column name="VLRPARCITPAG" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="vlrpagoitpag" type="big_decimal">
+            <column name="VLRPAGOITPAG" precision="15" scale="5" />
+        </property>
+        <property name="vlrapagitpag" type="big_decimal">
+            <column name="VLRAPAGITPAG" precision="15" scale="5" />
+        </property>
+        <property name="vlradicitpag" type="big_decimal">
+            <column name="VLRADICITPAG" precision="15" scale="5" />
+        </property>
+        <property name="vlrcancitpag" type="big_decimal">
+            <column name="VLRCANCITPAG" precision="15" scale="5" />
+        </property>
+        <property name="dtitpag" type="date">
+            <column name="DTITPAG" length="10" not-null="true" />
+        </property>
+        <property name="dtcompitpag" type="date">
+            <column name="DTCOMPITPAG" length="10" not-null="true">
+                <comment>Data de compet&#195;&#170;ncia.</comment>
+            </column>
+        </property>
+        <property name="dtvencitpag" type="date">
+            <column name="DTVENCITPAG" length="10" not-null="true" />
+        </property>
+        <property name="dtpagoitpag" type="date">
+            <column name="DTPAGOITPAG" length="10" />
+        </property>
+        <property name="statusitpag" type="string">
+            <column name="STATUSITPAG" length="2" not-null="true">
+                <comment>P1 - Pendente PL - Pagamento parcial PP - Pagamento total CP - Cancelado</comment>
+            </column>
+        </property>
+        <property name="doclancaitpag" type="string">
+            <column name="DOCLANCAITPAG" length="15" />
+        </property>
+        <property name="obsitpag" type="string">
+            <column name="OBSITPAG" length="250" />
+        </property>
+        <property name="flag" type="java.lang.Character">
+            <column name="FLAG" length="1" />
+        </property>
+        <property name="codempcc" type="java.lang.Integer">
+            <column name="CODEMPCC" />
+        </property>
+        <property name="codfilialcc" type="java.lang.Short">
+            <column name="CODFILIALCC" />
+        </property>
+        <property name="anocc" type="java.lang.Short">
+            <column name="ANOCC" />
+        </property>
+        <property name="codcc" type="string">
+            <column name="CODCC" length="19" />
+        </property>
+        <property name="emmanut" type="char">
+            <column name="EMMANUT" length="1" not-null="true" />
+        </property>
+        <property name="multibaixa" type="java.lang.Character">
+            <column name="MULTIBAIXA" length="1" />
+        </property>
+        <property name="edititpag" type="java.lang.Character">
+            <column name="EDITITPAG" length="1" />
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <set name="fnlancas" table="FNLANCA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODPAG" />
+                <column name="NPARCPAG" />
+                <column name="CODFILIALPG" />
+                <column name="CODEMPPG" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnlanca" />
+        </set>
+        <set name="fnsublancas" table="FNSUBLANCA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODPAG" />
+                <column name="NPARCPAG" />
+                <column name="CODFILIALPG" />
+                <column name="CODEMPPG" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnsublanca" />
+        </set>
+        <set name="fnmovimentos" table="FNMOVIMENTO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODPAG" />
+                <column name="NPARCPAG" />
+                <column name="CODFILIALPG" />
+                <column name="CODEMPPG" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnmovimento" />
+        </set>
+        <set name="fnpagcheqs" table="FNPAGCHEQ" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODPAG" not-null="true">
+                    <comment>C&#195;&#179;digo do pagamento.</comment>
+                </column>
+                <column name="NPARCPAG" not-null="true">
+                    <comment>N&#195;&#186;mero sequencial.</comment>
+                </column>
+                <column name="CODFILIAL" not-null="true">
+                    <comment>C&#195;&#179;digo da filial na tabela FNPAGAR.</comment>
+                </column>
+                <column name="CODEMP" not-null="true">
+                    <comment>C&#195;&#179;digo da empresa na tabela FNPAGAR.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnpagcheq" />
+        </set>
+    </class>
+</hibernate-mapping>

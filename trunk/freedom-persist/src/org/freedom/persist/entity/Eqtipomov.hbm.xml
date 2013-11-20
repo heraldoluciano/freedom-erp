@@ -1,0 +1,611 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Eqtipomov" table="EQTIPOMOV">
+        <composite-id name="id" class="org.freedom.persist.entity.EqtipomovId">
+            <key-property name="codtipomov" type="int">
+                <column name="CODTIPOMOV" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="sgfilial" class="org.freedom.persist.entity.Sgfilial" update="false" insert="false" fetch="select">
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <many-to-one name="vdregracomis" class="org.freedom.persist.entity.Vdregracomis" fetch="select">
+            <column name="CODREGRCOMIS" />
+            <column name="CODFILIALRC" />
+            <column name="CODEMPRC" />
+        </many-to-one>
+        <many-to-one name="lfmoddocfisc" class="org.freedom.persist.entity.Lfmoddocfisc" fetch="select">
+            <column name="CODMODDOCFISC" length="2">
+                <comment>Codigo do modelo do documento fiscal.</comment>
+            </column>
+            <column name="CODFILIALDF">
+                <comment>Codigo da filial do modelo de documento fiscal.</comment>
+            </column>
+            <column name="CODEMPDF">
+                <comment>Codigo da empresa do modelo de documento fiscal.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="lfmensagem" class="org.freedom.persist.entity.Lfmensagem" fetch="select">
+            <column name="CODMENS" />
+            <column name="CODFILIALMC" />
+            <column name="CODEMPMC" />
+        </many-to-one>
+        <many-to-one name="lfmodnota" class="org.freedom.persist.entity.Lfmodnota" fetch="select">
+            <column name="CODMODNOTA" not-null="true" />
+            <column name="CODFILIALMN" not-null="true" />
+            <column name="CODEMPMN" not-null="true" />
+        </many-to-one>
+        <many-to-one name="vdtabpreco" class="org.freedom.persist.entity.Vdtabpreco" fetch="select">
+            <column name="CODTAB" />
+            <column name="CODFILIALTB" />
+            <column name="CODEMPTB" />
+        </many-to-one>
+        <many-to-one name="lfserie" class="org.freedom.persist.entity.Lfserie" fetch="select">
+            <column name="SERIE" length="4" not-null="true" />
+            <column name="CODFILIALSE" not-null="true" />
+            <column name="CODEMPSE" not-null="true" />
+        </many-to-one>
+        <many-to-one name="eqtipomovByEqtipomovfkeqtipoc" class="org.freedom.persist.entity.Eqtipomov" fetch="select">
+            <column name="CODTIPOMOVTC" />
+            <column name="CODFILIALTC" />
+            <column name="CODEMPTC" />
+        </many-to-one>
+        <many-to-one name="fnplanopag" class="org.freedom.persist.entity.Fnplanopag" fetch="select">
+            <column name="CODPLANOPAG">
+                <comment>C&#195;&#179;digo do plano de pagamento preferencial</comment>
+            </column>
+            <column name="CODFILIALPP">
+                <comment>C&#195;&#179;digo da filial para o plano de pagamento preferencial</comment>
+            </column>
+            <column name="CODEMPPP">
+                <comment>C&#195;&#179;digo da empresa para o plano de pagamento preferencial</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="vdtransp" class="org.freedom.persist.entity.Vdtransp" fetch="select">
+            <column name="CODTRAN">
+                <comment>C&#195;&#179;digo da transportadora padr&#195;&#163;o para o tipo de movimento.</comment>
+            </column>
+            <column name="CODFILIALTN">
+                <comment>C&#195;&#179;digo da filial da transportadora padr&#195;&#163;o para o tipo de movimento.</comment>
+            </column>
+            <column name="CODEMPTN">
+                <comment>C&#195;&#179;digo da empresa da transportadora padr&#195;&#163;o para o tipo de movimento.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="eqtipomovByEqtipomovfkeqtipom" class="org.freedom.persist.entity.Eqtipomov" fetch="select">
+            <column name="CODTIPOMOVTM" />
+            <column name="CODFILIALTM" />
+            <column name="CODEMPTM" />
+        </many-to-one>
+        <property name="desctipomov" type="string">
+            <column name="DESCTIPOMOV" length="40" not-null="true" />
+        </property>
+        <property name="estipomov" type="char">
+            <column name="ESTIPOMOV" length="1" not-null="true" />
+        </property>
+        <property name="fiscaltipomov" type="char">
+            <column name="FISCALTIPOMOV" length="1" not-null="true" />
+        </property>
+        <property name="estoqtipomov" type="char">
+            <column name="ESTOQTIPOMOV" length="1" not-null="true">
+                <comment>Indica se o tipo de movimento movimenta estoque.</comment>
+            </column>
+        </property>
+        <property name="tipomov" type="string">
+            <column name="TIPOMOV" length="2" not-null="true" />
+        </property>
+        <property name="especietipomov" type="string">
+            <column name="ESPECIETIPOMOV" length="4" />
+        </property>
+        <property name="imppedtipomov" type="char">
+            <column name="IMPPEDTIPOMOV" length="1" not-null="true">
+                <comment>Flag que indica se imprime pedido.</comment>
+            </column>
+        </property>
+        <property name="impnftipomov" type="char">
+            <column name="IMPNFTIPOMOV" length="1" not-null="true">
+                <comment>Flag que indica se imprime NF.</comment>
+            </column>
+        </property>
+        <property name="impboltipomov" type="char">
+            <column name="IMPBOLTIPOMOV" length="1" not-null="true">
+                <comment>Flag que indica se imprime boleto.</comment>
+            </column>
+        </property>
+        <property name="imprectipomov" type="char">
+            <column name="IMPRECTIPOMOV" length="1" not-null="true">
+                <comment>Flag que indica se imprime recibo no fechamento da venda.</comment>
+            </column>
+        </property>
+        <property name="reimpnftipomov" type="char">
+            <column name="REIMPNFTIPOMOV" length="1" not-null="true">
+                <comment>Flag que indica se reimprime NF.</comment>
+            </column>
+        </property>
+        <property name="tusutipomov" type="char">
+            <column name="TUSUTIPOMOV" length="1" not-null="true">
+                <comment>Flag que indica se todos os usu&#195;&#161;rios podem utilizar o tipo de movimento.</comment>
+            </column>
+        </property>
+        <property name="somavdtipomov" type="java.lang.Character">
+            <column name="SOMAVDTIPOMOV" length="1">
+                <comment>Indica se as movimenta&#195;&#167;&#195;&#181;es geradas com esse tipo de movimento devem aparecer nos relat&#195;&#179;rios de venda.</comment>
+            </column>
+        </property>
+        <property name="seqnftipomov" type="char">
+            <column name="SEQNFTIPOMOV" length="1" not-null="true">
+                <comment>Flag que indica aloca&#195;&#167;&#195;&#163;o do n&#195;&#186;mero da nota fiscal.</comment>
+            </column>
+        </property>
+        <property name="vlrmfintipomov" type="char">
+            <column name="VLRMFINTIPOMOV" length="1" not-null="true">
+                <comment>Permite valor financeiro menor que total da nota.</comment>
+            </column>
+        </property>
+        <property name="mcomistipomov" type="char">
+            <column name="MCOMISTIPOMOV" length="1" not-null="true">
+                <comment>Indica se o sistema de comiss&#195;&#181;es &#195;&#169; com m&#195;&#186;ltiplos comissionados.</comment>
+            </column>
+        </property>
+        <property name="opertipomov" type="char">
+            <column name="OPERTIPOMOV" length="1" not-null="true">
+                <comment>Opera&#195;&#167;&#195;&#163;o: "C" - Conjugada; "P" - Produto; "S" - Servi&#195;&#167;o;</comment>
+            </column>
+        </property>
+        <property name="ctipofrete" type="java.lang.Character">
+            <column name="CTIPOFRETE" length="1">
+                <comment>flag de preferencia para o tipo de frete na venda com este tipo de movimento.</comment>
+            </column>
+        </property>
+        <property name="emitnfcpmov" type="char">
+            <column name="EMITNFCPMOV" length="1" not-null="true">
+                <comment>Indica se a nota ser&#195;&#161; digitada ou emitida na entrada.</comment>
+            </column>
+        </property>
+        <property name="descnatcompl" type="string">
+            <column name="DESCNATCOMPL" length="60" />
+        </property>
+        <property name="desbloqcv" type="char">
+            <column name="DESBLOQCV" length="1" not-null="true" />
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+        <set name="sgprefere8sForSgprefere8fkeqtipomovds" table="SGPREFERE8" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTIPOMOVDS">
+                    <comment>C&#195;&#179;digo do tipo de movimento padr&#195;&#163;o para devolu&#195;&#167;&#195;&#163;o de pe&#195;&#167;as consertadas.</comment>
+                </column>
+                <column name="CODFILIALDS">
+                    <comment>C&#195;&#179;digo da filial para o tipo de movimento padr&#195;&#163;o devolu&#195;&#167;&#195;&#163;o de pe&#195;&#167;as consertadas.</comment>
+                </column>
+                <column name="CODEMPDS">
+                    <comment>C&#195;&#179;digo da empresa para o tipo de movimento padr&#195;&#163;o para devolu&#195;&#167;&#195;&#163;o de pe&#195;&#167;as
+                    consertadas.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgprefere8" />
+        </set>
+        <set name="lfitregrafiscals" table="LFITREGRAFISCAL" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTIPOMOV" />
+                <column name="CODFILIALTM" />
+                <column name="CODEMPTM" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Lfitregrafiscal" />
+        </set>
+        <set name="lfitclfiscals" table="LFITCLFISCAL" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTIPOMOV" />
+                <column name="CODFILIALTM" />
+                <column name="CODEMPTM" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Lfitclfiscal" />
+        </set>
+        <set name="sgprefere1sForSgprefere1fk9eqtip" table="SGPREFERE1" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTIPOMOV9">
+                    <comment>C&#195;&#179;digo do tipo de movimento padr&#195;&#163;o para conhecimento de frete.</comment>
+                </column>
+                <column name="CODFILIALT9">
+                    <comment>C&#195;&#179;digo da filial do tipo de movimento para conheciemento de frete.</comment>
+                </column>
+                <column name="CODEMPT9">
+                    <comment>C&#195;&#179;digo da empresa do tipo de moviento padr&#195;&#163;o para conhecimento de frete.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgprefere1" />
+        </set>
+        <set name="sgprefere1sForSgprefere1fk5eqtip" table="SGPREFERE1" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTIPOMOV5" />
+                <column name="CODFILIALT5" />
+                <column name="CODEMPT5" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgprefere1" />
+        </set>
+        <set name="sgprefere7sForSgpref7fkeqtipmco" table="SGPREFERE7" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTIPOMOVCO">
+                    <comment>Tipo de movimento de consigna&#195;&#167;&#195;&#163;o.</comment>
+                </column>
+                <column name="CODFILIALCO" />
+                <column name="CODEMPCO" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgprefere7" />
+        </set>
+        <set name="eqrmas" table="EQRMA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTIPOMOV" not-null="true" />
+                <column name="CODFILIALTM" not-null="true" />
+                <column name="CODEMPTM" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqrma" />
+        </set>
+        <set name="sgprefere4s" table="SGPREFERE4" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTIPOMOV" />
+                <column name="CODFILIALTM" />
+                <column name="CODEMPTM" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgprefere4" />
+        </set>
+        <set name="sgprefere1sForSgprefere1fk4eqtip" table="SGPREFERE1" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTIPOMOV4">
+                    <comment>Tipo de movimento para servi&#195;&#167;os</comment>
+                </column>
+                <column name="CODFILIALT4" />
+                <column name="CODEMPT4" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgprefere1" />
+        </set>
+        <set name="sgprefere1sForSgprefere1fktipomovorcserv" table="SGPREFERE1" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTIPOMOVS">
+                    <comment>C&#195;&#179;digo do tipo de movimento para or&#195;&#167;amentos de servi&#195;&#167;o.</comment>
+                </column>
+                <column name="CODFILIALTS">
+                    <comment>C&#195;&#179;digo da filial do tipo de movimento para or&#195;&#167;amentos de servi&#195;&#167;o.</comment>
+                </column>
+                <column name="CODEMPTS">
+                    <comment>C&#195;&#179;digo da empresa do tipo de movimento para or&#195;&#167;amentos de servi&#195;&#167;o.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgprefere1" />
+        </set>
+        <set name="vdorcamentos" table="VDORCAMENTO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTIPOMOV">
+                    <comment>C&#195;&#179;digo do tipo de movimento previsto para o faturamento do or&#195;&#167;amento.</comment>
+                </column>
+                <column name="CODFILIALTM">
+                    <comment>C&#195;&#179;digo da filial do tipo de movimento previsto para o faturamento do or&#195;&#167;amento.</comment>
+                </column>
+                <column name="CODEMPTM">
+                    <comment>C&#195;&#179;digo da empresa do tipo de movimento previsto para o faturamento do or&#195;&#167;amento.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdorcamento" />
+        </set>
+        <set name="eqtipoexpedicaos" table="EQTIPOEXPEDICAO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTIPOMOV" />
+                <column name="CODFILIALTM" />
+                <column name="CODEMPTM" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqtipoexpedicao" />
+        </set>
+        <set name="eqmovseries" table="EQMOVSERIE" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTIPOMOV" />
+                <column name="CODFILIALTM" />
+                <column name="CODEMPTM" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqmovserie" />
+        </set>
+        <set name="eqmovprods" table="EQMOVPROD" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTIPOMOV" not-null="true" />
+                <column name="CODFILIALTM" not-null="true" />
+                <column name="CODEMPTM" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqmovprod" />
+        </set>
+        <set name="ppops" table="PPOP" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTIPOMOV" not-null="true">
+                    <comment>C&#195;&#179;digo do tipo de movimento.</comment>
+                </column>
+                <column name="CODFILIALTM" not-null="true">
+                    <comment>C&#195;&#179;digo da filial do tipo de movimento.</comment>
+                </column>
+                <column name="CODEMPTM" not-null="true">
+                    <comment>C&#195;&#179;digo da empresa do tipo de movimento.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Ppop" />
+        </set>
+        <set name="ppopsubprods" table="PPOPSUBPROD" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTIPOMOV" not-null="true">
+                    <comment>C&#195;&#179;digo do tipo de movimento.</comment>
+                </column>
+                <column name="CODFILIALTM" not-null="true">
+                    <comment>C&#195;&#179;digo da filial do tipo de movimento</comment>
+                </column>
+                <column name="CODEMPTM" not-null="true">
+                    <comment>C&#195;&#179;digo da empresa do tipo de movimento.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Ppopsubprod" />
+        </set>
+        <set name="sgprefere1sForSgprefere1fk6eqtip" table="SGPREFERE1" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTIPOMOV6">
+                    <comment>C&#195;&#179;digo de tipo de movimento de invent&#195;&#161;rio</comment>
+                </column>
+                <column name="CODFILIALT6">
+                    <comment>C&#195;&#179;digo da filial para tipo de movimento de invent&#195;&#161;rio</comment>
+                </column>
+                <column name="CODEMPT6">
+                    <comment>C&#195;&#179;digo da empresa para tipo de movimento de invent&#195;&#161;rio</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgprefere1" />
+        </set>
+        <set name="sgprefere7sForSgpref7fkeqtipmtv" table="SGPREFERE7" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTIPOMOVTV">
+                    <comment>Tipo de movimento de pedido de venda.</comment>
+                </column>
+                <column name="CODFILIALTV" />
+                <column name="CODEMPTV" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgprefere7" />
+        </set>
+        <set name="eqinvprods" table="EQINVPROD" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTIPOMOV" not-null="true" />
+                <column name="CODFILIALTM" not-null="true" />
+                <column name="CODEMPTM" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqinvprod" />
+        </set>
+        <set name="eqtipomovusus" table="EQTIPOMOVUSU" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTIPOMOV" not-null="true">
+                    <comment>C&#195;&#179;digo do tipo de movimento.</comment>
+                </column>
+                <column name="CODFILIAL" not-null="true">
+                    <comment>C&#195;&#179;digo da filial na tabela de tipos de movimento.</comment>
+                </column>
+                <column name="CODEMP" not-null="true">
+                    <comment>C&#195;&#179;digo da empresa na tabela de tipos de movimento.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqtipomovusu" />
+        </set>
+        <set name="sgprefere1sForSgprefere1fk2eqtip" table="SGPREFERE1" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTIPOMOV2">
+                    <comment>Tipo de movimento para or&#195;&#167;amento</comment>
+                </column>
+                <column name="CODFILIALT2" />
+                <column name="CODEMPT2" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgprefere1" />
+        </set>
+        <set name="sgprefere7sForSgpref7fkeqtipmtp" table="SGPREFERE7" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTIPOMOVTP">
+                    <comment>Tipo de movimento de venda.</comment>
+                </column>
+                <column name="CODFILIALTP" />
+                <column name="CODEMPTP" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgprefere7" />
+        </set>
+        <set name="eqtipomovsForEqtipomovfkeqtipom" table="EQTIPOMOV" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTIPOMOVTM" />
+                <column name="CODFILIALTM" />
+                <column name="CODEMPTM" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqtipomov" />
+        </set>
+        <set name="sgprefere8sForSgpref8fkeqtipomovtc" table="SGPREFERE8" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTIPOMOVTC">
+                    <comment>C&#195;&#179;digo do tipo de movimento padr&#195;&#163;o para compra, gerada a partir de pedidos de compra.</comment>
+                </column>
+                <column name="CODFILIALTC">
+                    <comment>C&#195;&#179;digo da filial para o tipo de movimento de compra gerada a partir de pedidos de compra.</comment>
+                </column>
+                <column name="CODEMPTC">
+                    <comment>C&#195;&#179;digo da empresa para o tipo de movimento de compra gera a partir de pedidos de compra.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgprefere8" />
+        </set>
+        <set name="sgprefere1sForSgprefere1fktpmovic" table="SGPREFERE1" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTIPOMOVIC" />
+                <column name="CODFILIALIC" />
+                <column name="CODEMPIC" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgprefere1" />
+        </set>
+        <set name="sgprefere1sForSgprefere1fk3eqtip" table="SGPREFERE1" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTIPOMOV3" />
+                <column name="CODFILIALT3" />
+                <column name="CODEMPT3" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgprefere1" />
+        </set>
+        <set name="vdvendas" table="VDVENDA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTIPOMOV" not-null="true" />
+                <column name="CODFILIALTM" not-null="true" />
+                <column name="CODEMPTM" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdvenda" />
+        </set>
+        <set name="cpcompras" table="CPCOMPRA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTIPOMOV" not-null="true" />
+                <column name="CODFILIALTM" not-null="true" />
+                <column name="CODEMPTM" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Cpcompra" />
+        </set>
+        <set name="sgprefere1sForSgprefere1fkeqtipo" table="SGPREFERE1" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTIPOMOV" />
+                <column name="CODFILIALTM" />
+                <column name="CODEMPTM" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgprefere1" />
+        </set>
+        <set name="sgprefere5sForSgprefere5fktipomoven" table="SGPREFERE5" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTIPOMOVEN">
+                    <comment>C&#195;&#179;digo do tipo de movimento padr&#195;&#163;o para envio de remessa para produ&#195;&#167;&#195;&#163;o externa.</comment>
+                </column>
+                <column name="CODFILIALEN">
+                    <comment>C&#195;&#179;digo da filial do tipo de movimento padr&#195;&#163;o para envio de remessa para produ&#195;&#167;&#195;&#163;o externa.</comment>
+                </column>
+                <column name="CODEMPEN">
+                    <comment>C&#195;&#179;digo da empresa do tipo de movimento padr&#195;&#163;o para envio de remessa para produ&#195;&#167;&#195;&#163;o externa.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgprefere5" />
+        </set>
+        <set name="lffretes" table="LFFRETE" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTIPOMOV" not-null="true" />
+                <column name="CODFILIALTM" not-null="true" />
+                <column name="CODEMPTM" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Lffrete" />
+        </set>
+        <set name="sgprefere5sForSgprefere5fktipomovsp" table="SGPREFERE5" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTIPOMOVSP">
+                    <comment>C&#195;&#179;digo do tipo de movimento para entrada de subprodutos.</comment>
+                </column>
+                <column name="CODFILIALTS">
+                    <comment>C&#195;&#179;digo da filial para tipo de movimento para entrada de subprodutos.</comment>
+                </column>
+                <column name="CODEMPTS">
+                    <comment>C&#195;&#179;digo da empresa para tipo de movimento para entrada de subprodutos.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgprefere5" />
+        </set>
+        <set name="sgprefere5sForSgprefere5fktipomovre" table="SGPREFERE5" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTIPOMOVRE">
+                    <comment>C&#195;&#179;digo do tipo de movimento padr&#195;&#163;o para retorno de produ&#195;&#167;&#195;&#163;o externa.</comment>
+                </column>
+                <column name="CODFILIALRE">
+                    <comment>C&#195;&#179;digo da filial do tipo de movimento padr&#195;&#163;o para retorno de produ&#195;&#167;&#195;&#163;o externa.</comment>
+                </column>
+                <column name="CODEMPRE">
+                    <comment>C&#195;&#179;digo da empresa do tipo de movimento padr&#195;&#163;o para retorno de produ&#195;&#167;&#195;&#163;o externa.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgprefere5" />
+        </set>
+        <set name="sgprefere1sForSgprefere1fk8eqtip" table="SGPREFERE1" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTIPOMOV8">
+                    <comment>Codigo do tipo de movimento padr&#195;&#163;o para RMA.</comment>
+                </column>
+                <column name="CODFILIALT8">
+                    <comment>Cod. filial do tipo de movimento padr&#195;&#163;o para RMA.</comment>
+                </column>
+                <column name="CODEMPT8">
+                    <comment>Cod. emp. do tipo de movimento padr&#195;&#163;o para RMA.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgprefere1" />
+        </set>
+        <set name="lftipofiscclis" table="LFTIPOFISCCLI" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTIPOMOVOC">
+                    <comment>C&#195;&#179;digo do tipo de movimento de or&#195;&#167;amento para o tipo fiscal de cliente.</comment>
+                </column>
+                <column name="CODFILIALOC">
+                    <comment>C&#195;&#179;digo da filial para o tipo de movimento de or&#195;&#167;amento para o tipo fiscal de cliente.</comment>
+                </column>
+                <column name="CODEMPOC">
+                    <comment>C&#195;&#179;digo da empresa para o tipo de movimento de or&#195;&#167;amento para o tipo fiscal de cliente.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Lftipofisccli" />
+        </set>
+        <set name="sgprefere1sForSgprefere1fktipomovim" table="SGPREFERE1" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTIPOMOVIM">
+                    <comment>C&#195;&#179;digo do tipo de movimento para nota fiscal de importa&#195;&#167;&#195;&#163;o.</comment>
+                </column>
+                <column name="CODFILIALIM">
+                    <comment>C&#195;&#179;digo da filial do tipo de movimento para NF de importa&#195;&#167;&#195;&#163;o</comment>
+                </column>
+                <column name="CODEMPIM">
+                    <comment>C&#195;&#179;digo do tipo de movimento para NF de importa&#195;&#167;&#195;&#163;o.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgprefere1" />
+        </set>
+        <set name="sgprefere5sForSgprefere5fkeqtipo" table="SGPREFERE5" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTIPOMOV">
+                    <comment>C&#195;&#179;digo do tipo de movimento padr&#195;&#163;o para Ordem de produ&#195;&#167;&#195;&#163;o.</comment>
+                </column>
+                <column name="CODFILIALTM">
+                    <comment>C&#195;&#179;digo da filial do tipo de movimento padr&#195;&#163;o para Ordem de Produ&#195;&#167;&#195;&#163;o.</comment>
+                </column>
+                <column name="CODEMPTM">
+                    <comment>C&#195;&#179;digo da empresa do tipo de movimento padr&#195;&#163;o para Ordem de Produ&#195;&#167;&#195;&#163;o.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgprefere5" />
+        </set>
+        <set name="eqtipomovsForEqtipomovfkeqtipoc" table="EQTIPOMOV" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTIPOMOVTC" />
+                <column name="CODFILIALTC" />
+                <column name="CODEMPTC" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqtipomov" />
+        </set>
+    </class>
+</hibernate-mapping>

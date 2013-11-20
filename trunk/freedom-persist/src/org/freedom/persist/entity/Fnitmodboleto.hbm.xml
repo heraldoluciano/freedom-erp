@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Fnitmodboleto" table="FNITMODBOLETO">
+        <comment>Tabela de amarra&#195;&#167;&#195;&#163;o modelo de boleto e banco</comment>
+        <composite-id name="id" class="org.freedom.persist.entity.FnitmodboletoId">
+            <key-property name="codmodbol" type="int">
+                <column name="CODMODBOL" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+            <key-property name="codbanco" type="string">
+                <column name="CODBANCO" length="3" />
+            </key-property>
+            <key-property name="codfilialbo" type="short">
+                <column name="CODFILIALBO" />
+            </key-property>
+            <key-property name="codempbo" type="int">
+                <column name="CODEMPBO" />
+            </key-property>
+            <key-property name="codcartcob" type="string">
+                <column name="CODCARTCOB" length="3" />
+            </key-property>
+            <key-property name="codfilialcb" type="short">
+                <column name="CODFILIALCB" />
+            </key-property>
+            <key-property name="codempcb" type="int">
+                <column name="CODEMPCB" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="fnconta" class="org.freedom.persist.entity.Fnconta" fetch="select">
+            <column name="NUMCONTA" length="10" />
+            <column name="CODFILIALCT" />
+            <column name="CODEMPCT" />
+        </many-to-one>
+        <many-to-one name="fnmodboleto" class="org.freedom.persist.entity.Fnmodboleto" update="false" insert="false" fetch="select">
+            <column name="CODMODBOL" not-null="true">
+                <comment>C&#195;&#179;digo do modelo de boleto.</comment>
+            </column>
+            <column name="CODFILIAL" not-null="true">
+                <comment>C&#195;&#179;digo filial.</comment>
+            </column>
+            <column name="CODEMP" not-null="true">
+                <comment>C&#195;&#179;digo da empresa</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="fncartcob" class="org.freedom.persist.entity.Fncartcob" update="false" insert="false" fetch="select">
+            <column name="CODCARTCOB" length="3" not-null="true">
+                <comment>C&#195;&#179;digo da carteira de cobran&#195;&#167;a.</comment>
+            </column>
+            <column name="CODFILIALCB" not-null="true">
+                <comment>C&#195;&#179;digo da filial na tabela FNCARTCOB.</comment>
+            </column>
+            <column name="CODEMPCB" not-null="true">
+                <comment>C&#195;&#179;digo da empresa na tabela FNCARTCOB.</comment>
+            </column>
+            <column name="CODBANCO" length="3" not-null="true">
+                <comment>C&#195;&#179;digo do banco.</comment>
+            </column>
+            <column name="CODFILIALBO" not-null="true">
+                <comment>C&#195;&#179;digo da filial na tabela FNBANCO.</comment>
+            </column>
+            <column name="CODEMPBO" not-null="true">
+                <comment>C&#195;&#179;digo da empresa na tabela FNBANCO.</comment>
+            </column>
+        </many-to-one>
+        <property name="convcob" type="string">
+            <column name="CONVCOB" length="20" not-null="true">
+                <comment>Conv&#195;&#170;nio de cobran&#195;&#167;a.</comment>
+            </column>
+        </property>
+        <property name="dvconvcob" type="string">
+            <column name="DVCONVCOB" length="4">
+                <comment>D&#195;&#173;gito do codigo da empresa.</comment>
+            </column>
+        </property>
+        <property name="seqnossonumero" type="java.lang.Integer">
+            <column name="SEQNOSSONUMERO">
+                <comment>Sequencia do nosso numero, para gera&#195;&#167;&#195;&#163;o de nosso numero no padr&#195;&#163;o "S" SGPREFER1.TPNOSSONUMERO.</comment>
+            </column>
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+    </class>
+</hibernate-mapping>

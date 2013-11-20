@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Eqprevestoqlog" table="EQPREVESTOQLOG">
+        <id name="id" type="long">
+            <column name="ID" />
+            <generator class="assigned" />
+        </id>
+        <property name="codemp" type="java.lang.Integer">
+            <column name="CODEMP" />
+        </property>
+        <property name="codfilial" type="java.lang.Short">
+            <column name="CODFILIAL" />
+        </property>
+        <property name="dtini" type="date">
+            <column name="DTINI" length="10" not-null="true" />
+        </property>
+        <property name="dtfim" type="date">
+            <column name="DTFIM" length="10" not-null="true" />
+        </property>
+        <property name="codempgp" type="java.lang.Integer">
+            <column name="CODEMPGP" />
+        </property>
+        <property name="codfilialgp" type="java.lang.Short">
+            <column name="CODFILIALGP" />
+        </property>
+        <property name="codgrup" type="string">
+            <column name="CODGRUP" length="14" />
+        </property>
+        <property name="codemppd" type="java.lang.Integer">
+            <column name="CODEMPPD" />
+        </property>
+        <property name="codfilialpd" type="java.lang.Short">
+            <column name="CODFILIALPD" />
+        </property>
+        <property name="codprod" type="java.lang.Integer">
+            <column name="CODPROD" />
+        </property>
+        <property name="ordem" type="char">
+            <column name="ORDEM" length="1" not-null="true" />
+        </property>
+        <property name="mercadoriaRevenda" type="char">
+            <column name="MERCADORIA_REVENDA" length="1" not-null="true" />
+        </property>
+        <property name="materiaPrima" type="char">
+            <column name="MATERIA_PRIMA" length="1" not-null="true" />
+        </property>
+        <property name="emProcesso" type="char">
+            <column name="EM_PROCESSO" length="1" not-null="true" />
+        </property>
+        <property name="outros" type="char">
+            <column name="OUTROS" length="1" not-null="true" />
+        </property>
+        <property name="subProduto" type="char">
+            <column name="SUB_PRODUTO" length="1" not-null="true" />
+        </property>
+        <property name="equipamento" type="char">
+            <column name="EQUIPAMENTO" length="1" not-null="true" />
+        </property>
+        <property name="materialConsumo" type="char">
+            <column name="MATERIAL_CONSUMO" length="1" not-null="true" />
+        </property>
+        <property name="produtoIntermed" type="char">
+            <column name="PRODUTO_INTERMED" length="1" not-null="true" />
+        </property>
+        <property name="produtoAcabado" type="char">
+            <column name="PRODUTO_ACABADO" length="1" not-null="true" />
+        </property>
+        <property name="embalagem" type="char">
+            <column name="EMBALAGEM" length="1" not-null="true" />
+        </property>
+        <property name="outrosInsumos" type="char">
+            <column name="OUTROS_INSUMOS" length="1" not-null="true" />
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="128" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" not-null="true" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" not-null="true" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="128" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

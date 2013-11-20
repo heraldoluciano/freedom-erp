@@ -1,0 +1,196 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Eqrma" table="EQRMA">
+        <composite-id name="id" class="org.freedom.persist.entity.EqrmaId">
+            <key-property name="codrma" type="int">
+                <column name="CODRMA" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="ppopfase" class="org.freedom.persist.entity.Ppopfase" fetch="select">
+            <column name="CODOP">
+                <comment>C&#195;&#179;digo da ordem de produ&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+            <column name="SEQOP">
+                <comment>N&#195;&#186;mero sequencial da OP.</comment>
+            </column>
+            <column name="SEQOF">
+                <comment>Sequencial da fase de produ&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+            <column name="CODFILIALOF">
+                <comment>C&#195;&#179;digo da filial da OP X Fase</comment>
+            </column>
+            <column name="CODEMPOF">
+                <comment>C&#195;&#179;digo da empresa a OP/Fase</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="sgusuarioByEqrmafksgusuarioap" class="org.freedom.persist.entity.Sgusuario" fetch="select">
+            <column name="IDUSUAPROV" length="8">
+                <comment>ID do usu&#195;&#161;rio que aprovou/aprovar&#195;&#161; a RMA.</comment>
+            </column>
+            <column name="CODFILIALUA">
+                <comment>C&#195;&#179;digo da filial do usu&#195;&#161;rio que aprovou/aprovar&#195;&#161; a RMA.</comment>
+            </column>
+            <column name="CODEMPUA">
+                <comment>C&#195;&#179;digo da empresa do usu&#195;&#161;rio que aprovou/aprovar&#195;&#161; a RMA.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="ppop" class="org.freedom.persist.entity.Ppop" update="false" insert="false" fetch="select">
+            <column name="CODOP">
+                <comment>C&#195;&#179;digo da ordem de produ&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+            <column name="SEQOP">
+                <comment>N&#195;&#186;mero sequencial da OP.</comment>
+            </column>
+            <column name="CODFILIALOF">
+                <comment>C&#195;&#179;digo da filial da OP X Fase</comment>
+            </column>
+            <column name="CODEMPOF">
+                <comment>C&#195;&#179;digo da empresa a OP/Fase</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="sgusuarioByEqrmafksgusuarioex" class="org.freedom.persist.entity.Sgusuario" fetch="select">
+            <column name="IDUSUEXP" length="8">
+                <comment>ID do usu&#195;&#161;rio que expediu/expedir&#195;&#161; a RMA.</comment>
+            </column>
+            <column name="CODFILIALUE">
+                <comment>C&#195;&#179;digo da filial do usu&#195;&#161;rio que expediu/expedir&#195;&#161; a RMA.</comment>
+            </column>
+            <column name="CODEMPUE">
+                <comment>C&#195;&#179;digo da empresa do usu&#195;&#161;rio que expediu/expedir&#195;&#161; a RMA.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="eqtipomov" class="org.freedom.persist.entity.Eqtipomov" fetch="select">
+            <column name="CODTIPOMOV" not-null="true" />
+            <column name="CODFILIALTM" not-null="true" />
+            <column name="CODEMPTM" not-null="true" />
+        </many-to-one>
+        <many-to-one name="eqrecmerc" class="org.freedom.persist.entity.Eqrecmerc" fetch="select">
+            <column name="TICKET">
+                <comment>N&#195;&#186;mero do ticket da ordem de servi&#195;&#167;o vinculada.</comment>
+            </column>
+            <column name="CODFILIALOS">
+                <comment>C&#195;&#179;digo da filial da ordem de servi&#195;&#167;o.</comment>
+            </column>
+            <column name="CODEMPOS">
+                <comment>Codigo da empresa da ordem de servi&#195;&#167;o.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="sgusuarioByEqrmafksgusuario" class="org.freedom.persist.entity.Sgusuario" fetch="select">
+            <column name="IDUSU" length="8" not-null="true" />
+            <column name="CODFILIALUU" not-null="true" />
+            <column name="CODEMPUU" not-null="true" />
+        </many-to-one>
+        <many-to-one name="vditcontrato" class="org.freedom.persist.entity.Vditcontrato" fetch="select">
+            <column name="CODCONTR">
+                <comment>C&#195;&#179;digo do contrato/projeto</comment>
+            </column>
+            <column name="CODITCONTR">
+                <comment>C&#195;&#179;digo do &#195;&#173;tem de contrato/projeto</comment>
+            </column>
+            <column name="CODFILIALCT">
+                <comment>C&#195;&#179;digo da filial da empresa/contrato</comment>
+            </column>
+            <column name="CODEMPCT">
+                <comment>C&#195;&#179;digo da empresa do contrato/projeto</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="fncc" class="org.freedom.persist.entity.Fncc" fetch="select">
+            <column name="CODCC" length="19" not-null="true" />
+            <column name="ANOCC" not-null="true" />
+            <column name="CODFILIALCC" not-null="true" />
+            <column name="CODEMPCC" not-null="true" />
+        </many-to-one>
+        <property name="motivorma" type="string">
+            <column name="MOTIVORMA" length="10000">
+                <comment>Motivo da solicita&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+        </property>
+        <property name="motivocancrma" type="string">
+            <column name="MOTIVOCANCRMA" length="10000">
+                <comment>Motivo do cancelamento.</comment>
+            </column>
+        </property>
+        <property name="sitrma" type="string">
+            <column name="SITRMA" length="2" not-null="true">
+                <comment>Situa&#195;&#167;&#195;&#163;o geral da rma: PE - Pendente (n&#195;&#163;o foi realizado nenhum procedimento de aprova&#195;&#167;&#195;&#163;o, ou
+                expedi&#195;&#167;&#195;&#163;o) EA - Em andamento AF - Aprova&#195;&#167;&#195;&#163;o finalizada EF - Expedi&#195;&#167;&#195;&#163;o finalizada CA - Cancelada
+                (requisi&#195;&#167;&#195;&#163;o foi cancelada)</comment>
+            </column>
+        </property>
+        <property name="dtareqrma" type="date">
+            <column name="DTAREQRMA" length="10" not-null="true">
+                <comment>Data da requisi&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+        </property>
+        <property name="dtaexprma" type="date">
+            <column name="DTAEXPRMA" length="10">
+                <comment>Data da expedi&#195;&#167;&#195;&#163;o da RMA.</comment>
+            </column>
+        </property>
+        <property name="sitaprovrma" type="string">
+            <column name="SITAPROVRMA" length="2" not-null="true">
+                <comment>Status da aprova&#195;&#167;&#195;&#163;o da RMA. "PE" - Aprova&#195;&#167;&#195;&#163;o pendente. "AP" - Aprova&#195;&#167;&#195;&#163;o parcial. "AT" -
+                Aprova&#195;&#167;&#195;&#163;o total. "NA" - N&#195;&#163;o aprovada.</comment>
+            </column>
+        </property>
+        <property name="sitexprma" type="string">
+            <column name="SITEXPRMA" length="2" not-null="true">
+                <comment>Status da expedi&#195;&#167;&#195;&#163;o da RMA. "PE" - Expedi&#195;&#167;&#195;&#163;o pendente. "EP" - Expedida parcial. "ET" - Expedida total. "NE" -
+                N&#195;&#163;o expedida.</comment>
+            </column>
+        </property>
+        <property name="dtaaprovrma" type="date">
+            <column name="DTAAPROVRMA" length="10">
+                <comment>Data da aprova&#195;&#167;&#195;&#163;o da RMA.</comment>
+            </column>
+        </property>
+        <property name="coditrecmerc" type="java.lang.Short">
+            <column name="CODITRECMERC">
+                <comment>C&#195;&#179;digo do &#195;&#173;tem de recebimento de mercadoria (Ordem de servi&#195;&#167;o)</comment>
+            </column>
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+        <set name="eqitrmas" table="EQITRMA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODRMA" not-null="true" />
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqitrma" />
+        </set>
+        <set name="eqrmaals" table="EQRMAAL" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODRMA" not-null="true" />
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqrmaal" />
+        </set>
+    </class>
+</hibernate-mapping>

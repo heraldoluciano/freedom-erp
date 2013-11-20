@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Vddetorc" table="VDDETORC">
+        <composite-id name="id" class="org.freedom.persist.entity.VddetorcId">
+            <key-property name="codorc" type="int">
+                <column name="CODORC" />
+            </key-property>
+            <key-property name="tipoorc" type="char">
+                <column name="TIPOORC" length="1" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <one-to-one name="vdorcamento" class="org.freedom.persist.entity.Vdorcamento" constrained="true"></one-to-one>
+        <property name="titdetorc" type="string">
+            <column name="TITDETORC" length="100" not-null="true" />
+        </property>
+        <property name="ativdetorc" type="string">
+            <column name="ATIVDETORC" length="2000" not-null="true" />
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="128" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="128" />
+        </property>
+        <set name="vditdetorcs" table="VDITDETORC" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODORC" not-null="true" />
+                <column name="TIPOORC" length="1" not-null="true" />
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vditdetorc" />
+        </set>
+    </class>
+</hibernate-mapping>

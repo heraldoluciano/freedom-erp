@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Lfitregrafiscal" table="LFITREGRAFISCAL">
+        <composite-id name="id" class="org.freedom.persist.entity.LfitregrafiscalId">
+            <key-property name="codnat" type="string">
+                <column name="CODNAT" length="4" />
+            </key-property>
+            <key-property name="codregra" type="string">
+                <column name="CODREGRA" length="4" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="lfnatoper" class="org.freedom.persist.entity.Lfnatoper" update="false" insert="false" fetch="select">
+            <column name="CODNAT" length="4" not-null="true" />
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <many-to-one name="lfregrafiscal" class="org.freedom.persist.entity.Lfregrafiscal" update="false" insert="false" fetch="select">
+            <column name="CODREGRA" length="4" not-null="true" />
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <many-to-one name="eqtipomov" class="org.freedom.persist.entity.Eqtipomov" fetch="select">
+            <column name="CODTIPOMOV" />
+            <column name="CODFILIALTM" />
+            <column name="CODEMPTM" />
+        </many-to-one>
+        <property name="noufitrf" type="char">
+            <column name="NOUFITRF" length="1" not-null="true" />
+        </property>
+        <property name="cvitrf" type="char">
+            <column name="CVITRF" length="1" not-null="true" />
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+    </class>
+</hibernate-mapping>

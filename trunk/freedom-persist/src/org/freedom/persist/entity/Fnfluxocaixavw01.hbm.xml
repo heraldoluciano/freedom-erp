@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Fnfluxocaixavw01" table="FNFLUXOCAIXAVW01">
+        <composite-id name="id" class="org.freedom.persist.entity.Fnfluxocaixavw01Id">
+            <key-property name="ordem" type="java.lang.Short">
+                <column name="ORDEM" />
+            </key-property>
+            <key-property name="tipolanca" type="java.lang.Character">
+                <column name="TIPOLANCA" length="1" />
+            </key-property>
+            <key-property name="subtipo" type="java.lang.Character">
+                <column name="SUBTIPO" length="1" />
+            </key-property>
+            <key-property name="codemp" type="java.lang.Integer">
+                <column name="CODEMP" />
+            </key-property>
+            <key-property name="codfilial" type="java.lang.Short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codrecpaglanc" type="java.lang.Integer">
+                <column name="CODRECPAGLANC" />
+            </key-property>
+            <key-property name="nparcrecpaglanc" type="java.lang.Integer">
+                <column name="NPARCRECPAGLANC" />
+            </key-property>
+            <key-property name="dtemissao" type="date">
+                <column name="DTEMISSAO" length="10" />
+            </key-property>
+            <key-property name="dtcomp" type="date">
+                <column name="DTCOMP" length="10" />
+            </key-property>
+            <key-property name="dtvenctorecpag" type="date">
+                <column name="DTVENCTORECPAG" length="10" />
+            </key-property>
+            <key-property name="doc" type="string">
+                <column name="DOC" length="15" />
+            </key-property>
+            <key-property name="codigo" type="java.lang.Integer">
+                <column name="CODIGO" />
+            </key-property>
+            <key-property name="razao" type="string">
+                <column name="RAZAO" length="60" />
+            </key-property>
+            <key-property name="historico" type="string">
+                <column name="HISTORICO" length="250" />
+            </key-property>
+            <key-property name="valor" type="big_decimal">
+                <column name="VALOR" precision="0" scale="5" />
+            </key-property>
+        </composite-id>
+    </class>
+</hibernate-mapping>

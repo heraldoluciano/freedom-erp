@@ -1,0 +1,188 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Atatendimento" table="ATATENDIMENTO">
+        <composite-id name="id" class="org.freedom.persist.entity.AtatendimentoId">
+            <key-property name="codatendo" type="int">
+                <column name="CODATENDO" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="sgfilial" class="org.freedom.persist.entity.Sgfilial" update="false" insert="false" fetch="select">
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <many-to-one name="atatendente" class="org.freedom.persist.entity.Atatendente" fetch="select">
+            <column name="CODATEND" not-null="true" />
+            <column name="CODFILIALAE" not-null="true" />
+            <column name="CODEMPAE" not-null="true" />
+        </many-to-one>
+        <many-to-one name="crtarefa" class="org.freedom.persist.entity.Crtarefa" fetch="select">
+            <column name="CODTAREFA" />
+            <column name="CODFILIALTA" />
+            <column name="CODEMPTA" />
+        </many-to-one>
+        <many-to-one name="attipoatendo" class="org.freedom.persist.entity.Attipoatendo" fetch="select">
+            <column name="CODTPATENDO" not-null="true" />
+            <column name="CODFILIALTO" not-null="true" />
+            <column name="CODEMPTO" not-null="true" />
+        </many-to-one>
+        <many-to-one name="atsetor" class="org.freedom.persist.entity.Atsetor" fetch="select">
+            <column name="CODSETAT" not-null="true" />
+            <column name="CODFILIALSA" not-null="true" />
+            <column name="CODEMPSA" not-null="true" />
+        </many-to-one>
+        <many-to-one name="vdcliente" class="org.freedom.persist.entity.Vdcliente" fetch="select">
+            <column name="CODCLI" />
+            <column name="CODFILIALCL" />
+            <column name="CODEMPCL" />
+        </many-to-one>
+        <many-to-one name="atespecatend" class="org.freedom.persist.entity.Atespecatend" fetch="select">
+            <column name="CODESPEC">
+                <comment>C&#195;&#179;digo de especifica&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+            <column name="CODFILIALEA">
+                <comment>C&#195;&#179;digo da filial na tabela de especifica&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+            <column name="CODEMPEA">
+                <comment>C&#195;&#179;digo da empresa na tabela de especifica&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="crchamado" class="org.freedom.persist.entity.Crchamado" fetch="select">
+            <column name="CODCHAMADO">
+                <comment>C&#195;&#179;digo do Chamado.</comment>
+            </column>
+            <column name="CODFILIALCH">
+                <comment>C&#195;&#179;digo da filial do chamado.</comment>
+            </column>
+            <column name="CODEMPCH">
+                <comment>C&#195;&#179;digo da empresa do chamado.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="vditcontrato" class="org.freedom.persist.entity.Vditcontrato" fetch="select">
+            <column name="CODCONTR">
+                <comment>C&#195;&#179;digo do contrato.</comment>
+            </column>
+            <column name="CODITCONTR">
+                <comment>C&#195;&#179;digo do &#195;&#173;tem de contrato.</comment>
+            </column>
+            <column name="CODFILIALCT">
+                <comment>C&#195;&#179;digo da filial do contrato.</comment>
+            </column>
+            <column name="CODEMPCT">
+                <comment>C&#195;&#179;digo da empresa do contrato.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="atclasatendo" class="org.freedom.persist.entity.Atclasatendo" fetch="select">
+            <column name="CODCLASATENDO" />
+            <column name="CODFILIALCA" />
+            <column name="CODEMPCA" />
+        </many-to-one>
+        <many-to-one name="sgusuario" class="org.freedom.persist.entity.Sgusuario" fetch="select">
+            <column name="IDUSU" length="8" not-null="true" />
+            <column name="CODFILIALUS" not-null="true" />
+            <column name="CODEMPUS" not-null="true" />
+        </many-to-one>
+        <many-to-one name="atconveniado" class="org.freedom.persist.entity.Atconveniado" fetch="select">
+            <column name="CODCONV" />
+            <column name="CODFILIALCV" />
+            <column name="CODEMPCV" />
+        </many-to-one>
+        <property name="dataatendo" type="date">
+            <column name="DATAATENDO" length="10" not-null="true" />
+        </property>
+        <property name="horaatendo" type="time">
+            <column name="HORAATENDO" length="8" not-null="true" />
+        </property>
+        <property name="dataatendofin" type="date">
+            <column name="DATAATENDOFIN" length="10" not-null="true">
+                <comment>Data final do atendimento</comment>
+            </column>
+        </property>
+        <property name="horaatendofin" type="time">
+            <column name="HORAATENDOFIN" length="8" not-null="true">
+                <comment>Hora final do atendimento.</comment>
+            </column>
+        </property>
+        <property name="obsatendo" type="string">
+            <column name="OBSATENDO" length="10000" />
+        </property>
+        <property name="obsinterno" type="string">
+            <column name="OBSINTERNO" length="10000">
+                <comment>Campo para observa&#195;&#167;&#195;&#181;es de interesse interno.</comment>
+            </column>
+        </property>
+        <property name="statusatendo" type="string">
+            <column name="STATUSATENDO" length="2" not-null="true" />
+        </property>
+        <property name="sitrevatendo" type="string">
+            <column name="SITREVATENDO" length="2" not-null="true" />
+        </property>
+        <property name="docatendo" type="int">
+            <column name="DOCATENDO" not-null="true" />
+        </property>
+        <property name="concluichamado" type="char">
+            <column name="CONCLUICHAMADO" length="1" not-null="true">
+                <comment>Indica se o atendimento deve concluir o chamado</comment>
+            </column>
+        </property>
+        <property name="sitatendo" type="string">
+            <column name="SITATENDO" length="2" />
+        </property>
+        <property name="emmanut" type="char">
+            <column name="EMMANUT" length="1" not-null="true" />
+        </property>
+        <property name="bloqatendo" type="char">
+            <column name="BLOQATENDO" length="1" not-null="true" />
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+        <set name="atatendimentoorcs" table="ATATENDIMENTOORC" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODATENDO" not-null="true" />
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Atatendimentoorc" />
+        </set>
+        <set name="atatendimentoitrecs" table="ATATENDIMENTOITREC" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODATENDO" not-null="true" />
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Atatendimentoitrec" />
+        </set>
+        <set name="atatendoagendas" table="ATATENDOAGENDA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODATENDO" not-null="true" />
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Atatendoagenda" />
+        </set>
+    </class>
+</hibernate-mapping>

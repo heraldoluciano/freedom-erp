@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Vditcontratofor" table="VDITCONTRATOFOR">
+        <composite-id name="id" class="org.freedom.persist.entity.VditcontratoforId">
+            <key-property name="codcontr" type="int">
+                <column name="CODCONTR" />
+            </key-property>
+            <key-property name="coditcontr" type="short">
+                <column name="CODITCONTR" />
+            </key-property>
+            <key-property name="seqicf" type="short">
+                <column name="SEQICF" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="cpforneced" class="org.freedom.persist.entity.Cpforneced" fetch="select">
+            <column name="CODFOR" not-null="true" />
+            <column name="CODFILIALFR" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <many-to-one name="vditcontrato" class="org.freedom.persist.entity.Vditcontrato" update="false" insert="false" fetch="select">
+            <column name="CODCONTR" not-null="true" />
+            <column name="CODITCONTR" not-null="true" />
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <property name="codempfr" type="int">
+            <column name="CODEMPFR" not-null="true" />
+        </property>
+        <property name="vlrapagfor" type="big_decimal">
+            <column name="VLRAPAGFOR" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="dtprevinifor" type="date">
+            <column name="DTPREVINIFOR" length="10" />
+        </property>
+        <property name="dtprevfinfor" type="date">
+            <column name="DTPREVFINFOR" length="10" />
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="128" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" not-null="true" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" not-null="true" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="128" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

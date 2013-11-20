@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Eqconfestoqvw01" table="EQCONFESTOQVW01">
+        <composite-id name="id" class="org.freedom.persist.entity.Eqconfestoqvw01Id">
+            <key-property name="codemp" type="java.lang.Integer">
+                <column name="CODEMP" />
+            </key-property>
+            <key-property name="codfilial" type="java.lang.Short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="ativoprod" type="java.lang.Character">
+                <column name="ATIVOPROD" length="1" />
+            </key-property>
+            <key-property name="descprod" type="string">
+                <column name="DESCPROD" length="100" />
+            </key-property>
+            <key-property name="codprod" type="java.lang.Integer">
+                <column name="CODPROD" />
+            </key-property>
+            <key-property name="refprod" type="string">
+                <column name="REFPROD" length="20" />
+            </key-property>
+            <key-property name="sldliqprod" type="big_decimal">
+                <column name="SLDLIQPROD" precision="15" scale="5" />
+            </key-property>
+            <key-property name="qtdinvp" type="big_decimal">
+                <column name="QTDINVP" precision="0" scale="5" />
+            </key-property>
+            <key-property name="qtditcompra" type="big_decimal">
+                <column name="QTDITCOMPRA" precision="0" scale="5" />
+            </key-property>
+            <key-property name="qtdfinalprodop" type="big_decimal">
+                <column name="QTDFINALPRODOP" precision="0" scale="5" />
+            </key-property>
+            <key-property name="qtdexpitrma" type="big_decimal">
+                <column name="QTDEXPITRMA" precision="0" scale="5" />
+            </key-property>
+            <key-property name="qtditvenda" type="big_decimal">
+                <column name="QTDITVENDA" precision="0" scale="5" />
+            </key-property>
+            <key-property name="sldmovprod" type="big_decimal">
+                <column name="SLDMOVPROD" precision="0" scale="5" />
+            </key-property>
+            <key-property name="sldliqprodax" type="big_decimal">
+                <column name="SLDLIQPRODAX" precision="0" scale="5" />
+            </key-property>
+        </composite-id>
+    </class>
+</hibernate-mapping>

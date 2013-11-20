@@ -1,0 +1,1225 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Sgprefere1" table="SGPREFERE1">
+        <comment>Prefer&#195;&#170;ncias do m&#195;&#179;dulo STD (Gerais).</comment>
+        <composite-id name="id" class="org.freedom.persist.entity.Sgprefere1Id">
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="vdtabpreco" class="org.freedom.persist.entity.Vdtabpreco" fetch="select">
+            <column name="CODTAB" />
+            <column name="CODFILIALTB" />
+            <column name="CODEMPTB" />
+        </many-to-one>
+        <many-to-one name="fnplanejamentoBySgprefere1fkplandr" class="org.freedom.persist.entity.Fnplanejamento" fetch="select">
+            <column name="CODPLANDR" length="13">
+                <comment>C&#195;&#179;digo da conta de planejamento de Descontos recebidos.</comment>
+            </column>
+            <column name="CODFILIALDR">
+                <comment>C&#195;&#179;digo da filial da conta de planejamento de Descontos recebidos.</comment>
+            </column>
+            <column name="CODEMPDR">
+                <comment>C&#195;&#179;digo da empresa da conta de planejamento de Descontos recebidos.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="fnplanejamentoBySgprefere1fkplancheque" class="org.freedom.persist.entity.Fnplanejamento" fetch="select">
+            <column name="CODPLANPC" length="13">
+                <comment>C&#195;&#179;digo do planejamento padr&#195;&#163;o para pagamento com cheques.</comment>
+            </column>
+            <column name="CODFILIALPC">
+                <comment>C&#195;&#179;digo da empresa para o planejamento padr&#195;&#163;o para pagamento com cheques.</comment>
+            </column>
+            <column name="CODEMPPC">
+                <comment>C&#195;&#179;digo da empresa padr&#195;&#163;o planejamento para pagamento com cheques.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="eqtipomovBySgprefere1fk8eqtip" class="org.freedom.persist.entity.Eqtipomov" fetch="select">
+            <column name="CODTIPOMOV8">
+                <comment>Codigo do tipo de movimento padr&#195;&#163;o para RMA.</comment>
+            </column>
+            <column name="CODFILIALT8">
+                <comment>Cod. filial do tipo de movimento padr&#195;&#163;o para RMA.</comment>
+            </column>
+            <column name="CODEMPT8">
+                <comment>Cod. emp. do tipo de movimento padr&#195;&#163;o para RMA.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="vdclascli" class="org.freedom.persist.entity.Vdclascli" fetch="select">
+            <column name="CODCLASCLI" />
+            <column name="CODFILIALCE" />
+            <column name="CODEMPCE" />
+        </many-to-one>
+        <one-to-one name="sgfilial" class="org.freedom.persist.entity.Sgfilial" constrained="true"></one-to-one>
+        <many-to-one name="eqtipomovBySgprefere1fktipomovim" class="org.freedom.persist.entity.Eqtipomov" fetch="select">
+            <column name="CODTIPOMOVIM">
+                <comment>C&#195;&#179;digo do tipo de movimento para nota fiscal de importa&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+            <column name="CODFILIALIM">
+                <comment>C&#195;&#179;digo da filial do tipo de movimento para NF de importa&#195;&#167;&#195;&#163;o</comment>
+            </column>
+            <column name="CODEMPIM">
+                <comment>C&#195;&#179;digo do tipo de movimento para NF de importa&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="eqtipomovBySgprefere1fk2eqtip" class="org.freedom.persist.entity.Eqtipomov" fetch="select">
+            <column name="CODTIPOMOV2">
+                <comment>Tipo de movimento para or&#195;&#167;amento</comment>
+            </column>
+            <column name="CODFILIALT2" />
+            <column name="CODEMPT2" />
+        </many-to-one>
+        <many-to-one name="vdtipocli" class="org.freedom.persist.entity.Vdtipocli" fetch="select">
+            <column name="CODTIPOCLI" />
+            <column name="CODFILIALTC" />
+            <column name="CODEMPTC" />
+        </many-to-one>
+        <many-to-one name="eqtipomovBySgprefere1fk5eqtip" class="org.freedom.persist.entity.Eqtipomov" fetch="select">
+            <column name="CODTIPOMOV5" />
+            <column name="CODFILIALT5" />
+            <column name="CODEMPT5" />
+        </many-to-one>
+        <many-to-one name="lfmensagemBySgprefere1fklfmens" class="org.freedom.persist.entity.Lfmensagem" fetch="select">
+            <column name="CODMENSORC">
+                <comment>C&#195;&#179;digo da mensagem padr&#195;&#163;o para or&#195;&#167;amento.</comment>
+            </column>
+            <column name="CODFILIALMENSORC">
+                <comment>C&#195;&#179;digo da filial para mensagem padr&#195;&#163;o para or&#195;&#167;amento.</comment>
+            </column>
+            <column name="CODEMPMENSORC">
+                <comment>C&#195;&#179;digo da empresa para a mensagem padr&#195;&#163;o para or&#195;&#167;amento.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="lfmensagemBySgprefere1fklfmens3" class="org.freedom.persist.entity.Lfmensagem" fetch="select">
+            <column name="CODMENSVENDA" />
+            <column name="CODFILIALME" />
+            <column name="CODEMPME" />
+        </many-to-one>
+        <many-to-one name="fnplanopagBySgprefere1fkfnplan" class="org.freedom.persist.entity.Fnplanopag" fetch="select">
+            <column name="CODPLANOPAG" />
+            <column name="CODFILIALPG" />
+            <column name="CODEMPPG" />
+        </many-to-one>
+        <many-to-one name="eqtipomovBySgprefere1fkeqtipo" class="org.freedom.persist.entity.Eqtipomov" fetch="select">
+            <column name="CODTIPOMOV" />
+            <column name="CODFILIALTM" />
+            <column name="CODEMPTM" />
+        </many-to-one>
+        <many-to-one name="fnplanejamentoBySgprefere1fkplanjr" class="org.freedom.persist.entity.Fnplanejamento" fetch="select">
+            <column name="CODPLANJR" length="13">
+                <comment>C&#195;&#179;digo da conta de planejamento de Juros Recebidos.</comment>
+            </column>
+            <column name="CODFILIALJR">
+                <comment>C&#195;&#179;digo da filial da conta de planejamento de Juros Recebidos.</comment>
+            </column>
+            <column name="CODEMPJR">
+                <comment>C&#195;&#179;digo da empresa da conta de planejamento de Juros Recebidos.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="eqtipomovBySgprefere1fktpmovic" class="org.freedom.persist.entity.Eqtipomov" fetch="select">
+            <column name="CODTIPOMOVIC" />
+            <column name="CODFILIALIC" />
+            <column name="CODEMPIC" />
+        </many-to-one>
+        <many-to-one name="cptipofor" class="org.freedom.persist.entity.Cptipofor" fetch="select">
+            <column name="CODTIPOFOR" />
+            <column name="CODFILIALTF" />
+            <column name="CODEMPTF" />
+        </many-to-one>
+        <many-to-one name="eqmarca" class="org.freedom.persist.entity.Eqmarca" fetch="select">
+            <column name="CODMARCA" length="6" />
+            <column name="CODFILIALMC" />
+            <column name="CODEMPMC" />
+        </many-to-one>
+        <many-to-one name="sgimagem" class="org.freedom.persist.entity.Sgimagem" fetch="select">
+            <column name="CODIMG" />
+            <column name="CODFILIALIG" />
+            <column name="CODEMPIG" />
+        </many-to-one>
+        <many-to-one name="lfmensagemBySgprefere1fklfmens2" class="org.freedom.persist.entity.Lfmensagem" fetch="select">
+            <column name="CODMENSICMSSIMPLES">
+                <comment>C&#195;&#179;digo da mensagem a ser destacada na nota fiscal, quando empresa destacar cr&#195;&#169;dito de icms, estando enquadrada no simples.</comment>
+            </column>
+            <column name="CODFILIALMS">
+                <comment>C&#195;&#179;digo da filial da mensagem de destaque de ICMS para empresa enquadrada no simples.</comment>
+            </column>
+            <column name="CODEMPMS">
+                <comment>C&#195;&#179;digo da empresa da mensagem de destaque de ICMS de empresa enquadrada no simples.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="eqtipomovBySgprefere1fk3eqtip" class="org.freedom.persist.entity.Eqtipomov" fetch="select">
+            <column name="CODTIPOMOV3" />
+            <column name="CODFILIALT3" />
+            <column name="CODEMPT3" />
+        </many-to-one>
+        <many-to-one name="eqtipomovBySgprefere1fk9eqtip" class="org.freedom.persist.entity.Eqtipomov" fetch="select">
+            <column name="CODTIPOMOV9">
+                <comment>C&#195;&#179;digo do tipo de movimento padr&#195;&#163;o para conhecimento de frete.</comment>
+            </column>
+            <column name="CODFILIALT9">
+                <comment>C&#195;&#179;digo da filial do tipo de movimento para conheciemento de frete.</comment>
+            </column>
+            <column name="CODEMPT9">
+                <comment>C&#195;&#179;digo da empresa do tipo de moviento padr&#195;&#163;o para conhecimento de frete.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="fntbjuros" class="org.freedom.persist.entity.Fntbjuros" fetch="select">
+            <column name="CODTBJ" />
+            <column name="CODFILIALTJ" />
+            <column name="CODEMPTJ" />
+        </many-to-one>
+        <many-to-one name="fnplanejamentoBySgprefere1fkplanjp" class="org.freedom.persist.entity.Fnplanejamento" fetch="select">
+            <column name="CODPLANJP" length="13">
+                <comment>C&#195;&#179;digo da conta de planejamento de Juros Pagos.</comment>
+            </column>
+            <column name="CODFILIALJP">
+                <comment>C&#195;&#179;digo da filial da conta de planejamento de Juros Pagos.</comment>
+            </column>
+            <column name="CODEMPJP">
+                <comment>C&#195;&#179;digo da empresa da conta de planejamento de Juros Pagos.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="eqtipomovBySgprefere1fk6eqtip" class="org.freedom.persist.entity.Eqtipomov" fetch="select">
+            <column name="CODTIPOMOV6">
+                <comment>C&#195;&#179;digo de tipo de movimento de invent&#195;&#161;rio</comment>
+            </column>
+            <column name="CODFILIALT6">
+                <comment>C&#195;&#179;digo da filial para tipo de movimento de invent&#195;&#161;rio</comment>
+            </column>
+            <column name="CODEMPT6">
+                <comment>C&#195;&#179;digo da empresa para tipo de movimento de invent&#195;&#161;rio</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="eqgrupo" class="org.freedom.persist.entity.Eqgrupo" fetch="select">
+            <column name="CODGRUP" length="14" />
+            <column name="CODFILIALGP" />
+            <column name="CODEMPGP" />
+        </many-to-one>
+        <many-to-one name="fnhistpadBySgprefere1fkfnhistp" class="org.freedom.persist.entity.Fnhistpad" fetch="select">
+            <column name="CODHISTPAG">
+                <comment>C&#195;&#179;digo do hist&#195;&#179;rico padr&#195;&#163;o para lan&#195;&#167;amentos financeiros provenientes do contas a pagar.</comment>
+            </column>
+            <column name="CODFILIALHISTPAG">
+                <comment>C&#195;&#179;digo da filial do hist&#195;&#179;rico padr&#195;&#163;o para lan&#195;&#167;amentos financeiros provenientes do contas a pagar.</comment>
+            </column>
+            <column name="CODEMPHISTPAG">
+                <comment>C&#195;&#179;digo da empresa do hist&#195;&#179;rico padr&#195;&#163;o para lan&#195;&#167;amentos financeiros provenientes do contas a pagar.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="fnmoeda" class="org.freedom.persist.entity.Fnmoeda" fetch="select">
+            <column name="CODMOEDA" length="4" not-null="true" />
+            <column name="CODFILIALMO" not-null="true" />
+            <column name="CODEMPMO" not-null="true" />
+        </many-to-one>
+        <many-to-one name="cpforneced" class="org.freedom.persist.entity.Cpforneced" fetch="select">
+            <column name="CODFOR" />
+            <column name="CODFILIALFR" />
+            <column name="CODEMPFR" />
+        </many-to-one>
+        <many-to-one name="fnplanejamentoBySgprefere1fkplandc" class="org.freedom.persist.entity.Fnplanejamento" fetch="select">
+            <column name="CODPLANDC" length="13">
+                <comment>C&#195;&#179;digo da conta de planejamento de Descontos concedidos.</comment>
+            </column>
+            <column name="CODFILIALDC">
+                <comment>C&#195;&#179;digo da filial da conta de planejamento de Descontos concedidos.</comment>
+            </column>
+            <column name="CODEMPDC">
+                <comment>C&#195;&#179;digo da empresa da conta de planejamento de Descontos concedidos.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="fnhistpadBySgprefere1fkfnhistr" class="org.freedom.persist.entity.Fnhistpad" fetch="select">
+            <column name="CODHISTREC">
+                <comment>C&#195;&#179;digo do hist&#195;&#179;rico padr&#195;&#163;o para lan&#195;&#167;amentos financeiros provenientes do contas a receber.</comment>
+            </column>
+            <column name="CODFILIALHISTREC">
+                <comment>C&#195;&#179;digo da filial do hist&#195;&#179;rico padr&#195;&#163;o para lan&#195;&#167;amentos financeiros provenientes do contas a receber.</comment>
+            </column>
+            <column name="CODEMPHISTREC">
+                <comment>C&#195;&#179;digo da empresa do hist&#195;&#179;rico padr&#195;&#163;o para lan&#195;&#167;amentos financeiros provenientes do contas a receber.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="eqtipomovBySgprefere1fk4eqtip" class="org.freedom.persist.entity.Eqtipomov" fetch="select">
+            <column name="CODTIPOMOV4">
+                <comment>Tipo de movimento para servi&#195;&#167;os</comment>
+            </column>
+            <column name="CODFILIALT4" />
+            <column name="CODEMPT4" />
+        </many-to-one>
+        <many-to-one name="vdtransp" class="org.freedom.persist.entity.Vdtransp" fetch="select">
+            <column name="CODTRAN">
+                <comment>C&#195;&#179;digo da transportadora.</comment>
+            </column>
+            <column name="CODFILIALTN">
+                <comment>C&#195;&#179;digo da filial para transportadora.</comment>
+            </column>
+            <column name="CODEMPTN">
+                <comment>C&#195;&#179;digo da empresa para transportadora</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="eqtipomovBySgprefere1fktipomovorcserv" class="org.freedom.persist.entity.Eqtipomov" fetch="select">
+            <column name="CODTIPOMOVS">
+                <comment>C&#195;&#179;digo do tipo de movimento para or&#195;&#167;amentos de servi&#195;&#167;o.</comment>
+            </column>
+            <column name="CODFILIALTS">
+                <comment>C&#195;&#179;digo da filial do tipo de movimento para or&#195;&#167;amentos de servi&#195;&#167;o.</comment>
+            </column>
+            <column name="CODEMPTS">
+                <comment>C&#195;&#179;digo da empresa do tipo de movimento para or&#195;&#167;amentos de servi&#195;&#167;o.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="fnplanopagBySgprefere1fkplanopagsv" class="org.freedom.persist.entity.Fnplanopag" fetch="select">
+            <column name="CODPLANOPAGSV">
+                <comment>C&#195;&#179;digo de plano de pagamento sem valor financeiro para uso em devolu&#195;&#167;&#195;&#181;es e afins.</comment>
+            </column>
+            <column name="CODFILIALSV">
+                <comment>C&#195;&#179;digo da filial de plano de pagamento sem valor financeiro para uso em devolu&#195;&#167;&#195;&#181;es e afins.</comment>
+            </column>
+            <column name="CODEMPSV">
+                <comment>C&#195;&#179;digo da empresa de plano de pagamento sem valor financeiro para uso em devolu&#195;&#167;&#195;&#181;es e afins.</comment>
+            </column>
+        </many-to-one>
+        <property name="usarefprod" type="char">
+            <column name="USAREFPROD" length="1" not-null="true" />
+        </property>
+        <property name="usapedseq" type="java.lang.Character">
+            <column name="USAPEDSEQ" length="1" />
+        </property>
+        <property name="usaorcseq" type="char">
+            <column name="USAORCSEQ" length="1" not-null="true">
+                <comment>FLAG QUE INDICA SE USA PEDIDO SEQUENCIAL NO OR&#195;&#135;AMENTO</comment>
+            </column>
+        </property>
+        <property name="filtro" type="string">
+            <column name="FILTRO" length="2" />
+        </property>
+        <property name="usaliqrel" type="java.lang.Character">
+            <column name="USALIQREL" length="1" />
+        </property>
+        <property name="tipoprecocusto" type="char">
+            <column name="TIPOPRECOCUSTO" length="1" not-null="true" />
+        </property>
+        <property name="anocentrocusto" type="java.lang.Short">
+            <column name="ANOCENTROCUSTO" />
+        </property>
+        <property name="obsorcpad" type="string">
+            <column name="OBSORCPAD" length="10000" />
+        </property>
+        <property name="classorc" type="string">
+            <column name="CLASSORC" length="80" />
+        </property>
+        <property name="classorcpd" type="string">
+            <column name="CLASSORCPD" length="80" />
+        </property>
+        <property name="titorctxt01" type="string">
+            <column name="TITORCTXT01" length="20" />
+        </property>
+        <property name="ordnota" type="java.lang.Character">
+            <column name="ORDNOTA" length="1" />
+        </property>
+        <property name="setorvenda" type="java.lang.Character">
+            <column name="SETORVENDA" length="1" />
+        </property>
+        <property name="prefcred" type="java.lang.Character">
+            <column name="PREFCRED" length="1" />
+        </property>
+        <property name="tipoprefcred" type="string">
+            <column name="TIPOPREFCRED" length="2" not-null="true">
+                <comment>Indica quando deve ser feita a verifica&#195;&#167;&#195;&#163;o do cr&#195;&#169;dito: FV - Fechamento de venda; II - Inser&#195;&#167;&#195;&#163;o de
+                &#195;&#173;tem; AB - Ambos;</comment>
+            </column>
+        </property>
+        <property name="usaclascomis" type="java.lang.Character">
+            <column name="USACLASCOMIS" length="1" />
+        </property>
+        <property name="percprecocusto" type="big_decimal">
+            <column name="PERCPRECOCUSTO" precision="9" not-null="true" />
+        </property>
+        <property name="rgcliobrig" type="char">
+            <column name="RGCLIOBRIG" length="1" not-null="true" />
+        </property>
+        <property name="tabfretevd" type="char">
+            <column name="TABFRETEVD" length="1" not-null="true">
+                <comment>Indica se a aba frete ser&#195;&#161; obrigat&#195;&#179;ria na tela de vendas.</comment>
+            </column>
+        </property>
+        <property name="tabadicvd" type="char">
+            <column name="TABADICVD" length="1" not-null="true">
+                <comment>Indica se a aba adicionais ser&#195;&#161; obrigat&#195;&#179;ria na tela de vendas.</comment>
+            </column>
+        </property>
+        <property name="travatmnfvd" type="char">
+            <column name="TRAVATMNFVD" length="1" not-null="true">
+                <comment>Trava tela de venda para n&#195;&#163;o receber tipo de movimento de NF na inser&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+        </property>
+        <property name="tipovalidorc" type="java.lang.Character">
+            <column name="TIPOVALIDORC" length="1">
+                <comment>Op&#195;&#167;&#195;&#163;o de validade para impress&#195;&#163;o nos or&#195;&#167;amentos: "N"=n&#195;&#186;mero de dias ; "D" data</comment>
+            </column>
+        </property>
+        <property name="climesmocnpj" type="java.lang.Character">
+            <column name="CLIMESMOCNPJ" length="1">
+                <comment>Permitir clientes com mesmo CNPJ: S-SIM N-N&#195;&#131;O</comment>
+            </column>
+        </property>
+        <property name="cnpjobrigcli" type="char">
+            <column name="CNPJOBRIGCLI" length="1" not-null="true">
+                <comment>CNPJ Obrigat&#195;&#179;rio para o cadastro de clientes S ou N</comment>
+            </column>
+        </property>
+        <property name="jurosposcalc" type="java.lang.Character">
+            <column name="JUROSPOSCALC" length="1" />
+        </property>
+        <property name="estlotneg" type="java.lang.Character">
+            <column name="ESTLOTNEG" length="1">
+                <comment>Permitir estoque de lote negativo</comment>
+            </column>
+        </property>
+        <property name="estneg" type="java.lang.Character">
+            <column name="ESTNEG" length="1" />
+        </property>
+        <property name="natvenda" type="java.lang.Character">
+            <column name="NATVENDA" length="1">
+                <comment>CFOP habilitada na tela de venda</comment>
+            </column>
+        </property>
+        <property name="ipivenda" type="java.lang.Character">
+            <column name="IPIVENDA" length="1">
+                <comment>Habilita campo IPI</comment>
+            </column>
+        </property>
+        <property name="custosicms" type="char">
+            <column name="CUSTOSICMS" length="1" not-null="true">
+                <comment>Pre&#195;&#167;o de custo na compra sem ICMS.</comment>
+            </column>
+        </property>
+        <property name="casasdec" type="java.lang.Short">
+            <column name="CASASDEC" />
+        </property>
+        <property name="casasdecfin" type="java.lang.Short">
+            <column name="CASASDECFIN">
+                <comment>Define as casas decimas para assuntos financeiros</comment>
+            </column>
+        </property>
+        <property name="comispdupl" type="java.lang.Character">
+            <column name="COMISPDUPL" length="1">
+                <comment>C&#195;&#161;lculo de comiss&#195;&#181;es por duplicata "S" calcula pelas parcelas do contas a receber. "N" calcula pelo valor da venda.</comment>
+            </column>
+        </property>
+        <property name="bloqvenda" type="char">
+            <column name="BLOQVENDA" length="1" not-null="true" />
+        </property>
+        <property name="bloqcompra" type="char">
+            <column name="BLOQCOMPRA" length="1" not-null="true">
+                <comment>FLAG PARA BLOQUEAR A COMPRA</comment>
+            </column>
+        </property>
+        <property name="vendamatprim" type="char">
+            <column name="VENDAMATPRIM" length="1" not-null="true">
+                <comment>Flag para permitir venda de mat&#195;&#169;ria prima (S/N).</comment>
+            </column>
+        </property>
+        <property name="vendapatrim" type="char">
+            <column name="VENDAPATRIM" length="1" not-null="true">
+                <comment>Flag para permitir venda de mat&#195;&#169;ria prima (S/N)</comment>
+            </column>
+        </property>
+        <property name="pepsprod" type="char">
+            <column name="PEPSPROD" length="1" not-null="true">
+                <comment>Flag que indica se deve aparecer o campo custo peps na tela de cadastro de produtos.</comment>
+            </column>
+        </property>
+        <property name="cnpjforobrig" type="char">
+            <column name="CNPJFOROBRIG" length="1" not-null="true">
+                <comment>Flag que indica se o CNPJ do fornecedor &#195;&#169; obrigat&#195;&#179;rio.</comment>
+            </column>
+        </property>
+        <property name="inscestforobrig" type="char">
+            <column name="INSCESTFOROBRIG" length="1" not-null="true">
+                <comment>Flag que indica se a insc. est. do fornecedor &#195;&#169; obrigat&#195;&#179;ria.</comment>
+            </column>
+        </property>
+        <property name="buscaprodsimilar" type="char">
+            <column name="BUSCAPRODSIMILAR" length="1" not-null="true">
+                <comment>Flag que indica se ao entrar com c&#195;&#179;digo de produto em textfield dever&#195;&#161; buscar os produtos similares.</comment>
+            </column>
+        </property>
+        <property name="multialmox" type="char">
+            <column name="MULTIALMOX" length="1" not-null="true">
+                <comment>Flag que indica o trabalho com multiplos almoxarifados.</comment>
+            </column>
+        </property>
+        <property name="estneggrup" type="char">
+            <column name="ESTNEGGRUP" length="1" not-null="true">
+                <comment>Define se controla o estoque negativo por grupo.</comment>
+            </column>
+        </property>
+        <property name="usatabpe" type="char">
+            <column name="USATABPE" length="1" not-null="true">
+                <comment>Flag para usar tabela de prazos de entrega.</comment>
+            </column>
+        </property>
+        <property name="tamdescprod" type="java.lang.Short">
+            <column name="TAMDESCPROD" />
+        </property>
+        <property name="desccompped" type="char">
+            <column name="DESCCOMPPED" length="1" not-null="true">
+                <comment>Indica se ser&#195;&#161; utilizada a descri&#195;&#167;&#195;&#163;o completa nos or&#195;&#167;amentos e pedidos.</comment>
+            </column>
+        </property>
+        <property name="obsclivend" type="char">
+            <column name="OBSCLIVEND" length="1" not-null="true">
+                <comment>Flag para mostrar observa&#195;&#167;&#195;&#181;es do cliente na tela de venda.</comment>
+            </column>
+        </property>
+        <property name="contestoq" type="char">
+            <column name="CONTESTOQ" length="1" not-null="true">
+                <comment>Flag que define se o sistema vai trabalhar com estoque.</comment>
+            </column>
+        </property>
+        <property name="diaspedt" type="char">
+            <column name="DIASPEDT" length="1" not-null="true">
+                <comment>S - mostra data de entrega no pedido N - mostra n&#195;&#186;mero de dias para entrega</comment>
+            </column>
+        </property>
+        <property name="recalcpcvenda" type="char">
+            <column name="RECALCPCVENDA" length="1" not-null="true">
+                <comment>flag que marca se deve recalcular os valores do item quando alterar o cabe&#195;&#167;alho</comment>
+            </column>
+        </property>
+        <property name="recalcpcorc" type="char">
+            <column name="RECALCPCORC" length="1" not-null="true">
+                <comment>flag que marca se deve recalcular os valores do item quando alterar o cabe&#195;&#167;alho</comment>
+            </column>
+        </property>
+        <property name="usalayoutped" type="char">
+            <column name="USALAYOUTPED" length="1" not-null="true">
+                <comment>define se usa layout proprio para pedido</comment>
+            </column>
+        </property>
+        <property name="verifaltparcvenda" type="char">
+            <column name="VERIFALTPARCVENDA" length="1" not-null="true">
+                <comment>FLAG INDICA SE FAZ VERIFICA&#195;&#135;&#195;&#131;O PARA ALTERAR PARCELA DA VENDA</comment>
+            </column>
+        </property>
+        <property name="buscacodprodgen" type="char">
+            <column name="BUSCACODPRODGEN" length="1" not-null="true">
+                <comment>BUSCA GENERICA DO C&#195;&#147;DIGO DO PRODUTO</comment>
+            </column>
+        </property>
+        <property name="filbuscgenprod" type="char">
+            <column name="FILBUSCGENPROD" length="1" not-null="true">
+                <comment>FILTAR POR PRODUTO NA BUSCA COM O C&#195;&#147;DIGO DE BARRAS</comment>
+            </column>
+        </property>
+        <property name="filbuscgenref" type="char">
+            <column name="FILBUSCGENREF" length="1" not-null="true">
+                <comment>FILTAR POR REFERENCIA NA BUSCA COM O C&#195;&#147;DIGO DE BARRAS</comment>
+            </column>
+        </property>
+        <property name="filbuscgencodbar" type="char">
+            <column name="FILBUSCGENCODBAR" length="1" not-null="true">
+                <comment>FILTAR POR CODIGO DE BARRAS NA BUSCA COM O C&#195;&#147;DIGO DE BARRAS</comment>
+            </column>
+        </property>
+        <property name="filbuscgencodfab" type="char">
+            <column name="FILBUSCGENCODFAB" length="1" not-null="true">
+                <comment>FILTAR POR CODIGO DO FABRICANTE NA BUSCA COM O C&#195;&#147;DIGO DE BARRAS</comment>
+            </column>
+        </property>
+        <property name="filbuscgencodfor" type="char">
+            <column name="FILBUSCGENCODFOR" length="1" not-null="true">
+                <comment>Busca produro por c&#195;&#179;digo de fornecedor.</comment>
+            </column>
+        </property>
+        <property name="buscavlrultcompra" type="char">
+            <column name="BUSCAVLRULTCOMPRA" length="1" not-null="true">
+                <comment>Busca o valor da ultima compra na tela de compras.</comment>
+            </column>
+        </property>
+        <property name="icmsvenda" type="char">
+            <column name="ICMSVENDA" length="1" not-null="true" />
+        </property>
+        <property name="usaprecozero" type="char">
+            <column name="USAPRECOZERO" length="1" not-null="true" />
+        </property>
+        <property name="usaimgassorc" type="char">
+            <column name="USAIMGASSORC" length="1" not-null="true">
+                <comment>Flag para usar imagem de assinatura no or&#195;&#167;amento.</comment>
+            </column>
+        </property>
+        <property name="imgassorc" type="binary">
+            <column name="IMGASSORC">
+                <comment>Imagem de assinatura pra or&#195;&#167;amento.</comment>
+            </column>
+        </property>
+        <property name="consistcpfcli" type="char">
+            <column name="CONSISTCPFCLI" length="1" not-null="true">
+                <comment>Indica se deve consistir CPF no cliente</comment>
+            </column>
+        </property>
+        <property name="consisteiecli" type="char">
+            <column name="CONSISTEIECLI" length="1" not-null="true">
+                <comment>Indica se deve consistir IE no cliente</comment>
+            </column>
+        </property>
+        <property name="consisteiefor" type="char">
+            <column name="CONSISTEIEFOR" length="1" not-null="true">
+                <comment>Indica se deve consistir IE no fornecedor.</comment>
+            </column>
+        </property>
+        <property name="consistecpffor" type="char">
+            <column name="CONSISTECPFFOR" length="1" not-null="true">
+                <comment>Indica se deve validar o CPF do fornecedor pessoa f&#195;&#173;sica.</comment>
+            </column>
+        </property>
+        <property name="usanomevendorc" type="char">
+            <column name="USANOMEVENDORC" length="1" not-null="true">
+                <comment>Flag "S" para indicar o uso de nome do vendedor no or&#195;&#167;amento, caso contr&#195;&#161;rio utilizar&#195;&#161; o nome da empresa.</comment>
+            </column>
+        </property>
+        <property name="siscontabil" type="string">
+            <column name="SISCONTABIL" length="2" not-null="true">
+                <comment>Seleciona o sistema de contabilidade utilizado. 00 - Nenhum 01 - Freedom Cont&#195;&#161;bil 02 - Safe Cont&#195;&#161;bil</comment>
+            </column>
+        </property>
+        <property name="atbancoimpbol" type="char">
+            <column name="ATBANCOIMPBOL" length="1" not-null="true">
+                <comment>Flag que indica se o banco poder&#195;&#161; ser atualizado na tela de impress&#195;&#163;o de boleto.</comment>
+            </column>
+        </property>
+        <property name="tipocodbar" type="char">
+            <column name="TIPOCODBAR" length="1" not-null="true">
+                <comment>Tipo de c&#195;&#179;digo de barras. 1-EAN 2-39</comment>
+            </column>
+        </property>
+        <property name="adicorcobsped" type="char">
+            <column name="ADICORCOBSPED" length="1" not-null="true">
+                <comment>Flag que indica se deve carregar os c&#195;&#179;digos dos or&#195;&#167;amentos nas observa&#195;&#167;&#195;&#181;es dos pedidos, gerados a partir de
+                or&#195;&#167;amentos.</comment>
+            </column>
+        </property>
+        <property name="custocompra" type="char">
+            <column name="CUSTOCOMPRA" length="1" not-null="true">
+                <comment>Habilita para digita&#195;&#167;&#195;&#163;o campo de custo na compra.</comment>
+            </column>
+        </property>
+        <property name="tabtranspcp" type="char">
+            <column name="TABTRANSPCP" length="1" not-null="true">
+                <comment>Indica se deve mostrar aba de transportadora na tela de compra.</comment>
+            </column>
+        </property>
+        <property name="tabtransporc" type="java.lang.Character">
+            <column name="TABTRANSPORC" length="1">
+                <comment>Indica se deve mostrar aba de transportadora na tela de or&#195;&#167;amento.</comment>
+            </column>
+        </property>
+        <property name="tabsolcp" type="char">
+            <column name="TABSOLCP" length="1" not-null="true">
+                <comment>Habilita e desabilita aba de solicita&#195;&#167;&#195;&#163;o na tela de compras.</comment>
+            </column>
+        </property>
+        <property name="adicfretebaseicm" type="char">
+            <column name="ADICFRETEBASEICM" length="1" not-null="true">
+                <comment>Indica se deve permitir adicionar frete &#195;&#160; base de calculo do ICMS.</comment>
+            </column>
+        </property>
+        <property name="precocprel" type="char">
+            <column name="PRECOCPREL" length="1" not-null="true">
+                <comment>Indica se deve mostrar o pre&#195;&#167;o de compra nos relat&#195;&#179;rios de compra.</comment>
+            </column>
+        </property>
+        <property name="descorc" type="string">
+            <column name="DESCORC" length="80" />
+        </property>
+        <property name="multicomis" type="char">
+            <column name="MULTICOMIS" length="1" not-null="true">
+                <comment>Habilita e desabilita multi-comissionados.</comment>
+            </column>
+        </property>
+        <property name="usuativcli" type="char">
+            <column name="USUATIVCLI" length="1" not-null="true">
+                <comment>S - Define controle de acesso para ativa&#195;&#167;&#195;&#163;o de cliente por usu&#195;&#161;rio.</comment>
+            </column>
+        </property>
+        <property name="estitrecaltdtvenc" type="char">
+            <column name="ESTITRECALTDTVENC" length="1" not-null="true">
+                <comment>Flag que indica se estorna recebimento ao alterar data de vencimento da parcela com baixa automatica.</comment>
+            </column>
+        </property>
+        <property name="lcredglobal" type="char">
+            <column name="LCREDGLOBAL" length="1" not-null="true">
+                <comment>Indica se a libera&#195;&#167;&#195;&#163;o de cr&#195;&#169;dito deve ser agrupada, para clientes com sub-clientes.</comment>
+            </column>
+        </property>
+        <property name="vdmanutcomobrig" type="char">
+            <column name="VDMANUTCOMOBRIG" length="1" not-null="true">
+                <comment>Indica se o filtro de vendedor &#195;&#169; obrigat&#195;&#179;ria na tela de manuten&#195;&#167;&#195;&#163;o de comiss&#195;&#181;es.</comment>
+            </column>
+        </property>
+        <property name="classped" type="string">
+            <column name="CLASSPED" length="80">
+                <comment>Classe padr&#195;&#163;o para pedidos gr&#195;&#161;ficos.</comment>
+            </column>
+        </property>
+        <property name="classped02" type="string">
+            <column name="CLASSPED02" length="80" />
+        </property>
+        <property name="tipoclassped" type="string">
+            <column name="TIPOCLASSPED" length="2" not-null="true">
+                <comment>Indica o tipo de classe padr&#195;&#163;o para or&#195;&#167;amentos. QA - Resultset como par&#195;&#162;metro (Query na Aplica&#195;&#167;&#195;&#163;o);
+                QJ - Parametros de filtro (Query no Jasper).</comment>
+            </column>
+        </property>
+        <property name="usaibgecli" type="char">
+            <column name="USAIBGECLI" length="1" not-null="true">
+                <comment>Indica se deve usar a tabela de IBGE de cidades para o cadastro de clientes.</comment>
+            </column>
+        </property>
+        <property name="usaibgefor" type="char">
+            <column name="USAIBGEFOR" length="1" not-null="true">
+                <comment>Indica se deve usar a tabela de IBGE de cidades para o cadastro de fornecedores.</comment>
+            </column>
+        </property>
+        <property name="usaibgetransp" type="char">
+            <column name="USAIBGETRANSP" length="1" not-null="true">
+                <comment>Indica se deve usar a tabela de IBGE de cidades para o cadastro de transportadoras.</comment>
+            </column>
+        </property>
+        <property name="somavolumes" type="char">
+            <column name="SOMAVOLUMES" length="1" not-null="true">
+                <comment>Indica se deve somar as quantidades dos itens de venda e lan&#195;&#167;ar no campo "volumes".</comment>
+            </column>
+        </property>
+        <property name="buscacep" type="char">
+            <column name="BUSCACEP" length="1" not-null="true">
+                <comment>Indica se deve habilitar o bot&#195;&#163;o para busca de ceps nos cadastros.</comment>
+            </column>
+        </property>
+        <property name="urlwscep" type="string">
+            <column name="URLWSCEP" length="150">
+                <comment>URL do web service de busca de endere&#195;&#167;o pelo cep.</comment>
+            </column>
+        </property>
+        <property name="classcp" type="string">
+            <column name="CLASSCP" length="80">
+                <comment>Classe padr&#195;&#163;o para pedido de compra.</comment>
+            </column>
+        </property>
+        <property name="labelobs01cp" type="string">
+            <column name="LABELOBS01CP" length="40">
+                <comment>Descri&#195;&#167;&#195;&#163;o para o campo coringa obs01 da tabela CPCOMPRA.</comment>
+            </column>
+        </property>
+        <property name="labelobs02cp" type="string">
+            <column name="LABELOBS02CP" length="40">
+                <comment>Descri&#195;&#167;&#195;&#163;o para o campo coringa obs02 da tabela CPCOMPRA.</comment>
+            </column>
+        </property>
+        <property name="labelobs03cp" type="string">
+            <column name="LABELOBS03CP" length="40">
+                <comment>Descri&#195;&#167;&#195;&#163;o para o campo coringa obs03 da tabela CPCOMPRA.</comment>
+            </column>
+        </property>
+        <property name="labelobs04cp" type="string">
+            <column name="LABELOBS04CP" length="40">
+                <comment>Descri&#195;&#167;&#195;&#163;o para o campo coringa obs04 da tabela CPCOMPRA.</comment>
+            </column>
+        </property>
+        <property name="consisteiepf" type="char">
+            <column name="CONSISTEIEPF" length="1" not-null="true">
+                <comment>Indica se deve consistir a inscri&#195;&#167;&#195;&#163;o estadual de clientes do tipo pessoa f&#195;&#173;sica.</comment>
+            </column>
+        </property>
+        <property name="credicmssimples" type="char">
+            <column name="CREDICMSSIMPLES" length="1" not-null="true">
+                <comment>Indica se deve destacar cr&#195;&#169;dito de ICMS (empesa simples.)</comment>
+            </column>
+        </property>
+        <property name="geracomisvendaorc" type="char">
+            <column name="GERACOMISVENDAORC" length="1" not-null="true">
+                <comment>Indica se deve gerar gerar comiss&#195;&#163;o padr&#195;&#163;o nas vendas geradas atrav&#195;&#169;s de busca de or&#195;&#167;amentos.</comment>
+            </column>
+        </property>
+        <property name="geracodunif" type="char">
+            <column name="GERACODUNIF" length="1" not-null="true">
+                <comment>Indica se deve gerar c&#195;&#179;digo unificado na tabela SGUNIFCOD para uso como destinatario ou remetente no conhecimento de frete.</comment>
+            </column>
+        </property>
+        <property name="gerapagemis" type="char">
+            <column name="GERAPAGEMIS" length="1" not-null="true">
+                <comment>Gera&#195;&#167;&#195;&#163;o de contas a pagar por data de emiss&#195;&#163;o.</comment>
+            </column>
+        </property>
+        <property name="lancafincontr" type="char">
+            <column name="LANCAFINCONTR" length="1" not-null="true">
+                <comment>Indica se deve habilitar o vinculo entre lan&#195;&#167;amento financeiro (fnsublanca) e contrato/projeto. Para apura&#195;&#167;&#195;&#163;o de
+                custos.</comment>
+            </column>
+        </property>
+        <property name="lancarmacontr" type="char">
+            <column name="LANCARMACONTR" length="1" not-null="true">
+                <comment>Indica se eve habilitar o vinculo entre rma e contrato/projeto. Para apura&#195;&#167;&#195;&#163;o de custos.</comment>
+            </column>
+        </property>
+        <property name="casasdecpre" type="java.lang.Short">
+            <column name="CASASDECPRE" />
+        </property>
+        <property name="visualizalucr" type="char">
+            <column name="VISUALIZALUCR" length="1" not-null="true">
+                <comment>Indica se deve habilitar a aba "Lucratividade" na tela de venda.</comment>
+            </column>
+        </property>
+        <property name="classnfe" type="string">
+            <column name="CLASSNFE" length="80">
+                <comment>Classe do plugin de integra&#195;&#167;&#195;&#163;o Nfe</comment>
+            </column>
+        </property>
+        <property name="dirnfe" type="string">
+            <column name="DIRNFE" length="80">
+                <comment>Diret&#195;&#179;rio padr&#195;&#163;o para arquivos NFE (windows).</comment>
+            </column>
+        </property>
+        <property name="dirnfelin" type="string">
+            <column name="DIRNFELIN" length="80">
+                <comment>Diret&#195;&#179;rio padr&#195;&#163;o para arquivos NFE (linux).</comment>
+            </column>
+        </property>
+        <property name="formatodanfe" type="java.lang.Short">
+            <column name="FORMATODANFE">
+                <comment>1 - Retrato, 2 - Paisagem</comment>
+            </column>
+        </property>
+        <property name="ambientenfe" type="java.lang.Short">
+            <column name="AMBIENTENFE">
+                <comment>1 - Produ&#195;&#167;&#195;&#163;o, 2 - Homologa&#195;&#167;&#195;&#163;o</comment>
+            </column>
+        </property>
+        <property name="proceminfe" type="java.lang.Short">
+            <column name="PROCEMINFE">
+                <comment>Identificador do processo de emiss&#195;&#163;o da NFe: 0 - emiss&#195;&#163;o de NF-e com aplicativo do contribuinte; 3 - emiss&#195;&#163;o NF-e pelo
+                contribuinte com aplicativo fornecido pelo Fisco.</comment>
+            </column>
+        </property>
+        <property name="verprocnfe" type="string">
+            <column name="VERPROCNFE" length="20">
+                <comment>Identificador da vers&#195;&#163;o do processo de emiss&#195;&#163;o (informar a ers&#195;&#163;o do aplicativo emissor de NFe)</comment>
+            </column>
+        </property>
+        <property name="keylicnfe" type="string">
+            <column name="KEYLICNFE" length="500">
+                <comment>Chave de licenciamento NFE.</comment>
+            </column>
+        </property>
+        <property name="dtvenctonfe" type="date">
+            <column name="DTVENCTONFE" length="10">
+                <comment>Data de vencimento da licen&#195;&#167;a NFE.</comment>
+            </column>
+        </property>
+        <property name="infadprodnfe" type="java.lang.Character">
+            <column name="INFADPRODNFE" length="1">
+                <comment>Indica se deve incluir as informa&#195;&#167;&#195;&#181;es adicionais do produto na nota fiscal eletronica (Campo HinfAdProd)</comment>
+            </column>
+        </property>
+        <property name="codempnf" type="java.lang.Integer">
+            <column name="CODEMPNF">
+                <comment>C&#195;&#179;digo da empresa do email padr&#195;&#163;o para envio de nfe.</comment>
+            </column>
+        </property>
+        <property name="codfilialnf" type="java.lang.Short">
+            <column name="CODFILIALNF">
+                <comment>C&#195;&#179;digo da filial do email padr&#195;&#163;o para envio nfe</comment>
+            </column>
+        </property>
+        <property name="codemailnf" type="java.lang.Integer">
+            <column name="CODEMAILNF">
+                <comment>C&#195;&#179;digo do email padr&#195;&#163;o para envio de nfe.</comment>
+            </column>
+        </property>
+        <property name="exibeparcobsdanfe" type="java.lang.Character">
+            <column name="EXIBEPARCOBSDANFE" length="1">
+                <comment>Indica se deve adicionar o desdobramento das parcelas nas observa&#195;&#167;&#195;&#181;es da DANFE.</comment>
+            </column>
+        </property>
+        <property name="versaonfe" type="string">
+            <column name="VERSAONFE" length="8" />
+        </property>
+        <property name="regimetribnfe" type="java.lang.Character">
+            <column name="REGIMETRIBNFE" length="1">
+                <comment>Regime tribut&#195;&#161;rio para NFE. 1 - Simples Nacional 2 - Simples Nacional (excesso de sub-limite) 3 - Normal</comment>
+            </column>
+        </property>
+        <property name="infcpdevolucao" type="char">
+            <column name="INFCPDEVOLUCAO" length="1" not-null="true">
+                <comment>Indica se deve informar a compra na devolu&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+        </property>
+        <property name="infvdremessa" type="char">
+            <column name="INFVDREMESSA" length="1" not-null="true">
+                <comment>Indica de informa nota de remessa.</comment>
+            </column>
+        </property>
+        <property name="gerarecemis" type="char">
+            <column name="GERARECEMIS" length="1" not-null="true">
+                <comment>Indica se deve gerar contas a receber a partir da data de emiss&#195;&#163;o do pedido.</comment>
+            </column>
+        </property>
+        <property name="retensaoimp" type="char">
+            <column name="RETENSAOIMP" length="1" not-null="true">
+                <comment>Indica se deve realizar a retens&#195;&#163;o de impostos na emiss&#195;&#163;o da nota, reduzindo o valor liquido da nota fiscal.</comment>
+            </column>
+        </property>
+        <property name="tipocustoluc" type="char">
+            <column name="TIPOCUSTOLUC" length="1" not-null="true">
+                <comment>Informa qual o tipo de custo deve ser usado no c&#195;&#161;lculo de lucratividade de or&#195;&#167;amentos/pedidos. U - Ultima compra; M - MPM P -
+                PEPS</comment>
+            </column>
+        </property>
+        <property name="tabimportcp" type="char">
+            <column name="TABIMPORTCP" length="1" not-null="true">
+                <comment>Indica se deve habilitar a aba importa&#195;&#167;&#195;&#163;o na tela de compras.</comment>
+            </column>
+        </property>
+        <property name="habvlrtotitorc" type="char">
+            <column name="HABVLRTOTITORC" length="1" not-null="true">
+                <comment>Indica se deve habilitar o valor total do item para digita&#195;&#167;&#195;&#163;o, na tela de or&#195;&#167;amentos.</comment>
+            </column>
+        </property>
+        <property name="usabuscagenprodcp" type="char">
+            <column name="USABUSCAGENPRODCP" length="1" not-null="true">
+                <comment>Indica se deve realizar a busca gen&#195;&#169;rica de produtos na compra.</comment>
+            </column>
+        </property>
+        <property name="adicobsorcped" type="char">
+            <column name="ADICOBSORCPED" length="1" not-null="true">
+                <comment>Indica se deve transferir as observa&#195;&#167;&#195;&#181;es do or&#195;&#167;amento para o pedido.</comment>
+            </column>
+        </property>
+        <property name="usaprecocot" type="java.lang.Character">
+            <column name="USAPRECOCOT" length="1">
+                <comment>Indica se deve utilizar o pre&#195;&#167;o de cota&#195;&#167;&#195;&#181;es para pedidos de compras.</comment>
+            </column>
+        </property>
+        <property name="bloqprecoaprov" type="java.lang.Character">
+            <column name="BLOQPRECOAPROV" length="1">
+                <comment>Indica se deve bloquear o faturamento de pedido de compra com pre&#195;&#167;o n&#195;&#163;o aprovado.</comment>
+            </column>
+        </property>
+        <property name="codempft" type="java.lang.Integer">
+            <column name="CODEMPFT">
+                <comment>C&#195;&#179;digo da empresa do tipo de fornecedor para transportadoras.</comment>
+            </column>
+        </property>
+        <property name="codfilialft" type="java.lang.Short">
+            <column name="CODFILIALFT">
+                <comment>C&#195;&#179;digo da filial do tipo de fornecedor para transportadoras.</comment>
+            </column>
+        </property>
+        <property name="codtipoforft" type="java.lang.Integer">
+            <column name="CODTIPOFORFT">
+                <comment>C&#195;&#179;digo do tipo de fornecedor para transportadoras.</comment>
+            </column>
+        </property>
+        <property name="usaprecocomis" type="char">
+            <column name="USAPRECOCOMIS" length="1" not-null="true">
+                <comment>Indica se deve utilizar o pre&#195;&#167;o para comissionamento do cadastro de produtos, para calculo de comissioament especial por
+                se&#195;&#167;&#195;&#163;o de produ&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+        </property>
+        <property name="especialcomis" type="java.lang.Character">
+            <column name="ESPECIALCOMIS" length="1">
+                <comment>Indica se deve utilizar o mecanismo de comissionamento especial (por setor de produ&#195;&#167;&#195;&#163;o)</comment>
+            </column>
+        </property>
+        <property name="arredpreco" type="java.lang.Short">
+            <column name="ARREDPRECO">
+                <comment>Indice de arredondamento de precos: null ou 0 = sem arredondamento; &gt; 0 fator de arredondamento decimal</comment>
+            </column>
+        </property>
+        <property name="tpnossonumero" type="java.lang.Character">
+            <column name="TPNOSSONUMERO" length="1">
+                <comment>Indica o padr&#195;&#163;o para gera&#195;&#167;&#195;&#163;o do nosso n&#195;&#186;mero (boletos e arquivos de remessa) D - N&#195;&#186;mero do
+                documento (doc) R - N&#195;&#186;mero do contas a receber (codrec) S - Sequencial &#195;&#186;nico (recomendado)</comment>
+            </column>
+        </property>
+        <property name="impdocbol" type="char">
+            <column name="IMPDOCBOL" length="1" not-null="true">
+                <comment>Define se o n&#195;&#186;mero NF ser&#195;&#161; impresso no campo documento do boleto (S/N).</comment>
+            </column>
+        </property>
+        <property name="fechacaixa" type="java.lang.Character">
+            <column name="FECHACAIXA" length="1">
+                <comment>Indica se deve bloquear caixas para lan&#195;&#167;amentos retroativos.</comment>
+            </column>
+        </property>
+        <property name="fechacaixaauto" type="java.lang.Character">
+            <column name="FECHACAIXAAUTO" length="1">
+                <comment>Indica se deve realizar o fechamento de caixas automaticamente, ou atrav&#195;&#169;s de procedimento manual.</comment>
+            </column>
+        </property>
+        <property name="numdigidenttit" type="java.lang.Short">
+            <column name="NUMDIGIDENTTIT">
+                <comment>Numero de digitos para campo de identificacao do titulo em arquivos de remessa padrao cnab (parametro corretivo para periodo intermediario entre a versao
+                1.2.4.1 e 1.2.4.2);</comment>
+            </column>
+        </property>
+        <property name="keylicefd" type="string">
+            <column name="KEYLICEFD" length="500">
+                <comment>Chave de licenciamento do m&#195;&#179;dulo Sped EFD.</comment>
+            </column>
+        </property>
+        <property name="dtvenctoefd" type="date">
+            <column name="DTVENCTOEFD" length="10">
+                <comment>Data de vencimento da licencao do SPED Efd.</comment>
+            </column>
+        </property>
+        <property name="revalidarlotecompra" type="java.lang.Character">
+            <column name="REVALIDARLOTECOMPRA" length="1" />
+        </property>
+        <property name="encorcprod" type="java.lang.Character">
+            <column name="ENCORCPROD" length="1">
+                <comment>Indica se deve encaminhar or&#195;&#167;amentos contendo produtos acabados para a produ&#195;&#167;&#195;&#163;o (Sistema Pull)</comment>
+            </column>
+        </property>
+        <property name="comissaodesconto" type="java.lang.Character">
+            <column name="COMISSAODESCONTO" length="1">
+                <comment>Indica se deve habilitar o mecanismo de comissionamento progressivo, de acordo com o desconto concedido. "S" - Sim "N" - N&#195;&#163;o</comment>
+            </column>
+        </property>
+        <property name="codemphc" type="java.lang.Integer">
+            <column name="CODEMPHC">
+                <comment>C&#195;&#179;digo da empresa para hist&#195;&#179;rico padr&#195;&#163;o para baixa CNAB.</comment>
+            </column>
+        </property>
+        <property name="codfilialhc" type="java.lang.Short">
+            <column name="CODFILIALHC">
+                <comment>C&#195;&#179;digo da filial para hist&#195;&#179;rico padr&#195;&#163;o para baixa CNAB.</comment>
+            </column>
+        </property>
+        <property name="codhistcnab" type="java.lang.Integer">
+            <column name="CODHISTCNAB">
+                <comment>C&#195;&#179;digo do hist&#195;&#179;rico padr&#195;&#163;o para baixa CNAB.</comment>
+            </column>
+        </property>
+        <property name="alinhatelalanca" type="java.lang.Character">
+            <column name="ALINHATELALANCA" length="1">
+                <comment>Indica se deve alinhar a tela de lan&#195;&#167;amentos financeiros a direta. S - Sim N - N&#195;&#163;o</comment>
+            </column>
+        </property>
+        <property name="vendaconsum" type="char">
+            <column name="VENDACONSUM" length="1" not-null="true" />
+        </property>
+        <property name="cvprod" type="java.lang.Character">
+            <column name="CVPROD" length="1" />
+        </property>
+        <property name="verifprod" type="java.lang.Character">
+            <column name="VERIFPROD" length="1" />
+        </property>
+        <property name="rmaprod" type="char">
+            <column name="RMAPROD" length="1" not-null="true" />
+        </property>
+        <property name="tipoprod" type="string">
+            <column name="TIPOPROD" length="2" />
+        </property>
+        <property name="obsitvendaped" type="char">
+            <column name="OBSITVENDAPED" length="1" not-null="true" />
+        </property>
+        <property name="fatorcparc" type="char">
+            <column name="FATORCPARC" length="1" not-null="true" />
+        </property>
+        <property name="aprovorcfatparc" type="char">
+            <column name="APROVORCFATPARC" length="1" not-null="true" />
+        </property>
+        <property name="bloqseqicp" type="char">
+            <column name="BLOQSEQICP" length="1" not-null="true" />
+        </property>
+        <property name="bloqseqivd" type="char">
+            <column name="BLOQSEQIVD" length="1" not-null="true" />
+        </property>
+        <property name="utilordcpint" type="char">
+            <column name="UTILORDCPINT" length="1" not-null="true" />
+        </property>
+        <property name="keylicepc" type="string">
+            <column name="KEYLICEPC" length="500" />
+        </property>
+        <property name="dtvenctoepc" type="date">
+            <column name="DTVENCTOEPC" length="10" />
+        </property>
+        <property name="implotenfe" type="char">
+            <column name="IMPLOTENFE" length="1" not-null="true" />
+        </property>
+        <property name="totcpsfrete" type="char">
+            <column name="TOTCPSFRETE" length="1" not-null="true" />
+        </property>
+        <property name="identclibco" type="char">
+            <column name="IDENTCLIBCO" length="1" not-null="true">
+                <comment>Identifica&#195;&#167;&#195;&#163;o cliente (SIACC)- D - Documento - CPF/CNPJ / C - C&#195;&#179;digo do cliente</comment>
+            </column>
+        </property>
+        <property name="qtddesc" type="char">
+            <column name="QTDDESC" length="1" not-null="true" />
+        </property>
+        <property name="localserv" type="char">
+            <column name="LOCALSERV" length="1" not-null="true" />
+        </property>
+        <property name="vdprodqqclas" type="char">
+            <column name="VDPRODQQCLAS" length="1" not-null="true">
+                <comment>Permite venda de produto independentemente da classifica&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+        </property>
+        <property name="codempvd" type="java.lang.Integer">
+            <column name="CODEMPVD" />
+        </property>
+        <property name="codfilialvd" type="java.lang.Short">
+            <column name="CODFILIALVD" />
+        </property>
+        <property name="codvend" type="java.lang.Integer">
+            <column name="CODVEND" />
+        </property>
+        <property name="padraonfe" type="char">
+            <column name="PADRAONFE" length="1" not-null="true" />
+        </property>
+        <property name="tipoemissaonfe" type="java.lang.Character">
+            <column name="TIPOEMISSAONFE" length="1" />
+        </property>
+        <property name="ccnfecp" type="char">
+            <column name="CCNFECP" length="1" not-null="true" />
+        </property>
+        <property name="adicicmstotnota" type="char">
+            <column name="ADICICMSTOTNOTA" length="1" not-null="true" />
+        </property>
+        <property name="utilizatbcalcca" type="char">
+            <column name="UTILIZATBCALCCA" length="1" not-null="true">
+                <comment>Utiliza tabela para c&#195;&#161;lculo do custo de aquisi&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+        </property>
+        <property name="habcompracompl" type="char">
+            <column name="HABCOMPRACOMPL" length="1" not-null="true" />
+        </property>
+        <property name="descnatcompl" type="string">
+            <column name="DESCNATCOMPL" length="60" />
+        </property>
+        <property name="hablogpagar" type="char">
+            <column name="HABLOGPAGAR" length="1" not-null="true" />
+        </property>
+        <property name="hablogreceber" type="char">
+            <column name="HABLOGRECEBER" length="1" not-null="true" />
+        </property>
+        <property name="consistendentvd" type="char">
+            <column name="CONSISTENDENTVD" length="1" not-null="true" />
+        </property>
+        <property name="usacliseq" type="char">
+            <column name="USACLISEQ" length="1" not-null="true" />
+        </property>
+        <property name="bloqdesccomporc" type="char">
+            <column name="BLOQDESCCOMPORC" length="1" not-null="true" />
+        </property>
+        <property name="bloqprecoorc" type="char">
+            <column name="BLOQPRECOORC" length="1" not-null="true" />
+        </property>
+        <property name="bloqdesccompvd" type="char">
+            <column name="BLOQDESCCOMPVD" length="1" not-null="true" />
+        </property>
+        <property name="bloqprecovd" type="char">
+            <column name="BLOQPRECOVD" length="1" not-null="true" />
+        </property>
+        <property name="desabdescfechavd" type="char">
+            <column name="DESABDESCFECHAVD" length="1" not-null="true" />
+        </property>
+        <property name="desabdescfechaorc" type="char">
+            <column name="DESABDESCFECHAORC" length="1" not-null="true" />
+        </property>
+        <property name="permitbaixaparcjdm" type="char">
+            <column name="PERMITBAIXAPARCJDM" length="1" not-null="true" />
+        </property>
+        <property name="bloqcomissorc" type="char">
+            <column name="BLOQCOMISSORC" length="1" not-null="true" />
+        </property>
+        <property name="bloqcomissvd" type="char">
+            <column name="BLOQCOMISSVD" length="1" not-null="true" />
+        </property>
+        <property name="calcprecog" type="char">
+            <column name="CALCPRECOG" length="1" not-null="true" />
+        </property>
+        <property name="enderecoobrigcli" type="char">
+            <column name="ENDERECOOBRIGCLI" length="1" not-null="true" />
+        </property>
+        <property name="entregaobrigcli" type="char">
+            <column name="ENTREGAOBRIGCLI" length="1" not-null="true" />
+        </property>
+        <property name="periodoconsch" type="char">
+            <column name="PERIODOCONSCH" length="1" not-null="true" />
+        </property>
+        <property name="bloqpedvd" type="char">
+            <column name="BLOQPEDVD" length="1" not-null="true">
+                <comment>Bloqueia pedido de venda ap&#195;&#179;s emiss&#195;&#163;o.</comment>
+            </column>
+        </property>
+        <property name="agendafprincipal" type="char">
+            <column name="AGENDAFPRINCIPAL" length="1" not-null="true" />
+        </property>
+        <property name="atualizaagenda" type="char">
+            <column name="ATUALIZAAGENDA" length="1" not-null="true" />
+        </property>
+        <property name="tempoatuagenda" type="int">
+            <column name="TEMPOATUAGENDA" not-null="true" />
+        </property>
+        <property name="soldtsaida" type="char">
+            <column name="SOLDTSAIDA" length="1" not-null="true" />
+        </property>
+        <property name="npermitdtmaior" type="char">
+            <column name="NPERMITDTMAIOR" length="1" not-null="true" />
+        </property>
+        <property name="permitimporcantap" type="char">
+            <column name="PERMITIMPORCANTAP" length="1" not-null="true" />
+        </property>
+        <property name="bloqeditorcaposap" type="char">
+            <column name="BLOQEDITORCAPOSAP" length="1" not-null="true" />
+        </property>
+        <property name="bloqvdporatraso" type="char">
+            <column name="BLOQVDPORATRASO" length="1" not-null="true" />
+        </property>
+        <property name="numdiasbloqvd" type="short">
+            <column name="NUMDIASBLOQVD" not-null="true" />
+        </property>
+        <property name="fatorsegestoq" type="big_decimal">
+            <column name="FATORSEGESTOQ" precision="9" scale="5" not-null="true" />
+        </property>
+        <property name="leitransp" type="char">
+            <column name="LEITRANSP" length="1" not-null="true" />
+        </property>
+        <property name="tipoimpdanfe" type="char">
+            <column name="TIPOIMPDANFE" length="1" not-null="true" />
+        </property>
+        <property name="replicaorc" type="char">
+            <column name="REPLICAORC" length="1" not-null="true" />
+        </property>
+        <property name="sqlreplicaorc" type="string">
+            <column name="SQLREPLICAORC" length="0" />
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,402 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Cpimportacao" table="CPIMPORTACAO">
+        <comment>Tabela de informa&#195;&#167;&#195;&#181;es sobre importa&#195;&#167;&#195;&#181;es.</comment>
+        <composite-id name="id" class="org.freedom.persist.entity.CpimportacaoId">
+            <key-property name="codimp" type="int">
+                <column name="CODIMP" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="cpforneced" class="org.freedom.persist.entity.Cpforneced" fetch="select">
+            <column name="CODFOR" not-null="true">
+                <comment>C&#195;&#179;digo do fornecedor na importa&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+            <column name="CODFILIALFR" not-null="true">
+                <comment>C&#195;&#179;digo da filial do fornecedor.</comment>
+            </column>
+            <column name="CODEMPFR" not-null="true">
+                <comment>C&#195;&#179;digo da empresa do fornecedor.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="fnplanopag" class="org.freedom.persist.entity.Fnplanopag" fetch="select">
+            <column name="CODPLANOPAG" not-null="true">
+                <comment>C&#195;&#179;digo do plano de pagamento acordado no invoice.</comment>
+            </column>
+            <column name="CODFILIALPG" not-null="true">
+                <comment>C&#195;&#179;digo da filial do plano de pagamento</comment>
+            </column>
+            <column name="CODEMPPG" not-null="true">
+                <comment>C&#195;&#179;digo da empresa do plano de pagamento.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="cpimportacao" class="org.freedom.persist.entity.Cpimportacao" fetch="select">
+            <column name="CODIMPOI" />
+            <column name="CODFILIALOI" />
+            <column name="CODEMPOI" />
+        </many-to-one>
+        <many-to-one name="fnmoeda" class="org.freedom.persist.entity.Fnmoeda" fetch="select">
+            <column name="CODMOEDA" length="4" not-null="true">
+                <comment>C&#195;&#179;digo da moeda de importa&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+            <column name="CODFILIALMI" not-null="true">
+                <comment>C&#195;&#179;digo da filial da moeda de importa&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+            <column name="CODEMPMI" not-null="true">
+                <comment>C&#195;&#179;digo da empresa da moeda de importa&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+        </many-to-one>
+        <property name="cotacaomoeda" type="big_decimal">
+            <column name="COTACAOMOEDA" precision="15" scale="5" not-null="true">
+                <comment>Fator de convers&#195;&#163;o da moeda de importa&#195;&#167;&#195;&#163;o para moeda corrente.</comment>
+            </column>
+        </property>
+        <property name="tipoimp" type="char">
+            <column name="TIPOIMP" length="1" not-null="true">
+                <comment>Tipo de importa&#195;&#167;&#195;&#163;o - O = Original / C = Complementar</comment>
+            </column>
+        </property>
+        <property name="invoice" type="string">
+            <column name="INVOICE" length="20">
+                <comment>Identifica&#195;&#167;&#195;&#163;o do invoice (pedido de compra de importa&#195;&#167;&#195;&#163;o)</comment>
+            </column>
+        </property>
+        <property name="di" type="string">
+            <column name="DI" length="10">
+                <comment>N&#195;&#186;mero da declara&#195;&#167;&#195;&#163;o de importa&#195;&#167;&#195;&#163;o .</comment>
+            </column>
+        </property>
+        <property name="manifesto" type="string">
+            <column name="MANIFESTO" length="20">
+                <comment>Identifica&#195;&#167;&#195;&#163;o do manifesto de carga.</comment>
+            </column>
+        </property>
+        <property name="certorigem" type="string">
+            <column name="CERTORIGEM" length="200">
+                <comment>Certificado de origem da mercadoria.</comment>
+            </column>
+        </property>
+        <property name="lacre" type="string">
+            <column name="LACRE" length="100">
+                <comment>Identifica&#195;&#167;&#195;&#163;o do lacre</comment>
+            </column>
+        </property>
+        <property name="prescarga" type="string">
+            <column name="PRESCARGA" length="200">
+                <comment>Presen&#195;&#167;a de carga</comment>
+            </column>
+        </property>
+        <property name="identhouse" type="string">
+            <column name="IDENTHOUSE" length="100">
+                <comment>Identifica&#195;&#167;&#195;&#163;o House B/L</comment>
+            </column>
+        </property>
+        <property name="dta" type="string">
+            <column name="DTA" length="50" />
+        </property>
+        <property name="conheccarga" type="string">
+            <column name="CONHECCARGA" length="100">
+                <comment>Identifica&#195;&#167;&#195;&#163;o do conhecimento de carga.</comment>
+            </column>
+        </property>
+        <property name="identcontainer" type="string">
+            <column name="IDENTCONTAINER" length="20">
+                <comment>Identifica&#195;&#167;&#195;&#163;o do container</comment>
+            </column>
+        </property>
+        <property name="tipomanifesto" type="string">
+            <column name="TIPOMANIFESTO" length="20">
+                <comment>Tipo de manifesto.</comment>
+            </column>
+        </property>
+        <property name="dtimp" type="date">
+            <column name="DTIMP" length="10" not-null="true">
+                <comment>Data da importa&#195;&#167;&#195;&#163;o</comment>
+            </column>
+        </property>
+        <property name="dtemb" type="date">
+            <column name="DTEMB" length="10">
+                <comment>Data de embarque.</comment>
+            </column>
+        </property>
+        <property name="dtchegada" type="date">
+            <column name="DTCHEGADA" length="10">
+                <comment>Data de chegada</comment>
+            </column>
+        </property>
+        <property name="dtdesembdi" type="date">
+            <column name="DTDESEMBDI" length="10">
+                <comment>Data do desembara&#195;&#167;o da declara&#195;&#167;&#195;&#163;o de importa&#195;&#167;&#195;&#163;o</comment>
+            </column>
+        </property>
+        <property name="dtregdi" type="date">
+            <column name="DTREGDI" length="10">
+                <comment>Data de registro da declara&#195;&#167;&#195;&#163;o de importa&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+        </property>
+        <property name="localemb" type="string">
+            <column name="LOCALEMB" length="200">
+                <comment>Local do desembara&#195;&#167;o da declara&#195;&#167;&#195;&#163;o de importa&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+        </property>
+        <property name="recintoaduaneiro" type="string">
+            <column name="RECINTOADUANEIRO" length="200">
+                <comment>Recinto Aduaneiro</comment>
+            </column>
+        </property>
+        <property name="codpaisdesembdi" type="java.lang.Integer">
+            <column name="CODPAISDESEMBDI">
+                <comment>C&#195;&#179;digo do pa&#195;&#173;s do desembara&#195;&#167;o da DI</comment>
+            </column>
+        </property>
+        <property name="siglaufdesembdi" type="string">
+            <column name="SIGLAUFDESEMBDI" length="2">
+                <comment>Sigla da unidade da federa&#195;&#167;&#195;&#163;o do desembara&#195;&#167;o da DI</comment>
+            </column>
+        </property>
+        <property name="locdesembdi" type="string">
+            <column name="LOCDESEMBDI" length="60">
+                <comment>Local de desembara&#195;&#167;o da DI.</comment>
+            </column>
+        </property>
+        <property name="obs" type="string">
+            <column name="OBS" length="1024">
+                <comment>Observa&#195;&#167;&#195;&#181;es</comment>
+            </column>
+        </property>
+        <property name="veiculo" type="string">
+            <column name="VEICULO" length="200">
+                <comment>Identifica&#195;&#167;&#195;&#163;o do ve&#195;&#173;culo (ex.: Nome do navio)</comment>
+            </column>
+        </property>
+        <property name="pesobruto" type="big_decimal">
+            <column name="PESOBRUTO" precision="15" scale="5" not-null="true">
+                <comment>Peso bruto total.</comment>
+            </column>
+        </property>
+        <property name="pesoliquido" type="big_decimal">
+            <column name="PESOLIQUIDO" precision="15" scale="5" not-null="true">
+                <comment>Peso l&#195;&#173;quido total</comment>
+            </column>
+        </property>
+        <property name="vlrfretemi" type="big_decimal">
+            <column name="VLRFRETEMI" precision="15" scale="5" not-null="true">
+                <comment>Valor do frete na moeda de importa&#195;&#167;&#195;&#163;o</comment>
+            </column>
+        </property>
+        <property name="vlrfrete" type="big_decimal">
+            <column name="VLRFRETE" precision="15" scale="5" not-null="true">
+                <comment>Valor do frete na moeda corrente.</comment>
+            </column>
+        </property>
+        <property name="vmlemi" type="big_decimal">
+            <column name="VMLEMI" precision="15" scale="5" not-null="true">
+                <comment>Valor liquido sem o frete na moeda de importa&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+        </property>
+        <property name="vmldmi" type="big_decimal">
+            <column name="VMLDMI" precision="15" scale="5" not-null="true">
+                <comment>Valor liquido mais o frete na moeda de importa&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+        </property>
+        <property name="vmle" type="big_decimal">
+            <column name="VMLE" precision="15" scale="5" not-null="true">
+                <comment>Valor liquido sem o frete na moeda corrente.</comment>
+            </column>
+        </property>
+        <property name="vmld" type="big_decimal">
+            <column name="VMLD" precision="15" scale="5" not-null="true">
+                <comment>Valor liquido mais o frete na moeda corrente.</comment>
+            </column>
+        </property>
+        <property name="vlrseguromi" type="big_decimal">
+            <column name="VLRSEGUROMI" precision="15" scale="5" not-null="true">
+                <comment>Valor do seguro na moeda de importa&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+        </property>
+        <property name="vlrseguro" type="big_decimal">
+            <column name="VLRSEGURO" precision="15" scale="5" not-null="true">
+                <comment>Valor do seguro na moeda corrente.</comment>
+            </column>
+        </property>
+        <property name="vlrii" type="big_decimal">
+            <column name="VLRII" precision="15" scale="5" not-null="true">
+                <comment>Valor do imposto de importa&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+        </property>
+        <property name="vlripi" type="big_decimal">
+            <column name="VLRIPI" precision="15" scale="5" not-null="true">
+                <comment>Valor do IPI</comment>
+            </column>
+        </property>
+        <property name="vlrpis" type="big_decimal">
+            <column name="VLRPIS" precision="15" scale="5" not-null="true">
+                <comment>Valor do PIS</comment>
+            </column>
+        </property>
+        <property name="vlrcofins" type="big_decimal">
+            <column name="VLRCOFINS" precision="15" scale="5" not-null="true">
+                <comment>Valor do cofins</comment>
+            </column>
+        </property>
+        <property name="vlrdireitosad" type="big_decimal">
+            <column name="VLRDIREITOSAD" precision="15" scale="5" not-null="true">
+                <comment>Valor de direitos antidumping.</comment>
+            </column>
+        </property>
+        <property name="vlrthc" type="big_decimal">
+            <column name="VLRTHC" precision="15" scale="5" not-null="true">
+                <comment>Valor da taxa de manuten&#195;&#167;&#195;&#163;o no terminal (Terminal Handling Charges)</comment>
+            </column>
+        </property>
+        <property name="vlrthcmi" type="big_decimal">
+            <column name="VLRTHCMI" precision="15" scale="5" not-null="true">
+                <comment>Valor do THC em moeda de importa&#195;&#167;&#195;&#163;o</comment>
+            </column>
+        </property>
+        <property name="vlrtxsiscomex" type="big_decimal">
+            <column name="VLRTXSISCOMEX" precision="15" scale="5" not-null="true">
+                <comment>Valor da taxa siscomex.</comment>
+            </column>
+        </property>
+        <property name="vlrad" type="big_decimal">
+            <column name="VLRAD" precision="15" scale="5" not-null="true">
+                <comment>Valor aduaneiro valor da mercadoria + frete +seguro +thc</comment>
+            </column>
+        </property>
+        <property name="vlradmi" type="big_decimal">
+            <column name="VLRADMI" precision="15" scale="5" not-null="true">
+                <comment>Valor aduaneiro em moeda de importa&#195;&#167;&#195;&#163;o</comment>
+            </column>
+        </property>
+        <property name="vlrbaseicms" type="big_decimal">
+            <column name="VLRBASEICMS" precision="15" scale="5" not-null="true">
+                <comment>Base de calculo do icms</comment>
+            </column>
+        </property>
+        <property name="vlricms" type="big_decimal">
+            <column name="VLRICMS" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="vlricmsdiferido" type="big_decimal">
+            <column name="VLRICMSDIFERIDO" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="vlricmsdevido" type="big_decimal">
+            <column name="VLRICMSDEVIDO" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="vlricmscredpresum" type="big_decimal">
+            <column name="VLRICMSCREDPRESUM" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="vlricmsrecolhimento" type="big_decimal">
+            <column name="VLRICMSRECOLHIMENTO" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="vlrdespad" type="big_decimal">
+            <column name="VLRDESPAD" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="vlrcompl" type="big_decimal">
+            <column name="VLRCOMPL" precision="15" scale="5" not-null="true">
+                <comment>Valor para nota fiscal complementar</comment>
+            </column>
+        </property>
+        <property name="emmanut" type="char">
+            <column name="EMMANUT" length="1" not-null="true">
+                <comment>Flag que indica se a tabela est&#195;&#161; em manuten&#195;&#167;&#195;&#163;o (S/N).</comment>
+            </column>
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true">
+                <comment>Data de inser&#195;&#167;&#195;&#163;o do registro.</comment>
+            </column>
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true">
+                <comment>Hora de inser&#195;&#167;&#195;&#163;o do registro.</comment>
+            </column>
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true">
+                <comment>Identifica&#195;&#167;&#195;&#163;o do usu&#195;&#161;rio que inseriu o registro</comment>
+            </column>
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10">
+                <comment>Data de altera&#195;&#167;&#195;&#163;o do registro</comment>
+            </column>
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8">
+                <comment>Hora de altera&#195;&#167;&#195;&#163;o do registro.</comment>
+            </column>
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8">
+                <comment>Identifica&#195;&#167;&#195;&#163;o do usu&#195;&#161;rio que alterou o registro.</comment>
+            </column>
+        </property>
+        <set name="cpitimportacaos" table="CPITIMPORTACAO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODIMP" not-null="true">
+                    <comment>C&#195;&#179;digo da importa&#195;&#167;&#195;&#163;o.</comment>
+                </column>
+                <column name="CODFILIAL" not-null="true">
+                    <comment>C&#195;&#179;digo da filial.</comment>
+                </column>
+                <column name="CODEMP" not-null="true">
+                    <comment>C&#195;&#179;digo da empresa.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Cpitimportacao" />
+        </set>
+        <set name="cpimportacaocompls" table="CPIMPORTACAOCOMPL" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODIMP" not-null="true" />
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Cpimportacaocompl" />
+        </set>
+        <set name="cpimportacaoadics" table="CPIMPORTACAOADIC" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODIMP" not-null="true">
+                    <comment>C&#195;&#179;digo da importa&#195;&#167;&#195;&#163;o</comment>
+                </column>
+                <column name="CODFILIAL" not-null="true">
+                    <comment>C&#195;&#179;digo da filial</comment>
+                </column>
+                <column name="CODEMP" not-null="true">
+                    <comment>C&#195;&#179;digo da empresa</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Cpimportacaoadic" />
+        </set>
+        <set name="cpimportacaos" table="CPIMPORTACAO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODIMPOI" />
+                <column name="CODFILIALOI" />
+                <column name="CODEMPOI" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Cpimportacao" />
+        </set>
+        <set name="cpcompras" table="CPCOMPRA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODIMP">
+                    <comment>C&#195;&#179;digo da importa&#195;&#167;&#195;&#163;o.</comment>
+                </column>
+                <column name="CODFILIALIM">
+                    <comment>C&#195;&#179;digo da filial da importa&#195;&#167;&#195;&#163;o.</comment>
+                </column>
+                <column name="CODEMPIM">
+                    <comment>C&#195;&#179;digo da empresa de importa&#195;&#167;&#195;&#163;o.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Cpcompra" />
+        </set>
+    </class>
+</hibernate-mapping>

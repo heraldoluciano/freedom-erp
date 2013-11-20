@@ -1,0 +1,165 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Vdtipocli" table="VDTIPOCLI">
+        <comment>Tipos de clientes.</comment>
+        <composite-id name="id" class="org.freedom.persist.entity.VdtipocliId">
+            <key-property name="codtipocli" type="int">
+                <column name="CODTIPOCLI" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="sgfilial" class="org.freedom.persist.entity.Sgfilial" update="false" insert="false" fetch="select">
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <property name="desctipocli" type="string">
+            <column name="DESCTIPOCLI" length="40" not-null="true" />
+        </property>
+        <property name="cheqtipocli" type="char">
+            <column name="CHEQTIPOCLI" length="1" not-null="true">
+                <comment>Flag que indica se haver&#195;&#161; aba adicional no cadastro de clientes (cheque).</comment>
+            </column>
+        </property>
+        <property name="fistipocli" type="char">
+            <column name="FISTIPOCLI" length="1" not-null="true">
+                <comment>Flag que indica se haver&#195;&#161; aba adicional no cadastro de clientes (pessoa f&#195;&#173;sica).</comment>
+            </column>
+        </property>
+        <property name="jurtipocli" type="char">
+            <column name="JURTIPOCLI" length="1" not-null="true">
+                <comment>Flag que indica se haver&#195;&#161; aba adicional no cadastro de clientes (pessoa jur&#195;&#173;dica).</comment>
+            </column>
+        </property>
+        <property name="filtipocli" type="char">
+            <column name="FILTIPOCLI" length="1" not-null="true">
+                <comment>Flag que indica se haver&#195;&#161; aba adicional no cadastro de clientes (Filia&#195;&#167;&#195;&#163;o).</comment>
+            </column>
+        </property>
+        <property name="loctrabtipocli" type="char">
+            <column name="LOCTRABTIPOCLI" length="1" not-null="true">
+                <comment>Flag que indica se haver&#195;&#161; aba adicional no cadastro de clientes (local de trabalho).</comment>
+            </column>
+        </property>
+        <property name="refcomltipocli" type="char">
+            <column name="REFCOMLTIPOCLI" length="1" not-null="true">
+                <comment>Flag que indica se haver&#195;&#161; aba adicional no cadastro de clientes (Refer&#195;&#170;ncias comerciais).</comment>
+            </column>
+        </property>
+        <property name="banctipocli" type="char">
+            <column name="BANCTIPOCLI" length="1" not-null="true">
+                <comment>Flag que indica se haver&#195;&#161; aba adicional no cadastro de clientes (Dados banc&#195;&#161;rios).</comment>
+            </column>
+        </property>
+        <property name="refpestipocli" type="char">
+            <column name="REFPESTIPOCLI" length="1" not-null="true">
+                <comment>Flag que indica se haver&#195;&#161; aba adicional no cadastro de clientes (refer&#195;&#170;ncias pessoais).</comment>
+            </column>
+        </property>
+        <property name="conjtipocli" type="char">
+            <column name="CONJTIPOCLI" length="1" not-null="true">
+                <comment>Flag que indica se haver&#195;&#161; aba adicional no cadastro de clientes (dados do c&#195;&#180;njuge jur&#195;&#173;dica).</comment>
+            </column>
+        </property>
+        <property name="veictipocli" type="char">
+            <column name="VEICTIPOCLI" length="1" not-null="true">
+                <comment>Flag que indica se haver&#195;&#161; aba adicional no cadastro de clientes (ve&#195;&#173;culos).</comment>
+            </column>
+        </property>
+        <property name="imovtipocli" type="char">
+            <column name="IMOVTIPOCLI" length="1" not-null="true">
+                <comment>Flag que indica se haver&#195;&#161; aba adicional no cadastro de clientes (im&#195;&#179;veis).</comment>
+            </column>
+        </property>
+        <property name="terratipocli" type="char">
+            <column name="TERRATIPOCLI" length="1" not-null="true">
+                <comment>Flag que indica se haver&#195;&#161; aba adicional no cadastro de clientes (terras).</comment>
+            </column>
+        </property>
+        <property name="pesautcptipocli" type="char">
+            <column name="PESAUTCPTIPOCLI" length="1" not-null="true">
+                <comment>Flag para dados complementares (pessoa autorizada a comprar).</comment>
+            </column>
+        </property>
+        <property name="avaltipocli" type="char">
+            <column name="AVALTIPOCLI" length="1" not-null="true">
+                <comment>Flag para dados complementares (avalista).</comment>
+            </column>
+        </property>
+        <property name="sociotipocli" type="char">
+            <column name="SOCIOTIPOCLI" length="1" not-null="true">
+                <comment>Flag para dados complementares (s&#195;&#179;cios).</comment>
+            </column>
+        </property>
+        <property name="prodruraltipocli" type="char">
+            <column name="PRODRURALTIPOCLI" length="1" not-null="true">
+                <comment>Flag que indica se cliente &#195;&#169; produtor rural.</comment>
+            </column>
+        </property>
+        <property name="web" type="char">
+            <column name="WEB" length="1" not-null="true" />
+        </property>
+        <property name="siglatipocli" type="string">
+            <column name="SIGLATIPOCLI" length="3">
+                <comment>Sigla ou abrevia&#195;&#167;&#195;&#163;o da descri&#195;&#167;&#195;&#163;o do tipo de cliente (utilizado em alguns relat&#195;&#179;rios)</comment>
+            </column>
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+        <set name="vdclientes" table="VDCLIENTE" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTIPOCLI" not-null="true" />
+                <column name="CODFILIALTI" not-null="true" />
+                <column name="CODEMPTI" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdcliente" />
+        </set>
+        <set name="sgprefere2s" table="SGPREFERE2" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTIPOCLI" />
+                <column name="CODFILIALTI" />
+                <column name="CODEMPTI" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgprefere2" />
+        </set>
+        <set name="sgprefere1s" table="SGPREFERE1" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTIPOCLI" />
+                <column name="CODFILIALTC" />
+                <column name="CODEMPTC" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgprefere1" />
+        </set>
+        <set name="tkcontatos" table="TKCONTATO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODTIPOCLI" />
+                <column name="CODFILIALTC" />
+                <column name="CODEMPTC" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Tkcontato" />
+        </set>
+    </class>
+</hibernate-mapping>

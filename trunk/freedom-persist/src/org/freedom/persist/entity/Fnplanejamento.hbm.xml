@@ -1,0 +1,357 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Fnplanejamento" table="FNPLANEJAMENTO">
+        <composite-id name="id" class="org.freedom.persist.entity.FnplanejamentoId">
+            <key-property name="codplan" type="string">
+                <column name="CODPLAN" length="13" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="sgfilial" class="org.freedom.persist.entity.Sgfilial" update="false" insert="false" fetch="select">
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <many-to-one name="fnhistpad" class="org.freedom.persist.entity.Fnhistpad" fetch="select">
+            <column name="CODHIST" />
+            <column name="CODFILIALHP" />
+            <column name="CODEMPHP" />
+        </many-to-one>
+        <many-to-one name="fnplanejamento" class="org.freedom.persist.entity.Fnplanejamento" update="false" insert="false" fetch="select">
+            <column name="CODSUBPLAN" length="13" />
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <property name="descplan" type="string">
+            <column name="DESCPLAN" length="50" not-null="true" />
+        </property>
+        <property name="nivelplan" type="int">
+            <column name="NIVELPLAN" not-null="true" />
+        </property>
+        <property name="codredplan" type="java.lang.Integer">
+            <column name="CODREDPLAN">
+                <comment>C&#195;&#179;digo reduzido</comment>
+            </column>
+        </property>
+        <property name="codempsp" type="java.lang.Integer">
+            <column name="CODEMPSP" />
+        </property>
+        <property name="codfilialsp" type="java.lang.Short">
+            <column name="CODFILIALSP" />
+        </property>
+        <property name="tipoplan" type="char">
+            <column name="TIPOPLAN" length="1" not-null="true" />
+        </property>
+        <property name="finplan" type="string">
+            <column name="FINPLAN" length="3">
+                <comment>Finalidade do planejamento.</comment>
+            </column>
+        </property>
+        <property name="compsldcxplan" type="char">
+            <column name="COMPSLDCXPLAN" length="1" not-null="true">
+                <comment>Flag indicando se comp&#195;&#181;e saldo de caixa.</comment>
+            </column>
+        </property>
+        <property name="codcontcred" type="string">
+            <column name="CODCONTCRED" length="20">
+                <comment>C&#195;&#179;digo da conta cr&#195;&#169;dito para contabilidade.</comment>
+            </column>
+        </property>
+        <property name="codcontdeb" type="string">
+            <column name="CODCONTDEB" length="20">
+                <comment>C&#195;&#179;digo da conta d&#195;&#169;bido para contabilidade.</comment>
+            </column>
+        </property>
+        <property name="esfinplan" type="char">
+            <column name="ESFINPLAN" length="1" not-null="true">
+                <comment>Natureza da categoria E-Entrada / S-Sa&#195;&#173;da</comment>
+            </column>
+        </property>
+        <property name="clasfinplan" type="char">
+            <column name="CLASFINPLAN" length="1" not-null="true">
+                <comment>Classifica&#195;&#167;&#195;&#163;o da categoria O-Operacional / N-N&#195;&#163;o Operacional.</comment>
+            </column>
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+        <set name="fnsublancas" table="FNSUBLANCA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODPLAN" length="13" not-null="true" />
+                <column name="CODFILIALPN" not-null="true" />
+                <column name="CODEMPPN" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnsublanca" />
+        </set>
+        <set name="cprateios" table="CPRATEIO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODPLAN" length="13" not-null="true">
+                    <comment>C&#195;&#179;digo do planejamento.</comment>
+                </column>
+                <column name="CODFILIALFN" not-null="true">
+                    <comment>C&#195;&#179;digo da filial na tabela FNPLANEJAMENTO.</comment>
+                </column>
+                <column name="CODEMPFN" not-null="true">
+                    <comment>C&#195;&#179;digo da empresa na tabela FNPLANEJAMENTO</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Cprateio" />
+        </set>
+        <set name="fnplanejamentos" table="FNPLANEJAMENTO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODSUBPLAN" length="13" />
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnplanejamento" />
+        </set>
+        <set name="fnitrecebers" table="FNITRECEBER" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODPLAN" length="13" />
+                <column name="CODFILIALPN" />
+                <column name="CODEMPPN" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnitreceber" />
+        </set>
+        <set name="sgprefere1sForSgprefere1fkplancheque" table="SGPREFERE1" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODPLANPC" length="13">
+                    <comment>C&#195;&#179;digo do planejamento padr&#195;&#163;o para pagamento com cheques.</comment>
+                </column>
+                <column name="CODFILIALPC">
+                    <comment>C&#195;&#179;digo da empresa para o planejamento padr&#195;&#163;o para pagamento com cheques.</comment>
+                </column>
+                <column name="CODEMPPC">
+                    <comment>C&#195;&#179;digo da empresa padr&#195;&#163;o planejamento para pagamento com cheques.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgprefere1" />
+        </set>
+        <set name="fncontas" table="FNCONTA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODPLAN" length="13" not-null="true" />
+                <column name="CODFILIALPN" not-null="true" />
+                <column name="CODEMPPN" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnconta" />
+        </set>
+        <set name="fnrecebers" table="FNRECEBER" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODPLAN" length="13">
+                    <comment>C&#195;&#179;digo do planejamento financeiro.</comment>
+                </column>
+                <column name="CODFILIALPN">
+                    <comment>C&#195;&#179;digo da filial do planejamento financeiro.</comment>
+                </column>
+                <column name="CODEMPPN">
+                    <comment>C&#195;&#179;digo da empresa do planejamento financeiro.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnreceber" />
+        </set>
+        <set name="sgprefere1sForSgprefere1fkplanjr" table="SGPREFERE1" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODPLANJR" length="13">
+                    <comment>C&#195;&#179;digo da conta de planejamento de Juros Recebidos.</comment>
+                </column>
+                <column name="CODFILIALJR">
+                    <comment>C&#195;&#179;digo da filial da conta de planejamento de Juros Recebidos.</comment>
+                </column>
+                <column name="CODEMPJR">
+                    <comment>C&#195;&#179;digo da empresa da conta de planejamento de Juros Recebidos.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgprefere1" />
+        </set>
+        <set name="sgprefere1sForSgprefere1fkplandr" table="SGPREFERE1" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODPLANDR" length="13">
+                    <comment>C&#195;&#179;digo da conta de planejamento de Descontos recebidos.</comment>
+                </column>
+                <column name="CODFILIALDR">
+                    <comment>C&#195;&#179;digo da filial da conta de planejamento de Descontos recebidos.</comment>
+                </column>
+                <column name="CODEMPDR">
+                    <comment>C&#195;&#179;digo da empresa da conta de planejamento de Descontos recebidos.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgprefere1" />
+        </set>
+        <set name="sgprefere7sForSgpref7fnplanvdconsig" table="SGPREFERE7" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODPLANVDCONSIG" length="13">
+                    <comment>C&#195;&#179;digo do planejamento padr&#195;&#163;o para venda consignada.</comment>
+                </column>
+                <column name="CODFILIALPV">
+                    <comment>C&#195;&#179;digo da filial do planejamento padr&#195;&#163;o para venda consignada.</comment>
+                </column>
+                <column name="CODEMPPV">
+                    <comment>C&#195;&#179;digo da empresa do planejamento padr&#195;&#163;o para venda consignada.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgprefere7" />
+        </set>
+        <set name="sgprefere1sForSgprefere1fkplanjp" table="SGPREFERE1" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODPLANJP" length="13">
+                    <comment>C&#195;&#179;digo da conta de planejamento de Juros Pagos.</comment>
+                </column>
+                <column name="CODFILIALJP">
+                    <comment>C&#195;&#179;digo da filial da conta de planejamento de Juros Pagos.</comment>
+                </column>
+                <column name="CODEMPJP">
+                    <comment>C&#195;&#179;digo da empresa da conta de planejamento de Juros Pagos.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgprefere1" />
+        </set>
+        <set name="fnlancas" table="FNLANCA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODPLAN" length="13" not-null="true" />
+                <column name="CODFILIALPN" not-null="true" />
+                <column name="CODEMPPN" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnlanca" />
+        </set>
+        <set name="vdvendedors" table="VDVENDEDOR" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODPLAN" length="13" />
+                <column name="CODFILIALPN" />
+                <column name="CODEMPPN" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdvendedor" />
+        </set>
+        <set name="fnsaldolancas" table="FNSALDOLANCA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODPLAN" length="13" not-null="true" />
+                <column name="CODFILIALPN" not-null="true" />
+                <column name="CODEMPPN" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnsaldolanca" />
+        </set>
+        <set name="fnitpagars" table="FNITPAGAR" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODPLAN" length="13" />
+                <column name="CODFILIALPN" />
+                <column name="CODEMPPN" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnitpagar" />
+        </set>
+        <set name="fnpagars" table="FNPAGAR" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODPLAN" length="13">
+                    <comment>C&#195;&#179;digo do planejamento financeiro.</comment>
+                </column>
+                <column name="CODFILIALPN">
+                    <comment>C&#195;&#179;digo da filial do planejamento financeiro.</comment>
+                </column>
+                <column name="CODEMPPN">
+                    <comment>C&#195;&#179;digo da empresa do planejamento financeiro.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnpagar" />
+        </set>
+        <set name="fnfbnclis" table="FNFBNCLI" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODPLAN" length="13" />
+                <column name="CODFILIALPN" />
+                <column name="CODEMPPN" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnfbncli" />
+        </set>
+        <set name="sgprefere7sForSgpref7fkfnplanconsig" table="SGPREFERE7" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODPLANCONSIG" length="13">
+                    <comment>C&#195;&#179;digo do planejamento padr&#195;&#163;o para consigna&#195;&#167;&#195;&#163;o.</comment>
+                </column>
+                <column name="CODFILIALPC">
+                    <comment>C&#195;&#179;digo da filial do planejamento padr&#195;&#163;o para consigna&#195;&#167;&#195;&#163;o.</comment>
+                </column>
+                <column name="CODEMPPC">
+                    <comment>C&#195;&#179;digo da empresa do planejamento padr&#195;&#163;o para consigna&#195;&#167;&#195;&#163;o.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgprefere7" />
+        </set>
+        <set name="eqprodplans" table="EQPRODPLAN" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODPLAN" length="13" not-null="true">
+                    <comment>C&#195;&#179;digo do planejamento.</comment>
+                </column>
+                <column name="CODFILIALPN" not-null="true">
+                    <comment>C&#195;&#179;digo da filial na tabela EQPLANEJAMENTO.</comment>
+                </column>
+                <column name="CODEMPPN" not-null="true">
+                    <comment>C&#195;&#179;digo da empresa na tabela EQPLANEJAMENTO.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Eqprodplan" />
+        </set>
+        <set name="sgprefere1sForSgprefere1fkplandc" table="SGPREFERE1" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODPLANDC" length="13">
+                    <comment>C&#195;&#179;digo da conta de planejamento de Descontos concedidos.</comment>
+                </column>
+                <column name="CODFILIALDC">
+                    <comment>C&#195;&#179;digo da filial da conta de planejamento de Descontos concedidos.</comment>
+                </column>
+                <column name="CODEMPDC">
+                    <comment>C&#195;&#179;digo da empresa da conta de planejamento de Descontos concedidos.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Sgprefere1" />
+        </set>
+        <set name="cpcompras" table="CPCOMPRA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODPLAN" length="13">
+                    <comment>C&#195;&#179;digo do planejamento financeiro.</comment>
+                </column>
+                <column name="CODFILIALPN">
+                    <comment>C&#195;&#179;digo do filial do planejamento financeiro.</comment>
+                </column>
+                <column name="CODEMPPN">
+                    <comment>C&#195;&#179;digo da empresa do planejamento financeiro.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Cpcompra" />
+        </set>
+        <set name="fnpagtocomis" table="FNPAGTOCOMI" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODPLAN" length="13" not-null="true" />
+                <column name="CODFILIALPN" not-null="true" />
+                <column name="CODEMPPN" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnpagtocomi" />
+        </set>
+        <set name="fnplanopags" table="FNPLANOPAG" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODPLAN" length="13" />
+                <column name="CODFILIALPN" />
+                <column name="CODEMPPN" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnplanopag" />
+        </set>
+    </class>
+</hibernate-mapping>

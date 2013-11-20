@@ -1,0 +1,172 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Fncheque" table="FNCHEQUE">
+        <comment>Tabela de cheques.</comment>
+        <composite-id name="id" class="org.freedom.persist.entity.FnchequeId">
+            <key-property name="seqcheq" type="int">
+                <column name="SEQCHEQ" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="fnbanco" class="org.freedom.persist.entity.Fnbanco" fetch="select">
+            <column name="CODBANC" length="3" not-null="true">
+                <comment>C&#195;&#179;digo do banco.</comment>
+            </column>
+            <column name="CODFILIALBO" not-null="true">
+                <comment>C&#195;&#179;digo da filial na tabela banco.</comment>
+            </column>
+            <column name="CODEMPBO" not-null="true">
+                <comment>C&#195;&#179;digo empresa na tabela banco.</comment>
+            </column>
+        </many-to-one>
+        <property name="agenciacheq" type="string">
+            <column name="AGENCIACHEQ" length="7" not-null="true">
+                <comment>Ag&#195;&#170;ncia.</comment>
+            </column>
+        </property>
+        <property name="contacheq" type="string">
+            <column name="CONTACHEQ" length="10" not-null="true">
+                <comment>N&#195;&#186;mero da conta</comment>
+            </column>
+        </property>
+        <property name="numcheq" type="int">
+            <column name="NUMCHEQ" not-null="true">
+                <comment>N&#195;&#186;mero do cheque.</comment>
+            </column>
+        </property>
+        <property name="nomeemitcheq" type="string">
+            <column name="NOMEEMITCHEQ" length="50" not-null="true">
+                <comment>Nome do emitente.</comment>
+            </column>
+        </property>
+        <property name="nomefavcheq" type="string">
+            <column name="NOMEFAVCHEQ" length="50" not-null="true">
+                <comment>Nome do favorecido.</comment>
+            </column>
+        </property>
+        <property name="dtemitcheq" type="date">
+            <column name="DTEMITCHEQ" length="10" not-null="true">
+                <comment>Emiss&#195;&#163;o</comment>
+            </column>
+        </property>
+        <property name="dtvenctocheq" type="date">
+            <column name="DTVENCTOCHEQ" length="10" not-null="true">
+                <comment>Data de vencimento.</comment>
+            </column>
+        </property>
+        <property name="dtcompcheq" type="date">
+            <column name="DTCOMPCHEQ" length="10">
+                <comment>Data de compensa&#195;&#167;&#195;&#163;o</comment>
+            </column>
+        </property>
+        <property name="tipocheq" type="string">
+            <column name="TIPOCHEQ" length="2" not-null="true">
+                <comment>Tipo de cheque. PF - Pagamento de fornecedor; RC - Recebimento de cliente.</comment>
+            </column>
+        </property>
+        <property name="predatcheq" type="java.lang.Character">
+            <column name="PREDATCHEQ" length="1">
+                <comment>Cheque pr&#195;&#169;-datado (S/N)</comment>
+            </column>
+        </property>
+        <property name="sitcheq" type="string">
+            <column name="SITCHEQ" length="2" not-null="true">
+                <comment>Situa&#195;&#167;&#195;&#163;o do cheque. CA - Cadastrado; ED - Emitido; CD - Compensado; DV - Devolvido.</comment>
+            </column>
+        </property>
+        <property name="vlrcheq" type="big_decimal">
+            <column name="VLRCHEQ" precision="15" scale="5" not-null="true">
+                <comment>Valor do cheque</comment>
+            </column>
+        </property>
+        <property name="histcheq" type="string">
+            <column name="HISTCHEQ" length="500" not-null="true">
+                <comment>Hist&#195;&#179;rico.</comment>
+            </column>
+        </property>
+        <property name="cnpjemitcheq" type="string">
+            <column name="CNPJEMITCHEQ" length="14" />
+        </property>
+        <property name="cpfemitcheq" type="string">
+            <column name="CPFEMITCHEQ" length="11" />
+        </property>
+        <property name="cnpjfavcheq" type="string">
+            <column name="CNPJFAVCHEQ" length="14" />
+        </property>
+        <property name="cpffavcheq" type="string">
+            <column name="CPFFAVCHEQ" length="11" />
+        </property>
+        <property name="dddfavcheq" type="string">
+            <column name="DDDFAVCHEQ" length="4">
+                <comment>DDD do favorecido do cheque</comment>
+            </column>
+        </property>
+        <property name="dddemitcheq" type="string">
+            <column name="DDDEMITCHEQ" length="4">
+                <comment>DDD Tel. emitente.</comment>
+            </column>
+        </property>
+        <property name="foneemitcheq" type="string">
+            <column name="FONEEMITCHEQ" length="9">
+                <comment>Telefone emitente.</comment>
+            </column>
+        </property>
+        <property name="fonefavcheq" type="string">
+            <column name="FONEFAVCHEQ" length="9">
+                <comment>Telefone do favorecido</comment>
+            </column>
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true">
+                <comment>Data de inser&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true">
+                <comment>Hora de inser&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="128" not-null="true">
+                <comment>Ident. do usu&#195;&#161;rio que inseriu.</comment>
+            </column>
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" not-null="true">
+                <comment>Data de altera&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" not-null="true">
+                <comment>Hora de altera&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="128" not-null="true">
+                <comment>Ident. usu&#195;&#161;rio que alterou.</comment>
+            </column>
+        </property>
+        <set name="fnpagcheqs" table="FNPAGCHEQ" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="SEQCHEQ" not-null="true">
+                    <comment>Sequencia de cheque.</comment>
+                </column>
+                <column name="CODFILIALCH" not-null="true">
+                    <comment>C&#195;&#179;digo filial na tabela FNCHEQUE.</comment>
+                </column>
+                <column name="CODEMPCH" not-null="true">
+                    <comment>C&#195;&#179;digo da empresa na tabela FNCHEQUE.</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Fnpagcheq" />
+        </set>
+    </class>
+</hibernate-mapping>

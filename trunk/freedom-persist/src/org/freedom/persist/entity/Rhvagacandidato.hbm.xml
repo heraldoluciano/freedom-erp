@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Rhvagacandidato" table="RHVAGACANDIDATO">
+        <comment>Tabela de v&#195;&#173;nculo entre vaga e candidatos.</comment>
+        <composite-id name="id" class="org.freedom.persist.entity.RhvagacandidatoId">
+            <key-property name="codvaga" type="int">
+                <column name="CODVAGA" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+            <key-property name="codcand" type="int">
+                <column name="CODCAND" />
+            </key-property>
+            <key-property name="codfilialca" type="short">
+                <column name="CODFILIALCA" />
+            </key-property>
+            <key-property name="codempca" type="int">
+                <column name="CODEMPCA" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="rhcandidato" class="org.freedom.persist.entity.Rhcandidato" update="false" insert="false" fetch="select">
+            <column name="CODCAND" not-null="true" />
+            <column name="CODFILIALCA" not-null="true" />
+            <column name="CODEMPCA" not-null="true" />
+        </many-to-one>
+        <many-to-one name="rhvaga" class="org.freedom.persist.entity.Rhvaga" update="false" insert="false" fetch="select">
+            <column name="CODVAGA" not-null="true" />
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <property name="stvagacand" type="string">
+            <column name="STVAGACAND" length="2" not-null="true">
+                <comment>Situa&#195;&#167;&#195;&#163;o do candidato na vaga: "EN" Encaminhado "EF" Efetivado</comment>
+            </column>
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+    </class>
+</hibernate-mapping>

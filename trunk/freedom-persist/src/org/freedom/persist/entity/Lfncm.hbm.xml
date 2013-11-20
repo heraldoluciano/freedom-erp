@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Lfncm" table="LFNCM">
+        <comment>NCM Nomenclatura Comum do Mercosul</comment>
+        <id name="codncm" type="string">
+            <column name="CODNCM" length="10" />
+            <generator class="assigned" />
+        </id>
+        <property name="descncm" type="string">
+            <column name="DESCNCM" length="60" not-null="true" />
+        </property>
+        <property name="aliqncm" type="string">
+            <column name="ALIQNCM" length="6" />
+        </property>
+        <property name="textoncm" type="string">
+            <column name="TEXTONCM" length="2000" />
+        </property>
+        <property name="excecaoncm" type="string">
+            <column name="EXCECAONCM" length="1000" />
+        </property>
+        <property name="aliqnac" type="big_decimal">
+            <column name="ALIQNAC" precision="9" not-null="true" />
+        </property>
+        <property name="aliqimp" type="big_decimal">
+            <column name="ALIQIMP" precision="9" not-null="true" />
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" not-null="true" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" not-null="true" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" not-null="true" />
+        </property>
+        <set name="cpitimportacaos" table="CPITIMPORTACAO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODNCM" length="10">
+                    <comment>C&#195;&#179;digo da NCM</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Cpitimportacao" />
+        </set>
+        <set name="cpimportacaoadics" table="CPIMPORTACAOADIC" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODNCM" length="10" not-null="true">
+                    <comment>C&#195;&#179;digo da NCM</comment>
+                </column>
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Cpimportacaoadic" />
+        </set>
+        <set name="lfncmnbms" table="LFNCMNBM" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODNCM" length="10" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Lfncmnbm" />
+        </set>
+    </class>
+</hibernate-mapping>

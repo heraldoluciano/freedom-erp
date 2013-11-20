@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Atagenda" table="ATAGENDA">
+        <composite-id name="id" class="org.freedom.persist.entity.AtagendaId">
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codag" type="int">
+                <column name="CODAG" />
+            </key-property>
+            <key-property name="codempsa" type="int">
+                <column name="CODEMPSA" />
+            </key-property>
+            <key-property name="codfilialsa" type="short">
+                <column name="CODFILIALSA" />
+            </key-property>
+            <key-property name="codsetat" type="int">
+                <column name="CODSETAT" />
+            </key-property>
+            <key-property name="dtacadag" type="date">
+                <column name="DTACADAG" length="10" />
+            </key-property>
+            <key-property name="horacatag" type="time">
+                <column name="HORACATAG" length="8" />
+            </key-property>
+            <key-property name="dtaag" type="date">
+                <column name="DTAAG" length="10" />
+            </key-property>
+            <key-property name="horaag" type="time">
+                <column name="HORAAG" length="8" />
+            </key-property>
+            <key-property name="descagenda" type="string">
+                <column name="DESCAGENDA" length="50" />
+            </key-property>
+            <key-property name="codempae" type="java.lang.Integer">
+                <column name="CODEMPAE" />
+            </key-property>
+            <key-property name="codfilialae" type="java.lang.Short">
+                <column name="CODFILIALAE" />
+            </key-property>
+            <key-property name="codatend" type="java.lang.Integer">
+                <column name="CODATEND" />
+            </key-property>
+            <key-property name="dtaatendag" type="date">
+                <column name="DTAATENDAG" length="10" />
+            </key-property>
+            <key-property name="horaatendag" type="time">
+                <column name="HORAATENDAG" length="8" />
+            </key-property>
+            <key-property name="obsagenda" type="string">
+                <column name="OBSAGENDA" length="10000" />
+            </key-property>
+            <key-property name="dtins" type="date">
+                <column name="DTINS" length="10" />
+            </key-property>
+            <key-property name="hins" type="time">
+                <column name="HINS" length="8" />
+            </key-property>
+            <key-property name="idusuins" type="string">
+                <column name="IDUSUINS" length="8" />
+            </key-property>
+            <key-property name="dtalt" type="date">
+                <column name="DTALT" length="10" />
+            </key-property>
+            <key-property name="halt" type="time">
+                <column name="HALT" length="8" />
+            </key-property>
+            <key-property name="idusualt" type="string">
+                <column name="IDUSUALT" length="8" />
+            </key-property>
+        </composite-id>
+    </class>
+</hibernate-mapping>

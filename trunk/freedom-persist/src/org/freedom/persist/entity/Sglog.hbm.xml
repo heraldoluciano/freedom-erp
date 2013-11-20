@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Sglog" table="SGLOG">
+        <composite-id name="id" class="org.freedom.persist.entity.SglogId">
+            <key-property name="codlog" type="int">
+                <column name="CODLOG" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="pvcaixa" class="org.freedom.persist.entity.Pvcaixa" fetch="select">
+            <column name="CODCAIXA" not-null="true" />
+            <column name="CODFILIALCX" not-null="true" />
+            <column name="CODEMPCX" not-null="true" />
+        </many-to-one>
+        <many-to-one name="sgusuario" class="org.freedom.persist.entity.Sgusuario" fetch="select">
+            <column name="IDUSU" length="8" not-null="true" />
+            <column name="CODFILIALUS" not-null="true" />
+            <column name="CODEMPUS" not-null="true" />
+        </many-to-one>
+        <property name="datalog" type="date">
+            <column name="DATALOG" length="10" not-null="true" />
+        </property>
+        <property name="horalog" type="time">
+            <column name="HORALOG" length="8" not-null="true" />
+        </property>
+        <property name="claslog" type="string">
+            <column name="CLASLOG" length="2" not-null="true">
+                <comment>Classificacao do log PR - Procedimento ER - Erro</comment>
+            </column>
+        </property>
+        <property name="tipolog" type="string">
+            <column name="TIPOLOG" length="3" not-null="true">
+                <comment>Tipo do log: LIB - Libera&#195;&#167;&#195;&#163;o de venda abaixo do custo</comment>
+            </column>
+        </property>
+        <property name="desclog" type="string">
+            <column name="DESCLOG" length="60" not-null="true">
+                <comment>Descri&#195;&#167;&#195;&#163;o resumida da opera&#195;&#167;&#195;&#163;o</comment>
+            </column>
+        </property>
+        <property name="obslog" type="string">
+            <column name="OBSLOG" length="1000">
+                <comment>Descri&#195;&#167;&#195;&#163;o completa e observa&#195;&#167;&#195;&#181;es sobre a opera&#195;&#167;&#195;&#163;o</comment>
+            </column>
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+        <set name="vditorcamentos" table="VDITORCAMENTO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODLOG" />
+                <column name="CODFILIALLG" />
+                <column name="CODEMPLG" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vditorcamento" />
+        </set>
+        <set name="vditvendas" table="VDITVENDA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODLOG" />
+                <column name="CODFILIALLG" />
+                <column name="CODEMPLG" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vditvenda" />
+        </set>
+    </class>
+</hibernate-mapping>

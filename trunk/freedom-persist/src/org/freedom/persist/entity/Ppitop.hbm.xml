@@ -1,0 +1,150 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Ppitop" table="PPITOP">
+        <comment>&#195;&#141;tens de ordens de produ&#195;&#167;&#195;&#163;o.</comment>
+        <composite-id name="id" class="org.freedom.persist.entity.PpitopId">
+            <key-property name="codop" type="int">
+                <column name="CODOP" />
+            </key-property>
+            <key-property name="seqop" type="short">
+                <column name="SEQOP" />
+            </key-property>
+            <key-property name="seqitop" type="short">
+                <column name="SEQITOP" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="eqproduto" class="org.freedom.persist.entity.Eqproduto" fetch="select">
+            <column name="CODPROD" not-null="true" />
+            <column name="CODFILIALPD" not-null="true" />
+            <column name="CODEMPPD" not-null="true" />
+        </many-to-one>
+        <many-to-one name="ppfase" class="org.freedom.persist.entity.Ppfase" fetch="select">
+            <column name="CODFASE" not-null="true" />
+            <column name="CODFILIALFS" not-null="true" />
+            <column name="CODEMPFS" not-null="true" />
+        </many-to-one>
+        <many-to-one name="ppopacaocorret" class="org.freedom.persist.entity.Ppopacaocorret" update="false" insert="false" fetch="select">
+            <column name="CODOP" not-null="true" />
+            <column name="SEQOP" not-null="true">
+                <comment>N&#195;&#186;mero sequencial da OP.</comment>
+            </column>
+            <column name="SEQAC">
+                <comment>Sequencial da a&#195;&#167;&#195;&#163;o corretiva.</comment>
+            </column>
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <many-to-one name="vdvenda" class="org.freedom.persist.entity.Vdvenda" fetch="select">
+            <column name="CODVENDA">
+                <comment>C&#195;&#179;digo da venda (remessa ou retorno industrializa&#195;&#167;&#195;&#163;o);</comment>
+            </column>
+            <column name="TIPOVENDA" length="1">
+                <comment>Tipo da venda (remessa ou retorno industrializa&#195;&#167;&#195;&#163;o);</comment>
+            </column>
+            <column name="CODFILIALVD">
+                <comment>C&#195;&#179;digo da filial da venda (remessa ou retorno industrializa&#195;&#167;&#195;&#163;o);</comment>
+            </column>
+            <column name="CODEMPVD">
+                <comment>C&#195;&#179;digo da empresa da venda (remessa ou retorno industrializa&#195;&#167;&#195;&#163;o);</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="cpcompra" class="org.freedom.persist.entity.Cpcompra" fetch="select">
+            <column name="CODCOMPRA" />
+            <column name="CODFILIALCP" />
+            <column name="CODEMPCP" />
+        </many-to-one>
+        <many-to-one name="eqlote" class="org.freedom.persist.entity.Eqlote" update="false" insert="false" fetch="select">
+            <column name="CODLOTE" length="20">
+                <comment>C&#195;&#179;digo do lote</comment>
+            </column>
+            <column name="CODPROD" not-null="true" />
+            <column name="CODFILIALLE">
+                <comment>C&#195;&#179;digo da filial - Lote</comment>
+            </column>
+            <column name="CODEMPLE">
+                <comment>C&#195;&#179;digo da empresa - lote</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="ppop" class="org.freedom.persist.entity.Ppop" update="false" insert="false" fetch="select">
+            <column name="CODOP" not-null="true" />
+            <column name="SEQOP" not-null="true">
+                <comment>N&#195;&#186;mero sequencial da OP.</comment>
+            </column>
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <property name="refprod" type="string">
+            <column name="REFPROD" length="20" not-null="true">
+                <comment>Referencia do produto.</comment>
+            </column>
+        </property>
+        <property name="qtditop" type="big_decimal">
+            <column name="QTDITOP" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="seqitopcp" type="java.lang.Short">
+            <column name="SEQITOPCP">
+                <comment>Sequ&#195;&#170;ncia do &#195;&#173;tem copiado (utilizado no rateamento autom&#195;&#161;tico de lotes)</comment>
+            </column>
+        </property>
+        <property name="codloterat" type="string">
+            <column name="CODLOTERAT" length="20">
+                <comment>C&#195;&#179;digo do lote rateado</comment>
+            </column>
+        </property>
+        <property name="qtdcopiaitop" type="big_decimal">
+            <column name="QTDCOPIAITOP" precision="15" scale="5">
+                <comment>Quantidade da inserida na c&#195;&#179;pia do item. Este valor dispara o trigger para cria&#195;&#167;&#195;&#163;o da c&#195;&#179;pia.</comment>
+            </column>
+        </property>
+        <property name="gerarma" type="char">
+            <column name="GERARMA" length="1" not-null="true">
+                <comment>Indica se deve gerar rma para o item. pode ser que n&#195;&#163;o deva ser gerado por padr&#195;&#163;o, ou por j&#195;&#161; ter sido gerado.</comment>
+            </column>
+        </property>
+        <property name="bloqop" type="char">
+            <column name="BLOQOP" length="1" not-null="true">
+                <comment>Marca se item bloqueou op.</comment>
+            </column>
+        </property>
+        <property name="permiteajusteitop" type="java.lang.Character">
+            <column name="PERMITEAJUSTEITOP" length="1">
+                <comment>Indica se deve permitir o ajuste de quantidades. S/N</comment>
+            </column>
+        </property>
+        <property name="tipoexterno" type="java.lang.Character">
+            <column name="TIPOEXTERNO" length="1">
+                <comment>Tipo de fluxo externo E - Envio/Remessa R - Retorno</comment>
+            </column>
+        </property>
+        <property name="emmanut" type="char">
+            <column name="EMMANUT" length="1" not-null="true" />
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+    </class>
+</hibernate-mapping>

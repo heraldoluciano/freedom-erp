@@ -1,0 +1,228 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Atconveniado" table="ATCONVENIADO">
+        <composite-id name="id" class="org.freedom.persist.entity.AtconveniadoId">
+            <key-property name="codconv" type="int">
+                <column name="CODCONV" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="sgfilial" class="org.freedom.persist.entity.Sgfilial" update="false" insert="false" fetch="select">
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <many-to-one name="atencaminhador" class="org.freedom.persist.entity.Atencaminhador" fetch="select">
+            <column name="CODENC">
+                <comment>C&#195;&#179;digo do encaminhador.</comment>
+            </column>
+            <column name="CODFILIALEC">
+                <comment>C&#195;&#179;digo da filial na tabela de encaminhador.</comment>
+            </column>
+            <column name="CODEMPEC">
+                <comment>C&#195;&#179;digo da empresa - Encaminhador</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="attipoconv" class="org.freedom.persist.entity.Attipoconv" fetch="select">
+            <column name="CODTPCONV" not-null="true" />
+            <column name="CODFILIALTC" not-null="true" />
+            <column name="CODEMPTC" not-null="true" />
+        </many-to-one>
+        <many-to-one name="sggrauinst" class="org.freedom.persist.entity.Sggrauinst" fetch="select">
+            <column name="CODGRI" />
+            <column name="CODFILIALGI" />
+            <column name="CODEMPGI" />
+        </many-to-one>
+        <many-to-one name="rhfuncao" class="org.freedom.persist.entity.Rhfuncao" fetch="select">
+            <column name="CODFUNC">
+                <comment>C&#195;&#179;digo da fun&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+            <column name="CODFILIALFC">
+                <comment>C&#195;&#179;digo da filial na tabela RHFUNCAO.</comment>
+            </column>
+            <column name="CODEMPFC">
+                <comment>C&#195;&#179;digo da empresa na tabela RHFUNCAO</comment>
+            </column>
+        </many-to-one>
+        <property name="nomeconv" type="string">
+            <column name="NOMECONV" length="50" not-null="true" />
+        </property>
+        <property name="dtnascconv" type="date">
+            <column name="DTNASCCONV" length="10" not-null="true" />
+        </property>
+        <property name="codempae" type="java.lang.Integer">
+            <column name="CODEMPAE" />
+        </property>
+        <property name="codfilialae" type="java.lang.Short">
+            <column name="CODFILIALAE" />
+        </property>
+        <property name="codatend" type="java.lang.Integer">
+            <column name="CODATEND" />
+        </property>
+        <property name="rgconv" type="string">
+            <column name="RGCONV" length="13" />
+        </property>
+        <property name="cpfconv" type="string">
+            <column name="CPFCONV" length="11" />
+        </property>
+        <property name="endconv" type="string">
+            <column name="ENDCONV" length="50" />
+        </property>
+        <property name="numconv" type="java.lang.Integer">
+            <column name="NUMCONV" />
+        </property>
+        <property name="bairconv" type="string">
+            <column name="BAIRCONV" length="30" />
+        </property>
+        <property name="cidconv" type="string">
+            <column name="CIDCONV" length="30" />
+        </property>
+        <property name="cepconv" type="string">
+            <column name="CEPCONV" length="8" />
+        </property>
+        <property name="foneconv" type="string">
+            <column name="FONECONV" length="12" />
+        </property>
+        <property name="faxconv" type="string">
+            <column name="FAXCONV" length="9" />
+        </property>
+        <property name="emailconv" type="string">
+            <column name="EMAILCONV" length="60" />
+        </property>
+        <property name="paiconv" type="string">
+            <column name="PAICONV" length="50" />
+        </property>
+        <property name="maeconv" type="string">
+            <column name="MAECONV" length="50" />
+        </property>
+        <property name="rgpaiconv" type="string">
+            <column name="RGPAICONV" length="13" />
+        </property>
+        <property name="rgmaeconv" type="string">
+            <column name="RGMAECONV" length="13" />
+        </property>
+        <property name="cnsconv" type="string">
+            <column name="CNSCONV" length="15" />
+        </property>
+        <property name="codempcl" type="java.lang.Integer">
+            <column name="CODEMPCL" />
+        </property>
+        <property name="codfilialcl" type="java.lang.Integer">
+            <column name="CODFILIALCL" />
+        </property>
+        <property name="codcli" type="java.lang.Integer">
+            <column name="CODCLI" />
+        </property>
+        <property name="ufconv" type="string">
+            <column name="UFCONV" length="2" />
+        </property>
+        <property name="celconv" type="string">
+            <column name="CELCONV" length="9" />
+        </property>
+        <property name="sexoconv" type="java.lang.Character">
+            <column name="SEXOCONV" length="1" />
+        </property>
+        <property name="identificconv" type="string">
+            <column name="IDENTIFICCONV" length="20" />
+        </property>
+        <property name="complconv" type="string">
+            <column name="COMPLCONV" length="20" />
+        </property>
+        <property name="icardconv" type="string">
+            <column name="ICARDCONV" length="15" />
+        </property>
+        <property name="nrviaconv" type="java.lang.Short">
+            <column name="NRVIACONV" />
+        </property>
+        <property name="dddconv" type="string">
+            <column name="DDDCONV" length="4">
+                <comment>C&#195;&#179;digo DDD do telefone principal do conveniado.</comment>
+            </column>
+        </property>
+        <property name="dddfaxconv" type="string">
+            <column name="DDDFAXCONV" length="4">
+                <comment>C&#195;&#147;DIGO DDD DO FAX DO CONVENIADO.</comment>
+            </column>
+        </property>
+        <property name="dddcelconv" type="string">
+            <column name="DDDCELCONV" length="4">
+                <comment>C&#195;&#147;DIGO DDD DO CELULAR DO CONVENIADO.</comment>
+            </column>
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+        <set name="svoses" table="SVOS" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCONV" />
+                <column name="CODFILIALCV" />
+                <column name="CODEMPCV" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Svos" />
+        </set>
+        <set name="atconvatribs" table="ATCONVATRIB" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCONV" not-null="true" />
+                <column name="CODFILIAL" not-null="true" />
+                <column name="CODEMP" not-null="true" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Atconvatrib" />
+        </set>
+        <set name="atmodatendos" table="ATMODATENDO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCONV" />
+                <column name="CODFILIALCV" />
+                <column name="CODEMPCV" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Atmodatendo" />
+        </set>
+        <set name="vdorcamentos" table="VDORCAMENTO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCONV" />
+                <column name="CODFILIALCV" />
+                <column name="CODEMPCV" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vdorcamento" />
+        </set>
+        <set name="vditvendas" table="VDITVENDA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCONV">
+                    <comment>C&#195;&#179;digo do conveniado</comment>
+                </column>
+                <column name="CODFILIALCV" />
+                <column name="CODEMPCV" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Vditvenda" />
+        </set>
+        <set name="atatendimentos" table="ATATENDIMENTO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODCONV" />
+                <column name="CODFILIALCV" />
+                <column name="CODEMPCV" />
+            </key>
+            <one-to-many class="org.freedom.persist.entity.Atatendimento" />
+        </set>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Vditcustoorc" table="VDITCUSTOORC">
+        <composite-id name="id" class="org.freedom.persist.entity.VditcustoorcId">
+            <key-property name="codorc" type="int">
+                <column name="CODORC" />
+            </key-property>
+            <key-property name="coditorc" type="int">
+                <column name="CODITORC" />
+            </key-property>
+            <key-property name="tipoorc" type="char">
+                <column name="TIPOORC" length="1" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <one-to-one name="vditorcamento" class="org.freedom.persist.entity.Vditorcamento" constrained="true"></one-to-one>
+        <property name="vlrprecoultcp" type="big_decimal">
+            <column name="VLRPRECOULTCP" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="vlrcustompm" type="big_decimal">
+            <column name="VLRCUSTOMPM" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="vlrcustopeps" type="big_decimal">
+            <column name="VLRCUSTOPEPS" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+    </class>
+</hibernate-mapping>

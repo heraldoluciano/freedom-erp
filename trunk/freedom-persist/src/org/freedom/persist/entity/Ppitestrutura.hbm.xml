@@ -1,0 +1,121 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Ppitestrutura" table="PPITESTRUTURA">
+        <comment>&#195;&#141;tens de estrutura de produtos.</comment>
+        <composite-id name="id" class="org.freedom.persist.entity.PpitestruturaId">
+            <key-property name="codprod" type="int">
+                <column name="CODPROD" />
+            </key-property>
+            <key-property name="seqest" type="short">
+                <column name="SEQEST" />
+            </key-property>
+            <key-property name="seqitest" type="short">
+                <column name="SEQITEST" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+            <key-property name="seqef" type="short">
+                <column name="SEQEF" />
+            </key-property>
+            <key-property name="codfase" type="int">
+                <column name="CODFASE" />
+            </key-property>
+            <key-property name="codfilialfs" type="short">
+                <column name="CODFILIALFS" />
+            </key-property>
+            <key-property name="codempfs" type="int">
+                <column name="CODEMPFS" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="ppestrufase" class="org.freedom.persist.entity.Ppestrufase" update="false" insert="false" fetch="select">
+            <column name="CODPROD" not-null="true" />
+            <column name="SEQEST" not-null="true">
+                <comment>N&#195;&#186;mero sequencial da estrutura.</comment>
+            </column>
+            <column name="SEQEF" not-null="true">
+                <comment>Sequencia da fase.</comment>
+            </column>
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+            <column name="CODFASE" not-null="true" />
+            <column name="CODFILIALFS" not-null="true" />
+            <column name="CODEMPFS" not-null="true" />
+        </many-to-one>
+        <many-to-one name="eqproduto" class="org.freedom.persist.entity.Eqproduto" fetch="select">
+            <column name="CODPRODPD" not-null="true" />
+            <column name="CODFILIALPD" not-null="true" />
+            <column name="CODEMPPD" not-null="true" />
+        </many-to-one>
+        <property name="refprod" type="string">
+            <column name="REFPROD" length="20">
+                <comment>Referencia do produto (estrutura)</comment>
+            </column>
+        </property>
+        <property name="refprodpd" type="string">
+            <column name="REFPRODPD" length="20">
+                <comment>Referencia do produto (item).</comment>
+            </column>
+        </property>
+        <property name="qtditest" type="big_decimal">
+            <column name="QTDITEST" precision="15" scale="9" not-null="true" />
+        </property>
+        <property name="rmaautoitest" type="char">
+            <column name="RMAAUTOITEST" length="1" not-null="true">
+                <comment>Flag para gera&#195;&#167;&#195;&#163;o de RMA autom&#195;&#161;tica (S/N)</comment>
+            </column>
+        </property>
+        <property name="cprova" type="char">
+            <column name="CPROVA" length="1" not-null="true">
+                <comment>Indica se o &#195;&#173;tem ser&#195;&#161; utilizado para reten&#195;&#167;&#195;&#163;o de contra-prova (controle de qualidade).</comment>
+            </column>
+        </property>
+        <property name="qtdvariavel" type="char">
+            <column name="QTDVARIAVEL" length="1" not-null="true">
+                <comment>Indica se a quantidade varia em virtude da quantidade final produzida.</comment>
+            </column>
+        </property>
+        <property name="qtdfixa" type="char">
+            <column name="QTDFIXA" length="1" not-null="true">
+                <comment>Indica se a quantidade n&#195;&#163;o deve ser multiplicada pela quantidade de itens de estrutura produzida.</comment>
+            </column>
+        </property>
+        <property name="permiteajusteitest" type="char">
+            <column name="PERMITEAJUSTEITEST" length="1" not-null="true">
+                <comment>Indica se deve permitir o ajuste da quantidade a ser utilizad na produ&#195;&#167;&#195;&#163;o no momento da OP.</comment>
+            </column>
+        </property>
+        <property name="tipoexterno" type="char">
+            <column name="TIPOEXTERNO" length="1" not-null="true">
+                <comment>Tipo de fluxo externo E - Envio/Remessa R - Retorno</comment>
+            </column>
+        </property>
+        <property name="emmanut" type="char">
+            <column name="EMMANUT" length="1" not-null="true" />
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+    </class>
+</hibernate-mapping>

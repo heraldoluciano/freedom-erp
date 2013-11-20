@@ -1,0 +1,211 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Pvleiturax" table="PVLEITURAX">
+        <composite-id name="id" class="org.freedom.persist.entity.PvleituraxId">
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codcaixa" type="int">
+                <column name="CODCAIXA" />
+            </key-property>
+            <key-property name="dtlx" type="date">
+                <column name="DTLX" length="10" />
+            </key-property>
+        </composite-id>
+        <property name="tt01" type="big_decimal">
+            <column name="TT01" precision="15" scale="5" />
+        </property>
+        <property name="tt02" type="big_decimal">
+            <column name="TT02" precision="15" scale="5" />
+        </property>
+        <property name="tt03" type="big_decimal">
+            <column name="TT03" precision="15" scale="5" />
+        </property>
+        <property name="tt04" type="big_decimal">
+            <column name="TT04" precision="15" scale="5" />
+        </property>
+        <property name="tt05" type="big_decimal">
+            <column name="TT05" precision="15" scale="5" />
+        </property>
+        <property name="tt06" type="big_decimal">
+            <column name="TT06" precision="15" scale="5" />
+        </property>
+        <property name="tt07" type="big_decimal">
+            <column name="TT07" precision="15" scale="5" />
+        </property>
+        <property name="tt08" type="big_decimal">
+            <column name="TT08" precision="15" scale="5" />
+        </property>
+        <property name="tt09" type="big_decimal">
+            <column name="TT09" precision="15" scale="5" />
+        </property>
+        <property name="tt10" type="big_decimal">
+            <column name="TT10" precision="15" scale="5" />
+        </property>
+        <property name="tt11" type="big_decimal">
+            <column name="TT11" precision="15" scale="5" />
+        </property>
+        <property name="tt12" type="big_decimal">
+            <column name="TT12" precision="15" scale="5" />
+        </property>
+        <property name="tt13" type="big_decimal">
+            <column name="TT13" precision="15" scale="5" />
+        </property>
+        <property name="tt14" type="big_decimal">
+            <column name="TT14" precision="15" scale="5" />
+        </property>
+        <property name="tt15" type="big_decimal">
+            <column name="TT15" precision="15" scale="5" />
+        </property>
+        <property name="tt16" type="big_decimal">
+            <column name="TT16" precision="15" scale="5" />
+        </property>
+        <property name="tisencao" type="big_decimal">
+            <column name="TISENCAO" precision="15" scale="5" />
+        </property>
+        <property name="tnincidencia" type="big_decimal">
+            <column name="TNINCIDENCIA" precision="15" scale="5" />
+        </property>
+        <property name="tsubstituicao" type="big_decimal">
+            <column name="TSUBSTITUICAO" precision="15" scale="5" />
+        </property>
+        <property name="tn1" type="big_decimal">
+            <column name="TN1" precision="15" scale="5" />
+        </property>
+        <property name="tn2" type="big_decimal">
+            <column name="TN2" precision="15" scale="5" />
+        </property>
+        <property name="tn3" type="big_decimal">
+            <column name="TN3" precision="15" scale="5" />
+        </property>
+        <property name="tn4" type="big_decimal">
+            <column name="TN4" precision="15" scale="5" />
+        </property>
+        <property name="tn5" type="big_decimal">
+            <column name="TN5" precision="15" scale="5" />
+        </property>
+        <property name="tn6" type="big_decimal">
+            <column name="TN6" precision="15" scale="5" />
+        </property>
+        <property name="tn7" type="big_decimal">
+            <column name="TN7" precision="15" scale="5" />
+        </property>
+        <property name="tn8" type="big_decimal">
+            <column name="TN8" precision="15" scale="5" />
+        </property>
+        <property name="tn9" type="big_decimal">
+            <column name="TN9" precision="15" scale="5" />
+        </property>
+        <property name="tsangria" type="big_decimal">
+            <column name="TSANGRIA" precision="15" scale="5" />
+        </property>
+        <property name="tsuprimento" type="big_decimal">
+            <column name="TSUPRIMENTO" precision="15" scale="5" />
+        </property>
+        <property name="tgtotal" type="big_decimal">
+            <column name="TGTOTAL" precision="15" scale="5" />
+        </property>
+        <property name="aliq01" type="big_decimal">
+            <column name="ALIQ01" precision="15" scale="5" />
+        </property>
+        <property name="aliq02" type="big_decimal">
+            <column name="ALIQ02" precision="15" scale="5" />
+        </property>
+        <property name="aliq03" type="big_decimal">
+            <column name="ALIQ03" precision="15" scale="5" />
+        </property>
+        <property name="aliq04" type="big_decimal">
+            <column name="ALIQ04" precision="15" scale="5" />
+        </property>
+        <property name="aliq05" type="big_decimal">
+            <column name="ALIQ05" precision="15" scale="5" />
+        </property>
+        <property name="aliq06" type="big_decimal">
+            <column name="ALIQ06" precision="15" scale="5" />
+        </property>
+        <property name="aliq07" type="big_decimal">
+            <column name="ALIQ07" precision="15" scale="5" />
+        </property>
+        <property name="aliq08" type="big_decimal">
+            <column name="ALIQ08" precision="15" scale="5" />
+        </property>
+        <property name="aliq09" type="big_decimal">
+            <column name="ALIQ09" precision="15" scale="5" />
+        </property>
+        <property name="aliq10" type="big_decimal">
+            <column name="ALIQ10" precision="15" scale="5" />
+        </property>
+        <property name="aliq11" type="big_decimal">
+            <column name="ALIQ11" precision="15" scale="5" />
+        </property>
+        <property name="aliq12" type="big_decimal">
+            <column name="ALIQ12" precision="15" scale="3" />
+        </property>
+        <property name="aliq13" type="big_decimal">
+            <column name="ALIQ13" precision="15" scale="3" />
+        </property>
+        <property name="aliq14" type="big_decimal">
+            <column name="ALIQ14" precision="15" scale="3" />
+        </property>
+        <property name="aliq15" type="big_decimal">
+            <column name="ALIQ15" precision="15" scale="3" />
+        </property>
+        <property name="aliq16" type="big_decimal">
+            <column name="ALIQ16" precision="15" scale="3" />
+        </property>
+        <property name="vlrcontabillx" type="big_decimal">
+            <column name="VLRCONTABILLX" precision="15" scale="3" />
+        </property>
+        <property name="vlrbasecalclx" type="big_decimal">
+            <column name="VLRBASECALCLX" precision="15" scale="3" />
+        </property>
+        <property name="numcanclx" type="java.lang.Integer">
+            <column name="NUMCANCLX" />
+        </property>
+        <property name="numredlx" type="java.lang.Integer">
+            <column name="NUMREDLX" />
+        </property>
+        <property name="vlrcanclx" type="big_decimal">
+            <column name="VLRCANCLX" precision="15" scale="3" />
+        </property>
+        <property name="vlrdesclx" type="big_decimal">
+            <column name="VLRDESCLX" precision="15" scale="3" />
+        </property>
+        <property name="contalx" type="big_decimal">
+            <column name="CONTALX" precision="15" scale="3" />
+        </property>
+        <property name="vlroutrosreclx" type="big_decimal">
+            <column name="VLROUTROSRECLX" precision="15" scale="3" />
+        </property>
+        <property name="ultcupomlx" type="java.lang.Integer">
+            <column name="ULTCUPOMLX" />
+        </property>
+        <property name="primcupomlx" type="java.lang.Integer">
+            <column name="PRIMCUPOMLX" />
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+    </class>
+</hibernate-mapping>

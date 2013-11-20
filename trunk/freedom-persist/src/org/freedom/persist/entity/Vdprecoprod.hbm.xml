@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20/11/2013 11:00:26 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="org.freedom.persist.entity.Vdprecoprod" table="VDPRECOPROD">
+        <composite-id name="id" class="org.freedom.persist.entity.VdprecoprodId">
+            <key-property name="codprecoprod" type="int">
+                <column name="CODPRECOPROD" />
+            </key-property>
+            <key-property name="codprod" type="int">
+                <column name="CODPROD" />
+            </key-property>
+            <key-property name="codfilial" type="short">
+                <column name="CODFILIAL" />
+            </key-property>
+            <key-property name="codemp" type="int">
+                <column name="CODEMP" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="eqproduto" class="org.freedom.persist.entity.Eqproduto" update="false" insert="false" fetch="select">
+            <column name="CODPROD" not-null="true" />
+            <column name="CODFILIAL" not-null="true" />
+            <column name="CODEMP" not-null="true" />
+        </many-to-one>
+        <many-to-one name="vdtabpreco" class="org.freedom.persist.entity.Vdtabpreco" fetch="select">
+            <column name="CODTAB" not-null="true" />
+            <column name="CODFILIALTB" not-null="true" />
+            <column name="CODEMPTB" not-null="true" />
+        </many-to-one>
+        <many-to-one name="fnplanopag" class="org.freedom.persist.entity.Fnplanopag" fetch="select">
+            <column name="CODPLANOPAG" />
+            <column name="CODFILIALPG" />
+            <column name="CODEMPPG" />
+        </many-to-one>
+        <many-to-one name="vdclascli" class="org.freedom.persist.entity.Vdclascli" fetch="select">
+            <column name="CODCLASCLI" />
+            <column name="CODFILIALCC" />
+            <column name="CODEMPCC" />
+        </many-to-one>
+        <property name="precoprod" type="big_decimal">
+            <column name="PRECOPROD" precision="15" scale="5" not-null="true" />
+        </property>
+        <property name="tipoprecoprod" type="java.lang.Character">
+            <column name="TIPOPRECOPROD" length="1">
+                <comment>Indica qual o tipo de pre&#195;&#167;o que origin&#195;&#161;rio. B - Pre&#195;&#167;o Base I - Custo informado; O - Outros;</comment>
+            </column>
+        </property>
+        <property name="dtaltpreco" type="date">
+            <column name="DTALTPRECO" length="10">
+                <comment>Data da altera&#195;&#167;&#195;&#163;o do pre&#195;&#167;o.</comment>
+            </column>
+        </property>
+        <property name="haltpreco" type="time">
+            <column name="HALTPRECO" length="8">
+                <comment>Hora de altera&#195;&#167;&#195;&#163;o do pre&#195;&#167;o.</comment>
+            </column>
+        </property>
+        <property name="precoant" type="big_decimal">
+            <column name="PRECOANT" precision="15" scale="5">
+                <comment>Pre&#195;&#167;o anterior &#195;&#160; &#195;&#186;ltima altera&#195;&#167;&#195;&#163;o.</comment>
+            </column>
+        </property>
+        <property name="idusualtpreco" type="string">
+            <column name="IDUSUALTPRECO" length="8">
+                <comment>Usu&#195;&#161;rio que realizou a altera&#195;&#167;&#195;&#163;o no pre&#195;&#167;o.</comment>
+            </column>
+        </property>
+        <property name="ativoprecoprod" type="char">
+            <column name="ATIVOPRECOPROD" length="1" not-null="true" />
+        </property>
+        <property name="dtins" type="date">
+            <column name="DTINS" length="10" not-null="true" />
+        </property>
+        <property name="hins" type="time">
+            <column name="HINS" length="8" not-null="true" />
+        </property>
+        <property name="idusuins" type="string">
+            <column name="IDUSUINS" length="8" not-null="true" />
+        </property>
+        <property name="dtalt" type="date">
+            <column name="DTALT" length="10" />
+        </property>
+        <property name="halt" type="time">
+            <column name="HALT" length="8" />
+        </property>
+        <property name="idusualt" type="string">
+            <column name="IDUSUALT" length="8" />
+        </property>
+    </class>
+</hibernate-mapping>
