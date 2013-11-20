@@ -31,7 +31,6 @@
 	<classpathentry kind="lib" path="/freedom-infra/lib/mailapi.jar"/>
 	<classpathentry kind="lib" path="/freedom-fw1/lib/jasperreports-fonts.jar"/>
 	<classpathentry kind="lib" path="/freedom-fw1/lib/commons-digester.jar"/>
-	<classpathentry kind="lib" path="/freedom-infra/lib/jaybird-full.jar"/>
 	<classpathentry kind="lib" path="/freedom-infra/lib/ilf-gpl.jar"/>
 	<classpathentry kind="lib" path="/freedom-ecf/lib/comm/lin/comm.jar"/>
 	<classpathentry kind="lib" path="/freedom-fw1/lib/barbecue.jar"/>
@@ -40,5 +39,6 @@
 	<classpathentry kind="lib" path="/freedom-fw1/lib/commons-discovery.jar"/>
 	<classpathentry kind="lib" path="/freedom-fw1/lib/commons-lang.jar"/>
 	<classpathentry kind="lib" path="/freedom-fw1/lib/commons-logging.jar"/>
+	<classpathentry kind="lib" path="/freedom-infra/lib/jaybird-full-2.2.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
