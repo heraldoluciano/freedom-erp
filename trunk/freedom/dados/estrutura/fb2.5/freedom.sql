@@ -360,6 +360,13 @@ CREATE TABLE ATATENDENTE (CODEMP INTEGER NOT NULL,
         ACESRELESTOUT CHAR(1) DEFAULT 'S' NOT NULL,
         ACESTROCOMIS CHAR(1) DEFAULT 'S' NOT NULL,
         ACESTROCOMISOUT CHAR(1) DEFAULT 'S' NOT NULL,
+        ACESCHAMLEROUT CHAR(1) DEFAULT 'S' NOT NULL,
+        ACESCHAMALTOUT CHAR(1) DEFAULT 'S' NOT NULL,
+        ACESCHAMDELLAN CHAR(1) DEFAULT 'S' NOT NULL,
+        ACESCHAMALTPRO CHAR(1) DEFAULT 'S' NOT NULL,
+        ACESCHAMDELOUT CHAR(1) DEFAULT 'S' NOT NULL,
+        ACESCHAMFINPRO CHAR(1) DEFAULT 'S' NOT NULL,
+        ACESCHAMFINOUT CHAR(1) DEFAULT 'S' NOT NULL, 
         DTINS DATE DEFAULT 'now',
         IDUSUINS CHAR(8) DEFAULT USER,
         DTALT DATE DEFAULT 'now',
@@ -1535,6 +1542,7 @@ CREATE TABLE CPITSOLICITACAO (CODEMP INTEGER NOT NULL,
         MOTIVOCOTABAIX VARCHAR(10000),
         CODEMPUA INTEGER,
         CODFILIALUA SMALLINT,
+        EMMANUT CHAR(1) DEFAULT 'N' NOT NULL,
         DTINS DATE DEFAULT 'now' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
@@ -1692,6 +1700,7 @@ CREATE TABLE CPSUMSOL (CODEMP INTEGER NOT NULL,
         IDUSUAPROVITSOL CHAR(8),
         SITAPROVITSOL CHAR(2),
         MOTIVOCOTABAIX VARCHAR(10000),
+        EMMANUT CHAR(1) DEFAULT 'N' NOT NULL,
         DTINS DATE DEFAULT 'now' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
@@ -2161,6 +2170,7 @@ CREATE TABLE EQCODALTPROD (CODEMP INTEGER NOT NULL,
         CODPROD INTEGER NOT NULL,
         CODALTPROD CHAR(20) NOT NULL,
         REFPROD VARCHAR(20) NOT NULL,
+        EMMANUT CHAR(1) DEFAULT 'N' NOT NULL,
         DTINS DATE DEFAULT 'now' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) DEFAULT user NOT NULL,
@@ -2345,6 +2355,7 @@ CREATE TABLE EQITEXPEDICAO (CODEMP INTEGER NOT NULL,
         CODTIPOEXPED SMALLINT NOT NULL,
         CODPROCEXPED INTEGER NOT NULL,
         STATUSITEXPED CHAR(2) DEFAULT 'PE' NOT NULL,
+        EMMANUT CHAR(1) DEFAULT 'N' NOT NULL,
         DTINS DATE DEFAULT 'today' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
@@ -2406,6 +2417,7 @@ DEFAULT 1 NOT NULL,
         PLACAVEICULO VARCHAR(10),
         NROFROTA VARCHAR(20),
         GARAGEM VARCHAR(20),
+        EMMANUT CHAR(1) DEFAULT 'N' NOT NULL,
         DTINS DATE DEFAULT 'today' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
@@ -2450,6 +2462,7 @@ CREATE TABLE EQITRECMERCITOS (CODEMP INTEGER NOT NULL,
         GERARMA CHAR(1),
         GERACHAMADO CHAR(1) DEFAULT 'N',
         GERANOVO CHAR(1),
+        EMMANUT CHAR(1) DEFAULT 'N' NOT NULL,
         DTINS DATE DEFAULT 'today' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
@@ -2545,6 +2558,7 @@ CREATE TABLE EQITSIMILAR (CODEMP INTEGER NOT NULL,
         CODFILIALPD SMALLINT NOT NULL,
         CODPROD INTEGER NOT NULL,
         REFPROD VARCHAR(20) NOT NULL,
+        EMMANUT CHAR(1) DEFAULT 'N' NOT NULL,
         DTINS DATE DEFAULT 'now' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
@@ -3005,6 +3019,7 @@ CREATE TABLE EQPRODUTO (CODEMP INTEGER NOT NULL,
         CODMODG INTEGER,
         PRAZOREPO INTEGER,
         MEDIAVENDA NUMERIC(15, 5),
+        EMMANUT CHAR(1) DEFAULT 'N' NOT NULL,
         DTINS DATE DEFAULT 'now' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
@@ -3093,6 +3108,7 @@ CREATE TABLE EQRECMERC (CODEMP INTEGER NOT NULL,
         CODALMOX INTEGER,
         OBSRECMERC CHAR(1000),
         DESCONTO NUMERICDN,
+        EMMANUT CHAR(1) DEFAULT 'N' NOT NULL,
         DTINS DATE DEFAULT 'today' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
@@ -3376,6 +3392,54 @@ CREATE TABLE EQTIPORECMERC (CODEMP INTEGER NOT NULL,
         HALT TIME DEFAULT 'now',
         IDUSUALT CHAR(8) DEFAULT USER,
 CONSTRAINT EQTIPORECMERCPK PRIMARY KEY (CODTIPORECMERC, CODFILIAL, CODEMP));
+
+CREATE TABLE EQTROCAREFPROD (ID BIGINT NOT NULL,
+        CODEMP INTEGER NOT NULL,
+        CODFILIAL SMALLINT NOT NULL,
+        MOTIVO VARCHAR(80),
+        DTTROCA DATE DEFAULT 'now' NOT NULL,
+        SITUACAO CHAR(2) DEFAULT 'PE' NOT NULL, 
+        DTINS DATE DEFAULT 'now' NOT NULL,
+        HINS TIME DEFAULT 'now' NOT NULL,
+        IDUSUINS VARCHAR(128) DEFAULT USER NOT NULL,
+        DTALT DATE DEFAULT 'now' NOT NULL,
+        HALT TIME DEFAULT 'now' NOT NULL,
+        IDUSUALT VARCHAR(128) DEFAULT USER,
+CONSTRAINT EQTROCAREFPRODPK PRIMARY KEY (ID));
+
+CREATE TABLE EQITTROCAREFPROD (ID_IT BIGINT NOT NULL,
+        ID BIGINT NOT NULL,
+        DTEXEC DATE DEFAULT 'now' NOT NULL,
+        CODEMP INTEGER NOT NULL,
+        CODFILIAL SMALLINT NOT NULL,
+        CODEMPPD INTEGER NOT NULL,
+        CODFILIALPD SMALLINT NOT NULL,
+        CODPROD INTEGER NOT NULL,
+        REFPRODOLD VARCHAR(20) NOT NULL,
+        REFPRODNEW VARCHAR(20) NOT NULL,
+        SITUACAO CHAR(2) DEFAULT 'PE' NOT NULL,
+        DTINS DATE DEFAULT 'now' NOT NULL,
+        HINS TIME DEFAULT 'now' NOT NULL,
+        IDUSUINS VARCHAR(128) DEFAULT USER NOT NULL,
+        DTALT DATE DEFAULT 'now' NOT NULL,
+        HALT TIME DEFAULT 'now' NOT NULL,
+        IDUSUALT VARCHAR(128) DEFAULT USER,
+CONSTRAINT EQITTROCAREFPRODPK PRIMARY KEY (ID_IT));
+
+CREATE TABLE EQITTROCARPLOG (ID BIGINT NOT NULL,
+        ID_IT_TROCA BIGINT NOT NULL,
+        DTEXEC DATE DEFAULT 'now' NOT NULL,
+        HEXEC TIME DEFAULT 'now' NOT NULL,
+        SITUACAO CHAR(2) DEFAULT 'OK' NOT NULL,
+        TABELA VARCHAR(50) DEFAULT '' NOT NULL,
+        MENSAGEM VARCHAR(2000),
+        DTINS DATE DEFAULT 'now' NOT NULL,
+        HINS TIME DEFAULT 'now' NOT NULL,
+        IDUSUINS VARCHAR(128) DEFAULT USER NOT NULL,
+        DTALT DATE DEFAULT 'now' NOT NULL,
+        HALT TIME DEFAULT 'now' NOT NULL,
+        IDUSUALT VARCHAR(128) DEFAULT USER,
+CONSTRAINT EQITTROCARPLOGPK PRIMARY KEY (ID));
 
 /* Table: EQUNIDADE, Owner: SYSDBA */
 CREATE TABLE EQUNIDADE (CODEMP INTEGER NOT NULL,
@@ -5386,6 +5450,7 @@ CREATE TABLE PPESTRUTURA (CODEMP INTEGER NOT NULL,
         BLOQQTDPROD CHAR(1) DEFAULT 'N' NOT NULL,
         EXPEDIRRMA CHAR(1) DEFAULT 'N' NOT NULL,
         GERAROP CHAR(1) DEFAULT 'N' NOT NULL,
+        EMMANUT CHAR(1) DEFAULT 'N' NOT NULL,
         DTINS DATE DEFAULT 'now' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
@@ -5446,6 +5511,7 @@ CREATE TABLE PPITESTRUTURA (CODEMP INTEGER NOT NULL,
         QTDFIXA CHAR(1) DEFAULT 'N' NOT NULL,
         PERMITEAJUSTEITEST CHAR(1) DEFAULT 'N' NOT NULL,
         TIPOEXTERNO CHAR(1) DEFAULT 'E' NOT NULL,
+        EMMANUT CHAR(1) DEFAULT 'N' NOT NULL,
         DTINS DATE DEFAULT 'now' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
@@ -5472,6 +5538,7 @@ CREATE TABLE PPITESTRUTURASUBPROD (CODEMP INTEGER NOT NULL,
         QTDITESTSP NUMERICDN NOT NULL,
         QTDVARIAVEL CHAR(1) DEFAULT 'N' NOT NULL,
         QTDFIXA CHAR(1) DEFAULT 'N' NOT NULL,
+        EMMANUT CHAR(1) DEFAULT 'N' NOT NULL,
         DTINS DATE DEFAULT 'now' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
@@ -5748,6 +5815,7 @@ CREATE TABLE PPOPSUBPROD (CODEMP INTEGER NOT NULL,
         CODFILIALTM SMALLINT NOT NULL,
         CODTIPOMOV INTEGER NOT NULL,
         DTSUBPROD DATE,
+        EMMANUT CHAR(1) DEFAULT 'N' NOT NULL,
         DTINS DATE DEFAULT 'now' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
@@ -7632,6 +7700,8 @@ CREATE TABLE SGPREFERE1 (CODEMP INTEGER NOT NULL,
         FATORSEGESTOQ DECIMAL(9, 5) DEFAULT 0 NOT NULL,
         LEITRANSP CHAR(1) DEFAULT 'N' NOT NULL,
         TIPOIMPDANFE CHAR(1) DEFAULT 'F' NOT NULL,
+        REPLICAORC CHAR(1) DEFAULT 'N' NOT NULL,
+        SQLREPLICAORC BLOB SUB_TYPE 1 SEGMENT SIZE 16384,
         DTINS DATE DEFAULT 'now' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
@@ -7873,6 +7943,7 @@ CREATE TABLE SGPREFERE5 (CODEMP INTEGER NOT NULL,
         VALIDAQTDOP CHAR(1) DEFAULT 'N' NOT NULL,
         VALIDAFASEOP CHAR(1) DEFAULT 'N' NOT NULL,
         EDITQTDOP CHAR(1) DEFAULT 'S' NOT NULL,
+        BLOQOPSEMSALDO CHAR(1) DEFAULT 'N' NOT NULL,
         DTINS DATE DEFAULT 'today' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
@@ -7958,6 +8029,7 @@ CREATE TABLE SGPREFERE8 (CODEMP INTEGER NOT NULL,
         UTILRENDACOT CHAR(1) DEFAULT 'S' NOT NULL,
         PERMITDOCCOLDUPL CHAR(1) DEFAULT 'S' NOT NULL,
         OBSPADOC VARCHAR(500),
+        PERMITITEMREPCP CHAR(1) DEFAULT 'N' NOT NULL,
         DTINS DATE DEFAULT 'now' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
@@ -8242,6 +8314,7 @@ CREATE TABLE SGUSUARIO (CODEMP INTEGER NOT NULL,
         ACESOPBTREMESSA CHAR(1) DEFAULT 'S' NOT NULL,
         ACESOPBTRETORNO CHAR(1) DEFAULT 'S' NOT NULL,
         ACESOPVERITENS CHAR(1) DEFAULT 'S' NOT NULL,
+        CADOUTUSU CHAR(1) DEFAULT 'N' NOT NULL,
         DTINS DATE DEFAULT 'today' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
@@ -9581,6 +9654,7 @@ CREATE TABLE VDITKIT (CODEMP INTEGER NOT NULL,
         QTDITKIT NUMERICDN              DEFAULT 0 NOT NULL,
         PRECOITKIT NUMERICDN              DEFAULT 0 NOT NULL,
         VLRTOTITKIT NUMERICDN              DEFAULT 0 NOT NULL,
+        EMMANUT CHAR(1) DEFAULT 'N' NOT NULL,
         DTINS DATE DEFAULT 'now' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) NOT NULL,
@@ -9856,6 +9930,7 @@ CREATE TABLE VDKIT (CODEMP INTEGER NOT NULL,
         QTDKIT NUMERICDN              DEFAULT 0 NOT NULL,
         PRECOKIT NUMERICDN              DEFAULT 0 NOT NULL,
         VLRTOTKIT NUMERICDN              DEFAULT 0 NOT NULL,
+        EMMANUT CHAR(1) DEFAULT 'N' NOT NULL,
         DTINS DATE DEFAULT 'now' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
@@ -11359,6 +11434,14 @@ ALTER TABLE EQTIPOMOVUSU ADD CONSTRAINT EQTIPOMOVUSUFKSGUS FOREIGN KEY (IDUSU, C
 ALTER TABLE EQTIPORECMERC ADD CONSTRAINT EQTIPORECMERCFKEQPRODUTO FOREIGN KEY (CODPROD, CODFILIALPD, CODEMPPD) REFERENCES EQPRODUTO (CODPROD, CODFILIAL, CODEMP);
 
 ALTER TABLE EQTIPORECMERC ADD CONSTRAINT EQTIPORECMERCFKSGFILIA FOREIGN KEY (CODFILIAL, CODEMP) REFERENCES SGFILIAL (CODFILIAL, CODEMP);
+
+ALTER TABLE EQITTROCAREFPROD ADD CONSTRAINT EQITTROCAREFPFKEQTRO FOREIGN KEY (ID) REFERENCES EQTROCAREFPROD (ID);
+
+ALTER TABLE EQITTROCAREFPROD ADD CONSTRAINT EQITTROCAREFPFKSGFIL FOREIGN KEY (CODFILIAL, CODEMP) REFERENCES SGFILIAL (CODFILIAL, CODEMP);
+
+ALTER TABLE EQITTROCARPLOG ADD CONSTRAINT EQITTROCARPFKEQITTRO FOREIGN KEY (ID_IT_TROCA) REFERENCES EQITTROCAREFPROD (ID_IT);
+
+ALTER TABLE EQTROCAREFPROD ADD CONSTRAINT EQTROCAREFPRODFKSGFI FOREIGN KEY (CODFILIAL, CODEMP) REFERENCES SGFILIAL (CODFILIAL, CODEMP);
 
 ALTER TABLE EQUNIDADE ADD CONSTRAINT EQUNIDADEFKSGFILIA FOREIGN KEY (CODFILIAL, CODEMP) REFERENCES SGFILIAL (CODFILIAL, CODEMP);
 
@@ -16827,11 +16910,20 @@ declare variable codempns integer;
 declare variable codfilialns smallint;
 declare variable numserietmp varchar(30);
 declare variable percprecocoletacp numeric(15,5);
+declare variable permititemrepcp char(1);
+declare variable trocaqtd char(1);
 begin
     
     -- Carregamdo variaveis
     aprovpreco = 'N';
 
+    -- Verificando se é para buscar as quantidades
+    if ( (qtditcompra is null) or (qtditcompra=0)) then
+       trocaqtd = 'S';
+    else 
+       trocaqtd = 'N';
+    
+    
     -- Buscando preferências
     select coalesce(p1.usaprecocot,'N') usaprecocot
     from sgprefere1 p1
@@ -16840,9 +16932,10 @@ begin
     
     -- Buscando preferências GMS
     select coalesce(p8.percprecocoletacp,100) percprecocoletacp
+    , coalesce(permititemrepcp, 'N') 
     from sgprefere8 p8
     where p8.codemp=:codemp and p8.codfilial=:codfilial
-    into :percprecocoletacp;
+    into :percprecocoletacp, :permititemrepcp;
 
     -- Buscando informações da compra
     select cp.codfilialtm, cp.codtipomov,
@@ -16861,8 +16954,9 @@ begin
         :codempns, :codfilialns, :numserietmp
         do
         begin
-
-            if(:codprod <> :codprodant or :codprodant is null) then
+            if (:trocaqtd='S') then
+                 qtditcompra = 0;  
+            if(:permititemrepcp='S' or :codprod <> :codprodant or :codprodant is null) then
             begin
 
                 -- Buscando a natureza da operação
@@ -16909,7 +17003,6 @@ begin
                         -- Indica que o preço é aprovado (cotado anteriormente);
                         aprovpreco = 'S';
                     end
-
                 end
 
                 -- Se não conseguiu obter o preço das cotações
@@ -18270,20 +18363,6 @@ CODFILIALOP INTEGER,
 CODOP INTEGER,
 SEQOP SMALLINT)
 AS 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
 declare variable seqof smallint;
 declare variable idusu1 char(8);
 declare variable seqitop integer;
@@ -18550,20 +18629,6 @@ ICODEMPAXNEW INTEGER,
 SCODFILIALAXNEW SMALLINT,
 ICODALMOXNEW INTEGER)
 AS 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
 DECLARE VARIABLE CCLOTEPROD CHAR(1);
 DECLARE VARIABLE ICODALMOX INTEGER;
 DECLARE VARIABLE ICODEMPAX INTEGER;
@@ -22291,20 +22356,6 @@ CODTIPOMOV INTEGER,
 CODITFISC INTEGER)
 RETURNS (CODNAT CHAR(4))
 AS 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
 declare variable noest char(1);
 declare variable cv char(1);
 declare variable itmp integer;
@@ -22366,6 +22417,7 @@ begin
         and c.codfisc=p.codfisc and c.codfilial=p.codfilialfc and c.codemp = p.codempfc and r.codregra = coalesce(icf.codregra, c.codregra)
         and r.codfilial = c.codfilialra and r.codemp = c.codempra
         and r.cvitrf=:cv and r.noufitrf=:noest
+        order by r.codtipomov
         into codnat;
      end
 
@@ -25277,18 +25329,8 @@ end ^
 
 ALTER PROCEDURE SGRETVERSAO RETURNS (VERSAO VARCHAR(30))
 AS 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
 begin
-    versao = '1.2.6.4 (02/07/2013)';
+    versao = '1.2.6.5 (17/08/2013)';
     suspend;
 end ^
 
@@ -30149,36 +30191,40 @@ AS
      declare variable ICODFILIALUSU smallint;
      declare variable IDUSU char(8);
 begin
-  /*#IBA#new.DTALT = cast('today' AS DATE);
-  new.IDUSUALT = USER;
-  new.HALT = cast('now' AS TIME);#IBA#*/
-  IF (new.CODALMOX IS NULL) THEN
-       SELECT CODEMPAX,CODFILIALAX,CODALMOX FROM EQPRODUTO WHERE
-          CODEMP=new.CODEMPPD AND CODFILIAL=new.CODFILIALPD AND
-          CODPROD=new.CODPROD
-       INTO new.codempam, new.codfilialam,new.CODALMOX;
-
-  IF (old.CODALMOX IS NOT NULL) THEN
+  IF (new.EMMANUT IS NULL) THEN
+     new.EMMANUT='N';
+  IF ( not ( (new.EMMANUT='S') or ( (old.EMMANUT='S') and (old.EMMANUT is not null)) ) ) THEN
   BEGIN
-     IF (old.CODALMOX!=new.CODALMOX) THEN
-         EXCEPTION EQALMOX01;
+      new.IDUSUALT = USER;
+      new.HALT = cast('now' AS TIME);
+      IF (new.CODALMOX IS NULL) THEN
+           SELECT CODEMPAX,CODFILIALAX,CODALMOX FROM EQPRODUTO WHERE
+              CODEMP=new.CODEMPPD AND CODFILIAL=new.CODFILIALPD AND
+              CODPROD=new.CODPROD
+           INTO new.codempam, new.codfilialam,new.CODALMOX;
+    
+      IF (old.CODALMOX IS NOT NULL) THEN
+      BEGIN
+         IF (old.CODALMOX!=new.CODALMOX) THEN
+             EXCEPTION EQALMOX01;
+      END
+      IF (new.CODPROD != old.CODPROD) THEN
+         EXCEPTION CPITSOLICITACAOEX01;
+      IF (new.REFPROD IS NULL) THEN
+      BEGIN
+           SELECT REFPROD FROM EQPRODUTO WHERE CODPROD=new.CODPROD
+                AND CODEMP=new.CODEMPPD AND CODFILIAL = new.CODFILIALPD INTO sRefProd;
+           new.REFPROD = sRefProd;
+      END
+      if((new.idusuaprovitsol is null) and (new.sititsol!=old.sititsol) and ((new.sititsol= 'AP') or (new.sititsol= 'AT') )) then
+      begin
+        SELECT CODEMPUSU,CODFILIALUSU,IDUSUS FROM sgretinfousu(new.CODEMP, USER) into :ICODEMPUSU,:ICODFILIALUSU,:IDUSU;
+        new.codempua = :ICODEMPUSU;
+        new.codfilialua = :ICODFILIALUSU;
+        new.idusuaprovitsol = :IDUSU;
+        new.dtaprovitsol = cast('now' AS DATE);
+      end
   END
-  IF (new.CODPROD != old.CODPROD) THEN
-     EXCEPTION CPITSOLICITACAOEX01;
-  IF (new.REFPROD IS NULL) THEN
-  BEGIN
-       SELECT REFPROD FROM EQPRODUTO WHERE CODPROD=new.CODPROD
-            AND CODEMP=new.CODEMPPD AND CODFILIAL = new.CODFILIALPD INTO sRefProd;
-       new.REFPROD = sRefProd;
-  END
-  if((new.idusuaprovitsol is null) and (new.sititsol!=old.sititsol) and ((new.sititsol= 'AP') or (new.sititsol= 'AT') )) then
-  begin
-    SELECT CODEMPUSU,CODFILIALUSU,IDUSUS FROM sgretinfousu(new.CODEMP, USER) into :ICODEMPUSU,:ICODFILIALUSU,:IDUSU;
-    new.codempua = :ICODEMPUSU;
-    new.codfilialua = :ICODFILIALUSU;
-    new.idusuaprovitsol = :IDUSU;
-    new.dtaprovitsol = cast('now' AS DATE);
-  end
 end ^
 
 CREATE TRIGGER CPITSOLTGBU02 FOR CPITSOLICITACAO 
@@ -30186,38 +30232,40 @@ ACTIVE BEFORE UPDATE POSITION 8
 AS
   declare variable statusitem char(2);
 begin
-  if (old.sititsol!='AF') then
-  begin
-      if (new.qtdaprovitsol!=old.qtdaprovitsol or (NEW.sitaprovitsol='AT') ) then
+  IF ( not ( (new.EMMANUT='S') or ( (old.EMMANUT='S') and (old.EMMANUT is not null)) ) ) THEN
+  BEGIN
+      if (old.sititsol!='AF') then
       begin
-          if ((new.sitaprovitsol='AT') and (new.qtdaprovitsol=0) and (old.sitaprovitsol!='AT')) then
+          if (new.qtdaprovitsol!=old.qtdaprovitsol or (NEW.sitaprovitsol='AT') ) then
           begin
-            new.qtdaprovitsol=new.qtditsol;
-          end
-          if (new.qtdaprovitsol>0) then
-          begin
-            if (new.qtdaprovitsol<new.qtditsol) then
-            begin
-                statusitem = 'AP';
+              if ((new.sitaprovitsol='AT') and (new.qtdaprovitsol=0) and (old.sitaprovitsol!='AT')) then
+              begin
+                new.qtdaprovitsol=new.qtditsol;
+              end
+              if (new.qtdaprovitsol>0) then
+              begin
+                if (new.qtdaprovitsol<new.qtditsol) then
+                begin
+                    statusitem = 'AP';
+                end
+                else
+                begin
+                    statusitem = 'AT';
+                end
+              new.sitaprovitsol=:statusitem;
+              if(new.sititsol='PE') then
+              begin
+                  new.sititsol='EA';
+              end
             end
-            else
-            begin
-                statusitem = 'AT';
-            end
-          new.sitaprovitsol=:statusitem;
-          if(new.sititsol='PE') then
-          begin
-              new.sititsol='EA';
           end
-        end
       end
-  end
-  if(new.sititsol='CA') then
-  begin
-    new.qtdaprovitsol=0;
-    new.sitaprovitsol='NA';
-  end
-
+      if(new.sititsol='CA') then
+      begin
+        new.qtdaprovitsol=0;
+        new.sitaprovitsol='NA';
+      end
+  END
 end ^
 
 CREATE TRIGGER CPITSOLTGBD FOR CPITSOLICITACAO 
@@ -30255,67 +30303,72 @@ AS
   declare variable numitenset int;
 
 begin
-  if (old.sititsol!='AF') then
-  begin
-      select count(1) from cpitsolicitacao where codemp=new.codemp and codfilial=new.codfilial and codsol = new.codsol into :numitens;
-      select count(1) from cpitsolicitacao where codemp=new.codemp and codfilial=new.codfilial and codsol = new.codsol and sititsol='AF' into :numitensaf;
-      select count(1) from cpitsolicitacao where codemp=new.codemp and codfilial=new.codfilial and codsol = new.codsol and sititsol='EF' into :numitensef;
-      select count(1) from cpitsolicitacao where codemp=new.codemp and codfilial=new.codfilial and codsol = new.codsol and sititsol='CA' into :numitensca;
-      if(:numitens=:numitensaf) then
+
+  IF ( not ( (new.EMMANUT='S') or ( (old.EMMANUT='S') and (old.EMMANUT is not null)) ) ) THEN
+  BEGIN
+
+      if (old.sititsol!='AF') then
       begin
-        update cpsolicitacao set sitsol='AF' where codemp=new.codemp and codfilial=new.codfilial and codsol = new.codsol and sitsol!='AF';
-      end
-      else if (:numitens=:numitensef) then
-      begin
-        update cpsolicitacao set sitsol='EF' where codemp=new.codemp and codfilial=new.codfilial and codsol = new.codsol and sitsol!='EF';
-      end
-      else if (:numitens=:numitensca) then
-      begin
-        update cpsolicitacao set sitsol='CA' where codemp=new.codemp and codfilial=new.codfilial and codsol = new.codsol and sitsol!='CA';
-      end
-      if (new.qtdaprovitsol!=old.qtdaprovitsol) then
-      begin
-          if (new.qtdaprovitsol>0) then
+          select count(1) from cpitsolicitacao where codemp=new.codemp and codfilial=new.codfilial and codsol = new.codsol into :numitens;
+          select count(1) from cpitsolicitacao where codemp=new.codemp and codfilial=new.codfilial and codsol = new.codsol and sititsol='AF' into :numitensaf;
+          select count(1) from cpitsolicitacao where codemp=new.codemp and codfilial=new.codfilial and codsol = new.codsol and sititsol='EF' into :numitensef;
+          select count(1) from cpitsolicitacao where codemp=new.codemp and codfilial=new.codfilial and codsol = new.codsol and sititsol='CA' into :numitensca;
+          if(:numitens=:numitensaf) then
           begin
-              update cpsolicitacao set sitsol='EA' where codemp=new.codemp and codfilial=new.codfilial and codsol = new.codsol and sitsol='PE';
-              select count(1) from cpitsolicitacao where codemp=new.codemp and codfilial=new.codfilial and codsol = new.codsol and sitaprovitsol='AP' into :numitensap;
-              select count(1) from cpitsolicitacao where codemp=new.codemp and codfilial=new.codfilial and codsol = new.codsol and sitaprovitsol='NA' into :numitensna;
-              select count(1) from cpitsolicitacao where codemp=new.codemp and codfilial=new.codfilial and codsol = new.codsol and sitaprovitsol='AT' into :numitensat;
-              if(:numitens!=:numitensaf) then
+            update cpsolicitacao set sitsol='AF' where codemp=new.codemp and codfilial=new.codfilial and codsol = new.codsol and sitsol!='AF';
+          end
+          else if (:numitens=:numitensef) then
+          begin
+            update cpsolicitacao set sitsol='EF' where codemp=new.codemp and codfilial=new.codfilial and codsol = new.codsol and sitsol!='EF';
+          end
+          else if (:numitens=:numitensca) then
+          begin
+            update cpsolicitacao set sitsol='CA' where codemp=new.codemp and codfilial=new.codfilial and codsol = new.codsol and sitsol!='CA';
+          end
+          if (new.qtdaprovitsol!=old.qtdaprovitsol) then
+          begin
+              if (new.qtdaprovitsol>0) then
               begin
-                if(:numitens=:numitensat) then
-                begin
-                   update cpsolicitacao set sitsol='AT' where codemp=new.codemp and codfilial=new.codfilial and codsol = new.codsol and sitsol!='AT';
-                end
-                else if((:numitensap>0) or (:numitensna>0)) then
-                begin
-                   update cpsolicitacao set sitsol='AP' where codemp=new.codemp and codfilial=new.codfilial and codsol = new.codsol and sitsol!='AP';
-                end
-                if(:numitens=:numitensna) then
-                begin
-                   update cpsolicitacao set sitsol='NA' where codemp=new.codemp and codfilial=new.codfilial and codsol = new.codsol  and sitsol!='NA';
-                end
+                  update cpsolicitacao set sitsol='EA' where codemp=new.codemp and codfilial=new.codfilial and codsol = new.codsol and sitsol='PE';
+                  select count(1) from cpitsolicitacao where codemp=new.codemp and codfilial=new.codfilial and codsol = new.codsol and sitaprovitsol='AP' into :numitensap;
+                  select count(1) from cpitsolicitacao where codemp=new.codemp and codfilial=new.codfilial and codsol = new.codsol and sitaprovitsol='NA' into :numitensna;
+                  select count(1) from cpitsolicitacao where codemp=new.codemp and codfilial=new.codfilial and codsol = new.codsol and sitaprovitsol='AT' into :numitensat;
+                  if(:numitens!=:numitensaf) then
+                  begin
+                    if(:numitens=:numitensat) then
+                    begin
+                       update cpsolicitacao set sitsol='AT' where codemp=new.codemp and codfilial=new.codfilial and codsol = new.codsol and sitsol!='AT';
+                    end
+                    else if((:numitensap>0) or (:numitensna>0)) then
+                    begin
+                       update cpsolicitacao set sitsol='AP' where codemp=new.codemp and codfilial=new.codfilial and codsol = new.codsol and sitsol!='AP';
+                    end
+                    if(:numitens=:numitensna) then
+                    begin
+                       update cpsolicitacao set sitsol='NA' where codemp=new.codemp and codfilial=new.codfilial and codsol = new.codsol  and sitsol!='NA';
+                    end
+                  end
               end
           end
       end
-  end
-  else if (old.sititsol!='EF') then
-  begin
-      select count(1) from cpitsolicitacao where codemp=new.codemp and codfilial=new.codfilial and codsol = new.codsol into :numitens;
-      select count(1) from cpitsolicitacao where codemp=new.codemp and codfilial=new.codfilial and codsol = new.codsol and sititsol='EF' into :numitensef;
-      if (:numitens=:numitensef) then
+      else if (old.sititsol!='EF') then
       begin
-        update cpsolicitacao set sitsol='EF' where codemp=new.codemp and codfilial=new.codfilial and codsol = new.codsol and sitsol!='EF';
+          select count(1) from cpitsolicitacao where codemp=new.codemp and codfilial=new.codfilial and codsol = new.codsol into :numitens;
+          select count(1) from cpitsolicitacao where codemp=new.codemp and codfilial=new.codfilial and codsol = new.codsol and sititsol='EF' into :numitensef;
+          if (:numitens=:numitensef) then
+          begin
+            update cpsolicitacao set sitsol='EF' where codemp=new.codemp and codfilial=new.codfilial and codsol = new.codsol and sitsol!='EF';
+          end
       end
-  end
-    if(new.sititsol='EF')  then
-    begin
-      update cpcotacao set sititsol = 'EF' where codemp=new.codemp and codfilial=new.codfilial and codsol=new.codsol and coditsol=new.coditsol and sititsol!='EF';
-    end
-    if(new.sititsol='ET')  then
-    begin
-      update cpcotacao set sititsol = 'ET' where codemp=new.codemp and codfilial=new.codfilial and codsol=new.codsol and coditsol=new.coditsol and sitcompitsol!='ET';
-    end
+        if(new.sititsol='EF')  then
+        begin
+          update cpcotacao set sititsol = 'EF' where codemp=new.codemp and codfilial=new.codfilial and codsol=new.codsol and coditsol=new.coditsol and sititsol!='EF';
+        end
+        if(new.sititsol='ET')  then
+        begin
+          update cpcotacao set sititsol = 'ET' where codemp=new.codemp and codfilial=new.codfilial and codsol=new.codsol and coditsol=new.coditsol and sitcompitsol!='ET';
+        end
+    END
 end ^
 
 CREATE TRIGGER CPITSOLITSOL FOR CPITSOLITSOL 
@@ -30423,7 +30476,6 @@ CREATE TRIGGER CPSOLICITACAOTGAU FOR CPSOLICITACAO
 ACTIVE AFTER UPDATE POSITION 0 
 AS
 begin
-
     if(new.sitsol='AF')  then
     begin
       update cpitsolicitacao set sititsol = 'AF' where codemp=new.codemp and codfilial=new.codfilial and codsol=new.codsol and sititsol!='AF';
@@ -30462,7 +30514,7 @@ begin
   new.idusuins=USER;
   new.hins = cast('now' AS TIME);
 
- IF (new.REFPROD IS NULL) THEN
+  IF (new.REFPROD IS NULL) THEN
        SELECT REFPROD FROM EQPRODUTO WHERE CODPROD=new.CODPROD
             AND CODEMP=new.CODEMPPD AND CODFILIAL = new.CODFILIALPD INTO new.REFPROD;
 END ^
@@ -30472,17 +30524,22 @@ ACTIVE BEFORE UPDATE POSITION 0
 AS
      declare variable sRefProd VARChar(20);
 begin
-  new.DTALT=cast('now' AS DATE);
-  new.IDUSUALT=USER;
-  new.HALT = cast('now' AS TIME);
-
-  IF (new.CODPROD != old.CODPROD) THEN
-     EXCEPTION CPITSOLICITACAOEX01;
-  IF (new.REFPROD IS NULL) THEN
+  IF (new.EMMANUT IS NULL) THEN
+     new.EMMANUT='N';
+  IF ( not ( (new.EMMANUT='S') or ( (old.EMMANUT='S') and (old.EMMANUT is not null)) ) ) THEN
   BEGIN
-       SELECT REFPROD FROM EQPRODUTO WHERE CODPROD=new.CODPROD
-            AND CODEMP=new.CODEMPPD AND CODFILIAL = new.CODFILIALPD INTO sRefProd;
-       new.REFPROD = sRefProd;
+      new.DTALT=cast('now' AS DATE);
+      new.IDUSUALT=USER;
+      new.HALT = cast('now' AS TIME);
+    
+      IF (new.CODPROD != old.CODPROD) THEN
+         EXCEPTION CPITSOLICITACAOEX01;
+      IF (new.REFPROD IS NULL) THEN
+      BEGIN
+           SELECT REFPROD FROM EQPRODUTO WHERE CODPROD=new.CODPROD
+                AND CODEMP=new.CODEMPPD AND CODFILIAL = new.CODFILIALPD INTO sRefProd;
+           new.REFPROD = sRefProd;
+      END
   END
 end ^
 
@@ -30704,11 +30761,16 @@ CREATE TRIGGER EQCODALTPRODBU FOR EQCODALTPROD
 ACTIVE BEFORE UPDATE POSITION 0 
 AS
 begin
-  new.DTALT=cast('now' AS DATE);
-  new.IDUSUALT=USER;
-  new.HALT = cast('now' AS TIME);
-  SELECT REFPROD FROM EQPRODUTO WHERE CODEMP=new.CODEMP and CODFILIAL=new.CODFILIAL
-     AND CODPROD=new.CODPROD INTO new.REFPROD;
+  IF (new.EMMANUT IS NULL) THEN
+     new.EMMANUT='N';
+  IF ( not ( (new.EMMANUT='S') or ( (old.EMMANUT='S') and (old.EMMANUT is not null)) ) ) THEN
+  BEGIN    
+      new.DTALT=cast('now' AS DATE);
+      new.IDUSUALT=USER;
+      new.HALT = cast('now' AS TIME);
+      SELECT REFPROD FROM EQPRODUTO WHERE CODEMP=new.CODEMP and CODFILIAL=new.CODFILIAL
+         AND CODPROD=new.CODPROD INTO new.REFPROD;
+  END
 end ^
 
 CREATE TRIGGER EQETIQPRODTGBU FOR EQETIQPROD 
@@ -30985,10 +31047,11 @@ CREATE TRIGGER EQITEXPEDICAOTGBU FOR EQITEXPEDICAO
 ACTIVE BEFORE UPDATE POSITION 0 
 as
 begin
+  IF (new.EMMANUT IS NULL) THEN
+     new.EMMANUT='N';
   new.DTALT=cast('now' AS DATE);
   new.IDUSUALT=USER;
   new.HALT = cast('now' AS TIME);
-  /* Trigger Text */
 end ^
 
 CREATE TRIGGER EQITEXPEDICAOTGAU FOR EQITEXPEDICAO 
@@ -30999,6 +31062,8 @@ as
 
 begin
 
+  IF ( not ( (new.EMMANUT='S') or ( (old.EMMANUT='S') and (old.EMMANUT is not null)) ) ) THEN
+  begin
   -- buscando tipo de amostragem
 
     select pr.tipoprocexped,
@@ -31032,7 +31097,7 @@ begin
             where ex.codemp=new.codemp and ex.codfilial=new.codfilial and ex.ticket=new.ticket;
         end
     end
-
+  end
 end ^
 
 CREATE TRIGGER EQITMODGRADETGBU FOR EQITMODGRADE 
@@ -31059,6 +31124,8 @@ CREATE TRIGGER EQITRECMERCTGBU FOR EQITRECMERC
 ACTIVE BEFORE UPDATE POSITION 0 
 as
 begin
+  IF (new.EMMANUT IS NULL) THEN
+     new.EMMANUT='N';
   new.DTALT=cast('now' AS DATE);
   new.IDUSUALT=USER;
   new.HALT=cast('now'AS TIME);
@@ -31071,6 +31138,8 @@ as
 
 begin
 
+  IF ( not ( (new.EMMANUT='S') or ( (old.EMMANUT='S') and (old.EMMANUT is not null)) ) ) THEN
+  BEGIN
   -- buscando tipo de amostragem
 
     select pr.tipoprocrecmerc
@@ -31132,7 +31201,7 @@ begin
         eq.codfilialrc=old.codfilial and eq.codemprc=old.codemp and
         eq.numserie<>new.numserie;
     end
-
+  END
 end ^
 
 CREATE TRIGGER EQITRECMERCTGBD FOR EQITRECMERC 
@@ -31258,6 +31327,8 @@ CREATE TRIGGER EQITRECMERCITOSTGBU FOR EQITRECMERCITOS
 ACTIVE BEFORE UPDATE POSITION 0 
 as
 begin
+  IF (new.EMMANUT IS NULL) THEN
+     new.EMMANUT='N';
   new.DTALT=cast('now' AS DATE);
   new.IDUSUALT=USER;
   new.HALT=cast('now'AS TIME);
@@ -31281,6 +31352,8 @@ declare variable coditorc smallint;
 
 begin
 
+  IF ( not ( (new.EMMANUT='S') or ( (old.EMMANUT='S') and (old.EMMANUT is not null)) ) ) THEN
+  BEGIN
     -- Buscando status geral da OS
     select rm.status from eqrecmerc rm
     where rm.codemp=new.codemp and rm.codfilial=new.codfilial and rm.ticket=new.ticket
@@ -31365,7 +31438,7 @@ begin
         end
 
     end
-
+  END
 end ^
 
 CREATE TRIGGER EQITRECMERCITOSITORCTGBU FOR EQITRECMERCITOSITORC 
@@ -31887,11 +31960,16 @@ CREATE TRIGGER EQITSIMILARBU FOR EQITSIMILAR
 ACTIVE BEFORE UPDATE POSITION 0 
 AS
 begin
+  IF (new.EMMANUT IS NULL) THEN
+     new.EMMANUT='N';
   new.DTALT=cast('now' AS DATE);
   new.IDUSUALT=USER;
   new.HALT = cast('now' AS TIME);
-  SELECT REFPROD FROM EQPRODUTO WHERE CODEMP=new.CODEMPPD and CODFILIAL=new.CODFILIALPD
-     AND CODPROD=new.CODPROD INTO new.REFPROD;
+  IF ( not ( (new.EMMANUT='S') or ( (old.EMMANUT='S') and (old.EMMANUT is not null)) ) ) THEN
+  BEGIN  
+      SELECT REFPROD FROM EQPRODUTO WHERE CODEMP=new.CODEMPPD and CODFILIAL=new.CODFILIALPD
+         AND CODPROD=new.CODPROD INTO new.REFPROD;
+  END
 end ^
 
 CREATE TRIGGER EQITVARGRADETGBU FOR EQITVARGRADE 
@@ -32216,54 +32294,59 @@ as
   DECLARE VARIABLE CESTNEGGRUP CHAR(1);
   DECLARE VARIABLE ICODPROD INTEGER;
 begin
-  SELECT ICODFILIAL FROM SGRETFILIAL(new.CODEMP,'SGPREFERE1') INTO :iCodFilial;
-  SELECT ESTNEG, ESTNEGGRUP FROM SGPREFERE1
-     WHERE CODEMP=new.CODEMP AND CODFILIAL=:iCodFilial
-     INTO :cEstNeg, :cEstNegGrupPref;
+  IF (new.EMMANUT IS NULL) THEN
+     new.EMMANUT='N';
   new.DTALT=cast('now' AS DATE);
   new.IDUSUALT=USER;
   new.HALT = cast('now' AS TIME);
-  if (new.SLDPROD is null) then
-     new.SLDPROD = 0;
-  if (new.SLDRESPROD is null) then
-     new.SLDRESPROD = 0;
-  if (new.SLDCONSIGPROD is null) then
-     new.SLDCONSIGPROD = 0;
-  new.SLDLIQPROD = new.SLDPROD-new.SLDRESPROD-new.SLDCONSIGPROD;
-  if (cEstNeg Is null) then
-      cEstNeg = 'N';
-  if (cEstNegGrupPref is null) then
-      cEstNegGrupPref = 'N';
-  if ((new.SLDPROD < 0) AND (new.TIPOPROD='P') ) THEN
-  begin
-    if (cEstNegGrupPref = 'S') then
-    begin
-       SELECT ESTNEGGRUP FROM EQGRUPO
-         WHERE CODEMP=new.CODEMPGP AND CODFILIAL=new.CODFILIALGP AND
-            CODGRUP=new.CODGRUP INTO :CESTNEGGRUP;
-       if (cEstNegGrup is null) then
-          cEstNegGrup = 'N';
-       if (cEstNegGrup='N') then
-          EXCEPTION EQPRODUTOEX01 'O PROD. '||rtrim(cast(new.CODPROD as char(10)))
-            ||'-'||substring(new.DESCPROD from 1 for 20)||
-          ' NÃO POSSUI SALDO P/COMPL. A OPERAÇÃO';
-    end
-    else if (cEstNeg='N') then
-          EXCEPTION EQPRODUTOEX01 'O PROD. '||rtrim(cast(new.CODPROD as char(10)))
-            ||'-'||substring(new.DESCPROD from 1 for 20)||
-          ' NÃO POSSUI SALDO P/COMPL. A OPERAÇÃO';
-  end
-  if ( new.REFPROD != old.REFPROD ) then
-  begin
-     SELECT FIRST 1 CODPROD FROM EQMOVPROD WHERE CODEMPPD=new.CODEMP AND
-        CODFILIALPD=new.CODFILIAL AND CODPROD=new.CODPROD
-          INTO :ICODPROD;
-     if ( (ICODPROD IS NOT NULL) AND (ICODPROD=new.CODPROD) ) then
-        EXCEPTION EQPRODUTOEX01 'REFERÊNCIA NÃO PODE SER ALTERADA. PRODUTO POSSUI MOVIMENTO!';
-     else
-        UPDATE EQCODALTPROD SET REFPROD=new.REFPROD WHERE CODEMP=new.CODEMP AND
-          CODFILIAL=new.CODFILIAL AND CODPROD=new.CODPROD;
-  end
+  IF ( not ( (new.EMMANUT='S') or ( (old.EMMANUT='S') and (old.EMMANUT is not null)) ) ) THEN
+  BEGIN
+      SELECT ICODFILIAL FROM SGRETFILIAL(new.CODEMP,'SGPREFERE1') INTO :iCodFilial;
+      SELECT ESTNEG, ESTNEGGRUP FROM SGPREFERE1
+         WHERE CODEMP=new.CODEMP AND CODFILIAL=:iCodFilial
+         INTO :cEstNeg, :cEstNegGrupPref;
+      if (new.SLDPROD is null) then
+         new.SLDPROD = 0;
+      if (new.SLDRESPROD is null) then
+         new.SLDRESPROD = 0;
+      if (new.SLDCONSIGPROD is null) then
+         new.SLDCONSIGPROD = 0;
+      new.SLDLIQPROD = new.SLDPROD-new.SLDRESPROD-new.SLDCONSIGPROD;
+      if (cEstNeg Is null) then
+          cEstNeg = 'N';
+      if (cEstNegGrupPref is null) then
+          cEstNegGrupPref = 'N';
+      if ((new.SLDPROD < 0) AND (new.TIPOPROD='P') ) THEN
+      begin
+        if (cEstNegGrupPref = 'S') then
+        begin
+           SELECT ESTNEGGRUP FROM EQGRUPO
+             WHERE CODEMP=new.CODEMPGP AND CODFILIAL=new.CODFILIALGP AND
+                CODGRUP=new.CODGRUP INTO :CESTNEGGRUP;
+           if (cEstNegGrup is null) then
+              cEstNegGrup = 'N';
+           if (cEstNegGrup='N') then
+              EXCEPTION EQPRODUTOEX01 'O PROD. '||rtrim(cast(new.CODPROD as char(10)))
+                ||'-'||substring(new.DESCPROD from 1 for 20)||
+              ' NÃO POSSUI SALDO P/COMPL. A OPERAÇÃO';
+        end
+        else if (cEstNeg='N') then
+              EXCEPTION EQPRODUTOEX01 'O PROD. '||rtrim(cast(new.CODPROD as char(10)))
+                ||'-'||substring(new.DESCPROD from 1 for 20)||
+              ' NÃO POSSUI SALDO P/COMPL. A OPERAÇÃO';
+      end
+      if ( new.REFPROD != old.REFPROD ) then
+      begin
+         SELECT FIRST 1 CODPROD FROM EQMOVPROD WHERE CODEMPPD=new.CODEMP AND
+            CODFILIALPD=new.CODFILIAL AND CODPROD=new.CODPROD
+              INTO :ICODPROD;
+         if ( (ICODPROD IS NOT NULL) AND (ICODPROD=new.CODPROD) ) then
+            EXCEPTION EQPRODUTOEX01 'REFERÊNCIA NÃO PODE SER ALTERADA. PRODUTO POSSUI MOVIMENTO!';
+         else
+            UPDATE EQCODALTPROD SET REFPROD=new.REFPROD WHERE CODEMP=new.CODEMP AND
+              CODFILIAL=new.CODFILIAL AND CODPROD=new.CODPROD;
+      end
+  END
 end ^
 
 CREATE TRIGGER EQPRODUTOTGAU FOR EQPRODUTO 
@@ -32271,19 +32354,21 @@ ACTIVE AFTER UPDATE POSITION 0
 AS
     declare variable seqlog integer;
 begin
-
+  IF ( not ( (new.EMMANUT='S') or ( (old.EMMANUT='S') and (old.EMMANUT is not null)) ) ) THEN
+  BEGIN  
     --Verifica se o preço foi realmente alterado;
     if(new.precobaseprod != old.precobaseprod) then
     begin
     
-    select coalesce(max(seqlog),0) + 1 from eqprodutolog
-    where codemp=new.codemp and codfilial=new.codfilial and codprod=new.codprod
-    into :seqlog;
+      select coalesce(max(seqlog),0) + 1 from eqprodutolog
+      where codemp=new.codemp and codfilial=new.codfilial and codprod=new.codprod
+      into :seqlog;
 
-    insert into eqprodutolog(codemp, codfilial, codprod, seqlog, precobaseprodant, precobaseprodnovo)
-    values (new.codemp, new.codfilial, new.codprod, coalesce(:seqlog,1), old.precobaseprod, new.precobaseprod);
+      insert into eqprodutolog(codemp, codfilial, codprod, seqlog, precobaseprodant, precobaseprodnovo)
+      values (new.codemp, new.codfilial, new.codprod, coalesce(:seqlog,1), old.precobaseprod, new.precobaseprod);
 
-  end
+    end
+  END
 end ^
 
 CREATE TRIGGER EQPRODUTOLOGTGBU FOR EQPRODUTOLOG 
@@ -32393,6 +32478,8 @@ CREATE TRIGGER EQRECMERCTGBU FOR EQRECMERC
 ACTIVE BEFORE UPDATE POSITION 0 
 as
 begin
+  IF (new.EMMANUT IS NULL) THEN
+     new.EMMANUT='N';
   new.DTALT=cast('now' AS DATE);
   new.IDUSUALT=USER;
   new.HALT=cast('now'AS TIME);
@@ -32402,6 +32489,8 @@ CREATE TRIGGER EQRECMERCTGAU FOR EQRECMERC
 ACTIVE AFTER UPDATE POSITION 0 
 AS
 begin
+  IF ( not ( (new.EMMANUT='S') or ( (old.EMMANUT='S') and (old.EMMANUT is not null)) ) ) THEN
+  BEGIN
     -- Mecanismo de contingência do status dos itens de OS
 
     if( new.status='PT' ) then
@@ -32409,8 +32498,7 @@ begin
         update eqitrecmercitos set statusitos = 'CO'
         where codemp=new.codemp and codfilial=new.codfilial and ticket = new.ticket and statusitos!='CO';
     end
-
-
+ END
 end ^
 
 CREATE TRIGGER EQRMATGBI FOR EQRMA 
@@ -35601,24 +35689,28 @@ ACTIVE BEFORE UPDATE POSITION 0
 as
 declare variable iFinaliza smallint;
 begin
+  IF (new.EMMANUT IS NULL) THEN
+     new.EMMANUT='N';
   new.DTALT=cast('now' AS DATE);
   new.IDUSUALT=USER;
   new.HALT = cast('now' AS TIME);
-
-  if (new.REFPROD IS NULL) then
-  SELECT REFPROD FROM EQPRODUTO WHERE CODPROD=new.CODPROD
-         AND CODEMP=new.CODEMP AND CODFILIAL = new.CODFILIAL INTO new.REFPROD;
-  IF(NEW.ativoest='S' AND NEW.ativoest!=OLD.ativoest) THEN
+  IF ( not ( (new.EMMANUT='S') or ( (old.EMMANUT='S') and (old.EMMANUT is not null)) ) ) THEN
   BEGIN
-    select count(1) from ppestrufase ef
-        where ef.codemp=new.codemp and ef.codfilial=new.codfilial and
-        ef.codprod=new.codprod and ef.seqest=new.seqest and ef.finalizaop='S'
-        into :iFinaliza;
-    if ((:iFinaliza is null) or (:iFinaliza<1) ) then
-    begin
-      exception ppestruturaex01;
-    end
-  END
+      if (new.REFPROD IS NULL) then
+         SELECT REFPROD FROM EQPRODUTO WHERE CODPROD=new.CODPROD
+             AND CODEMP=new.CODEMP AND CODFILIAL = new.CODFILIAL INTO new.REFPROD;
+      IF(NEW.ativoest='S' AND NEW.ativoest!=OLD.ativoest) THEN
+      BEGIN
+        select count(1) from ppestrufase ef
+            where ef.codemp=new.codemp and ef.codfilial=new.codfilial and
+            ef.codprod=new.codprod and ef.seqest=new.seqest and ef.finalizaop='S'
+            into :iFinaliza;
+        if ((:iFinaliza is null) or (:iFinaliza<1) ) then
+        begin
+          exception ppestruturaex01;
+        end
+      END
+ END
 
 end ^
 
@@ -35628,26 +35720,29 @@ AS
 declare variable iCount smallint;
 declare variable sCertfsc char;
 begin
-    --verifica se estruta está em fase de ativação
-  IF(NEW.ativoest='S' AND OLD.ativoest='N') THEN
+  IF ( not ( (new.EMMANUT='S') or ( (old.EMMANUT='S') and (old.EMMANUT is not null)) ) ) THEN
   BEGIN
-     --busca na tabela de produtos se produto é certificado FSC
-     select pd.certfsc from eqproduto pd
-        where pd.codemp=new.codemp and pd.codfilial=new.codfilial and pd.codprod=new.codprod
-        into :sCertfsc;
-
-     --Se produto é certificado, e não possui nenhum subproduto cadastrado lança uma exceção.
-     IF(:sCertfsc='S') then
-     BEGIN
-        select count(1) from PPITESTRUTURASUBPROD es
-           where es.codemp= new.codemp and es.codfilial=new.codfilial and es.codprod= new.codprod  and es.seqest = new.seqest
-           into :iCount;
-        IF ((:iCount is null) or (:iCount<1) ) THEN
-        BEGIN
-           exception ppestruturaex02;
-        END
-     END
-  END
+        --verifica se estruta está em fase de ativação
+      IF(NEW.ativoest='S' AND OLD.ativoest='N') THEN
+      BEGIN
+         --busca na tabela de produtos se produto é certificado FSC
+         select pd.certfsc from eqproduto pd
+            where pd.codemp=new.codemp and pd.codfilial=new.codfilial and pd.codprod=new.codprod
+            into :sCertfsc;
+    
+         --Se produto é certificado, e não possui nenhum subproduto cadastrado lança uma exceção.
+         IF(:sCertfsc='S') then
+         BEGIN
+            select count(1) from PPITESTRUTURASUBPROD es
+               where es.codemp= new.codemp and es.codfilial=new.codfilial and es.codprod= new.codprod  and es.seqest = new.seqest
+               into :iCount;
+            IF ((:iCount is null) or (:iCount<1) ) THEN
+            BEGIN
+               exception ppestruturaex02;
+            END
+         END
+      END
+ END
 end ^
 
 CREATE TRIGGER PPFASETGBU FOR PPFASE 
@@ -35684,12 +35779,17 @@ CREATE TRIGGER PPITESTRUTURATGBU FOR PPITESTRUTURA
 ACTIVE BEFORE UPDATE POSITION 0 
 as
 begin
+  IF (new.EMMANUT IS NULL) THEN
+     new.EMMANUT='N';
   new.DTALT=cast('now' AS DATE);
   new.IDUSUALT=USER;
   new.HALT = cast('now' AS TIME);
-  if (new.REFPROD IS NULL) then
-    SELECT REFPROD FROM EQPRODUTO WHERE CODPROD=new.CODPROD
+  IF ( not ( (new.EMMANUT='S') or ( (old.EMMANUT='S') and (old.EMMANUT is not null)) ) ) THEN
+  BEGIN
+      if (new.REFPROD IS NULL) then
+        SELECT REFPROD FROM EQPRODUTO WHERE CODPROD=new.CODPROD
          AND CODEMP=new.CODEMP AND CODFILIAL = new.CODFILIAL INTO new.REFPROD;
+  END
 end ^
 
 CREATE TRIGGER PPITESTRUTURASUBPRODTGBI FOR PPITESTRUTURASUBPROD 
@@ -35708,12 +35808,17 @@ CREATE TRIGGER PPITESTRUTURASUBPRODTGBU FOR PPITESTRUTURASUBPROD
 ACTIVE BEFORE UPDATE POSITION 0 
 as
 begin
+  IF (new.EMMANUT IS NULL) THEN
+     new.EMMANUT='N';
   new.DTALT=cast('now' AS DATE);
   new.IDUSUALT=USER;
   new.HALT = cast('now' AS TIME);
-  if (new.REFPROD IS NULL) then
-    SELECT REFPROD FROM EQPRODUTO WHERE CODPROD=new.CODPROD
+  IF ( not ( (new.EMMANUT='S') or ( (old.EMMANUT='S') and (old.EMMANUT is not null)) ) ) THEN
+  BEGIN
+    if (new.REFPROD IS NULL) then
+      SELECT REFPROD FROM EQPRODUTO WHERE CODPROD=new.CODPROD
          AND CODEMP=new.CODEMP AND CODFILIAL = new.CODFILIAL INTO new.REFPROD;
+  END
 end ^
 
 CREATE TRIGGER PPITOPTGBI FOR PPITOP 
@@ -36556,11 +36661,16 @@ CREATE TRIGGER PPOPSUBPRODTGBU FOR PPOPSUBPROD
 ACTIVE BEFORE UPDATE POSITION 0 
 as
 begin
+  IF (new.EMMANUT IS NULL) THEN
+     new.EMMANUT='N';
   new.DTALT=cast('now' AS DATE);
   new.IDUSUALT=USER;
   new.HALT = cast('now' AS TIME);
-  SELECT REFPROD FROM EQPRODUTO WHERE CODEMP=new.CODEMPPD AND
-    CODFILIAL=new.CODFILIALPD AND CODPROD=new.CODPROD INTO new.REFPROD;
+  IF ( not ( (new.EMMANUT='S') or ( (old.EMMANUT='S') and (old.EMMANUT is not null)) ) ) THEN
+  BEGIN  
+      SELECT REFPROD FROM EQPRODUTO WHERE CODEMP=new.CODEMPPD AND
+        CODFILIAL=new.CODFILIALPD AND CODPROD=new.CODPROD INTO new.REFPROD;
+  END
 end ^
 
 CREATE TRIGGER PPOPSUBPRODTGAU FOR PPOPSUBPROD 
@@ -36572,7 +36682,8 @@ declare variable codfilialax smallint;
 declare variable codalmox integer;
 
 begin
-
+  IF ( not ( (new.EMMANUT='S') or ( (old.EMMANUT='S') and (old.EMMANUT is not null)) ) ) THEN
+  BEGIN
     if ( new.qtditsp>0 and (old.dtsubprod is null and new.dtsubprod is not null) ) then
         begin
 
@@ -36592,6 +36703,7 @@ begin
                 new.dtsubprod , new.codop, 'N', new.qtditsp,:preco,
                 :codempax, :codfilialax, :codalmox, new.seqsubprod, 'S', 'N' );
         end
+  END
 end ^
 
 CREATE TRIGGER PPOPSUBPRODTGAD FOR PPOPSUBPROD 
@@ -38590,7 +38702,6 @@ CREATE TRIGGER VDITKITTGBI FOR VDITKIT
 ACTIVE BEFORE INSERT POSITION 0 
 AS
 begin
-  /* Trigger text */
   new.DTINS=cast('now' AS DATE);
   new.IDUSUINS=USER;
   new.HINS = cast('now' AS TIME);
@@ -38601,11 +38712,15 @@ CREATE TRIGGER VDITKITTGBU FOR VDITKIT
 ACTIVE BEFORE UPDATE POSITION 0 
 AS
 begin
-  /* Trigger text */
+  IF (new.EMMANUT IS NULL) THEN
+     new.EMMANUT='N';
   new.DTALT=cast('now' AS DATE);
   new.IDUSUALT=USER;
   new.HALT = cast('now' AS TIME);
-  SELECT REFPROD FROM EQREFPRODSP(new.CODEMP, new.CODFILIAL, new.CODPROD) INTO new.REFPROD;
+  IF ( not ( (new.EMMANUT='S') or ( (old.EMMANUT='S') and (old.EMMANUT is not null)) ) ) THEN
+  BEGIN  
+     SELECT REFPROD FROM EQREFPRODSP(new.CODEMP, new.CODFILIAL, new.CODPROD) INTO new.REFPROD;
+  END
 end ^
 
 CREATE TRIGGER VDITORCAMENTOTGBI FOR VDITORCAMENTO 
@@ -40045,18 +40160,21 @@ begin
   new.IDUSUINS=USER;
   new.HINS = cast('now' AS TIME);
   SELECT REFPROD FROM EQREFPRODSP(new.CODEMP, new.CODFILIAL, new.CODPROD) INTO new.REFPROD;
-  /* Trigger text */
 end ^
 
 CREATE TRIGGER VDKITTGBU FOR VDKIT 
 ACTIVE BEFORE UPDATE POSITION 0 
 AS
 begin
+  IF (new.EMMANUT IS NULL) THEN
+     new.EMMANUT='N';
   new.DTALT=cast('now' AS DATE);
   new.IDUSUALT=USER;
   new.HALT = cast('now' AS TIME);
-  SELECT REFPROD FROM EQREFPRODSP(new.CODEMP, new.CODFILIAL, new.CODPROD) INTO new.REFPROD;
-  /* Trigger text */
+  IF ( not ( (new.EMMANUT='S') or ( (old.EMMANUT='S') and (old.EMMANUT is not null)) ) ) THEN
+  BEGIN  
+     SELECT REFPROD FROM EQREFPRODSP(new.CODEMP, new.CODFILIAL, new.CODPROD) INTO new.REFPROD;
+  END
 end ^
 
 CREATE TRIGGER VDMOTORISTATGAI FOR VDMOTORISTA 
@@ -41874,6 +41992,9 @@ GRANT SELECT ON EQTIPOMOV TO PROCEDURE VDBUSCAPRECOSP;
 GRANT SELECT ON EQTIPOMOV TO PROCEDURE VDEVOLUVENDAS;
 GRANT DELETE, INSERT, SELECT, UPDATE ON EQTIPOMOVUSU TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON EQTIPORECMERC TO ROLE ADM;
+GRANT DELETE, INSERT, SELECT, UPDATE ON EQITTROCAREFPROD TO ROLE ADM;
+GRANT DELETE, INSERT, SELECT, UPDATE ON EQTROCAREFPROD TO ROLE ADM;
+GRANT DELETE, INSERT, SELECT, UPDATE ON EQITTROCARPLOG TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON EQUNIDADE TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON EQVARGRADE TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON FNBANCO TO ROLE ADM;
