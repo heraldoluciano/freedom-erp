@@ -22002,8 +22002,8 @@ begin
             from lfitclfiscal it, eqproduto p, sgfilial f
             where p.codprod=:codprod and p.codfilial=:codfilial and p.codemp=:codemp and it.codemp=p.codempfc
                 and it.codfilial=p.codfilialfc and it.codfisc=p.codfisc and it.noufitfisc=:noestcf
-                and (((it.codtipomov=:codtipomov and it.codemptm=:codemptm and it.codfilial=:codfilialtm) or (it.codtipomov is null))
-                and  ((it.codfisccli=:codfisccf and it.codempfc=:codempfccf and it.codfilialfc=:codfilialfccf) or (it.codfisccli is null)))
+                and ((it.codtipomov=:codtipomov and it.codemptm=:codemptm and it.codfilial=:codfilialtm) or (it.codtipomov is null))
+                and  ((it.codfisccli=:codfisccf and it.codempfc=:codempfccf and it.codfilialfc=:codfilialfccf) or (it.codfisccli is null))
                 and it.siglauf=:ufcf and it.tipousoitfisc=:tipobusca
                 and f.codemp=:codemp and f.codfilial=:codfilial
             order by it.codtipomov desc, it.codfisccli desc
@@ -25330,7 +25330,7 @@ end ^
 ALTER PROCEDURE SGRETVERSAO RETURNS (VERSAO VARCHAR(30))
 AS 
 begin
-    versao = '1.2.6.5 (17/08/2013)';
+    versao = '1.2.6.6 (21/11/2013)';
     suspend;
 end ^
 
