@@ -25330,7 +25330,7 @@ end ^
 ALTER PROCEDURE SGRETVERSAO RETURNS (VERSAO VARCHAR(30))
 AS 
 begin
-    versao = '1.2.6.5 (17/08/2013)';
+    versao = '1.2.6.6 (21/11/2013)';
     suspend;
 end ^
 
