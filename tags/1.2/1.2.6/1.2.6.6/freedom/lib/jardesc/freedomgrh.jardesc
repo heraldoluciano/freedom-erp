@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<jardesc>
+    <jar path="freedom/lib/freedomgrh.jar"/>
+    <options buildIfNeeded="true" compress="true" descriptionLocation="/freedom/lib/jardesc/freedomgrh.jardesc" exportErrors="false" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
+    <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
+    <selectedProjects/>
+    <manifest generateManifest="false" manifestLocation="/freedom/META-INF/MANIFEST.MF" manifestVersion="1.0" reuseManifest="true" saveManifest="true" usesManifest="true">
+        <sealing sealJar="false">
+            <packagesToSeal/>
+            <packagesToUnSeal/>
+        </sealing>
+    </manifest>
+    <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
+        <file path="/freedom/src/org/freedom/layout/rel/REL_GPE_BATIDAS.jrxml"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.grh.view.frame.crud.special"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.cfg.view.frame.crud.tabbed{FFeriados.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.grh.view.frame.crud.plain"/>
+        <file path="/freedom/src/org/freedom/layout/rel/REL_GPE_BATIDAS.jasper"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.grh.view.frame.crud.tabbed"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.grh"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.grh.view.frame.utility"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.grh.view.frame.report"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.grh.view.crud"/>
+    </selectedElements>
+</jardesc>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<jardesc>
+    <jar path="freedom/lib/freedom.jar"/>
+    <options buildIfNeeded="true" compress="true" descriptionLocation="/freedom/lib/jardesc/freedom.jardesc" exportErrors="false" exportWarnings="true" includeDirectoryEntries="true" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
+    <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
+    <selectedProjects/>
+    <manifest generateManifest="false" manifestLocation="/freedom/META-INF/MANIFEST.MF" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
+        <sealing sealJar="false">
+            <packagesToSeal/>
+            <packagesToUnSeal/>
+        </sealing>
+    </manifest>
+    <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.bol"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.business.component"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.graphics"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.business.webservice"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.col"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.doc.release_notes"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.business.object"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.udf"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.images"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.atd"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.relatorios.etiquetas.clientes"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.nf"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.dup"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.orc"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.pd"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.relatorios"/>
+        <folder path="/freedom/icones/novos"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.scriptlet"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.udf.amd64"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.relatorios.fnc"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.rel"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.rec"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.op"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.oc"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout.os"/>
+    </selectedElements>
+</jardesc>
