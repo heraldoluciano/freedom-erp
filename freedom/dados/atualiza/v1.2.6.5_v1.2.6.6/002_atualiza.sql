@@ -5,7 +5,7 @@ SET NAMES ISO8859_1;
 
 SET SQL DIALECT 3;
 
-CONNECT '/opt/firebird/dados/desenv/freedom251.2.6.5.fdb' USER 'SYSDBA' PASSWORD '123654';
+--CONNECT '/opt/firebird/dados/desenv/freedom251.2.6.5.fdb' USER 'SYSDBA' PASSWORD '123654';
 
 SET AUTODDL ON;
 
