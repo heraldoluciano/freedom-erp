@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<jardesc>
+    <jar path="freedom/lib/freedompcp.jar"/>
+    <options buildIfNeeded="true" compress="true" descriptionLocation="/freedom/lib/jardesc/freedompcp.jardesc" exportErrors="false" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
+    <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
+    <selectedProjects/>
+    <manifest generateManifest="false" manifestLocation="/freedom/META-INF/MANIFEST.MF" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
+        <sealing sealJar="false">
+            <packagesToSeal/>
+            <packagesToUnSeal/>
+        </sealing>
+    </manifest>
+    <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.pcp.Interface"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.pcp.view.dialog.utility"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.pcp.view.frame.crud.plain"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.pcp.dao"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.pcp.view.dialog.report"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.doc.release_notes"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.pcp.view.frame.report.fsc"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.pcp.business.object"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.pcp.view.frame.crud.detail"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.pcp"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.pcp.view.frame.report"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.pcp.view.frame.crud.tabbed"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.pcp.view.frame.utility"/>
+    </selectedElements>
+</jardesc>

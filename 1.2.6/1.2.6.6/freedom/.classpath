@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/liquidlnf.jar"/>
+	<classpathentry kind="lib" path="lib/metouia.jar"/>
+	<classpathentry kind="lib" path="lib/squareness.jar"/>
+	<classpathentry kind="lib" path="lib/jdt-compiler.jar"/>
+	<classpathentry kind="lib" path="lib/jasperreports-chart-themes-3.7.6.jar"/>
+	<classpathentry kind="lib" path="lib/spring-beans-2.5.5.jar"/>
+	<classpathentry kind="lib" path="lib/spring-core-2.5.5.jar"/>
+	<classpathentry kind="lib" path="lib/castor-1.2.jar"/>
+	<classpathentry kind="lib" path="lib/jasperreports-extensions-3.5.3.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/freedom-ecf"/>
+	<classpathentry kind="lib" path="lib/jcommon.jar"/>
+	<classpathentry kind="lib" path="lib/ireport.jar"/>
+	<classpathentry kind="lib" path="lib/dsn.jar"/>
+	<classpathentry kind="lib" path="lib/imap.jar"/>
+	<classpathentry kind="lib" path="lib/pop3.jar"/>
+	<classpathentry kind="lib" path="lib/saaj.jar"/>
+	<classpathentry kind="lib" path="lib/smtp.jar"/>
+	<classpathentry kind="lib" path="lib/TableLayout.jar"/>
+	<classpathentry kind="lib" path="lib/dom4j.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/freedom-nfe"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/freedom-fw1"/>
+	<classpathentry kind="lib" path="/freedom-fw1/lib/jasperreports.jar"/>
+	<classpathentry kind="lib" path="/freedom-fw1/lib/jfreechart.jar"/>
+	<classpathentry kind="lib" path="/freedom-fw1/lib/bizcal.jar"/>
+	<classpathentry kind="lib" path="/freedom-fw1/lib/nachocalendar.jar"/>
+	<classpathentry kind="lib" path="lib/poi.jar"/>
+	<classpathentry kind="lib" path="/freedom-infra/lib/mailapi.jar"/>
+	<classpathentry kind="lib" path="/freedom-fw1/lib/jasperreports-fonts.jar"/>
+	<classpathentry kind="lib" path="/freedom-fw1/lib/commons-digester.jar"/>
+	<classpathentry kind="lib" path="/freedom-infra/lib/ilf-gpl.jar"/>
+	<classpathentry kind="lib" path="/freedom-ecf/lib/comm/lin/comm.jar"/>
+	<classpathentry kind="lib" path="/freedom-fw1/lib/barbecue.jar"/>
+	<classpathentry kind="lib" path="/freedom-fw1/lib/commons-beanutils.jar"/>
+	<classpathentry kind="lib" path="/freedom-fw1/lib/commons-collections.jar"/>
+	<classpathentry kind="lib" path="/freedom-fw1/lib/commons-discovery.jar"/>
+	<classpathentry kind="lib" path="/freedom-fw1/lib/commons-lang.jar"/>
+	<classpathentry kind="lib" path="/freedom-fw1/lib/commons-logging.jar"/>
+	<classpathentry kind="lib" path="/freedom-infra/lib/jaybird-full-2.2.3.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
