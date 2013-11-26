@@ -99,6 +99,8 @@ public abstract class AbstractNFEFactory {
 	private String kindTransmission = KIND_APP_FISCO;
 
 	private String KindEnv = KIND_ENV_HOMOLOG;
+	
+	private boolean nfeAutorizada = false;
 
 	public enum SYSTEM {
 		FREEDOM
@@ -272,6 +274,14 @@ public abstract class AbstractNFEFactory {
 
 	public void setKindEnv(String kindEnv) {
 		KindEnv = kindEnv;
+	}
+
+	public boolean isNfeAutorizada() {
+		return nfeAutorizada;
+	}
+
+	public void setNfeAutorizada(boolean nfeAutorizada) {
+		this.nfeAutorizada = nfeAutorizada;
 	}
 
 	
