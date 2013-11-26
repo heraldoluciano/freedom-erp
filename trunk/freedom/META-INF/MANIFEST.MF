@@ -3,6 +3,7 @@ Main-Class: org.freedom.modulos.std.FreedomSTD
 Signature-Version: 1.2.6.6 (21/11/2013)
 Class-path: *
 Caller-Allowable-Codebase: *
+Application-Library-Allowable-Codebase: *
  
 Name: Freedom
 Specification-Title: FreedomERP 
