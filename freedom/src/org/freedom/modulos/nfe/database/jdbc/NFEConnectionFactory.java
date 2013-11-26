@@ -95,6 +95,7 @@ public class NFEConnectionFactory implements NFEListener {
 					getObjNFEFactory().setTpNF( getTpNF() );
 					getObjNFEFactory().setService( isService() );
 					getObjNFEFactory().setKindEnv( getKindEnv() );
+					getObjNFEFactory().setKindTransmission( getKindTransmission() );
 
 				}
 				else {
@@ -366,7 +367,13 @@ public class NFEConnectionFactory implements NFEListener {
 			inconsistency.setVisible( true );
 		}
 		else {
-			Funcoes.mensagemInforma( null, "Arquivo de NF-e criado com sucesso.\n verifique a pasta:" + getDirNFE() );
+			if (getKindTransmission().equals( AbstractNFEFactory.KIND_APP_OWN) ) {
+				if (nfefactory.isNfeAutorizada()) {
+					Funcoes.mensagemInforma( null, "NFe autorizada com sucesso!");
+				}
+			} else {
+				Funcoes.mensagemInforma( null, "Arquivo de NF-e criado com sucesso.\n verifique a pasta:" + getDirNFE() );
+			}
 		}
 	}
 	
