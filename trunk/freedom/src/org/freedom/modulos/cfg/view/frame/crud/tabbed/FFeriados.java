@@ -79,7 +79,7 @@ public class FFeriados extends FTabDados implements PostListener, DeleteListener
 
 	private JCheckBoxPad cbBanc = new JCheckBoxPad( "Feriado Bancário?", "S", "N" );
 
-	private JCheckBoxPad cbTrabFer = new JCheckBoxPad( "Feriado Trabalista?", "S", "N" );
+	private JCheckBoxPad cbTrabFer = new JCheckBoxPad( "Feriado Trabalhista?", "S", "N" );
 
 	private JCheckBoxPad cbOptFer = new JCheckBoxPad( "Feriado Optativo?", "S", "N" );
 	
@@ -103,7 +103,7 @@ public class FFeriados extends FTabDados implements PostListener, DeleteListener
 		tabData.adicColuna( "Data Feriado" );
 		tabData.adicColuna( "Descrição do Feriado" );
 		tabData.adicColuna( "Bancário" );
-		tabData.adicColuna( "Trabalista" );
+		tabData.adicColuna( "Trabalhista" );
 		tabData.setTamColuna( 350, EcolFeriado.DESCFER.ordinal() );
 
 		pnGImp.add( btGeraExped );

@@ -278,8 +278,8 @@ public class FreedomSTD extends AplicativoPD {
 		addOpcao( 100000000, TP_OPCAO_MENU, "Tabelas", "", 'T', 100100000, 1, false, null );
 		addOpcao( 100100000, TP_OPCAO_MENU, "Cliente", "", 'C', 100101000, 2, false, null );
 		addOpcao( 100101000, TP_OPCAO_ITEM, "Tipo de cliente", "TipoCli", 'T', 100101010, 3, true, FTipoCli.class );
-		addOpcao( 100101000, TP_OPCAO_ITEM, "Classificação de cliente", "Classifição de Clientes", 'f', 100101020, 3, true, FClasCli.class );
-		addOpcao( 100101000, TP_OPCAO_ITEM, "Atividae CNAE", "Atividade CNAE", 'a', 100101060, 3, true, FCnae.class );
+		addOpcao( 100101000, TP_OPCAO_ITEM, "Classificação de cliente", "Classificação de Clientes", 'f', 100101020, 3, true, FClasCli.class );
+		addOpcao( 100101000, TP_OPCAO_ITEM, "Atividade CNAE", "Atividade CNAE", 'a', 100101060, 3, true, FCnae.class );
 		addOpcao( 100101000, TP_OPCAO_ITEM, "Cliente", "Clientes", 'C', 100101030, 3, true, FCliente.class );
 		addOpcao( 100101000, TP_OPCAO_ITEM, "Crédito por cliente", "Crédito por cliente", 'r', 100101050, 3, true, FCredCli.class );
 		addOpcao( 100100000, TP_OPCAO_MENU, "Comissionado", "", 'C', 100102000, 2, false, null );
