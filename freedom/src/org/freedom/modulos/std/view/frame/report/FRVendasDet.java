@@ -337,7 +337,7 @@ public class FRVendasDet extends FRelatorio {
 				sCab.append( txtDescProd.getVlrString() );
 			}
 			if ( txtCodVend.getVlrInteger().intValue() > 0 ) {
-				sWhere5 = " AND V.CODVEND=" + txtCodVend.getVlrInteger().intValue() + " ";
+				sWhere6 = " AND V.CODVEND=" + txtCodVend.getVlrInteger().intValue() + " ";
 				if ( sCab.length() > 0 ) {
 					sCab.append( "\n" );
 				}
