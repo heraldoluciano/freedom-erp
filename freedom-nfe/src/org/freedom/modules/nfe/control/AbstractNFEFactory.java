@@ -101,6 +101,8 @@ public abstract class AbstractNFEFactory {
 	private String KindEnv = KIND_ENV_HOMOLOG;
 	
 	private boolean nfeAutorizada = false;
+	
+	private String chaveNfe = null;
 
 	public enum SYSTEM {
 		FREEDOM
@@ -282,6 +284,14 @@ public abstract class AbstractNFEFactory {
 
 	public void setNfeAutorizada(boolean nfeAutorizada) {
 		this.nfeAutorizada = nfeAutorizada;
+	}
+
+	public String getChaveNfe() {
+		return chaveNfe;
+	}
+
+	public void setChaveNfe(String chaveNfe) {
+		this.chaveNfe = chaveNfe;
 	}
 
 	
