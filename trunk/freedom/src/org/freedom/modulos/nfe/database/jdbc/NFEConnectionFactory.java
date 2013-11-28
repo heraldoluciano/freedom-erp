@@ -25,8 +25,6 @@ import org.freedom.modules.nfe.event.NFEEvent;
 import org.freedom.modules.nfe.event.NFEListener;
 import org.freedom.modulos.nfe.DLInconsistency;
 
-import com.setpoint.nfetools.Enum.SituacaoNFE;
-
 /**
  * Classe para manipulação de conexão com banco de dados NFE.
  * 
@@ -371,7 +369,7 @@ public class NFEConnectionFactory implements NFEListener {
 		else {
 			if (getKindTransmission().equals( AbstractNFEFactory.KIND_APP_OWN) ) {
 				if (nfefactory.isNfeAutorizada()) {
-					Funcoes.mensagemInforma( null, SituacaoNFE.m100.getMensagem());
+					Funcoes.mensagemInforma( null, "Autorizado o uso da NF-e");
 				}
 			} else {
 				Funcoes.mensagemInforma( null, "Arquivo de NF-e criado com sucesso.\n verifique a pasta:" + getDirNFE() );
