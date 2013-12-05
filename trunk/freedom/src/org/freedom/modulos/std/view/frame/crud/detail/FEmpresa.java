@@ -56,8 +56,10 @@ public class FEmpresa extends FDetalhe {
 	
 	private JPanelPad pinDetContador = new JPanelPad();
 	
-	private JPanelPad pinSped = new JPanelPad();
-	
+	private JPanelPad pinSpedEPC = new JPanelPad();
+
+	private JPanelPad pinSpedEFD = new JPanelPad();
+
 	private JPanelPad pinMatriz = new JPanelPad();
 
 	private JTextFieldPad txtCodEmp = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
@@ -160,6 +162,8 @@ public class FEmpresa extends FDetalhe {
 	
 	private JComboBoxPad cbPerfilFilial = null;
 	
+	private JComboBoxPad cbPerfilEPC = null;
+	
 	public Constant PERFIL_FILIAL_A = new Constant( "Perfil A", "A" );
 	
 	public Constant PERFIL_FILIAL_B = new Constant( "Perfil B", "B" );
@@ -238,6 +242,22 @@ public class FEmpresa extends FDetalhe {
 		vValsPerfil.addElement( PERFIL_FILIAL_C.getValue().toString() );
 
 		cbPerfilFilial = new JComboBoxPad( vLabsPerfil, vValsPerfil, JComboBoxPad.TP_STRING, 1, 0);
+
+		Vector<String> vLabsPerfilEPC = new Vector<String>();
+		Vector<String> vValsPerfilEPC = new Vector<String>();
+
+		vLabsPerfilEPC.addElement("<--Selecione-->");
+		
+		vLabsPerfilEPC.addElement( PERFIL_FILIAL_A.getName() );
+		vLabsPerfilEPC.addElement( PERFIL_FILIAL_B.getName() );
+		vLabsPerfilEPC.addElement( PERFIL_FILIAL_C.getName() );
+		
+		vValsPerfilEPC.addElement("");		
+		vValsPerfilEPC.addElement( PERFIL_FILIAL_A.getValue().toString() );
+		vValsPerfilEPC.addElement( PERFIL_FILIAL_B.getValue().toString() );
+		vValsPerfilEPC.addElement( PERFIL_FILIAL_C.getValue().toString() );
+
+		cbPerfilEPC = new JComboBoxPad( vLabsPerfilEPC, vValsPerfilEPC, JComboBoxPad.TP_STRING, 1, 0);
 
 		Vector<String> vLabsIndAtiv = new Vector<String>();
 		Vector<String> vValsIndAtiv = new Vector<String>();
@@ -428,9 +448,10 @@ public class FEmpresa extends FDetalhe {
 		adicCampo( txtPercIssFilial, 319, 60, 75, 20, "PercISSFilial", "% ISS", ListaCampos.DB_SI, false );
 		adicCampo( txtPercSimples, 397, 60, 83, 20, "PercSimplesFilial", "% Simples", ListaCampos.DB_SI, false );
 		
-		adicDB( cbPerfilFilial, 7, 110, 200, 20, "PerfilFIlial", "Perfil SPED", false );
+		adicDB( cbPerfilFilial, 7, 110, 200, 20, "PerfilFIlial", "Perfil SPED Fiscal (EFD)", false );
 		adicDB( cbIndAtivFilial, 210, 110, 250, 20, "IndAtivFIlial", "Indicador de atividade SPED", false );				
 		adicDB( cbIndNatPjFilial, 7, 160, 455, 20, "IndNatPjFilial", "Indicador da natureza da pessoa jurídica", false );
+		adicDB( cbPerfilEPC, 7, 210, 200, 20, "PerfilEPC", "Perfil SPED Contribuições (EPC)", false );
 		
 		
 		// Aba Contabilidade
@@ -443,18 +464,25 @@ public class FEmpresa extends FDetalhe {
 		
 		adicCampo( txtCodFor, 7, 20, 60, 20, "codfor", "Cod.for.", ListaCampos.DB_FK, txtNomeFor, false );
 		adicDescFK( txtNomeFor, 70, 20, 250, 20, "NomeFOr", "Nome do fornecedor (contabilista)" );
-		
-		// Aba SPED
+
+		// Aba SPED EFD
 		
 		pnDet.add( tpnGeral );
-		tpnGeral.addTab( "SPED", pinSped );
-		setPainel( pinSped );
+		tpnGeral.addTab( "SPED Fiscal EFD", pinSpedEFD );
+		setPainel( pinSpedEFD );
+		
+		adicDB( cbCodRec, 7,20, 500, 20, "CODRECEITA", "Código de receita", false );
+
+		// Aba SPED EPC
+		
+		pnDet.add( tpnGeral );
+		tpnGeral.addTab( "SPED Contribuições EPC", pinSpedEPC );
+		setPainel( pinSpedEPC );
 		
 		adicDB( cbCodInc, 7, 20, 500, 20, "CODINCTRIB", "Indicador da incidência tributária no período", false );
 		adicDB( cbCodApro, 7, 60, 500, 20, "INDAPROCRED", "Indicador de método de apropriação de créditos comuns", false );
 		adicDB( cbCodCon, 7, 100, 500, 20, "CODTIPOCONT", "Indicador do Tipo de Contribuição Apurada no Período", false );
 		adicDB( cbCodEsc, 7, 140, 500, 20, "INDREGCUM", "Indicador do critério de escrituração e apuração adotado", false );
-		adicDB( cbCodRec, 7,180, 500, 20, "CODRECEITA", "Código de receita", false );
 		
 		// Aba Matriz/Franqueadora
 		
