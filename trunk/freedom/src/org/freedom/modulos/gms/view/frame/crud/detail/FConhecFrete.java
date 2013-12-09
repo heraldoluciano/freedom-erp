@@ -102,7 +102,9 @@ public class FConhecFrete extends FDetalhe implements ActionListener, ChangeList
 	private JTextFieldFK txtDescTipoMov = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JTextFieldPad txtDtEmitFrete = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
-	
+
+	private JTextFieldPad txtDtMovFrete = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+
 	private JTextFieldPad txtDtPagFrete = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldPad txtCodTran = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
@@ -415,17 +417,18 @@ public class FConhecFrete extends FDetalhe implements ActionListener, ChangeList
 		setPainel( panelCabecalho, pnCliCab );
 		setAltCab( 290 );
 
-		adicCampo( txtCodFrete, 7, 20, 90, 20, "CodFrete", "Cód.Frete", ListaCampos.DB_PK, true );
-		adicCampo( txtSerieFrete, 100, 20, 50, 20, "Serie", "Serie", ListaCampos.DB_SI, false );
-		adicCampo( txtDocFrete, 153, 20, 72, 20, "DocFrete", "Doc.", ListaCampos.DB_SI, false );
-		adicCampo( txtDtEmitFrete, 228, 20, 75, 20, "DTEmitFrete", "Dt.emissão", ListaCampos.DB_SI, true );		
+		adicCampo( txtCodFrete, 7, 20, 70, 20, "CodFrete", "Cód.Frete", ListaCampos.DB_PK, true );
+		adicCampo( txtSerieFrete, 80, 20, 40, 20, "Serie", "Serie", ListaCampos.DB_SI, false );
+		adicCampo( txtDocFrete, 122, 20, 72, 20, "DocFrete", "Doc.", ListaCampos.DB_SI, false );
+		adicCampo( txtDtEmitFrete, 197, 20, 75, 20, "DTEmitFrete", "Dt.emissão", ListaCampos.DB_SI, true );		
+		adicCampo( txtDtMovFrete, 274, 20, 75, 20, "DTMovFrete", "Dt.mov.E/S", ListaCampos.DB_SI, true );		
 		
 		txtDtPagFrete.setSoLeitura( true );
 		
-		adicCampo( txtDtPagFrete, 306, 20, 75, 20, "DTPagFrete", "Dt.Pgto.", ListaCampos.DB_SI, false );
+		adicCampo( txtDtPagFrete, 351, 20, 75, 20, "DTPagFrete", "Dt.Pgto.", ListaCampos.DB_SI, false );
 
-		adicCampo( txtCodTipoMov, 384, 20, 60, 20, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_FK, txtDescTipoMov, true );
-		adicDescFK( txtDescTipoMov, 446, 20, 250, 20, "DescTipoMov", "Descrição do tipo de movimento" );
+		adicCampo( txtCodTipoMov, 428, 20, 50, 20, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_FK, txtDescTipoMov, true );
+		adicDescFK( txtDescTipoMov, 480, 20, 216, 20, "DescTipoMov", "Descrição do tipo de movimento" );
 
 		adicCampo( txtCodTran, 7, 60, 90, 20, "CodTran", "Cód.Tran.", ListaCampos.DB_FK, txtRazTran, true );
 		adicDescFK( txtRazTran, 100, 60, 250, 20, "RazTran", "Razão social da transportadora" );
@@ -830,6 +833,7 @@ public class FConhecFrete extends FDetalhe implements ActionListener, ChangeList
 			txtVlrICMSFrete.setVlrBigDecimal( new BigDecimal( "0.00" ) );
 			txtVlrBaseICMSFrete.setVlrBigDecimal( new BigDecimal( "0.00" ) );
 			txtDtEmitFrete.setVlrDate( new Date() );
+			txtDtMovFrete.setVlrDate( new Date() );
 
 			txtDocFrete.requestFocus();
 		}
