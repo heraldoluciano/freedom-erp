@@ -4692,6 +4692,7 @@ CREATE TABLE LFFRETE (CODEMP INTEGER NOT NULL,
         CODFILIALDE SMALLINT NOT NULL,
         CODDESTINAT INTEGER NOT NULL,
         DTEMITFRETE DATE NOT NULL,
+        DTMOVFRETE DATE,
         DTPAGFRETE DATE,
         QTDFRETE NUMERICDN NOT NULL,
         VLRMERCADORIA NUMERICDN NOT NULL,
@@ -4716,6 +4717,7 @@ CREATE TABLE LFFRETE (CODEMP INTEGER NOT NULL,
         CODEMPEX INTEGER,
         CODFILIALEX SMALLINT,
         TICKETEX INTEGER,
+        EMMANUT CHAR(1) DEFAULT 'N',
         DTINS DATE DEFAULT 'now' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
@@ -35014,18 +35016,24 @@ CREATE TRIGGER LFFRETETGBU FOR LFFRETE
 ACTIVE BEFORE UPDATE POSITION 0 
 AS
 begin
-  new.DTALT=cast('now' AS DATE);
-  new.IDUSUALT=USER;
-  new.HALT = cast('now' AS TIME);
-
-   -- Atualizando data do pagamento
-
-  if(old.codpag is null and new.codpag is not null) then
+  IF (new.EMMANUT IS NULL) THEN
+     new.EMMANUT='N';
+  IF ( not ( (new.EMMANUT='S') or ( (old.EMMANUT='S') and (old.EMMANUT is not null)) ) ) THEN
   begin
 
-      select pg.datapag from fnpagar pg  where pg.codemp=new.codemppa and pg.codfilial=new.codfilialpa and pg.codpag=new.codpag
-      into new.dtpagfrete;
+  	new.DTALT=cast('now' AS DATE);
+  	new.IDUSUALT=USER;
+  	new.HALT = cast('now' AS TIME);
 
+   	-- Atualizando data do pagamento
+
+  	if(old.codpag is null and new.codpag is not null) then
+  	begin
+
+      	select pg.datapag from fnpagar pg  where pg.codemp=new.codemppa and pg.codfilial=new.codfilialpa and pg.codpag=new.codpag
+      	into new.dtpagfrete;
+
+  	end
   end
 
 end ^
