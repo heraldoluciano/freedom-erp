@@ -1715,9 +1715,9 @@ CarregaListener, MouseListener {
 					ListaCampos lcExt = gcCampo.getCampo().getTabelaExterna();
 					if ((lcExt != null) && lcExt.getUsaME()) {
 						if (lcExt.getUsaFI()) {
-							String campoCodemp = "codemp" + lcExt.getSigla();
+							String campoCodemp = "codemp" + lcExt.getSigla().trim();
 							String campoCodfilial = "codfilial"
-									+ lcExt.getSigla();
+									+ lcExt.getSigla().trim();
 							// Condição para evitar duplicação de codemp e
 							// codfilial
 							if (fieldsInsert.get(campoCodemp) == null) {
@@ -2961,7 +2961,7 @@ CarregaListener, MouseListener {
 										if (lcExt.getUsaME()
 												&& lcExt.getUsaFI()) {
 											if (!comp.getSoLeitura()) {
-												String sigla = lcExt.getSigla();
+												String sigla = lcExt.getSigla().trim();
 												Integer iParamPostCodemp = null;
 												Integer iParamPostCodfilial = null;
 												if (sigla == null) {
