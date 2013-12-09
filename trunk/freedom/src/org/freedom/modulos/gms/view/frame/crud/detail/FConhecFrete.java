@@ -185,13 +185,13 @@ public class FConhecFrete extends FDetalhe implements ActionListener, ChangeList
 
 	private ListaCampos lcDestinatario = new ListaCampos( this, "DE" );
 
-	private ListaCampos lcVenda = new ListaCampos( this, " " );
+	private ListaCampos lcVenda = new ListaCampos( this, "" );
 
 	private ListaCampos lcCliente = new ListaCampos( this, "CL" );
 
 	private ListaCampos lcDetCompra = new ListaCampos( this );
 
-	private ListaCampos lcCompra = new ListaCampos( this, " " );
+	private ListaCampos lcCompra = new ListaCampos( this, "" );
 
 	private ListaCampos lcFornecedor = new ListaCampos( this, "FO" );
 	
@@ -484,7 +484,7 @@ public class FConhecFrete extends FDetalhe implements ActionListener, ChangeList
 		adic( new JLabelPad( "Rasão social do cliente" ), 203, 40, 306, 20 );
 		adic( txtRazCli, 203, 60, 306, 20 );
 
-		setListaCampos( true, "FRETEVENDA", "LF" );
+		setListaCampos( false, "FRETEVENDA", "LF" );
 		lcDet.setQueryInsert( true );
 
 		montaTab();
@@ -501,7 +501,7 @@ public class FConhecFrete extends FDetalhe implements ActionListener, ChangeList
 		setAltDet( 130 );
 		setNavegador( navDetCompra );
 
-		adicCampo( txtCodCompra, 7, 20, 90, 20, "CodCompra", "Cód.compra", ListaCampos.DB_PF, txtDocVenda, true );
+		adicCampo( txtCodCompra, 7, 20, 90, 20, "CodCompra", "Cód.compra", ListaCampos.DB_PF, txtDocCompra, true );
 		adicDescFK( txtDocCompra, 100, 20, 100, 20, "DocCompra", "Documento" );
 		adic( new JLabelPad( "Serie" ), 203, 0, 100, 20 );
 		adic( txtSerieCompra, 203, 20, 100, 20 );
@@ -514,7 +514,7 @@ public class FConhecFrete extends FDetalhe implements ActionListener, ChangeList
 		adic( new JLabelPad( "Rasão social do fornecedor" ), 203, 40, 306, 20 );
 		adic( txtRazFor, 203, 60, 306, 20 );
 
-		setListaCampos( true, "FRETECOMPRA", "LF" );
+		setListaCampos( false, "FRETECOMPRA", "LF" );
 		lcDetCompra.setQueryInsert( true );
 
 		lcDetCompra.montaTab();
