@@ -616,7 +616,7 @@ P.CODFILIAL=1 ORDER BY IT.DTVENCITPAG,F.RAZFOR]]>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRPAGOITPAG}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
-				<reportElement key="textField-3" x="2" y="3" width="146" height="12"/>
+				<reportElement key="textField-3" x="2" y="3" width="234" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
