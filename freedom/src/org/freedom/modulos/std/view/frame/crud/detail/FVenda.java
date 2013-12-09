@@ -1246,6 +1246,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		pinDet = new JPanelPad( 740, 100 );
 		setPainel( pinDet, pnDet );
 		setListaCampos( lcDet );
+		
+		lcDet.setOrdem( "coditvenda" );
+
 		setNavegador( navRod );
 		adicCampo( txtCodItVenda, 7, 20, 30, 20, "CodItVenda", "Item", ListaCampos.DB_PK, true );
 
@@ -1338,6 +1341,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		pinTot.adic( new JLabelPad( "Vlr.liq." ), 7, 80, 90, 20 );
 		pinTot.adic( txtVlrLiqVenda, 7, 100, 90, 20 );
 		txtCodNat.setStrMascara( "#.###" );
+		//lcDet.setOrdem( "coditvenda" );
 		lcDet.setWhereAdic( "TIPOVENDA='V'" );
 		setListaCampos( true, "ITVENDA", "VD" );
 
