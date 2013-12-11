@@ -3,7 +3,7 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="139"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -82,7 +82,7 @@ order by it.seqitop]]>
 	<pageHeader>
 		<band height="90" splitType="Stretch">
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-1" x="7" y="7" width="258" height="15"/>
+				<reportElement key="textField-1" x="7" y="2" width="258" height="15"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -90,7 +90,7 @@ order by it.seqitop]]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="SansSerif" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font fontName="SansSerif" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["FASE:" + $F{SEQOF} + " - " + $F{DESCFASE}.trim()]]></textFieldExpression>
 			</textField>
@@ -268,7 +268,7 @@ order by it.seqitop]]>
 			<line>
 				<reportElement key="line-10" x="0" y="0" width="549" height="1"/>
 			</line>
-			<textField isBlankWhenNull="false">
+			<textField isBlankWhenNull="true">
 				<reportElement key="textField-9" x="269" y="12" width="278" height="62"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
