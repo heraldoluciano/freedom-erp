@@ -162,7 +162,7 @@ public class FEmpresa extends FDetalhe {
 	
 	private JComboBoxPad cbPerfilFilial = null;
 	
-	private JComboBoxPad cbPerfilEPC = null;
+	//private JComboBoxPad cbPerfilEPC = null;
 	
 	public Constant PERFIL_FILIAL_A = new Constant( "Perfil A", "A" );
 	
@@ -174,6 +174,18 @@ public class FEmpresa extends FDetalhe {
 	
 	public Constant INDICADOR_ATIVIDADE_OUTROS = new Constant( "Outros", "1" );
 	
+	public Constant EPC_INDICADOR_ATIVIDADE_IND = new Constant( "Industrial ou equiparado a industria", "0" );
+	
+	public Constant EPC_INDICADOR_ATIVIDADE_PS = new Constant( "Prestador de serviços", "1" );
+
+	public Constant EPC_INDICADOR_ATIVIDADE_AC = new Constant( "Atividade de comércio", "2" );
+	
+	public Constant EPC_INDICADOR_ATIVIDADE_AF = new Constant( "Atividade financeira", "3" );
+	
+	public Constant EPC_INDICADOR_ATIVIDADE_AI = new Constant( "Atividade imobiliária", "4" );
+	
+	public Constant EPC_INDICADOR_ATIVIDADE_OU = new Constant( "Outros", "9" );
+
 	public Constant IND_NAT_PJ_FILIAL00 = new Constant( "Sociedade empresária em geral", "00" );
 	
 	public Constant IND_NAT_PJ_FILIAL01 = new Constant( "Sociedade cooperativa", "01" );
@@ -181,6 +193,8 @@ public class FEmpresa extends FDetalhe {
 	public Constant IND_NAT_PJ_FILIAL02 = new Constant( "Entidade sujeita ao PIS/Pasep exclusivamente com base na Folha de Salários", "02" );
 	
 	private JComboBoxPad cbIndAtivFilial = null;
+	
+	private JComboBoxPad cbIndAtivEPC = null;
 	
 	private JComboBoxPad cbIndNatPjFilial = null;
 	
@@ -243,7 +257,7 @@ public class FEmpresa extends FDetalhe {
 
 		cbPerfilFilial = new JComboBoxPad( vLabsPerfil, vValsPerfil, JComboBoxPad.TP_STRING, 1, 0);
 
-		Vector<String> vLabsPerfilEPC = new Vector<String>();
+		/*Vector<String> vLabsPerfilEPC = new Vector<String>();
 		Vector<String> vValsPerfilEPC = new Vector<String>();
 
 		vLabsPerfilEPC.addElement("<--Selecione-->");
@@ -256,8 +270,8 @@ public class FEmpresa extends FDetalhe {
 		vValsPerfilEPC.addElement( PERFIL_FILIAL_A.getValue().toString() );
 		vValsPerfilEPC.addElement( PERFIL_FILIAL_B.getValue().toString() );
 		vValsPerfilEPC.addElement( PERFIL_FILIAL_C.getValue().toString() );
-
-		cbPerfilEPC = new JComboBoxPad( vLabsPerfilEPC, vValsPerfilEPC, JComboBoxPad.TP_STRING, 1, 0);
+*/
+		//cbPerfilEPC = new JComboBoxPad( vLabsPerfilEPC, vValsPerfilEPC, JComboBoxPad.TP_STRING, 1, 0);
 
 		Vector<String> vLabsIndAtiv = new Vector<String>();
 		Vector<String> vValsIndAtiv = new Vector<String>();
@@ -273,6 +287,43 @@ public class FEmpresa extends FDetalhe {
 		
 		cbIndAtivFilial = new JComboBoxPad( vLabsIndAtiv, vValsIndAtiv, JComboBoxPad.TP_STRING, 1, 0);
 
+		
+		/*	public Constant EPC_INDICADOR_ATIVIDADE_IND = new Constant( "Industrial ou equiparado a industria", "0" );
+	
+	public Constant EPC_INDICADOR_ATIVIDADE_PS = new Constant( "Prestador de serviços", "1" );
+
+	public Constant EPC_INDICADOR_ATIVIDADE_AC = new Constant( "Atividade de comércio", "2" );
+	
+	public Constant EPC_INDICADOR_ATIVIDADE_AF = new Constant( "Atividade financeira", "3" );
+	
+	public Constant EPC_INDICADOR_ATIVIDADE_AI = new Constant( "Atividade imobiliária", "4" );
+	
+	public Constant EPC_INDICADOR_ATIVIDADE_OU = new Constant( "Outros", "9" );
+*/
+		
+		Vector<String> vLabsIndAtivEPC = new Vector<String>();
+		Vector<String> vValsIndAtivEPC = new Vector<String>();
+
+		vLabsIndAtivEPC.addElement("<--Selecione-->");
+		
+		vLabsIndAtivEPC.addElement( getTituloValor(EPC_INDICADOR_ATIVIDADE_IND) );
+		vLabsIndAtivEPC.addElement( getTituloValor(EPC_INDICADOR_ATIVIDADE_PS) );
+		vLabsIndAtivEPC.addElement( getTituloValor(EPC_INDICADOR_ATIVIDADE_AC) );
+		vLabsIndAtivEPC.addElement( getTituloValor(EPC_INDICADOR_ATIVIDADE_AF) );
+		vLabsIndAtivEPC.addElement( getTituloValor(EPC_INDICADOR_ATIVIDADE_AI) );
+		vLabsIndAtivEPC.addElement( getTituloValor(EPC_INDICADOR_ATIVIDADE_OU) );
+		
+		vValsIndAtivEPC.addElement("");		
+		vValsIndAtivEPC.addElement( getValor(EPC_INDICADOR_ATIVIDADE_IND) );
+		vValsIndAtivEPC.addElement( getValor(EPC_INDICADOR_ATIVIDADE_PS) );
+		vValsIndAtivEPC.addElement( getValor(EPC_INDICADOR_ATIVIDADE_AC) );
+		vValsIndAtivEPC.addElement( getValor(EPC_INDICADOR_ATIVIDADE_AF) );
+		vValsIndAtivEPC.addElement( getValor(EPC_INDICADOR_ATIVIDADE_AI) );
+		vValsIndAtivEPC.addElement( getValor(EPC_INDICADOR_ATIVIDADE_OU) );
+		
+		cbIndAtivEPC = new JComboBoxPad( vLabsIndAtivEPC, vValsIndAtivEPC, JComboBoxPad.TP_STRING, 1, 0);
+		
+		
 		Vector<String> vLabsIndNatPjFilial = new Vector<String>();
 		Vector<String> vValsIndNatPjFilial = new Vector<String>();
 
@@ -448,10 +499,8 @@ public class FEmpresa extends FDetalhe {
 		adicCampo( txtPercIssFilial, 319, 60, 75, 20, "PercISSFilial", "% ISS", ListaCampos.DB_SI, false );
 		adicCampo( txtPercSimples, 397, 60, 83, 20, "PercSimplesFilial", "% Simples", ListaCampos.DB_SI, false );
 		
-		adicDB( cbPerfilFilial, 7, 110, 200, 20, "PerfilFIlial", "Perfil SPED Fiscal (EFD)", false );
-		adicDB( cbIndAtivFilial, 210, 110, 250, 20, "IndAtivFIlial", "Indicador de atividade SPED", false );				
-		adicDB( cbIndNatPjFilial, 7, 160, 455, 20, "IndNatPjFilial", "Indicador da natureza da pessoa jurídica", false );
-		adicDB( cbPerfilEPC, 7, 210, 200, 20, "PerfilEPC", "Perfil SPED Contribuições (EPC)", false );
+		adicDB( cbIndNatPjFilial, 7, 100, 455, 20, "IndNatPjFilial", "Indicador da natureza da pessoa jurídica", false );
+		//adicDB( cbPerfilEPC, 7, 210, 200, 20, "PerfilEPC", "Perfil SPED Contribuições (EPC)", false );
 		
 		
 		// Aba Contabilidade
@@ -472,6 +521,8 @@ public class FEmpresa extends FDetalhe {
 		setPainel( pinSpedEFD );
 		
 		adicDB( cbCodRec, 7,20, 500, 20, "CODRECEITA", "Código de receita", false );
+		adicDB( cbPerfilFilial, 7, 60, 200, 20, "PerfilFIlial", "Perfil SPED Fiscal (EFD)", false );
+		adicDB( cbIndAtivFilial, 210, 60, 200, 20, "IndAtivFIlial", "Indicador de atividade SPED", false );				
 
 		// Aba SPED EPC
 		
@@ -483,6 +534,7 @@ public class FEmpresa extends FDetalhe {
 		adicDB( cbCodApro, 7, 60, 500, 20, "INDAPROCRED", "Indicador de método de apropriação de créditos comuns", false );
 		adicDB( cbCodCon, 7, 100, 500, 20, "CODTIPOCONT", "Indicador do Tipo de Contribuição Apurada no Período", false );
 		adicDB( cbCodEsc, 7, 140, 500, 20, "INDREGCUM", "Indicador do critério de escrituração e apuração adotado", false );
+		adicDB( cbIndAtivEPC, 7, 180, 500, 20, "IndAtivEPC", "Indicador de atividade", false );				
 		
 		// Aba Matriz/Franqueadora
 		
@@ -527,6 +579,22 @@ public class FEmpresa extends FDetalhe {
 
 	}
 
+	private String getValor(Constant constant) {
+		String result = "";
+		if (constant!=null) {
+			result = constant.getValue().toString();
+		}
+		return result;
+	}
+	
+	private String getTituloValor(Constant constant) {
+		String result = "";
+		if (constant!=null) {
+			result = constant.getName()+"-"+constant.getValue();
+		}
+		return result;
+	}
+	
 	private void montaListaCampos() {
 
 		/***************
