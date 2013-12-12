@@ -2559,7 +2559,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			}
 			if ( !consistSeq( tab.getDataVector() ) ){
 				if( (Boolean) oPrefs[ POS_PREFS.BLOQSEQIVD.ordinal() ] ) {
-					Funcoes.mensagemInforma( this, "Sequência de itens inválida !\nFavor ajustar em tabelas->ferramentas->Reorganização de seq. de itens" );
+					Funcoes.mensagemInforma( this, "Sequência de itens inválida !\nFavor ajustar em \"Arquivos => Ferramentas => Reorganização de seq. de itens\"" );
 					return;
 				} else if ( Funcoes.mensagemConfirma( this, "Sequência de itens inválida !\nDeseja Continuar?" ) == JOptionPane.NO_OPTION ){
 					return;						

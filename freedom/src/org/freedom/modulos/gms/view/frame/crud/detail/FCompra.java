@@ -2478,7 +2478,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 
 		if ( !consistSeq( tab.getDataVector() ) ) {
 			if( "S".equals( bloqseqicp ) ) {
-				Funcoes.mensagemInforma( this, "Sequência de itens inválida !\nFavor ajustar em tabelas->ferramentas->Reorganização de seq. de itens" );
+				Funcoes.mensagemInforma( this, "Sequência de itens inválida !\nFavor ajustar em \"Arquivos => Ferramentas => Reorganização de seq. de itens\"" );
 				return;
 			} else if ( Funcoes.mensagemConfirma( this, "Sequência de itens inválida !\nDeseja Continuar?" ) == JOptionPane.NO_OPTION ){
 				return;						
