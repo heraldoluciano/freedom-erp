@@ -826,8 +826,8 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		
 		
 		lcSpNatOP.setUsaME( false );
-		lcSpNatOP.add( new GuardaCampo( txtCstNatOp, "CST", "CST.", ListaCampos.DB_PK,txtDescNatOp, false ) );
-		lcSpNatOP.add( new GuardaCampo( txtCodNatOp, "CODIGO", "Cód.", ListaCampos.DB_PK, false ) );
+		lcSpNatOP.add( new GuardaCampo( txtCodNatOp, "CODIGO", "Cód.", ListaCampos.DB_PK, txtDescNatOp, false ) );
+		lcSpNatOP.add( new GuardaCampo( txtCstNatOp, "CST", "CST.", ListaCampos.DB_PK, false ) );
 		lcSpNatOP.add( new GuardaCampo( txtDescNatOp, "DESC_PROD", "Descrição do produto", ListaCampos.DB_SI, false ) );
 		lcSpNatOP.montaSql( false, "NATOPER", "SP" ); // Nome da tabela com 2 espaços em branco no final, para contornar bug do lista campos
 		lcSpNatOP.setQueryCommit( false );
@@ -888,8 +888,8 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		adicDescFK( txtDescNCM, 110, 20, 320, 20, "DescNCM", "Descrição da nomenclatura comum do Mercosul" );
 		adicCampo( txtExTIPI, 433, 20, 47, 20, "ExTIPI", "Cód.ex.", ListaCampos.DB_SI, false );
 
-		adicCampo( txtCstNatOp, 7, 60, 100, 20, "CST", "CST Nat.Oper.", ListaCampos.DB_FK, false );
-		adicCampoInvisivel( txtCodNatOp, "CODIGO", "Cód.nat.oper", ListaCampos.DB_FK, false );
+		adicCampo( txtCodNatOp, 7, 60, 100, 20, "CODIGO", "Nat.rec.", ListaCampos.DB_FK, false );
+		adicCampoInvisivel( txtCstNatOp, "CST", "CST Nat.Oper.", ListaCampos.DB_FK, false );
 		adicDescFK( txtDescNatOp, 110, 60, 595, 20, "DESC_PROD", "Descrição do produto");
 
 		
