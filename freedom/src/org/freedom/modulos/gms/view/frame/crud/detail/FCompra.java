@@ -2715,7 +2715,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 				BigDecimal vlrICMSSt = txtVlrBaseICMSStItCompra.getVlrBigDecimal().multiply( txtPercICMSStItCompra.getVlrBigDecimal().divide( new BigDecimal( 100 ), mcPerc ) );
 
 				txtVlrICMSStItCompra.setVlrBigDecimal( vlrICMSSt );
-				txtVlrICMSStItCompra.setAtivo( false );
+				//txtVlrICMSStItCompra.setAtivo( false );
 			}
 		}
 
