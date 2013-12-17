@@ -93,7 +93,7 @@ public class FModContr extends FDados {
 		adicDescFK( txtNomeBanco, 90, 103, 370, 20, "NOMEBANCO", "Nome do banco" );
 		adicDB( rgTpModContr, 7, 143, 300, 30, "TPMODCONTR", "Tipo do modelo do contrato", false );
 		adicCampo( txtCodCartCob, 7, 193, 80, 20, "CodCartCob", "Cód.cart.cob.", ListaCampos.DB_FK, false );
-		adicDescFK( txtDescCartCob, 90, 193, 370, 20, "DescCartCob", "Descrição da carteira de cobraça" );		
+		adicDescFK( txtDescCartCob, 90, 193, 370, 20, "DescCartCob", "Descrição da carteira de cobrança" );		
 		adicDB( txaTexto1, 7, 233, 470, 90, "TEXTO1", "Texto 1", false );
 		adicDB( txaTexto2, 7, 343, 470, 90, "TEXTO2", "Texto 2", false );
 

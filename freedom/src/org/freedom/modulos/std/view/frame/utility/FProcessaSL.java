@@ -76,7 +76,7 @@ public class FProcessaSL extends FFilho implements ActionListener {
 
 		JLabelPad lbAviso = new JLabelPad();
 		lbAviso.setForeground( Color.RED );
-		lbAviso.setText( "<HTML> ATENÇÃO! <BR><BR>" + " O processamento de saldo é uma rotina que exige muito processamento " + "tando da estação cliente como do servidor. Assegure-se que neste momento " + "nenhum outro usuário de outra estação esteja relizando tarefas que exijam "
+		lbAviso.setText( "<HTML> ATENÇÃO! <BR><BR>" + " O processamento de saldo é uma rotina que exige muito processamento " + "tanto da estação cliente como do servidor. Assegure-se que neste momento " + "nenhum outro usuário de outra estação esteja realizando tarefas que exijam "
 				+ "agilidade no servidor.</HTML>" );
 
 		pin.adic( lbAviso, 10, 60, 460, 150 );

@@ -320,7 +320,7 @@ public class FreedomGMS extends AplicativoPD {
 		addOpcao( 400800000, TP_OPCAO_ITEM, "Conferência", "Conferência de Estoque", 'C', 400806000, 2, true, FRConfEstoq.class );
 		addOpcao( 400800000, TP_OPCAO_ITEM, "Inventário", "Inventário", 'I', 400807000, 2, true, FRInvPeps.class );
 
-		addOpcao( 400800000, TP_OPCAO_ITEM, "Codifição de produto", "Codificação de produto", 'P', 400800800, 2, true, FRCodficProd.class );
+		addOpcao( 400800000, TP_OPCAO_ITEM, "Codificação de produto", "Codificação de produto", 'P', 400800800, 2, true, FRCodficProd.class );
 		addOpcao( 400800000, TP_OPCAO_ITEM, "Etiquetas de código de barras", "Etiquetas de código de barras", 'E', 400800900, 2, true, FRCodbarProd.class );
 		addOpcao( 400800000, TP_OPCAO_ITEM, "Ultimas compras/produto", "Ultimas compras/produto", 'E', 400801000, 2, true, FRCpProd.class );
 		addOpcao( 400800000, TP_OPCAO_ITEM, "Movimentação de Produto Controlado", "Movimentação de Produto Controlado", 'M', 400802000, 2, true, FRMovProdCont.class );
