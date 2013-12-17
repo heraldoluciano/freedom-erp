@@ -23,6 +23,7 @@ import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
@@ -58,6 +59,7 @@ import org.freedom.modulos.crm.dao.DAOAgenda;
 import org.freedom.modulos.crm.dao.DAOAtendimento;
 import org.freedom.modulos.crm.object.Agenda;
 import org.freedom.modulos.crm.view.frame.utility.FCRM;
+import org.freedom.modulos.fnc.business.object.ChaveParcela;
 
 /**
  * 
@@ -267,6 +269,8 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 	private Integer codagenda = 0; 
 	
 	private String agendado = null;
+
+	private List<ChaveParcela> parcrec;
 	
 	public FNovoAtend( int iCodCli, Integer codchamado, Component cOrig, boolean isUpdate,
 			DbConnection conn, int codatendo, int codatend, String tipoatendo, boolean financeirop, 
@@ -417,13 +421,17 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 	}
 
 	public FNovoAtend( int codcli, Integer codchamado, Component cOrig, DbConnection conn
-			, boolean isUpdate, Integer codrec, Integer nparcitrec, String tipoatendo
+			, boolean isUpdate, List<ChaveParcela> parcrec, String tipoatendo
 			, boolean financeirop, String titulo, boolean bloquearFinalizar ) {
 
 		this( codcli, codchamado, cOrig, conn, tipoatendo, isUpdate, financeirop, titulo, bloquearFinalizar );
-
-		this.codrec = codrec;
-		this.nparcitrec = nparcitrec;
+		
+		setParcrec( parcrec );
+		if (parcrec!=null && parcrec.size()>0) {
+			int firstrec = 0;
+			this.codrec = parcrec.get( firstrec ).getCodrec();
+			this.nparcitrec = parcrec.get( firstrec ).getNparcitrec();
+		}
 
 	}
 
@@ -927,6 +935,18 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 		return iRet;
 	}
 
+	
+	public List<ChaveParcela> getParcrec() {
+	
+		return parcrec;
+	}
+
+	
+	public void setParcrec( List<ChaveParcela> parcrec ) {
+	
+		this.parcrec = parcrec;
+	}
+
 	private void insertIntervaloAtend(String horaini, String horafim) {
 		try {
 			daoatend.insertIntervaloAtend( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "ATATENDIMENTO" ), 
@@ -1148,107 +1168,149 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 
 	}
 
+	private String addSecond(String hora) {
+		String result = Funcoes.addSecondTime( hora, 1 );
+		return result;
+	}
+	
+	private int compareTime(String hora1, String hora2) {
+		int result = 0;
+		Date h1 = Funcoes.getStringTime( hora1 );
+		Date h2 = Funcoes.getStringTime( hora2 );
+		result = Funcoes.compareDate( h1, h2 );
+		return result;
+	}
+	
 	private void insert() throws Exception {
 		
-		org.freedom.modulos.crm.business.object.Atendimento atd = new org.freedom.modulos.crm.business.object.Atendimento();
-
-		atd.setCodemp( Aplicativo.iCodEmp );
-		atd.setCodfilial( ListaCampos.getMasterFilial( "ATATENDIMENTO" ));
-
-		atd.setCodempto( Aplicativo.iCodEmp );
-		atd.setCodfilialto( ListaCampos.getMasterFilial( "ATTIPOATENDO" ));
-		atd.setCodtpatendo( txtCodTpAtendo.getVlrInteger() );
-
-		atd.setCodempca( Aplicativo.iCodEmp );
-		atd.setCodfilialca( ListaCampos.getMasterFilial( "ATCLASATENDO" ));
-
-		if (txtCodCli.getVlrInteger().intValue()!=0) {	
-			atd.setCodempcl( Aplicativo.iCodEmp );
-			atd.setCodfilialcl( ListaCampos.getMasterFilial( "VDCLIENTE" ));
-			atd.setCodcli( txtCodCli.getVlrInteger() );
-		}
-
-		atd.setCodempcv( Aplicativo.iCodEmp );
-		atd.setCodfilialcv( ListaCampos.getMasterFilial( "ATCONVENIADO" ));
-
-		atd.setCodempae( Aplicativo.iCodEmp );
-		atd.setCodfilialae( ListaCampos.getMasterFilial( "ATATENDENTE" ));
-		atd.setCodatend( txtCodAtend.getVlrInteger() ); // Código do atendente logado
-
-		atd.setCodempus( Aplicativo.iCodEmp );
-		atd.setCodfilialus( ListaCampos.getMasterFilial( "SGUSUARIO" )); // Id do usuário logado
-		atd.setIdusu( Aplicativo.getUsuario().getIdusu() );
-
-		atd.setCodempsa( Aplicativo.iCodEmp );
-		atd.setCodfilialsa( ListaCampos.getMasterFilial( "ATATENDENTE" ));
-		atd.setCodsetat( txtCodsetat.getVlrInteger() ); // Setor de atendimento 
-
-		atd.setDocatendo( String.valueOf( iDoc ) );
-		atd.setCodatendo( txtCodAtendo.getVlrInteger() );
-		atd.setDataatendo( txtDataAtendimento.getVlrDate() );
-		atd.setDataatendofin( txtDataAtendimentoFin.getVlrDate() );
-		atd.setHoraatendo( txtHoraini.getVlrString() );
-		atd.setHoraatendofin( txtHorafim.getVlrString() );
-		atd.setObsatendo( txaObsAtend.getVlrString() );
-		atd.setObsinterno( txaObsInterno.getVlrString() );
-		atd.setConcluichamado( cbConcluiChamado.getVlrString() );
-
-		if (txtCodContr.getVlrInteger().intValue()!= 0) {		
-			atd.setCodempct( Aplicativo.iCodEmp );
-			atd.setCodfilialct( ListaCampos.getMasterFilial( "VDCONTRATO" ));
-			atd.setCodcontr( txtCodContr.getVlrInteger() );
-			atd.setCoditcontr( txtCodItContr.getVlrInteger() );
-		}
-
-		if (txtCodChamado.getVlrInteger().intValue()!=0) {
-			atd.setCodempch( Aplicativo.iCodEmp );
-			atd.setCodfilialch( ListaCampos.getMasterFilial( "CRCHAMADO" ));
-			atd.setCodchamado( txtCodChamado.getVlrInteger() );
-			//	atd.setCodcli( txtCodCli2.getVlrInteger()  );
-		}
-
-		if (txtCodEspec.getVlrInteger().intValue()!=0) {	
-			atd.setCodempea( Aplicativo.iCodEmp );
-			atd.setCodfilialea( ListaCampos.getMasterFilial( "ATESPECATEND" ));
-			atd.setCodespec( txtCodEspec.getVlrInteger() );
-		}
-		if (txtCodTarefa.getVlrInteger().intValue()!=0) {	
-			atd.setCodempta( Aplicativo.iCodEmp );
-			atd.setCodfilialta( ListaCampos.getMasterFilial( "CRTAREFA" ));
-			atd.setCodtarefa( txtCodTarefa.getVlrInteger() );
-		}
-
-		if (codrec!=null) {			
-			atd.setCodempir( Aplicativo.iCodEmp );
-			atd.setCodfilialir( ListaCampos.getMasterFilial( "FNRECEBER" ));
-			atd.setCodrec( codrec );
-			atd.setNparcitrec( nparcitrec );
-		}
-
-		if (txtCodorc.getVlrInteger().intValue()!=0) {			
-			atd.setCodempoc( Aplicativo.iCodEmp );
-			atd.setCodfilialoc( ListaCampos.getMasterFilial( "VDORCAMENTO" ));
-			atd.setTipoorc( txtTipoorc.getVlrString() );
-			atd.setCodorc( txtCodorc.getVlrInteger() );
-		}
-
-		if (!"".equals(cbSituacao.getVlrString())) {
-			if ("AA".equals( agendado )) {
-				atd.setSitatendo( "AA" );
-			} else {
-				atd.setSitatendo( cbSituacao.getVlrString() );
+		String horaini = txtHoraini.getVlrString();
+		String horainitmp = horaini;
+		String horafim = txtHorafim.getVlrString();
+		String horafimtmp = horafim;
+		// Implementação do codrec para manter compatibilidade
+		Integer codrec = this.codrec;
+		Integer nparcitrec = this.nparcitrec;
+		Integer codatendo = txtCodAtendo.getVlrInteger();
+		int numrecord = 1;
+		if (parcrec!=null && parcrec.size()>1) {
+			numrecord = getParcrec().size();
+		} 
+		for (int i=0; i<numrecord; i++) {
+			// Se for da lista deverá recarregar o código do receber
+			if (parcrec!=null && parcrec.size()>1) {
+				codrec = getParcrec().get( i ).getCodrec();
+				nparcitrec = getParcrec().get( i ).getNparcitrec();
+				// Se não for o primeiro registro, deverá gerar novo código de atendimento
+				if (i!=0) {
+					codatendo = null;
+					horainitmp = addSecond(horafimtmp);
+					horafimtmp = addSecond(horainitmp);
+					if (i==(numrecord-1)) {
+						if (compareTime(horafimtmp, horafim)<0) {
+							horafimtmp = horafim;
+						}
+					}
+				}
+			} 
+			org.freedom.modulos.crm.business.object.Atendimento atd = new org.freedom.modulos.crm.business.object.Atendimento();
+			atd.setCodemp( Aplicativo.iCodEmp );
+			atd.setCodfilial( ListaCampos.getMasterFilial( "ATATENDIMENTO" ));
+	
+			atd.setCodempto( Aplicativo.iCodEmp );
+			atd.setCodfilialto( ListaCampos.getMasterFilial( "ATTIPOATENDO" ));
+			atd.setCodtpatendo( txtCodTpAtendo.getVlrInteger() );
+	
+			atd.setCodempca( Aplicativo.iCodEmp );
+			atd.setCodfilialca( ListaCampos.getMasterFilial( "ATCLASATENDO" ));
+	
+			if (txtCodCli.getVlrInteger().intValue()!=0) {	
+				atd.setCodempcl( Aplicativo.iCodEmp );
+				atd.setCodfilialcl( ListaCampos.getMasterFilial( "VDCLIENTE" ));
+				atd.setCodcli( txtCodCli.getVlrInteger() );
 			}
+	
+			atd.setCodempcv( Aplicativo.iCodEmp );
+			atd.setCodfilialcv( ListaCampos.getMasterFilial( "ATCONVENIADO" ));
+	
+			atd.setCodempae( Aplicativo.iCodEmp );
+			atd.setCodfilialae( ListaCampos.getMasterFilial( "ATATENDENTE" ));
+			atd.setCodatend( txtCodAtend.getVlrInteger() ); // Código do atendente logado
+	
+			atd.setCodempus( Aplicativo.iCodEmp );
+			atd.setCodfilialus( ListaCampos.getMasterFilial( "SGUSUARIO" )); // Id do usuário logado
+			atd.setIdusu( Aplicativo.getUsuario().getIdusu() );
+	
+			atd.setCodempsa( Aplicativo.iCodEmp );
+			atd.setCodfilialsa( ListaCampos.getMasterFilial( "ATATENDENTE" ));
+			atd.setCodsetat( txtCodsetat.getVlrInteger() ); // Setor de atendimento 
+	
+			atd.setDocatendo( String.valueOf( iDoc ) );
+			atd.setCodatendo( codatendo );
+			atd.setDataatendo( txtDataAtendimento.getVlrDate() );
+			atd.setDataatendofin( txtDataAtendimentoFin.getVlrDate() );
+			atd.setHoraatendo( txtHoraini.getVlrString() );
+			atd.setHoraatendofin( txtHorafim.getVlrString() );
+			atd.setObsatendo( txaObsAtend.getVlrString() );
+			atd.setObsinterno( txaObsInterno.getVlrString() );
+			atd.setConcluichamado( cbConcluiChamado.getVlrString() );
+	
+			if (txtCodContr.getVlrInteger().intValue()!= 0) {		
+				atd.setCodempct( Aplicativo.iCodEmp );
+				atd.setCodfilialct( ListaCampos.getMasterFilial( "VDCONTRATO" ));
+				atd.setCodcontr( txtCodContr.getVlrInteger() );
+				atd.setCoditcontr( txtCodItContr.getVlrInteger() );
+			}
+	
+			if (txtCodChamado.getVlrInteger().intValue()!=0) {
+				atd.setCodempch( Aplicativo.iCodEmp );
+				atd.setCodfilialch( ListaCampos.getMasterFilial( "CRCHAMADO" ));
+				atd.setCodchamado( txtCodChamado.getVlrInteger() );
+				//	atd.setCodcli( txtCodCli2.getVlrInteger()  );
+			}
+	
+			if (txtCodEspec.getVlrInteger().intValue()!=0) {	
+				atd.setCodempea( Aplicativo.iCodEmp );
+				atd.setCodfilialea( ListaCampos.getMasterFilial( "ATESPECATEND" ));
+				atd.setCodespec( txtCodEspec.getVlrInteger() );
+			}
+			if (txtCodTarefa.getVlrInteger().intValue()!=0) {	
+				atd.setCodempta( Aplicativo.iCodEmp );
+				atd.setCodfilialta( ListaCampos.getMasterFilial( "CRTAREFA" ));
+				atd.setCodtarefa( txtCodTarefa.getVlrInteger() );
+			}
+	
+			if (codrec!=null) {			
+				atd.setCodempir( Aplicativo.iCodEmp );
+				atd.setCodfilialir( ListaCampos.getMasterFilial( "FNRECEBER" ));
+				atd.setCodrec( codrec );
+				atd.setNparcitrec( nparcitrec );
+			}
+	
+			if (txtCodorc.getVlrInteger().intValue()!=0) {			
+				atd.setCodempoc( Aplicativo.iCodEmp );
+				atd.setCodfilialoc( ListaCampos.getMasterFilial( "VDORCAMENTO" ));
+				atd.setTipoorc( txtTipoorc.getVlrString() );
+				atd.setCodorc( txtCodorc.getVlrInteger() );
+			}
+	
+			if (!"".equals(cbSituacao.getVlrString())) {
+				if ("AA".equals( agendado )) {
+					atd.setSitatendo( "AA" );
+				} else {
+					atd.setSitatendo( cbSituacao.getVlrString() );
+				}
+			}
+			
+			if (codagenda > 0) {
+				atd.setCodempag( Aplicativo.iCodEmp );
+				atd.setCodfilialag( ListaCampos.getMasterFilial( "SGAGENDA" ));
+				atd.setTipoage((String) agente.get("TipoAge"));
+				atd.setCodage( (Integer) agente.get( "CodAge" ) );
+				atd.setCodagd( codagenda );
+			}
+			
+			daoatend.insert( atd );
 		}
-		
-		if (codagenda > 0) {
-			atd.setCodempag( Aplicativo.iCodEmp );
-			atd.setCodfilialag( ListaCampos.getMasterFilial( "SGAGENDA" ));
-			atd.setTipoage((String) agente.get("TipoAge"));
-			atd.setCodage( (Integer) agente.get( "CodAge" ) );
-			atd.setCodagd( codagenda );
-		}
-		
-		daoatend.insert( atd );
 		
 		if(corig instanceof FCRM) {
 			(( FCRM ) corig).carregaAtendimentos();	

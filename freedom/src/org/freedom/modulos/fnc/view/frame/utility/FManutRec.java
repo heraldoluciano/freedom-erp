@@ -83,6 +83,7 @@ import org.freedom.library.swing.frame.FFilho;
 import org.freedom.library.swing.util.SwingParams;
 import org.freedom.library.type.StringDireita;
 import org.freedom.modulos.crm.view.frame.utility.FCRM;
+import org.freedom.modulos.fnc.business.object.ChaveParcela;
 import org.freedom.modulos.fnc.view.dialog.report.DLImpBoletoRec;
 import org.freedom.modulos.fnc.view.dialog.utility.DLBaixaRec;
 import org.freedom.modulos.fnc.view.dialog.utility.DLBordero;
@@ -2979,12 +2980,45 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		}
 	}
 
+	
+	private List<ChaveParcela> getTituloSel(Vector<Vector<Object>> dataVector, int selectedRow) {
+		List<ChaveParcela> result = new ArrayList<ChaveParcela>();
+		if (dataVector!=null) {
+			for (Vector<Object> row: dataVector) {
+				if ((Boolean) row.elementAt( EColTabManut.SEL.ordinal() )) {
+					ChaveParcela chave = new ChaveParcela();
+					chave.setCodempcl( Aplicativo.iCodEmp );
+					chave.setCodfilialcl( ListaCampos.getMasterFilial( "VDCLIENTE" ) );
+					chave.setCodcli( (Integer) row.elementAt( EColTabManut.CODCLI.ordinal() ) ) ;
+					chave.setCodemprc( Aplicativo.iCodEmp );
+					chave.setCodfilialrc( ListaCampos.getMasterFilial( "FNITRECEBER" ) );
+					chave.setCodrec( (Integer) row.elementAt( EColTabManut.CODREC.ordinal() ) ) ;
+					chave.setNparcitrec( (Integer) row.elementAt( EColTabManut.NPARCITREC.ordinal() ) ) ;
+					result.add( chave );
+				}
+			}
+			if (result.size()==0 && selectedRow>-1) {
+				Vector<Object> row = dataVector.elementAt( selectedRow );
+				ChaveParcela chave = new ChaveParcela();
+				chave.setCodempcl( Aplicativo.iCodEmp );
+				chave.setCodfilialcl( ListaCampos.getMasterFilial( "VDCLIENTE" ) );
+				chave.setCodcli( (Integer) row.elementAt( EColTabManut.CODCLI.ordinal() ) ) ;
+				chave.setCodemprc( Aplicativo.iCodEmp );
+				chave.setCodfilialrc( ListaCampos.getMasterFilial( "FNITRECEBER" ) );
+				chave.setCodrec( (Integer) row.elementAt( EColTabManut.CODREC.ordinal() ) ) ;
+				chave.setNparcitrec( (Integer) row.elementAt( EColTabManut.NPARCITREC.ordinal() ) ) ;
+			}
+		}
+		return result;
+	}
+	
 	private void abreHistorico() {
 
 		try {
 
-			if ( tabManut.getLinhaSel() < 0 ) {
-				Funcoes.mensagemInforma( this, "Selecione uma parcela!" );
+			List<ChaveParcela> list = getTituloSel( tabManut.getDataVector(), tabManut.getLinhaSel() );
+			if ( list.size()==0 ) {
+				Funcoes.mensagemInforma( this, "Selecione uma ou mais parcelas !" );
 				return;
 			}
 
@@ -3002,7 +3036,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 				Integer nparcitrec = ( (Integer) tabManut.getValor( tabManut.getLinhaSel(), EColTabManut.NPARCITREC.ordinal() ) );
 				tela = new FCRM();
 				fPrim.criatela( "Gestão de relacionamento com clientes", tela, con );
-				tela.loadFin( codcli, codrec, nparcitrec, true);
+				tela.loadFin( list, true);
 			}
 		} catch ( Exception e ) {
 			e.printStackTrace();
@@ -3416,4 +3450,5 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		}
 		return result;
 	}
+
 }

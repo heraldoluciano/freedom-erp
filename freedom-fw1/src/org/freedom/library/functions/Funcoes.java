@@ -144,6 +144,16 @@ public class Funcoes {
 		return result.toString();
 	}
 
+	public static int compareDate(Date data1, Date data2) {
+		int result = 0;
+		Calendar cal1 = Calendar.getInstance();
+		cal1.setTime(data1);
+		Calendar cal2 = Calendar.getInstance();
+		cal2.setTime(data2);
+		result = cal1.compareTo(cal2);
+		return result;
+	}
+	
 	public static String getStringFormatedBigDecimal(BigDecimal bigVal,
 			int iDecimal) {
 
@@ -237,6 +247,34 @@ public class Funcoes {
 		return bRetorno;
 	}
 
+	public static Date getStringTime(String time) {
+		Date result = null;
+		if (time!=null && time.length()>6) {
+			String hour = time.substring(0,2);
+			String minute = time.substring(3,6);
+			String second = time.substring(6,9);
+			Calendar cal = Calendar.getInstance();
+			cal.set(Calendar.HOUR, Integer.parseInt(hour) );
+			cal.set(Calendar.MINUTE, Integer.parseInt(minute) );
+			cal.set(Calendar.SECOND, Integer.parseInt(second) );
+			cal.set(Calendar.MILLISECOND, 0 );
+			result = cal.getTime();
+		}
+		return result;
+	}
+	
+	public static String addSecondTime(String time, int amount) {
+		String result = time;
+		if (result!=null) {
+			Date tini = getStringTime(result);
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(tini);
+			cal.add(Calendar.SECOND, amount);
+			result = getTimeString(cal.getTime());
+		}
+		return result;
+	}
+	
 	public static int contaChar(String sTexto, char cChar) {
 		int iRet = 0;
 
