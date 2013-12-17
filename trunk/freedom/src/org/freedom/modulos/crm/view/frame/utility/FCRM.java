@@ -28,6 +28,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -82,6 +83,7 @@ import org.freedom.modulos.crm.view.frame.crud.plain.FChamado;
 import org.freedom.modulos.crm.view.frame.crud.plain.FEspecAtend;
 import org.freedom.modulos.crm.view.frame.crud.plain.FNovoAtend;
 import org.freedom.modulos.crm.view.frame.report.FRAtendimentos;
+import org.freedom.modulos.fnc.business.object.ChaveParcela;
 import org.freedom.modulos.gms.business.object.StatusOS;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 
@@ -348,6 +350,8 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 	private final JDialog dlMensagem = new JDialog();
 
 	private int TIPO_PK = Types.INTEGER;
+	
+	private List<ChaveParcela> parcrec;
 
 //	Integer codatend_atual = null;
 
@@ -476,20 +480,21 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 	// Construção padrão lançamento de contatos financeiro/cobrança
 
-	public void loadFin( Integer codcli, Integer codrec, Integer nparcitrec, boolean isUpdate ) {
+	public void loadFin( List<ChaveParcela> parcrec, boolean isUpdate ) {
 
+		int firstrec = 0;
 		setAtribos( 20, 20, 850, 500 );
 		tipoatendo = "C"; // Setando o tipo de atendimento para "C" de Contato;
 		pnCabCli.setPreferredSize( new Dimension( 500, 150 ) );
 		montaListaCamposFinanc();
-
 		adicCamposFinanc();
-
 		ativaCamposFinanc();
-
-		txtCodCli.setVlrInteger( codcli );
-		txtCodRec.setVlrInteger( codrec );
-		txtNParcItRec.setVlrInteger( nparcitrec );
+		setParcrec( parcrec );
+		if (parcrec.size()>0) {
+			txtCodCli.setVlrInteger( parcrec.get( firstrec ).getCodcli() );
+			txtCodRec.setVlrInteger( parcrec.get( firstrec ).getCodrec() );
+			txtNParcItRec.setVlrInteger( parcrec.get( firstrec ).getNparcitrec() );
+		}
 		lcCli.carregaDados();
 		lcRec.carregaDados();
 		lcItRec.carregaDados();
@@ -1794,8 +1799,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		bloquearFinalizar = daoatend.bloquearChamadosFinalizar( daoatend.getCodatend_atual() );
 		if ( atd == null ) {
 			if ( txtCodRec.getVlrInteger() > 0 && txtNParcItRec.getVlrInteger() > 0 ) {
-				dl = new FNovoAtend( txtCodCli.getVlrInteger().intValue(), null, this, con, false, txtCodRec.getVlrInteger()
-						, txtNParcItRec.getVlrInteger(), tipoatendo, financeiro, null, bloquearFinalizar );
+				dl = new FNovoAtend( txtCodCli.getVlrInteger().intValue(), null, this, con, false, getParcrec(), tipoatendo, financeiro, null, bloquearFinalizar );
 			}
 			else {
 
@@ -2341,6 +2345,18 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 	public void mouseReleased( MouseEvent mevt ) {
 
+	}
+
+	
+	public List<ChaveParcela> getParcrec() {
+	
+		return parcrec;
+	}
+
+	
+	public void setParcrec( List<ChaveParcela> parcrec ) {
+	
+		this.parcrec = parcrec;
 	}
 
 	private boolean emAtraso() {
