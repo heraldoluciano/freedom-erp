@@ -77,7 +77,7 @@ public class FTipoCob extends FDados implements ActionListener {
 	
 	private JRadioGroup<?, ?> rgTipoSPED = null;
 
-	private final JCheckBoxPad cbObriCartCob = new JCheckBoxPad( "Obrigar carteira de cobraça?", "S", "N" );
+	private final JCheckBoxPad cbObriCartCob = new JCheckBoxPad( "Obrigar carteira de cobrança?", "S", "N" );
 
 	public FTipoCob() {
 

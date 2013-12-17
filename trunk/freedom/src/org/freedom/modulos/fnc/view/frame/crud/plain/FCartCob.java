@@ -74,7 +74,7 @@ public class FCartCob extends FDados implements ActionListener {
 		adicDescFK( txtNomeBanco, 90, 20, 300, 20, "NomeBanco", "Nome do banco" );
 
 		adicCampo( txtCodCartCob, 7, 60, 80, 20, "CodCartCob", "Cód.cart.cob.", ListaCampos.DB_PK, true );
-		adicCampo( txtDescCartCob, 90, 60, 237, 20, "DescCartCob", "Descrição da carteira de cobraça", ListaCampos.DB_SI, true );		
+		adicCampo( txtDescCartCob, 90, 60, 237, 20, "DescCartCob", "Descrição da carteira de cobrança", ListaCampos.DB_SI, true );		
 		adicCampo( txtCartCobCnab, 330, 60, 60, 20, "CartCobCnab", "Cód. cnab", ListaCampos.DB_SI, true );
 		adicCampo( txtCodCartCobCnab, 7, 100, 80, 20, "CodCartCobCnab", "Tipo Cart. Cob", ListaCampos.DB_SI, false );
 		adicCampo( txtVariacao, 90, 100, 80, 20, "VariacaoCartCob", "Variação", ListaCampos.DB_SI, false );
