@@ -2479,6 +2479,15 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		}
 	}
 
+	private boolean senhaLiberaAtraso() {
+		boolean result = false;
+		FPassword fpw = new FPassword( this, FPassword.LIBERA_CRED, "Liberação de título em atraso", con );
+		fpw.execShow();
+		result=fpw.OK;
+		fpw.dispose();
+		return result;
+	}
+	
 	private boolean consultaCredito( BigDecimal vlradic, boolean fechamento ) {
 
 		try {
@@ -3872,8 +3881,13 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 						}
 					} else if (!"".equals( mensagem )) {
 						Funcoes.mensagemInforma( this, mensagem );
-						pevt.cancela();
-						return;
+						if (!"S".equals( Aplicativo.getUsuario().getLiberacredusu()) ) {
+							if (!senhaLiberaAtraso() ) {
+								Funcoes.mensagemInforma(this, "Usuário não tem permissão para liberação da venda !");
+								pevt.cancela();
+								return;
+							}
+						}
 					}
 				} catch (Exception err) {
 					Funcoes.mensagemErro( this, err.getMessage() );

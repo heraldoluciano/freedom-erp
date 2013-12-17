@@ -371,7 +371,7 @@ public class DAOBuscaOrc extends AbstractDAO {
 					if (result.length()>2) {
 						int numreg = Integer.parseInt(result.substring(2));
 						if (numreg>0) {
-							result = "Cliente possui "+numreg+" parcelas em aberto atraso !!!";
+							result = "Cliente possui "+numreg+" parcela(s) em atraso !!!";
 						}
 					}
 				}
