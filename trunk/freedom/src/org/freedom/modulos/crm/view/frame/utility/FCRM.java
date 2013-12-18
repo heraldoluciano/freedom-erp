@@ -546,7 +546,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 	 */
 	private void adicCamposFinanc() {
 
-		pinFiltrosTitulo.setBorder( SwingParams.getPanelLabel( "Título", Color.BLUE ) );
+		/*pinFiltrosTitulo.setBorder( SwingParams.getPanelLabel( "Título", Color.BLUE ) );
 
 		pinFiltrosTitulo.adic( txtCodRec, 7, 20, 70, 20, "Cód.rec" );
 		pinFiltrosTitulo.adic( txtNParcItRec, 80, 20, 40, 20, "Parc." );
@@ -569,7 +569,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		pnGridFinanc.add( scpFinanc, BorderLayout.CENTER );
 
 		pnAtd.add( pnGridFinanc, BorderLayout.CENTER );
-
+*/
 	}
 
 	private void ativaCamposFinanc() {
@@ -1268,7 +1268,19 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 				sql.append( " and exists(select codrec from atatendimentoitrec ir " );
 				sql.append( "where ir.codemp=a.codemp and ir.codfilial=a.codfilial" );
 				sql.append( " and ir.codatendo=a.codatendo and ir.codempir=? and ir.codfilialir=? " );
-				sql.append( " and ir.codrec=? and ir.nparcitrec=?)" );
+				if (parcrec==null) {
+					sql.append( " and ir.codrec=? and ir.nparcitrec=? ");
+				} else {
+					sql.append( " and ( ");
+					for (int i=0; i<parcrec.size(); i++) {
+						if (i>0) {
+							sql.append(" or ");
+						}
+						sql.append( " ir.codrec=? and ir.nparcitrec=? ");
+					}
+					sql.append( " ) ");
+				}
+				sql.append(" )" );
 			}
 
 			if ( ( filtroObs != null ) && ( !"".equals( filtroObs ) ) ) {
@@ -1315,8 +1327,15 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 				if ( txtCodRec.getVlrInteger() > 0 ) {
 					ps.setInt( iparam++, lcRec.getCodEmp() );
 					ps.setInt( iparam++, lcRec.getCodFilial() );
-					ps.setInt( iparam++, txtCodRec.getVlrInteger() );
-					ps.setInt( iparam++, txtNParcItRec.getVlrInteger() );
+					if (parcrec==null) {
+						ps.setInt( iparam++, txtCodRec.getVlrInteger() );
+						ps.setInt( iparam++, txtNParcItRec.getVlrInteger() );
+					} else {
+						for (ChaveParcela parcela: parcrec) {
+							ps.setInt( iparam++, parcela.getCodrec() );
+							ps.setInt( iparam++, parcela.getNparcitrec() );
+						}
+					}
 				}
 				if ( txtCodChamado.getVlrInteger() > 0 ) {
 					ps.setInt( iparam++, Aplicativo.iCodEmp );
@@ -1701,7 +1720,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		String titulo = tabatd.getNumLinhas() + " Atendimentos  /  " + Funcoes.strDecimalToStrCurrency( 2, total_horas_atend.toString() ) + " Horas dec. " + "  /  " + Funcoes.strDecimalToStrCurrency( 2, total_cobcli.toString() ) + " h.cobrança" + "  /  Produtividade: "
 				+ Funcoes.strDecimalToStrCurrency( 2, getCoeficiente( total_horas_atend, total_cobcli ).toString() ) + " %";
 
-		scpAtd.setBorder( SwingParams.getPanelLabel( titulo, Color.BLUE, TitledBorder.CENTER ) );
+		//scpAtd.setBorder( SwingParams.getPanelLabel( titulo, Color.BLUE, TitledBorder.CENTER ) );
 
 	}
 

@@ -3022,6 +3022,14 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 				Funcoes.mensagemInforma( this, "Selecione uma ou mais parcelas !" );
 				return;
 			}
+			int FIRSTPARC = 0;
+			Integer codclitmp = list.get( FIRSTPARC ).getCodcli();
+			for (int i=1; i<list.size(); i++) {
+				if (!codclitmp.equals( list.get( i ).getCodcli() )) {
+					Funcoes.mensagemInforma( this, "Não é possível gerar histórico de contatos para títulos de clientes diferentes !" );
+					return;
+				}
+			}
 
 			FCRM tela = null;
 

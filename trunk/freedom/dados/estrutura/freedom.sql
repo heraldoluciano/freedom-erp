@@ -13294,8 +13294,6 @@ ir.sitexpitrma='ET'
 
 /* View: ATATENDIMENTOVW01, Owner: SYSDBA */
 CREATE VIEW ATATENDIMENTOVW01 (CODEMP, CODFILIAL, CODATENDO, CODEMPAE, CODFILIALAE, CODATEND, NOMEATEND, PARTPREMIATEND, CODEMPEP, CODFILIALEP, MATEMPR, COEMPEA, CODFILIALEA, CODESPEC, DESCESPEC, CODEMPCT, CODFILIALCT, CODCONTR, DESCCONTR, CODITCONTR, CODEMPTA, CODFILIALTA, CODTAREFA, TPCOBCONTR, ANOATENDO, MESATENDO, QTDCONTR, QTDITCONTR, VLRITCONTR, VLRITCONTREXCED, DTINICIO, STATUSATENDO, RAZCLI, NOMECLI, CODCLI, CODEMPCL, CODFILIALCL, CODEMPCH, CODFILIALCH, CODCHAMADO, DESCCHAMADO, CODEMPTO, CODFILIALTO, CODTPATENDO, DESCTPATENDO, OBSATENDO, DATAATENDO, DATAATENDOFIN, HORAATENDO, HORAATENDOFIN, PGCOMIESPEC, COBCLIESPEC, CONTMETAESPEC, MRELCOBESPEC, BHESPEC, TEMPOMINCOBESPEC, TEMPOMAXCOBESPEC, PERCCOMIESPEC, TOTALMIN, SITREVATENDO, SITCONTR, DESCSITCONTR, DTPREVFIN, TIPOATENDO, DOCATENDO, CODEMPOC, CODFILIALOC, TIPOORC, CODORC) AS
-
-
 select a.codemp, a.codfilial, a.codatendo
   , a.codempae, a.codfilialae, a.codatend, ate.nomeatend, ate.partpremiatend, ate.codempep, codfilialep, matempr
   , a.codempea, a.codfilialea, a.codespec, e.descespec
@@ -13314,8 +13312,16 @@ select a.codemp, a.codfilial, a.codatendo
   , e.tempomincobespec, e.tempomaxcobespec, e.perccomiespec, ((a.horaatendofin-a.horaatendo) / 60) TOTALMIN
   , a.sitrevatendo
   , ct.sitcontr, ct.descsitcontr, ct.dtprevfin, ta.tipoatendo, a.docatendo, atc.codempoc, atc.codfilialoc, atc.tipoorc, atc.codorc
-from atatendente ate, atespecatend e, vdcliente c, attipoatendo ta, atatendimento a
-left outer join crchamado ch on 
+from  atatendimento a
+inner join atatendente ate on
+ate.codemp=a.codempae and ate.codfilial=a.codfilialae and ate.codatend=a.codatend
+inner join vdcliente c on
+c.codemp=a.codempcl and c.codfilial=a.codfilialcl and c.codcli=a.codcli
+left outer join attipoatendo ta on
+ta.codemp=a.codempto and ta.codfilial=a.codfilialto and ta.codtpatendo=a.codtpatendo
+left outer join atespecatend e on
+e.codemp=a.codempea and e.codfilial=a.codfilialea and e.codespec=a.codespec
+left outer join crchamado ch on
 ch.codemp=a.codempch and ch.codfilial=a.codfilialch and ch.codchamado=a.codchamado 
 left outer join vdcontrato ct on
 ct.codemp=a.codempct and ct.codfilial=a.codfilialct and ct.codcontr=a.codcontr
@@ -13323,10 +13329,6 @@ left outer join vditcontrato ict on
 ict.codemp=a.codempct and ict.codfilial=a.codfilialct and ict.codcontr=a.codcontr and ict.coditcontr=a.coditcontr
 left outer join atatendimentoorc atc on
 atc.codemp=a.codemp and atc.codfilial=a.codfilial and atc.codatendo=a.codatendo
-where ate.codemp=a.codempae and ate.codfilial=a.codfilialae and ate.codatend=a.codatend and
-e.codemp=a.codempea and e.codfilial=a.codfilialea and e.codespec=a.codespec and 
-c.codemp=a.codempcl and c.codfilial=a.codfilialcl and c.codcli=a.codcli and
-ta.codemp=a.codempto and ta.codfilial=a.codfilialto and ta.codtpatendo=a.codtpatendo
 ;
 
 /* View: ATATENDIMENTOVW02, Owner: SYSDBA */
