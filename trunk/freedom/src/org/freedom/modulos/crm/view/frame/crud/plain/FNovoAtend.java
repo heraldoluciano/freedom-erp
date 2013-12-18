@@ -1168,8 +1168,9 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 
 	}
 
-	private String addSecond(String hora) {
-		String result = Funcoes.addSecondTime( hora, 1 );
+	private String addMinute(String hora) {
+		String result = Funcoes.addMinuteTime( hora, 1 );
+		
 		return result;
 	}
 	
@@ -1201,10 +1202,12 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 				codrec = getParcrec().get( i ).getCodrec();
 				nparcitrec = getParcrec().get( i ).getNparcitrec();
 				// Se não for o primeiro registro, deverá gerar novo código de atendimento
-				if (i!=0) {
+				if (i==0) {
+					horafimtmp = addMinute(horainitmp);
+				} else {
 					codatendo = null;
-					horainitmp = addSecond(horafimtmp);
-					horafimtmp = addSecond(horainitmp);
+					horainitmp = addMinute(horafimtmp);
+					horafimtmp = addMinute(horainitmp);
 					if (i==(numrecord-1)) {
 						if (compareTime(horafimtmp, horafim)<0) {
 							horafimtmp = horafim;
@@ -1248,8 +1251,8 @@ public class FNovoAtend extends FFilho implements KeyListener, CarregaListener, 
 			atd.setCodatendo( codatendo );
 			atd.setDataatendo( txtDataAtendimento.getVlrDate() );
 			atd.setDataatendofin( txtDataAtendimentoFin.getVlrDate() );
-			atd.setHoraatendo( txtHoraini.getVlrString() );
-			atd.setHoraatendofin( txtHorafim.getVlrString() );
+			atd.setHoraatendo( horainitmp );
+			atd.setHoraatendofin( horafimtmp );
 			atd.setObsatendo( txaObsAtend.getVlrString() );
 			atd.setObsinterno( txaObsInterno.getVlrString() );
 			atd.setConcluichamado( cbConcluiChamado.getVlrString() );

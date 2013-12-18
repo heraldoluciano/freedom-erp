@@ -1876,7 +1876,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			HashMap<String, Vector<Object>> vals = FuncoesCRM.montaComboContr( con, txtCodCli.getVlrInteger(), "<Todos>", false );
 			cbContr.setItensGeneric( (Vector<?>) vals.get( "LAB" ), (Vector<?>) vals.get( "VAL" ) );
 			carregaChamados();
-
+ 
 			if ( prefere == null ) {
 				prefere = getPrefere();
 			}
