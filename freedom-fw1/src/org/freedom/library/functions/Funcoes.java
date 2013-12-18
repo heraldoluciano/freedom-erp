@@ -238,7 +238,7 @@ public class Funcoes {
 		if (data != null) {
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(data);
-			bRetorno = StringFunctions.strZero(cal.get(Calendar.HOUR) + "", 2)
+			bRetorno = StringFunctions.strZero(cal.get(Calendar.HOUR_OF_DAY) + "", 2)
 					+ ":"
 					+ StringFunctions.strZero(cal.get(Calendar.MINUTE) + "", 2)
 					+ ":"
@@ -249,12 +249,17 @@ public class Funcoes {
 
 	public static Date getStringTime(String time) {
 		Date result = null;
-		if (time!=null && time.length()>6) {
+		if (time!=null && time.length()>4) {
 			String hour = time.substring(0,2);
-			String minute = time.substring(3,6);
-			String second = time.substring(6,9);
+			String minute = time.substring(3,5);
+			String second;
+			if (time.length()>6) {
+				second = time.substring(6,8);
+			} else {
+				second = "00";
+			}
 			Calendar cal = Calendar.getInstance();
-			cal.set(Calendar.HOUR, Integer.parseInt(hour) );
+			cal.set(Calendar.HOUR_OF_DAY, Integer.parseInt(hour) );
 			cal.set(Calendar.MINUTE, Integer.parseInt(minute) );
 			cal.set(Calendar.SECOND, Integer.parseInt(second) );
 			cal.set(Calendar.MILLISECOND, 0 );
@@ -270,6 +275,18 @@ public class Funcoes {
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(tini);
 			cal.add(Calendar.SECOND, amount);
+			result = getTimeString(cal.getTime());
+		}
+		return result;
+	}
+
+	public static String addMinuteTime(String time, int amount) {
+		String result = time;
+		if (result!=null) {
+			Date tini = getStringTime(result);
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(tini);
+			cal.add(Calendar.MINUTE, amount);
 			result = getTimeString(cal.getTime());
 		}
 		return result;

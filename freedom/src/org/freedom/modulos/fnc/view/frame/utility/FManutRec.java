@@ -3007,6 +3007,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 				chave.setCodfilialrc( ListaCampos.getMasterFilial( "FNITRECEBER" ) );
 				chave.setCodrec( (Integer) row.elementAt( EColTabManut.CODREC.ordinal() ) ) ;
 				chave.setNparcitrec( (Integer) row.elementAt( EColTabManut.NPARCITREC.ordinal() ) ) ;
+				result.add( chave );
 			}
 		}
 		return result;
