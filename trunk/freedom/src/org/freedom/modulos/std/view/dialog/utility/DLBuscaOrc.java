@@ -60,6 +60,7 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FPassword;
 import org.freedom.modulos.crm.view.frame.crud.detail.FContrato;
 import org.freedom.modulos.std.business.object.VDContrOrc;
 import org.freedom.modulos.std.business.object.VDContrato;
@@ -349,12 +350,17 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 			String mensagem = daobusca.testaPgto( "", codcli
 				, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCLIENTE" ) ) ; 
 			if ( "N".equals( mensagem ) ) {
-				if ( Funcoes.mensagemConfirma( null, "Cliente com duplicatas em aberto! Continuar?" ) != 0 ) {
+				if ( Funcoes.mensagemConfirma( this, "Cliente com duplicatas em aberto! Continuar?" ) != 0 ) {
 					result = false;
 				}
 			} else if (!"".equals( mensagem )) {
-				Funcoes.mensagemInforma( null, mensagem );
-				result = false;
+				Funcoes.mensagemInforma( this, mensagem );
+				if (!"S".equals( Aplicativo.getUsuario().getLiberacredusu()) ) {
+					if (!senhaLiberaAtraso() ) {
+						Funcoes.mensagemInforma(this, "Usuário não tem permissão para liberação da venda !");
+						result = false;
+					}
+				}
 			}
 		} catch (Exception err) {
 			Funcoes.mensagemErro( null, err.getMessage() );
@@ -363,6 +369,15 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 		return result;
 	}
 
+	private boolean senhaLiberaAtraso() {
+		boolean result = false;
+		FPassword fpw = new FPassword( null, FPassword.LIBERA_CRED, "Liberação de título em atraso", con );
+		fpw.execShow();
+		result=fpw.OK;
+		fpw.dispose();
+		return result;
+	}
+	
 	private void montaListener() {
 
 		tabitorc.addKeyListener( this );
