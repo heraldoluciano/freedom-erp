@@ -350,14 +350,14 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 			String mensagem = daobusca.testaPgto( "", codcli
 				, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCLIENTE" ) ) ; 
 			if ( "N".equals( mensagem ) ) {
-				if ( Funcoes.mensagemConfirma( this, "Cliente com duplicatas em aberto! Continuar?" ) != 0 ) {
+				if ( Funcoes.mensagemConfirma( null, "Cliente com duplicatas em aberto! Continuar?" ) != 0 ) {
 					result = false;
 				}
 			} else if (!"".equals( mensagem )) {
-				Funcoes.mensagemInforma( this, mensagem );
+				Funcoes.mensagemInforma( null, mensagem );
 				if (!"S".equals( Aplicativo.getUsuario().getLiberacredusu()) ) {
 					if (!senhaLiberaAtraso() ) {
-						Funcoes.mensagemInforma(this, "Usuário não tem permissão para liberação da venda !");
+						Funcoes.mensagemInforma(null, "Usuário não tem permissão para liberação da venda !");
 						result = false;
 					}
 				}
@@ -371,7 +371,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 
 	private boolean senhaLiberaAtraso() {
 		boolean result = false;
-		FPassword fpw = new FPassword( null, FPassword.LIBERA_CRED, "Liberação de título em atraso", con );
+		FPassword fpw = new FPassword( this, FPassword.LIBERA_CRED, "Liberação de título em atraso", con );
 		fpw.execShow();
 		result=fpw.OK;
 		fpw.dispose();
