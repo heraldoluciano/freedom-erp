@@ -111,10 +111,10 @@ public class FRRecebAberto extends FRelatorio implements FocusListener {
 		sql.append("where r.codemp=ir.codemp and r.codfilial=ir.codfilial and r.codrec=ir.codrec ");
 		sql.append("and ir.codemp=? and ir.codfilial=? and ir.dtitrec <= ? ");
 		sql.append("and c.codemp=r.codempcl and c.codfilial=r.codfilialcl and c.codcli=r.codcli ");
-		sql.append("and ir.vlritrec>coalesce((select sum(sl2.vlrsublanca*-1) ");
+		sql.append("and cast(ir.vlritrec as decimal(15,2))>cast(coalesce((select sum(sl2.vlrsublanca*-1) ");
 		sql.append("from fnsublanca sl2 ");
 		sql.append("where sl2.codemprc=ir.codemp and sl2.codfilialrc=ir.codfilial and sl2.codrec=ir.codrec ");
-		sql.append("and sl2.nparcitrec=ir.nparcitrec and sl2.datasublanca<=? and sl2.codsublanca<>0),0) ");
+		sql.append("and sl2.nparcitrec=ir.nparcitrec and sl2.datasublanca<=? and sl2.codsublanca<>0),0) as decimal(15,2)) ");
 		sql.append("group by ir.codemp, ir.codfilial, ir.codrec, ir.nparcitrec ");
 		sql.append(", ir.dtitrec, ir.dtvencitrec, r.codcli, c.razcli, r.docrec ");
 		sql.append(", r.codvenda, ir.vlrparcitrec, ir.vlrdescitrec, ir.vlrjurositrec, ir.vlritrec ");
