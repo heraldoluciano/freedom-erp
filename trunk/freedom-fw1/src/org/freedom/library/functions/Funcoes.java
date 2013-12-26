@@ -1854,11 +1854,19 @@ public class Funcoes {
 	}
 
 	public static java.sql.Date dateToSQLDate(Date d) {
-		return new java.sql.Date(d.getTime());
+		java.sql.Date result = null;
+		if (d!=null) {
+			result = new java.sql.Date(d.getTime());
+		}
+		return result ;
 	}
 
 	public static java.sql.Time dateToSQLTime(Date d) {
-		return new java.sql.Time(d.getTime());
+		java.sql.Time result = null;
+		if (d!=null) {
+			result = new java.sql.Time(d.getTime());
+		}
+		return result;
 	}
 
 	public static Date sqlDateToDate(java.sql.Date dVal) {
