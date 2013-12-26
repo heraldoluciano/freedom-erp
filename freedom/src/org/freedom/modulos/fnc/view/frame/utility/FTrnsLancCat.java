@@ -83,9 +83,9 @@ public class FTrnsLancCat extends FFilho implements ActionListener, CarregaListe
 
 	private final ListaCampos lcPlanDest = new ListaCampos( this, "PN" );
 
-	private final String[] tabelas;
+	//private final String[] tabelas;
 
-	private final Map<String, String> mapaTabelas = new HashMap<String, String>();
+	private final Map<String, Table> mapaTabelas = new HashMap<String, Table>();
 
 	public FTrnsLancCat() {
 
@@ -102,19 +102,36 @@ public class FTrnsLancCat extends FFilho implements ActionListener, CarregaListe
 		lcPlanOrig.addCarregaListener( this );
 		lcPlanDest.addCarregaListener( this );
 
-		mapaTabelas.put( "CPRATEIO", "FN" );
-		mapaTabelas.put( "EQPRODPLAN", "PN" );
-		mapaTabelas.put( "FNCONTA", "PN" );
-		mapaTabelas.put( "FNFBNCLI", "PN" );
-		mapaTabelas.put( "FNITPAGAR", "PN" );
-		mapaTabelas.put( "FNITRECEBER", "PN" );
-		mapaTabelas.put( "FNLANCA", "PN" );
-		mapaTabelas.put( "FNPAGTOCOMI", "PN" );
-		mapaTabelas.put( "FNPLANOPAG", "PN" );
-		mapaTabelas.put( "FNSUBLANCA", "PN" );
-		mapaTabelas.put( "VDVENDEDOR", "PN" );
+		Table rateio = new Table("RATEIO", "CP", "FN", false);
+		Table prodplan = new Table("PRODPLAN","EQ", "PN", false);
+		Table conta = new Table("CONTA","FN", "PN", false);
+		Table fbncli = new Table("FBNCLI","FN", "PN", false);
+		Table pagar = new Table("PAGAR","FN", "PN", true);
+		Table itpagar = new Table("ITPAGAR","FN", "PN", true);
+		Table receber = new Table("RECEBER","FN", "PN", true);
+		Table itreceber = new Table("ITRECEBER","FN", "PN", true);
+		Table lanca = new Table("LANCA","FN", "PN", false);
+		Table pagtocomi = new Table("PAGTOCOMI","FN", "PN", false);
+		Table planopag = new Table("PLANOPAG","FN", "PN", false);
+		Table sublanca = new Table("SUBLANCA","FN", "PN", false);
+		Table vendedor = new Table("VENDEDOR","VD", "PN", false);
+			
+		mapaTabelas.put( rateio.getFullName(), rateio );
+		mapaTabelas.put( prodplan.getFullName(), prodplan );
+		mapaTabelas.put( conta.getFullName(), conta );
+		mapaTabelas.put( fbncli.getFullName(), fbncli );
+		mapaTabelas.put( pagar.getFullName(), pagar );
+		mapaTabelas.put( itpagar.getFullName(), itpagar );
+		mapaTabelas.put( receber.getFullName(), receber );
+		mapaTabelas.put( itreceber.getFullName(), itreceber );
+		mapaTabelas.put( lanca.getFullName(), lanca );
+		mapaTabelas.put( pagtocomi.getFullName(), pagtocomi );
+		mapaTabelas.put( planopag.getFullName(), planopag );
+		mapaTabelas.put( sublanca.getFullName(), sublanca );
+		mapaTabelas.put( vendedor.getFullName(), vendedor );
 
-		tabelas = new String[] { "CPRATEIO", "EQPRODPLAN", "FNCONTA", "FNFBNCLI", "FNITPAGAR", "FNITRECEBER", "FNLANCA", "FNPAGTOCOMI", "FNPLANOPAG", "FNSUBLANCA", "VDVENDEDOR" };
+//		tabelas = new String[] { "CPRATEIO", "EQPRODPLAN", "FNCONTA", "FNFBNCLI", "FNITPAGAR", "FNITRECEBER", "FNLANCA", "FNPAGTOCOMI", "FNPLANOPAG", "FNSUBLANCA", "VDVENDEDOR" };
+		
 	}
 
 	private void montaListaCampos() {
@@ -255,13 +272,13 @@ public class FTrnsLancCat extends FFilho implements ActionListener, CarregaListe
 
 			String idFk = "";
 
-			for ( String tabela : tabelas ) {
+			for ( Table table : mapaTabelas.values() ) {
 
-				idFk = mapaTabelas.get( tabela );
+				idFk = table.getSufixplan();
 
 				sql.delete( 0, sql.length() );
 				sql.append( "SELECT COUNT(*) FROM " );
-				sql.append( tabela );
+				sql.append( table.getFullName() );
 				sql.append( " WHERE" );
 				sql.append( " CODEMP" + idFk + "=? AND" );
 				sql.append( " CODFILIAL" + idFk + "=? AND" );
@@ -308,14 +325,17 @@ public class FTrnsLancCat extends FFilho implements ActionListener, CarregaListe
 		String idFk = "";
 
 		try {
-			for ( String tabela : tabelas ) {
+			for ( Table table: mapaTabelas.values() ) {
 
-				idFk = mapaTabelas.get( tabela );
-
+				idFk = table.getSufixplan();
+				
 				sql.delete( 0, sql.length() );
 				sql.append( "UPDATE " );
-				sql.append( tabela );
+				sql.append( table.getFullName() );
 				sql.append( " SET" );
+				if (table.isEmmanut()) {
+					sql.append( " EMMANUT='S', ");
+				}
 				sql.append( " CODEMP" + idFk + "=?," );
 				sql.append( " CODFILIAL" + idFk + "=?," );
 				sql.append( " CODPLAN=?" );
@@ -326,7 +346,7 @@ public class FTrnsLancCat extends FFilho implements ActionListener, CarregaListe
 
 				try {
 
-					status.setText( "Atulizando tabela " + tabela );
+					status.setText( "Atulizando tabela " + table.getFullName() );
 
 					ps = con.prepareStatement( sql.toString() );
 					ps.setInt( 1, Aplicativo.iCodEmp );
@@ -336,6 +356,16 @@ public class FTrnsLancCat extends FFilho implements ActionListener, CarregaListe
 					ps.setInt( 5, lcPlanOrig.getCodFilial() );
 					ps.setString( 6, txtCodPlanOrig.getVlrString() );
 					ps.executeUpdate();
+					ps.close();
+					if (table.isEmmanut()) {
+						sql.delete( 0, sql.length() );
+						sql.append( "UPDATE ");
+						sql.append( table.getFullName() );
+						sql.append( " SET EMMANUT='N' where EMMANUT='S'");
+						ps = con.prepareStatement( sql.toString() );
+						ps.executeUpdate();
+						ps.close();
+					}
 
 				} catch ( SQLException e ) {
 					e.printStackTrace();
@@ -401,5 +431,62 @@ public class FTrnsLancCat extends FFilho implements ActionListener, CarregaListe
 		lcPlanOrig.setConexao( cn );
 		lcPlanDest.setConexao( cn );
 
+	}
+	
+	public class Table {
+		String tablename;
+		String prefix;
+		String sufixplan;
+		boolean emmanut;
+		
+		public Table(String tablename, String prefix, String sufixplan, boolean emmanut) {
+			setTablename( tablename );
+			setPrefix( prefix );
+			setSufixplan( sufixplan );
+			setEmmanut( emmanut );
+		}
+		public String getTablename() {
+		
+			return tablename;
+		}
+		
+		public void setTablename( String tablename ) {
+		
+			this.tablename = tablename;
+		}
+		
+		public String getPrefix() {
+		
+			return prefix;
+		}
+		
+		public void setPrefix( String prefix ) {
+		
+			this.prefix = prefix;
+		}
+		
+		
+		public String getSufixplan() {
+		
+			return sufixplan;
+		}
+		
+		public void setSufixplan( String sufixplan ) {
+		
+			this.sufixplan = sufixplan;
+		}
+		public boolean isEmmanut() {
+		
+			return emmanut;
+		}
+		
+		public void setEmmanut( boolean emmanut ) {
+		
+			this.emmanut = emmanut;
+		}
+		
+		public String getFullName() {
+			return ""+this.prefix+this.tablename;
+		}
 	}
 }
