@@ -111,10 +111,10 @@ public class FRPagarAberto extends FRelatorio implements FocusListener {
 		sql.append("where p.codemp=ip.codemp and p.codfilial=ip.codfilial and p.codpag=ip.codpag ");
 		sql.append("and ip.codemp=? and ip.codfilial=? and ip.dtitpag <= ? ");
 		sql.append("and f.codemp=p.codempfr and f.codfilial=p.codfilialfr and f.codfor=p.codfor ");
-		sql.append("and ip.vlritpag>coalesce((select sum(sl2.vlrsublanca) ");
+		sql.append("and cast(ip.vlritpag as decimal(15,2))>cast(coalesce((select sum(sl2.vlrsublanca) ");
 		sql.append("from fnsublanca sl2 ");
 		sql.append("where sl2.codemppg=ip.codemp and sl2.codfilialpg=ip.codfilial and sl2.codpag=ip.codpag ");
-		sql.append("and sl2.nparcpag=ip.nparcpag and sl2.datasublanca<=? and sl2.codsublanca<>0),0) ");
+		sql.append("and sl2.nparcpag=ip.nparcpag and sl2.datasublanca<=? and sl2.codsublanca<>0),0) as decimal(15,2)) ");
 		sql.append("group by ip.codemp, ip.codfilial, ip.codpag, ip.nparcpag ");
 		sql.append(", ip.dtitpag, ip.dtvencitpag, p.codfor, f.razfor, p.docpag ");
 		sql.append(", p.codcompra, ip.vlrparcitpag, ip.vlrdescitpag, ip.vlrjurositpag, ip.vlritpag ");
