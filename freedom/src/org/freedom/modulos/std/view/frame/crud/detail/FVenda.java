@@ -2904,7 +2904,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 	private void emiteNFE() {
 
-		nfecf.setKey( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDVENDA" ), txtTipoVenda.getVlrString(), txtCodVenda.getVlrInteger(), txtDocVenda.getVlrInteger() );
+		nfecf.setKey( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDVENDA" ), txtTipoVenda.getVlrString()
+				, txtCodVenda.getVlrInteger(), txtCodSerie.getVlrString(), txtDocVenda.getVlrInteger() );
 		nfecf.post();
 /*		if ("0".equals(nfecf.getKindTransmission()) || nfecf.getObjNFEFactory().isNfeAutorizada()) {
 			lcCampos.edit();

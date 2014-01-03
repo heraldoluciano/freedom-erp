@@ -1573,7 +1573,8 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 
 		nfecf.setTpNF( AbstractNFEFactory.TP_NF_IN );
 
-		nfecf.setKey( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPCOMPRA" ), txtCodCompra.getVlrInteger(), txtDocCompra.getVlrInteger() );
+		nfecf.setKey( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPCOMPRA" )
+				, txtCodCompra.getVlrInteger(), txtSerieCompra.getVlrString(), txtDocCompra.getVlrInteger() );
 		
 		nfecf.post();
 
@@ -2011,7 +2012,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		}
 		if ( result && "N".equals( emitnfcpmov ) && nfecf != null ) { 
 
-			nfecf.setKey( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPCOMPRA" ), txtCodCompra.getVlrInteger(), txtDocCompra.getVlrInteger() );
+			nfecf.setKey( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPCOMPRA" ), txtCodCompra.getVlrInteger(), txtSerieCompra.getVlrString(), txtDocCompra.getVlrInteger() );
 
 
 			result = nfecf.consistChaveNFE( txtChaveNfe.getVlrString() );
