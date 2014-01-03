@@ -39,23 +39,27 @@ public class FreedomNFEKey extends AbstractNFEKey {
 	public static final String DOCCOMPRA = "DOCCOMPRA";
 
 	public static final String DIRNFE = "DIRNFE";
+	
+	public static final String MODELO = "MODELO";
 
-	public FreedomNFEKey(Integer codemp, Integer codfilial, String tipovenda, Integer codvenda, String serie, Integer docvenda, String dirNFE) {
+	public FreedomNFEKey(Integer codemp, Integer codfilial, String tipovenda, Integer codvenda, Integer modelo, String serie, Integer docvenda, String dirNFE) {
 
 		put(CODEMP, codemp);
 		put(CODFILIAL, codfilial);
 		put(TIPOVENDA, tipovenda);
 		put(CODVENDA, codvenda);
+		put(MODELO, modelo);
 		put(SERIE, serie);
 		put(DOCVENDA, docvenda);
 		put(DIRNFE, dirNFE);
 	}
 
-	public FreedomNFEKey(Integer codemp, Integer codfilial, Integer codcompra, String serie, Integer doccompra, String dirNFE) {
+	public FreedomNFEKey(Integer codemp, Integer codfilial, Integer codcompra, Integer modelo, String serie, Integer doccompra, String dirNFE) {
 
 		put(CODEMP, codemp);
 		put(CODFILIAL, codfilial);
 		put(CODCOMPRA, codcompra);
+		put(MODELO, modelo);
 		put(SERIE, serie);
 		put(DOCCOMPRA, doccompra);
 		put(DIRNFE, dirNFE);
