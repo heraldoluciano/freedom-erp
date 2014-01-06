@@ -288,7 +288,7 @@ public class FRVendasGrupo extends FRelatorio {
 		}
 		
 		if ( txtCodVend.getVlrInteger().intValue() > 0 ) {
-			sql.append( " and v.codempvd=? and v.codfilialvd=? and c.codvend=? ");
+			sql.append( " and v.codempvd=? and v.codfilialvd=? and v.codvend=? ");
 		    cab.append( " ( Vendedor: " );
 		    cab.append( txtNomeVend.getVlrString().trim());
 		    cab.append( " ) ");
