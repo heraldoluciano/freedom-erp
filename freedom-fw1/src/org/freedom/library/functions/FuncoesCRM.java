@@ -42,7 +42,8 @@ public class FuncoesCRM {
 	public FuncoesCRM() {
 	}
 
-	public static HashMap<String, Vector<Object>> montaComboContr(DbConnection con, Integer codcli, String textonulo, boolean soativos) {
+	public static HashMap<String, Vector<Object>> montaComboContr(DbConnection con, Integer codcli, Integer codcontr,
+			String textonulo, boolean soativos) {
 
 		Vector<Object> vVals = new Vector<Object>();
 		Vector<Object> vLabs = new Vector<Object>();
@@ -59,9 +60,12 @@ public class FuncoesCRM {
 		
 		
 		if(soativos) {
-			
-			sql.append(" and coalesce(ct.ativo,'N')='S' ");
-			
+			sql.append(" and ( coalesce(ct.ativo,'N')='S' ");
+			if (codcontr!=null) {
+				sql.append(" or ct.codcontr=");
+				sql.append(codcontr);
+			}
+			sql.append(" )");
 		}
 
 		try {
