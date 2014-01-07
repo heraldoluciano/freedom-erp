@@ -914,7 +914,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 		}
 
 		if ( cevt.getListaCampos() == lcCli ) {
-			HashMap<String, Vector<Object>> vals = FuncoesCRM.montaComboContr( con, txtCodCli.getVlrInteger(), "<Não selecionado>", true );
+			HashMap<String, Vector<Object>> vals = FuncoesCRM.montaComboContr( con, txtCodCli.getVlrInteger(), txtCodContr.getVlrInteger(), "<Não selecionado>", true );
 			cbContr.setItensGeneric( (Vector<?>) vals.get( "LAB" ), (Vector<?>) vals.get( "VAL" ) );
 		}
 

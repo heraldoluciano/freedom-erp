@@ -319,6 +319,11 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 		adicCampo( txtHistSubLanca, 110, 60, 516, 20, "HistSubLanca", "Histórico do lançamento", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtCodPag, "CodPag", "Cód.Pag.", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtCodRec, "CodRec", "Cód.Rec.", ListaCampos.DB_SI, false );
+		if ( "S".equals( (String) prefere.get( "LANCAFINCONTR" ) ) ) {
+			adicCampoInvisivel( txtCodContr, "CodContr", "Cod.Contr.", ListaCampos.DB_FK, false );
+			// adicCampoInvisivel( txtCodContr2, "CodContr", "Cod.Contr.", ListaCampos.DB_FK, false );
+			adicCampoInvisivel( txtCodItContr, "CodItContr", "Cod.It.Contr.", ListaCampos.DB_SI, false );
+		}
 
 		txtCodCli.setRequerido( true );
 		txtCodFor.setRequerido( true );
@@ -338,11 +343,6 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 		lbCodFor = adicCampo( txtCodFor, 2, 18, 95, 20, "CodFor", "Cód. Fornecedor", ListaCampos.DB_FK, false );
 		lbRazFor = adicDescFK( txtRazFor, 100, 18, 503, 20, "RazFor", "Razão social do fornecedor" );
 
-		if ( "S".equals( (String) prefere.get( "LANCAFINCONTR" ) ) ) {
-			adicCampoInvisivel( txtCodContr, "CodContr", "Cod.Contr.", ListaCampos.DB_FK, false );
-			// adicCampoInvisivel( txtCodContr2, "CodContr", "Cod.Contr.", ListaCampos.DB_FK, false );
-			adicCampoInvisivel( txtCodItContr, "CodItContr", "Cod.It.Contr.", ListaCampos.DB_SI, false );
-		}
 
 		lbCodCli.setVisible( false );
 		lbRazCli.setVisible( false );
@@ -789,7 +789,7 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 	public void afterCarrega( CarregaEvent cevt ) {
 
 		if ( cevt.getListaCampos() == lcCli ) {
-			HashMap<String, Vector<Object>> vals = FuncoesCRM.montaComboContr( con, txtCodCli.getVlrInteger(), "<Não selecionado>", true );
+			HashMap<String, Vector<Object>> vals = FuncoesCRM.montaComboContr( con, txtCodCli.getVlrInteger(), txtCodContr.getVlrInteger(), "<Não selecionado>", true );
 			cbContr.setItensGeneric( (Vector<?>) vals.get( "LAB" ), (Vector<?>) vals.get( "VAL" ) );
 		} else if ( cevt.getListaCampos() == lcDet ) {
 			if ( "O".equals( rgTipoLanca.getVlrString() ) ) {
