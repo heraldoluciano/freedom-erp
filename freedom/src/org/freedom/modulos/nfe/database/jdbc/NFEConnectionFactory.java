@@ -60,14 +60,17 @@ public class NFEConnectionFactory implements NFEListener {
 	private String kindTransmission = AbstractNFEFactory.KIND_APP_FISCO;
 	
 	private String kindEnv = AbstractNFEFactory.KIND_ENV_HOMOLOG;
+	
+	private String tempDir;
 
 	public NFEConnectionFactory( final DbConnection conFreedom, final DbConnection conSped
-			, Constant TP_NF, boolean service, String kindTransmission, String kindEnv ) {
+			, Constant TP_NF, boolean service, String kindTransmission, String kindEnv, String tempDir ) {
 
 		this.con = conFreedom;
 		this.service = service;
 		this.kindTransmission = kindTransmission;
 		this.kindEnv = kindEnv;
+		this.tempDir = tempDir;
 		
 		if ( TP_NF == null ) {
 			setTpNF( AbstractNFEFactory.TP_NF_OUT );
@@ -96,6 +99,7 @@ public class NFEConnectionFactory implements NFEListener {
 					getObjNFEFactory().setService( isService() );
 					getObjNFEFactory().setKindEnv( getKindEnv() );
 					getObjNFEFactory().setKindTransmission( getKindTransmission() );
+					getObjNFEFactory().setTempDir( getTempDir() );
 
 				}
 				else {
@@ -160,6 +164,18 @@ public class NFEConnectionFactory implements NFEListener {
 	public void setUrl( String url ) {
 
 		this.url = url;
+	}
+
+	
+	public String getTempDir() {
+	
+		return tempDir;
+	}
+
+	
+	public void setTempDir( String tempDir ) {
+	
+		this.tempDir = tempDir;
 	}
 
 	public String getStrClassNFE() {
