@@ -296,22 +296,11 @@ public class SystemFunctions {
 		//String encoding = "UTF-8";
 		try {
 			
-			byte[] buffer = new byte[1];
-			
 			FileOutputStream fout = new FileOutputStream(zipFile);
 			ZipOutputStream zout = new ZipOutputStream(fout);
 			
 			for (File file: files ) {
-				FileInputStream fin = new FileInputStream(file);
-				zout.putNextEntry(new ZipEntry(file.getName()));
-				@SuppressWarnings("unused")
-				int length=0;
-				while ((length = fin.read(buffer)) > 0) {
-					zout.write(buffer);
-				}
-				zout.flush();
-				zout.closeEntry();
-				fin.close();
+				zip(zout, file, file.getName());
 			}
 			zout.close();
 			result = true;
@@ -320,6 +309,39 @@ public class SystemFunctions {
 		} 
 
 		return result;
+	}
+
+	public static boolean zip(File file, String zipFileName, String srcFileName ) {
+		boolean result = false;
+		//String encoding = "UTF-8";
+		try {
+			if (srcFileName==null) {
+				srcFileName = file.getName();
+			}
+			FileOutputStream fout = new FileOutputStream(zipFileName);
+			ZipOutputStream zout = new ZipOutputStream(fout);
+			zip(zout, file, srcFileName);
+			zout.close();
+			result = true;
+		} catch (IOException e) {
+			e.printStackTrace();
+		} 
+
+		return result;
+	}
+
+	public static void zip(ZipOutputStream zout, File file, String filename ) throws IOException {
+		FileInputStream fin = new FileInputStream(file);
+		zout.putNextEntry(new ZipEntry(filename));
+		@SuppressWarnings("unused")
+		int length=0;
+		byte[] buffer = new byte[1];
+		while ((length = fin.read(buffer)) > 0) {
+			zout.write(buffer);
+		}
+		zout.flush();
+		zout.closeEntry();
+		fin.close();
 	}
 	
 	public static Vector<File> unzip(String dir, File zip) {

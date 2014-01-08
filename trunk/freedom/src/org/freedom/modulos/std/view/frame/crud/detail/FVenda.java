@@ -4197,7 +4197,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 							, AbstractNFEFactory.TP_NF_OUT, true
 							, (String) oPrefs[POS_PREFS.PROCEMINFE.ordinal()] 
 							, (String) oPrefs[POS_PREFS.AMBIENTENFE.ordinal()]
-									) );
+							, Aplicativo.strTemp) );
 
 				}
 				else {
@@ -4205,7 +4205,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 							, AbstractNFEFactory.TP_NF_OUT, false
 							, (String) oPrefs[POS_PREFS.PROCEMINFE.ordinal()]
 							, (String) oPrefs[POS_PREFS.AMBIENTENFE.ordinal()]
-									) );
+							, Aplicativo.strTemp) );
 				}
 
 				recriaSqlWhereLcProdutos();
@@ -5133,7 +5133,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				, AbstractNFEFactory.TP_NF_OUT, false
 				, (String) oPrefs[POS_PREFS.PROCEMINFE.ordinal()]
 				, (String) oPrefs[POS_PREFS.AMBIENTENFE.ordinal()]
-						) );
+				, Aplicativo.strTemp) );
 		daobuscaorc = new DAOBuscaOrc( cn );
 		
 	}

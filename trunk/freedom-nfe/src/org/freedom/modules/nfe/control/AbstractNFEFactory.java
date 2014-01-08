@@ -104,11 +104,14 @@ public abstract class AbstractNFEFactory {
 	
 	private String chaveNfe = null;
 
+	private String tempDir;
+	
 	public enum SYSTEM {
 		FREEDOM
 	};
 
-	public AbstractNFEFactory(){}
+	public AbstractNFEFactory() {
+	}
 
 	public boolean isValid() {
 		return valid;
@@ -294,5 +297,12 @@ public abstract class AbstractNFEFactory {
 		this.chaveNfe = chaveNfe;
 	}
 
+	public String getTempDir() {
+		return tempDir;
+	}
+
+	public void setTempDir(String tempDir) {
+		this.tempDir = tempDir;
+	}
 	
 }
