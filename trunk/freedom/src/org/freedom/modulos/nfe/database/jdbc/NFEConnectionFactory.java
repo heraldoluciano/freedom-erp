@@ -393,8 +393,8 @@ public class NFEConnectionFactory implements NFEListener {
 		}
 	}
 	
-	public boolean cancNFe(FreedomNFEKey key, String nfekey) {
-		return getObjNFEFactory().cancNFe(key, nfekey);
+	public boolean cancNFe(FreedomNFEKey key, String nfekey, String justificativa) {
+		return getObjNFEFactory().cancNFe(key, nfekey, justificativa);
 	}
 	
 	public ReturnMessageKey getReturnKey(){

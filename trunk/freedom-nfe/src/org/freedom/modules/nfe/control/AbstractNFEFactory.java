@@ -205,7 +205,7 @@ public abstract class AbstractNFEFactory {
 
 	protected abstract void runSend();
 	
-	public abstract boolean cancNFe(FreedomNFEKey key, String nfekey);
+	public abstract boolean cancNFe(FreedomNFEKey key, String nfekey, String justificativa);
 
 	public void post() {
 
