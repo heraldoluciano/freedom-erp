@@ -55,7 +55,7 @@ public class NFEConnectionFactory implements NFEListener {
 
 	private Constant tpNF = AbstractNFEFactory.TP_NF_OUT;
 	
-	private boolean service;
+	private boolean service; 
 	
 	private String kindTransmission = AbstractNFEFactory.KIND_APP_FISCO;
 	
@@ -391,6 +391,10 @@ public class NFEConnectionFactory implements NFEListener {
 				Funcoes.mensagemInforma( null, "Arquivo de NF-e criado com sucesso.\n verifique a pasta:" + getDirNFE() );
 			}
 		}
+	}
+	
+	public boolean cancNFe(FreedomNFEKey key, String nfekey) {
+		return getObjNFEFactory().cancNFe(key, nfekey);
 	}
 	
 	public ReturnMessageKey getReturnKey(){

@@ -21,6 +21,7 @@ import java.util.List;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.infra.pojos.Constant;
 import org.freedom.modules.nfe.bean.AbstractNFEKey;
+import org.freedom.modules.nfe.bean.FreedomNFEKey;
 import org.freedom.modules.nfe.bean.NFEInconsistency;
 import org.freedom.modules.nfe.bean.ReturnMessageKey;
 import org.freedom.modules.nfe.event.NFEEvent;
@@ -203,6 +204,8 @@ public abstract class AbstractNFEFactory {
 	protected abstract void validSend();
 
 	protected abstract void runSend();
+	
+	public abstract boolean cancNFe(FreedomNFEKey key, String nfekey);
 
 	public void post() {
 
