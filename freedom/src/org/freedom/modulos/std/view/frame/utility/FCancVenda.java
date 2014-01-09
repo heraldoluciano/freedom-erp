@@ -215,13 +215,14 @@ public class FCancVenda extends FFilho implements ActionListener {
 				String tipovenda = "V";
 				String fiscaltipomov = cbFiscaltipomov.getVlrString();
 				String chavenfe = txtChaveNfe.getVlrString();
+				String justificativa = txaMotivoCancVenda.getVlrString();
 				if ( APLIC_CONTRIB_NFE.equals(oPrefs[POS_PREFS.PROCEMINFE.ordinal()]) && "S".equals( fiscaltipomov )) {
 					if ("".equals(chavenfe)) {
 						Funcoes.mensagemInforma( this, "Nota fiscal eletrônica sem chave de acesso não pode ser cancelada !" );
 						return result;
 					}
 					FreedomNFEKey key = new FreedomNFEKey( codemp, codfilial, tipovenda, codvenda, modelo, serie, docvenda, dirNFE );
-					cancVenda = nfecf.cancNFe( key, chavenfe );
+					cancVenda = nfecf.cancNFe( key, chavenfe, justificativa );
 				}
 				if (cancVenda) {
 					PreparedStatement ps = null;

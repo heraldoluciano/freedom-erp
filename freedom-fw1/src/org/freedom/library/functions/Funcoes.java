@@ -665,10 +665,12 @@ public class Funcoes {
 	}
 
 	public static int getAno(Date data) {
-		int retorno = 1;
-		GregorianCalendar cal = new GregorianCalendar();
-		cal.setTime(data);
-		retorno = cal.get(Calendar.YEAR);
+		int retorno = 0;
+		if (data!=null) {
+			GregorianCalendar cal = new GregorianCalendar();
+			cal.setTime(data);
+			retorno = cal.get(Calendar.YEAR);
+		}
 		return retorno;
 	}
 
