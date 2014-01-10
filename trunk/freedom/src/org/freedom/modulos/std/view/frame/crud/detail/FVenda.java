@@ -99,6 +99,7 @@ import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.util.SwingParams;
 import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modules.nfe.control.AbstractNFEFactory;
+import org.freedom.modules.nfe.control.AbstractNFEFactory.TYPE_PROC;
 import org.freedom.modulos.crm.view.frame.crud.plain.FVendaContrato;
 import org.freedom.modulos.gms.business.object.TipoMov;
 import org.freedom.modulos.gms.business.object.TipoProd;
@@ -4197,15 +4198,14 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 							, AbstractNFEFactory.TP_NF_OUT, true
 							, (String) oPrefs[POS_PREFS.PROCEMINFE.ordinal()] 
 							, (String) oPrefs[POS_PREFS.AMBIENTENFE.ordinal()]
-							, Aplicativo.strTemp) );
+							, Aplicativo.strTemp, TYPE_PROC.NFE) );
 
-				}
-				else {
+				}else {
 					setNfecf( new NFEConnectionFactory( con, Aplicativo.getInstace().getConexaoNFE()
 							, AbstractNFEFactory.TP_NF_OUT, false
 							, (String) oPrefs[POS_PREFS.PROCEMINFE.ordinal()]
 							, (String) oPrefs[POS_PREFS.AMBIENTENFE.ordinal()]
-							, Aplicativo.strTemp) );
+							, Aplicativo.strTemp, TYPE_PROC.NFE) );
 				}
 
 				recriaSqlWhereLcProdutos();
@@ -5133,7 +5133,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				, AbstractNFEFactory.TP_NF_OUT, false
 				, (String) oPrefs[POS_PREFS.PROCEMINFE.ordinal()]
 				, (String) oPrefs[POS_PREFS.AMBIENTENFE.ordinal()]
-				, Aplicativo.strTemp) );
+				, Aplicativo.strTemp, TYPE_PROC.NFE) );
 		daobuscaorc = new DAOBuscaOrc( cn );
 		
 	}

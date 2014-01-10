@@ -93,6 +93,7 @@ import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.util.SwingParams;
 import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modules.nfe.control.AbstractNFEFactory;
+import org.freedom.modules.nfe.control.AbstractNFEFactory.TYPE_PROC;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FPais;
 import org.freedom.modulos.cfg.view.frame.crud.plain.FUF;
 import org.freedom.modulos.gms.business.component.NumSerie;
@@ -3738,7 +3739,8 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		super.setConexao( cn );
 		getPrefere();
 
-		setNfecf( new NFEConnectionFactory( cn, Aplicativo.getInstace().getConexaoNFE(), AbstractNFEFactory.TP_NF_IN, false, proceminfe, ambientenfe, Aplicativo.strTemp ) );
+		setNfecf( new NFEConnectionFactory( cn, Aplicativo.getInstace().getConexaoNFE(), AbstractNFEFactory.TP_NF_IN
+				, false, proceminfe, ambientenfe, Aplicativo.strTemp, TYPE_PROC.NFE ) );
 
 		lcTipoMov.setConexao( cn );
 		lcSerie.setConexao( cn );

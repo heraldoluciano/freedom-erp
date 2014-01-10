@@ -21,6 +21,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modules.nfe.bean.FreedomNFEKey;
 import org.freedom.modules.nfe.bean.ReturnMessageKey;
 import org.freedom.modules.nfe.control.AbstractNFEFactory;
+import org.freedom.modules.nfe.control.AbstractNFEFactory.TYPE_PROC;
 import org.freedom.modules.nfe.event.NFEEvent;
 import org.freedom.modules.nfe.event.NFEListener;
 import org.freedom.modulos.nfe.DLInconsistency;
@@ -62,15 +63,18 @@ public class NFEConnectionFactory implements NFEListener {
 	private String kindEnv = AbstractNFEFactory.KIND_ENV_HOMOLOG;
 	
 	private String tempDir;
-
+	
+	private TYPE_PROC type_proc = null;
+	
 	public NFEConnectionFactory( final DbConnection conFreedom, final DbConnection conSped
-			, Constant TP_NF, boolean service, String kindTransmission, String kindEnv, String tempDir ) {
+			, Constant TP_NF, boolean service, String kindTransmission, String kindEnv, String tempDir, TYPE_PROC type_proc ) {
 
 		this.con = conFreedom;
 		this.service = service;
 		this.kindTransmission = kindTransmission;
 		this.kindEnv = kindEnv;
 		this.tempDir = tempDir;
+		this.type_proc = type_proc;
 		
 		if ( TP_NF == null ) {
 			setTpNF( AbstractNFEFactory.TP_NF_OUT );
@@ -100,6 +104,7 @@ public class NFEConnectionFactory implements NFEListener {
 					getObjNFEFactory().setKindEnv( getKindEnv() );
 					getObjNFEFactory().setKindTransmission( getKindTransmission() );
 					getObjNFEFactory().setTempDir( getTempDir() );
+					getObjNFEFactory().setType_proc( getType_proc() );
 
 				}
 				else {
@@ -229,12 +234,37 @@ public class NFEConnectionFactory implements NFEListener {
 
 	}
 
+	public void setMotivoCancNfe(String motivoCancNfe) {
+		getObjNFEFactory().setMotivoCancNfe( motivoCancNfe );
+	}
+	
+	public void setChaveNfe(String chaveNfe) {
+		getObjNFEFactory().setChaveNfe( chaveNfe );
+	}
+	
+	public void setKey(FreedomNFEKey key) {
+		getObjNFEFactory().setKey( key );
+
+	}
+	
 	public void setKey( Integer codemp, Integer codfilial, Integer codcompra, Integer modelo, String serie, Integer doccompra ) {
 
 		FreedomNFEKey key = new FreedomNFEKey( codemp, codfilial, codcompra, modelo, serie, doccompra, getDirNFE() );
 		
 		getObjNFEFactory().setKey( key );
 
+	}
+
+	
+	public TYPE_PROC getType_proc() {
+	
+		return type_proc;
+	}
+
+	
+	public void setType_proc( TYPE_PROC type_proc ) {
+	
+		this.type_proc = type_proc;
 	}
 
 	private String getUrlDb() {
@@ -391,10 +421,6 @@ public class NFEConnectionFactory implements NFEListener {
 				Funcoes.mensagemInforma( null, "Arquivo de NF-e criado com sucesso.\n verifique a pasta:" + getDirNFE() );
 			}
 		}
-	}
-	
-	public boolean cancNFe(FreedomNFEKey key, String nfekey, String justificativa) {
-		return getObjNFEFactory().cancNFe(key, nfekey, justificativa);
 	}
 	
 	public ReturnMessageKey getReturnKey(){

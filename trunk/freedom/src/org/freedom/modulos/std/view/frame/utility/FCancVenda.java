@@ -50,6 +50,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
 import org.freedom.modules.nfe.bean.FreedomNFEKey;
 import org.freedom.modules.nfe.control.AbstractNFEFactory;
+import org.freedom.modules.nfe.control.AbstractNFEFactory.TYPE_PROC;
 import org.freedom.modulos.nfe.database.jdbc.NFEConnectionFactory;
 
 
@@ -222,7 +223,12 @@ public class FCancVenda extends FFilho implements ActionListener {
 						return result;
 					}
 					FreedomNFEKey key = new FreedomNFEKey( codemp, codfilial, tipovenda, codvenda, modelo, serie, docvenda, dirNFE );
-					cancVenda = nfecf.cancNFe( key, chavenfe, justificativa );
+					nfecf.setMotivoCancNfe(justificativa);
+					nfecf.setChaveNfe( chavenfe );
+					nfecf.setKey(key);
+					nfecf.post();
+					// trocar isValid para isAutorizada
+					cancVenda = nfecf.getObjNFEFactory().isValid();
 				}
 				if (cancVenda) {
 					PreparedStatement ps = null;
@@ -289,7 +295,7 @@ public class FCancVenda extends FFilho implements ActionListener {
 				, AbstractNFEFactory.TP_NF_OUT, false
 				, (String) oPrefs[POS_PREFS.PROCEMINFE.ordinal()]
 				, (String) oPrefs[POS_PREFS.AMBIENTENFE.ordinal()]
-				, Aplicativo.strTemp) );
+				, Aplicativo.strTemp, TYPE_PROC.CANCELAMENTO) );
 	}
 	
 	private Object[] prefs() {
