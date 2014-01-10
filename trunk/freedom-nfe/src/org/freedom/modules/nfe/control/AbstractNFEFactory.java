@@ -327,5 +327,5 @@ public abstract class AbstractNFEFactory {
 	public void setMotivoCancNfe(String motivoCancNfe) {
 		this.motivoCancNfe = motivoCancNfe;
 	}
-	
+
 }
