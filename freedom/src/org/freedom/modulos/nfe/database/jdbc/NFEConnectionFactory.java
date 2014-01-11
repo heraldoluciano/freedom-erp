@@ -414,7 +414,7 @@ public class NFEConnectionFactory implements NFEListener {
 		}
 		else {
 			if (getKindTransmission().equals( AbstractNFEFactory.KIND_APP_OWN) ) {
-				if (nfefactory.isNfeAutorizada()) {
+				if (nfefactory.isAutorizada()) {
 					Funcoes.mensagemInforma( null, "Autorizado o uso da NF-e");
 				}
 			} else {

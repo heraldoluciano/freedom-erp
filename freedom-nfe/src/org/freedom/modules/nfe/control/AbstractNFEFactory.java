@@ -100,7 +100,7 @@ public abstract class AbstractNFEFactory {
 
 	private String KindEnv = KIND_ENV_HOMOLOG;
 	
-	private boolean nfeAutorizada = false;
+	private boolean autorizada = false;
 	
 	private String chaveNfe = null;
 
@@ -288,12 +288,12 @@ public abstract class AbstractNFEFactory {
 		KindEnv = kindEnv;
 	}
 
-	public boolean isNfeAutorizada() {
-		return nfeAutorizada;
+	public boolean isAutorizada() {
+		return autorizada;
 	}
 
-	public void setNfeAutorizada(boolean nfeAutorizada) {
-		this.nfeAutorizada = nfeAutorizada;
+	public void setNfeAutorizada(boolean autorizada) {
+		this.autorizada = autorizada;
 	}
 
 	public String getChaveNfe() {

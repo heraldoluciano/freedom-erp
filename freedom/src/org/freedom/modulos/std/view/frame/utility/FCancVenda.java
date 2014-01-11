@@ -228,7 +228,7 @@ public class FCancVenda extends FFilho implements ActionListener {
 					nfecf.setKey(key);
 					nfecf.post();
 					// trocar isValid para isAutorizada
-					cancVenda = nfecf.getObjNFEFactory().isValid();
+					cancVenda = nfecf.getObjNFEFactory().isAutorizada();
 				}
 				if (cancVenda) {
 					PreparedStatement ps = null;
