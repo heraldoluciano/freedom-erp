@@ -231,15 +231,38 @@ public class FCancVenda extends FFilho implements ActionListener {
 					cancVenda = nfecf.getObjNFEFactory().isAutorizada();
 				}
 				if (cancVenda) {
+					
 					PreparedStatement ps = null;
-					StringBuilder sql = new StringBuilder();
-					sql.append( "UPDATE VDVENDA SET MOTIVOCANCVENDA=?, STATUSVENDA = ? " ); 
-					sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='V'");
+					StringBuilder sql = new StringBuilder(); 
 	
 					try {
-	 
+						// Desbloquear a venda, caso seja necessário
+						sql.append( "UPDATE VDVENDA SET EMMANUT='S', BLOQVENDA='N' ");
+						sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='V' AND BLOQVENDA='S' ");
 						ps = con.prepareStatement( sql.toString() );
 						int param = 1;
+						ps.setInt( param++, Aplicativo.iCodEmp );
+						ps.setInt( param++, ListaCampos.getMasterFilial( "VDVENDA" ) );
+						ps.setInt( param++, codvenda );
+						ps.executeUpdate();
+						ps.close();
+						// Ajusta o emmanut para 'N'
+						sql.delete( 0, sql.length() ); 
+						sql.append( "UPDATE VDVENDA SET EMMANUT='N' ");
+						sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='V' AND EMMANUT='S' ");
+						ps = con.prepareStatement( sql.toString() );
+						param = 1;
+						ps.setInt( param++, Aplicativo.iCodEmp );
+						ps.setInt( param++, ListaCampos.getMasterFilial( "VDVENDA" ) );
+						ps.setInt( param++, codvenda );
+						ps.executeUpdate();
+						ps.close();
+						// Executa o cancelamento
+						sql.delete( 0, sql.length() ); 
+						sql.append( "UPDATE VDVENDA SET MOTIVOCANCVENDA=?, STATUSVENDA = ? " ); 
+						sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='V'");
+						ps = con.prepareStatement( sql.toString() );
+						param = 1;
 						ps.setString( param++, motivocancvenda );
 						ps.setString( param++, "C"+status.substring( 0, 1 ) );
 						ps.setInt( param++, Aplicativo.iCodEmp );
