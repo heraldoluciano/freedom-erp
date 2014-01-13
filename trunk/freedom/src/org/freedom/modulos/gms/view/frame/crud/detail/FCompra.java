@@ -501,6 +501,8 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 
 	private String ambientenfe = AbstractNFEFactory.KIND_ENV_HOMOLOG;
 	
+	private String cnpjfilial = null;
+	
 	private Integer codtipomovim = null;
 
 	private String abaTransp = "N";
@@ -1765,8 +1767,11 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 			sql.append( "P1.TABTRANSPCP, P1.TABSOLCP,P1.TABIMPORTCP, P1.CLASSCP, P1.LABELOBS01CP, P1.LABELOBS02CP, " );
 			sql.append( "P1.LABELOBS03CP, P1.LABELOBS04CP, P5.HABCONVCP, P1.USABUSCAGENPRODCP, COALESCE(P1.BLOQPRECOAPROV, 'N') BLOQPRECOAPROV, " );
 			sql.append( "P1.CODTIPOMOVIM, P1.BLOQSEQICP, P1.UTILORDCPINT, P1.TOTCPSFRETE, P1.UTILIZATBCALCCA, P1.CCNFECP, P1.HABCOMPRACOMPL ");
-			sql.append( ", P1.NPERMITDTMAIOR, P1.PROCEMINFE, P1.AMBIENTENFE " );
-			sql.append( "FROM SGPREFERE1 P1 LEFT OUTER JOIN SGPREFERE5 P5 ON " );
+			sql.append( ", P1.NPERMITDTMAIOR, P1.PROCEMINFE, P1.AMBIENTENFE, F.CNPJFILIAL " );
+			sql.append( "FROM SGPREFERE1 P1 " );
+			sql.append( "INNER JOIN SGFILIAL F ON ");
+			sql.append( "F.CODEMP=P1.CODEMP AND F.CODFILIAL=P1.CODFILIAL ");
+			sql.append( "LEFT OUTER JOIN SGPREFERE5 P5 ON ");
 			sql.append( "P1.CODEMP=P5.CODEMP AND P1.CODFILIAL=P5.CODFILIAL " );
 			sql.append( "WHERE P1.CODEMP=? AND P1.CODFILIAL=?" );
 
@@ -1804,6 +1809,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 				npermitdtmaior = rs.getString( "NPERMITDTMAIOR" ) == null ? false : rs.getString( "NPERMITDTMAIOR" ).equals( "S" );
 				proceminfe = rs.getString( "PROCEMINFE" ) == null ? "3" : rs.getString("PROCEMINFE");
 				ambientenfe = rs.getString( "AMBIENTENFE" ) == null ? AbstractNFEFactory.KIND_ENV_HOMOLOG : rs.getString("AMBIENTENFE");
+				cnpjfilial = rs.getString("CNPJFILIAL");
 			}
 			con.commit();
 		} catch ( Exception e ) {
@@ -3740,7 +3746,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		getPrefere();
 
 		setNfecf( new NFEConnectionFactory( cn, Aplicativo.getInstace().getConexaoNFE(), AbstractNFEFactory.TP_NF_IN
-				, false, proceminfe, ambientenfe, Aplicativo.strTemp, TYPE_PROC.NFE ) );
+				, false, proceminfe, ambientenfe, Aplicativo.strTemp, TYPE_PROC.NFE, cnpjfilial ) );
 
 		lcTipoMov.setConexao( cn );
 		lcSerie.setConexao( cn );
