@@ -64,10 +64,13 @@ public class NFEConnectionFactory implements NFEListener {
 	
 	private String tempDir;
 	
+	private String cnpjFilial = null;
+	
 	private TYPE_PROC type_proc = null;
 	
 	public NFEConnectionFactory( final DbConnection conFreedom, final DbConnection conSped
-			, Constant TP_NF, boolean service, String kindTransmission, String kindEnv, String tempDir, TYPE_PROC type_proc ) {
+			, Constant TP_NF, boolean service, String kindTransmission, String kindEnv, String tempDir
+			, TYPE_PROC type_proc, String cnpjFilial ) {
 
 		this.con = conFreedom;
 		this.service = service;
@@ -75,6 +78,7 @@ public class NFEConnectionFactory implements NFEListener {
 		this.kindEnv = kindEnv;
 		this.tempDir = tempDir;
 		this.type_proc = type_proc;
+		this.cnpjFilial = cnpjFilial;
 		
 		if ( TP_NF == null ) {
 			setTpNF( AbstractNFEFactory.TP_NF_OUT );
@@ -105,6 +109,7 @@ public class NFEConnectionFactory implements NFEListener {
 					getObjNFEFactory().setKindTransmission( getKindTransmission() );
 					getObjNFEFactory().setTempDir( getTempDir() );
 					getObjNFEFactory().setType_proc( getType_proc() );
+					getObjNFEFactory().setCnpjFilial( getCnpjFilial() );
 
 				}
 				else {
@@ -181,6 +186,18 @@ public class NFEConnectionFactory implements NFEListener {
 	public void setTempDir( String tempDir ) {
 	
 		this.tempDir = tempDir;
+	}
+
+	
+	public String getCnpjFilial() {
+	
+		return cnpjFilial;
+	}
+
+	
+	public void setCnpjFilial( String cnpjFilial ) {
+	
+		this.cnpjFilial = cnpjFilial;
 	}
 
 	public String getStrClassNFE() {

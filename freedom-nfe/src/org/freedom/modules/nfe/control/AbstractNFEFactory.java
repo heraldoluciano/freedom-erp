@@ -112,6 +112,8 @@ public abstract class AbstractNFEFactory {
 	
 	private String motivoCancNfe = null;
 	
+	private String cnpjFilial = null;
+	
 	public enum SYSTEM {
 		FREEDOM
 	};
@@ -326,6 +328,14 @@ public abstract class AbstractNFEFactory {
 
 	public void setMotivoCancNfe(String motivoCancNfe) {
 		this.motivoCancNfe = motivoCancNfe;
+	}
+
+	public String getCnpjFilial() {
+		return cnpjFilial;
+	}
+
+	public void setCnpjFilial(String cnpjFilial) {
+		this.cnpjFilial = cnpjFilial;
 	}
 
 }
