@@ -420,7 +420,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		StringBuilder path = new StringBuilder();
 		String sep = null;
 		String drive = null;
-		if (SystemFunctions.getOS() == SystemFunctions.OS_LINUX) {
+		if (SystemFunctions.getOS() == SystemFunctions.OS_LINUX || SystemFunctions.getOS() == SystemFunctions.OS_OSX ) {
 			sep = "/";
 			drive = "";
 		} else {
