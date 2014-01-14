@@ -46,6 +46,8 @@ public class SystemFunctions {
 	
 	public static final int OS_VERSION_WINDOWS_SEVEN = 12;
 	
+	public static final int OS_VERSION_WINDOWS_EIGHT = 13;
+	
 
 	/**
 	 * 
@@ -92,6 +94,9 @@ public class SystemFunctions {
 			}
 			else if (System.getProperty("os.name").indexOf("7") >-1 ) {
 				ret = OS_VERSION_WINDOWS_SEVEN; 
+			}
+			else if (System.getProperty("os.name").indexOf("8") >-1 ) {
+				ret = OS_VERSION_WINDOWS_EIGHT; 
 			}
 		} 
 
