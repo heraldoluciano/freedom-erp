@@ -8,14 +8,15 @@
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
-	<parameter name="RAZEMP" class="java.lang.String"/>
-	<parameter name="USUARIO" class="java.lang.String"/>
-	<parameter name="LOGOEMP" class="java.lang.Object"/>
-	<parameter name="TITULO" class="java.lang.String"/>
-	<parameter name="FILTROS" class="java.lang.String"/>
+	<parameter name="RAZEMP" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="USUARIO" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="LOGOEMP" class="java.lang.Object" isForPrompting="false"/>
+	<parameter name="TITULO" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="FILTROS" class="java.lang.String" isForPrompting="false"/>
 	<queryString>
 		<![CDATA[select V.codvend, V.nomevend, V.dddfonevend, V.fonevend, V.cidvend, C.codcli, C.razcli, C.endcli, C.numcli, C.dddcli, C.fonecli, COALESCE( M.nomemunic, C.cidcli ) cidcli,
-c.dddcelcli, c.celcli, c.dddfaxcli, c.faxcli, c.nomecli,c.emailcli
+coalesce(c.dddcelcli,'') dddcelcli, coalesce(c.celcli,'') celcli, coalesce(c.dddfaxcli,'') dddfaxcli
+, coalesce(c.faxcli,'') faxcli, c.nomecli,c.emailcli
 , ( SELECT MAX(DTEMITVENDA) FROM vdvenda VD, EQTIPOMOV TM WHERE VD.codvend = V.codvend AND VD.codfilialvd   = V.codfilial
 AND VD.codempvd = V.codemp AND VD.codcli = C.codcli AND VD.codfilialcl = C.codfilial AND VD.codempcl = C.codemp AND VD.codemptm = TM.codemp
 AND VD.codfilialtm = TM.codfilial AND VD.codtipomov = TM.codtipomov AND TM.fiscaltipomov = 'S' AND TM.somavdtipomov = 'S'
@@ -467,7 +468,7 @@ AND C.siglauf = M.siglauf AND C.codpais = M.codpais]]>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{CIDCLI}]]></textFieldExpression>
 			</textField>
-			<textField pattern="( #### ) #### - #### 0000 - 0000 - 0000" isBlankWhenNull="true">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement key="textField-33" x="469" y="1" width="75" height="11"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -478,7 +479,7 @@ AND C.siglauf = M.siglauf AND C.codpais = M.codpais]]>
 				<textElement textAlignment="Left">
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{FONECLI}==null? "" :( "(" + $F{DDDCLI}.trim() + ") " + $F{FONECLI}.substring(0,4) + "-" + $F{FONECLI}.substring(4)   )]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA["".equals($F{FONECLI})? "" :( "(" + $F{DDDCLI}.trim() + ") " + $F{FONECLI}   )]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
 				<reportElement key="textField-34" x="712" y="1" width="54" height="11"/>
@@ -527,7 +528,7 @@ AND C.siglauf = M.siglauf AND C.codpais = M.codpais]]>
 				</textElement>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{DOC_ULTIMA_VENDA}]]></textFieldExpression>
 			</textField>
-			<textField pattern="( #### ) #### - #### 0000 - 0000 - 0000" isBlankWhenNull="true">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement key="textField-39" x="550" y="1" width="75" height="11"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -538,9 +539,9 @@ AND C.siglauf = M.siglauf AND C.codpais = M.codpais]]>
 				<textElement textAlignment="Left">
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{FAXCLI}==null? "" : ( "(" + $F{DDDFAXCLI}.trim() + ") " + $F{FAXCLI}.substring(0,4) + "-" + $F{FAXCLI}.substring(4)   )]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA["".equals($F{FAXCLI})?"":"("+$F{DDDFAXCLI}.trim()+") "+$F{FAXCLI}]]></textFieldExpression>
 			</textField>
-			<textField pattern="( #### ) #### - #### 0000 - 0000 - 0000" isBlankWhenNull="true">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement key="textField-40" x="631" y="1" width="75" height="11"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -551,7 +552,7 @@ AND C.siglauf = M.siglauf AND C.codpais = M.codpais]]>
 				<textElement textAlignment="Left">
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{CELCLI}==null? "" : ( "(" + $F{DDDCELCLI}.trim() + ") " + $F{CELCLI}.substring(0,4) + "-" + $F{CELCLI}.substring(4)   )]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA["".equals($F{CELCLI})?"":"(" + $F{DDDCELCLI}.trim() + ") " + $F{CELCLI}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
 				<reportElement key="textField-41" x="218" y="1" width="127" height="11"/>
