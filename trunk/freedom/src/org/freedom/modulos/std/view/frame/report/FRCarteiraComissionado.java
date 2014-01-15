@@ -131,8 +131,11 @@ public class FRCarteiraComissionado extends FRelatorio {
 		try {
 
 			sql.append( "select V.codvend, V.nomevend, V.dddfonevend, V.fonevend, V.cidvend, C.codcli, C.razcli, " );
-			sql.append( "C.endcli, C.numcli, C.dddcli, C.fonecli, COALESCE( M.nomemunic, C.cidcli ) cidcli, " );
-			sql.append( "c.dddcelcli, c.celcli, c.dddfaxcli, c.faxcli, c.nomecli,c.emailcli " );
+			sql.append( "C.endcli, C.numcli, coalesce(c.dddcli,'') dddcli, coalesce(c.fonecli,'') fonecli");
+			sql.append(", COALESCE( M.nomemunic, C.cidcli ) cidcli, " );
+			sql.append( "coalesce(c.dddcelcli,'') dddcelcli, coalesce(c.celcli,'') celcli");
+			sql.append( ", coalesce(c.dddfaxcli,'') dddfaxcli, coalesce(c.faxcli,'') faxcli");
+			sql.append(", c.nomecli,c.emailcli " );
 			sql.append( ", ( SELECT first 1 DTEMITVENDA FROM vdvenda VD, EQTIPOMOV TM " );
 			sql.append( "WHERE VD.codvend = V.codvend AND VD.codfilialvd   = V.codfilial " );
 			sql.append( " AND VD.codempvd = V.codemp" );
