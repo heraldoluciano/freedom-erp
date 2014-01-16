@@ -118,7 +118,7 @@ public class StatusDaruma implements Status {
 
 	public static final StatusDaruma DARUMA_ERROR_86 = new StatusDaruma( 86, RELEVANC_ERRO, "Não há mais memória para o cadastro de bancos." );
 
-	public static final StatusDaruma DARUMA_ERROR_87 = new StatusDaruma( 87, RELEVANC_ERRO, "Impressão no verso somento após a impressão da frente do cheque." );
+	public static final StatusDaruma DARUMA_ERROR_87 = new StatusDaruma( 87, RELEVANC_ERRO, "Impressão no verso somente após a impressão da frente do cheque." );
 
 	public static final StatusDaruma DARUMA_ERROR_88 = new StatusDaruma( 88, RELEVANC_ERRO, "Valor inválido para o cheque." );
 
