@@ -432,7 +432,7 @@ public class NFEConnectionFactory implements NFEListener {
 		else {
 			if (getKindTransmission().equals( AbstractNFEFactory.KIND_APP_OWN) ) {
 				if (nfefactory.isAutorizada()) {
-					Funcoes.mensagemInforma( null, "Autorizado o uso da NF-e");
+					Funcoes.mensagemInforma( null, "Procedimento autorizado pela Sefaz !");
 				}
 			} else {
 				Funcoes.mensagemInforma( null, "Arquivo de NF-e criado com sucesso.\n verifique a pasta:" + getDirNFE() );

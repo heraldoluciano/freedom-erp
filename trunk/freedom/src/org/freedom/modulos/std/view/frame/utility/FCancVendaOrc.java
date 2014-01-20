@@ -147,7 +147,7 @@ public class FCancVendaOrc extends FFilho implements ActionListener, CarregaList
 		}
 	}
 
-	public static void cancelar( DbConnection con, final int iCodVenda, final String sTipoVenda, final String sStatus, String sBloqVenda ) {
+	public static void cancelar( DbConnection con, final int iCodVenda, final String sTipoVenda, final String sStatus, String sBloqVenda, boolean consistBloq ) {
 
 		String sSQL = null;
 		PreparedStatement ps = null;
@@ -157,7 +157,7 @@ public class FCancVendaOrc extends FFilho implements ActionListener, CarregaList
 				Funcoes.mensagemInforma( null, "Nenhuma venda foi selecionada!" );
 				return;
 			}
-			if ( sBloqVenda.equals( "S" ) ) {
+			if ( consistBloq && sBloqVenda.equals( "S" ) ) {
 				sBloqVenda = "N";
 				Funcoes.mensagemInforma( null, "Esta venda encontra-se bloqueada!" );
 				return;
@@ -188,7 +188,7 @@ public class FCancVendaOrc extends FFilho implements ActionListener, CarregaList
 		if ( evt.getSource() == btSair )
 			dispose();
 		else if ( evt.getSource() == btCancelar ) {
-			cancelar( con, txtCodVenda.getVlrInteger().intValue(), txtTipoVenda.getVlrString(), txtStatusVenda.getVlrString(), txtBloqVenda.getVlrString() );
+			cancelar( con, txtCodVenda.getVlrInteger().intValue(), txtTipoVenda.getVlrString(), txtStatusVenda.getVlrString(), txtBloqVenda.getVlrString(), true );
 			lcVenda.carregaDados();
 		}
 	}

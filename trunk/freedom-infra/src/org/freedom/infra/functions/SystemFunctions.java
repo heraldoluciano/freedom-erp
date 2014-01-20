@@ -299,17 +299,25 @@ public class SystemFunctions {
 	public static boolean zip(Vector<File> files, String zipFile) {
 		boolean result = false;
 		//String encoding = "UTF-8";
+		File tmp = null;
 		try {
-			
+			File filezip = new File(zipFile);
+			if (filezip.exists()) {
+				filezip.delete();
+			}
 			FileOutputStream fout = new FileOutputStream(zipFile);
 			ZipOutputStream zout = new ZipOutputStream(fout);
-			
 			for (File file: files ) {
+				tmp = file;
 				zip(zout, file, file.getName());
 			}
 			zout.close();
+			fout.close();
 			result = true;
 		} catch (IOException e) {
+			if (tmp!=null) {
+				System.out.println("Erro compactando o arquivo "+tmp.getAbsolutePath());
+			}
 			e.printStackTrace();
 		} 
 
