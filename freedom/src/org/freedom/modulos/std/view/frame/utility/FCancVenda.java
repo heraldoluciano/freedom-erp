@@ -195,15 +195,15 @@ public class FCancVenda extends FFilho implements ActionListener {
 	public boolean cancelar( int codvenda, String status, String motivocancvenda ) {
 
 		boolean result = false;
-
+		String justificativa = txaMotivoCancVenda.getVlrString().trim();
 		if ( codvenda == 0 ) {
 			Funcoes.mensagemInforma( null, "Nenhuma venda foi selecionada!" );
 			txtCodVenda.requestFocus();
-		}
-		else if ( status.substring( 0, 1 ).equals( "C" ) )
+		} else if ( status.substring( 0, 1 ).equals( "C" ) ) {
 			Funcoes.mensagemInforma( null, "Venda ja foi cancelada!!" );
-
-		else if ( "VPD".indexOf( status.substring( 0, 1 ) ) != -1 ) {
+		} else if (justificativa.length()<15) {
+			Funcoes.mensagemInforma( null, "Tamanho mínimo para motivo/justificativa é de 15 caractéres !" );
+		} else if ( "VPD".indexOf( status.substring( 0, 1 ) ) != -1 ) {
 
 			if ( Funcoes.mensagemConfirma( null, "Deseja realmente cancelar esta venda?" ) == JOptionPane.YES_OPTION ) {
 				boolean cancVenda = true;
@@ -216,7 +216,6 @@ public class FCancVenda extends FFilho implements ActionListener {
 				String tipovenda = "V";
 				String fiscaltipomov = cbFiscaltipomov.getVlrString();
 				String chavenfe = txtChaveNfe.getVlrString();
-				String justificativa = txaMotivoCancVenda.getVlrString();
 				if ( APLIC_CONTRIB_NFE.equals(oPrefs[POS_PREFS.PROCEMINFE.ordinal()]) && "S".equals( fiscaltipomov )) {
 					if ("".equals(chavenfe)) {
 						Funcoes.mensagemInforma( this, "Nota fiscal eletrônica sem chave de acesso não pode ser cancelada !" );
@@ -275,7 +274,7 @@ public class FCancVenda extends FFilho implements ActionListener {
 	
 						result = true;
 	
-						FCancVendaOrc.cancelar( con, codvenda, txtTipoVenda.getVlrString(), txtStatusVenda.getVlrString(), txtBloqVenda.getVlrString() );
+						FCancVendaOrc.cancelar( con, codvenda, txtTipoVenda.getVlrString(), txtStatusVenda.getVlrString(), txtBloqVenda.getVlrString(), false );
 	
 					} catch ( SQLException err ) {
 						Funcoes.mensagemErro( null, "Erro ao cancelar a venda!\n" + err.getMessage(), true, con, err );

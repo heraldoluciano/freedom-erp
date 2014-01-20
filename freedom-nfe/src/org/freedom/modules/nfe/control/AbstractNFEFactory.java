@@ -294,7 +294,7 @@ public abstract class AbstractNFEFactory {
 		return autorizada;
 	}
 
-	public void setNfeAutorizada(boolean autorizada) {
+	public void setAutorizada(boolean autorizada) {
 		this.autorizada = autorizada;
 	}
 
