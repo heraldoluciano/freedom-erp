@@ -283,6 +283,7 @@ public class FCancVenda extends FFilho implements ActionListener {
 					} finally {
 						ps = null;
 						sql = null;
+						lcVenda.carregaDados();
 					}
 				}
 			}
