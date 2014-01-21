@@ -202,7 +202,9 @@ public class FCancVenda extends FFilho implements ActionListener {
 		} else if ( status.substring( 0, 1 ).equals( "C" ) ) {
 			Funcoes.mensagemInforma( null, "Venda ja foi cancelada!!" );
 		} else if (justificativa.length()<15) {
-			Funcoes.mensagemInforma( null, "Tamanho mínimo para motivo/justificativa é de 15 caractéres !" );
+			Funcoes.mensagemInforma( null, "Tamanho mínimo para motivo/justificativa é de 15 caracteres !" );
+		} else if (justificativa.length()>255) {
+			Funcoes.mensagemInforma( null, "Tamanho máximo para motivo/justificativa é de 255 caracteres !" );
 		} else if ( "VPD".indexOf( status.substring( 0, 1 ) ) != -1 ) {
 
 			if ( Funcoes.mensagemConfirma( null, "Deseja realmente cancelar esta venda?" ) == JOptionPane.YES_OPTION ) {
