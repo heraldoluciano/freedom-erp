@@ -1584,9 +1584,9 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 	}
 
 	private void emiteNotaFiscal( final String sTipo ) {
-
 		if ( ( nfecf.getHasNFE() && "E".equals( txtTipoModNota.getVlrString() ) ) ) {
 			emiteNFE();
+			lcCampos.carregaDados();
 		}
 		else {
 			emiteNF( sTipo );
@@ -2512,22 +2512,14 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		}
 		lcCampos.carregaDados();
 		if ( sValores != null ) {
-			lcCampos.edit();
 			if ( sValores[ 4 ].equals( "S" ) ) {
 				if ( txtTipoMov.getVlrString().equals( TipoMov.TM_PEDIDO_COMPRA.getValue() ) || txtTipoMov.getVlrString().equals( TipoMov.TM_COMPRA.getValue() ) || txtTipoMov.getVlrString().equals( TipoMov.TM_DEVOLUCAO_VENDA.getValue() )
 						|| txtTipoMov.getVlrString().equals( TipoMov.TM_DEVOLUCAO_CONSIGNACAO.getValue() ) || txtTipoMov.getVlrString().equals( TipoMov.TM_DEVOLUCAO_REMESSA.getValue() ) ) {
 
 					emiteNotaFiscal( "NF" );
-
-				}
-
-				else if ( "CP,CO,DI".indexOf( txtTipoMov.getVlrString() ) > -1 && "S".equals( cbSeqNfTipoMov.getVlrString() ) ) {
+				} else if ( "CP,CO,DI".indexOf( txtTipoMov.getVlrString() ) > -1 && "S".equals( cbSeqNfTipoMov.getVlrString() ) ) {
 					emiteNotaFiscal( "NF" );
-				}
-				// else if ( txtTipoMov.getVlrString().equals( "SE" ) ) {
-				// emiteNotaFiscal( "NS" );
-				// }
-				else {
+				} else {
 					Funcoes.mensagemErro( this, "O tipo de movimento utilizado não permite impressão de nota!\n" + "Verifique o cadastro do tipo de movimento." );
 					return;
 				}
@@ -2537,7 +2529,8 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 			}
 
 			// Gerando informacoes complementares (fisco)
-
+			lcCampos.edit();
+			
 			geraInfoCompl();
 
 			lcCampos.post();
@@ -2579,8 +2572,6 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		else if ( evt.getSource() == nav.btCancelar){
 			desabilitaBotoes( false );
 		}
-
-
 		super.actionPerformed( evt );
 	}
 
