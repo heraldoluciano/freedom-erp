@@ -119,6 +119,7 @@ public class FCancCompra extends FFilho implements ActionListener {
 
 		Funcoes.setBordReq( txtCodCompra );
 		txtDocCompra.setAtivo( false );
+		txtSerie.setAtivo( false );
 		txtVlrLiqCompra.setAtivo( false );
 		txtStatusCompra.setAtivo( false );
 
@@ -172,6 +173,7 @@ public class FCancCompra extends FFilho implements ActionListener {
 	private void montaListaCampos() {
 
 		lcCompra.add( new GuardaCampo( txtCodCompra, "CodCompra", "Cód.Compra", ListaCampos.DB_PK, null, false ) );
+		lcCompra.add( new GuardaCampo( txtSerie, "Serie", "Série", ListaCampos.DB_SI, null, false ) );
 		lcCompra.add( new GuardaCampo( txtDocCompra, "DocCompra", "Documento", ListaCampos.DB_SI, null, false ) );
 		lcCompra.add( new GuardaCampo( txtBloqCompra, "BloqCompra", "Bloqueio", ListaCampos.DB_SI, false ) );
 		lcCompra.add( new GuardaCampo( txtVlrLiqCompra, "VlrLiqCompra", "V. Liq.", ListaCampos.DB_SI, false ) );
