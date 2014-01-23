@@ -315,42 +315,6 @@ public class FCancCompra extends FFilho implements ActionListener {
 
 	}
 
-/*	private void cancelar( int codcompra, String status ) {
-		PreparedStatement ps = null;
-		StringBuffer sql = new StringBuffer();
-		if ( codcompra == 0 ) {
-			Funcoes.mensagemInforma( null, "Nenhuma Compra foi selecionada!" );
-			txtCodCompra.requestFocus();
-		} else if ( status.substring( 0, 1 ).equals( "X" ) ) {
-			Funcoes.mensagemInforma( null, "Compra já foi cancelada!" );
-			txtCodCompra.requestFocus();
-		} else {
-			if ( Funcoes.mensagemConfirma( null, "Deseja realmente cancelar esta compra?" ) == JOptionPane.YES_OPTION ) {
-
-				sql.append( "UPDATE CPCOMPRA SET STATUSCOMPRA = 'X" + sStatus.substring( 0, 1 ) + "' " );
-				sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODCOMPRA=?" );
-
-				try {
-
-					ps = con.prepareStatement( sSQL.toString() );
-					ps.setInt( 1, Aplicativo.iCodEmp );
-					ps.setInt( 2, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
-					ps.setInt( 3, codCompra );
-					ps.executeUpdate();
-					ps.close();
-
-					con.commit();
-
-					Funcoes.mensagemInforma( this, "A Compra " + txtCodCompra.getVlrInteger() + " foi cancelada com sucesso!" );
-
-				} catch ( SQLException err ) {
-					err.printStackTrace();
-					Funcoes.mensagemErro( this, "Erro ao cancelar compra! " + err.getMessage() );
-				}
-			}
-		}
-	}
-*/
 	public void actionPerformed( ActionEvent e ) {
 
 		if ( e.getSource() == btSair ) {
