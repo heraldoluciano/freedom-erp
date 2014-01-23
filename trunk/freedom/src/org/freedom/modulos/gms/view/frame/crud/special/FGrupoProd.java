@@ -410,7 +410,7 @@ public class FGrupoProd extends FFilho implements ActionListener, MouseListener,
 		sDesc = sDesc.trim();
 		sSigla = sSigla.trim();
 		dl.dispose();
-		String sSQL = "UPDATE EQGRUPO SET DESCGRUP='" + sDesc + "',SIGLAGRUP='" + sSigla +
+		String sSQL = "UPDATE EQGRUPO SET DESCGRUP='" + sDesc +
 		     "',SIGLAGRUP='" + sSigla + "', ESTNEGGRUP='" + sEstNeg + "',ESTLOTNEGGRUP='" + 
 		     sEstNegLot + "',WEB='" +sWeb + "'" +
 		     " WHERE CODEMP=? AND CODFILIAL=? AND CODGRUP='" + sCodFilho + "'";
