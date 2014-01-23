@@ -291,7 +291,7 @@ public class FCancCompra extends FFilho implements ActionListener {
 						ps = con.prepareStatement( sql.toString() );
 						param = 1;
 						ps.setString( param++, motivocanccompra );
-						ps.setString( param++, "C"+status.substring( 0, 1 ) );
+						ps.setString( param++, "X"+status.substring( 0, 1 ) );
 						ps.setInt( param++, Aplicativo.iCodEmp );
 						ps.setInt( param++, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
 						ps.setInt( param++, codcompra );
