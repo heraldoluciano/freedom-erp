@@ -106,6 +106,8 @@ public abstract class AbstractNFEFactory {
 
 	private String tempDir;
 	
+	private String siglaUfEmitente;
+	
 	public enum TYPE_PROC {NFE, CANCELAMENTO};
 	
 	private TYPE_PROC type_proc = null;
@@ -272,7 +274,7 @@ public abstract class AbstractNFEFactory {
 		}
 	}
 	
-	public abstract boolean consistChaveNFE(String chavenfe);
+	public abstract boolean consistChaveNFE(String chavenfe) throws Exception;
 
 	public String getKindTransmission() {
 		return kindTransmission;
@@ -336,6 +338,14 @@ public abstract class AbstractNFEFactory {
 
 	public void setCnpjFilial(String cnpjFilial) {
 		this.cnpjFilial = cnpjFilial;
+	}
+
+	public String getSiglaUfEmitente() {
+		return siglaUfEmitente;
+	}
+
+	public void setSiglaUfEmitente(String siglaUfEmitente) {
+		this.siglaUfEmitente = siglaUfEmitente;
 	}
 
 }
