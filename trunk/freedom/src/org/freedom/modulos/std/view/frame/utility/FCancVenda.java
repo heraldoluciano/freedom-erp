@@ -107,7 +107,7 @@ public class FCancVenda extends FFilho implements ActionListener {
 	private NFEConnectionFactory nfecf = null;
 
 	private enum POS_PREFS {
-		 PROCEMINFE, AMBIENTENFE, CNPJFILIAL
+		 PROCEMINFE, AMBIENTENFE, CNPJFILIAL, SIGLAUF
 	}
 
 	public FCancVenda() {
@@ -321,7 +321,8 @@ public class FCancVenda extends FFilho implements ActionListener {
 				, (String) oPrefs[POS_PREFS.PROCEMINFE.ordinal()]
 				, (String) oPrefs[POS_PREFS.AMBIENTENFE.ordinal()]
 				, Aplicativo.strTemp, TYPE_PROC.CANCELAMENTO
-				, (String) oPrefs[POS_PREFS.CNPJFILIAL.ordinal()]) );
+				, (String) oPrefs[POS_PREFS.CNPJFILIAL.ordinal()]
+				, (String) oPrefs[POS_PREFS.SIGLAUF.ordinal()]) );
 	}
 	
 	private Object[] prefs() {
@@ -332,7 +333,7 @@ public class FCancVenda extends FFilho implements ActionListener {
 		ResultSet rs = null;
 		try {
 			sSQL.append( "SELECT COALESCE(P1.PROCEMINFE,'3') PROCEMINFE, COALESCE(P1.AMBIENTENFE,'2') AMBIENTENFE " );
-			sSQL.append( ", F.CNPJFILIAL ");
+			sSQL.append( ", F.CNPJFILIAL, F.SIGLAUF ");
 			sSQL.append( "FROM SGPREFERE1 P1 INNER JOIN SGFILIAL F ON " );
 			sSQL.append( "F.CODEMP=P1.CODEMP AND F.CODFILIAL=P1.CODFILIAL ");
 			sSQL.append( "WHERE P1.CODEMP=? AND P1.CODFILIAL=? " );
@@ -344,6 +345,7 @@ public class FCancVenda extends FFilho implements ActionListener {
 				retorno[ POS_PREFS.PROCEMINFE.ordinal()] = rs.getString( POS_PREFS.PROCEMINFE.toString() ); 
 				retorno[ POS_PREFS.AMBIENTENFE.ordinal()] = rs.getString( POS_PREFS.AMBIENTENFE.toString() ); 
 				retorno[ POS_PREFS.CNPJFILIAL.ordinal()] = rs.getString( POS_PREFS.CNPJFILIAL.toString() ); 
+				retorno[ POS_PREFS.SIGLAUF.ordinal()] = rs.getString( POS_PREFS.SIGLAUF.toString() ); 
 			}
 			rs.close();
 			ps.close();

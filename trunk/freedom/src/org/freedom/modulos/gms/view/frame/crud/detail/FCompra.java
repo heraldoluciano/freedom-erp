@@ -503,6 +503,8 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 	
 	private String cnpjfilial = null;
 	
+	private String siglauffilial = null;
+	
 	private Integer codtipomovim = null;
 
 	private String abaTransp = "N";
@@ -1578,7 +1580,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 
 		nfecf.setKey( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPCOMPRA" )
 				, txtCodCompra.getVlrInteger(), txtCodModNota.getVlrInteger(), txtSerieCompra.getVlrString(), txtDocCompra.getVlrInteger() );
-		
+		nfecf.setSiglaUfEmitente( siglauffilial  );
 		nfecf.post();
 
 	}
@@ -1767,7 +1769,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 			sql.append( "P1.TABTRANSPCP, P1.TABSOLCP,P1.TABIMPORTCP, P1.CLASSCP, P1.LABELOBS01CP, P1.LABELOBS02CP, " );
 			sql.append( "P1.LABELOBS03CP, P1.LABELOBS04CP, P5.HABCONVCP, P1.USABUSCAGENPRODCP, COALESCE(P1.BLOQPRECOAPROV, 'N') BLOQPRECOAPROV, " );
 			sql.append( "P1.CODTIPOMOVIM, P1.BLOQSEQICP, P1.UTILORDCPINT, P1.TOTCPSFRETE, P1.UTILIZATBCALCCA, P1.CCNFECP, P1.HABCOMPRACOMPL ");
-			sql.append( ", P1.NPERMITDTMAIOR, P1.PROCEMINFE, P1.AMBIENTENFE, F.CNPJFILIAL " );
+			sql.append( ", P1.NPERMITDTMAIOR, P1.PROCEMINFE, P1.AMBIENTENFE, F.CNPJFILIAL, F.SIGLAUF " );
 			sql.append( "FROM SGPREFERE1 P1 " );
 			sql.append( "INNER JOIN SGFILIAL F ON ");
 			sql.append( "F.CODEMP=P1.CODEMP AND F.CODFILIAL=P1.CODFILIAL ");
@@ -1810,6 +1812,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 				proceminfe = rs.getString( "PROCEMINFE" ) == null ? "3" : rs.getString("PROCEMINFE");
 				ambientenfe = rs.getString( "AMBIENTENFE" ) == null ? AbstractNFEFactory.KIND_ENV_HOMOLOG : rs.getString("AMBIENTENFE");
 				cnpjfilial = rs.getString("CNPJFILIAL");
+				siglauffilial = rs.getString( "SIGLAUF" );
 			}
 			con.commit();
 		} catch ( Exception e ) {
@@ -2022,8 +2025,14 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 			nfecf.setKey( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPCOMPRA" ), txtCodCompra.getVlrInteger()
 					, txtCodModNota.getVlrInteger(), txtSerieCompra.getVlrString(), txtDocCompra.getVlrInteger() );
 
-
-			result = nfecf.consistChaveNFE( txtChaveNfe.getVlrString() );
+			try {
+				nfecf.setSiglaUfEmitente( txtSiglaUFFor.getVlrString() );
+				result = nfecf.consistChaveNFE( txtChaveNfe.getVlrString() );
+			} catch (Exception err) {
+				result = false;
+				Funcoes.mensagemInforma( this, "Ocorreu um erro executando a validação de chave da NFe !\n"+err.getMessage() );
+				return result;
+			}
 			// Remover hardcode após conclusão da rotina de pesquisa
 			int codretorno = nfecf.getReturnKey().getCodeReturn();
 			String mensagem = nfecf.getReturnKey().getMessage();
@@ -3737,7 +3746,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		getPrefere();
 
 		setNfecf( new NFEConnectionFactory( cn, Aplicativo.getInstace().getConexaoNFE(), AbstractNFEFactory.TP_NF_IN
-				, false, proceminfe, ambientenfe, Aplicativo.strTemp, TYPE_PROC.NFE, cnpjfilial ) );
+				, false, proceminfe, ambientenfe, Aplicativo.strTemp, TYPE_PROC.NFE, cnpjfilial, null ) );
 
 		lcTipoMov.setConexao( cn );
 		lcSerie.setConexao( cn );

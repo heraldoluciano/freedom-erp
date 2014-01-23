@@ -68,9 +68,11 @@ public class NFEConnectionFactory implements NFEListener {
 	
 	private TYPE_PROC type_proc = null;
 	
+	private String siglaUfEmitente = null;
+	
 	public NFEConnectionFactory( final DbConnection conFreedom, final DbConnection conSped
 			, Constant TP_NF, boolean service, String kindTransmission, String kindEnv, String tempDir
-			, TYPE_PROC type_proc, String cnpjFilial ) {
+			, TYPE_PROC type_proc, String cnpjFilial, String siglaUfEmitente ) {
 
 		this.con = conFreedom;
 		this.service = service;
@@ -79,6 +81,7 @@ public class NFEConnectionFactory implements NFEListener {
 		this.tempDir = tempDir;
 		this.type_proc = type_proc;
 		this.cnpjFilial = cnpjFilial;
+		this.siglaUfEmitente = siglaUfEmitente;
 		
 		if ( TP_NF == null ) {
 			setTpNF( AbstractNFEFactory.TP_NF_OUT );
@@ -110,6 +113,7 @@ public class NFEConnectionFactory implements NFEListener {
 					getObjNFEFactory().setTempDir( getTempDir() );
 					getObjNFEFactory().setType_proc( getType_proc() );
 					getObjNFEFactory().setCnpjFilial( getCnpjFilial() );
+					getObjNFEFactory().setSiglaUfEmitente( getSiglaUfEmitente() );
 
 				}
 				else {
@@ -444,7 +448,7 @@ public class NFEConnectionFactory implements NFEListener {
 		return getObjNFEFactory().getReturnMessage();
 	}
 	
-	public boolean consistChaveNFE(String chave){
+	public boolean consistChaveNFE(String chave) throws Exception {
 		return getObjNFEFactory().consistChaveNFE( chave );
 	}
 
@@ -470,6 +474,18 @@ public class NFEConnectionFactory implements NFEListener {
 	public void setKindEnv( String kindEnv ) {
 	
 		this.kindEnv = kindEnv;
+	}
+
+	
+	public String getSiglaUfEmitente() {
+	
+		return siglaUfEmitente;
+	}
+
+	
+	public void setSiglaUfEmitente( String siglaUfEmitente ) {
+	
+		this.siglaUfEmitente = siglaUfEmitente;
 	}
 
 }
