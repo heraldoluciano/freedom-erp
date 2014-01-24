@@ -75,7 +75,7 @@ public class FRInvPeps extends FRelatorio {
 
 	private JTextFieldFK txtDescGrup = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
-	private JCheckBoxPad cbComEstoq = new JCheckBoxPad( "Imprimir somento produtos com estoque ?", "S", "N" );
+	private JCheckBoxPad cbComEstoq = new JCheckBoxPad( "Imprimir somente produtos com estoque ?", "S", "N" );
 
 	private JCheckBoxPad cbRelTexto = new JCheckBoxPad( "Relatório texto ?", "S", "N" );
 
