@@ -562,7 +562,7 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
 				}
 			} catch ( SQLException err ) {
 				err.printStackTrace();
-				Funcoes.mensagemErro( null, "Erro ao relizar procedimento!\n" + err.getMessage(), true, con, err );
+				Funcoes.mensagemErro( null, "Erro ao realizar procedimento!\n" + err.getMessage(), true, con, err );
 			}
 
 		} finally {
