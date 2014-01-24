@@ -145,7 +145,8 @@ public class FRRazCli extends FRelatorio {
 			sSQL.append( "'A' TIPOSUBLANCA, ");
 			sSQL.append( "0 DOC, (COALESCE( ( SELECT SUM(R.VLRPARCREC) " );
 			sSQL.append( "FROM FNRECEBER R WHERE R.CODEMP=? AND R.CODFILIAL=? AND R.CODEMPCL=C.CODEMP AND " );
-			sSQL.append( "R.CODFILIALCL=C.CODFILIAL AND R.CODCLI=C.CODCLI AND R.DATAREC < ? ),0) - " );
+			sSQL.append( "R.CODFILIALCL=C.CODFILIAL AND R.CODCLI=C.CODCLI AND R.DATAREC < ? ");
+			sSQL.append( " ),0) - " );
 
 			/**
 			 * 
@@ -245,6 +246,23 @@ public class FRRazCli extends FRelatorio {
 			sSQL.append( "R.CODEMP=? AND R.CODFILIAL=? AND " );
 			sSQL.append( "SL.DATASUBLANCA BETWEEN ? AND ? " );
 			/**
+			 * Query dos cancelamentos
+			 * */
+			sSQL.append( "UNION ALL ");
+			sSQL.append( " SELECT C.CODCLI CODEMIT, C.RAZCLI RAZEMIT, " );
+			sSQL.append( " IR.DTVENCITREC DATA, 'X' TIPO, " );
+			sSQL.append( "'A' TIPOSUBLANCA, ");
+			sSQL.append( "R.DOCREC DOC, 0.00 VLRDEB, COALESCE(SUM(IR.VLRCANCITREC),0)*-1 VLRCRED " );
+			sSQL.append( "FROM FNRECEBER R, FNITRECEBER IR, VDCLIENTE C WHERE R.CODEMP=? AND R.CODFILIAL=? AND R.CODEMPCL=C.CODEMP AND " );
+			sSQL.append( "R.CODFILIALCL=C.CODFILIAL AND R.CODCLI=C.CODCLI ");
+			sSQL.append( "AND IR.CODEMP=R.CODEMP AND IR.CODFILIAL=R.CODFILIAL AND IR.CODREC=R.CODREC AND IR.STATUSITREC IN ('CR') ");
+			if ( codcli != 0 ) {
+				sSQL.append( "AND C.CODCLI=? " );
+			}
+			//sSQL.append( "AND R.CODEMP=? AND R.CODFILIAL=? AND " );
+			sSQL.append( "AND R.DATAREC BETWEEN ? AND ? " );
+			sSQL.append( "GROUP BY 1, 2, 3, 4, 5, 6 ");
+			/**
 			 * Query das devoluções
 			 */
 			sSQL.append( "UNION ALL SELECT C.CODCLI CODEMIT, C.RAZCLI RAZEMIT, CP.DTENTCOMPRA DATA, " );
@@ -341,15 +359,22 @@ public class FRRazCli extends FRelatorio {
 			ps.setInt( param++, ListaCampos.getMasterFilial( "FNRECEBER" ) ); // 32
 			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 33
 			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) ); // 34
-
+			// Parâmetros cancelamentos
+			ps.setInt( param++, Aplicativo.iCodEmp ); // 35
+			ps.setInt( param++, ListaCampos.getMasterFilial( "FNRECEBER" ) ); // 36
+			if ( codcli != 0 ) {
+				ps.setInt( param++, codcli ); // 37
+			}
+			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 38
+			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) ); // 39
 			// Parâmetros das devoluções
 			if ( codcli != 0 ) {
-				ps.setInt( param++, codcli ); // 36
+				ps.setInt( param++, codcli ); // 40
 			}
-			ps.setInt( param++, Aplicativo.iCodEmp ); // 37
-			ps.setInt( param++, ListaCampos.getMasterFilial( "CPCOMPRA" ) ); // 38
-			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 39
-			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) ); // 40
+			ps.setInt( param++, Aplicativo.iCodEmp ); // 41
+			ps.setInt( param++, ListaCampos.getMasterFilial( "CPCOMPRA" ) ); // 42
+			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 43
+			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) ); // 44
 
 			// Parametros dos descontos
 
