@@ -39,7 +39,7 @@
 	<field name="VLRDEB" class="java.math.BigDecimal"/>
 	<field name="VLRCRED" class="java.math.BigDecimal"/>
 	<variable name="DESCTIPO" class="java.lang.String">
-		<variableExpression><![CDATA["A".equals($F{TIPO})?"SALDO INICIAL":"Q".equals($F{TIPO})?"VENDA":"Z".equals($F{TIPO})?"DEVOLUÇÃO":"R".equals($F{TIPO})?"RECEBIMENTO":"D".equals($F{TIPOSUBLANCA})?"DESCONTO":"J".equals($F{TIPOSUBLANCA})?"JUROS":"J".equals($F{TIPOSUBLANCA})?"CANCELAMENTO":"MULTA"]]></variableExpression>
+		<variableExpression><![CDATA["A".equals($F{TIPO})?"SALDO INICIAL":"Q".equals($F{TIPO})?"VENDA":"Z".equals($F{TIPO})?"DEVOLUÇÃO":"R".equals($F{TIPO})?"RECEBIMENTO":"D".equals($F{TIPOSUBLANCA})?"DESCONTO":"J".equals($F{TIPOSUBLANCA})?"JUROS":"X".equals($F{TIPOSUBLANCA})?"CANCELAMENTO":"MULTA"]]></variableExpression>
 	</variable>
 	<variable name="SALDOFOR" class="java.math.BigDecimal" resetType="Group" resetGroup="FORNECEDOR" calculation="Sum">
 		<variableExpression><![CDATA[$F{VLRCRED}.add( $F{VLRDEB} )]]></variableExpression>
