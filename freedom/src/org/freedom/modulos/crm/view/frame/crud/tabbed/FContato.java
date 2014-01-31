@@ -101,7 +101,7 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 
 	private JPanelPad pnCompl = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
-	private JTextFieldPad txtCodCont = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
+	private JTextFieldPad txtCodCont = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 9, 0 );
 
 	private JTextFieldPad txtRazCont = new JTextFieldPad( JTextFieldPad.TP_STRING, 60, 0 );
 
