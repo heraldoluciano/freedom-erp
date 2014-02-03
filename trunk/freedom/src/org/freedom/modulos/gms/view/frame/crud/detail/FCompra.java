@@ -2022,6 +2022,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		}
 		if ( result && "N".equals( emitnfcpmov ) && nfecf != null ) { 
 
+			nfecf.setKindEnv( ambientenfe );
 			nfecf.setKey( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPCOMPRA" ), txtCodCompra.getVlrInteger()
 					, txtCodModNota.getVlrInteger(), txtSerieCompra.getVlrString(), txtDocCompra.getVlrInteger() );
 
@@ -3071,17 +3072,19 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 					txtCodProd.setBuscaGenProd( new DLCodProd( con, null, txtCodFor.getVlrInteger() ) );
 				}
 			}
-
-			if ("S".equals(consistChaveNFE)) {
-				// Verifica se a emissão é própria e se a chave tem o tamanho correto, nesta caso o campo é desabilitado para evitar alteração na chave
-				if ("S".equals( txtEmitCompra.getVlrString() ) && txtChaveNfe.getVlrString().length()==TAMANHOCHAVE) {
-					txtChaveNfe.setEnabled( false );
-				} else {
-					txtChaveNfe.setEnabled( true );
+			boolean enableChave = true;
+			if ("S".equals(txtEmitCompra.getVlrString()) ) {
+				enableChave = false;
+			} else {
+				if ("S".equals(consistChaveNFE)) {
+					// Verifica se a emissão é própria e se a chave tem o tamanho correto, nesta caso o campo é desabilitado para evitar alteração na chave
+					if ("S".equals( txtEmitCompra.getVlrString() ) && txtChaveNfe.getVlrString().length()==TAMANHOCHAVE) {
+						enableChave = false;
+					} 
 				}
 			}
-
-
+			txtChaveNfe.setEnabled( enableChave );
+			
 			if(!( lcCampos.getStatus() == ListaCampos.LCS_INSERT )) {
 				desabilitaBotoes( false );
 			}
