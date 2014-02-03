@@ -3602,9 +3602,11 @@ public class Funcoes {
 		try {
 
 			// Cria channel na origem
+			@SuppressWarnings("resource")
 			FileChannel oriChannel = new FileInputStream(origem).getChannel();
 
 			// Cria channel no destino
+			@SuppressWarnings("resource")
 			FileChannel destChannel = new FileOutputStream(destino)
 					.getChannel();
 
