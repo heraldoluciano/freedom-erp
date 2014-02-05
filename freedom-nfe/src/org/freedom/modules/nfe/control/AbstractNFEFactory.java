@@ -109,6 +109,15 @@ public abstract class AbstractNFEFactory {
 	private String siglaUfEmitente;
 	
 	public enum TYPE_PROC {NFE, CANCELAMENTO};
+	/*ASSINADA;1
+AUTORIZADA;10772
+CANCELADA;130
+CANCELADA_EVENTO;93
+DENEGADA;9
+EM_DIGITACAO;2
+REJEITADA;2*/
+	
+	public enum SITUACAO_NFE_DB {EM_DIGITACAO, ASSINADA, AUTORIZADA, CANCELADA_EVENTO, DENEGADA, REJEITADA}; 
 	
 	private TYPE_PROC type_proc = null;
 	
