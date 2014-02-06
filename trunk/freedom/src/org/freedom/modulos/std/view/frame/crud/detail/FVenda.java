@@ -4283,6 +4283,11 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				lbStatus.setText( "CANCELADA" );
 				lbStatus.setBackground( Color.RED );
 
+			} 
+			else if ( txtStatusVenda.getVlrString().trim().length() > 0 && txtStatusVenda.getVlrString().substring( 0, 1 ).equals( "D" ) ) {
+				NF_EMITIDA = true;
+				lbStatus.setText( "DENEGADA" );
+				lbStatus.setBackground( Color.RED );
 			}
 			else if ( getVendaBloqueada() ) {
 				NF_EMITIDA = true;

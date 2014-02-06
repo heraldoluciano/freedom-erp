@@ -3227,6 +3227,11 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 			lbStatus.setBackground( Color.RED );
 			lbStatus.setVisible( true );
 		}
+		else if ( statuscompra.length() > 0 && statuscompra.substring( 0, 1 ).equals( "D" ) ) {
+			lbStatus.setText( "DENEGADA" );
+			lbStatus.setBackground( Color.RED );
+			lbStatus.setVisible( true );
+		}
 		else if ( statuscompra.length() > 0 && statuscompra.equals( "P2" ) ) {
 			lbStatus.setText( "EM ABERTO" );
 			lbStatus.setBackground( Color.ORANGE );
