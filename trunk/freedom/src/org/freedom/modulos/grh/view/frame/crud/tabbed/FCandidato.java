@@ -403,9 +403,6 @@ public class FCandidato extends FTabDados implements CarregaListener, PostListen
 		adicDBLiv( txaOutrosempregos, "OutrosEmpregos", "Outros empregos", false );
 		panelOutrosEmpregos.add( new JScrollPane( txaOutrosempregos ) );
 
-		setListaCampos( true, "CANDIDATO", "RH" );
-		lcCampos.setQueryInsert( false );
-
 		// Fim da aba outros empregos
 
 		// Aba outros OBS
