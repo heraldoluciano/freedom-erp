@@ -13198,20 +13198,6 @@ and pd.codemp=op.codemppd and pd.codfilial=op.codfilialpd and pd.codprod=op.codp
 
 /* View: EQCONFESTOQVW01, Owner: SYSDBA */
 CREATE VIEW EQCONFESTOQVW01 (CODEMP, CODFILIAL, ATIVOPROD, DESCPROD, CODPROD, REFPROD, SLDLIQPROD, QTDINVP, QTDITCOMPRA, QTDFINALPRODOP, QTDEXPITRMA, QTDITVENDA, SLDMOVPROD, SLDLIQPRODAX) AS
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
 SELECT P.CODEMP, P.CODFILIAL, P.ATIVOPROD, P.DESCPROD,P.CODPROD,P.REFPROD,P.SLDLIQPROD,
     COALESCE((SELECT SUM(QTDINVP)  FROM EQINVPROD IT WHERE IT.CODEMPPD=P.CODEMP AND
        IT.CODFILIALPD=P.CODFILIAL AND IT.CODPROD=P.CODPROD ),0) QTDINVP,
@@ -13233,7 +13219,7 @@ SELECT P.CODEMP, P.CODFILIAL, P.ATIVOPROD, P.DESCPROD,P.CODPROD,P.REFPROD,P.SLDL
       WHERE IV.CODEMPPD=P.CODEMP AND IV.CODFILIALPD=P.CODFILIAL AND IV.CODPROD=P.CODPROD AND
       V.CODVENDA=IV.CODVENDA AND V.TIPOVENDA=IV.TIPOVENDA AND
       V.CODEMP=IV.CODEMP AND V.CODFILIAL=IV.CODFILIAL AND
-      (NOT SUBSTR(V.STATUSVENDA,1,1)='C') AND TM.CODTIPOMOV=V.CODTIPOMOV AND
+      (SUBSTR(V.STATUSVENDA,1,1) NOT IN ('C','N')) AND TM.CODTIPOMOV=V.CODTIPOMOV AND
       TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM  AND TM.ESTOQTIPOMOV='S' ),0) QTDITVENDA,
    COALESCE((SELECT FIRST 1 M.SLDMOVPROD FROM EQMOVPROD M WHERE M.CODEMPPD=P.CODEMP AND
       M.CODFILIALPD=P.CODFILIAL AND  M.CODPROD=P.CODPROD
@@ -16596,20 +16582,6 @@ CODFILIALCL INTEGER,
 CODCLI INTEGER)
 RETURNS (CODFOR INTEGER)
 AS 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
 DECLARE VARIABLE CODTIPOFOR INTEGER;
 DECLARE VARIABLE CODFILIALTF INTEGER;
 DECLARE VARIABLE CODFILIALFR INTEGER;
@@ -17199,20 +17171,6 @@ CODVENDA INTEGER,
 CITEM CHAR(1))
 RETURNS (CODCOMPRA INTEGER)
 AS 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
 DECLARE VARIABLE STATUSVENDA CHAR(2);
 DECLARE VARIABLE CODCLI INTEGER;
 DECLARE VARIABLE CODFILIALCL INTEGER;
@@ -17234,7 +17192,7 @@ BEGIN
 
   SELECT CODCLI,CODFILIALCL,STATUSVENDA FROM VDVENDA WHERE CODVENDA=:CODVENDA AND TIPOVENDA=:TIPOVENDA
     AND CODEMP=:CODEMP AND CODFILIAL=:CODFILIAL INTO CODCLI,CODFILIALCL,STATUSVENDA;
-  IF (SUBSTRING (STATUSVENDA FROM 1 FOR 1) = 'C') THEN
+  IF (SUBSTRING (STATUSVENDA FROM 1 FOR 1) IN ('C','N') ) THEN
     EXCEPTION VDVENDAEX05;
   
   SELECT CODFOR FROM CPADICFORSP(:CODEMP,:CODFILIAL,:CODFILIALCL,:CODCLI) INTO CODFOR;
@@ -23107,20 +23065,6 @@ ALTER PROCEDURE LIMPACAMPO2SP (VTAB VARCHAR(30),
 VCAMPO VARCHAR(30),
 STAM SMALLINT)
 AS 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
 declare variable s smallint;
 declare variable vsql varchar(1000);
 declare variable csep char(1);
@@ -28714,7 +28658,7 @@ BEGIN
         IF ((sStatusPag = 'PD') AND (new.VLRLIQCOMPRA != :dVlrPagar)) THEN
           EXCEPTION CPCOMPRAEX04;
       END
-       IF ((substr(old.STATUSCOMPRA,1,1) IN ('P','C')) AND (substr(new.STATUSCOMPRA,1,1)='X')) THEN
+       IF ((substr(old.STATUSCOMPRA,1,1) IN ('P','C')) AND (substr(new.STATUSCOMPRA,1,1) IN ('X','N') )) THEN
       BEGIN
            new.vlrdescitcompra = 0;
            new.vlrprodcompra = 0;
@@ -28730,7 +28674,7 @@ BEGIN
 
   END
     -- Atualizando o status do documento fiscal para 02 - Documento cancelado, quando nota for cancelado pelo sistema.
-  IF (substr(new.statuscompra,1,1) = 'X' and new.sitdoc!='02') THEN
+  IF (substr(new.statuscompra,1,1) in ('X','N') and new.sitdoc!='02') THEN
   begin
     new.sitdoc = '02';
   end
@@ -28876,7 +28820,7 @@ BEGIN
 
               END
         END
-          IF ((substr(new.STATUSCOMPRA,1,1)='X') AND (substr(old.STATUSCOMPRA,1,1) IN ('P','C'))) THEN
+          IF ((substr(new.STATUSCOMPRA,1,1) IN ('X','N')) AND (substr(old.STATUSCOMPRA,1,1) IN ('P','C'))) THEN
           BEGIN
               UPDATE CPITCOMPRA SET QTDITCOMPRACANC=QTDITCOMPRA, QTDITCOMPRA=0 WHERE CODCOMPRA=new.CODCOMPRA AND CODEMP=new.CODEMP
               AND CODFILIAL=new.CODFILIAL;
@@ -29577,7 +29521,7 @@ begin
         into :sadicfrete, :sadicadic, :statuscompra;
 
         /* Caso a nota não seja cancelada */
-        if ((substr(:statuscompra,1,1)<>'X')) then
+        if ((substr(:statuscompra,1,1) not in ('X','N'))) then
         begin
 
             vlritcusto = new.vlrliqitcompra/new.qtditcompra;
@@ -35195,7 +35139,7 @@ begin
         where cp.codcompra = new.codcompra and cp.codemp=new.codemp and cp.codfilial = new.codfilial
         into :cstatus;
 
-        if (substr(:cstatus,1,1)!='X') then
+        if (substr(:cstatus,1,1) not in ('X','N') ) then
         begin
             update cpcompra cp set
             cp.vlrbasepiscompra = cp.vlrbasepiscompra - :ovlrbasepis + :nvlrbasepis,
@@ -35337,7 +35281,7 @@ begin
         and vd.codemp=new.codemp and vd.codfilial = new.codfilial
         into :cstatus;
 
-        if (substr(:cstatus,1,1)!='C') then
+        if (substr(:cstatus,1,1) not in ('C','N')) then
         begin
             update vdvenda vd set
             vd.vlrbasepisvenda = vd.vlrbasepisvenda - :ovlrbasepis + :nvlrbasepis,
@@ -39871,7 +39815,7 @@ BEGIN
       SELECT TIPOPROD FROM EQPRODUTO WHERE CODPROD=old.CODPROD
              AND CODEMP=old.CODEMPPD AND CODFILIAL = old.CODFILIALPD
          INTO CTIPOPROD;
-      if (SUBSTRING(:CSTATUS FROM 1 FOR 1)!='C') then
+      if (SUBSTRING(:CSTATUS FROM 1 FOR 1) not in ('C','N')) then
       BEGIN
         UPDATE VDVENDA SET VLRDESCITVENDA = VLRDESCITVENDA -old.VLRDESCITVENDA + new.VLRDESCITVENDA,
                VLRPRODVENDA = VLRPRODVENDA - old.VLRPRODITVENDA + new.VLRPRODITVENDA,
@@ -40964,6 +40908,8 @@ BEGIN
         EXCEPTION VDVENDAEX05;
       IF (SUBSTRING(old.STATUSVENDA FROM 1 FOR 1) = 'D' and SUBSTRING(old.STATUSVENDA FROM 1 FOR 1) <> 'D' and old.chavenfevenda=new.chavenfevenda) THEN
         EXCEPTION VDVENDAEX05 'ESTA VENDA FOI DEVOLVIDA!';
+      IF (SUBSTRING(old.STATUSVENDA FROM 1 FOR 1) = 'N' and SUBSTRING(old.STATUSVENDA FROM 1 FOR 1) <> 'N' and old.chavenfevenda=new.chavenfevenda) THEN
+        EXCEPTION VDVENDAEX05 'ESTA VENDA FOI DENEGADA!';
       IF ((SUBSTRING(old.STATUSVENDA FROM 1 FOR 1) = 'P') AND (SUBSTRING(new.STATUSVENDA FROM 1 FOR 1) = 'V' ) AND new.IMPNOTAVENDA = 'N') THEN
       BEGIN
         if ( new.subtipovenda = 'NC' ) then
@@ -41071,7 +41017,7 @@ BEGIN
             as numeric(15, 5));
       end
 
-      IF ((SUBSTRING(old.STATUSVENDA FROM 1 FOR 1) IN ('P','V')) AND (SUBSTRING(new.STATUSVENDA FROM 1 FOR 1)='C')) THEN
+      IF ((SUBSTRING(old.STATUSVENDA FROM 1 FOR 1) IN ('P','V')) AND (SUBSTRING(new.STATUSVENDA FROM 1 FOR 1) IN ('C','N'))) THEN
       BEGIN
           new.VLRDESCITVENDA = 0;
           new.VLRPRODVENDA = 0;
@@ -41161,7 +41107,7 @@ BEGIN
     END
 
     -- Atualizando o status do documento fiscal para 02 - Documento cancelado, quando nota for cancelado pelo sistema.
-    IF (SUBSTRING(new.STATUSVENDA FROM 1 FOR 1) = 'C' and new.sitdoc!='02') THEN
+    IF (SUBSTRING(new.STATUSVENDA FROM 1 FOR 1) IN ('C','N') and new.sitdoc!='02') THEN
     begin
       new.sitdoc = '02';
     end
@@ -41586,7 +41532,7 @@ BEGIN
         update vditvenda set coditvenda=coditvenda
         where codvenda = old.codvenda and tipovenda = old.tipovenda and codemp=old.codemp and codfilial=old.codfilial;
     end
-    else if ((SUBSTRING(new.statusvenda FROM 1 FOR 1)='C') and (SUBSTRING(old.statusvenda FROM 1 FOR 1) in ('P','V'))) then
+    else if ((SUBSTRING(new.statusvenda FROM 1 FOR 1) IN ('C','N')) and (SUBSTRING(old.statusvenda FROM 1 FOR 1) in ('P','V'))) then
     begin
 
         delete from vdvendaorc where codemp=new.codemp and codfilial=new.codfilial and
