@@ -592,6 +592,8 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 	private DAOImportacao daoimp = null;
 
 	private int codigoNfe = 55;
+	
+	private Integer tipoemissao = new Integer(1);
 
 	private enum PROCEDUREOP {
 		TIPOPROCESS, CODEMPOP, CODFILIALOP, CODOP, SEQOP, CODEMPPD, CODFILIALPD, CODPROD, CODEMPOC, CODFILIALOC, CODORC, TIPOORC, CODITORC, QTDSUGPRODOP, DTFABROP, SEQEST, CODEMPET, CODFILIALET, CODEST, AGRUPDATAAPROV, AGRUPDTFABROP, AGRUPCODCLI, CODEMPCL, CODFILIALCL, CODCLI, DATAAPROV, CODEMPCP, CODFILIALCP, CODCOMPRA, CODITCOMPRA, JUSTFICQTDPROD, CODEMPPDENTRADA, CODFILIALPDENTRADA, CODPRODENTRADA, QTDENTRADA
@@ -1769,7 +1771,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 			sql.append( "P1.TABTRANSPCP, P1.TABSOLCP,P1.TABIMPORTCP, P1.CLASSCP, P1.LABELOBS01CP, P1.LABELOBS02CP, " );
 			sql.append( "P1.LABELOBS03CP, P1.LABELOBS04CP, P5.HABCONVCP, P1.USABUSCAGENPRODCP, COALESCE(P1.BLOQPRECOAPROV, 'N') BLOQPRECOAPROV, " );
 			sql.append( "P1.CODTIPOMOVIM, P1.BLOQSEQICP, P1.UTILORDCPINT, P1.TOTCPSFRETE, P1.UTILIZATBCALCCA, P1.CCNFECP, P1.HABCOMPRACOMPL ");
-			sql.append( ", P1.NPERMITDTMAIOR, P1.PROCEMINFE, P1.AMBIENTENFE, F.CNPJFILIAL, F.SIGLAUF " );
+			sql.append( ", P1.NPERMITDTMAIOR, P1.PROCEMINFE, P1.AMBIENTENFE, F.CNPJFILIAL, F.SIGLAUF, coalesce(P1.TIPOEMISSAONFE,'1') TIPOEMISSAONFE " );
 			sql.append( "FROM SGPREFERE1 P1 " );
 			sql.append( "INNER JOIN SGFILIAL F ON ");
 			sql.append( "F.CODEMP=P1.CODEMP AND F.CODFILIAL=P1.CODFILIAL ");
@@ -1813,6 +1815,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 				ambientenfe = rs.getString( "AMBIENTENFE" ) == null ? AbstractNFEFactory.KIND_ENV_HOMOLOG : rs.getString("AMBIENTENFE");
 				cnpjfilial = rs.getString("CNPJFILIAL");
 				siglauffilial = rs.getString( "SIGLAUF" );
+				tipoemissao = new Integer(rs.getString( "TIPOEMISSAONFE" ));
 			}
 			con.commit();
 		} catch ( Exception e ) {
@@ -3754,7 +3757,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		getPrefere();
 
 		setNfecf( new NFEConnectionFactory( cn, Aplicativo.getInstace().getConexaoNFE(), AbstractNFEFactory.TP_NF_IN
-				, false, proceminfe, ambientenfe, Aplicativo.strTemp, TYPE_PROC.NFE, cnpjfilial, siglauffilial ) );
+				, false, proceminfe, ambientenfe, Aplicativo.strTemp, TYPE_PROC.NFE, cnpjfilial, siglauffilial, tipoemissao ) );
 
 		lcTipoMov.setConexao( cn );
 		lcSerie.setConexao( cn );

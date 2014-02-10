@@ -70,9 +70,11 @@ public class NFEConnectionFactory implements NFEListener {
 	
 	private String siglaUfEmitente = null;
 	
+	private Integer tipoemissao;
+	
 	public NFEConnectionFactory( final DbConnection conFreedom, final DbConnection conSped
 			, Constant TP_NF, boolean service, String kindTransmission, String kindEnv, String tempDir
-			, TYPE_PROC type_proc, String cnpjFilial, String siglaUfEmitente ) {
+			, TYPE_PROC type_proc, String cnpjFilial, String siglaUfEmitente, Integer tipoemissao ) {
 
 		this.con = conFreedom;
 		this.service = service;
@@ -82,6 +84,7 @@ public class NFEConnectionFactory implements NFEListener {
 		this.type_proc = type_proc;
 		this.cnpjFilial = cnpjFilial;
 		this.siglaUfEmitente = siglaUfEmitente;
+		this.tipoemissao = tipoemissao;
 		
 		if ( TP_NF == null ) {
 			setTpNF( AbstractNFEFactory.TP_NF_OUT );
@@ -114,6 +117,7 @@ public class NFEConnectionFactory implements NFEListener {
 					getObjNFEFactory().setType_proc( getType_proc() );
 					getObjNFEFactory().setCnpjFilial( getCnpjFilial() );
 					getObjNFEFactory().setSiglaUfEmitente( getSiglaUfEmitente() );
+					getObjNFEFactory().setTipoEmissao( getTipoemissao() );
 
 				}
 				else {
@@ -486,6 +490,18 @@ public class NFEConnectionFactory implements NFEListener {
 	public void setSiglaUfEmitente( String siglaUfEmitente ) {
 	
 		this.siglaUfEmitente = siglaUfEmitente;
+	}
+
+	
+	public Integer getTipoemissao() {
+	
+		return tipoemissao;
+	}
+
+	
+	public void setTipoemissao( Integer tipoemissao ) {
+	
+		this.tipoemissao = tipoemissao;
 	}
 
 }
