@@ -108,6 +108,8 @@ public abstract class AbstractNFEFactory {
 	
 	private String siglaUfEmitente;
 	
+	private Integer tipoEmissao;
+	
 	public enum TYPE_PROC {NFE, CANCELAMENTO};
 	/*ASSINADA;1
 AUTORIZADA;10772
@@ -206,6 +208,14 @@ REJEITADA;2*/
 
 	public Constant getTpNF() {
 		return tpNF;
+	}
+
+	public Integer getTipoEmissao() {
+		return tipoEmissao;
+	}
+
+	public void setTipoEmissao(Integer tipoEmissao) {
+		this.tipoEmissao = tipoEmissao;
 	}
 
 	public void setListInconsistency(List<NFEInconsistency> listInconsistency) {
