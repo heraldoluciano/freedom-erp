@@ -334,7 +334,7 @@ public class FCancVenda extends FFilho implements ActionListener {
 		ResultSet rs = null;
 		try {
 			sSQL.append( "SELECT COALESCE(P1.PROCEMINFE,'3') PROCEMINFE, COALESCE(P1.AMBIENTENFE,'2') AMBIENTENFE " );
-			sSQL.append( ", F.CNPJFILIAL, F.SIGLAUF, coalesce(P1.TIPOEMISSAO,'1') TIPOEMISSAONFE ");
+			sSQL.append( ", F.CNPJFILIAL, F.SIGLAUF, coalesce(P1.TIPOEMISSAONFE,'1') TIPOEMISSAONFE ");
 			sSQL.append( "FROM SGPREFERE1 P1 INNER JOIN SGFILIAL F ON " );
 			sSQL.append( "F.CODEMP=P1.CODEMP AND F.CODFILIAL=P1.CODFILIAL ");
 			sSQL.append( "WHERE P1.CODEMP=? AND P1.CODFILIAL=? " );
