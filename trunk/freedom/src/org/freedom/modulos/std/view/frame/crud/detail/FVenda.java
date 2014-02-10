@@ -608,7 +608,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		, OBSCLIVEND, IPIVENDA, CONTESTOQ, DIASPEDT, RECALCCPVENDA, USALAYOUTPED, ICMSVENDA, USAPRECOZERO, MULTICOMIS, CONS_CRED_ITEM, CONS_CRED_FECHA
 		, TIPOCLASPED, VENDAIMOBILIZADO, VISUALIZALUCR, INFCPDEVOLUCAO, INFVDREMESSA, TIPOCUSTO, BUSCACODPRODGEN, CODPLANOPAGSV, CODTIPOMOVDS, COMISSAODESCONTO
 		, VENDAMATCONSUM, OBSITVENDAPED, BLOQSEQIVD, VDPRODQQCLAS, CONSISTENDENTVD, BLOQDESCCOMPVD, BLOQPRECOVD, BLOQCOMISSVD, BLOQPEDVD, SOLDTSAIDA
-		, PROCEMINFE, AMBIENTENFE, CNPJFILIAL, SIGLAUF
+		, PROCEMINFE, AMBIENTENFE, CNPJFILIAL, SIGLAUF, TIPOEMISSAONFE
 	}
 
 	private enum ECOL_ITENS{
@@ -3594,7 +3594,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			sSQL.append( ", P1.COMISSAODESCONTO, P8.CODTIPOMOVDS, P1.VENDACONSUM, P1.OBSITVENDAPED, P1.BLOQSEQIVD, P1.LOCALSERV ");
 			sSQL.append( ", P1.VDPRODQQCLAS, P1.CONSISTENDENTVD, P1.BLOQDESCCOMPVD, P1.BLOQPRECOVD, P1.BLOQCOMISSVD ");
 			sSQL.append( ", P1.BLOQPEDVD, P1.SOLDTSAIDA, COALESCE(P1.PROCEMINFE,'3') PROCEMINFE, COALESCE(P1.AMBIENTENFE,'2') AMBIENTENFE " );
-			sSQL.append( ", F.CNPJFILIAL, F.SIGLAUF " );
+			sSQL.append( ", F.CNPJFILIAL, F.SIGLAUF, coalesce(P1.TIPOEMISSAONFE,'1') TIPOEMISSAONFE " );
 
 			sSQL.append( "FROM SGPREFERE1 P1 ");
 			sSQL.append( "INNER JOIN SGFILIAL F ");
@@ -3664,7 +3664,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				retorno[ POS_PREFS.AMBIENTENFE.ordinal()] = rs.getString( POS_PREFS.AMBIENTENFE.toString() ); 
 				retorno[ POS_PREFS.CNPJFILIAL.ordinal()] = rs.getString( POS_PREFS.CNPJFILIAL.toString() );
 				retorno[ POS_PREFS.SIGLAUF.ordinal()] = rs.getString( POS_PREFS.SIGLAUF.toString() );
-				
+				retorno[ POS_PREFS.TIPOEMISSAONFE.ordinal()] = rs.getString( POS_PREFS.TIPOEMISSAONFE.toString() );
 				localServ = rs.getString( "LOCALSERV" );
 			}
 			rs.close();
@@ -4207,7 +4207,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 							, (String) oPrefs[POS_PREFS.AMBIENTENFE.ordinal()]
 							, Aplicativo.strTemp, TYPE_PROC.NFE
 							, (String) oPrefs[POS_PREFS.CNPJFILIAL.ordinal()]
-							, (String) oPrefs[POS_PREFS.SIGLAUF.ordinal()] ) );
+							, (String) oPrefs[POS_PREFS.SIGLAUF.ordinal()] 
+							, new Integer((String) oPrefs[POS_PREFS.TIPOEMISSAONFE.ordinal()])));
 
 				}else {
 					setNfecf( new NFEConnectionFactory( con, Aplicativo.getInstace().getConexaoNFE()
@@ -4216,7 +4217,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 							, (String) oPrefs[POS_PREFS.AMBIENTENFE.ordinal()]
 							, Aplicativo.strTemp, TYPE_PROC.NFE
 							, (String) oPrefs[POS_PREFS.CNPJFILIAL.ordinal()]
-							, (String) oPrefs[POS_PREFS.SIGLAUF.ordinal()] ) );
+							, (String) oPrefs[POS_PREFS.SIGLAUF.ordinal()] 
+							, new Integer((String) oPrefs[POS_PREFS.TIPOEMISSAONFE.ordinal()])));
 				}
 				recriaSqlWhereLcProdutos();
 			}
@@ -5150,7 +5152,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				, (String) oPrefs[POS_PREFS.AMBIENTENFE.ordinal()]
 				, Aplicativo.strTemp, TYPE_PROC.NFE
 				, (String) oPrefs[POS_PREFS.CNPJFILIAL.ordinal()]
-				, (String) oPrefs[POS_PREFS.SIGLAUF.ordinal()] ) );
+				, (String) oPrefs[POS_PREFS.SIGLAUF.ordinal()] 
+				, new Integer((String) oPrefs[POS_PREFS.TIPOEMISSAONFE.ordinal()])));
+
 		daobuscaorc = new DAOBuscaOrc( cn );
 		
 	}

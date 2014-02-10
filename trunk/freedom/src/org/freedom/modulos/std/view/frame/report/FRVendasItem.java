@@ -287,6 +287,8 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
 		rgQtdVlr.setAtivo( false );
 		
 		txtAno.addFocusListener( this );
+		
+		// btExportXLS.setEnabled( true );
 
 	}
 	
@@ -1000,6 +1002,17 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
+		/*if (bVisualizar==TYPE_PRINT.EXPORT) {
+			if (btExportXLS.execute(rs, getTitle())) {
+				Funcoes.mensagemInforma( this, "Arquivo exportado com sucesso !" );
+			}
+			try {
+				rs.close();
+				con.commit();
+			} catch ( SQLException e ) {
+				e.printStackTrace();
+			}
+		}*/
 		else {
 			try {
 				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
