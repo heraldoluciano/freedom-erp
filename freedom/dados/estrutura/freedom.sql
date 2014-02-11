@@ -38685,7 +38685,7 @@ begin
   END
 end ^
 
-CREATE TRIGGER VDITORCAMENTOTGBI FOR VDITORCAMENTO 
+CREATE OR ALTER TRIGGER VDITORCAMENTOTGBI FOR VDITORCAMENTO 
 ACTIVE BEFORE INSERT POSITION 0 
 as
     declare variable refprod VARchar(20);
@@ -38695,6 +38695,8 @@ as
 
 begin
 
+  if ( ( new.emmanut is null ) or ( new.emmanut='N' ) ) then
+  begin
     select fi.contribipifilial from sgfilial fi where fi.codemp=new.codemp and fi.codfilial=new.codfilial
     into contribipi;
 
@@ -38750,9 +38752,10 @@ begin
                              o.vlrliqorc = o.vlrliqorc + new.vlrliqitorc
     where o.codorc=new.codorc and o.tipoorc=new.tipoorc and o.codemp=new.codemp and o.codfilial=new.codfilial;
 
+  end
 end ^
 
-CREATE TRIGGER VDITORCAMENTOTGAI FOR VDITORCAMENTO 
+CREATE OR ALTER TRIGGER VDITORCAMENTOTGAI FOR VDITORCAMENTO 
 ACTIVE AFTER INSERT POSITION 0 
 AS
     declare variable visualizalucr char(1);
@@ -38760,7 +38763,8 @@ AS
     declare variable custompm numeric(15, 5);
     declare variable custouc numeric(15, 5);
 begin
-
+  if ( ( new.emmanut is null ) or ( new.emmanut='N' ) ) then
+  begin
     -- Carregamento de preferencias
     select visualizalucr from sgprefere1 where codemp=new.codemp and codfilial = new.codfilial
     into :visualizalucr;
@@ -38795,10 +38799,7 @@ begin
         from lfbuscaprevtriborc(new.codemp, new.codfilial, new.codorc, new.tipoorc, new.coditorc);
 
     end
-
-
-
-
+  end
 end ^
 
 CREATE TRIGGER VDITORCAMENTOTGBU FOR VDITORCAMENTO 
