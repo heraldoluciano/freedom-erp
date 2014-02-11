@@ -288,6 +288,11 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 	private JTextFieldPad txtDescClassOrcPd = new JTextFieldPad(JTextFieldPad.TP_STRING, 80, 0);
 
+	// CLASSORCLAUDOSUS, CLASSORCCTALUGUEL 
+	private JTextFieldPad txtClassOrcLaudoSus = new JTextFieldPad(JTextFieldPad.TP_STRING, 80, 0);
+ 
+	private JTextFieldPad txtClassOrcCtAluguel = new JTextFieldPad(JTextFieldPad.TP_STRING, 80, 0);
+	
 	private JTextFieldPad txtDescClassPed = new JTextFieldPad(JTextFieldPad.TP_STRING, 80, 0);
 
 	private JTextFieldPad txtDescClassPed02 = new JTextFieldPad(JTextFieldPad.TP_STRING, 80, 0);
@@ -879,7 +884,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		super();
 
 		setTitulo("Preferências Gerais");
-		setAtribos(30, 40, 940, 680);
+		setAtribos(30, 40, 940, 720);
 
 		lcCampos.setMensInserir(false);
 		lcPrefere3.setMensInserir(false);
@@ -1699,6 +1704,9 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB(rgTipoCustoLuc, 7, 185, 320, 70, "TipoCustoLuc", "Tipo de custo para calculo da lucratividade", true);
 		adicDB(rgTipoValidOrc, 7, 275, 322, 30, "tipovalidorc", "Validade na impressão", true);
 		
+		adicCampo(txtClassOrcLaudoSus, 7, 328, 322, 20, "ClassOrcLaudoSus", "Classe para orçamento/laudo Sus", ListaCampos.DB_SI, false);
+		adicCampo(txtClassOrcCtAluguel, 343, 328, 382, 20, "ClassOrcCtAluguel", "Classe para orçamento/contrato aluguel", ListaCampos.DB_SI, false);
+		
 		adicCampo(txtCodImg, 343, 225, 50, 20, "CODIMG", "Cod.img", ListaCampos.DB_FK, txtDescImg , false);
 		adicDescFK(txtDescImg, 399, 225, 322, 20, "DESCIMG", "Imagem para cabeçalho/título de Orçamento");
 		
@@ -2193,7 +2201,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		setListaCampos(lcPrefere4);
 		setPainel(pinOrcamento);
 		pnOpcoesOrc.setBorder(SwingParams.getPanelLabel("Opções", Color.BLACK));
-		adic(pnOpcoesOrc, 7, 310, 750, 250);
+		adic(pnOpcoesOrc, 7, 350, 750, 250);
 		setNavegador(new Navegador(false));
 
 		adicCampo(txtCodTipoMov7, 7, 65, 90, 20, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_FK, txtDescTipoMov7, false);

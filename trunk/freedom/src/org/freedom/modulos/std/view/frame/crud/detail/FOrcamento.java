@@ -2097,7 +2097,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	private String buscaClassOrc(){
 
 		String result = "layout/orc/ORC_PD.jasper";
-		StringBuilder sql = new StringBuilder("SELECT CLASSORCPD FROM SGPREFERE1 P ");
+		StringBuilder sql = new StringBuilder("SELECT CLASSORCPD, CLASSORCLAUDOSUS, CLASSORCCTALUGUEL FROM SGPREFERE1 P ");
 		sql.append( "WHERE P.CODEMP=? AND P.CODFILIAL=?" );
 		try {
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
@@ -2118,8 +2118,6 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			e.printStackTrace();
 		}
 		return result;
-
-
 
 	}
 
@@ -2565,37 +2563,9 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			// dl = new FPrinterJob( imp, this );
 			// dl.setVisible( true );
 		} else if ( evt.getSource() == btOrcTst ) {
-			LeiauteGR leiOrc = null;
-			try {
-				leiOrc = (LeiauteGR) Class.forName( "org.freedom.layout.orc." + "LaudoAprSusFisio" ).newInstance();
-				leiOrc.setConexao( con );
-				vParamOrc.clear();
-				vParamOrc.addElement( txtCodOrc.getText() );
-				vParamOrc.addElement( txtCodConv.getText() );
-				leiOrc.setParam( vParamOrc );
-
-				dl = new FPrinterJob( leiOrc, this );
-				dl.setVisible( true );
-			} catch ( Exception err ) {
-				Funcoes.mensagemInforma( this, "Não foi possível carregar o leiaute de Orçamento Fisio.!\n" + err.getMessage() );
-				err.printStackTrace();
-			}
+			imprimeLaudoSusJava();
 		} else if ( evt.getSource() == btOrcTst2 ) {
-			LeiauteGR leiOrc = null;
-			try {
-				leiOrc = (LeiauteGR) Class.forName( "org.freedom.layout.orc." + "ContratoAluguelApr" ).newInstance();
-				leiOrc.setConexao( con );
-				vParamOrc.clear();
-				vParamOrc.addElement( txtCodOrc.getText() );
-				vParamOrc.addElement( txtCodConv.getText() );
-				leiOrc.setParam( vParamOrc );
-
-				dl = new FPrinterJob( leiOrc, this );
-				dl.setVisible( true );
-			} catch ( Exception err ) {
-				Funcoes.mensagemInforma( this, "Não foi possível carregar o layout de Contrato de locação!\n" + err.getMessage() );
-				err.printStackTrace();
-			}
+			imprimeContratoAluguelJava();
 		} else if ( evt.getSource() == btObs ) {
 			mostraObs( "VDORCAMENTO", txtCodOrc.getVlrInteger().intValue() );
 		} else if ( evt.getSource() == btCopiaOrcamento ) {
@@ -2609,6 +2579,42 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		super.actionPerformed( evt );
 	}
 
+	private void imprimeContratoAluguelJava() {
+		LeiauteGR leiOrc = null;
+		try {
+			leiOrc = (LeiauteGR) Class.forName( "org.freedom.layout.orc." + "ContratoAluguelApr" ).newInstance();
+			leiOrc.setConexao( con );
+			vParamOrc.clear();
+			vParamOrc.addElement( txtCodOrc.getText() );
+			vParamOrc.addElement( txtCodConv.getText() );
+			leiOrc.setParam( vParamOrc );
+
+			dl = new FPrinterJob( leiOrc, this );
+			dl.setVisible( true );
+		} catch ( Exception err ) {
+			Funcoes.mensagemInforma( this, "Não foi possível carregar o layout de Contrato de locação!\n" + err.getMessage() );
+			err.printStackTrace();
+		}
+	}
+	
+	private void imprimeLaudoSusJava() {
+		LeiauteGR leiOrc = null;
+		try {
+			leiOrc = (LeiauteGR) Class.forName( "org.freedom.layout.orc." + "LaudoAprSusFisio" ).newInstance();
+			leiOrc.setConexao( con );
+			vParamOrc.clear();
+			vParamOrc.addElement( txtCodOrc.getText() );
+			vParamOrc.addElement( txtCodConv.getText() );
+			leiOrc.setParam( vParamOrc );
+
+			dl = new FPrinterJob( leiOrc, this );
+			dl.setVisible( true );
+		} catch ( Exception err ) {
+			Funcoes.mensagemInforma( this, "Não foi possível carregar o leiaute de Orçamento Fisio.!\n" + err.getMessage() );
+			err.printStackTrace();
+		}
+	}
+	
 	public void beforeCarrega( CarregaEvent cevt ) {
 		if ( cevt.getListaCampos() == lcProd2 ) {
 			lcProd.edit();
