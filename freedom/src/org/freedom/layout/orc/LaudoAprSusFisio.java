@@ -46,19 +46,19 @@ public class LaudoAprSusFisio extends LeiauteGR {
 
 	private DbConnection con = null;
 
-	private Font fnSubTitulo = new Font( "Times New Roman", Font.PLAIN, 7 );
+	private Font fnSubTitulo = new Font( "Arial", Font.PLAIN, 7 );
 
-	private Font fnTituloBanner = new Font( "Times New Roman", Font.BOLD, 8 );
+	private Font fnTituloBanner = new Font( "Arial", Font.BOLD, 8 );
 
-	private Font fnTitulo = new Font( "Times New Roman", Font.BOLD, 11 );
+	private Font fnTitulo = new Font( "Arial", Font.BOLD, 11 );
 
 	private Font fnConteudo = new Font( "Courier", Font.PLAIN, 10 );
 
-	private Font fnCabCli = new Font( "Times New Roman", Font.PLAIN, 9 );
+	private Font fnCabCli = new Font( "Arial", Font.PLAIN, 9 );
 
-	private Font fnLogo = new Font( "Times New Roman", Font.BOLD, 11 );
+	private Font fnLogo = new Font( "Arial", Font.BOLD, 11 );
 
-	private Font fnLogo2 = new Font( "Times New Roman", Font.PLAIN, 10 );
+	private Font fnLogo2 = new Font( "Arial", Font.PLAIN, 10 );
 
 	Vector<?> vParamOrc = new Vector<Object>();
 
