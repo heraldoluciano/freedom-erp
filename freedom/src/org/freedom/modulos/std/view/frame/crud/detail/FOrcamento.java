@@ -2566,17 +2566,19 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		} else if ( evt.getSource() == btImp ) {
 			imprimir( TYPE_PRINT.PRINT);
 		} else if ( evt.getSource() == btOrc ) {
-
 			imprimiGraficoPad( TYPE_PRINT.VIEW, classorcpd );
-
-			// ImprimeOrc imp = new ImprimeOrc( txtCodOrc.getVlrInteger().intValue() );
-			// imp.setConexao( con );
-			// dl = new FPrinterJob( imp, this );
-			// dl.setVisible( true );
 		} else if ( evt.getSource() == btOrcTst ) {
-			imprimeLaudoSusJava();
+			if (classorclaudosus==null) {
+				imprimeLaudoSusJava();
+			} else {
+				imprimiGraficoPad( TYPE_PRINT.VIEW, classorclaudosus );
+			}
 		} else if ( evt.getSource() == btOrcTst2 ) {
-			imprimeContratoAluguelJava();
+			if (classorcctaluguel==null) {
+				imprimeContratoAluguelJava();
+			} else {
+				imprimiGraficoPad( TYPE_PRINT.VIEW, classorcctaluguel );
+			}
 		} else if ( evt.getSource() == btObs ) {
 			mostraObs( "VDORCAMENTO", txtCodOrc.getVlrInteger().intValue() );
 		} else if ( evt.getSource() == btCopiaOrcamento ) {
