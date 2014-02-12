@@ -475,6 +475,14 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	private DAOEmail daoemail = null;
 
 	private boolean bImprimir = true;
+
+	private String classorcpd = null;
+	
+	private String classorclaudosus = null;
+	
+	private String classorcctaluguel = null;
+	
+	//CLASSORCPD, CLASSORCLAUDOSUS, CLASSORCCTALUGUEL
 	
 	//private DAOAtendimento daoatendo = null;
 	
@@ -2094,9 +2102,9 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		}
 	}
 
-	private String buscaClassOrc(){
-
-		String result = "layout/orc/ORC_PD.jasper";
+	private void buscaClassOrc(){
+		// Carrega layouts de orçamento padrão Jasper
+		classorcpd = "layout/orc/ORC_PD.jasper";
 		StringBuilder sql = new StringBuilder("SELECT CLASSORCPD, CLASSORCLAUDOSUS, CLASSORCCTALUGUEL FROM SGPREFERE1 P ");
 		sql.append( "WHERE P.CODEMP=? AND P.CODFILIAL=?" );
 		try {
@@ -2106,8 +2114,13 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			ResultSet rs = ps.executeQuery();
 			if ( rs.next() ) {
 				if ( (rs.getString("CLASSORCPD")!=null) && (! "".equals( rs.getString( "CLASSORCPD" ).trim() ) ) ) {
-					result = "layout/orc/" + rs.getString("CLASSORCPD").trim();
-					//result = rs.getString("CLASSORCPD").trim();
+					classorcpd = "layout/orc/" + rs.getString("CLASSORCPD").trim();
+					if (rs.getString("CLASSORCLAUDOSUS")!=null) {
+						classorclaudosus = "layout/orc/" + rs.getString("CLASSORCLAUDOSUS").trim();
+					} 
+					if (rs.getString("CLASSORCCTALUGUEL")!=null) {
+						classorclaudosus = "layout/orc/" + rs.getString("CLASSORCCTALUGUEL").trim();
+					} 
 				}
 			}
 			rs.close();
@@ -2117,11 +2130,9 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			Funcoes.mensagemErro( this, "Erro consultando o preferências !\n"+e.getMessage() );
 			e.printStackTrace();
 		}
-		return result;
-
 	}
 
-	private void imprimiGraficoPad( TYPE_PRINT bVisualizar ) {
+	private void imprimiGraficoPad( TYPE_PRINT bVisualizar, String layoutorc ) {
 
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
@@ -2137,7 +2148,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		EmailBean mail = Aplicativo.getEmailBean();
 		mail.setPara( daoemail.getEmailCli( txtCodCli.getVlrInteger(), con ) );
 
-		dlGr = new FPrinterJob( buscaClassOrc(), null, null, this, hParam, con, mail );
+		dlGr = new FPrinterJob( layoutorc, null, null, this, hParam, con, mail );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
@@ -2556,7 +2567,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			imprimir( TYPE_PRINT.PRINT);
 		} else if ( evt.getSource() == btOrc ) {
 
-			imprimiGraficoPad( TYPE_PRINT.VIEW );
+			imprimiGraficoPad( TYPE_PRINT.VIEW, classorcpd );
 
 			// ImprimeOrc imp = new ImprimeOrc( txtCodOrc.getVlrInteger().intValue() );
 			// imp.setConexao( con );
@@ -2898,17 +2909,9 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			txtPrecoItOrc.setEditable( false );
 		} 
 		
-/*		if ( (Boolean) daoatendo.getPrefs()[PREFS.CONTROLEACESATEND.ordinal()]) {
-			if (daoatend.getCodatend_atual() != null) {	
-				//codatend_atual = (Integer) infAtendente.get("codatend");
-				acesatdolerout = (Boolean) infAtendente.get("acesatdolerout");
-				acesatdoaltout = (Boolean) infAtendente.get("acesatdoaltout");
-			}
-		} else {
-			codatend_atual = org.freedom.modulos.crm.business.component.Atendimento.buscaAtendente();
-			acesatdoaltout = true;
-			acesatdolerout = true;
-		}*/
+		// Busca classes para impressão de orçamentos
+		buscaClassOrc();
+		
 	}
 
 	private void atualizaLucratividade() {
