@@ -2115,13 +2115,13 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			if ( rs.next() ) {
 				if ( (rs.getString("CLASSORCPD")!=null) && (! "".equals( rs.getString( "CLASSORCPD" ).trim() ) ) ) {
 					classorcpd = "layout/orc/" + rs.getString("CLASSORCPD").trim();
-					if (rs.getString("CLASSORCLAUDOSUS")!=null) {
-						classorclaudosus = "layout/orc/" + rs.getString("CLASSORCLAUDOSUS").trim();
-					} 
-					if (rs.getString("CLASSORCCTALUGUEL")!=null) {
-						classorclaudosus = "layout/orc/" + rs.getString("CLASSORCCTALUGUEL").trim();
-					} 
 				}
+				if (rs.getString("CLASSORCLAUDOSUS")!=null) {
+					classorclaudosus = "layout/orc/" + rs.getString("CLASSORCLAUDOSUS").trim();
+				} 
+				if (rs.getString("CLASSORCCTALUGUEL")!=null) {
+					classorclaudosus = "layout/orc/" + rs.getString("CLASSORCCTALUGUEL").trim();
+				} 
 			}
 			rs.close();
 			ps.close();
@@ -2132,7 +2132,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		}
 	}
 
-	private void imprimiGraficoPad( TYPE_PRINT bVisualizar, String layoutorc ) {
+	private void imprimiGraficoPad( TYPE_PRINT bVisualizar, String layoutorc, Date dtorc ) {
 
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
@@ -2142,6 +2142,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
 		hParam.put( "CODFILIALPF", ListaCampos.getMasterFilial( "SGPREFERE1" ) );
 		hParam.put( "CIDADEDIAMESANO", Funcoes.getCidadeDiaMesAnoExtenso( Funcoes.getCidadeFilial( con ), new Date() ) );
+		hParam.put( "MESEXTENSO", Funcoes.getMesExtenso(dtorc) );
 		hParam.put( "SUBREPORT_DIR", "org/freedom/layout/orc/" );
 		hParam.put( "PESO", calcPeso());
 
@@ -2566,18 +2567,18 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		} else if ( evt.getSource() == btImp ) {
 			imprimir( TYPE_PRINT.PRINT);
 		} else if ( evt.getSource() == btOrc ) {
-			imprimiGraficoPad( TYPE_PRINT.VIEW, classorcpd );
+			imprimiGraficoPad( TYPE_PRINT.VIEW, classorcpd, txtDtOrc.getVlrDate() );
 		} else if ( evt.getSource() == btOrcTst ) {
 			if (classorclaudosus==null) {
 				imprimeLaudoSusJava();
 			} else {
-				imprimiGraficoPad( TYPE_PRINT.VIEW, classorclaudosus );
+				imprimiGraficoPad( TYPE_PRINT.VIEW, classorclaudosus, txtDtOrc.getVlrDate() );
 			}
 		} else if ( evt.getSource() == btOrcTst2 ) {
 			if (classorcctaluguel==null) {
 				imprimeContratoAluguelJava();
 			} else {
-				imprimiGraficoPad( TYPE_PRINT.VIEW, classorcctaluguel );
+				imprimiGraficoPad( TYPE_PRINT.VIEW, classorcctaluguel, txtDtOrc.getVlrDate() );
 			}
 		} else if ( evt.getSource() == btObs ) {
 			mostraObs( "VDORCAMENTO", txtCodOrc.getVlrInteger().intValue() );
