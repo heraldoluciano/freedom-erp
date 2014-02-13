@@ -269,8 +269,7 @@ IT.TIPOORC = 'O' AND IT.CODORC=orc.codorc AND IT.CODEMP=orc.codemp AND IT.CODFIL
 					<textElement verticalAlignment="Top">
 						<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[$P{REPORT_SCRIPTLET}.getFormatString($F{CEPCONV},"#####-#####")
-    ]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA[$P{REPORT_SCRIPTLET}.getFormatString($F{CEPCONV},"#####-#####")]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="false">
 					<reportElement key="TXTSEXOFEM-1" x="493" y="145" width="12" height="10"/>
@@ -2504,7 +2503,7 @@ E MEIOS AUXILIARES DE LOCOMOÇÃO]]></text>
 				<textElement>
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCPROD}.length()>0?$F{DESCPROD}.substring(0,40):$F{DESCPROD}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCPROD}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement key="staticText-24" mode="Opaque" x="7" y="2" width="88" height="8"/>
