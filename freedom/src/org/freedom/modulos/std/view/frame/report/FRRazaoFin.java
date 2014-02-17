@@ -29,7 +29,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Vector;
+
+import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
@@ -43,6 +47,7 @@ import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
+import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
 import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.fnc.library.swing.component.JTextFieldPlan;
@@ -111,9 +116,9 @@ public class FRRazaoFin extends FRelatorio {
 		lcPlan.setConexao( cn );
 	}
 
-	private double buscaSaldo() {
+	private BigDecimal buscaSaldo() {
 
-		double dRet = 0.00;
+		BigDecimal result =  new BigDecimal(0.00);
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -135,7 +140,7 @@ public class FRRazaoFin extends FRelatorio {
 			rs = ps.executeQuery();
 
 			if ( rs.next() ) {
-				dRet = Funcoes.strCurrencyToDouble( rs.getString( "SALDOSL" ) == null ? "0,00" : rs.getString( "SALDOSL" ) );
+				result = rs.getBigDecimal( "saldosl" );
 			}
 
 			rs.close();
@@ -147,7 +152,7 @@ public class FRRazaoFin extends FRelatorio {
 			e.printStackTrace();
 		}
 
-		return dRet;
+		return result;
 	}
 
 	private ResultSet getResultSet() throws SQLException {
@@ -194,13 +199,42 @@ public class FRRazaoFin extends FRelatorio {
 		if ("T".equals(rgTipoRel.getVlrString())) {
 			imprimirTexto( bVisualizar, codplan );
 		} else {
-			imprimirGrafico( bVisualizar, codplan);
+			imprimirGrafico( bVisualizar, codplan, txtDescPlan.getVlrString(), txtDataini.getVlrDate(), txtDatafim.getVlrDate());
 		}
 
 	}
 	
-	private void imprimirGrafico( TYPE_PRINT bVisualizar, String codplan) {
+	private void imprimirGrafico( TYPE_PRINT bVisualizar, String codplan, String descplan, Date dtini, Date dtfim) {
+		HashMap<String, Object> hParam = new HashMap<String, Object>();
 		
+		StringBuilder cab = new StringBuilder();
+		cab.append( "Planejamento: " );
+		cab.append( codplan );
+		cab.append( " - " );
+		cab.append( descplan );
+		cab.append( " / Período de: ");
+		cab.append( Funcoes.dateToStrDate( dtini ) );
+		cab.append(" até: ");
+		cab.append( Funcoes.dateToStrDate( dtfim ) );
+		hParam.put( "SALDOANT", buscaSaldo() );
+		ResultSet rs = null;
+		try {
+			rs = getResultSet();
+			FPrinterJob dlGr = new FPrinterJob( "relatorios/FRRazFin.jasper", "Relatório razão financeiro", cab.toString(), rs, hParam, this );
+			if ( bVisualizar == TYPE_PRINT.VIEW ) {
+				dlGr.setVisible( true );
+			}
+			else {
+				try {
+					JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+				} catch ( Exception err ) {
+					Funcoes.mensagemErro( this, "Erro na impressão de relatório razão financeiro!\n" + err.getMessage(), true, con, err );
+				}
+			}	
+		} catch ( SQLException e ) {
+			Funcoes.mensagemErro( this, "Ocorreu um erro executando a consulta.\n" + e.getMessage() );
+			return;
+		} 
 	}
 	
 	private void imprimirTexto( TYPE_PRINT bVisualizar, String codplan) {
