@@ -55,6 +55,7 @@ import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.component.JTabbedPanePad;
 import org.freedom.library.swing.component.JTablePad;
+import org.freedom.library.swing.component.JTextAreaPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.component.Navegador;
@@ -65,8 +66,12 @@ import org.freedom.modulos.gms.business.object.TipoRecMerc;
 public class FEstacao extends FDetalhe implements PostListener, ActionListener, ChangeListener {
 
 	private static final long serialVersionUID = 1L;
+	
+	private JTabbedPanePad tpnCab = new JTabbedPanePad();
 
-	private JPanelPad pinCab = new JPanelPad();
+	private JPanelPad pinCabGeral = new JPanelPad();
+
+	private JPanelPad pinCabAdic = new JPanelPad();
 
 	private JPanelPad pinDet = new JPanelPad();
 
@@ -105,6 +110,14 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 	private JTextFieldPad txtCodProxy = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 9, 0);
 
 	private JTextFieldFK txtDescProxy = new JTextFieldFK( JTextFieldFK.TP_STRING, 60, 0);
+	
+	private JTextFieldPad txtHostEst = new JTextFieldPad( JTextFieldPad.TP_STRING, 100, 0 );
+	
+	private JTextFieldPad txtIpEst = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
+
+	private JTextFieldPad txtMacAddressEst = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
+
+	private JTextAreaPad txaDescLocalEst = new JTextAreaPad( 1000 );
 	
 	private JCheckBoxPad cbImpPad = new JCheckBoxPad( "Impressora padrão?", "S", "N" );
 
@@ -189,8 +202,6 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 
 		setTitulo( "Cadastro de estações de trabalho" );
 		setAtribos( 50, 10, 550, 620 );
-
-		pinCab = new JPanelPad( 530, 100 );
 
 		montaValores();
 
@@ -404,10 +415,18 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 		 * CABEÇALHO *
 		 ********************/
 
-		pinCab = new JPanelPad( 740, 130 );
+		pinCabGeral = new JPanelPad( 740, 180 );
+		pinCabAdic = new JPanelPad(740, 180);
+		
+		//pnCliCab.add( pinCabGeral );
+		pnCliCab.add( tpnCab );
+		tpnCab.addTab( "Geral", pinCabGeral );
+		tpnCab.addTab( "Adicional", pinCabAdic );
+
 		setListaCampos( lcCampos );
-		setAltCab( 205 );
-		setPainel( pinCab, pnCliCab );
+		setAltCab( 230 );
+		//setPainel( pinCabGeral, pnCliCab );
+		setPainel(pinCabGeral);
 		cbModoDemoEst.setVlrString( "N" );
 		cbNfeEst.setVlrString( "N" );
 
@@ -421,6 +440,11 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 		adic(btDirCacerts, 360, 100, 20, 20);
 		adicCampo( txtCodProxy, 7, 140, 80, 20, "CodProxy", "Cód.proxy", ListaCampos.DB_FK,txtDescProxy, false );
 		adicDescFK( txtDescProxy, 90, 140, 250, 20, "DescProxy", "Descrição do proxy" );
+		setPainel(pinCabAdic);
+		adicCampo( txtHostEst, 7, 20, 400, 20, "HostEst", "Host", ListaCampos.DB_SI, false);
+		adicCampo( txtIpEst, 7, 60, 200, 20, "IpEst", "Endreço IP", ListaCampos.DB_SI, false);
+		adicCampo( txtMacAddressEst, 210, 60, 197, 20, "MacAddressEst", "Mac Address", ListaCampos.DB_SI, false );
+		adicDB( txaDescLocalEst, 7, 100, 400, 40, "DescLocalEst", "Descrição da localização", false );
 		
 		setListaCampos( true, "ESTACAO", "SG" );
 		lcCampos.setQueryInsert( false );
@@ -586,7 +610,10 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
 		if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-				txtPathCacerts.setVlrString(fileChooser.getSelectedFile().getPath());
+			if (lcCampos.getStatus()!=ListaCampos.LCS_EDIT || lcCampos.getStatus()!=ListaCampos.LCS_INSERT ) {
+				lcCampos.edit();
+			}
+			txtPathCacerts.setVlrString(fileChooser.getSelectedFile().getPath());
 		}
 	}
 }
