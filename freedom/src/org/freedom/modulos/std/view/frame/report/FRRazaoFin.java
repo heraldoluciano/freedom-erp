@@ -37,7 +37,9 @@ import org.freedom.library.component.ImprimeOS;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.component.JComboBoxPad;
 import org.freedom.library.swing.component.JLabelPad;
+import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
@@ -56,6 +58,8 @@ public class FRRazaoFin extends FRelatorio {
 	private JTextFieldFK txtDescPlan = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JTextFieldPlan txtCodPlan = new JTextFieldPlan( JTextFieldPad.TP_STRING, 13, 0 );
+	
+	private JRadioGroup<String, String> rgTipoRel = null;
 
 	private ListaCampos lcPlan = new ListaCampos( this );
 
@@ -63,7 +67,7 @@ public class FRRazaoFin extends FRelatorio {
 
 		super( false );
 		setTitulo( "Relatório razão financeiro" );
-		setAtribos( 80, 80, 330, 180 );
+		setAtribos( 80, 80, 330, 230 );
 
 		lcPlan.add( new GuardaCampo( txtCodPlan, "CodPlan", "Cód.plan", ListaCampos.DB_PK, false ) );
 		lcPlan.add( new GuardaCampo( txtDescPlan, "DescPlan", "Descrição do planejamento", ListaCampos.DB_SI, false ) );
@@ -74,6 +78,14 @@ public class FRRazaoFin extends FRelatorio {
 		txtCodPlan.setFK( true );
 		txtCodPlan.setNomeCampo( "CodPlan" );
 
+		Vector<String> labelTipoRel = new Vector<String>();
+		labelTipoRel.addElement( "Gráfico" );
+		labelTipoRel.addElement( "Texto" );
+		Vector<String> valueTipoRel = new Vector<String>();
+		valueTipoRel.addElement( "G" );
+		valueTipoRel.addElement( "T" );
+		rgTipoRel = new JRadioGroup<String, String>( 1, 2, labelTipoRel, valueTipoRel, JComboBoxPad.TP_STRING );
+		
 		adic( new JLabelPad( "Periodo:" ), 7, 5, 125, 20 );
 		adic( new JLabelPad( "De:" ), 7, 25, 30, 20 );
 		adic( txtDataini, 32, 25, 125, 20 );
@@ -83,6 +95,8 @@ public class FRRazaoFin extends FRelatorio {
 		adic( txtCodPlan, 7, 70, 100, 20 );
 		adic( new JLabelPad( "Descrição do planejamento" ), 110, 50, 240, 20 );
 		adic( txtDescPlan, 110, 70, 200, 20 );
+		adic( new JLabelPad( "Formato de impressão" ), 7, 90, 240, 20 );
+		adic( rgTipoRel, 7, 110, 200, 30 );
 
 		Calendar cPeriodo = Calendar.getInstance();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
@@ -107,8 +121,11 @@ public class FRRazaoFin extends FRelatorio {
 		try {
 			int iParam = 1;
 
-			ps = con.prepareStatement( "SELECT SL.CODPLAN, SALDOSL FROM FNSALDOLANCA SL " + "WHERE SL.CODEMP=? AND SL.CODFILIAL=? AND SL.CODEMPPN=? AND SL.CODFILIALPN=? AND " + "SL.CODPLAN=? AND SL.DATASL=(SELECT MAX(SL2.DATASL) FROM FNSALDOLANCA SL2 "
-					+ "WHERE SL2.CODPLAN=SL.CODPLAN AND SL2.DATASL<?)" );
+			StringBuilder sql = new StringBuilder();
+			sql.append( "select first 1 sl.codplan, saldosl from fnsaldolanca sl ");
+			sql.append( "where sl.codemp=? and sl.codfilial=? and sl.codemp=? and sl.codfilialpn=? ");
+			sql.append( "and sl.codplan=? and sl.datasl<? order by sl.datasl desc" );
+			ps = con.prepareStatement(sql.toString());
 			ps.setInt( iParam++, Aplicativo.iCodEmp );
 			ps.setInt( iParam++, Aplicativo.iCodFilial );
 			ps.setInt( iParam++, Aplicativo.iCodEmp );
@@ -133,32 +150,72 @@ public class FRRazaoFin extends FRelatorio {
 		return dRet;
 	}
 
+	private ResultSet getResultSet() throws SQLException {
+		ResultSet result = null;
+		StringBuilder sql = new StringBuilder();
+		sql.append( "select sl.datasublanca, sl.codlanca, sl.histsublanca, sl.vlrsublanca ");
+		sql.append( ", coalesce(f.codfor, c.codcli) codemit, coalesce(f.razfor, c.razcli) razemit ");
+		sql.append( ", (case when f.codfor is not null then 'F' when c.codcli is not null then 'C' else 'A' end) tipo ");
+		sql.append( "from fnsublanca sl ");
+		sql.append( "left outer join cpforneced f ");
+		sql.append( "on f.codemp=sl.codempfr and f.codfilial=sl.codfilialfr and f.codfor=sl.codfor ");
+		sql.append( "left outer join vdcliente c ");
+		sql.append( "on c.codemp=sl.codempcl and c.codfilial=sl.codfilialcl and c.codcli=sl.codcli ");
+		sql.append( "where sl.codemp=? and sl.codfilial=? and sl.codplan=? ");
+		sql.append( "and sl.codemppn=? and sl.codfilialpn=? and sl.datasublanca between ? and ? " );
+		sql.append( "order by sl.datasublanca");
+
+		PreparedStatement ps = con.prepareStatement( sql.toString() );
+
+		ps.setInt( 1, Aplicativo.iCodEmp );
+		ps.setInt( 2, Aplicativo.iCodFilial );
+		ps.setString( 3, txtCodPlan.getVlrString() );
+		ps.setInt( 4, Aplicativo.iCodEmp );
+		ps.setInt( 5, lcPlan.getCodFilial() );
+		ps.setDate( 6, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+		ps.setDate( 7, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+		result = ps.executeQuery();
+		return result;
+	}
+	
 	public void imprimir( TYPE_PRINT bVisualizar ) {
 
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
 			return;
 		}
+		String codplan = txtCodPlan.getVlrString().trim();
 
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		String sSQL = null;
-		String sCodPlan = txtCodPlan.getVlrString().trim();
-		String sConta = "";
-		String sSaldoAnt = "";
+		if ( codplan.equals( "" ) ) {
+			Funcoes.mensagemInforma( this, "Informe um código de conta !" );
+			return;
+		}
+		
+		if ("T".equals(rgTipoRel.getVlrString())) {
+			imprimirTexto( bVisualizar, codplan );
+		} else {
+			imprimirGrafico( bVisualizar, codplan);
+		}
+
+	}
+	
+	private void imprimirGrafico( TYPE_PRINT bVisualizar, String codplan) {
+		
+	}
+	
+	private void imprimirTexto( TYPE_PRINT bVisualizar, String codplan) {
 		BigDecimal bVlrSubLanca = new BigDecimal( 0 );
 		BigDecimal bTotal = new BigDecimal( 0 );
 		BigDecimal bTotDesp = new BigDecimal( 0 );
 		BigDecimal bTotRec = new BigDecimal( 0 );
-		ImprimeOS imp = null;
+		String sSQL = null;
+		String sConta = "";
+		String sSaldoAnt = "";
+		ResultSet rs = null;
+		
 		int linPag = 0;
 		Vector<String> hist = null;
-
-		if ( sCodPlan.equals( "" ) ) {
-			Funcoes.mensagemInforma( this, "Informe um código de conta !" );
-			return;
-		}
-
+		ImprimeOS imp = null;
 		try {
 
 			imp = new ImprimeOS( "", con );
@@ -166,26 +223,15 @@ public class FRRazaoFin extends FRelatorio {
 			imp.montaCab();
 			imp.setTitulo( "Razão financeiro" );
 			imp.addSubTitulo( "RELATORIO RAZÃO FINANCEIRO" );
-			if ( ! ( sCodPlan.trim().equals( "" ) ) ) {
-				sConta = "CONTA: " + sCodPlan + " - " + txtDescPlan.getVlrString();
+			if ( ! ( codplan.trim().equals( "" ) ) ) {
+				sConta = "CONTA: " + codplan + " - " + txtDescPlan.getVlrString();
 				imp.addSubTitulo( sConta );
 			}
 			imp.limpaPags();
 
 			sSaldoAnt = Funcoes.strDecimalToStrCurrency( 13, 2, String.valueOf( buscaSaldo() ) );
 
-			sSQL = "SELECT SL.DATASUBLANCA,SL.CODLANCA,SL.HISTSUBLANCA,SL.VLRSUBLANCA " + "FROM FNSUBLANCA SL " + "WHERE SL.CODEMP=? AND SL.CODFILIAL=? AND SL.CODPLAN=? AND " + "SL.CODEMPPN=? AND CODFILIALPN=? AND SL.DATASUBLANCA BETWEEN ? AND ? " + "ORDER BY SL.DATASUBLANCA";
-
-			ps = con.prepareStatement( sSQL );
-
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, Aplicativo.iCodFilial );
-			ps.setString( 3, txtCodPlan.getVlrString() );
-			ps.setInt( 4, Aplicativo.iCodEmp );
-			ps.setInt( 5, lcPlan.getCodFilial() );
-			ps.setDate( 6, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
-			ps.setDate( 7, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
-			rs = ps.executeQuery();
+			rs = getResultSet();
 
 			while ( rs.next() ) {
 				if ( imp.pRow() >= linPag ) {
@@ -232,10 +278,25 @@ public class FRRazaoFin extends FRelatorio {
 				imp.say( 16, rs.getString( "CODLANCA" ) );
 				imp.say( 25, "|" );
 
-				hist = Funcoes.strToVectorSilabas( rs.getString( "HISTSUBLANCA" ), 62 );
-				if ( rs.getString( "HISTSUBLANCA" ) != null ) {
-					imp.say( 27, hist.get( 0 ) );
+				StringBuilder histSublanca = new StringBuilder();
+				String tipo = rs.getString( "tipo" );
+				if (!"A".equals( tipo ) ) {
+					if ("F".equals( tipo )) {
+						histSublanca.append( "Forn.: " );
+					} else if ("C".equals( tipo )) {
+						histSublanca.append( "Cli.: ");
+					}
+					histSublanca.append( rs.getInt( "codemit" ));
+					histSublanca.append(" - ");
+					histSublanca.append( rs.getString( "razemit" ).trim() );
+					histSublanca.append( ". " );
 				}
+		
+				if (rs.getString( "histsublanca" )!=null) {
+					histSublanca.append( rs.getString( "histsublanca" ).trim() );
+				}
+				hist  = Funcoes.strToVectorSilabas( histSublanca.toString(), 62 );
+				imp.say( 27, hist.get( 0 ) );
 				bVlrSubLanca = rs.getBigDecimal( "VLRSUBLANCA" );
 				bTotal = bTotal.add( bVlrSubLanca );
 
@@ -290,6 +351,8 @@ public class FRRazaoFin extends FRelatorio {
 
 			imp.fechaGravacao();
 
+			rs.close();
+			
 			con.commit();
 
 		} catch ( SQLException err ) {
@@ -305,5 +368,6 @@ public class FRRazaoFin extends FRelatorio {
 		else {
 			imp.print();
 		}
+		
 	}
 }
