@@ -37,6 +37,8 @@ import javax.swing.JScrollPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import org.freedom.acao.InsertEvent;
+import org.freedom.acao.InsertListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.bmps.Icone;
@@ -63,7 +65,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.modulos.gms.business.object.TipoRecMerc;
 
-public class FEstacao extends FDetalhe implements PostListener, ActionListener, ChangeListener {
+public class FEstacao extends FDetalhe implements PostListener, ActionListener, ChangeListener, InsertListener {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -71,7 +73,9 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 
 	private JPanelPad pinCabGeral = new JPanelPad();
 
-	private JPanelPad pinCabAdic = new JPanelPad();
+	private JPanelPad pinCabRede = new JPanelPad();
+
+	private JPanelPad pinCabContato = new JPanelPad();
 
 	private JPanelPad pinDet = new JPanelPad();
 
@@ -110,7 +114,9 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 	private JTextFieldPad txtCodProxy = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 9, 0);
 
 	private JTextFieldFK txtDescProxy = new JTextFieldFK( JTextFieldFK.TP_STRING, 60, 0);
-	
+
+	private JCheckBoxPad cbAtivaEst = new JCheckBoxPad("Ativa", "S", "N");
+
 	private JTextFieldPad txtHostEst = new JTextFieldPad( JTextFieldPad.TP_STRING, 100, 0 );
 	
 	private JTextFieldPad txtIpEst = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
@@ -119,6 +125,12 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 
 	private JTextAreaPad txaDescLocalEst = new JTextAreaPad( 1000 );
 	
+	private JTextFieldPad txtNomeContEst = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+
+	private JTextFieldPad txtRamalEst = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
+	
+	private JTextFieldPad txtEmailEst = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+
 	private JCheckBoxPad cbImpPad = new JCheckBoxPad( "Impressora padrão?", "S", "N" );
 
 	private JCheckBoxPad cbImpGrafica = new JCheckBoxPad( "Impressão gráfica?", "S", "N" );
@@ -188,7 +200,7 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 	private JComboBoxPad cbBitsBal = new JComboBoxPad( vLabBitsBal, vValBitsBal, JComboBoxPad.TP_INTEGER, 1, 0 );
 
 	private JComboBoxPad cbStopBitsBal = new JComboBoxPad( vLabStopBitsBal, vValStopBitsBal, JComboBoxPad.TP_INTEGER, 1, 0 );
-
+	
 	private JComboBoxPad cbTipoProcRecMerc = null;
 
 	private Vector<String> vValsTipoProc = new Vector<String>();
@@ -416,12 +428,14 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 		 ********************/
 
 		pinCabGeral = new JPanelPad( 740, 180 );
-		pinCabAdic = new JPanelPad(740, 180);
+		pinCabRede = new JPanelPad(740, 180);
+		pinCabContato = new JPanelPad(740, 180);
 		
 		//pnCliCab.add( pinCabGeral );
 		pnCliCab.add( tpnCab );
 		tpnCab.addTab( "Geral", pinCabGeral );
-		tpnCab.addTab( "Adicional", pinCabAdic );
+		tpnCab.addTab( "Rede", pinCabRede );
+		tpnCab.addTab( "Contato", pinCabContato );
 
 		setListaCampos( lcCampos );
 		setAltCab( 230 );
@@ -440,11 +454,16 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 		adic(btDirCacerts, 360, 100, 20, 20);
 		adicCampo( txtCodProxy, 7, 140, 80, 20, "CodProxy", "Cód.proxy", ListaCampos.DB_FK,txtDescProxy, false );
 		adicDescFK( txtDescProxy, 90, 140, 250, 20, "DescProxy", "Descrição do proxy" );
-		setPainel(pinCabAdic);
+		adicDB( cbAtivaEst, 350, 140, 100, 20, "AtivaEst", "Situação", true );
+		setPainel(pinCabRede);
 		adicCampo( txtHostEst, 7, 20, 400, 20, "HostEst", "Host", ListaCampos.DB_SI, false);
 		adicCampo( txtIpEst, 7, 60, 200, 20, "IpEst", "Endreço IP", ListaCampos.DB_SI, false);
 		adicCampo( txtMacAddressEst, 210, 60, 197, 20, "MacAddressEst", "Mac Address", ListaCampos.DB_SI, false );
 		adicDB( txaDescLocalEst, 7, 100, 400, 40, "DescLocalEst", "Descrição da localização", false );
+		setPainel(pinCabContato);
+		adicCampo( txtNomeContEst, 7, 20, 400, 20, "NomeContEst", "Nome da pessoa de contato", ListaCampos.DB_SI, false);
+		adicCampo( txtRamalEst, 7, 60, 200, 20, "RamalEst", "Ramal mais próximo", ListaCampos.DB_SI, false);
+		adicCampo( txtEmailEst, 210, 60, 197, 20, "EmailEst", "E-mail da pessoa de contato", ListaCampos.DB_SI, false );
 		
 		setListaCampos( true, "ESTACAO", "SG" );
 		lcCampos.setQueryInsert( false );
@@ -516,11 +535,9 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 	private void adicListeners() {
 
 		tpnGeral.addChangeListener( this );
-
 		lcCampos.addPostListener( this );
-
+		lcCampos.addInsertListener( this );
 		lcDet.addPostListener( this );
-		
 		btDirCacerts.addActionListener( this );
 
 	}
@@ -614,6 +631,17 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 				lcCampos.edit();
 			}
 			txtPathCacerts.setVlrString(fileChooser.getSelectedFile().getPath());
+		}
+	}
+
+	public void beforeInsert( InsertEvent ievt ) {
+
+	}
+
+	public void afterInsert( InsertEvent ievt ) {
+
+		if (ievt.getListaCampos()==lcCampos) {
+			cbAtivaEst.setVlrString( "S" );
 		}
 	}
 }
