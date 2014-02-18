@@ -1,6 +1,6 @@
 package org.freedom.persist.entity;
 
-// Generated 20/11/2013 10:59:59 by Hibernate Tools 4.0.0
+// Generated 18/02/2014 15:53:28 by Hibernate Tools 4.0.0
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -56,6 +56,8 @@ public class Sgprefere1 implements java.io.Serializable {
 	private String obsorcpad;
 	private String classorc;
 	private String classorcpd;
+	private String classorclaudosus;
+	private String classorcctaluguel;
 	private String titorctxt01;
 	private Character ordnota;
 	private Character setorvenda;
@@ -488,6 +490,7 @@ public class Sgprefere1 implements java.io.Serializable {
 			Character usapedseq, char usaorcseq, String filtro,
 			Character usaliqrel, char tipoprecocusto, Short anocentrocusto,
 			String obsorcpad, String classorc, String classorcpd,
+			String classorclaudosus, String classorcctaluguel,
 			String titorctxt01, Character ordnota, Character setorvenda,
 			Character prefcred, String tipoprefcred, Character usaclascomis,
 			BigDecimal percprecocusto, char rgcliobrig, char tabfretevd,
@@ -557,11 +560,7 @@ public class Sgprefere1 implements java.io.Serializable {
 			char permitimporcantap, char bloqeditorcaposap,
 			char bloqvdporatraso, short numdiasbloqvd,
 			BigDecimal fatorsegestoq, char leitransp, char tipoimpdanfe,
-			char replicaorc, String sqlreplicaorc ) {
-			/*
-			 * Remoção de parâmetros para evitar erros na declaração do método
-			, Date dtins, Date hins,
-			String idusuins, Date dtalt, Date halt, String idusualt) { */
+			char replicaorc, String sqlreplicaorc) {
 		this.vdtabpreco = vdtabpreco;
 		this.fnplanejamentoBySgprefere1fkplandr = fnplanejamentoBySgprefere1fkplandr;
 		this.fnplanejamentoBySgprefere1fkplancheque = fnplanejamentoBySgprefere1fkplancheque;
@@ -607,6 +606,8 @@ public class Sgprefere1 implements java.io.Serializable {
 		this.obsorcpad = obsorcpad;
 		this.classorc = classorc;
 		this.classorcpd = classorcpd;
+		this.classorclaudosus = classorclaudosus;
+		this.classorcctaluguel = classorcctaluguel;
 		this.titorctxt01 = titorctxt01;
 		this.ordnota = ordnota;
 		this.setorvenda = setorvenda;
@@ -1210,6 +1211,22 @@ public class Sgprefere1 implements java.io.Serializable {
 
 	public void setClassorcpd(String classorcpd) {
 		this.classorcpd = classorcpd;
+	}
+
+	public String getClassorclaudosus() {
+		return this.classorclaudosus;
+	}
+
+	public void setClassorclaudosus(String classorclaudosus) {
+		this.classorclaudosus = classorclaudosus;
+	}
+
+	public String getClassorcctaluguel() {
+		return this.classorcctaluguel;
+	}
+
+	public void setClassorcctaluguel(String classorcctaluguel) {
+		this.classorcctaluguel = classorcctaluguel;
 	}
 
 	public String getTitorctxt01() {

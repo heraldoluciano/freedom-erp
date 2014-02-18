@@ -1,6 +1,6 @@
 package org.freedom.persist.entity;
 
-// Generated 20/11/2013 10:59:59 by Hibernate Tools 4.0.0
+// Generated 18/02/2014 15:53:28 by Hibernate Tools 4.0.0
 
 import java.util.Date;
 import java.util.HashSet;
@@ -47,6 +47,9 @@ public class Tkcontato implements java.io.Serializable {
 	private char removcto;
 	private Integer numempcto;
 	private String celcto;
+	private char replicado;
+	private Date dtrepl;
+	private Date hrepl;
 	private Date dtins;
 	private Date hins;
 	private String idusuins;
@@ -67,7 +70,8 @@ public class Tkcontato implements java.io.Serializable {
 
 	public Tkcontato(TkcontatoId id, Vdsetor vdsetor, Tkorigcont tkorigcont,
 			String razcto, String nomecto, Date datacto, char pessoacto,
-			char ativocto, char removcto, Date dtins, Date hins, String idusuins) {
+			char ativocto, char removcto, char replicado, Date dtins,
+			Date hins, String idusuins) {
 		this.id = id;
 		this.vdsetor = vdsetor;
 		this.tkorigcont = tkorigcont;
@@ -77,6 +81,7 @@ public class Tkcontato implements java.io.Serializable {
 		this.pessoacto = pessoacto;
 		this.ativocto = ativocto;
 		this.removcto = removcto;
+		this.replicado = replicado;
 		this.dtins = dtins;
 		this.hins = hins;
 		this.idusuins = idusuins;
@@ -92,11 +97,11 @@ public class Tkcontato implements java.io.Serializable {
 			String baircto, String cidcto, String ufcto, String cepcto,
 			String dddcto, String fonecto, String faxcto, String emailcto,
 			String contcto, String cargocontcto, String obscto, char removcto,
-			Integer numempcto, String celcto, Date dtins, Date hins,
-			String idusuins, Date dtalt, Date halt, String idusualt,
-			Set crfichaavals, Set tkhistoricos, Set tkcontclis, Set tksitcamps,
-			Set tkcontpessoas, Set tkctogrpints, Set tkctoativs,
-			Set tkcampanhactos) {
+			Integer numempcto, String celcto, char replicado, Date dtrepl,
+			Date hrepl, Date dtins, Date hins, String idusuins, Date dtalt,
+			Date halt, String idusualt, Set crfichaavals, Set tkhistoricos,
+			Set tkcontclis, Set tksitcamps, Set tkcontpessoas,
+			Set tkctogrpints, Set tkctoativs, Set tkcampanhactos) {
 		this.id = id;
 		this.tktipocont = tktipocont;
 		this.tksetorcto = tksetorcto;
@@ -133,6 +138,9 @@ public class Tkcontato implements java.io.Serializable {
 		this.removcto = removcto;
 		this.numempcto = numempcto;
 		this.celcto = celcto;
+		this.replicado = replicado;
+		this.dtrepl = dtrepl;
+		this.hrepl = hrepl;
 		this.dtins = dtins;
 		this.hins = hins;
 		this.idusuins = idusuins;
@@ -435,6 +443,30 @@ public class Tkcontato implements java.io.Serializable {
 
 	public void setCelcto(String celcto) {
 		this.celcto = celcto;
+	}
+
+	public char getReplicado() {
+		return this.replicado;
+	}
+
+	public void setReplicado(char replicado) {
+		this.replicado = replicado;
+	}
+
+	public Date getDtrepl() {
+		return this.dtrepl;
+	}
+
+	public void setDtrepl(Date dtrepl) {
+		this.dtrepl = dtrepl;
+	}
+
+	public Date getHrepl() {
+		return this.hrepl;
+	}
+
+	public void setHrepl(Date hrepl) {
+		this.hrepl = hrepl;
 	}
 
 	public Date getDtins() {

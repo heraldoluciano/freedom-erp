@@ -1,6 +1,6 @@
 package org.freedom.persist.entity;
 
-// Generated 20/11/2013 10:59:59 by Hibernate Tools 4.0.0
+// Generated 18/02/2014 15:53:28 by Hibernate Tools 4.0.0
 
 import java.util.Date;
 import java.util.HashSet;
@@ -39,6 +39,7 @@ public class Vdcontrato implements java.io.Serializable {
 	private Vdfincontr vdfincontr;
 	private Set vdcontratos = new HashSet(0);
 	private Set vditvendavditcontrs = new HashSet(0);
+	private Set vditcontratos = new HashSet(0);
 
 	public Vdcontrato() {
 	}
@@ -74,7 +75,8 @@ public class Vdcontrato implements java.io.Serializable {
 			char tpcontr, String sitcontr, Date dtprevfin, String descsitcontr,
 			char ativo, char recebcontr, char conthsubcontr, Date dtins,
 			Date hins, String idusuins, Date dtalt, Date halt, String idusualt,
-			Vdfincontr vdfincontr, Set vdcontratos, Set vditvendavditcontrs) {
+			Vdfincontr vdfincontr, Set vdcontratos, Set vditvendavditcontrs,
+			Set vditcontratos) {
 		this.id = id;
 		this.vdmodcontr = vdmodcontr;
 		this.vdcliente = vdcliente;
@@ -103,6 +105,7 @@ public class Vdcontrato implements java.io.Serializable {
 		this.vdfincontr = vdfincontr;
 		this.vdcontratos = vdcontratos;
 		this.vditvendavditcontrs = vditvendavditcontrs;
+		this.vditcontratos = vditcontratos;
 	}
 
 	public VdcontratoId getId() {
@@ -327,6 +330,14 @@ public class Vdcontrato implements java.io.Serializable {
 
 	public void setVditvendavditcontrs(Set vditvendavditcontrs) {
 		this.vditvendavditcontrs = vditvendavditcontrs;
+	}
+
+	public Set getVditcontratos() {
+		return this.vditcontratos;
+	}
+
+	public void setVditcontratos(Set vditcontratos) {
+		this.vditcontratos = vditcontratos;
 	}
 
 }
