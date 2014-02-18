@@ -1,6 +1,6 @@
 package org.freedom.persist.entity;
 
-// Generated 20/11/2013 10:59:59 by Hibernate Tools 4.0.0
+// Generated 18/02/2014 15:53:28 by Hibernate Tools 4.0.0
 
 import java.util.Date;
 import java.util.HashSet;
@@ -16,9 +16,17 @@ public class Sgestacao implements java.io.Serializable {
 	private String descest;
 	private char mododemoest;
 	private char nfeest;
+	private char ativaest;
 	private Short tamfontetxt;
 	private String fontetxt;
 	private String pathcacerts;
+	private String hostest;
+	private String ipest;
+	private String macaddressest;
+	private String desclocalest;
+	private String nomecontest;
+	private String ramalest;
+	private String emailest;
 	private Date dtins;
 	private Date hins;
 	private String idusuins;
@@ -34,29 +42,41 @@ public class Sgestacao implements java.io.Serializable {
 	}
 
 	public Sgestacao(SgestacaoId id, String descest, char mododemoest,
-			char nfeest, Date dtins, Date hins, String idusuins) {
+			char nfeest, char ativaest, Date dtins, Date hins, String idusuins) {
 		this.id = id;
 		this.descest = descest;
 		this.mododemoest = mododemoest;
 		this.nfeest = nfeest;
+		this.ativaest = ativaest;
 		this.dtins = dtins;
 		this.hins = hins;
 		this.idusuins = idusuins;
 	}
 
 	public Sgestacao(SgestacaoId id, Sgproxyweb sgproxyweb, String descest,
-			char mododemoest, char nfeest, Short tamfontetxt, String fontetxt,
-			String pathcacerts, Date dtins, Date hins, String idusuins,
-			Date dtalt, Date halt, String idusualt, Set pvcaixas,
-			Set sgestacaobals, Set sgestacaoimps, Set ppprocessaoptmps) {
+			char mododemoest, char nfeest, char ativaest, Short tamfontetxt,
+			String fontetxt, String pathcacerts, String hostest, String ipest,
+			String macaddressest, String desclocalest, String nomecontest,
+			String ramalest, String emailest, Date dtins, Date hins,
+			String idusuins, Date dtalt, Date halt, String idusualt,
+			Set pvcaixas, Set sgestacaobals, Set sgestacaoimps,
+			Set ppprocessaoptmps) {
 		this.id = id;
 		this.sgproxyweb = sgproxyweb;
 		this.descest = descest;
 		this.mododemoest = mododemoest;
 		this.nfeest = nfeest;
+		this.ativaest = ativaest;
 		this.tamfontetxt = tamfontetxt;
 		this.fontetxt = fontetxt;
 		this.pathcacerts = pathcacerts;
+		this.hostest = hostest;
+		this.ipest = ipest;
+		this.macaddressest = macaddressest;
+		this.desclocalest = desclocalest;
+		this.nomecontest = nomecontest;
+		this.ramalest = ramalest;
+		this.emailest = emailest;
 		this.dtins = dtins;
 		this.hins = hins;
 		this.idusuins = idusuins;
@@ -109,6 +129,14 @@ public class Sgestacao implements java.io.Serializable {
 		this.nfeest = nfeest;
 	}
 
+	public char getAtivaest() {
+		return this.ativaest;
+	}
+
+	public void setAtivaest(char ativaest) {
+		this.ativaest = ativaest;
+	}
+
 	public Short getTamfontetxt() {
 		return this.tamfontetxt;
 	}
@@ -131,6 +159,62 @@ public class Sgestacao implements java.io.Serializable {
 
 	public void setPathcacerts(String pathcacerts) {
 		this.pathcacerts = pathcacerts;
+	}
+
+	public String getHostest() {
+		return this.hostest;
+	}
+
+	public void setHostest(String hostest) {
+		this.hostest = hostest;
+	}
+
+	public String getIpest() {
+		return this.ipest;
+	}
+
+	public void setIpest(String ipest) {
+		this.ipest = ipest;
+	}
+
+	public String getMacaddressest() {
+		return this.macaddressest;
+	}
+
+	public void setMacaddressest(String macaddressest) {
+		this.macaddressest = macaddressest;
+	}
+
+	public String getDesclocalest() {
+		return this.desclocalest;
+	}
+
+	public void setDesclocalest(String desclocalest) {
+		this.desclocalest = desclocalest;
+	}
+
+	public String getNomecontest() {
+		return this.nomecontest;
+	}
+
+	public void setNomecontest(String nomecontest) {
+		this.nomecontest = nomecontest;
+	}
+
+	public String getRamalest() {
+		return this.ramalest;
+	}
+
+	public void setRamalest(String ramalest) {
+		this.ramalest = ramalest;
+	}
+
+	public String getEmailest() {
+		return this.emailest;
+	}
+
+	public void setEmailest(String emailest) {
+		this.emailest = emailest;
 	}
 
 	public Date getDtins() {

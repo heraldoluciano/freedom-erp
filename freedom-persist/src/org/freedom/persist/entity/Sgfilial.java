@@ -1,6 +1,6 @@
 package org.freedom.persist.entity;
 
-// Generated 20/11/2013 10:59:59 by Hibernate Tools 4.0.0
+// Generated 18/02/2014 15:53:28 by Hibernate Tools 4.0.0
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -46,7 +46,9 @@ public class Sgfilial implements java.io.Serializable {
 	private char contribipifilial;
 	private byte[] timbrefilial;
 	private Character perfilfilial;
+	private Character perfilepc;
 	private Character indativfilial;
+	private Character indativepc;
 	private String indnatpjfilial;
 	private String suframa;
 	private Character codinctrib;
@@ -204,45 +206,45 @@ public class Sgfilial implements java.io.Serializable {
 			BigDecimal perccsocialfilial, Character simplesfilial,
 			BigDecimal percsimplesfilial, String inscmunfilial,
 			String cnaefilial, BigDecimal percissfilial, char contribipifilial,
-			byte[] timbrefilial, Character perfilfilial,
-			Character indativfilial, String indnatpjfilial, String suframa,
-			Character codinctrib, Character indaprocred, Character codtipocont,
-			Character indregcum, String unidfranqueada,
-			String marcafranqueadora, String wwwfranqueadora,
-			String codreceita, Date dtins, Date hins, String idusuins,
-			Date dtalt, Date halt, String idusualt, Set vdromaneios,
-			Set eqseries, Set vdtransps, Set lfcsosns, Set eqitrecmercitoses,
-			Set attipoatends, Set vdtabprecos, Set eqtrocarefprods,
-			Set fnmoedas, Set sggrauinsts, Set atmodatendos,
-			Set eqalmoxfilials, Set sgatribuicaos, Set tktipoconts,
-			Set fncontas, Set vdvendedors, Set pprecursos, Set vdregcomisdescs,
-			Set eqprodutos, Set atatendimentos, Set eqfatconvs,
-			Set lfclfiscals, Set tkorigconts, Set fnborderos, Set vdsetors,
-			Set cptipofors, Set fnlancas, Set eqtipoexps, Set fnplanopags,
-			Set lflivrofiscals, Set lfsittribs, Set eqittrocarefprods,
-			Set sgconexaos, Set cpsolicitacaos, Set atencaminhadors,
-			Set ppestrufases, Set cpforneceds, Set ppfases, Set sgsequencias,
-			Set sgusuarios, Set sggrpusus, Set sgacessomgs, Set sgacessomus,
-			Set eqrecmercs, Set eqprocrecmercs, Sgprefere4 sgprefere4,
-			Set vdclientes, Set fnpagars, Set vdclasclis, Set atclasatendos,
-			Set crmotivofbs, Set attipoconvs, Set fntbjuroses, Set lfmodnotas,
-			Set eqtipomovs, Set eqtiporecmercs, Set eqalmoxes, Set sgpapels,
-			Set crfeedbacks, Set fnplanejamentos, Set lfnatopers, Set rhcursos,
-			Set fnlibcreds, Set sgimpressoras, Set rhnivelcursos,
-			Set eqmodgrades, Set eqlocdescargas, Set sgtabelas, Set fnccs,
-			Set rhareas, Set sgcatimgs, Set vdvendas, Set eqlanctoexps,
-			Set atconveniados, Sgprefere5 sgprefere5, Set eqinvprods,
-			Set lftrattribs, Set fnsaldolancas, Set equnidades, Set fnrecebers,
-			Set fnbancos, Set eqmovexps, Set vdcomissaos,
-			Sgprefere1 sgprefere1, Set eqgrupos, Set eqmovseries,
-			Set sgacessoeus, Set atatendentes, Set rhcaracteristicas,
-			Set rhcandidatos, Set sgestcivils, Set cpcompras,
-			Set rhempregadors, Set lfseries, Set vdtipoclis, Set attipoatendos,
-			Set lfregrafiscals, Set eqmarcas, Set eqlotes, Set vdgruporcs,
-			Set fncotmoedas, Set eqtipoexpedicaos, Set eqitrecmercs,
-			Set eqvargrades, Set atatribuicaos, Set fntipocobs, Set atsetors,
-			Set eqmovprods, Set pptiporecs, Set lfmoddocfiscs,
-			Set fnpagtocomis, Set necontingencias) {
+			byte[] timbrefilial, Character perfilfilial, Character perfilepc,
+			Character indativfilial, Character indativepc,
+			String indnatpjfilial, String suframa, Character codinctrib,
+			Character indaprocred, Character codtipocont, Character indregcum,
+			String unidfranqueada, String marcafranqueadora,
+			String wwwfranqueadora, String codreceita, Date dtins, Date hins,
+			String idusuins, Date dtalt, Date halt, String idusualt,
+			Set vdromaneios, Set eqseries, Set vdtransps, Set lfcsosns,
+			Set eqitrecmercitoses, Set attipoatends, Set vdtabprecos,
+			Set eqtrocarefprods, Set fnmoedas, Set sggrauinsts,
+			Set atmodatendos, Set eqalmoxfilials, Set sgatribuicaos,
+			Set tktipoconts, Set fncontas, Set vdvendedors, Set pprecursos,
+			Set vdregcomisdescs, Set eqprodutos, Set atatendimentos,
+			Set eqfatconvs, Set lfclfiscals, Set tkorigconts, Set fnborderos,
+			Set vdsetors, Set cptipofors, Set fnlancas, Set eqtipoexps,
+			Set fnplanopags, Set lflivrofiscals, Set lfsittribs,
+			Set eqittrocarefprods, Set sgconexaos, Set cpsolicitacaos,
+			Set atencaminhadors, Set ppestrufases, Set cpforneceds,
+			Set ppfases, Set sgsequencias, Set sgusuarios, Set sggrpusus,
+			Set sgacessomgs, Set sgacessomus, Set eqrecmercs,
+			Set eqprocrecmercs, Sgprefere4 sgprefere4, Set vdclientes,
+			Set fnpagars, Set vdclasclis, Set atclasatendos, Set crmotivofbs,
+			Set attipoconvs, Set fntbjuroses, Set lfmodnotas, Set eqtipomovs,
+			Set eqtiporecmercs, Set eqalmoxes, Set sgpapels, Set crfeedbacks,
+			Set fnplanejamentos, Set lfnatopers, Set rhcursos, Set fnlibcreds,
+			Set sgimpressoras, Set rhnivelcursos, Set eqmodgrades,
+			Set eqlocdescargas, Set sgtabelas, Set fnccs, Set rhareas,
+			Set sgcatimgs, Set vdvendas, Set eqlanctoexps, Set atconveniados,
+			Sgprefere5 sgprefere5, Set eqinvprods, Set lftrattribs,
+			Set fnsaldolancas, Set equnidades, Set fnrecebers, Set fnbancos,
+			Set eqmovexps, Set vdcomissaos, Sgprefere1 sgprefere1,
+			Set eqgrupos, Set eqmovseries, Set sgacessoeus, Set atatendentes,
+			Set rhcaracteristicas, Set rhcandidatos, Set sgestcivils,
+			Set cpcompras, Set rhempregadors, Set lfseries, Set vdtipoclis,
+			Set attipoatendos, Set lfregrafiscals, Set eqmarcas, Set eqlotes,
+			Set vdgruporcs, Set fncotmoedas, Set eqtipoexpedicaos,
+			Set eqitrecmercs, Set eqvargrades, Set atatribuicaos,
+			Set fntipocobs, Set atsetors, Set eqmovprods, Set pptiporecs,
+			Set lfmoddocfiscs, Set fnpagtocomis, Set necontingencias) {
 		this.id = id;
 		this.cpforneced = cpforneced;
 		this.sgunifcod = sgunifcod;
@@ -277,7 +279,9 @@ public class Sgfilial implements java.io.Serializable {
 		this.contribipifilial = contribipifilial;
 		this.timbrefilial = timbrefilial;
 		this.perfilfilial = perfilfilial;
+		this.perfilepc = perfilepc;
 		this.indativfilial = indativfilial;
+		this.indativepc = indativepc;
 		this.indnatpjfilial = indnatpjfilial;
 		this.suframa = suframa;
 		this.codinctrib = codinctrib;
@@ -680,12 +684,28 @@ public class Sgfilial implements java.io.Serializable {
 		this.perfilfilial = perfilfilial;
 	}
 
+	public Character getPerfilepc() {
+		return this.perfilepc;
+	}
+
+	public void setPerfilepc(Character perfilepc) {
+		this.perfilepc = perfilepc;
+	}
+
 	public Character getIndativfilial() {
 		return this.indativfilial;
 	}
 
 	public void setIndativfilial(Character indativfilial) {
 		this.indativfilial = indativfilial;
+	}
+
+	public Character getIndativepc() {
+		return this.indativepc;
+	}
+
+	public void setIndativepc(Character indativepc) {
+		this.indativepc = indativepc;
 	}
 
 	public String getIndnatpjfilial() {

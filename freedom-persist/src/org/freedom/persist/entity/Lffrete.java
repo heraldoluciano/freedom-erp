@@ -1,6 +1,6 @@
 package org.freedom.persist.entity;
 
-// Generated 20/11/2013 10:59:59 by Hibernate Tools 4.0.0
+// Generated 18/02/2014 15:53:28 by Hibernate Tools 4.0.0
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -26,6 +26,7 @@ public class Lffrete implements java.io.Serializable {
 	private char tipofrete;
 	private char tipopgto;
 	private Date dtemitfrete;
+	private Date dtmovfrete;
 	private Date dtpagfrete;
 	private BigDecimal qtdfrete;
 	private BigDecimal vlrmercadoria;
@@ -38,6 +39,7 @@ public class Lffrete implements java.io.Serializable {
 	private BigDecimal vlrbaseicmsfrete;
 	private String serie;
 	private String chavecte;
+	private Character emmanut;
 	private Date dtins;
 	private Date hins;
 	private String idusuins;
@@ -84,14 +86,14 @@ public class Lffrete implements java.io.Serializable {
 			Eqexpedicao eqexpedicao, Lftrattrib lftrattrib,
 			Eqtipomov eqtipomov, Vdtransp vdtransp,
 			Sgunifcod sgunifcodByLffretefksgunifcodr, String docfrete,
-			char tipofrete, char tipopgto, Date dtemitfrete, Date dtpagfrete,
-			BigDecimal qtdfrete, BigDecimal vlrmercadoria, BigDecimal vlrfrete,
-			BigDecimal vlrfretenota, BigDecimal pesobruto,
+			char tipofrete, char tipopgto, Date dtemitfrete, Date dtmovfrete,
+			Date dtpagfrete, BigDecimal qtdfrete, BigDecimal vlrmercadoria,
+			BigDecimal vlrfrete, BigDecimal vlrfretenota, BigDecimal pesobruto,
 			BigDecimal pesoliquido, BigDecimal aliqicmsfrete,
 			BigDecimal vlricmsfrete, BigDecimal vlrbaseicmsfrete, String serie,
-			String chavecte, Date dtins, Date hins, String idusuins,
-			Date dtalt, Date halt, String idusualt, Set lffretecompras,
-			Set lffretevendas) {
+			String chavecte, Character emmanut, Date dtins, Date hins,
+			String idusuins, Date dtalt, Date halt, String idusualt,
+			Set lffretecompras, Set lffretevendas) {
 		this.id = id;
 		this.fnpagar = fnpagar;
 		this.eqrecmerc = eqrecmerc;
@@ -106,6 +108,7 @@ public class Lffrete implements java.io.Serializable {
 		this.tipofrete = tipofrete;
 		this.tipopgto = tipopgto;
 		this.dtemitfrete = dtemitfrete;
+		this.dtmovfrete = dtmovfrete;
 		this.dtpagfrete = dtpagfrete;
 		this.qtdfrete = qtdfrete;
 		this.vlrmercadoria = vlrmercadoria;
@@ -118,6 +121,7 @@ public class Lffrete implements java.io.Serializable {
 		this.vlrbaseicmsfrete = vlrbaseicmsfrete;
 		this.serie = serie;
 		this.chavecte = chavecte;
+		this.emmanut = emmanut;
 		this.dtins = dtins;
 		this.hins = hins;
 		this.idusuins = idusuins;
@@ -242,6 +246,14 @@ public class Lffrete implements java.io.Serializable {
 		this.dtemitfrete = dtemitfrete;
 	}
 
+	public Date getDtmovfrete() {
+		return this.dtmovfrete;
+	}
+
+	public void setDtmovfrete(Date dtmovfrete) {
+		this.dtmovfrete = dtmovfrete;
+	}
+
 	public Date getDtpagfrete() {
 		return this.dtpagfrete;
 	}
@@ -336,6 +348,14 @@ public class Lffrete implements java.io.Serializable {
 
 	public void setChavecte(String chavecte) {
 		this.chavecte = chavecte;
+	}
+
+	public Character getEmmanut() {
+		return this.emmanut;
+	}
+
+	public void setEmmanut(Character emmanut) {
+		this.emmanut = emmanut;
 	}
 
 	public Date getDtins() {
