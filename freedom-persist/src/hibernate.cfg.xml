@@ -9,7 +9,7 @@
         <property name="hibernate.connection.password">123654</property>
         <property name="hibernate.connection.url">jdbc:firebirdsql:localhost/3050:/opt/firebird/dados/desenv/freedom25.fdb?lc_ctype=ISO8859_1</property>
         <property name="hibernate.connection.username">sysdba</property>
-        <property name="hibernate.dialect">org.hibernate.dialect.InterbaseDialect</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.FirebirdDialect</property>
         <property name="hibernate.search.autoregister_listeners">false</property>
         <mapping resource="org/freedom/persist/entity/Sgobjetotb.hbm.xml" />
         <mapping resource="org/freedom/persist/entity/Vdmodcontr.hbm.xml" />
