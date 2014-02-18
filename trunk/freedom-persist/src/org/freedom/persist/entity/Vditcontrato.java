@@ -1,6 +1,6 @@
 package org.freedom.persist.entity;
 
-// Generated 20/11/2013 10:59:59 by Hibernate Tools 4.0.0
+// Generated 18/02/2014 15:53:28 by Hibernate Tools 4.0.0
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -15,6 +15,7 @@ public class Vditcontrato implements java.io.Serializable {
 	private VditcontratoId id;
 	private Eqproduto eqprodutoByVditcontratofkeqprodu;
 	private Eqproduto eqprodutoByVditcontratofkeqprodpe;
+	private Vdcontrato vdcontrato;
 	private String descitcontr;
 	private BigDecimal qtditcontr;
 	private BigDecimal vlritcontr;
@@ -46,13 +47,15 @@ public class Vditcontrato implements java.io.Serializable {
 
 	public Vditcontrato(VditcontratoId id,
 			Eqproduto eqprodutoByVditcontratofkeqprodu,
-			Eqproduto eqprodutoByVditcontratofkeqprodpe, BigDecimal qtditcontr,
-			BigDecimal vlritcontr, BigDecimal vlritcontrexced,
-			int indexitcontr, Date dtins, Date hins, String idusuins,
-			short acumuloitcontr, char franquiaitcontr) {
+			Eqproduto eqprodutoByVditcontratofkeqprodpe, Vdcontrato vdcontrato,
+			BigDecimal qtditcontr, BigDecimal vlritcontr,
+			BigDecimal vlritcontrexced, int indexitcontr, Date dtins,
+			Date hins, String idusuins, short acumuloitcontr,
+			char franquiaitcontr) {
 		this.id = id;
 		this.eqprodutoByVditcontratofkeqprodu = eqprodutoByVditcontratofkeqprodu;
 		this.eqprodutoByVditcontratofkeqprodpe = eqprodutoByVditcontratofkeqprodpe;
+		this.vdcontrato = vdcontrato;
 		this.qtditcontr = qtditcontr;
 		this.vlritcontr = vlritcontr;
 		this.vlritcontrexced = vlritcontrexced;
@@ -66,8 +69,8 @@ public class Vditcontrato implements java.io.Serializable {
 
 	public Vditcontrato(VditcontratoId id,
 			Eqproduto eqprodutoByVditcontratofkeqprodu,
-			Eqproduto eqprodutoByVditcontratofkeqprodpe, String descitcontr,
-			BigDecimal qtditcontr, BigDecimal vlritcontr,
+			Eqproduto eqprodutoByVditcontratofkeqprodpe, Vdcontrato vdcontrato,
+			String descitcontr, BigDecimal qtditcontr, BigDecimal vlritcontr,
 			BigDecimal vlritcontrexced, int indexitcontr, String keylic,
 			Date dtins, Date hins, String idusuins, Date dtalt, Date halt,
 			String idusualt, short acumuloitcontr, char franquiaitcontr,
@@ -77,6 +80,7 @@ public class Vditcontrato implements java.io.Serializable {
 		this.id = id;
 		this.eqprodutoByVditcontratofkeqprodu = eqprodutoByVditcontratofkeqprodu;
 		this.eqprodutoByVditcontratofkeqprodpe = eqprodutoByVditcontratofkeqprodpe;
+		this.vdcontrato = vdcontrato;
 		this.descitcontr = descitcontr;
 		this.qtditcontr = qtditcontr;
 		this.vlritcontr = vlritcontr;
@@ -128,6 +132,14 @@ public class Vditcontrato implements java.io.Serializable {
 	public void setEqprodutoByVditcontratofkeqprodpe(
 			Eqproduto eqprodutoByVditcontratofkeqprodpe) {
 		this.eqprodutoByVditcontratofkeqprodpe = eqprodutoByVditcontratofkeqprodpe;
+	}
+
+	public Vdcontrato getVdcontrato() {
+		return this.vdcontrato;
+	}
+
+	public void setVdcontrato(Vdcontrato vdcontrato) {
+		this.vdcontrato = vdcontrato;
 	}
 
 	public String getDescitcontr() {
