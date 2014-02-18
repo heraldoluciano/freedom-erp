@@ -1,6 +1,6 @@
 package org.freedom.persist.entity;
 
-// Generated 20/11/2013 10:59:59 by Hibernate Tools 4.0.0
+// Generated 18/02/2014 15:53:28 by Hibernate Tools 4.0.0
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -99,6 +99,7 @@ public class Cpcompra implements java.io.Serializable {
 	private BigDecimal vlroutrasdesp;
 	private Long cnf;
 	private String chavenfevalida;
+	private String motivocanccompra;
 	private Date dtins;
 	private Date hins;
 	private String idusuins;
@@ -182,10 +183,10 @@ public class Cpcompra implements java.io.Serializable {
 			BigDecimal vlricmscredpresum, String obspag,
 			BigDecimal vlrisscompra, String nroordemcompra,
 			BigDecimal vlroutrasdesp, Long cnf, String chavenfevalida,
-			Date dtins, Date hins, String idusuins, Date dtalt, Date halt,
-			String idusualt, Set eqguiatrafs, Set cprateios, Set ppitops,
-			Set lffretecompras, Set fnpagars, Set cpitcompras,
-			Cpfretecp cpfretecp) {
+			String motivocanccompra, Date dtins, Date hins, String idusuins,
+			Date dtalt, Date halt, String idusualt, Set eqguiatrafs,
+			Set cprateios, Set ppitops, Set lffretecompras, Set fnpagars,
+			Set cpitcompras, Cpfretecp cpfretecp) {
 		this.id = id;
 		this.ppop = ppop;
 		this.fnconta = fnconta;
@@ -273,6 +274,7 @@ public class Cpcompra implements java.io.Serializable {
 		this.vlroutrasdesp = vlroutrasdesp;
 		this.cnf = cnf;
 		this.chavenfevalida = chavenfevalida;
+		this.motivocanccompra = motivocanccompra;
 		this.dtins = dtins;
 		this.hins = hins;
 		this.idusuins = idusuins;
@@ -982,6 +984,14 @@ public class Cpcompra implements java.io.Serializable {
 
 	public void setChavenfevalida(String chavenfevalida) {
 		this.chavenfevalida = chavenfevalida;
+	}
+
+	public String getMotivocanccompra() {
+		return this.motivocanccompra;
+	}
+
+	public void setMotivocanccompra(String motivocanccompra) {
+		this.motivocanccompra = motivocanccompra;
 	}
 
 	public Date getDtins() {
