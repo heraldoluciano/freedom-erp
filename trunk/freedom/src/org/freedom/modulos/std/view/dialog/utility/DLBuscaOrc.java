@@ -641,7 +641,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 	daobusca.commit();
 	result = true;
 	
-	if ( Funcoes.mensagemConfirma( null, "Contrato '" + codcontr + "' gerada com sucesso!!!\n\n" + "Deseja edita-lo?" ) == JOptionPane.YES_OPTION ) {
+	if ( Funcoes.mensagemConfirma( null, "Contrato '" + codcontr + "' gerado com sucesso!!!\n\n" + "Deseja edita-lo?" ) == JOptionPane.YES_OPTION ) {
 			FContrato contr = new FContrato( con, codcontr );
 			Aplicativo.telaPrincipal.criatela( "Projetos/Contratos", contr , con );
 			this.dispose();
