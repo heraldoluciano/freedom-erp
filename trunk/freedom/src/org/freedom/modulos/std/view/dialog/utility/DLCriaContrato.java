@@ -2,21 +2,13 @@ package org.freedom.modulos.std.view.dialog.utility;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Date;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
-import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
-import org.freedom.library.persistence.GuardaCampo;
-import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JLabelPad;
-import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FDialogo;
-import org.freedom.library.swing.frame.Aplicativo;
-import org.freedom.modulos.gms.business.object.TipoMov;
-import org.freedom.modulos.lvf.business.object.SeqSerie;
 
 public class DLCriaContrato extends FDialogo implements CarregaListener, ActionListener {
 
@@ -43,13 +35,13 @@ public class DLCriaContrato extends FDialogo implements CarregaListener, ActionL
 
 		String labeltipo = "";
 		setAtribos( 300, 200 );
-		labeltipo = "uma venda";
+		labeltipo = "projeto";
 
 		// Se for uma compra ou venda e deve ser confirmado o codigo
 		//		if ( ( "V".equals( tipo ) ) && confirmacodigo ) {
 		adic( new JLabelPad( "Deseja criar " + labeltipo + " agora?" ), 7, 15, 220, 20 );
 
-		adic( new JLabelPad( "Nº Pedido" ), 7, 40, 80, 20 );
+		adic( new JLabelPad( "Nº contrato" ), 7, 40, 80, 20 );
 		adic( txtNewCod, 87, 40, 120, 20 ); 
 		
 		adic( new JLabelPad( "Descrição do Projeto" ), 7, 63, 250, 20 );

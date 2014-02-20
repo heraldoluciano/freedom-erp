@@ -390,12 +390,12 @@ public class DAOBuscaOrc extends AbstractDAO {
 
 	}
 
-	public Vector<Vector<Object>> buscar(Integer codorc, Integer codcli, Integer codconv, String busca) throws ExceptionCarregaDados{
+	public Vector<Vector<Object>> buscar(Integer codorc, Integer codcli, Integer codconv, String busca, boolean proj) throws ExceptionCarregaDados{
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		String mensagemErro = "";
-		String sql = null;
+		StringBuilder sql = new StringBuilder();
 		String sWhere = null;
 		Vector<Object> vVals = null;
 		boolean bOrc = false;
@@ -442,21 +442,22 @@ public class DAOBuscaOrc extends AbstractDAO {
 
 		try {
 
-			sql = "SELECT O.CODORC," + ( bConv ? "O.CODCONV,C.NOMECONV," : "O.CODCLI,C.NOMECLI," ) 
-					+ "(SELECT COUNT(IT.CODITORC) FROM VDITORCAMENTO IT WHERE IT.CODORC=O.CODORC "
-					+ "AND IT.CODFILIAL=O.CODFILIAL AND IT.CODEMP=O.CODEMP),"
-					+ "(SELECT COUNT(IT.CODITORC) FROM VDITORCAMENTO IT WHERE IT.CODORC=O.CODORC " 
-					+ "AND IT.CODFILIAL=O.CODFILIAL AND IT.CODEMP=O.CODEMP " 
-					+ "AND IT.ACEITEITORC='S' AND IT.APROVITORC='S'),"
-					+ "(SELECT SUM(IT.VLRLIQITORC) FROM VDITORCAMENTO IT WHERE IT.CODORC=O.CODORC "
-					+ "AND IT.CODFILIAL=O.CODFILIAL AND IT.CODEMP=O.CODEMP),"
-					+ "(SELECT SUM(IT.VLRLIQITORC) FROM VDITORCAMENTO IT WHERE IT.CODORC=O.CODORC " 
-					+ "AND IT.CODFILIAL=O.CODFILIAL AND IT.CODEMP=O.CODEMP "
-					+ "AND IT.ACEITEITORC='S' AND IT.APROVITORC='S'), O.STATUSORC, COALESCE(O.OBSORC,'') OBSORC " 
-					+ "FROM VDORCAMENTO O" 
-					+ sWhere + " ORDER BY O.CODORC";
+			sql.append( "SELECT O.CODORC," + ( bConv ? "O.CODCONV,C.NOMECONV," : "O.CODCLI,C.NOMECLI," ));
+			sql.append( "(SELECT COUNT(IT.CODITORC) FROM VDITORCAMENTO IT WHERE IT.CODORC=O.CODORC ");
+			sql.append( "AND IT.CODFILIAL=O.CODFILIAL AND IT.CODEMP=O.CODEMP)," );
+			sql.append( "(SELECT COUNT(IT.CODITORC) FROM VDITORCAMENTO IT WHERE IT.CODORC=O.CODORC " ); 
+			sql.append( "AND IT.CODFILIAL=O.CODFILIAL AND IT.CODEMP=O.CODEMP " ); 
+			sql.append( "AND IT.ACEITEITORC='S' AND IT.APROVITORC='S')," );
+			sql.append( "(SELECT SUM(IT.VLRLIQITORC) FROM VDITORCAMENTO IT WHERE IT.CODORC=O.CODORC " );
+			sql.append( "AND IT.CODFILIAL=O.CODFILIAL AND IT.CODEMP=O.CODEMP)," );
+			sql.append( "(SELECT SUM(IT.VLRLIQITORC) FROM VDITORCAMENTO IT WHERE IT.CODORC=O.CODORC " ); 
+			sql.append( "AND IT.CODFILIAL=O.CODFILIAL AND IT.CODEMP=O.CODEMP " );
+			sql.append( "AND IT.ACEITEITORC='S' AND IT.APROVITORC='S'), O.STATUSORC, COALESCE(O.OBSORC,'') OBSORC " ); 
+			sql.append( "FROM VDORCAMENTO O"  );
+			sql.append( sWhere );
+			sql.append( " ORDER BY O.CODORC" );
 
-			ps = getConn().prepareStatement( sql );
+			ps = getConn().prepareStatement( sql.toString() );
 			ps.setInt( 1, iCod );
 			ps.setInt( 2, ListaCampos.getMasterFilial( bOrc ? "VDORCAMENTO" : ( bConv ? "ATCONVENIADO" : "VDCLIENTE" ) ) );
 			ps.setInt( 3, Aplicativo.iCodEmp );
@@ -464,7 +465,8 @@ public class DAOBuscaOrc extends AbstractDAO {
 			vector =  new Vector<Vector<Object>>();
 
 			while (rs.next()) {
-				if (rs.getString(8).equals("OL") || rs.getString(8).equals("OP") || rs.getString(8).equals("FP")) {
+				String statusorc=rs.getString( "statusorc" );
+				if ("OL".equals( statusorc ) || "OP".equals( statusorc ) || "FP".equals( statusorc ) || (proj && "OV".equals( statusorc ))) {
 
 					vVals = new Vector<Object>();
 					vVals.addElement( new Boolean( true ) );
@@ -506,12 +508,14 @@ public class DAOBuscaOrc extends AbstractDAO {
 
 	public Vector<Vector<Object>>  carregar( Vector<Vector<Object>> tabOrc, boolean aprovorcfatparc, String origem ) throws SQLException {
 
+		boolean proj = "Contrato".equalsIgnoreCase( origem );
 		Vector<Object> vVals = null;
 		Vector<Vector<Object>> vector = new Vector<Vector<Object>>();
 
 		Vector<String> vcodorcs = new Vector<String>();
 		Vector<Vector<String>> vorcs = new Vector<Vector<String>>();
 		vorcs.add( vcodorcs );
+		
 
 		int count = 0;
 
@@ -555,16 +559,20 @@ public class DAOBuscaOrc extends AbstractDAO {
 			sql.append( "WHERE O.CODEMP=IT.CODEMP AND O.CODFILIAL=IT.CODFILIAL AND O.TIPOORC=IT.TIPOORC AND O.CODORC=IT.CODORC AND ");
 			sql.append( "P.CODPROD=IT.CODPROD AND P.CODFILIAL=IT.CODFILIALPD AND " );
 			sql.append( "P.CODEMP=IT.CODEMPPD AND ");
-			sql.append( "((IT.ACEITEITORC='S' AND IT.FATITORC IN ('N','P') AND IT.APROVITORC='S' AND IT.SITPRODITORC='NP') OR ");
+			sql.append( "((IT.ACEITEITORC='S' ");
+			if (!proj) {
+				sql.append( "AND IT.FATITORC IN ('N','P') ");
+			}
+			sql.append( "AND IT.APROVITORC='S' AND IT.SITPRODITORC='NP') OR ");
 			sql.append( "(IT.SITPRODITORC='PD' AND IT.APROVITORC='S' AND IT.FATITORC IN ('N','P') )) ");
-			if (aprovorcfatparc) {
+			if ( aprovorcfatparc && !proj ) {
 				sql.append( " AND O.STATUSORC NOT IN ('OV','FP') " ); 
 			}
 			sql.append( " AND IT.CODEMP=? AND IT.CODFILIAL=? AND IT.CODORC IN " );
 			sql.append( "(" + scodorcs + ") " );
 
 			//Caso a origem for a tela de Contrato busca apenas produtos com o tipo Serviço.
-			if ("Contrato".equals( origem )) {
+			if ( proj ) {
 				sql.append( " AND P.TIPOPROD = 'S' " );
 				sql.append( " AND NOT EXISTS( SELECT * FROM VDCONTRORC CO WHERE CO.CODEMPOR=IT.CODEMP AND CO.CODFILIALOR=IT.CODFILIAL AND CO.TIPOORC=IT.TIPOORC ");
 				sql.append( " AND CO.CODORC=IT.CODORC AND CO.CODITORC=IT.CODITORC) " );
