@@ -72,7 +72,8 @@ import org.freedom.modulos.std.view.frame.utility.FPesquisaOrc;
 
 public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupListener, CarregaListener, MouseListener {
 
-	public enum GRID_ITENS { SEL, CODITORC, CODPROD, DESCPROD, QTDITORC, QTDAFATITORC, QTDFATITORC, QTDFINALPRODITORC, PRECO, DESC, VLRLIQ, TPAGR, PAI, VLRAGRP, CODORC, USALOTE, CODLOTE, CODALMOX, CODOP };
+	public enum GRID_ITENS { SEL, CODITORC, CODPROD, DESCPROD, QTDITORC, QTDAFATITORC, QTDFATITORC
+		, QTDFINALPRODITORC, PRECO, DESC, VLRLIQ, TPAGR, PAI, VLRAGRP, CODORC, USALOTE, CODLOTE, CODALMOX, CODOP };
 
 	private static final long serialVersionUID = 1L;
 
@@ -516,172 +517,6 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 		txtVlrLiq.setVlrBigDecimal(  new BigDecimal(0) );
 	}
 
-	/*	private void carregar() {
-
-		float fValProd = 0;
-		float fValDesc = 0;
-		float fValLiq = 0;
-
-		try {
-			tabitorc.limpa();
-			vValidos.clear();
-
-			Vector<Vector<String>> vorcs = new Vector<Vector<String>>();
-			Vector<String> vcodorcs = new Vector<String>();
-			vorcs.add( vcodorcs );
-
-			int count = 0;
-
-			for ( int i = 0; i < tabOrc.getNumLinhas(); i++ ) {
-
-				if ( ! ( (Boolean) tabOrc.getValor( i, 0 ) ).booleanValue() ) {
-					continue;
-				}
-
-				vcodorcs.add( String.valueOf( tabOrc.getValor( i, 1 ) ) );
-				count++;
-
-				if ( count == 1000 ) {
-					vcodorcs = new Vector<String>();
-					vorcs.add( vcodorcs );
-					count = 0;
-				}
-			}
-
-			try {
-
-				for ( Vector<String> v : vorcs ) {
-
-					String scodorcs = "";
-
-					for ( int i = 0; i < v.size(); i++ ) {
-						if ( scodorcs.length() > 0 ) {
-							scodorcs += ",";
-						}
-						scodorcs += v.get( i );
-					}
-
-					StringBuilder sql = new StringBuilder();
-
-					sql.append( "SELECT IT.CODORC,IT.CODITORC,IT.CODPROD,P.DESCPROD," );
-					sql.append( "IT.QTDITORC,IT.QTDFATITORC,IT.QTDAFATITORC,IT.PRECOITORC,IT.VLRDESCITORC,IT.VLRLIQITORC," );
-					sql.append( "IT.VLRPRODITORC, P.CLOTEPROD, IT.CODLOTE, coalesce(ip.qtdfinalproditorc,0) qtdfinalproditorc, ip.codop, it.codalmox ");
-
-					sql.append( "FROM EQPRODUTO P, VDORCAMENTO O, VDITORCAMENTO IT  " );
-					sql.append( "LEFT OUTER JOIN PPOPITORC IP ON IP.CODEMPOC=IT.CODEMP AND IP.CODFILIALOC=IT.CODFILIAL AND IP.TIPOORC=IT.TIPOORC AND IP.CODORC=IT.CODORC AND IP.CODITORC=IT.CODITORC ");
-
-					sql.append( "WHERE O.CODEMP=IT.CODEMP AND O.CODFILIAL=IT.CODFILIAL AND O.TIPOORC=IT.TIPOORC AND O.CODORC=IT.CODORC AND ");
-					sql.append( "P.CODPROD=IT.CODPROD AND P.CODFILIAL=IT.CODFILIALPD AND " );
-					sql.append( "P.CODEMP=IT.CODEMPPD AND ");
-					sql.append( "((IT.ACEITEITORC='S' AND IT.FATITORC IN ('N','P') AND IT.APROVITORC='S' AND IT.SITPRODITORC='NP') OR ");
-					sql.append( "(IT.SITPRODITORC='PD' AND IT.APROVITORC='S' AND IT.FATITORC IN ('N','P') )) ");
-					if (prefs.get(COL_PREFS.APROVORCFATPARC.name())) {
-						sql.append( " AND O.STATUSORC NOT IN ('OV','FP') " ); 
-					}
-					sql.append( " AND IT.CODEMP=? AND IT.CODFILIAL=? AND IT.CODORC IN " );
-					sql.append( "(" + scodorcs + ") " );
-
-					//Caso a origem for a tela de Contrato busca apenas produtos com o tipo Serviço.
-					if ("Contrato".equals( origem )) {
-						sql.append( " AND P.TIPOPROD = 'S' " );
-					}
-
-
-					sql.append( " ORDER BY IT.CODORC,IT.CODITORC " );
-
-					// Vector<Object> vVals = null;
-
-					PreparedStatement ps = con.prepareStatement( sql.toString() );
-					ps.setInt( 1, Aplicativo.iCodEmp );
-					ps.setInt( 2, ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
-					ResultSet rs = ps.executeQuery();
-
-					int irow = 0;
-					int icol = 0;
-
-					while ( rs.next() ) {
-						tabitorc.adicLinha();
-
-						// vVals = new Vector<Object>();
-						tabitorc.setValor( new Boolean( true ), irow, GRID_ITENS.SEL.ordinal() );
-						tabitorc.setValor( new Integer( rs.getInt( "CodItOrc" ) ), irow, GRID_ITENS.CODITORC.ordinal()  );
-						tabitorc.setValor( new Integer( rs.getInt( "CodProd" ) ), irow, GRID_ITENS.CODPROD.ordinal() );
-						tabitorc.setValor( rs.getString( "DescProd" ).trim(), irow, GRID_ITENS.DESCPROD.ordinal() );
-						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( casasDec, rs.getString( GRID_ITENS.QTDITORC.toString() ) != null ? rs.getString( GRID_ITENS.QTDITORC.toString() ) : "0" ), irow, GRID_ITENS.QTDITORC.ordinal() );
-						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( casasDec, rs.getString( GRID_ITENS.QTDAFATITORC.toString()) != null ? rs.getString(GRID_ITENS.QTDAFATITORC.toString() ) : "0" ), irow, GRID_ITENS.QTDAFATITORC.ordinal() );
-						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( casasDec, rs.getString( GRID_ITENS.QTDFATITORC.toString() ) != null ? rs.getString( GRID_ITENS.QTDFATITORC.toString() ) : "0" ), irow, GRID_ITENS.QTDFATITORC.ordinal() );
-						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( casasDec, rs.getString( GRID_ITENS.QTDFINALPRODITORC.toString() ) ), irow, GRID_ITENS.QTDFINALPRODITORC.ordinal() );
-						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( casasDecPre, rs.getString( "PrecoItOrc" ) != null ? rs.getString( "PrecoItOrc" ) : "0" ), irow, GRID_ITENS.PRECO.ordinal() );
-						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( casasDecPre, rs.getString( "VlrDescItOrc" ) != null ? rs.getString( "VlrDescItOrc" ) : "0" ), irow, GRID_ITENS.DESC.ordinal() );
-						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( casasDecPre, rs.getString( "VlrLiqItOrc" ) != null ? rs.getString( "VlrLiqItOrc" ) : "0" ), irow, GRID_ITENS.VLRLIQ.ordinal() );
-						tabitorc.setValor( "", irow, GRID_ITENS.TPAGR.ordinal() );
-						tabitorc.setValor( "", irow, GRID_ITENS.PAI.ordinal() );
-						tabitorc.setValor( "0,00", irow, GRID_ITENS.VLRAGRP.ordinal() );
-						tabitorc.setValor( rs.getInt( "CodOrc" ), irow, GRID_ITENS.CODORC.ordinal() );
-					// 	private enum GRID_ITENS { SEL, CODITORC, CODPROD, DESCPROD, QTD, QTDAFAT, QTDFAT, QTD_PROD, PRECO, DESC, VLRLIQ, TPAGR, PAI, VLRAGRP, CODORC, USALOTE, CODLOTE };	
-						tabitorc.setValor( rs.getString( "CLOTEPROD" ), irow, GRID_ITENS.USALOTE.ordinal() );
-						tabitorc.setValor( rs.getString( "CODLOTE" ) == null ? "" : rs.getString( "CODLOTE" ), irow, GRID_ITENS.CODLOTE.ordinal() );
-						tabitorc.setValor( rs.getString( "CODALMOX" ) == null ? "" : rs.getString( "CODALMOX" ) , irow, GRID_ITENS.CODALMOX.ordinal() );
-
-
-
-
-						fValProd += rs.getFloat( "VlrProdItOrc" );
-						fValDesc += rs.getFloat( "VlrDescItOrc" );
-						fValLiq += rs.getFloat( "VlrLiqItOrc" );
-
-						if ( "S".equals( rs.getString( "CLOTEPROD" ) ) && ( rs.getString( "CODLOTE" ) == null ) ) {
-							tabitorc.setColColor( irow, GRID_ITENS.USALOTE.ordinal() , Color.RED, Color.WHITE );
-						}
-						else {
-							tabitorc.setColColor( irow, GRID_ITENS.USALOTE.ordinal() , Color.WHITE, Color.BLACK );
-						}
-
-						vValidos.addElement( new int[] { rs.getInt( "CodOrc" ), rs.getInt( "CodItOrc" ) } );
-
-						// tab.adicLinha( vVals );
-						irow++;
-						icol = 0;
-					}
-
-					con.commit();
-				}
-			} catch ( SQLException err ) {
-				// Funcoes.mensagemErro( this, "Erro ao processar ítem '" + i + "'!\n" + err.getMessage(), true, con, err );
-				err.printStackTrace();
-			}
-
-			txtVlrProd.setVlrBigDecimal( new BigDecimal( fValProd ) );
-			txtVlrDesc.setVlrBigDecimal( new BigDecimal( fValDesc ) );
-			txtVlrLiq.setVlrBigDecimal( new BigDecimal( fValLiq ) );
-
-		} catch ( Exception e ) {
-			e.printStackTrace();
-		}
-	}*/
-
-	/*	private void atualizaObsPed( final StringBuffer obs, final int iCodVenda ) {
-
-		PreparedStatement ps = null;
-		String sSql = null;
-
-		try {
-			sSql = "UPDATE VDVENDA SET OBSVENDA=? WHERE " + "CODEMP=? AND CODFILIAL=? AND CODVENDA=?";
-
-			PreparedStatement ps2 = con.prepareStatement( sSql );
-			String obsupdate = obs.toString().replace( "\n", " - " );
-
-			ps2.setString( 1, obsupdate.length() > 10000 ? obsupdate.substring( 0, 10000 ) : obsupdate );
-			ps2.setInt( 2, Aplicativo.iCodEmp );
-			ps2.setInt( 3, Aplicativo.iCodFilial );
-			ps2.setInt( 4, iCodVenda );
-
-			ps2.execute();
-
-		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro ao atualizar observações da venda!\n" + err.getMessage(), true, con, err );
-		}
-	}*/
 
 	public void CarregaOrcamento(Integer codorc) {
 
@@ -1104,7 +939,7 @@ private boolean gerarVenda() {
 }
 
 
-private void buscar() {
+private void buscar(boolean proj) {
 	int codcli = -1;
 	try {
 		tabOrc.limpa();
@@ -1116,7 +951,8 @@ private void buscar() {
 			codcli = txtCodCli.getVlrInteger();
 		}
 		if (codcli==-1 || testaPagto(codcli)) {
-			tabOrc.setDataVector(daobusca.buscar( txtCodOrc.getVlrInteger(), txtCodCli.getVlrInteger(), txtCodConv.getVlrInteger(), rgBusca.getVlrString()));
+			tabOrc.setDataVector(daobusca.buscar( txtCodOrc.getVlrInteger(), txtCodCli.getVlrInteger()
+					, txtCodConv.getVlrInteger(), rgBusca.getVlrString(), proj));
 		}
 	} catch (ExceptionCarregaDados e) {
 		Funcoes.mensagemErro( null, e.getMessage());
@@ -1460,14 +1296,15 @@ public void actionPerformed( ActionEvent evt ) {
 		dispose();
 	}
 	else if ( evt.getSource() == btBusca ) {
-		buscar();
+		boolean proj = !"Venda".equalsIgnoreCase( origem );
+		buscar(proj);
 	}
 	else if ( evt.getSource() == btExec ) {
 		carregar();
 	}
 	else if ( evt.getSource() == btGerar ) {
 
-		if ("Venda".equals( origem )) {
+		if ("Venda".equalsIgnoreCase( origem )) {
 			if ( !gerarVenda() ) {
 				try {
 					con.rollback();
