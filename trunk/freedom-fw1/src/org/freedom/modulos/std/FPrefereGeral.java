@@ -84,6 +84,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 	private static final String DANFE_XML = "X";
 	
+	private static final String DANFE_XML_MULT = "M";
+	
 	private static final String RETRATO_DANFE = "1";
 
 	private static final String PAISAGEM_DANFE = "2";
@@ -893,10 +895,13 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		Vector<String> vLabsTipoImpDanfe = new Vector<String>();
 		Vector<String> vValsTipoImpDanfe = new Vector<String>();
 		vLabsTipoImpDanfe.addElement("Freedom");
-		vLabsTipoImpDanfe.addElement("XML");
+		vLabsTipoImpDanfe.addElement("XML um a um");
+		vLabsTipoImpDanfe.addElement("XML multiplos");
 		vValsTipoImpDanfe.addElement(DANFE_FREEDOM);
 		vValsTipoImpDanfe.addElement(DANFE_XML);
-		rgTipoImpDanfe = new JRadioGroup<String, String>(1, 2, vLabsTipoImpDanfe, vValsTipoImpDanfe);
+		vValsTipoImpDanfe.addElement(DANFE_XML_MULT);
+		
+		rgTipoImpDanfe = new JRadioGroup<String, String>(1, 3, vLabsTipoImpDanfe, vValsTipoImpDanfe);
 
 		Vector<String> vLabsFormatoDANFE = new Vector<String>();
 		Vector<String> vValsFormatoDANFE = new Vector<String>();
