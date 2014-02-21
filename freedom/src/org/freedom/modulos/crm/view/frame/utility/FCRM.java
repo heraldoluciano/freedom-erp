@@ -356,6 +356,8 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 //	Integer codatend_atual = null;
 
 	private String filtroObs = null;
+	
+	private JLabelPad labelProdutividade = new JLabelPad("Produtividade");
 
 	//private Map<String, Object> atendente = null;
 
@@ -411,6 +413,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 	private void adicFiltrosAtend() {
 
+		labelProdutividade.setForeground( Color.BLUE );
 		pinFiltrosAtend.setBorder( SwingParams.getPanelLabel( "Filtros de atendimentos", Color.BLUE ) );
 
 		pinFiltrosAtend.adic( txtDatainiAtend, 7, 20, 70, 20, "Data Inicial" );
@@ -428,6 +431,8 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		pinFiltrosAtend.adic( txtCodOrc, 694, 20, 70, 20, "Cód.Orc." );
 
 		pinFiltrosAtend.adic( cbTipoAtend, 7, 60, 195, 20, "Tipo" );
+		
+		pinFiltrosAtend.adic( labelProdutividade, 7, 80, 600, 20);
 
 		pinFiltrosAtend.adic( cbContr, 206, 60, 314, 20, "Contrato/Projeto" );
 
@@ -1720,6 +1725,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		String titulo = tabatd.getNumLinhas() + " Atendimentos  /  " + Funcoes.strDecimalToStrCurrency( 2, total_horas_atend.toString() ) + " Horas dec. " + "  /  " + Funcoes.strDecimalToStrCurrency( 2, total_cobcli.toString() ) + " h.cobrança" + "  /  Produtividade: "
 				+ Funcoes.strDecimalToStrCurrency( 2, getCoeficiente( total_horas_atend, total_cobcli ).toString() ) + " %";
 
+		labelProdutividade.setText( titulo );
 		//scpAtd.setBorder( SwingParams.getPanelLabel( titulo, Color.BLUE, TitledBorder.CENTER ) );
 
 	}
