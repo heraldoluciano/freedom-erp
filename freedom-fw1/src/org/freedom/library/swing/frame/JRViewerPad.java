@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.view.JRViewer;
 
@@ -42,7 +43,6 @@ public class JRViewerPad extends JRViewer {
 		report = arg0;
 		this.imprimir = imprimir;
 		this.exportar = exportar;
-		
 		init(mail, this.imprimir, this.exportar);
 	}
 
@@ -60,6 +60,10 @@ public class JRViewerPad extends JRViewer {
 		report = arg0;
 	}
 
+	public JRViewerPad(String fileName, boolean isXML) throws JRException {
+		super(fileName, isXML);
+	}
+	
 	private void init(EmailBean mail, boolean imprimir, boolean exportar) {
 
 		tlbToolBar.add(panelButtonsStp);

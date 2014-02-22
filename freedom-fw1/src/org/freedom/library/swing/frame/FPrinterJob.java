@@ -53,6 +53,8 @@ import net.sf.jasperreports.engine.JRResultSetDataSource;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRXmlDataSource;
+import net.sf.jasperreports.swing.JRViewer;
+import net.sf.jasperreports.view.JasperViewer;
 
 import org.freedom.bmps.Icone;
 import org.freedom.bmps.Imagem;
@@ -254,6 +256,34 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 		this(sLayout, sTituloRel, sFiltros, rs, hParamRel, ifOrig, null);
 	}
 
+	/**
+	 * Construção do FPrinterJob utilizando JasperReports através de arquivo PDF.
+	 * 
+	 * @param titulo Titulo da janela
+	 * @param pdffile Arquivo PDF
+	 * @param orig classe de origem
+	 * @param mail Email para envio do arquivo
+	 */
+	public FPrinterJob(String titulo, File pdffile, JInternalFrame orig, EmailBean mail) {
+		super(false);
+		setTitulo(titulo, this.getClass().getName());
+		setBounds(50, 50, 500, 400);
+		orig.getDesktopPane().add(this);
+		try {
+			//JRViewerPad viewer = new JRViewerPad(pdffile.getAbsolutePath(), false);
+			JasperViewer.viewReport(pdffile.getAbsolutePath(), false);
+			//this.setContentPane(viewer);
+		}
+		catch (JRException err) {
+			err.printStackTrace();
+		}
+		try {
+			setMaximum(true);
+		}
+		catch (Exception err) {
+			err.printStackTrace();
+		}
+	}
 	/**
 	 * Construção do FPrinterJob utilizando JasperReports através de resultset.
 	 * 
@@ -780,7 +810,7 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 	
 	public static Blob getLogo(DbConnection con){
 		Blob logo = null;
-		StringBuilder sql = new StringBuilder();
+		//StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		
