@@ -188,9 +188,11 @@ public abstract class Login extends FDialogo implements ActionListener, FocusLis
 	}
 */
 	public int getFilial() {
-		if (cbEmp.getVlrInteger().intValue() == 0)
+		String strcodfilial[] = cbEmp.getVlrString().split("-");
+		Integer codfilial = Integer.parseInt(strcodfilial[1]);
+		if (codfilial == 0)
 			return 1;
-		return cbEmp.getVlrInteger().intValue();
+		return codfilial;
 	}
 
 	public String getNomeFilial() {
