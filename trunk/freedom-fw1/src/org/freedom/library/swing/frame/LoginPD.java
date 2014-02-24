@@ -193,7 +193,7 @@ public class LoginPD extends Login implements ActionListener, FocusListener {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
-			sql.append("select fl.codemp, fl.codfilial, fl.codemp||' - '||fl.nomefilial nomefilial");
+			sql.append("select fl.codemp, fl.codfilial, fl.codemp||' - '||fl.codfilial||' - '||fl.nomefilial nomefilial");
 			sql.append(", coalesce((select first 1 fmz.codfilial from sgfilial fmz where fmz.codemp=fl.codemp and mzfilial='S'),1) codfilialmz ");
 			sql.append("from sgfilial fl ");
 			if (!bAdmin) {
@@ -219,7 +219,7 @@ public class LoginPD extends Login implements ActionListener, FocusListener {
 				iFilialMz = rs.getInt("codfilialmz");
 				String strfilial = rs.getInt("codemp")+"-"+rs.getInt("codfilial")+"-"+iFilialMz;
 				vVals.addElement(strfilial);
-				vLabs.addElement(rs.getString("nomefilial"));
+				vLabs.addElement(rs.getString("nomefilial").trim());
 				if (rs.getInt("codfilial") == 1)
 					iFilialPadrao = rs.getInt("codfilial");
 			}
