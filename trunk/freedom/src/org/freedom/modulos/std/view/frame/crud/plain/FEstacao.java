@@ -75,6 +75,8 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 
 	private JPanelPad pinCabRede = new JPanelPad();
 
+	private JPanelPad pinCabApp = new JPanelPad();
+
 	private JPanelPad pinCabContato = new JPanelPad();
 
 	private JPanelPad pinDet = new JPanelPad();
@@ -110,7 +112,9 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 	private JTextFieldFK txtDescPapel = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 	
 	private JTextFieldPad txtPathCacerts = new JTextFieldPad( JTextFieldPad.TP_STRING, 256, 0);
-	
+
+	private JTextFieldPad txtPathPDFReader = new JTextFieldPad( JTextFieldPad.TP_STRING, 256, 0);
+
 	private JTextFieldPad txtCodProxy = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 9, 0);
 
 	private JTextFieldFK txtDescProxy = new JTextFieldFK( JTextFieldFK.TP_STRING, 60, 0);
@@ -209,6 +213,7 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 	
 	private final JButtonPad btDirCacerts = new JButtonPad(Icone.novo("btAbrirPeq.png"));
 	
+	private final JButtonPad btDirPDFReader = new JButtonPad(Icone.novo("btAbrirPeq.png"));
 
 	public FEstacao() {
 
@@ -429,6 +434,7 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 
 		pinCabGeral = new JPanelPad( 740, 180 );
 		pinCabRede = new JPanelPad(740, 180);
+		pinCabApp = new JPanelPad(740, 180);
 		pinCabContato = new JPanelPad(740, 180);
 		
 		//pnCliCab.add( pinCabGeral );
@@ -436,7 +442,7 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 		tpnCab.addTab( "Geral", pinCabGeral );
 		tpnCab.addTab( "Rede", pinCabRede );
 		tpnCab.addTab( "Contato", pinCabContato );
-
+		tpnCab.addTab( "Aplicações", pinCabApp );
 		setListaCampos( lcCampos );
 		setAltCab( 230 );
 		//setPainel( pinCabGeral, pnCliCab );
@@ -464,7 +470,9 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 		adicCampo( txtNomeContEst, 7, 20, 400, 20, "NomeContEst", "Nome da pessoa de contato", ListaCampos.DB_SI, false);
 		adicCampo( txtRamalEst, 7, 60, 200, 20, "RamalEst", "Ramal mais próximo", ListaCampos.DB_SI, false);
 		adicCampo( txtEmailEst, 210, 60, 197, 20, "EmailEst", "E-mail da pessoa de contato", ListaCampos.DB_SI, false );
-		
+		setPainel(pinCabApp);
+		adicCampo( txtPathPDFReader, 7, 20, 350, 20, "PathPDFReader", "Aplicativo leitor de PDF", ListaCampos.DB_SI, false);
+		adic(btDirPDFReader, 360, 20, 20, 20);
 		setListaCampos( true, "ESTACAO", "SG" );
 		lcCampos.setQueryInsert( false );
 
@@ -539,6 +547,7 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 		lcCampos.addInsertListener( this );
 		lcDet.addPostListener( this );
 		btDirCacerts.addActionListener( this );
+		btDirPDFReader.addActionListener( this );
 
 	}
 
@@ -616,7 +625,15 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 				}
 			});
 			th.start();
+		} else 	if (e.getSource() == btDirPDFReader) {
+			Thread th = new Thread(new Runnable() {
+				public void run() {
+					getDiretorioPDFReader();
+				}
+			});
+			th.start();
 		}
+
 		
 		super.actionPerformed( e );
 	}
@@ -631,6 +648,18 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 				lcCampos.edit();
 			}
 			txtPathCacerts.setVlrString(fileChooser.getSelectedFile().getPath());
+		}
+	}
+
+	private void getDiretorioPDFReader() {
+
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+			if (lcCampos.getStatus()!=ListaCampos.LCS_EDIT || lcCampos.getStatus()!=ListaCampos.LCS_INSERT ) {
+				lcCampos.edit();
+			}
+			txtPathPDFReader.setVlrString(fileChooser.getSelectedFile().getPath());
 		}
 	}
 
