@@ -73,6 +73,8 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 
 	private JPanelPad panelVendas = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
+	private JPanelPad panelCesta = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+
 	private JPanelPad panelTabVendas = new JPanelPad( 700, 73 );
 
 	private JPanelPad panelGridVendas = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 2, 1 ) );
@@ -274,6 +276,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		panelGeral.add( panelDetail, BorderLayout.CENTER );
 		panelDetail.add( tabbedDetail );
 		tabbedDetail.addTab( "Vendas", panelVendas );
+		tabbedDetail.addTab( "Cesta", panelCesta );
 		// tabbedDetail.addTab( "Receber", panelReceber );
 		// tabbedDetail.addTab( "Histórico", panelHistorico );
 
