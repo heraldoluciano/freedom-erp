@@ -325,7 +325,7 @@ public class DLBordero extends FDialogo {
 
 			PreparedStatement ps = con.prepareStatement( selectSequencia.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "SPGERANUM" ) );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "FNBORDERO" ) );
 			ps.setString( 3, "BD" );
 
 			ResultSet rs = ps.executeQuery();
@@ -368,7 +368,7 @@ public class DLBordero extends FDialogo {
 				if ( (Boolean) tabReceber.getValor( row, RECEBER.SEL.ordinal() ) ) {
 					ps = con.prepareStatement( insertItensBordero.toString() );
 					ps.setInt( 1, Aplicativo.iCodEmp );
-					ps.setInt( 2, ListaCampos.getMasterFilial( "FNTIBORDERO" ) );
+					ps.setInt( 2, ListaCampos.getMasterFilial( "FNITBORDERO" ) );
 					ps.setInt( 3, codBordero );
 					ps.setInt( 4, Aplicativo.iCodEmp );
 					ps.setInt( 5, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
