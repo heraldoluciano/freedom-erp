@@ -1,11 +1,24 @@
-/*
- * Projeto: Freedom Pacote: org.freedom.modules.crm Classe: @(#)FConsultaCli.java
+/**
+ * @author Setpoint Informática Ltda./Robson Sanchez <BR>
+ * @version 25/02/2014  
+ *         Projeto: Freedom <BR>
  * 
- * Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR> modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR> na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
- * Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR> sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR> Veja a Licença Pública Geral GNU para maiores detalhes. <BR> Você deve ter recebido uma cópia da Licença Pública
- * Geral GNU junto com este programa, se não, <BR> escreva para a Fundação do Software Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA <BR>
+ *         Pacote: org.freedom.modulos.crm.view.frame.utiliy <BR>
+ *         Classe: @(#)FConsultaCli.java <BR>
+ * 
+ *                    Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
+ *                    modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
+ *                    na versão 2 da Licença, ou (na sua opnião) qualquer versão. <BR>
+ *                    Este programa é distribuido na esperança que possa ser util, mas SEM NENHUMA GARANTIA; <BR>
+ *                    sem uma garantia implicita de ADEQUAÇÂO a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. <BR>
+ *                    Veja a Licença Pública Geral GNU para maiores detalhes. <BR>
+ *                    Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este programa, se não, <BR>
+ *                    de acordo com os termos da LPG-PC <BR>
+ * <BR>
+ * 
+ *                    Classe de visualização de histórico de vendas para clientes
+ * 
  */
-
 package org.freedom.modulos.crm.view.frame.utility;
 
 import java.awt.BorderLayout;
@@ -49,6 +62,7 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
+import org.freedom.modulos.std.orcamento.bussiness.CestaFactory;
 import org.freedom.modulos.std.view.frame.crud.detail.FVenda;
 
 /**
@@ -160,6 +174,8 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 	private ListaCampos lcProd = new ListaCampos( this );
 
 	private boolean carregandoVendas = false;
+	
+	private CestaFactory cestaFactory;
 
 	private enum VENDAS {
 		STATUSPGTO, CODVENDA, NOTA, DATA, PAGAMENTO, VENDEDOR, VALOR_PRODUTOS, VALOR_DESCONTO, VALOR_ADICIONAL, FRETE, VALOR_LIQUIDO, TIPOVENDA, STATUS;
@@ -444,9 +460,10 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 			sql.append(" AS PAGO, ");
 			sql.append(" COALESCE((SELECT VF.TIPOFRETEVD FROM VDFRETEVD VF WHERE VF.CODEMP = V.CODEMP AND VF.CODFILIAL = V.CODFILIAL AND VF.TIPOVENDA = V.TIPOVENDA AND VF.CODVENDA = V.CODVENDA), 'N')  AS TIPOFRETE ");
 			sql.append( "FROM VDVENDA V, FNPLANOPAG P, VDVENDEDOR VD " );
-			sql.append( "WHERE V.CODEMP=? AND V.CODFILIAL=? AND V.TIPOVENDA='V' AND V.DTEMITVENDA BETWEEN ? AND ? AND " );
-			sql.append( "P.CODEMP=V.CODEMPPG AND P.CODFILIAL=V.CODFILIALPG AND P.CODPLANOPAG=V.CODPLANOPAG AND " );
-			sql.append( "VD.CODEMP=V.CODEMPVD AND VD.CODFILIAL=V.CODFILIALVD AND VD.CODVEND=V.CODVEND" );
+			sql.append( "WHERE V.CODEMP=? AND V.CODFILIAL=? AND V.TIPOVENDA='V' AND V.DTEMITVENDA BETWEEN ? AND ?" );
+			sql.append( "and substring( v.statusvenda from 1 for 1) not in ('D','C') ");
+			sql.append( "and P.CODEMP=V.CODEMPPG AND P.CODFILIAL=V.CODFILIALPG AND P.CODPLANOPAG=V.CODPLANOPAG " );
+			sql.append( "and VD.CODEMP=V.CODEMPVD AND VD.CODFILIAL=V.CODFILIALVD AND VD.CODVEND=V.CODVEND" );
 
 			if ( txtCodCli.getVlrInteger() > 0 ) {
 				sql.append( " AND V.CODEMPCL=? AND V.CODFILIALCL=? AND CODCLI=? " );
@@ -853,6 +870,8 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		super.setConexao( cn );
 		lcCliente.setConexao( con );
 		lcProd.setConexao( con );
-
+		// Carregar a cesta de compras
+		cestaFactory = Aplicativo.getInstace().getCestaFactory();
+		
 	}
 }
