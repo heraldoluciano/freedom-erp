@@ -67,6 +67,7 @@ import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.dialog.FDialogo;
 import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.util.SwingParams;
+import org.freedom.modulos.std.orcamento.bussiness.CestaFactory;
 
 public abstract class Aplicativo implements ActionListener, KeyListener {
 
@@ -228,7 +229,9 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	private Boolean autproxy = false;
 
 	private static Usuario usuario;
-
+	
+	private CestaFactory cestaFactory;
+	
 	public Boolean isAutproxy() {
 		return autproxy;
 	}
@@ -1249,5 +1252,16 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 	public static void setUsuario(Usuario usuarioobj) {
 		usuario = usuarioobj;
+	}
+
+	public CestaFactory getCestaFactory() {
+		if (cestaFactory==null) {
+			cestaFactory = new CestaFactory();
+		}
+		return cestaFactory;
+	}
+
+	public void setCestaFactory(CestaFactory cestaFactory) {
+		this.cestaFactory = cestaFactory;
 	}
 }
