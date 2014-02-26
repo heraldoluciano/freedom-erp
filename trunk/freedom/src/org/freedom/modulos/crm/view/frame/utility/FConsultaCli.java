@@ -302,9 +302,9 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 
 		panelTabVendas.adic( new JLabelPad( "Última Venda" ), 10, 10, 90, 20 );
 		panelTabVendas.adic( txtUltimaVenda, 10, 30, 90, 20 );
-		panelTabVendas.adic( new JLabelPad( "Vlr. últ. compra" ), 103, 10, 95, 20 );
+		panelTabVendas.adic( new JLabelPad( "Vlr. últ. venda" ), 103, 10, 95, 20 );
 		panelTabVendas.adic( txtVlrUltimaVenda, 103, 30, 95, 20 );
-		panelTabVendas.adic( new JLabelPad( "Total de compras" ), 201, 10, 95, 20 );
+		panelTabVendas.adic( new JLabelPad( "Total de vendas" ), 201, 10, 95, 20 );
 		panelTabVendas.adic( txtTotalVendas, 201, 30, 95, 20 );
 		panelTabVendas.adic( new JLabelPad( "Valor em aberto" ), 299, 10, 95, 20 );
 		panelTabVendas.adic( txtTotalAberto, 299, 30, 95, 20 );
@@ -521,7 +521,8 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 					venda = new FVenda();
 					Aplicativo.telaPrincipal.criatela( "Venda", venda, con );
 				}
-				venda.exec( (Integer) tabVendas.getValor( tabVendas.getLinhaSel(), VENDAS.CODVENDA.ordinal() ), (String) tabVendas.getValor( tabVendas.getLinhaSel(), VENDAS.TIPOVENDA.ordinal() ) );
+				venda.exec( (Integer) tabVendas.getValor( tabVendas.getLinhaSel(), VENDAS.CODVENDA.ordinal() )
+						, (String) tabVendas.getValor( tabVendas.getLinhaSel(), VENDAS.TIPOVENDA.ordinal() ) );
 			}
 			else if ( e.getSource() == tabItensVenda && tabItensVenda.getLinhaSel() > -1 ) {
 				FVenda venda = null;
