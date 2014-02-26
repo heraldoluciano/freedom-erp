@@ -59,10 +59,10 @@ public class DAOConsultaCli extends AbstractDAO {
 	public static enum VENDAS {
 		STATUSPGTO, CODVENDA, NOTA, DATA, PAGAMENTO, VENDEDOR, VALOR_PRODUTOS, VALOR_DESCONTO, VALOR_ADICIONAL, FRETE, VALOR_LIQUIDO, TIPOVENDA, STATUS;
 	}
-	public static enum ITEMVENDAS {
+	public static enum ITENSVENDA {
 		ITEM, CODPROD, DESCPROD, LOTE, QUANTIDADE, PRECO, DESCONTO, FRETE, TOTAL, TIPOVENDA;
 	}
-	public static enum RESULT_ULTVENDAS{ 
+	public static enum RESULT_ULTVENDA{ 
 		DTEMITVENDA, VLRLIQVENDA
 	}
 	public static enum RESULT_RECEBER{ 
@@ -90,7 +90,7 @@ public class DAOConsultaCli extends AbstractDAO {
 	public Object[] loadUltimaVenda(Integer codempvd, Integer codfilialvd
 			, Integer codempcl, Integer codfilialcl, Integer codcli 
 			, Date dtini, Date dtfim) throws Exception {
-		Object[] result = new Object[RESULT_ULTVENDAS.values().length];
+		Object[] result = new Object[RESULT_ULTVENDA.values().length];
 		try {
 			StringBuilder sql = new StringBuilder();
 			sql.append( "select first 1 v.dtemitvenda, v.vlrliqvenda, v.codvenda " );
@@ -110,8 +110,8 @@ public class DAOConsultaCli extends AbstractDAO {
 			ps.setInt( param++, codcli );
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
-				result[RESULT_ULTVENDAS.DTEMITVENDA.ordinal()] = rs.getDate( RESULT_ULTVENDAS.DTEMITVENDA.name() );
-				result[RESULT_ULTVENDAS.VLRLIQVENDA.ordinal()] = rs.getBigDecimal( RESULT_ULTVENDAS.VLRLIQVENDA.name() );
+				result[RESULT_ULTVENDA.DTEMITVENDA.ordinal()] = rs.getDate( RESULT_ULTVENDA.DTEMITVENDA.name() );
+				result[RESULT_ULTVENDA.VLRLIQVENDA.ordinal()] = rs.getBigDecimal( RESULT_ULTVENDA.VLRLIQVENDA.name() );
 			}
 		} catch (SQLException e) {
 			getConn().rollback();
