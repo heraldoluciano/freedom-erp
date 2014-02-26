@@ -28,6 +28,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -73,7 +75,8 @@ import org.freedom.modulos.std.view.frame.crud.detail.FVenda;
  * @author Setpoint Informática Ltda./Alex Rodrigues
  * @version 24/08/2009
  */
-public class FConsultaCli extends FFilho implements ActionListener, TabelaSelListener, MouseListener, KeyListener, CarregaListener {
+public class FConsultaCli extends FFilho implements ActionListener, TabelaSelListener, MouseListener
+			, KeyListener, CarregaListener, FocusListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -83,17 +86,27 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 
 	private JPanelPad panelMaster = new JPanelPad( 700, 140 );
 
-	private JPanelPad panelDetail = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
+	//private JPanelPad panelDetail = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 2, 2 ) );
+
+	private JPanelPad panelDetail = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
 	private JTabbedPanePad tabbedDetail = new JTabbedPanePad();
 
-	private JPanelPad panelVendas = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	private JTabbedPanePad tabbedVendas = new JTabbedPanePad(JTabbedPanePad.BOTTOM);
+
+	private JPanelPad panelTodasVendas = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+
+	private JPanelPad panelProdVendas = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
 	private JPanelPad panelCesta = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
-	private JPanelPad panelTabVendas = new JPanelPad( 700, 73 );
+	private JPanelPad panelResumoVendas = new JPanelPad( 700, 73 );
 
+	private JPanelPad panelTabProdVendas = new JPanelPad( 700, 125 );
+	
 	private JPanelPad panelGridVendas = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 2, 1 ) );
+
+	private JPanelPad panelGridProdVendas = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
 
 	private JPanelPad panelTabVendasNotas = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
 
@@ -181,6 +194,8 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 	
 	private ImageIcon imgVencimento = null;
 	
+	private Integer codcliatual = null; 
+	
 	public FConsultaCli() {
 
 		super( false );
@@ -198,6 +213,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		tabVendas.addMouseListener( this );
 		tabItensVenda.addMouseListener( this );
 		btBuscar.addKeyListener( this );
+		txtCodCli.addFocusListener( this );
 		Calendar periodo = Calendar.getInstance();
 		txtDatafim.setVlrDate( periodo.getTime() );
 		periodo.set( Calendar.YEAR, periodo.get( Calendar.YEAR ) - 1 );
@@ -234,47 +250,35 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 
 		getTela().add( panelGeral, BorderLayout.CENTER );
 		panelGeral.add( panelMaster, BorderLayout.NORTH );
-
 		// ***** Cabeçalho
-
 		JLabel periodo = new JLabel( "Período", SwingConstants.CENTER );
 		periodo.setOpaque( true );
 		JLabel borda = new JLabel();
 		borda.setBorder( BorderFactory.createEtchedBorder() );
-		
-		
 		panelMaster.adic( new JLabelPad( "Cód.Cli" ), 7, 5, 60, 20 );
 		panelMaster.adic( txtCodCli, 7, 25, 60, 20 );
 		panelMaster.adic( new JLabelPad( "Razão social do cliente" ), 70, 5, 340, 20 );
 		panelMaster.adic( txtRazCli, 70, 25, 340, 20 );
-
 		panelMaster.adic( new JLabelPad( "Contato" ), 413, 5, 100, 20 );
 		panelMaster.adic( txtContCli, 413, 25, 100, 20 );
-
 		panelMaster.adic( new JLabelPad( "DDD" ), 7, 45, 60, 20 );
 		panelMaster.adic( txtDDDCli, 7, 65, 60, 20 );
 		panelMaster.adic( new JLabelPad( "Fone" ), 70, 45, 75, 20 );
 		panelMaster.adic( txtFoneCli, 70, 65, 75, 20 );
 		panelMaster.adic( new JLabelPad( "e-mail" ), 148, 45, 262, 20 );
 		panelMaster.adic( txtEmailCli, 148, 65, 262, 20 );
-
 		panelMaster.adic( lbAtivoCli, 413, 65, 100, 20 );
-
 		panelMaster.adic( new JLabelPad( "Cód.Prod." ), 7, 85, 60, 20 );
 		panelMaster.adic( txtCodProd, 7, 105, 60, 20 );
 		panelMaster.adic( new JLabelPad( "Descrição do produto" ), 70, 85, 340, 20 );
 		panelMaster.adic( txtDescProd, 70, 105, 340, 20 );
-
 		panelMaster.adic( periodo, 540, 5, 60, 20 );
 		panelMaster.adic( borda, 530, 15, 220, 73 );
 		panelMaster.adic( txtDataini, 540, 40, 80, 20 );
 		panelMaster.adic( new JLabel( "até", SwingConstants.CENTER ), 620, 40, 40, 20 );
 		panelMaster.adic( txtDatafim, 660, 40, 80, 20 );
-		
 		panelMaster.adic( btBuscar, 530, 100, 220, 30 );
-
 		txtFoneCli.setMascara( JTextFieldPad.MC_FONE );
-
 		lbAtivoCli.setOpaque( true );
 		lbAtivoCli.setFont( new Font( "Arial", Font.BOLD, 13 ) );
 		lbAtivoCli.setBackground( GREEN );
@@ -282,79 +286,89 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		
 		// ***** Detalhamento (abas)
 
+		panelResumoVendas.setPreferredSize( new Dimension( 700, 73 ) );
 		panelGeral.add( panelDetail, BorderLayout.CENTER );
-		panelDetail.add( tabbedDetail );
-		tabbedDetail.addTab( "Vendas", panelVendas );
+		panelDetail.add( panelResumoVendas, BorderLayout.NORTH );
+		panelDetail.add( tabbedDetail, BorderLayout.CENTER );
+		
+		tabbedVendas.addTab( "Todas", panelTodasVendas );
+		tabbedVendas.addTab( "Produtos", panelProdVendas );
+	
+		tabbedDetail.addTab("Vendas", tabbedVendas);
 		tabbedDetail.addTab( "Cesta", panelCesta );
-		// tabbedDetail.addTab( "Receber", panelReceber );
-		// tabbedDetail.addTab( "Histórico", panelHistorico );
 
-		// ***** Vendas
+		// ***** Todas Vendas
 
-		panelVendas.add( panelTabVendas, BorderLayout.NORTH );
-		panelVendas.add( panelGridVendas, BorderLayout.CENTER );
+		//panelTodasVendas.add( panelResumoVendas, BorderLayout.NORTH );
+		panelTodasVendas.add( panelGridVendas, BorderLayout.CENTER );
 		panelGridVendas.add( panelTabVendasNotas );
 		panelGridVendas.add( panelTabItensVendas );
 
 		panelTabVendasNotas.setBorder( BorderFactory.createTitledBorder( "Vendas" ) );
-		panelTabItensVendas.setBorder( BorderFactory.createTitledBorder( "Itens de vendas" ) );
+		panelTabItensVendas.setBorder( BorderFactory.createTitledBorder( "Itens da venda selecionada" ) );
 		panelTabItensVendas.setPreferredSize( new Dimension( 700, 120 ) );
 
-		panelTabVendas.adic( new JLabelPad( "Última Venda" ), 10, 10, 90, 20 );
-		panelTabVendas.adic( txtUltimaVenda, 10, 30, 90, 20 );
-		panelTabVendas.adic( new JLabelPad( "Vlr. últ. venda" ), 103, 10, 95, 20 );
-		panelTabVendas.adic( txtVlrUltimaVenda, 103, 30, 95, 20 );
-		panelTabVendas.adic( new JLabelPad( "Total de vendas" ), 201, 10, 95, 20 );
-		panelTabVendas.adic( txtTotalVendas, 201, 30, 95, 20 );
-		panelTabVendas.adic( new JLabelPad( "Valor em aberto" ), 299, 10, 95, 20 );
-		panelTabVendas.adic( txtTotalAberto, 299, 30, 95, 20 );
-		panelTabVendas.adic( new JLabelPad( "Valor em atraso" ), 397, 10, 95, 20 );
-		panelTabVendas.adic( txtTotalAtraso, 397, 30, 95, 20 );
+		// ***** Prod Vendas
+		panelProdVendas.add( panelGridProdVendas, BorderLayout.CENTER );
+		panelGridProdVendas.add( panelTabProdVendas );
+		panelTabProdVendas.setBorder( BorderFactory.createTitledBorder( "Itens adquiridos no perído" ) );
+		// Final prodVendas
+		
+		panelResumoVendas.adic( new JLabelPad( "Última Venda" ), 10, 10, 90, 20 );
+		panelResumoVendas.adic( txtUltimaVenda, 10, 30, 90, 20 );
+		panelResumoVendas.adic( new JLabelPad( "Vlr. últ. venda" ), 103, 10, 95, 20 );
+		panelResumoVendas.adic( txtVlrUltimaVenda, 103, 30, 95, 20 );
+		panelResumoVendas.adic( new JLabelPad( "Total de vendas" ), 201, 10, 95, 20 );
+		panelResumoVendas.adic( txtTotalVendas, 201, 30, 95, 20 );
+		panelResumoVendas.adic( new JLabelPad( "Valor em aberto" ), 299, 10, 95, 20 );
+		panelResumoVendas.adic( txtTotalAberto, 299, 30, 95, 20 );
+		panelResumoVendas.adic( new JLabelPad( "Valor em atraso" ), 397, 10, 95, 20 );
+		panelResumoVendas.adic( txtTotalAtraso, 397, 30, 95, 20 );
 
 		Color statusColor = new Color( 111, 106, 177 );
 		Font statusFont = new Font( "Tomoha", Font.PLAIN, 11 );
 		
-		panelTabVendas.adic( new JLabelPad( imgPgEmDia ), 500, 5, 20, 15 );
+		panelResumoVendas.adic( new JLabelPad( imgPgEmDia ), 500, 5, 20, 15 );
 		JLabelPad pgtoDia = new JLabelPad( "pagas em dia" );
 		pgtoDia.setForeground( statusColor );
 		pgtoDia.setFont( statusFont );
-		panelTabVendas.adic( pgtoDia, 520, 5, 100, 15 );
+		panelResumoVendas.adic( pgtoDia, 520, 5, 100, 15 );
 
-		panelTabVendas.adic( new JLabelPad( imgPgEmAtraso ), 500, 20, 20, 15 );
+		panelResumoVendas.adic( new JLabelPad( imgPgEmAtraso ), 500, 20, 20, 15 );
 		JLabelPad pgtoAtraso = new JLabelPad( "pagas em atraso" );
 		pgtoAtraso.setForeground( statusColor );
 		pgtoAtraso.setFont( statusFont );
-		panelTabVendas.adic( pgtoAtraso, 520, 20, 100, 15 );
+		panelResumoVendas.adic( pgtoAtraso, 520, 20, 100, 15 );
 		
-		panelTabVendas.adic( new JLabelPad( imgVencida ), 500, 35, 20, 15 );
+		panelResumoVendas.adic( new JLabelPad( imgVencida ), 500, 35, 20, 15 );
 		JLabelPad vencidas = new JLabelPad( "vencidas" );
 		vencidas.setForeground( statusColor );
 		vencidas.setFont( statusFont );
-		panelTabVendas.adic( vencidas, 520, 35, 100, 15 );
+		panelResumoVendas.adic( vencidas, 520, 35, 100, 15 );
 
-		panelTabVendas.adic( new JLabelPad( imgAVencer ), 500, 50, 20, 15 );
+		panelResumoVendas.adic( new JLabelPad( imgAVencer ), 500, 50, 20, 15 );
 		JLabelPad aVencer = new JLabelPad( "a vencer" );
 		aVencer.setForeground( statusColor );
 		aVencer.setFont( statusFont );
-		panelTabVendas.adic( aVencer, 520, 50, 100, 15 );
+		panelResumoVendas.adic( aVencer, 520, 50, 100, 15 );
 
-		panelTabVendas.adic( new JLabelPad( imgCancelado ), 650, 5, 20, 15 );
+		panelResumoVendas.adic( new JLabelPad( imgCancelado ), 650, 5, 20, 15 );
 		JLabelPad canceladas = new JLabelPad( "canceladas" );
 		canceladas.setForeground( statusColor );
 		canceladas.setFont( statusFont );
-		panelTabVendas.adic( canceladas, 670, 5, 100, 15 );
+		panelResumoVendas.adic( canceladas, 670, 5, 100, 15 );
 
-		panelTabVendas.adic( new JLabelPad( imgPedido ), 650, 20, 20, 15 );
+		panelResumoVendas.adic( new JLabelPad( imgPedido ), 650, 20, 20, 15 );
 		JLabelPad pedidos = new JLabelPad( "pedidos" );
 		pedidos.setForeground( statusColor );
 		pedidos.setFont( statusFont );
-		panelTabVendas.adic( pedidos, 670, 20, 100, 15 );
+		panelResumoVendas.adic( pedidos, 670, 20, 100, 15 );
 
-		panelTabVendas.adic( new JLabelPad( imgFaturado ), 650, 35, 20, 15 );
+		panelResumoVendas.adic( new JLabelPad( imgFaturado ), 650, 35, 20, 15 );
 		JLabelPad faturadas = new JLabelPad( "faturadas" );
 		faturadas.setForeground( statusColor );
 		faturadas.setFont( statusFont );
-		panelTabVendas.adic( faturadas, 670, 35, 100, 15 );
+		panelResumoVendas.adic( faturadas, 670, 35, 100, 15 );
 
 		tabVendas.adicColuna( "" );
 		tabVendas.adicColuna( "Código" );
@@ -417,8 +431,18 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		panelSouth.add( adicBotaoSair() );
 	}
 
-	private void buscaVendas() {
+	private void clearFields() {
+		tabVendas.limpa();
+		tabItensVenda.limpa();
+		txtUltimaVenda.setVlrString("");
+		txtVlrUltimaVenda.setVlrString( "" );
+		txtTotalVendas.setVlrString( "" );
+		txtTotalAberto.setVlrString( "" );
+		txtTotalAtraso.setVlrString( "" );
+	}
 
+	private void loadVendas() {
+		clearFields();
 		if ( txtCodCli.getVlrInteger() == 0 && txtCodProd.getVlrInteger() == 0 ) {
 			Funcoes.mensagemInforma( this, "Selecione um cliente ou produto!" );
 			txtCodCli.requestFocus();
@@ -440,26 +464,30 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 			Vector<Vector<Object>> vendas = daoconsultacli.loadVendas(codempvd, codfilialvd
 					, codempcl, codfilialcl, codcli, codemppd, codfilialpd, codprod, dtini, dtfim);
 			carregandoVendas = true;
-			tabVendas.limpa();
 			for (Vector<Object> row: vendas) {
 				tabVendas.adicLinha( row );
 			}
 			Object[] ultimaVenda = daoconsultacli.loadUltimaVenda(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDVENDA" )
 					, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCLIENTE" ), txtCodCli.getVlrInteger()
 					, txtDataini.getVlrDate(), txtDatafim.getVlrDate());
-			txtUltimaVenda.setVlrString("");
-			txtVlrUltimaVenda.setVlrString( "" );
 			if ( ultimaVenda[RESULT_ULTVENDA.DTEMITVENDA.ordinal()]!=null ) {
 				txtUltimaVenda.setVlrDate( Funcoes.sqlDateToDate( (java.sql.Date) ultimaVenda[RESULT_ULTVENDA.DTEMITVENDA.ordinal()] ) );
 				txtVlrUltimaVenda.setVlrBigDecimal( (BigDecimal) ultimaVenda[RESULT_ULTVENDA.VLRLIQVENDA.ordinal()] );
 			}
 			Object[] receber = daoconsultacli.loadReceber( codemprc, codfilialrc, codempcl
 					, codfilialcl, codcli, codemppd, codfilialpd, codprod, dtini, dtfim );
+			BigDecimal totalVendas = (BigDecimal) receber[RESULT_RECEBER.TOTAL_VENDAS.ordinal()];
 			BigDecimal totalAberto = (BigDecimal) receber[RESULT_RECEBER.TOTAL_ABERTO.ordinal()];
-			if (totalAberto == null){
-				totalAberto = new BigDecimal(0);
+			BigDecimal totalAtraso = (BigDecimal) receber[RESULT_RECEBER.TOTAL_ATRASO.ordinal()];
+			if (totalVendas != null && !totalVendas.equals( BigDecimal.ZERO )){
+				txtTotalVendas.setVlrBigDecimal( totalVendas );
 			}
-			txtTotalAtraso.setVlrBigDecimal( totalAberto);
+			if (totalAberto != null && !totalAberto.equals( BigDecimal.ZERO )){
+				txtTotalAberto.setVlrBigDecimal( totalAberto );
+			}
+			if (totalAtraso != null  && !totalAtraso.equals( BigDecimal.ZERO )){
+				txtTotalAtraso.setVlrBigDecimal( totalAtraso);
+			}
 			if (tabVendas.getDataVector().size()>0) {
 				tabVendas.setLinhaSel( 0 );
 				buscaItensVenda( codempvd, codfilialvd, "V", (Integer) tabVendas.getValor( tabVendas.getLinhaSel(), VENDAS.CODVENDA.ordinal() )
@@ -491,7 +519,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 	public void actionPerformed( ActionEvent e ) {
 
 		if ( e.getSource() == btBuscar ) {
-			buscaVendas();
+			loadVendas();
 		}
 	}
 
@@ -587,10 +615,10 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 				lbAtivoCli.setText( "Inativo" );
 				lbAtivoCli.setBackground( Color.RED );
 			}
-			buscaVendas();
+			loadVendas();
 		}
 		if ( lcProd == e.getListaCampos() ) {
-			buscaVendas();
+			loadVendas();
 		}
 	}
 
@@ -606,5 +634,22 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		// Montar a tela após a instância de daoconsultacli
 
 
+	}
+
+	public void focusGained( FocusEvent e ) {
+		
+		if (e.getSource()==txtCodCli) {
+			codcliatual = txtCodCli.getVlrInteger();
+		}
+		
+	}
+
+	public void focusLost( FocusEvent e ) {
+
+		if (e.getSource()==txtCodCli) {
+			if ( codcliatual!=null  && !codcliatual.equals(txtCodCli.getVlrInteger()) && txtCodCli.getVlrInteger().intValue()==0) {
+				clearFields();
+			}
+		}
 	}
 }
