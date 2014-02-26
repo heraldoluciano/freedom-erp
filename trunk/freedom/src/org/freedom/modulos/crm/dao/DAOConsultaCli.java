@@ -59,6 +59,10 @@ public class DAOConsultaCli extends AbstractDAO {
 	public static enum VENDAS {
 		STATUSPGTO, CODVENDA, NOTA, DATA, PAGAMENTO, VENDEDOR, VALOR_PRODUTOS, VALOR_DESCONTO, VALOR_ADICIONAL, FRETE, VALOR_LIQUIDO, TIPOVENDA, STATUS;
 	}
+	public static enum PRODVENDAS {
+		STATUSVENDA, STATUSPGTO, CODVENDA, DOCVENDA, DTEMITVENDA, CODPROD, DESCPROD, QTDITVENDA, PRECOITVENDA, PERCDESCITVENDA
+		, VLRDESCITVENDA, VLRLIQITVENDA, TIPOVENDA;
+	}
 	public static enum ITENSVENDA {
 		ITEM, CODPROD, DESCPROD, LOTE, QUANTIDADE, PRECO, DESCONTO, FRETE, TOTAL, TIPOVENDA;
 	}
@@ -272,43 +276,14 @@ public class DAOConsultaCli extends AbstractDAO {
 			
 			while ( rs.next() ) {
 				Vector<Object> row = new Vector<Object>();
-				if ( "C".equals( rs.getString( "STATUSVENDA" ).substring( 0, 1 ) ) ) {
-					imgColuna = imgCancelado;
+				String statusvenda = rs.getString( "STATUSVENDA" );
+				java.sql.Date emaberto = rs.getDate( "EMABERTO" );
+				Integer pago = null;
+				if (rs.getString( "PAGO" )!=null) {
+					pago = new Integer(rs.getInt("PAGO"));
 				}
-				else if ( "P".equals( rs.getString( "STATUSVENDA" ).substring( 0, 1 ) ) ) {
-					imgColuna = imgPedido;
-				}
-				else {
-					imgColuna = imgFaturado;
-				}
-				if ( "C".equals( rs.getString( "STATUSVENDA" ).substring( 0, 1 ) ) ) {
-					imgVencimento = imgVencida;
-				}
-				else{
-					if (rs.getDate( "EMABERTO" )!=null ) {
-						imgVencimento = imgAVencer;
-						Date vencimento = rs.getDate( "EMABERTO" );
-						Calendar hoje = Calendar.getInstance();
-						if (hoje.after( vencimento )){
-							imgVencimento = imgVencida;
-						}
-					}
-					else if ( rs.getString( "PAGO" )!=null ) {
-						imgVencimento = imgPgEmDia;
-						int diferenca = rs.getInt( "PAGO" );
-						if (diferenca < 0){
-							imgVencimento = imgPgEmAtraso;
-						}
-					}
-					else if ( rs.getDate( "EMABERTO" )==null && rs.getString( "PAGO" )==null ) {
-						if ( "P".equals( rs.getString( "STATUSVENDA" ).substring( 0, 1 ) ) ) {
-							imgVencimento = imgAVencer;
-						}
-						else{
-							imgVencimento = imgPgEmDia;
-						}
-					}
-				}
+				imgColuna = getImgStatus(statusvenda);
+				imgVencimento = getImgVencimento(statusvenda, emaberto, pago);
 				row.addElement( imgVencimento );
 				row.addElement( rs.getInt( "CODVENDA" ) );
 				row.addElement( rs.getString( "DOCVENDA" ) );
@@ -333,7 +308,160 @@ public class DAOConsultaCli extends AbstractDAO {
 		}
 		return result;
 	}
-	
+
+	public Vector<Vector<Object>> loadProdVendas( Integer codempvd, Integer codfilialvd
+			, Integer codempcl, Integer codfilialcl, Integer codcli 
+			, Integer codemppd, Integer codfilialpd, Integer codprod
+			, Date dtini, Date dtfim) throws Exception {
+		Vector<Vector<Object>> result = new Vector<Vector<Object>>();
+		try {
+			StringBuilder sql = new StringBuilder();/*
+					STATUSVENDA, STATUSPGTO, CODVENDA, DOCVENDA, DTEMITVENDA, CODPROD, DESCPROD, QTDITVENDA, PRECOITVENDA, PERCDESCITVENDA
+		, VLRDESCITVENDA, VLRLIQITVENDA, TIPOVENDA;*/
+			sql.append("select vd.statusvenda, vd.codvenda, vd.docvenda, vd.dtemitvenda");
+			sql.append(", pd.codprod, pd.descprod, iv.qtditvenda, iv.precoitvenda, iv.percdescitvenda ");
+			sql.append(", iv.vlrdescitvenda, iv.vlrliqitvenda, vd.tipovenda ");
+			sql.append(", (select first 1 fi.dtvencitrec ");
+			sql.append("       from fnitreceber fi ");
+			sql.append("      inner join fnreceber fr on fr.codrec = fi.codrec and fr.codfilial = fi.codfilial   and fr.codemp = fi.codemp ");
+			sql.append("      where fi.statusitrec = 'R1' ");
+			sql.append("        and fr.tipovenda = vd.tipovenda and fr.codfilialva = vd.codfilial and fr.codempva = vd.codemp and fr.codvenda = vd.codvenda ");
+			sql.append("      order by fi.dtvencitrec) ");
+			sql.append(" emaberto ");
+			sql.append(", (select first 1 fi.dtvencitrec - fi.dtliqitrec ");
+			sql.append("       from fnitreceber fi ");
+			sql.append("      inner join fnreceber fr on fr.codrec = fi.codrec       and fr.codfilial = fi.codfilial   and fr.codemp = fi.codemp ");
+			sql.append("      where fi.statusitrec = 'RP' ");
+			sql.append("        and fr.tipovenda = vd.tipovenda and fr.codfilialva = vd.codfilial and fr.codempva = vd.codemp and fr.codvenda = vd.codvenda ");
+			sql.append("      order by fi.dtvencitrec) ");
+			sql.append(" pago ");
+			sql.append("from eqproduto pd ");
+			sql.append("inner join vdvenda vd on ");
+			sql.append("vd.codemp=? and vd.codfilial=? and vd.dtemitvenda between ? and ? ");
+			sql.append("and vd.tipovenda='V' ");
+			sql.append("and substring(vd.statusvenda from 1 for 1) not in ('C','N') ");
+			sql.append("and vd.codempcl=? and vd.codfilialcl=? and vd.codcli=? " );
+			sql.append("and vd.codvenda=(select first 1 vd2.codvenda from vdvenda vd2, vditvenda iv2 ");
+			sql.append("where vd2.codemp=? and vd2.codfilial=? and vd2.tipovenda='V' ");
+			sql.append("and vd2.dtemitvenda between ? and ? ");
+			sql.append("and vd2.codempcl=? and vd2.codfilialcl=? and vd2.codcli=? ");
+			sql.append("and iv2.codemp=vd2.codemp and iv2.codfilial=vd2.codfilial and iv2.tipovenda=vd2.tipovenda and iv2.codvenda=vd2.codvenda ");
+			sql.append("and iv2.codemppd=pd.codemp and iv2.codfilialpd=pd.codfilial and iv2.codprod=pd.codprod ");
+			sql.append("order by vd2.dtemitvenda desc) ");
+			sql.append("inner join vditvenda iv on ");
+			sql.append("iv.codemp=vd.codemp and iv.codfilial=vd.codfilial and iv.tipovenda=vd.tipovenda and iv.codvenda=vd.codvenda ");
+			sql.append("and iv.coditvenda=(select first 1 iv2.coditvenda from vditvenda iv2 ");
+			sql.append("where iv2.codemp=vd.codemp and iv2.codfilial=vd.codfilial and iv2.tipovenda=vd.tipovenda and iv2.codvenda=vd.codvenda ");
+			sql.append("and iv2.codemppd=pd.codemp and iv2.codfilialpd=pd.codfilial and iv2.codprod=pd.codprod) ");
+			sql.append( "where pd.codemp=? and pd.codfilial=? " );
+			if ( codprod > 0 ) {
+				sql.append("and pd.codprod=? ");
+			}
+			sql.append( "order by vd.dtemitvenda desc, pd.descprod" );
+			PreparedStatement ps = getConn().prepareStatement( sql.toString() );
+			int iparam = 1;
+			ps.setInt( iparam++, codempvd );
+			ps.setInt( iparam++, codfilialvd );
+			ps.setDate( iparam++, Funcoes.dateToSQLDate( dtini ) );
+			ps.setDate( iparam++, Funcoes.dateToSQLDate( dtfim ) );
+			ps.setInt( iparam++, codempcl );
+			ps.setInt( iparam++, codfilialcl );
+			ps.setInt( iparam++, codcli );
+			ps.setInt( iparam++, codempvd );
+			ps.setInt( iparam++, codfilialvd );
+			ps.setDate( iparam++, Funcoes.dateToSQLDate( dtini ) );
+			ps.setDate( iparam++, Funcoes.dateToSQLDate( dtfim ) );
+			ps.setInt( iparam++, codempcl );
+			ps.setInt( iparam++, codfilialcl );
+			ps.setInt( iparam++, codcli );
+			ps.setInt( iparam++, codemppd );
+			ps.setInt( iparam++, codfilialpd );
+			if ( codprod.intValue() > 0 ) {
+				ps.setInt( iparam++, codprod );
+			}
+			ResultSet rs = ps.executeQuery();
+			
+			while ( rs.next() ) {
+				Vector<Object> row = new Vector<Object>();
+				String statusvenda = rs.getString( "STATUSVENDA" );
+				java.sql.Date emaberto = rs.getDate( "EMABERTO" );
+				Integer pago = null;
+				if (rs.getString( "PAGO" )!=null) {
+					pago = new Integer(rs.getInt("PAGO"));
+				}
+				imgColuna = getImgStatus(statusvenda);
+				imgVencimento = getImgVencimento(statusvenda, emaberto, pago);
+				row.addElement( imgColuna);
+				row.addElement( imgVencimento );
+				row.addElement( rs.getInt( "CODVENDA" ) );
+				row.addElement( rs.getString( "DOCVENDA" ) );
+				row.addElement( Funcoes.dateToStrDate( rs.getDate( "DTEMITVENDA" ) ) );
+				row.addElement( rs.getInt( "CODPROD" ) );
+				row.addElement( rs.getString( "DESCPROD" ) );
+				row.addElement( Funcoes.bdToStr( rs.getBigDecimal( "QTDITVENDA" ) ) );
+				row.addElement( Funcoes.bdToStr( rs.getBigDecimal( "PRECOITVENDA" ) ) );
+				row.addElement( Funcoes.bdToStr( rs.getBigDecimal( "PERCDESCITVENDA" ) ) );
+				row.addElement( getTipoFrete(rs.getString( "VLRDESCITVENDA" )) );
+				row.addElement( Funcoes.bdToStr( rs.getBigDecimal( "VLRLIQITVENDA" ) ) );
+				row.addElement( rs.getString( "TIPOVENDA" ) );
+				result.addElement( row );
+			}
+			rs.close();
+			ps.close();
+			getConn().commit();
+		} catch (SQLException e) {
+			getConn().rollback();
+			throw new Exception(e.getMessage());
+		}
+		return result;
+	}
+
+	private ImageIcon getImgVencimento(String statusvenda, java.sql.Date emaberto, Integer pago) {
+		ImageIcon result = null;
+		if ( "C".equals( statusvenda.substring( 0, 1 ) ) ) {
+			result = imgVencida;
+		}
+		else{
+			if (emaberto!=null ) {
+				result = imgAVencer;
+				Date vencimento = emaberto;
+				Calendar hoje = Calendar.getInstance();
+				if (hoje.after( vencimento )){
+					result = imgVencida;
+				}
+			}
+			else if ( pago!=null ) {
+				result = imgPgEmDia;
+				int diferenca = pago;
+				if (diferenca < 0){
+					result = imgPgEmAtraso;
+				}
+			}
+			else if ( emaberto==null && pago==null ) {
+				if ( "P".equals( statusvenda.substring( 0, 1 ) ) ) {
+					result = imgAVencer;
+				}
+				else{
+					result = imgPgEmDia;
+				}
+			}
+		}
+
+		return result;
+	}
+	private ImageIcon getImgStatus(String statusvenda) {
+		ImageIcon result = null;
+		if ( "C".equals( statusvenda.substring( 0, 1 ) ) ) {
+			result = imgCancelado;
+		}
+		else if ( "P".equals( statusvenda.substring( 0, 1 ) ) ) {
+			result = imgPedido;
+		}
+		else {
+			result = imgFaturado;
+		}
+		return result;
+	}
 	private String getTipoFrete (String cod){
 		if ("C".equals( cod )){
 			return "CIF";

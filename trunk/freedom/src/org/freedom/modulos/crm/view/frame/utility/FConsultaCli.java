@@ -63,6 +63,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
 import org.freedom.modulos.crm.dao.DAOConsultaCli;
 import org.freedom.modulos.crm.dao.DAOConsultaCli.ITENSVENDA;
+import org.freedom.modulos.crm.dao.DAOConsultaCli.PRODVENDAS;
 import org.freedom.modulos.crm.dao.DAOConsultaCli.RESULT_RECEBER;
 import org.freedom.modulos.crm.dao.DAOConsultaCli.RESULT_ULTVENDA;
 import org.freedom.modulos.crm.dao.DAOConsultaCli.VENDAS;
@@ -102,11 +103,13 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 
 	private JPanelPad panelResumoVendas = new JPanelPad( 700, 73 );
 
-	private JPanelPad panelTabProdVendas = new JPanelPad( 700, 125 );
+	//private JPanelPad panelTabProdVendas = new JPanelPad();
+	
+	private JPanelPad panelTabProdVendas = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 	
 	private JPanelPad panelGridVendas = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 2, 1 ) );
 
-	private JPanelPad panelGridProdVendas = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
+	private JPanelPad panelGridProdVendas = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
 	private JPanelPad panelTabVendasNotas = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
 
@@ -162,6 +165,8 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 	
 	private JTablePad tabVendas = new JTablePad();
 
+	private JTablePad tabProdVendas = new JTablePad();
+
 	private JTablePad tabItensVenda = new JTablePad();
 	
 	// *** Listacampos
@@ -211,6 +216,8 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		btBuscar.addActionListener( this );
 		tabVendas.addTabelaSelListener( this );
 		tabVendas.addMouseListener( this );
+		tabProdVendas.addTabelaSelListener( this );
+		tabProdVendas.addMouseListener( this );
 		tabItensVenda.addMouseListener( this );
 		btBuscar.addKeyListener( this );
 		txtCodCli.addFocusListener( this );
@@ -292,7 +299,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		panelDetail.add( tabbedDetail, BorderLayout.CENTER );
 		
 		tabbedVendas.addTab( "Todas", panelTodasVendas );
-		tabbedVendas.addTab( "Produtos", panelProdVendas );
+		tabbedVendas.addTab( "Produtos", panelProdVendas);
 	
 		tabbedDetail.addTab("Vendas", tabbedVendas);
 		tabbedDetail.addTab( "Cesta", panelCesta );
@@ -310,8 +317,8 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 
 		// ***** Prod Vendas
 		panelProdVendas.add( panelGridProdVendas, BorderLayout.CENTER );
-		panelGridProdVendas.add( panelTabProdVendas );
-		panelTabProdVendas.setBorder( BorderFactory.createTitledBorder( "Itens adquiridos no perído" ) );
+		panelGridProdVendas.add( panelTabProdVendas, BorderLayout.CENTER);
+		//panelTabProdVendas.setBorder( BorderFactory.createTitledBorder( "Itens adquiridos no perído" ) );
 		// Final prodVendas
 		
 		panelResumoVendas.adic( new JLabelPad( "Última Venda" ), 10, 10, 90, 20 );
@@ -421,9 +428,38 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		tabItensVenda.setTamColuna( 80, ITENSVENDA.FRETE.ordinal() );
 		tabItensVenda.setTamColuna( 90, ITENSVENDA.TOTAL.ordinal() );
 		tabItensVenda.setColunaInvisivel( ITENSVENDA.TIPOVENDA.ordinal() );
-
 		panelTabItensVendas.add( new JScrollPane( tabItensVenda ) );
 
+		tabProdVendas.adicColuna( "S.V." );
+		tabProdVendas.adicColuna( "S.P." );
+		tabProdVendas.adicColuna( "Pedido" );
+		tabProdVendas.adicColuna( "Doc." );
+		tabProdVendas.adicColuna( "Data" );
+		tabProdVendas.adicColuna( "Cód.prod." );
+		tabProdVendas.adicColuna( "Descrição do produto" );
+		tabProdVendas.adicColuna( "Quantidade" );
+		tabProdVendas.adicColuna( "Preço" );
+		tabProdVendas.adicColuna( "% Desc." );
+		tabProdVendas.adicColuna( "V.desconto" );
+		tabProdVendas.adicColuna( "V.Líquido" );
+		tabProdVendas.adicColuna( "Tipo Venda" );
+
+		tabProdVendas.setTamColuna( 30, PRODVENDAS.STATUSPGTO.ordinal() );
+		tabProdVendas.setTamColuna( 30, PRODVENDAS.STATUSVENDA.ordinal() );
+		tabProdVendas.setTamColuna( 60, PRODVENDAS.CODVENDA.ordinal() );
+		tabProdVendas.setTamColuna( 60, PRODVENDAS.DOCVENDA.ordinal() );
+		tabProdVendas.setTamColuna( 70, PRODVENDAS.DTEMITVENDA.ordinal() );
+		tabProdVendas.setTamColuna( 70, PRODVENDAS.CODPROD.ordinal() );
+		tabProdVendas.setTamColuna( 250, PRODVENDAS.DESCPROD.ordinal() );
+		tabProdVendas.setTamColuna( 90, PRODVENDAS.QTDITVENDA.ordinal() );
+		tabProdVendas.setTamColuna( 90, PRODVENDAS.PRECOITVENDA.ordinal() );
+		tabProdVendas.setTamColuna( 60, PRODVENDAS.PERCDESCITVENDA.ordinal() );
+		tabProdVendas.setTamColuna( 90, PRODVENDAS.VLRDESCITVENDA.ordinal() );
+		tabProdVendas.setTamColuna( 90, PRODVENDAS.VLRLIQITVENDA.ordinal() );
+		tabProdVendas.setColunaInvisivel( PRODVENDAS.TIPOVENDA.ordinal() );
+
+		panelTabProdVendas.add( new JScrollPane( tabProdVendas ) );
+		
 		// ***** Rodapé
 
 		panelGeral.add( panelSouth, BorderLayout.SOUTH );
@@ -434,6 +470,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 	private void clearFields() {
 		tabVendas.limpa();
 		tabItensVenda.limpa();
+		tabProdVendas.limpa();
 		txtUltimaVenda.setVlrString("");
 		txtVlrUltimaVenda.setVlrString( "" );
 		txtTotalVendas.setVlrString( "" );
@@ -449,6 +486,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 			return;
 		}
 		try {
+			carregandoVendas = true;
 			Integer codempvd = Aplicativo.iCodEmp;
 			Integer codfilialvd = ListaCampos.getMasterFilial( "VDVENDA" );
 			Integer codemprc = Aplicativo.iCodEmp;
@@ -463,7 +501,6 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 			Date dtfim = txtDatafim.getVlrDate();
 			Vector<Vector<Object>> vendas = daoconsultacli.loadVendas(codempvd, codfilialvd
 					, codempcl, codfilialcl, codcli, codemppd, codfilialpd, codprod, dtini, dtfim);
-			carregandoVendas = true;
 			for (Vector<Object> row: vendas) {
 				tabVendas.adicLinha( row );
 			}
@@ -493,11 +530,17 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 				buscaItensVenda( codempvd, codfilialvd, "V", (Integer) tabVendas.getValor( tabVendas.getLinhaSel(), VENDAS.CODVENDA.ordinal() )
 						, codemppd, codfilialpd, codprod);
 			}
-			carregandoVendas = false;
 			tabVendas.requestFocus();
+			Vector<Vector<Object>> prodVendas = daoconsultacli.loadProdVendas(codempvd, codfilialvd
+					, codempcl, codfilialcl, codcli, codemppd, codfilialpd, codprod, dtini, dtfim);
+			for (Vector<Object> row: prodVendas) {
+				tabProdVendas.adicLinha( row );
+			}
 		} catch ( Exception e ) {
 			e.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro carregando vendas !\n"+e.getMessage() );
+		} finally {
+			carregandoVendas = false;
 		}
 	}
 	
