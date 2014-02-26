@@ -60,9 +60,9 @@ import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
 import org.freedom.modulos.crm.dao.DAOConsultaCli;
-import org.freedom.modulos.crm.dao.DAOConsultaCli.ITEMVENDAS;
+import org.freedom.modulos.crm.dao.DAOConsultaCli.ITENSVENDA;
 import org.freedom.modulos.crm.dao.DAOConsultaCli.RESULT_RECEBER;
-import org.freedom.modulos.crm.dao.DAOConsultaCli.RESULT_ULTVENDAS;
+import org.freedom.modulos.crm.dao.DAOConsultaCli.RESULT_ULTVENDA;
 import org.freedom.modulos.crm.dao.DAOConsultaCli.VENDAS;
 import org.freedom.modulos.std.orcamento.bussiness.CestaFactory;
 import org.freedom.modulos.std.view.frame.crud.detail.FVenda;
@@ -133,11 +133,11 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 
 	// *** Vendas
 
-	private JTextFieldFK txtUltimaCompra = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
+	private JTextFieldFK txtUltimaVenda = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
 
-	private JTextFieldFK txtVlrUltimaCompra = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, Aplicativo.casasDecFin );
+	private JTextFieldFK txtVlrUltimaVenda = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, Aplicativo.casasDecFin );
 
-	private JTextFieldFK txtTotalCompras = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, Aplicativo.casasDecFin );
+	private JTextFieldFK txtTotalVendas = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, Aplicativo.casasDecFin );
 
 	private JTextFieldFK txtTotalAberto = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, Aplicativo.casasDecFin );
 	
@@ -149,7 +149,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 	
 	private JTablePad tabVendas = new JTablePad();
 
-	private JTablePad tabItensVendas = new JTablePad();
+	private JTablePad tabItensVenda = new JTablePad();
 	
 	// *** Listacampos
 
@@ -196,7 +196,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		btBuscar.addActionListener( this );
 		tabVendas.addTabelaSelListener( this );
 		tabVendas.addMouseListener( this );
-		tabItensVendas.addMouseListener( this );
+		tabItensVenda.addMouseListener( this );
 		btBuscar.addKeyListener( this );
 		Calendar periodo = Calendar.getInstance();
 		txtDatafim.setVlrDate( periodo.getTime() );
@@ -300,12 +300,12 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		panelTabItensVendas.setBorder( BorderFactory.createTitledBorder( "Itens de vendas" ) );
 		panelTabItensVendas.setPreferredSize( new Dimension( 700, 120 ) );
 
-		panelTabVendas.adic( new JLabelPad( "Última Compra" ), 10, 10, 90, 20 );
-		panelTabVendas.adic( txtUltimaCompra, 10, 30, 90, 20 );
+		panelTabVendas.adic( new JLabelPad( "Última Venda" ), 10, 10, 90, 20 );
+		panelTabVendas.adic( txtUltimaVenda, 10, 30, 90, 20 );
 		panelTabVendas.adic( new JLabelPad( "Vlr. últ. compra" ), 103, 10, 95, 20 );
-		panelTabVendas.adic( txtVlrUltimaCompra, 103, 30, 95, 20 );
+		panelTabVendas.adic( txtVlrUltimaVenda, 103, 30, 95, 20 );
 		panelTabVendas.adic( new JLabelPad( "Total de compras" ), 201, 10, 95, 20 );
-		panelTabVendas.adic( txtTotalCompras, 201, 30, 95, 20 );
+		panelTabVendas.adic( txtTotalVendas, 201, 30, 95, 20 );
 		panelTabVendas.adic( new JLabelPad( "Valor em aberto" ), 299, 10, 95, 20 );
 		panelTabVendas.adic( txtTotalAberto, 299, 30, 95, 20 );
 		panelTabVendas.adic( new JLabelPad( "Valor em atraso" ), 397, 10, 95, 20 );
@@ -386,29 +386,29 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 
 		panelTabVendasNotas.add( new JScrollPane( tabVendas ) );
 
-		tabItensVendas.adicColuna( "Item" );
-		tabItensVendas.adicColuna( "Código" );
-		tabItensVendas.adicColuna( "Descrição do produto" );
-		tabItensVendas.adicColuna( "Lote" );
-		tabItensVendas.adicColuna( "Qtd." );
-		tabItensVendas.adicColuna( "Preço" );
-		tabItensVendas.adicColuna( "V.Desc." );
-		tabItensVendas.adicColuna( "V.Frete" );
-		tabItensVendas.adicColuna( "V.líq." );
-		tabItensVendas.adicColuna( "TipoVenda" );
+		tabItensVenda.adicColuna( "Item" );
+		tabItensVenda.adicColuna( "Código" );
+		tabItensVenda.adicColuna( "Descrição do produto" );
+		tabItensVenda.adicColuna( "Lote" );
+		tabItensVenda.adicColuna( "Qtd." );
+		tabItensVenda.adicColuna( "Preço" );
+		tabItensVenda.adicColuna( "V.Desc." );
+		tabItensVenda.adicColuna( "V.Frete" );
+		tabItensVenda.adicColuna( "V.líq." );
+		tabItensVenda.adicColuna( "TipoVenda" );
 
-		tabItensVendas.setTamColuna( 30, ITEMVENDAS.ITEM.ordinal() );
-		tabItensVendas.setTamColuna( 50, ITEMVENDAS.CODPROD.ordinal() );
-		tabItensVendas.setTamColuna( 300, ITEMVENDAS.DESCPROD.ordinal() );
-		tabItensVendas.setTamColuna( 70, ITEMVENDAS.LOTE.ordinal() );
-		tabItensVendas.setTamColuna( 50, ITEMVENDAS.QUANTIDADE.ordinal() );
-		tabItensVendas.setTamColuna( 70, ITEMVENDAS.PRECO.ordinal() );
-		tabItensVendas.setTamColuna( 80, ITEMVENDAS.DESCONTO.ordinal() );
-		tabItensVendas.setTamColuna( 80, ITEMVENDAS.FRETE.ordinal() );
-		tabItensVendas.setTamColuna( 90, ITEMVENDAS.TOTAL.ordinal() );
-		tabItensVendas.setColunaInvisivel( ITEMVENDAS.TIPOVENDA.ordinal() );
+		tabItensVenda.setTamColuna( 30, ITENSVENDA.ITEM.ordinal() );
+		tabItensVenda.setTamColuna( 50, ITENSVENDA.CODPROD.ordinal() );
+		tabItensVenda.setTamColuna( 300, ITENSVENDA.DESCPROD.ordinal() );
+		tabItensVenda.setTamColuna( 70, ITENSVENDA.LOTE.ordinal() );
+		tabItensVenda.setTamColuna( 50, ITENSVENDA.QUANTIDADE.ordinal() );
+		tabItensVenda.setTamColuna( 70, ITENSVENDA.PRECO.ordinal() );
+		tabItensVenda.setTamColuna( 80, ITENSVENDA.DESCONTO.ordinal() );
+		tabItensVenda.setTamColuna( 80, ITENSVENDA.FRETE.ordinal() );
+		tabItensVenda.setTamColuna( 90, ITENSVENDA.TOTAL.ordinal() );
+		tabItensVenda.setColunaInvisivel( ITENSVENDA.TIPOVENDA.ordinal() );
 
-		panelTabItensVendas.add( new JScrollPane( tabItensVendas ) );
+		panelTabItensVendas.add( new JScrollPane( tabItensVenda ) );
 
 		// ***** Rodapé
 
@@ -447,11 +447,11 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 			Object[] ultimaVenda = daoconsultacli.loadUltimaVenda(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDVENDA" )
 					, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCLIENTE" ), txtCodCli.getVlrInteger()
 					, txtDataini.getVlrDate(), txtDatafim.getVlrDate());
-			txtUltimaCompra.setVlrString("");
-			txtVlrUltimaCompra.setVlrString( "" );
-			if ( ultimaVenda[RESULT_ULTVENDAS.DTEMITVENDA.ordinal()]!=null ) {
-				txtUltimaCompra.setVlrDate( Funcoes.sqlDateToDate( (java.sql.Date) ultimaVenda[RESULT_ULTVENDAS.DTEMITVENDA.ordinal()] ) );
-				txtVlrUltimaCompra.setVlrBigDecimal( (BigDecimal) ultimaVenda[RESULT_ULTVENDAS.VLRLIQVENDA.ordinal()] );
+			txtUltimaVenda.setVlrString("");
+			txtVlrUltimaVenda.setVlrString( "" );
+			if ( ultimaVenda[RESULT_ULTVENDA.DTEMITVENDA.ordinal()]!=null ) {
+				txtUltimaVenda.setVlrDate( Funcoes.sqlDateToDate( (java.sql.Date) ultimaVenda[RESULT_ULTVENDA.DTEMITVENDA.ordinal()] ) );
+				txtVlrUltimaVenda.setVlrBigDecimal( (BigDecimal) ultimaVenda[RESULT_ULTVENDA.VLRLIQVENDA.ordinal()] );
 			}
 			Object[] receber = daoconsultacli.loadReceber( codemprc, codfilialrc, codempcl
 					, codfilialcl, codcli, codemppd, codfilialpd, codprod, dtini, dtfim );
@@ -478,10 +478,10 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 			, Integer codemppd, Integer codfilialpd, Integer codprod  ) {
 
 		try {
-			tabItensVendas.limpa();
+			tabItensVenda.limpa();
 			Vector<Vector<Object>> itensVenda = daoconsultacli.loadItensVenda( codempvd, codfilialvd, tipovenda, codvenda, codemppd, codfilialpd, codprod );
 			for (Vector<Object> row: itensVenda) {
-				tabItensVendas.adicLinha( row );
+				tabItensVenda.adicLinha( row );
 			}
 		} catch ( Exception e ) {
 			e.printStackTrace();
@@ -523,7 +523,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 				}
 				venda.exec( (Integer) tabVendas.getValor( tabVendas.getLinhaSel(), VENDAS.CODVENDA.ordinal() ), (String) tabVendas.getValor( tabVendas.getLinhaSel(), VENDAS.TIPOVENDA.ordinal() ) );
 			}
-			else if ( e.getSource() == tabItensVendas && tabItensVendas.getLinhaSel() > -1 ) {
+			else if ( e.getSource() == tabItensVenda && tabItensVenda.getLinhaSel() > -1 ) {
 				FVenda venda = null;
 				if ( Aplicativo.telaPrincipal.temTela( FVenda.class.getName() ) ) {
 					venda = (FVenda) Aplicativo.telaPrincipal.getTela( FVenda.class.getName() );
@@ -532,7 +532,9 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 					venda = new FVenda();
 					Aplicativo.telaPrincipal.criatela( "Venda", venda, con );
 				}
-				venda.exec( (Integer) tabVendas.getValor( tabVendas.getLinhaSel(), VENDAS.CODVENDA.ordinal() ), (Integer) tabItensVendas.getValor( tabItensVendas.getLinhaSel(), ITEMVENDAS.ITEM.ordinal() ), (String) tabItensVendas.getValor( tabItensVendas.getLinhaSel(), ITEMVENDAS.TIPOVENDA
+				venda.exec( (Integer) tabVendas.getValor( tabVendas.getLinhaSel(), VENDAS.CODVENDA.ordinal() )
+						, (Integer) tabItensVenda.getValor( tabItensVenda.getLinhaSel(), ITENSVENDA.ITEM.ordinal() )
+						, (String) tabItensVenda.getValor( tabItensVenda.getLinhaSel(), ITENSVENDA.TIPOVENDA
 						.ordinal() ) );
 			}
 		}
