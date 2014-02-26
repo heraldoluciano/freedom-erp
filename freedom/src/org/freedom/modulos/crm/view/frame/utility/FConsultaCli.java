@@ -33,17 +33,14 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.Calendar;
 import java.util.Date;
-
+import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
-
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.TabelaSelEvent;
@@ -62,6 +59,11 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
+import org.freedom.modulos.crm.dao.DAOConsultaCli;
+import org.freedom.modulos.crm.dao.DAOConsultaCli.ITEMVENDAS;
+import org.freedom.modulos.crm.dao.DAOConsultaCli.RESULT_RECEBER;
+import org.freedom.modulos.crm.dao.DAOConsultaCli.RESULT_ULTVENDAS;
+import org.freedom.modulos.crm.dao.DAOConsultaCli.VENDAS;
 import org.freedom.modulos.std.orcamento.bussiness.CestaFactory;
 import org.freedom.modulos.std.view.frame.crud.detail.FVenda;
 
@@ -149,6 +151,18 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 
 	private JTablePad tabItensVendas = new JTablePad();
 	
+	// *** Listacampos
+
+	private ListaCampos lcCliente = new ListaCampos( this, "CL" );
+
+	private ListaCampos lcProd = new ListaCampos( this );
+
+	private boolean carregandoVendas = false;
+	
+	private CestaFactory cestaFactory;
+
+	private DAOConsultaCli daoconsultacli;
+	
 	private ImageIcon imgVencida = Icone.novo( "clVencido.gif" );
 
 	private ImageIcon imgAVencer = Icone.novo( "clNaoVencido.gif" );
@@ -166,25 +180,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 	private ImageIcon imgColuna = null;
 	
 	private ImageIcon imgVencimento = null;
-
-	// *** Listacampos
-
-	private ListaCampos lcCliente = new ListaCampos( this, "CL" );
-
-	private ListaCampos lcProd = new ListaCampos( this );
-
-	private boolean carregandoVendas = false;
 	
-	private CestaFactory cestaFactory;
-
-	private enum VENDAS {
-		STATUSPGTO, CODVENDA, NOTA, DATA, PAGAMENTO, VENDEDOR, VALOR_PRODUTOS, VALOR_DESCONTO, VALOR_ADICIONAL, FRETE, VALOR_LIQUIDO, TIPOVENDA, STATUS;
-	}
-
-	private enum ITEMVENDAS {
-		ITEM, CODPROD, DESCPROD, LOTE, QUANTIDADE, PRECO, DESCONTO, FRETE, TOTAL, TIPOVENDA;
-	}
-
 	public FConsultaCli() {
 
 		super( false );
@@ -193,10 +189,8 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		int x = (int) ( Aplicativo.telaPrincipal.dpArea.getSize().getWidth() - getWidth() ) / 2;
 		int y = (int) ( Aplicativo.telaPrincipal.dpArea.getSize().getHeight() - getHeight() ) / 2;
 		setLocation( x, y );
-
 		montaListaCampos();
 		montaTela();
-
 		lcCliente.addCarregaListener( this );
 		lcProd.addCarregaListener( this );
 		btBuscar.addActionListener( this );
@@ -204,7 +198,6 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		tabVendas.addMouseListener( this );
 		tabItensVendas.addMouseListener( this );
 		btBuscar.addKeyListener( this );
-
 		Calendar periodo = Calendar.getInstance();
 		txtDatafim.setVlrDate( periodo.getTime() );
 		periodo.set( Calendar.YEAR, periodo.get( Calendar.YEAR ) - 1 );
@@ -431,339 +424,65 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 			txtCodCli.requestFocus();
 			return;
 		}
-
 		try {
-
-			StringBuilder sql = new StringBuilder();
-			sql.append( "SELECT V.CODVENDA, V.DOCVENDA, V.DTEMITVENDA, V.STATUSVENDA, V.CODPLANOPAG," );
-			sql.append( "P.DESCPLANOPAG, V.CODVEND, VD.NOMEVEND, coalesce(V.VLRPRODVENDA,0) VLRPRODVENDA, coalesce(V.VLRDESCVENDA,0) VLRDESCVENDA," );
-			sql.append( "coalesce(V.VLRADICVENDA,0) VLRADICVENDA , coalesce(V.VLRFRETEVENDA,0) VLRFRETEVENDA, coalesce(V.VLRLIQVENDA,0) VLRLIQVENDA, V.TIPOVENDA, " );
-			sql.append(" coalesce( ");
-			sql.append(" (SELECT FIRST 1 FI.DTVENCITREC ");
-			sql.append("       FROM FNITRECEBER FI ");
-			sql.append("      INNER JOIN FNRECEBER FR ON FR.CODREC = FI.CODREC       AND FR.CODFILIAL = FI.CODFILIAL   AND FR.CODEMP = FI.CODEMP ");
-			sql.append("      INNER JOIN VDVENDA VA   ON FR.TIPOVENDA = VA.TIPOVENDA AND FR.CODFILIALVA = VA.CODFILIAL AND FR.CODEMPVA = VA.CODEMP AND FR.CODVENDA = VA.CODVENDA ");
-			sql.append("      WHERE FI.STATUSITREC = 'R1' ");
-			sql.append("        AND FR.TIPOVENDA = 'V' AND FR.CODFILIALVA = V.CODFILIAL AND FR.CODEMPVA = V.CODEMP AND FR.CODVENDA = V.CODVENDA ");
-			sql.append("      ORDER BY FI.DTVENCITREC), ");
-			sql.append("      'NULL') ");
-			sql.append(" AS EMABERTO, ");
-			sql.append(" coalesce( ");
-			sql.append(" (SELECT FIRST 1 FI.DTVENCITREC - FI.DTLIQITREC ");
-			sql.append("       FROM FNITRECEBER FI ");
-			sql.append("      INNER JOIN FNRECEBER FR ON FR.CODREC = FI.CODREC       AND FR.CODFILIAL = FI.CODFILIAL   AND FR.CODEMP = FI.CODEMP ");
-			sql.append("      INNER JOIN VDVENDA VA   ON FR.TIPOVENDA = VA.TIPOVENDA AND FR.CODFILIALVA = VA.CODFILIAL AND FR.CODEMPVA = VA.CODEMP AND FR.CODVENDA = VA.CODVENDA ");
-			sql.append("      WHERE FI.STATUSITREC = 'RP' ");
-			sql.append("        AND FR.TIPOVENDA = 'V' AND FR.CODFILIALVA = V.CODFILIAL AND FR.CODEMPVA = V.CODEMP AND FR.CODVENDA = V.CODVENDA ");
-			sql.append("      ORDER BY FI.DTVENCITREC), ");
-			sql.append("      'NULL') ");
-			sql.append(" AS PAGO, ");
-			sql.append(" COALESCE((SELECT VF.TIPOFRETEVD FROM VDFRETEVD VF WHERE VF.CODEMP = V.CODEMP AND VF.CODFILIAL = V.CODFILIAL AND VF.TIPOVENDA = V.TIPOVENDA AND VF.CODVENDA = V.CODVENDA), 'N')  AS TIPOFRETE ");
-			sql.append( "FROM VDVENDA V, FNPLANOPAG P, VDVENDEDOR VD " );
-			sql.append( "WHERE V.CODEMP=? AND V.CODFILIAL=? AND V.TIPOVENDA='V' AND V.DTEMITVENDA BETWEEN ? AND ?" );
-			sql.append( "and substring( v.statusvenda from 1 for 1) not in ('D','C') ");
-			sql.append( "and P.CODEMP=V.CODEMPPG AND P.CODFILIAL=V.CODFILIALPG AND P.CODPLANOPAG=V.CODPLANOPAG " );
-			sql.append( "and VD.CODEMP=V.CODEMPVD AND VD.CODFILIAL=V.CODFILIALVD AND VD.CODVEND=V.CODVEND" );
-
-			if ( txtCodCli.getVlrInteger() > 0 ) {
-				sql.append( " AND V.CODEMPCL=? AND V.CODFILIALCL=? AND CODCLI=? " );
-			}
-
-			if ( txtCodProd.getVlrInteger() > 0 ) {
-				sql.append( " AND EXISTS (" );
-				sql.append( " SELECT CODVENDA FROM VDITVENDA IV WHERE " );
-				sql.append( " IV.CODEMP=V.CODEMP AND IV.CODFILIAL=V.CODFILIAL AND IV.CODVENDA=V.CODVENDA AND IV.TIPOVENDA=V.TIPOVENDA " );
-				sql.append( " AND IV.CODEMPPD=? AND IV.CODFILIALPD=? AND IV.CODPROD=? ) " );
-
-			}
-
-			sql.append( " ORDER BY V.DTEMITVENDA DESC " );
-
-			PreparedStatement ps = con.prepareStatement( sql.toString() );
-
-			int iparam = 1;
-
-			ps.setInt( iparam++, Aplicativo.iCodEmp );
-			ps.setInt( iparam++, ListaCampos.getMasterFilial( "VDVENDA" ) );
-			ps.setDate( iparam++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
-			ps.setDate( iparam++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
-
-			if ( txtCodCli.getVlrInteger() > 0 ) {
-				ps.setInt( iparam++, lcCliente.getCodEmp() );
-				ps.setInt( iparam++, lcCliente.getCodFilial() );
-				ps.setInt( iparam++, txtCodCli.getVlrInteger() );
-			}
-
-			if ( txtCodProd.getVlrInteger() > 0 ) {
-				ps.setInt( iparam++, lcProd.getCodEmp() );
-				ps.setInt( iparam++, lcProd.getCodFilial() );
-				ps.setInt( iparam++, txtCodProd.getVlrInteger() );
-			}
-
-			ResultSet rs = ps.executeQuery();
-
+			Integer codempvd = Aplicativo.iCodEmp;
+			Integer codfilialvd = ListaCampos.getMasterFilial( "VDVENDA" );
+			Integer codemprc = Aplicativo.iCodEmp;
+			Integer codfilialrc = ListaCampos.getMasterFilial( "FNRECEBER" );
+			Integer codempcl = Aplicativo.iCodEmp;
+			Integer codfilialcl = ListaCampos.getMasterFilial( "VDCLIENTE" );
+			Integer codcli = txtCodCli.getVlrInteger();
+			Integer codemppd = Aplicativo.iCodEmp;
+			Integer codfilialpd = ListaCampos.getMasterFilial( "EQPRODUTO" );
+			Integer codprod = txtCodProd.getVlrInteger();
+			Date dtini = txtDataini.getVlrDate();
+			Date dtfim = txtDatafim.getVlrDate();
+			Vector<Vector<Object>> vendas = daoconsultacli.loadVendas(codempvd, codfilialvd
+					, codempcl, codfilialcl, codcli, codemppd, codfilialpd, codprod, dtini, dtfim);
 			carregandoVendas = true;
 			tabVendas.limpa();
-			tabItensVendas.limpa();
-
-			int row = 0;
-			while ( rs.next() ) {
-
-				tabVendas.adicLinha();
-
-				if ( "C".equals( rs.getString( "STATUSVENDA" ).substring( 0, 1 ) ) ) {
-					imgColuna = imgCancelado;
-				}
-				else if ( "P".equals( rs.getString( "STATUSVENDA" ).substring( 0, 1 ) ) ) {
-					imgColuna = imgPedido;
-				}
-				else {
-					imgColuna = imgFaturado;
-				}
-				
-				if ( "C".equals( rs.getString( "STATUSVENDA" ).substring( 0, 1 ) ) ) {
-					imgVencimento = imgVencida;
-				}
-				else{
-				
-					if (!"NULL".equals( rs.getString( "EMABERTO" ) )){
-						imgVencimento = imgAVencer;
-						
-						Date vencimento = rs.getDate( "EMABERTO" );
-						
-						Calendar hoje = Calendar.getInstance();
-						if (hoje.after( vencimento )){
-							imgVencimento = imgVencida;
-						}
-					}
-					else if (!"NULL".equals( rs.getString( "PAGO" ) )){
-						imgVencimento = imgPgEmDia;
-						
-						int diferenca = rs.getInt( "PAGO" );
-						
-						if (diferenca < 0){
-							imgVencimento = imgPgEmAtraso;
-						}
-					}
-					else if ( "NULL".equals( rs.getString( "EMABERTO" )) && "NULL".equals( rs.getString( "PAGO" )) ){
-						if ( "P".equals( rs.getString( "STATUSVENDA" ).substring( 0, 1 ) ) ) {
-							imgVencimento = imgAVencer;
-						}
-						else{
-							imgVencimento = imgPgEmDia;
-						}
-					}
-				}
-				
-
-				tabVendas.setValor( imgVencimento, row, VENDAS.STATUSPGTO.ordinal() );
-				tabVendas.setValor( rs.getInt( "CODVENDA" ), row, VENDAS.CODVENDA.ordinal() );
-				tabVendas.setValor( rs.getString( "DOCVENDA" ), row, VENDAS.NOTA.ordinal() );
-				tabVendas.setValor( Funcoes.dateToStrDate( rs.getDate( "DTEMITVENDA" ) ), row, VENDAS.DATA.ordinal() );
-				tabVendas.setValor( rs.getString( "DESCPLANOPAG" ), row, VENDAS.PAGAMENTO.ordinal() );
-				tabVendas.setValor( rs.getString( "NOMEVEND" ), row, VENDAS.VENDEDOR.ordinal() );
-				tabVendas.setValor( Funcoes.bdToStr( rs.getBigDecimal( "VLRPRODVENDA" ) ), row, VENDAS.VALOR_PRODUTOS.ordinal() );
-				tabVendas.setValor( Funcoes.bdToStr( rs.getBigDecimal( "VLRDESCVENDA" ) ), row, VENDAS.VALOR_DESCONTO.ordinal() );
-				tabVendas.setValor( Funcoes.bdToStr( rs.getBigDecimal( "VLRADICVENDA" ) ), row, VENDAS.VALOR_ADICIONAL.ordinal() );
-				tabVendas.setValor( this.getTipoFrete(rs.getString( "TIPOFRETE" )), row, VENDAS.FRETE.ordinal() );
-				tabVendas.setValor( Funcoes.bdToStr( rs.getBigDecimal( "VLRLIQVENDA" ) ), row, VENDAS.VALOR_LIQUIDO.ordinal() );
-				tabVendas.setValor( rs.getString( "TIPOVENDA" ), row, VENDAS.TIPOVENDA.ordinal() );
-				tabVendas.setValor( imgColuna, row, VENDAS.STATUS.ordinal() );
-
-				row++;
+			for (Vector<Object> row: vendas) {
+				tabVendas.adicLinha( row );
 			}
-
-			sql = new StringBuilder();
-			sql.append( "SELECT FIRST 1 V.DTEMITVENDA, V.VLRLIQVENDA, V.CODVENDA " );
-			sql.append( "FROM VDVENDA V, VDCLIENTE C " );
-			sql.append( "WHERE V.CODEMP=? AND V.CODFILIAL=? AND V.TIPOVENDA='V' AND V.DTEMITVENDA BETWEEN ? AND ? AND " );
-			sql.append( "C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND C.CODCLI=V.CODCLI AND " );
-			sql.append( "C.CODEMP=? AND C.CODFILIAL=? AND C.CODCLI=? " );
-			sql.append( "ORDER BY V.DTEMITVENDA DESC" );
-
-			ps = con.prepareStatement( sql.toString() );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "VDVENDA" ) );
-			ps.setDate( 3, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
-			ps.setDate( 4, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
-			ps.setInt( 5, Aplicativo.iCodEmp );
-			ps.setInt( 6, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
-			ps.setInt( 7, txtCodCli.getVlrInteger() );
-
-			rs = ps.executeQuery();
-
+			Object[] ultimaVenda = daoconsultacli.loadUltimaVenda(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDVENDA" )
+					, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCLIENTE" ), txtCodCli.getVlrInteger()
+					, txtDataini.getVlrDate(), txtDatafim.getVlrDate());
 			txtUltimaCompra.setVlrString("");
 			txtVlrUltimaCompra.setVlrString( "" );
-			
-			if ( rs.next() ) {
-				txtUltimaCompra.setVlrDate( Funcoes.sqlDateToDate( rs.getDate( "DTEMITVENDA" ) ) );
-				txtVlrUltimaCompra.setVlrBigDecimal( rs.getBigDecimal( "VLRLIQVENDA" ) );
+			if ( ultimaVenda[RESULT_ULTVENDAS.DTEMITVENDA.ordinal()]!=null ) {
+				txtUltimaCompra.setVlrDate( Funcoes.sqlDateToDate( (java.sql.Date) ultimaVenda[RESULT_ULTVENDAS.DTEMITVENDA.ordinal()] ) );
+				txtVlrUltimaCompra.setVlrBigDecimal( (BigDecimal) ultimaVenda[RESULT_ULTVENDAS.VLRLIQVENDA.ordinal()] );
 			}
-
-			sql = new StringBuilder();
-			
-			sql.append( "select sum(ir.vlritrec) total, sum(ir.vlrapagitrec) total_aberto, MIN(DATAREC), MAX(DATAREC) " );
-			sql.append( "FROM FNRECEBER rc, fnitreceber ir " );
-			sql.append( "where rc.codemp=ir.codemp and rc.codfilial=ir.codfilial and rc.codrec=ir.codrec and " );
-			
-			sql.append( "ir.CODEMP=? AND ir.CODFILIAL=? AND rc.CODEMPCL=? and rc.codfilialcl=? and CODCLI=? " );
-			sql.append( "and ir.DTvencitrec BETWEEN ? AND ? ");
-			
-			/*
-			sql.append( "SELECT SUM(V.VLRLIQVENDA) TOTAL, SUM(R.VLRAPAGREC) TOTAL_ABERTO " );
-			sql.append( "FROM VDVENDA V, VDCLIENTE C, FNRECEBER R " );
-			sql.append( "WHERE V.CODEMP=? AND V.CODFILIAL=? AND V.TIPOVENDA='V' AND V.DTEMITVENDA BETWEEN ? AND ? AND " );
-			sql.append( "C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND C.CODCLI=V.CODCLI AND " );
-			sql.append( "C.CODEMP=? AND C.CODFILIAL=? AND C.CODCLI=? AND " );
-			sql.append( "R.CODEMPVD=V.CODEMP AND R.CODFILIALVD=V.CODFILIAL AND R.CODVENDA=V.CODVENDA AND R.TIPOVENDA=V.TIPOVENDA " );
-			sql.append( "GROUP BY V.CODCLI " );
-
-			 */
-			
-			ps = con.prepareStatement( sql.toString() );
-			
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
-
-			ps.setInt( 3, Aplicativo.iCodEmp );
-			ps.setInt( 4, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
-			ps.setInt( 5, txtCodCli.getVlrInteger() );
-
-			ps.setDate( 6, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
-			ps.setDate( 7, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
-		
-			rs = ps.executeQuery();
-			
-			txtTotalCompras.setVlrString( "" );
-			txtTotalAberto.setVlrString( "" );
-
-			if ( rs.next() ) {
-				
-				//txtTotalCompras.setVlrString( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs.getString( "TOTAL" ) ) );
-				//txtTotalAberto.setVlrString( Funcoes.strDecimalToStrCurrency( 15, Aplicativo.casasDecFin, rs.getString( "TOTAL_ABERTO" ) ) );
-			
-				txtTotalCompras.setVlrBigDecimal( rs.getBigDecimal( "TOTAL" ) );
-				txtTotalAberto.setVlrBigDecimal( rs.getBigDecimal( "TOTAL_ABERTO"  ));
-				
+			Object[] receber = daoconsultacli.loadReceber( codemprc, codfilialrc, codempcl
+					, codfilialcl, codcli, codemppd, codfilialpd, codprod, dtini, dtfim );
+			BigDecimal totalAberto = (BigDecimal) receber[RESULT_RECEBER.TOTAL_ABERTO.ordinal()];
+			if (totalAberto == null){
+				totalAberto = new BigDecimal(0);
 			}
-			
-			sql = new StringBuilder();
-			
-			sql.append( "select sum(ir.vlritrec) total, sum(ir.vlrapagitrec) total_aberto, MIN(DATAREC), MAX(DATAREC) " );
-			sql.append( "FROM FNRECEBER rc, fnitreceber ir " );
-			sql.append( "where rc.codemp=ir.codemp and rc.codfilial=ir.codfilial and rc.codrec=ir.codrec " );
-			sql.append( " and ir.DTvencitrec > current_date " );
-			
-			sql.append( "and ir.CODEMP=? AND ir.CODFILIAL=? AND rc.CODEMPCL=? and rc.codfilialcl=? and CODCLI=? " );
-			sql.append( "and ir.DTvencitrec BETWEEN ? AND ? ");
-			
-			ps = con.prepareStatement( sql.toString() );
-			
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
-
-			ps.setInt( 3, Aplicativo.iCodEmp );
-			ps.setInt( 4, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
-			ps.setInt( 5, txtCodCli.getVlrInteger() );
-
-			ps.setDate( 6, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
-			ps.setDate( 7, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
-		
-			rs = ps.executeQuery();
-			
-			if ( rs.next() ) {
-				BigDecimal totalAberto = rs.getBigDecimal( "total_aberto" );
-				if (totalAberto == null){
-					totalAberto = new BigDecimal(0);
-				}
-				txtTotalAtraso.setVlrBigDecimal( totalAberto);
-			}
-
-			if ( row > 0 ) {
-				// Selecionando primeiro do grid e carregando itens
-
+			txtTotalAtraso.setVlrBigDecimal( totalAberto);
+			if (tabVendas.getDataVector().size()>0) {
 				tabVendas.setLinhaSel( 0 );
-				buscaItensVenda( (Integer) tabVendas.getValor( tabVendas.getLinhaSel(), VENDAS.CODVENDA.ordinal() ), "V" );
+				buscaItensVenda( codempvd, codfilialvd, "V", (Integer) tabVendas.getValor( tabVendas.getLinhaSel(), VENDAS.CODVENDA.ordinal() )
+						, codemppd, codfilialpd, codprod);
 			}
-
-			rs.close();
-			ps.close();
-			con.commit();
-
 			carregandoVendas = false;
 			tabVendas.requestFocus();
 		} catch ( Exception e ) {
 			e.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro carregando vendas !\n"+e.getMessage() );
 		}
 	}
 	
-	private String getTipoFrete (String cod){
-		if ("C".equals( cod )){
-			return "CIF";
-		}
-		else if ("F".equals( cod )){
-			return "FOB";
-		}
-		else{
-			return "";
-		}
-	}
 
-	private void buscaItensVenda( int codvenda, String tipovenda ) {
+	private void buscaItensVenda( Integer codempvd, Integer codfilialvd, String tipovenda, Integer codvenda
+			, Integer codemppd, Integer codfilialpd, Integer codprod  ) {
 
 		try {
-			StringBuilder sql = new StringBuilder();
-			sql.append( "SELECT I.CODITVENDA, I.CODPROD, coalesce(obsitvenda, P.DESCPROD) DESCPROD, coalesce(I.CODLOTE,'') codlote, " );
-			sql.append( "coalesce(I.QTDITVENDA,0) qtditvenda, coalesce(I.PRECOITVENDA,0) precoitvenda, coalesce(I.VLRDESCITVENDA,0) vlrdescitvenda, coalesce(I.VLRFRETEITVENDA,0) vlrfreteitvenda, coalesce(I.VLRLIQITVENDA,0) vlrliqitvenda " );
-			sql.append( "FROM VDITVENDA I, EQPRODUTO P " );
-			sql.append( "WHERE I.CODEMP=? AND I.CODFILIAL=? AND I.CODVENDA=? AND I.TIPOVENDA=? AND " );
-			sql.append( "P.CODEMP=I.CODEMPPD AND P.CODFILIAL=I.CODFILIALPD AND P.CODPROD=I.CODPROD " );
-
-			if ( txtCodProd.getVlrInteger() > 0 ) {
-				sql.append( " AND P.CODPROD=? " );
-			}
-
-			sql.append( "ORDER BY I.CODITVENDA" );
-
-			PreparedStatement ps = con.prepareStatement( sql.toString() );
-
-			int iparam = 1;
-
-			ps.setInt( iparam++, Aplicativo.iCodEmp );
-			ps.setInt( iparam++, ListaCampos.getMasterFilial( "VDITVENDA" ) );
-			ps.setInt( iparam++, codvenda );
-			ps.setString( iparam++, tipovenda );
-
-			if ( txtCodProd.getVlrInteger() > 0 ) {
-				ps.setInt( iparam++, txtCodProd.getVlrInteger() );
-			}
-
-			ResultSet rs = ps.executeQuery();
-
 			tabItensVendas.limpa();
-
-			int row = 0;
-			while ( rs.next() ) {
-
-				tabItensVendas.adicLinha();
-
-				tabItensVendas.setValor( rs.getInt( "CODITVENDA" ), row, ITEMVENDAS.ITEM.ordinal() );
-				tabItensVendas.setValor( rs.getInt( "CODPROD" ), row, ITEMVENDAS.CODPROD.ordinal() );
-				tabItensVendas.setValor( rs.getString( "DESCPROD" ), row, ITEMVENDAS.DESCPROD.ordinal() );
-				tabItensVendas.setValor( rs.getString( "CODLOTE" ), row, ITEMVENDAS.LOTE.ordinal() );
-				tabItensVendas.setValor( Funcoes.bdToStr( rs.getBigDecimal( "QTDITVENDA" ) ), row, ITEMVENDAS.QUANTIDADE.ordinal() );
-				tabItensVendas.setValor( Funcoes.bdToStr( rs.getBigDecimal( "PRECOITVENDA" ) ), row, ITEMVENDAS.PRECO.ordinal() );
-				tabItensVendas.setValor( Funcoes.bdToStr( rs.getBigDecimal( "VLRDESCITVENDA" ) ), row, ITEMVENDAS.DESCONTO.ordinal() );
-				tabItensVendas.setValor( Funcoes.bdToStr( rs.getBigDecimal( "VLRFRETEITVENDA" ) ), row, ITEMVENDAS.FRETE.ordinal() );
-				tabItensVendas.setValor( Funcoes.bdToStr( rs.getBigDecimal( "VLRLIQITVENDA" ) ), row, ITEMVENDAS.TOTAL.ordinal() );
-				tabItensVendas.setValor( tipovenda, row, ITEMVENDAS.TIPOVENDA.ordinal() );
-
-				row++;
+			Vector<Vector<Object>> itensVenda = daoconsultacli.loadItensVenda( codempvd, codfilialvd, tipovenda, codvenda, codemppd, codfilialpd, codprod );
+			for (Vector<Object> row: itensVenda) {
+				tabItensVendas.adicLinha( row );
 			}
-
-			rs.close();
-			ps.close();
-			con.commit();
 		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
@@ -779,7 +498,14 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 	public void valorAlterado( TabelaSelEvent e ) {
 
 		if ( e.getTabela() == tabVendas && tabVendas.getLinhaSel() > -1 && !carregandoVendas ) {
-			buscaItensVenda( (Integer) tabVendas.getValor( tabVendas.getLinhaSel(), VENDAS.CODVENDA.ordinal() ), (String) tabVendas.getValor( tabVendas.getLinhaSel(), VENDAS.TIPOVENDA.ordinal() ) );
+			Integer codempvd = Aplicativo.iCodEmp;
+			Integer codfilialvd = ListaCampos.getMasterFilial( "VDVENDA" );
+			Integer codemppd = Aplicativo.iCodEmp;
+			Integer codfilialpd = ListaCampos.getMasterFilial( "EQPRODUTO" );
+			Integer codprod = txtCodProd.getVlrInteger();
+			String tipovenda = (String) tabVendas.getValor( tabVendas.getLinhaSel(), VENDAS.TIPOVENDA.ordinal() );
+			Integer codvenda = (Integer) tabVendas.getValor( tabVendas.getLinhaSel(), VENDAS.CODVENDA.ordinal() );
+			buscaItensVenda( codempvd, codfilialvd, tipovenda, codvenda, codemppd, codfilialpd, codprod );
 		}
 	}
 
@@ -871,7 +597,11 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		lcCliente.setConexao( con );
 		lcProd.setConexao( con );
 		// Carregar a cesta de compras
+		daoconsultacli = new DAOConsultaCli( cn, imgVencida, imgAVencer, imgPgEmAtraso
+				, imgPgEmDia, imgCancelado, imgPedido, imgFaturado );
 		cestaFactory = Aplicativo.getInstace().getCestaFactory();
-		
+		// Montar a tela após a instância de daoconsultacli
+
+
 	}
 }
