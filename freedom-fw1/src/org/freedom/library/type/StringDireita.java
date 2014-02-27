@@ -20,6 +20,8 @@
 
 package org.freedom.library.type;
 
+import java.math.BigDecimal;
+
 public class StringDireita implements Comparable<String> {
 	private String sTexto = "";
 
@@ -34,5 +36,14 @@ public class StringDireita implements Comparable<String> {
 
 	public int compareTo(String arg0) {
 		return sTexto.compareTo(arg0.toString());
+	}
+	
+	public BigDecimal getBigDecimal() {
+		BigDecimal result = null;
+		if (sTexto!=null && !"".equals(sTexto.trim())) {
+			String str = sTexto.trim().replace(',', '.');
+			result = new BigDecimal(str);
+		}
+		return result;
 	}
 }
