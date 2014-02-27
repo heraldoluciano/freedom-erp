@@ -193,7 +193,9 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 	
 	private JPanelPad pinToolBarVendas = new JPanelPad(40, 120);
 
-	private JButtonPad btAdic = new JButtonPad( Icone.novo( "btAdic2.gif" ) );
+	private JButtonPad btResetCesta = new JButtonPad( Icone.novo( "btReset.png" ) );
+
+	private JButtonPad btAddCesta = new JButtonPad( Icone.novo( "btAdic2.gif" ) );
 
 	private JButtonPad btExec = new JButtonPad( Icone.novo( "btExecuta.png" ) );
 
@@ -201,15 +203,11 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 
 	private JButtonPad btEditQtd = new JButtonPad( Icone.novo( "btEditar.gif" ) );
 
-	private JButtonPad btResetCesta = new JButtonPad( Icone.novo( "btReset.png" ) );
-
 	private JButtonPad btTudoIt = new JButtonPad( Icone.novo( "btTudo.png" ) );
 
 	private JButtonPad btNadaIt = new JButtonPad( Icone.novo( "btNada.png" ) );
 
 	private JButtonPad btGerar = new JButtonPad( Icone.novo( "btGerar.png" ) );
-
-	private JButtonPad btAgruparItens = new JButtonPad( Icone.novo( "btAdic2.gif" ) );
 
 	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.png" ) );
 
@@ -269,6 +267,8 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		tabProdVendas.addMouseListener( this );
 		tabItensVenda.addMouseListener( this );
 		btBuscar.addKeyListener( this );
+		btResetCesta.addActionListener( this );
+		btAddCesta.addActionListener( this );
 		txtCodCli.addFocusListener( this );
 		Calendar periodo = Calendar.getInstance();
 		txtDatafim.setVlrDate( periodo.getTime() );
@@ -309,6 +309,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		pinToolBar.add( pinToolBarCesta, BorderLayout.NORTH );
 		pinToolBar.add( pinToolBarVendas, BorderLayout.CENTER );
 		pinToolBarCesta.adic( btResetCesta, 3, 3, 30, 30 );
+		pinToolBarVendas.adic( btAddCesta, 3, 3, 30, 30 );
 		// *********
 		getTela().add( panelGeral, BorderLayout.CENTER );
 		panelGeral.add( panelMaster, BorderLayout.NORTH );
@@ -656,9 +657,21 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 
 		if ( e.getSource() == btBuscar ) {
 			loadVendas();
+		} else if ( e.getSource() == btAddCesta ) {
+			addCesta();
 		}
 	}
 
+	private void addCesta() {
+		
+		int selectedRow = tabItensVenda.getSelectedRow();
+		if ( selectedRow == -1 ) {
+			Funcoes.mensagemInforma( this, "Selecione um item para inclusão na lista !" );
+			tabItensVenda.requestFocus();
+			return;
+		}
+	}
+	
 	private void loadTabVendas() {
 		Integer codempvd = Aplicativo.iCodEmp;
 		Integer codfilialvd = ListaCampos.getMasterFilial( "VDVENDA" );
