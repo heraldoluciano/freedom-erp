@@ -23,27 +23,34 @@ package org.freedom.library.type;
 import java.math.BigDecimal;
 
 public class StringDireita implements Comparable<String> {
-	private String sTexto = "";
+	private String text = "";
 
-	public StringDireita(String sTexto) {
-		if (sTexto != null)
-			this.sTexto = sTexto.trim();
+	public StringDireita(String text) {
+		if (text != null)
+			this.text = text.trim();
 	}
 
 	public String toString() {
-		return sTexto;
+		return text;
 	}
 
 	public int compareTo(String arg0) {
-		return sTexto.compareTo(arg0.toString());
+		return text.compareTo(arg0.toString());
 	}
 	
 	public BigDecimal getBigDecimal() {
 		BigDecimal result = null;
-		if (sTexto!=null && !"".equals(sTexto.trim())) {
-			String str = sTexto.trim().replace(',', '.');
+		if (text!=null && !"".equals(text.trim())) {
+			String str = text.trim().replace(',', '.');
+			int pos = str.lastIndexOf('.');
+			if (pos>-1) {
+				String str1 = str.substring(0, pos);
+				String str2 = str.substring(pos);
+				str = str1.replace(".","")+str2;
+			} 
 			result = new BigDecimal(str);
 		}
 		return result;
 	}
+	
 }

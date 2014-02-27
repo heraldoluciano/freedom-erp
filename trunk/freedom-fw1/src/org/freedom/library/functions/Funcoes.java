@@ -1450,7 +1450,7 @@ public class Funcoes {
 		Component cRetorno = null;
 		cFrame = comp.getParent();
 		if (cFrame != null) {
-			for (int i = 1; 1 <= 10; i++) {
+			for (int i = 1; i <= 10; i++) {
 				if ((cFrame instanceof JFrame)
 						|| (cFrame instanceof JInternalFrame)
 						|| (cFrame instanceof JDialog)) {
