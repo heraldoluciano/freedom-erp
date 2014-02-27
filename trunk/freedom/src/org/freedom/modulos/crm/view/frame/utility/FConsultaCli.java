@@ -37,6 +37,7 @@ import java.awt.event.MouseListener;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -63,11 +64,14 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
 import org.freedom.library.type.StringDireita;
 import org.freedom.modulos.crm.dao.DAOConsultaCli;
+import org.freedom.modulos.crm.dao.DAOConsultaCli.CESTAS;
+import org.freedom.modulos.crm.dao.DAOConsultaCli.ITENSCESTA;
 import org.freedom.modulos.crm.dao.DAOConsultaCli.ITENSVENDA;
 import org.freedom.modulos.crm.dao.DAOConsultaCli.PRODVENDAS;
 import org.freedom.modulos.crm.dao.DAOConsultaCli.RESULT_RECEBER;
 import org.freedom.modulos.crm.dao.DAOConsultaCli.RESULT_ULTVENDA;
 import org.freedom.modulos.crm.dao.DAOConsultaCli.VENDAS;
+import org.freedom.modulos.std.orcamento.bean.Cesta;
 import org.freedom.modulos.std.orcamento.bussiness.CestaFactory;
 import org.freedom.modulos.std.view.frame.crud.detail.FVenda;
 
@@ -100,7 +104,9 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 
 	private JPanelPad panelProdVendas = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
-	private JPanelPad panelCesta = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	private JPanelPad panelTodasCestas = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+
+	private JPanelPad panelCestas = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
 	private JPanelPad panelResumoVendas = new JPanelPad( 700, 73 );
 
@@ -114,7 +120,13 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 
 	private JPanelPad panelTabVendasNotas = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
 
-	private JPanelPad panelTabItensVendas = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
+	private JPanelPad panelTabItensVenda = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
+
+	private JPanelPad panelGridCestas = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 2, 1 ) );
+
+	private JPanelPad panelTabCestas = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
+
+	private JPanelPad panelTabItensCesta = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
 
 	private JPanelPad panelReceber = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
@@ -169,6 +181,41 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 	private JTablePad tabProdVendas = new JTablePad();
 
 	private JTablePad tabItensVenda = new JTablePad();
+
+	private JTablePad tabCestas = new JTablePad();
+
+	private JTablePad tabItensCesta = new JTablePad();
+
+	// *** Itens para barra de ferramentas
+	private JPanelPad pinToolBar = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 2, 1 ));
+	
+	private JPanelPad pinToolBarCesta = new JPanelPad(40, 120);
+	
+	private JPanelPad pinToolBarVendas = new JPanelPad(40, 120);
+
+	private JButtonPad btAdic = new JButtonPad( Icone.novo( "btAdic2.gif" ) );
+
+	private JButtonPad btExec = new JButtonPad( Icone.novo( "btExecuta.png" ) );
+
+	private JButtonPad btTudoOrc = new JButtonPad( Icone.novo( "btTudo.png" ) );
+
+	private JButtonPad btEditQtd = new JButtonPad( Icone.novo( "btEditar.gif" ) );
+
+	private JButtonPad btResetCesta = new JButtonPad( Icone.novo( "btReset.png" ) );
+
+	private JButtonPad btTudoIt = new JButtonPad( Icone.novo( "btTudo.png" ) );
+
+	private JButtonPad btNadaIt = new JButtonPad( Icone.novo( "btNada.png" ) );
+
+	private JButtonPad btGerar = new JButtonPad( Icone.novo( "btGerar.png" ) );
+
+	private JButtonPad btAgruparItens = new JButtonPad( Icone.novo( "btAdic2.gif" ) );
+
+	private JButtonPad btSair = new JButtonPad( "Sair", Icone.novo( "btSair.png" ) );
+
+	private JButtonPad btResetOrc = new JButtonPad( Icone.novo( "btReset.png" ) );
+
+	private JButtonPad btResetItOrc = new JButtonPad( Icone.novo( "btReset.png" ) );
 	
 	// *** Listacampos
 
@@ -217,6 +264,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		btBuscar.addActionListener( this );
 		tabVendas.addTabelaSelListener( this );
 		tabVendas.addMouseListener( this );
+		tabCestas.addTabelaSelListener( this );
 		tabProdVendas.addTabelaSelListener( this );
 		tabProdVendas.addMouseListener( this );
 		tabItensVenda.addMouseListener( this );
@@ -256,6 +304,12 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 
 	private void montaTela() {
 
+		// **** Preparando barra de ferramentas
+		btResetCesta.setToolTipText( "Esvazia todas as cestas" );
+		pinToolBar.add( pinToolBarCesta, BorderLayout.NORTH );
+		pinToolBar.add( pinToolBarVendas, BorderLayout.CENTER );
+		pinToolBarCesta.adic( btResetCesta, 3, 3, 30, 30 );
+		// *********
 		getTela().add( panelGeral, BorderLayout.CENTER );
 		panelGeral.add( panelMaster, BorderLayout.NORTH );
 		// ***** Cabeçalho
@@ -298,29 +352,36 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		panelGeral.add( panelDetail, BorderLayout.CENTER );
 		panelDetail.add( panelResumoVendas, BorderLayout.NORTH );
 		panelDetail.add( tabbedDetail, BorderLayout.CENTER );
+		panelDetail.add(pinToolBar, BorderLayout.EAST);
 		
 		tabbedVendas.addTab( "Todas", panelTodasVendas );
 		tabbedVendas.addTab( "Produtos", panelProdVendas);
 	
 		tabbedDetail.addTab("Vendas", tabbedVendas);
-		tabbedDetail.addTab( "Cesta", panelCesta );
+		tabbedDetail.addTab( "Cestas", panelCestas );
 
 		// ***** Todas Vendas
 
 		//panelTodasVendas.add( panelResumoVendas, BorderLayout.NORTH );
 		panelTodasVendas.add( panelGridVendas, BorderLayout.CENTER );
 		panelGridVendas.add( panelTabVendasNotas );
-		panelGridVendas.add( panelTabItensVendas );
-
+		panelGridVendas.add( panelTabItensVenda );
 		panelTabVendasNotas.setBorder( BorderFactory.createTitledBorder( "Vendas" ) );
-		panelTabItensVendas.setBorder( BorderFactory.createTitledBorder( "Itens da venda selecionada" ) );
-		panelTabItensVendas.setPreferredSize( new Dimension( 700, 120 ) );
-
+		panelTabItensVenda.setBorder( BorderFactory.createTitledBorder( "Itens da venda selecionada" ) );
+		panelTabItensVenda.setPreferredSize( new Dimension( 700, 120 ) );
 		// ***** Prod Vendas
 		panelProdVendas.add( panelGridProdVendas, BorderLayout.CENTER );
 		panelGridProdVendas.add( panelTabProdVendas, BorderLayout.CENTER);
 		//panelTabProdVendas.setBorder( BorderFactory.createTitledBorder( "Itens adquiridos no perído" ) );
 		// Final prodVendas
+		// **** Paineis para Cestas;
+		panelCestas.add( panelGridCestas, BorderLayout.CENTER );
+		panelGridCestas.add( panelTabCestas );
+		panelGridCestas.add( panelTabItensCesta );
+		panelTabCestas.setBorder( BorderFactory.createTitledBorder( "Cestas" ) );
+		panelTabItensCesta.setBorder( BorderFactory.createTitledBorder( "Itens da cesta selecionada" ) );
+		panelTabItensCesta.setPreferredSize( new Dimension( 700, 120 ) );
+//		panelCesta.add
 		
 		panelResumoVendas.adic( new JLabelPad( "Última Venda" ), 10, 10, 90, 20 );
 		panelResumoVendas.adic( txtUltimaVenda, 10, 30, 90, 20 );
@@ -377,7 +438,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		faturadas.setForeground( statusColor );
 		faturadas.setFont( statusFont );
 		panelResumoVendas.adic( faturadas, 670, 35, 100, 15 );
-
+		// Grid de vendas
 		tabVendas.adicColuna( "" );
 		tabVendas.adicColuna( "Código" );
 		tabVendas.adicColuna( "Doc." );
@@ -391,7 +452,6 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		tabVendas.adicColuna( "V.Líquido" );
 		tabVendas.adicColuna( "Tipo Venda" );
 		tabVendas.adicColuna( "" );
-
 		tabVendas.setTamColuna( 20, VENDAS.STATUSPGTO.ordinal() );
 		tabVendas.setTamColuna( 60, VENDAS.CODVENDA.ordinal() );
 		tabVendas.setTamColuna( 60, VENDAS.NOTA.ordinal() );
@@ -405,9 +465,8 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		tabVendas.setTamColuna( 80, VENDAS.VALOR_LIQUIDO.ordinal() );
 		tabVendas.setTamColuna( 20, VENDAS.STATUS.ordinal() );
 		tabVendas.setColunaInvisivel( VENDAS.TIPOVENDA.ordinal() );
-
 		panelTabVendasNotas.add( new JScrollPane( tabVendas ) );
-
+		// Gride de itens de venda
 		tabItensVenda.adicColuna( "Item" );
 		tabItensVenda.adicColuna( "Código" );
 		tabItensVenda.adicColuna( "Descrição do produto" );
@@ -418,7 +477,6 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		tabItensVenda.adicColuna( "V.Frete" );
 		tabItensVenda.adicColuna( "V.líq." );
 		tabItensVenda.adicColuna( "TipoVenda" );
-
 		tabItensVenda.setTamColuna( 30, ITENSVENDA.ITEM.ordinal() );
 		tabItensVenda.setTamColuna( 50, ITENSVENDA.CODPROD.ordinal() );
 		tabItensVenda.setTamColuna( 300, ITENSVENDA.DESCPROD.ordinal() );
@@ -429,8 +487,8 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		tabItensVenda.setTamColuna( 80, ITENSVENDA.FRETE.ordinal() );
 		tabItensVenda.setTamColuna( 90, ITENSVENDA.TOTAL.ordinal() );
 		tabItensVenda.setColunaInvisivel( ITENSVENDA.TIPOVENDA.ordinal() );
-		panelTabItensVendas.add( new JScrollPane( tabItensVenda ) );
-
+		panelTabItensVenda.add( new JScrollPane( tabItensVenda ) );
+		// Gride de produtos vendidos 
 		tabProdVendas.adicColuna( "S.V." );
 		tabProdVendas.adicColuna( "S.P." );
 		tabProdVendas.adicColuna( "Pedido" );
@@ -444,7 +502,6 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		tabProdVendas.adicColuna( "V.desconto" );
 		tabProdVendas.adicColuna( "V.Líquido" );
 		tabProdVendas.adicColuna( "Tipo Venda" );
-
 		tabProdVendas.setTamColuna( 30, PRODVENDAS.STATUSPGTO.ordinal() );
 		tabProdVendas.setTamColuna( 30, PRODVENDAS.STATUSVENDA.ordinal() );
 		tabProdVendas.setTamColuna( 60, PRODVENDAS.CODVENDA.ordinal() );
@@ -458,11 +515,40 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		tabProdVendas.setTamColuna( 90, PRODVENDAS.VLRDESCITVENDA.ordinal() );
 		tabProdVendas.setTamColuna( 90, PRODVENDAS.VLRLIQITVENDA.ordinal() );
 		tabProdVendas.setColunaInvisivel( PRODVENDAS.TIPOVENDA.ordinal() );
-
 		panelTabProdVendas.add( new JScrollPane( tabProdVendas ) );
-		
+		// Gride de cestas
+		tabCestas.adicColuna( "Sel." );
+		tabCestas.adicColuna( "Cód.cli." );
+		tabCestas.adicColuna( "Razão social" );
+		tabCestas.adicColuna( "Data" );
+		tabCestas.adicColuna( "Quantidade" );
+		tabCestas.adicColuna( "V.desconto" );
+		tabCestas.adicColuna( "V.líquido" );
+		tabCestas.setTamColuna( 30, CESTAS.SELECAO.ordinal() );
+		tabCestas.setTamColuna( 90, CESTAS.CODCLI.ordinal() );
+		tabCestas.setTamColuna( 250, CESTAS.RAZCLI.ordinal() );
+		tabCestas.setTamColuna( 90, CESTAS.DATACESTA.ordinal() );
+		tabCestas.setTamColuna( 100, CESTAS.QTDCESTA.ordinal() );
+		tabCestas.setTamColuna( 100, CESTAS.VLRDESCCESTA.ordinal() );
+		tabCestas.setTamColuna( 100, CESTAS.VLRLIQCESTA.ordinal() );
+		panelTabCestas.add( new JScrollPane( tabCestas ) );
+		// Gride de itens da cesta
+		tabItensCesta.adicColuna( "Sel." );
+		tabItensCesta.adicColuna( "Cód.prod." );
+		tabItensCesta.adicColuna( "Descrição do produto" );
+		tabItensCesta.adicColuna( "Quantidade" );
+		tabItensCesta.adicColuna( "Preço" );
+		tabItensCesta.adicColuna( "V.Desconto" );
+		tabItensCesta.adicColuna( "V.líquido" );
+		tabItensCesta.setTamColuna( 30, ITENSCESTA.SELECAO.ordinal() );
+		tabItensCesta.setTamColuna( 90, ITENSCESTA.CODPROD.ordinal() );
+		tabItensCesta.setTamColuna( 300, ITENSCESTA.DESCPROD.ordinal() );
+		tabItensCesta.setTamColuna( 60, ITENSCESTA.QTDITCESTA.ordinal() );
+		tabItensCesta.setTamColuna( 90, ITENSCESTA.PRECOITCESTA.ordinal() );
+		tabItensCesta.setTamColuna( 90, ITENSCESTA.VLRDESCITCESTA.ordinal() );
+		tabItensCesta.setTamColuna( 90, ITENSCESTA.VLRLIQITCESTA.ordinal() );
+		panelTabItensCesta.add( new JScrollPane( tabItensCesta ) );		
 		// ***** Rodapé
-
 		panelGeral.add( panelSouth, BorderLayout.SOUTH );
 		panelSouth.setBorder( BorderFactory.createEtchedBorder() );
 		panelSouth.add( adicBotaoSair() );
@@ -573,17 +659,43 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		}
 	}
 
+	private void loadTabVendas() {
+		Integer codempvd = Aplicativo.iCodEmp;
+		Integer codfilialvd = ListaCampos.getMasterFilial( "VDVENDA" );
+		Integer codemppd = Aplicativo.iCodEmp;
+		Integer codfilialpd = ListaCampos.getMasterFilial( "EQPRODUTO" );
+		Integer codprod = txtCodProd.getVlrInteger();
+		String tipovenda = (String) tabVendas.getValor( tabVendas.getLinhaSel(), VENDAS.TIPOVENDA.ordinal() );
+		Integer codvenda = (Integer) tabVendas.getValor( tabVendas.getLinhaSel(), VENDAS.CODVENDA.ordinal() );
+		buscaItensVenda( codempvd, codfilialvd, tipovenda, codvenda, codemppd, codfilialpd, codprod );
+	}
+
+	private void loadTabCestas() {
+		if (cestaFactory!=null) {
+			List<Cesta> cestas = cestaFactory.getCestas();
+			if (cestas.size()>0) {
+				tabCestas.limpa();
+				for (Cesta cesta: cestas) {
+					int row = tabCestas.getNumLinhas();
+					tabCestas.adicLinha();
+					tabCestas.setValor( cesta.getSel(), row, CESTAS.SELECAO.ordinal() );
+					tabCestas.setValor( cesta.getCodcli(), row, CESTAS.CODCLI.ordinal() );
+					tabCestas.setValor( cesta.getRazcli(), row, CESTAS.RAZCLI.ordinal() );
+					tabCestas.setValor( cesta.getDatacesta(), row, CESTAS.DATACESTA.ordinal() );
+					tabCestas.setValor( cesta.getQtdcesta(), row, CESTAS.QTDCESTA.ordinal() );
+					tabCestas.setValor( cesta.getVlrdesccesta(), row, CESTAS.VLRDESCCESTA.ordinal() );
+					tabCestas.setValor( cesta.getVlrliqcesta(), row, CESTAS.VLRLIQCESTA.ordinal() );
+				}
+			}
+		}
+	}
+	
 	public void valorAlterado( TabelaSelEvent e ) {
 
 		if ( e.getTabela() == tabVendas && tabVendas.getLinhaSel() > -1 && !carregandoVendas ) {
-			Integer codempvd = Aplicativo.iCodEmp;
-			Integer codfilialvd = ListaCampos.getMasterFilial( "VDVENDA" );
-			Integer codemppd = Aplicativo.iCodEmp;
-			Integer codfilialpd = ListaCampos.getMasterFilial( "EQPRODUTO" );
-			Integer codprod = txtCodProd.getVlrInteger();
-			String tipovenda = (String) tabVendas.getValor( tabVendas.getLinhaSel(), VENDAS.TIPOVENDA.ordinal() );
-			Integer codvenda = (Integer) tabVendas.getValor( tabVendas.getLinhaSel(), VENDAS.CODVENDA.ordinal() );
-			buscaItensVenda( codempvd, codfilialvd, tipovenda, codvenda, codemppd, codfilialpd, codprod );
+			loadTabVendas();
+		} else if (e.getTabela() == tabCestas) {
+			loadTabCestas();
 		}
 	}
 
