@@ -61,6 +61,7 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
+import org.freedom.library.type.StringDireita;
 import org.freedom.modulos.crm.dao.DAOConsultaCli;
 import org.freedom.modulos.crm.dao.DAOConsultaCli.ITENSVENDA;
 import org.freedom.modulos.crm.dao.DAOConsultaCli.PRODVENDAS;
@@ -499,10 +500,16 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 			Integer codprod = txtCodProd.getVlrInteger();
 			Date dtini = txtDataini.getVlrDate();
 			Date dtfim = txtDatafim.getVlrDate();
+			BigDecimal totalVendas = new BigDecimal(0);
 			Vector<Vector<Object>> vendas = daoconsultacli.loadVendas(codempvd, codfilialvd
 					, codempcl, codfilialcl, codcli, codemppd, codfilialpd, codprod, dtini, dtfim);
 			for (Vector<Object> row: vendas) {
 				tabVendas.adicLinha( row );
+				StringDireita strVlrItem = (StringDireita) row.elementAt(VENDAS.VALOR_LIQUIDO.ordinal());
+				BigDecimal vlrItem = strVlrItem.getBigDecimal();
+				if (vlrItem!=null) {
+					totalVendas = totalVendas.add( vlrItem );
+				}
 			}
 			Object[] ultimaVenda = daoconsultacli.loadUltimaVenda(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDVENDA" )
 					, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCLIENTE" ), txtCodCli.getVlrInteger()
@@ -513,7 +520,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 			}
 			Object[] receber = daoconsultacli.loadReceber( codemprc, codfilialrc, codempcl
 					, codfilialcl, codcli, codemppd, codfilialpd, codprod, dtini, dtfim );
-			BigDecimal totalVendas = (BigDecimal) receber[RESULT_RECEBER.TOTAL_VENDAS.ordinal()];
+			//BigDecimal totalVendas = (BigDecimal) receber[RESULT_RECEBER.TOTAL_VENDAS.ordinal()];
 			BigDecimal totalAberto = (BigDecimal) receber[RESULT_RECEBER.TOTAL_ABERTO.ordinal()];
 			BigDecimal totalAtraso = (BigDecimal) receber[RESULT_RECEBER.TOTAL_ATRASO.ordinal()];
 			if (totalVendas != null && !totalVendas.equals( BigDecimal.ZERO )){
