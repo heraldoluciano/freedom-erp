@@ -70,7 +70,7 @@ public class DAOConsultaCli extends AbstractDAO {
 		DTEMITVENDA, VLRLIQVENDA
 	}
 	public static enum RESULT_RECEBER{ 
-		TOTAL_VENDAS, TOTAL_ABERTO, TOTAL_ATRASO
+		TOTAL_ABERTO, TOTAL_ATRASO
 	}
 	public DAOConsultaCli( DbConnection connection ) {
 		super( connection );
@@ -132,7 +132,7 @@ public class DAOConsultaCli extends AbstractDAO {
 		Object[] result = new Object[RESULT_RECEBER.values().length];
 		try {
 			StringBuilder sql = new StringBuilder();
-			sql.append( "select sum(ir.vlritrec) total_vendas, sum(ir.vlrapagitrec) total_aberto ");
+			sql.append( "select sum(ir.vlrapagitrec) total_aberto ");
 			sql.append( ", sum(case when ir.dtvencitrec<cast('now' as date) then ir.vlrapagitrec else 0 end) total_atraso ");
 			//sql.append( ", min(datarec), max(datarec) " );
 			sql.append( "from fnreceber rc, fnitreceber ir " );
@@ -150,7 +150,7 @@ public class DAOConsultaCli extends AbstractDAO {
 			ps.setDate( param++, Funcoes.dateToSQLDate( dtfim ) );
 			ResultSet rs = ps.executeQuery();
 			if ( rs.next() ) {
-				result[RESULT_RECEBER.TOTAL_VENDAS.ordinal()] = rs.getBigDecimal( RESULT_RECEBER.TOTAL_VENDAS.name() ); 
+				//result[RESULT_RECEBER.TOTAL_VENDAS.ordinal()] = rs.getBigDecimal( RESULT_RECEBER.TOTAL_VENDAS.name() ); 
 				result[RESULT_RECEBER.TOTAL_ABERTO.ordinal()] = rs.getBigDecimal( RESULT_RECEBER.TOTAL_ABERTO.name() ); 
 				result[RESULT_RECEBER.TOTAL_ATRASO.ordinal()] = rs.getBigDecimal( RESULT_RECEBER.TOTAL_ATRASO.name() ); 
 			}
