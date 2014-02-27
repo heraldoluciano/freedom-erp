@@ -102,7 +102,7 @@ public class DAOConsultaCli extends AbstractDAO {
 			sql.append( "where v.codemp=? and v.codfilial=? and v.tipovenda='V' and v.dtemitvenda between ? and ? " );
 			sql.append( "and c.codemp=v.codempcl and c.codfilial=v.codfilialcl and c.codcli=v.codcli " );
 			sql.append( "and c.codemp=? and c.codfilial=? and c.codcli=? " );
-			sql.append( "order by v.dtemitvenda desc" );
+			sql.append( "order by v.dtemitvenda desc, v.docvenda desc" );
 			PreparedStatement ps = getConn().prepareStatement( sql.toString() );
 			int param = 1;
 			ps.setInt( param++, codempvd );
@@ -255,7 +255,7 @@ public class DAOConsultaCli extends AbstractDAO {
 				sql.append( " iv.codemp=v.codemp and iv.codfilial=v.codfilial and iv.codvenda=v.codvenda and iv.tipovenda=v.tipovenda " );
 				sql.append( " and iv.codemppd=? and iv.codfilialpd=? and iv.codprod=? ) " );
 			}
-			sql.append( "order by v.dtemitvenda desc" );
+			sql.append( "order by v.dtemitvenda desc, v.docvenda desc" );
 			PreparedStatement ps = getConn().prepareStatement( sql.toString() );
 			int iparam = 1;
 			ps.setInt( iparam++, codempvd );
