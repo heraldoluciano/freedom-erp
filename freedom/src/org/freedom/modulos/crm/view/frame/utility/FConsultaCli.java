@@ -75,6 +75,7 @@ import org.freedom.modulos.crm.dao.DAOConsultaCli.RESULT_RECEBER;
 import org.freedom.modulos.crm.dao.DAOConsultaCli.RESULT_ULTVENDA;
 import org.freedom.modulos.crm.dao.DAOConsultaCli.VENDAS;
 import org.freedom.modulos.std.orcamento.bean.Cesta;
+import org.freedom.modulos.std.orcamento.bean.Item;
 import org.freedom.modulos.std.orcamento.bussiness.CestaFactory;
 import org.freedom.modulos.std.view.frame.crud.detail.FVenda;
 public class FConsultaCli extends FFilho implements ActionListener, TabelaSelListener, MouseListener
@@ -740,9 +741,33 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 					tabCestas.setValor( cesta.getVlrliqcesta(), row, CESTAS.VLRLIQCESTA.ordinal() );
 				}
 			}
+			loadTabItensCesta();
 		}
 	}
-	
+	public void loadTabItensCesta() {
+		tabItensCesta.limpa();
+		if (tabCestas.getNumLinhas()>0) {
+			int selectedRow = tabCestas.getSelectedRow();
+			if (selectedRow==-1) {
+				selectedRow = 0;
+			}
+			Integer codemp = Aplicativo.iCodEmp;
+			Integer codfilial = ListaCampos.getMasterFilial( "VDCLIENTE" );
+			Integer codcli = (Integer) tabCestas.getValor( selectedRow, CESTAS.CODCLI.ordinal() );
+			Cesta cesta = cestaFactory.getCesta( codemp, codfilial, codcli );
+		}
+		
+	}
+	public void loadTabItensCesta(Cesta cesta) {
+		if (cesta!=null) {
+			for (Item item: cesta.getItens()) {
+				int row = tabItensCesta.getNumLinhas();
+				tabItensCesta.adicLinha();
+				tabItensCesta.setValor( item.getCodprod(), row, ITENSCESTA.CODPROD.ordinal() );
+				tabItensCesta.setValor( item.getDescprod(), row, ITENSCESTA.DESCPROD.ordinal() );
+			}
+		}
+	}
 	public void valorAlterado( TabelaSelEvent e ) {
 
 		if ( e.getTabela() == tabVendas && tabVendas.getLinhaSel() > -1 && !carregandoVendas ) {
