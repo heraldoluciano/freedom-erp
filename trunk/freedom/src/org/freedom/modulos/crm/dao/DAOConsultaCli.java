@@ -57,7 +57,7 @@ public class DAOConsultaCli extends AbstractDAO {
 	private ImageIcon imgVencimento = null;
 
 	public static enum VENDAS {
-		STATUSPGTO, CODVENDA, NOTA, DATA, PAGAMENTO, VENDEDOR, VALOR_PRODUTOS, VALOR_DESCONTO, VALOR_ADICIONAL, FRETE, VALOR_LIQUIDO, TIPOVENDA, STATUS;
+		STATUSVENDA, STATUSPGTO, CODVENDA, NOTA, DATA, PAGAMENTO, VENDEDOR, VALOR_PRODUTOS, VALOR_DESCONTO, VALOR_ADICIONAL, FRETE, VALOR_LIQUIDO, TIPOVENDA;
 	}
 	public static enum CESTAS {
 		SELECAO, CODCLI, RAZCLI, DATACESTA, QTDCESTA, VLRDESCCESTA, VLRLIQCESTA;
@@ -67,7 +67,7 @@ public class DAOConsultaCli extends AbstractDAO {
 		, VLRDESCITVENDA, VLRLIQITVENDA, TIPOVENDA;
 	}
 	public static enum ITENSVENDA {
-		ITEM, CODPROD, DESCPROD, LOTE, QUANTIDADE, PRECO, DESCONTO, FRETE, TOTAL, TIPOVENDA;
+		CODITVENDA, CODPROD, DESCPROD, CODLOTE, QTDITVENDA, PRECOITVENDA, VLRDESCITVENDA, VLRFRETEITVENDA, VLRLIQITVENDA, TIPOVENDA;
 	}
 	public static enum ITENSCESTA {
 		SELECAO, CODPROD, DESCPROD, QTDITCESTA, PRECOITCESTA, VLRDESCITCESTA, VLRLIQITCESTA;
@@ -290,6 +290,7 @@ public class DAOConsultaCli extends AbstractDAO {
 				}
 				imgColuna = getImgStatus(statusvenda);
 				imgVencimento = getImgVencimento(statusvenda, emaberto, pago);
+				row.addElement( imgColuna);
 				row.addElement( imgVencimento );
 				row.addElement( rs.getInt( "CODVENDA" ) );
 				row.addElement( rs.getString( "DOCVENDA" ) );
@@ -302,7 +303,6 @@ public class DAOConsultaCli extends AbstractDAO {
 				row.addElement( getTipoFrete(rs.getString( "TIPOFRETE" )) );
 				row.addElement( Funcoes.bdToStr( rs.getBigDecimal( "VLRLIQVENDA" ) ) );
 				row.addElement( rs.getString( "TIPOVENDA" ) );
-				row.addElement( imgColuna);
 				result.addElement( row );
 			}
 			rs.close();

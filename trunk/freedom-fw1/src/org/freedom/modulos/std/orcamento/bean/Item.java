@@ -11,6 +11,20 @@ public class Item {
 	BigDecimal preco;
 	BigDecimal percdesc;
 	BigDecimal vlrdesc;
+	BigDecimal vlrliq;
+	public Item() {
+		setQtd(BigDecimal.ZERO);
+		setPreco(BigDecimal.ZERO);
+		setPercdesc(BigDecimal.ZERO);
+		setVlrdesc(BigDecimal.ZERO);
+		setVlrliq(BigDecimal.ZERO);
+	}
+	public Item(Integer codemp, Integer codfilial, Integer codprod, String descprod) {
+		setCodemp(codemp);
+		setCodfilial(codfilial);
+		setCodprod(codprod);
+		setDescprod(descprod);
+	}
 	public Integer getCodemp() {
 		return codemp;
 	}
@@ -36,6 +50,9 @@ public class Item {
 		this.descprod = descprod;
 	}
 	public BigDecimal getQtd() {
+		if (qtd==null) {
+			qtd = new BigDecimal(0);
+		}
 		return qtd;
 	}
 	public void setQtd(BigDecimal qtd) {
@@ -54,9 +71,21 @@ public class Item {
 		this.percdesc = percdesc;
 	}
 	public BigDecimal getVlrdesc() {
+		if (vlrdesc==null) {
+			vlrdesc = new BigDecimal(0);
+		}
 		return vlrdesc;
 	}
 	public void setVlrdesc(BigDecimal vlrdesc) {
 		this.vlrdesc = vlrdesc;
+	}
+	public BigDecimal getVlrliq() {
+		if (vlrliq==null) {
+			vlrliq = new BigDecimal(0);
+		}
+		return vlrliq;
+	}
+	public void setVlrliq(BigDecimal vlrliq) {
+		this.vlrliq = vlrliq;
 	}
 }
