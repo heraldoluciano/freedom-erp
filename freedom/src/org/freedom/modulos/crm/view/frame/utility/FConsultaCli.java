@@ -44,6 +44,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.TabelaSelEvent;
@@ -74,15 +77,8 @@ import org.freedom.modulos.crm.dao.DAOConsultaCli.VENDAS;
 import org.freedom.modulos.std.orcamento.bean.Cesta;
 import org.freedom.modulos.std.orcamento.bussiness.CestaFactory;
 import org.freedom.modulos.std.view.frame.crud.detail.FVenda;
-
-/**
- * Consulta de informações referente a clientes.
- * 
- * @author Setpoint Informática Ltda./Alex Rodrigues
- * @version 24/08/2009
- */
 public class FConsultaCli extends FFilho implements ActionListener, TabelaSelListener, MouseListener
-			, KeyListener, CarregaListener, FocusListener {
+			, KeyListener, CarregaListener, FocusListener, ChangeListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -251,7 +247,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 
 		super( false );
 		setTitulo( "Consulta de clientes", this.getClass().getName() );
-		setAtribos( 20, 20, 780, 600 );
+		setAtribos( 10, 10, 840, 600 );
 		int x = (int) ( Aplicativo.telaPrincipal.dpArea.getSize().getWidth() - getWidth() ) / 2;
 		int y = (int) ( Aplicativo.telaPrincipal.dpArea.getSize().getHeight() - getHeight() ) / 2;
 		setLocation( x, y );
@@ -270,6 +266,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		btResetCesta.addActionListener( this );
 		btAddCesta.addActionListener( this );
 		txtCodCli.addFocusListener( this );
+		tabbedDetail.addChangeListener( this );
 		Calendar periodo = Calendar.getInstance();
 		txtDatafim.setVlrDate( periodo.getTime() );
 		periodo.set( Calendar.YEAR, periodo.get( Calendar.YEAR ) - 1 );
@@ -310,6 +307,8 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		pinToolBar.add( pinToolBarVendas, BorderLayout.CENTER );
 		pinToolBarCesta.adic( btResetCesta, 3, 3, 30, 30 );
 		pinToolBarVendas.adic( btAddCesta, 3, 3, 30, 30 );
+		// ToolBarCesta inicializa invisível
+		pinToolBarCesta.setVisible( false );
 		// *********
 		getTela().add( panelGeral, BorderLayout.CENTER );
 		panelGeral.add( panelMaster, BorderLayout.NORTH );
@@ -318,7 +317,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		periodo.setOpaque( true );
 		JLabel borda = new JLabel();
 		borda.setBorder( BorderFactory.createEtchedBorder() );
-		panelMaster.adic( new JLabelPad( "Cód.Cli" ), 7, 5, 60, 20 );
+		panelMaster.adic( new JLabelPad( "Cód.cli" ), 7, 5, 60, 20 );
 		panelMaster.adic( txtCodCli, 7, 25, 60, 20 );
 		panelMaster.adic( new JLabelPad( "Razão social do cliente" ), 70, 5, 340, 20 );
 		panelMaster.adic( txtRazCli, 70, 25, 340, 20 );
@@ -331,7 +330,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		panelMaster.adic( new JLabelPad( "e-mail" ), 148, 45, 262, 20 );
 		panelMaster.adic( txtEmailCli, 148, 65, 262, 20 );
 		panelMaster.adic( lbAtivoCli, 413, 65, 100, 20 );
-		panelMaster.adic( new JLabelPad( "Cód.Prod." ), 7, 85, 60, 20 );
+		panelMaster.adic( new JLabelPad( "Cód.prod." ), 7, 85, 60, 20 );
 		panelMaster.adic( txtCodProd, 7, 105, 60, 20 );
 		panelMaster.adic( new JLabelPad( "Descrição do produto" ), 70, 85, 340, 20 );
 		panelMaster.adic( txtDescProd, 70, 105, 340, 20 );
@@ -440,20 +439,21 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		faturadas.setFont( statusFont );
 		panelResumoVendas.adic( faturadas, 670, 35, 100, 15 );
 		// Grid de vendas
-		tabVendas.adicColuna( "" );
+		tabVendas.adicColuna( "S.V." );
+		tabVendas.adicColuna( "S.R." );
 		tabVendas.adicColuna( "Código" );
 		tabVendas.adicColuna( "Doc." );
 		tabVendas.adicColuna( "Data" );
 		tabVendas.adicColuna( "Plano Pgto." );
 		tabVendas.adicColuna( "Vendedor" );
-		tabVendas.adicColuna( "V.Produtos" );
-		tabVendas.adicColuna( "V.Desc." );
-		tabVendas.adicColuna( "V.Adic." );
-		tabVendas.adicColuna( "Tp.Frete" );
-		tabVendas.adicColuna( "V.Líquido" );
-		tabVendas.adicColuna( "Tipo Venda" );
-		tabVendas.adicColuna( "" );
-		tabVendas.setTamColuna( 20, VENDAS.STATUSPGTO.ordinal() );
+		tabVendas.adicColuna( "V.produtos" );
+		tabVendas.adicColuna( "V.desc." );
+		tabVendas.adicColuna( "V.adic." );
+		tabVendas.adicColuna( "Tp.fr." );
+		tabVendas.adicColuna( "V.líquido" );
+		tabVendas.adicColuna( "Tipo venda" );
+		tabVendas.setTamColuna( 30, VENDAS.STATUSVENDA.ordinal() );
+		tabVendas.setTamColuna( 30, VENDAS.STATUSPGTO.ordinal() );
 		tabVendas.setTamColuna( 60, VENDAS.CODVENDA.ordinal() );
 		tabVendas.setTamColuna( 60, VENDAS.NOTA.ordinal() );
 		tabVendas.setTamColuna( 70, VENDAS.DATA.ordinal() );
@@ -462,9 +462,8 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		tabVendas.setTamColuna( 80, VENDAS.VALOR_PRODUTOS.ordinal() );
 		tabVendas.setTamColuna( 60, VENDAS.VALOR_DESCONTO.ordinal() );
 		tabVendas.setTamColuna( 60, VENDAS.VALOR_ADICIONAL.ordinal() );
-		tabVendas.setTamColuna( 60, VENDAS.FRETE.ordinal() );
+		tabVendas.setTamColuna( 40, VENDAS.FRETE.ordinal() );
 		tabVendas.setTamColuna( 80, VENDAS.VALOR_LIQUIDO.ordinal() );
-		tabVendas.setTamColuna( 20, VENDAS.STATUS.ordinal() );
 		tabVendas.setColunaInvisivel( VENDAS.TIPOVENDA.ordinal() );
 		panelTabVendasNotas.add( new JScrollPane( tabVendas ) );
 		// Gride de itens de venda
@@ -474,24 +473,24 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		tabItensVenda.adicColuna( "Lote" );
 		tabItensVenda.adicColuna( "Qtd." );
 		tabItensVenda.adicColuna( "Preço" );
-		tabItensVenda.adicColuna( "V.Desc." );
-		tabItensVenda.adicColuna( "V.Frete" );
+		tabItensVenda.adicColuna( "V.desc." );
+		tabItensVenda.adicColuna( "V.frete" );
 		tabItensVenda.adicColuna( "V.líq." );
 		tabItensVenda.adicColuna( "TipoVenda" );
-		tabItensVenda.setTamColuna( 30, ITENSVENDA.ITEM.ordinal() );
+		tabItensVenda.setTamColuna( 30, ITENSVENDA.CODITVENDA.ordinal() );
 		tabItensVenda.setTamColuna( 50, ITENSVENDA.CODPROD.ordinal() );
-		tabItensVenda.setTamColuna( 300, ITENSVENDA.DESCPROD.ordinal() );
-		tabItensVenda.setTamColuna( 70, ITENSVENDA.LOTE.ordinal() );
-		tabItensVenda.setTamColuna( 50, ITENSVENDA.QUANTIDADE.ordinal() );
-		tabItensVenda.setTamColuna( 70, ITENSVENDA.PRECO.ordinal() );
-		tabItensVenda.setTamColuna( 80, ITENSVENDA.DESCONTO.ordinal() );
-		tabItensVenda.setTamColuna( 80, ITENSVENDA.FRETE.ordinal() );
-		tabItensVenda.setTamColuna( 90, ITENSVENDA.TOTAL.ordinal() );
+		tabItensVenda.setTamColuna( 250, ITENSVENDA.DESCPROD.ordinal() );
+		tabItensVenda.setTamColuna( 70, ITENSVENDA.CODLOTE.ordinal() );
+		tabItensVenda.setTamColuna( 50, ITENSVENDA.QTDITVENDA.ordinal() );
+		tabItensVenda.setTamColuna( 70, ITENSVENDA.PRECOITVENDA.ordinal() );
+		tabItensVenda.setTamColuna( 80, ITENSVENDA.VLRDESCITVENDA.ordinal() );
+		tabItensVenda.setTamColuna( 80, ITENSVENDA.VLRFRETEITVENDA.ordinal() );
+		tabItensVenda.setTamColuna( 90, ITENSVENDA.VLRLIQITVENDA.ordinal() );
 		tabItensVenda.setColunaInvisivel( ITENSVENDA.TIPOVENDA.ordinal() );
 		panelTabItensVenda.add( new JScrollPane( tabItensVenda ) );
 		// Gride de produtos vendidos 
 		tabProdVendas.adicColuna( "S.V." );
-		tabProdVendas.adicColuna( "S.P." );
+		tabProdVendas.adicColuna( "S.R." );
 		tabProdVendas.adicColuna( "Pedido" );
 		tabProdVendas.adicColuna( "Doc." );
 		tabProdVendas.adicColuna( "Data" );
@@ -499,21 +498,21 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		tabProdVendas.adicColuna( "Descrição do produto" );
 		tabProdVendas.adicColuna( "Quantidade" );
 		tabProdVendas.adicColuna( "Preço" );
-		tabProdVendas.adicColuna( "% Desc." );
-		tabProdVendas.adicColuna( "V.desconto" );
-		tabProdVendas.adicColuna( "V.Líquido" );
+		tabProdVendas.adicColuna( "% desc." );
+		tabProdVendas.adicColuna( "V.desc." );
+		tabProdVendas.adicColuna( "V.líquido" );
 		tabProdVendas.adicColuna( "Tipo Venda" );
 		tabProdVendas.setTamColuna( 30, PRODVENDAS.STATUSPGTO.ordinal() );
 		tabProdVendas.setTamColuna( 30, PRODVENDAS.STATUSVENDA.ordinal() );
-		tabProdVendas.setTamColuna( 60, PRODVENDAS.CODVENDA.ordinal() );
-		tabProdVendas.setTamColuna( 60, PRODVENDAS.DOCVENDA.ordinal() );
+		tabProdVendas.setTamColuna( 55, PRODVENDAS.CODVENDA.ordinal() );
+		tabProdVendas.setTamColuna( 55, PRODVENDAS.DOCVENDA.ordinal() );
 		tabProdVendas.setTamColuna( 70, PRODVENDAS.DTEMITVENDA.ordinal() );
-		tabProdVendas.setTamColuna( 70, PRODVENDAS.CODPROD.ordinal() );
+		tabProdVendas.setTamColuna( 65, PRODVENDAS.CODPROD.ordinal() );
 		tabProdVendas.setTamColuna( 250, PRODVENDAS.DESCPROD.ordinal() );
-		tabProdVendas.setTamColuna( 90, PRODVENDAS.QTDITVENDA.ordinal() );
-		tabProdVendas.setTamColuna( 90, PRODVENDAS.PRECOITVENDA.ordinal() );
+		tabProdVendas.setTamColuna( 80, PRODVENDAS.QTDITVENDA.ordinal() );
+		tabProdVendas.setTamColuna( 80, PRODVENDAS.PRECOITVENDA.ordinal() );
 		tabProdVendas.setTamColuna( 60, PRODVENDAS.PERCDESCITVENDA.ordinal() );
-		tabProdVendas.setTamColuna( 90, PRODVENDAS.VLRDESCITVENDA.ordinal() );
+		tabProdVendas.setTamColuna( 80, PRODVENDAS.VLRDESCITVENDA.ordinal() );
 		tabProdVendas.setTamColuna( 90, PRODVENDAS.VLRLIQITVENDA.ordinal() );
 		tabProdVendas.setColunaInvisivel( PRODVENDAS.TIPOVENDA.ordinal() );
 		panelTabProdVendas.add( new JScrollPane( tabProdVendas ) );
@@ -663,12 +662,53 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 	}
 
 	private void addCesta() {
-		
-		int selectedRow = tabItensVenda.getSelectedRow();
+		int selectedRow = -1;
+		boolean prodShowing = panelProdVendas.isShowing();
+		if (prodShowing) {
+			selectedRow = tabProdVendas.getSelectedRow();
+		} else {
+			selectedRow = tabItensVenda.getSelectedRow();
+		}
 		if ( selectedRow == -1 ) {
 			Funcoes.mensagemInforma( this, "Selecione um item para inclusão na lista !" );
-			tabItensVenda.requestFocus();
+			
+			//tabItensVenda.requestFocus();
 			return;
+		}
+		Integer codempcl = Aplicativo.iCodEmp;
+		Integer codfilialcl = ListaCampos.getMasterFilial( "VDCLIENTE" );
+		Integer codcli = txtCodCli.getVlrInteger();
+		String razcli = txtRazCli.getVlrString();
+		Integer codemppd = Aplicativo.iCodEmp;
+		Integer codfilialpd = ListaCampos.getMasterFilial( "EQPRODUTO" );
+		Integer codprod;
+		String descprod;
+		BigDecimal qtditvenda;
+		BigDecimal precoitvenda;
+		BigDecimal percdescitvenda;
+		BigDecimal vlrdescitvenda;
+		BigDecimal vlrliqitvenda;
+		if (prodShowing) {
+			codprod = (Integer) tabProdVendas.getValor( selectedRow, PRODVENDAS.CODPROD.ordinal() );
+			descprod = (String) tabProdVendas.getValor( selectedRow, PRODVENDAS.DESCPROD.ordinal() );
+			qtditvenda = ((StringDireita) tabProdVendas.getValor( selectedRow, PRODVENDAS.QTDITVENDA.ordinal() )).getBigDecimal();
+			precoitvenda = ((StringDireita) tabProdVendas.getValor( selectedRow, PRODVENDAS.PRECOITVENDA.ordinal() )).getBigDecimal();
+			percdescitvenda = ((StringDireita) tabProdVendas.getValor( selectedRow, PRODVENDAS.PERCDESCITVENDA.ordinal() )).getBigDecimal();
+			vlrdescitvenda = ((StringDireita) tabProdVendas.getValor( selectedRow, PRODVENDAS.VLRDESCITVENDA.ordinal() )).getBigDecimal();
+			vlrliqitvenda = ((StringDireita) tabProdVendas.getValor( selectedRow, PRODVENDAS.VLRLIQITVENDA.ordinal() )).getBigDecimal();
+		} else {
+			codprod = (Integer) tabItensVenda.getValor( selectedRow, ITENSVENDA.CODPROD.ordinal() );
+			descprod = (String) tabItensVenda.getValor( selectedRow, ITENSVENDA.DESCPROD.ordinal() );
+			qtditvenda = ((StringDireita) tabItensVenda.getValor( selectedRow, ITENSVENDA.QTDITVENDA.ordinal() )).getBigDecimal();
+			precoitvenda = ((StringDireita) tabItensVenda.getValor( selectedRow, ITENSVENDA.PRECOITVENDA.ordinal() )).getBigDecimal();
+			percdescitvenda = new BigDecimal(0);
+			vlrdescitvenda = ((StringDireita) tabItensVenda.getValor( selectedRow, ITENSVENDA.VLRDESCITVENDA.ordinal() )).getBigDecimal();
+			vlrliqitvenda = ((StringDireita) tabItensVenda.getValor( selectedRow, ITENSVENDA.VLRLIQITVENDA.ordinal() )).getBigDecimal();
+		}
+		//Item
+		Cesta cesta = cestaFactory.createNewCesta(codempcl, codfilialcl, codcli, razcli);
+		if (cesta!=null) {
+			cesta.addItem( codemppd, codfilialpd, codprod, descprod, qtditvenda, precoitvenda, percdescitvenda, vlrdescitvenda, vlrliqitvenda );
 		}
 	}
 	
@@ -737,7 +777,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 					Aplicativo.telaPrincipal.criatela( "Venda", venda, con );
 				}
 				venda.exec( (Integer) tabVendas.getValor( tabVendas.getLinhaSel(), VENDAS.CODVENDA.ordinal() )
-						, (Integer) tabItensVenda.getValor( tabItensVenda.getLinhaSel(), ITENSVENDA.ITEM.ordinal() )
+						, (Integer) tabItensVenda.getValor( tabItensVenda.getLinhaSel(), ITENSVENDA.CODITVENDA.ordinal() )
 						, (String) tabItensVenda.getValor( tabItensVenda.getLinhaSel(), ITENSVENDA.TIPOVENDA
 						.ordinal() ) );
 			}
@@ -806,9 +846,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		daoconsultacli = new DAOConsultaCli( cn, imgVencida, imgAVencer, imgPgEmAtraso
 				, imgPgEmDia, imgCancelado, imgPedido, imgFaturado );
 		cestaFactory = Aplicativo.getInstace().getCestaFactory();
-		// Montar a tela após a instância de daoconsultacli
-
-
+		
 	}
 
 	public void focusGained( FocusEvent e ) {
@@ -825,6 +863,37 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 			if ( codcliatual!=null  && !codcliatual.equals(txtCodCli.getVlrInteger()) && txtCodCli.getVlrInteger().intValue()==0) {
 				clearFields();
 			}
+		}
+	}
+
+	public void stateChanged( ChangeEvent e ) {
+
+		if (e.getSource() == tabbedDetail) {
+			//System.out.println(tabbedDetail.getSelectedComponent().getName());
+			if (tabbedDetail.getSelectedComponent()==panelCestas) {
+				pinToolBarVendas.setVisible( false );
+				pinToolBarCesta.setVisible( true );
+				loadCestas();
+			} else  {
+				pinToolBarVendas.setVisible( true );
+				pinToolBarCesta.setVisible( false );
+			}
+		}
+		
+	}
+	
+	public void loadCestas() {
+		tabCestas.limpa();
+		List<Cesta> cestas = cestaFactory.getCestas();
+		for (Cesta cesta:cestas) {
+			int row = tabCestas.getNumLinhas();
+			tabCestas.adicLinha();
+			tabCestas.setValor( cesta.getCodcli(), row, CESTAS.CODCLI.ordinal() );
+			tabCestas.setValor( cesta.getRazcli(), row, CESTAS.RAZCLI.ordinal() );
+			tabCestas.setValor( cesta.getDatacesta(), row, CESTAS.DATACESTA.ordinal() );
+			tabCestas.setValor( cesta.getQtdcesta(), row, CESTAS.QTDCESTA.ordinal() );
+			tabCestas.setValor( cesta.getVlrdesccesta(), row, CESTAS.VLRDESCCESTA.ordinal() );
+			tabCestas.setValor( cesta.getVlrliqcesta(), row, CESTAS.VLRLIQCESTA.ordinal() );
 		}
 	}
 }
