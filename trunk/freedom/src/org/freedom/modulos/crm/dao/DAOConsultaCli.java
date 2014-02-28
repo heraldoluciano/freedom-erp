@@ -78,6 +78,9 @@ public class DAOConsultaCli extends AbstractDAO {
 	public static enum RESULT_RECEBER{ 
 		TOTAL_ABERTO, TOTAL_ATRASO
 	}
+	public static enum RESULT_RECEBER2{
+		EMABERTO, PAGO
+	}
 	public DAOConsultaCli( DbConnection connection ) {
 		super( connection );
 	}
@@ -227,26 +230,10 @@ public class DAOConsultaCli extends AbstractDAO {
 		Vector<Vector<Object>> result = new Vector<Vector<Object>>();
 		try {
 			StringBuilder sql = new StringBuilder();
-			sql.append( "select v.codvenda, v.docvenda, v.dtemitvenda, v.statusvenda, v.codplanopag," );
-			sql.append( "p.descplanopag, v.codvend, vd.nomevend, coalesce(v.vlrprodvenda,0) vlrprodvenda, coalesce(v.vlrdescvenda,0) vlrdescvenda," );
-			sql.append( "coalesce(v.vlradicvenda,0) vlradicvenda , coalesce(v.vlrfretevenda,0) vlrfretevenda, coalesce(v.vlrliqvenda,0) vlrliqvenda, v.tipovenda, " );
-			sql.append(" (select first 1 fi.dtvencitrec ");
-			sql.append("       from fnitreceber fi ");
-			sql.append("      inner join fnreceber fr on fr.codrec = fi.codrec and fr.codfilial = fi.codfilial   and fr.codemp = fi.codemp ");
-			sql.append("      inner join vdvenda va on fr.tipovenda = va.tipovenda and fr.codfilialva = va.codfilial and fr.codempva = va.codemp and fr.codvenda = va.codvenda ");
-			sql.append("      where fi.statusitrec = 'R1' ");
-			sql.append("        and fr.tipovenda = 'V' and fr.codfilialva = v.codfilial and fr.codempva = v.codemp and fr.codvenda = v.codvenda ");
-			sql.append("      order by fi.dtvencitrec) ");
-			sql.append(" emaberto, ");
-			sql.append(" (select first 1 fi.dtvencitrec - fi.dtliqitrec ");
-			sql.append("       from fnitreceber fi ");
-			sql.append("      inner join fnreceber fr on fr.codrec = fi.codrec       and fr.codfilial = fi.codfilial   and fr.codemp = fi.codemp ");
-			sql.append("      inner join vdvenda va   on fr.tipovenda = va.tipovenda and fr.codfilialva = va.codfilial and fr.codempva = va.codemp and fr.codvenda = va.codvenda ");
-			sql.append("      where fi.statusitrec = 'RP' ");
-			sql.append("        and fr.tipovenda = 'V' and fr.codfilialva = v.codfilial and fr.codempva = v.codemp and fr.codvenda = v.codvenda ");
-			sql.append("      order by fi.dtvencitrec) ");
-			sql.append(" pago, ");
-			sql.append(" coalesce((select vf.tipofretevd from vdfretevd vf where vf.codemp = v.codemp and vf.codfilial = v.codfilial and vf.tipovenda = v.tipovenda and vf.codvenda = v.codvenda), 'N')  as tipofrete ");
+			sql.append("select v.codvenda, v.docvenda, v.dtemitvenda, v.statusvenda, v.codplanopag" );
+			sql.append(", p.descplanopag, v.codvend, vd.nomevend, coalesce(v.vlrprodvenda,0) vlrprodvenda, coalesce(v.vlrdescvenda,0) vlrdescvenda" );
+			sql.append(", coalesce(v.vlradicvenda,0) vlradicvenda , coalesce(v.vlrfretevenda,0) vlrfretevenda, coalesce(v.vlrliqvenda,0) vlrliqvenda, v.tipovenda" );
+			sql.append(" , coalesce((select vf.tipofretevd from vdfretevd vf where vf.codemp = v.codemp and vf.codfilial = v.codfilial and vf.tipovenda = v.tipovenda and vf.codvenda = v.codvenda), 'N')  as tipofrete ");
 			sql.append( "from vdvenda v, fnplanopag p, vdvendedor vd " );
 			sql.append( "where v.codemp=? and v.codfilial=? and v.tipovenda='V' and v.dtemitvenda between ? and ?" );
 			//sql.append( "and substring( v.statusvenda from 1 for 1) not in ('D','C') ");
@@ -282,17 +269,21 @@ public class DAOConsultaCli extends AbstractDAO {
 			
 			while ( rs.next() ) {
 				Vector<Object> row = new Vector<Object>();
+				String tipovenda = rs.getString( "TIPOVENDA" );
+				Integer codvenda = rs.getInt( "CODVENDA" );
 				String statusvenda = rs.getString( "STATUSVENDA" );
-				java.sql.Date emaberto = rs.getDate( "EMABERTO" );
+				java.sql.Date emaberto = null;
 				Integer pago = null;
-				if (rs.getString( "PAGO" )!=null) {
-					pago = new Integer(rs.getInt("PAGO"));
+				Object[] result_receber2 = loadReceber2( codempvd, codfilialvd, tipovenda, codvenda );
+				if (result_receber2!=null) {
+					pago = (Integer) result_receber2[RESULT_RECEBER2.PAGO.ordinal()];
+					emaberto = (java.sql.Date) result_receber2[RESULT_RECEBER2.EMABERTO.ordinal()];
 				}
 				imgColuna = getImgStatus(statusvenda);
 				imgVencimento = getImgVencimento(statusvenda, emaberto, pago);
 				row.addElement( imgColuna);
 				row.addElement( imgVencimento );
-				row.addElement( rs.getInt( "CODVENDA" ) );
+				row.addElement( codvenda );
 				row.addElement( rs.getString( "DOCVENDA" ) );
 				row.addElement( Funcoes.dateToStrDate( rs.getDate( "DTEMITVENDA" ) ) );
 				row.addElement( rs.getString( "DESCPLANOPAG" ) );
@@ -302,7 +293,7 @@ public class DAOConsultaCli extends AbstractDAO {
 				row.addElement( Funcoes.bdToStr( rs.getBigDecimal( "VLRADICVENDA" ) ) );
 				row.addElement( getTipoFrete(rs.getString( "TIPOFRETE" )) );
 				row.addElement( Funcoes.bdToStr( rs.getBigDecimal( "VLRLIQVENDA" ) ) );
-				row.addElement( rs.getString( "TIPOVENDA" ) );
+				row.addElement( tipovenda );
 				result.addElement( row );
 			}
 			rs.close();
@@ -311,6 +302,37 @@ public class DAOConsultaCli extends AbstractDAO {
 		} catch (SQLException e) {
 			getConn().rollback();
 			throw new Exception(e.getMessage());
+		}
+		return result;
+	}
+	
+	private Object[] loadReceber2( Integer codempvd, Integer codfilialvd, String tipovenda, Integer codvenda) throws SQLException {
+		Object[] result = null;
+		StringBuilder sql = new StringBuilder();
+		sql.append("select codemp, codfilial, codrec");
+		sql.append(", (select first 1 ir.dtvencitrec ");
+		sql.append(" from fnitreceber ir ");
+		sql.append(" where ir.codemp=rc.codemp and ir.codfilial=rc.codfilial and ir.codrec=rc.codrec and ir.statusitrec = 'R1' ");
+		sql.append(" order by ir.dtvencitrec) ");
+		sql.append(" emaberto ");
+		sql.append(", (select first 1 ir.dtvencitrec - ir.dtliqitrec ");
+		sql.append("       from fnitreceber ir ");
+		sql.append("      where ir.codemp=rc.codemp and ir.codfilial=rc.codfilial and ir.codrec=rc.codrec and ir.statusitrec = 'RP' ");
+		sql.append("      order by ir.dtvencitrec) ");
+		sql.append(" pago ");
+		sql.append("from fnreceber rc ");
+		sql.append("where rc.codempva=? and rc.codfilialva=? and rc.tipovenda=? and rc.codvenda=?");
+		PreparedStatement ps = getConn().prepareStatement( sql.toString() );
+		int param = 1;
+		ps.setInt( param++, codempvd );
+		ps.setInt( param++, codfilialvd );
+		ps.setString( param++, tipovenda );
+		ps.setInt( param++, codvenda );
+		ResultSet rs = ps.executeQuery();
+		if (rs.next()) {
+			result = new Object[RESULT_RECEBER2.values().length];
+			result[RESULT_RECEBER2.EMABERTO.ordinal()] = rs.getDate( RESULT_RECEBER2.EMABERTO.name() );
+			result[RESULT_RECEBER2.PAGO.ordinal()] = new Integer(rs.getInt( RESULT_RECEBER2.PAGO.name() ));
 		}
 		return result;
 	}
@@ -327,20 +349,6 @@ public class DAOConsultaCli extends AbstractDAO {
 			sql.append("select vd.statusvenda, vd.codvenda, vd.docvenda, vd.dtemitvenda");
 			sql.append(", pd.codprod, pd.descprod, iv.qtditvenda, iv.precoitvenda, iv.percdescitvenda ");
 			sql.append(", iv.vlrdescitvenda, iv.vlrliqitvenda, vd.tipovenda ");
-			sql.append(", (select first 1 fi.dtvencitrec ");
-			sql.append("       from fnitreceber fi ");
-			sql.append("      inner join fnreceber fr on fr.codrec = fi.codrec and fr.codfilial = fi.codfilial   and fr.codemp = fi.codemp ");
-			sql.append("      where fi.statusitrec = 'R1' ");
-			sql.append("        and fr.tipovenda = vd.tipovenda and fr.codfilialva = vd.codfilial and fr.codempva = vd.codemp and fr.codvenda = vd.codvenda ");
-			sql.append("      order by fi.dtvencitrec) ");
-			sql.append(" emaberto ");
-			sql.append(", (select first 1 fi.dtvencitrec - fi.dtliqitrec ");
-			sql.append("       from fnitreceber fi ");
-			sql.append("      inner join fnreceber fr on fr.codrec = fi.codrec       and fr.codfilial = fi.codfilial   and fr.codemp = fi.codemp ");
-			sql.append("      where fi.statusitrec = 'RP' ");
-			sql.append("        and fr.tipovenda = vd.tipovenda and fr.codfilialva = vd.codfilial and fr.codempva = vd.codemp and fr.codvenda = vd.codvenda ");
-			sql.append("      order by fi.dtvencitrec) ");
-			sql.append(" pago ");
 			sql.append("from eqproduto pd ");
 			sql.append("inner join vdvenda vd on ");
 			sql.append("vd.codemp=? and vd.codfilial=? and vd.dtemitvenda between ? and ? ");
@@ -359,11 +367,18 @@ public class DAOConsultaCli extends AbstractDAO {
 			sql.append("and iv.coditvenda=(select first 1 iv2.coditvenda from vditvenda iv2 ");
 			sql.append("where iv2.codemp=vd.codemp and iv2.codfilial=vd.codfilial and iv2.tipovenda=vd.tipovenda and iv2.codvenda=vd.codvenda ");
 			sql.append("and iv2.codemppd=pd.codemp and iv2.codfilialpd=pd.codfilial and iv2.codprod=pd.codprod) ");
-			sql.append( "where pd.codemp=? and pd.codfilial=? " );
+			sql.append("where pd.codemp=? and pd.codfilial=? " );
 			if ( codprod > 0 ) {
 				sql.append("and pd.codprod=? ");
 			}
-			sql.append( "order by vd.dtemitvenda desc, pd.descprod" );
+			sql.append("and exists " );
+			sql.append("(select vd2.codvenda from vdvenda vd2, vditvenda iv2 ");
+			sql.append("where vd2.codemp=? and vd2.codfilial=? and vd2.tipovenda='V' ");
+			sql.append("and vd2.dtemitvenda between ? and ? ");
+			sql.append("and vd2.codempcl=? and vd2.codfilialcl=? and vd2.codcli=? ");
+			sql.append("and iv2.codemp=vd2.codemp and iv2.codfilial=vd2.codfilial and iv2.tipovenda=vd2.tipovenda and iv2.codvenda=vd2.codvenda ");
+			sql.append("and iv2.codemppd=pd.codemp and iv2.codfilialpd=pd.codfilial and iv2.codprod=pd.codprod) ");
+			sql.append("order by vd.dtemitvenda desc, pd.descprod" );
 			PreparedStatement ps = getConn().prepareStatement( sql.toString() );
 			int iparam = 1;
 			ps.setInt( iparam++, codempvd );
@@ -385,21 +400,32 @@ public class DAOConsultaCli extends AbstractDAO {
 			if ( codprod.intValue() > 0 ) {
 				ps.setInt( iparam++, codprod );
 			}
+			ps.setInt( iparam++, codempvd );
+			ps.setInt( iparam++, codfilialvd );
+			ps.setDate( iparam++, Funcoes.dateToSQLDate( dtini ) );
+			ps.setDate( iparam++, Funcoes.dateToSQLDate( dtfim ) );
+			ps.setInt( iparam++, codempcl );
+			ps.setInt( iparam++, codfilialcl );
+			ps.setInt( iparam++, codcli );
 			ResultSet rs = ps.executeQuery();
 			
 			while ( rs.next() ) {
 				Vector<Object> row = new Vector<Object>();
+				String tipovenda = rs.getString( "TIPOVENDA" );
+				Integer codvenda = rs.getInt( "CODVENDA" );
 				String statusvenda = rs.getString( "STATUSVENDA" );
-				java.sql.Date emaberto = rs.getDate( "EMABERTO" );
+				java.sql.Date emaberto = null;
 				Integer pago = null;
-				if (rs.getString( "PAGO" )!=null) {
-					pago = new Integer(rs.getInt("PAGO"));
+				Object[] result_receber2 = loadReceber2( codempvd, codfilialvd, tipovenda, codvenda );
+				if (result_receber2!=null) {
+					pago = (Integer) result_receber2[RESULT_RECEBER2.PAGO.ordinal()];
+					emaberto = (java.sql.Date) result_receber2[RESULT_RECEBER2.EMABERTO.ordinal()];
 				}
 				imgColuna = getImgStatus(statusvenda);
 				imgVencimento = getImgVencimento(statusvenda, emaberto, pago);
 				row.addElement( imgColuna);
 				row.addElement( imgVencimento );
-				row.addElement( rs.getInt( "CODVENDA" ) );
+				row.addElement( codvenda );
 				row.addElement( rs.getString( "DOCVENDA" ) );
 				row.addElement( Funcoes.dateToStrDate( rs.getDate( "DTEMITVENDA" ) ) );
 				row.addElement( rs.getInt( "CODPROD" ) );
@@ -409,7 +435,7 @@ public class DAOConsultaCli extends AbstractDAO {
 				row.addElement( Funcoes.bdToStr( rs.getBigDecimal( "PERCDESCITVENDA" ) ) );
 				row.addElement( getTipoFrete(rs.getString( "VLRDESCITVENDA" )) );
 				row.addElement( Funcoes.bdToStr( rs.getBigDecimal( "VLRLIQITVENDA" ) ) );
-				row.addElement( rs.getString( "TIPOVENDA" ) );
+				row.addElement( tipovenda );
 				result.addElement( row );
 			}
 			rs.close();
