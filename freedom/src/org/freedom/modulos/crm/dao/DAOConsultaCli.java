@@ -394,7 +394,7 @@ public class DAOConsultaCli extends AbstractDAO {
 				row.addElement( Funcoes.bdToStr( rs.getBigDecimal( "QTDITVENDA" ) ) );
 				row.addElement( Funcoes.bdToStr( rs.getBigDecimal( "PRECOITVENDA" ) ) );
 				row.addElement( Funcoes.bdToStr( rs.getBigDecimal( "PERCDESCITVENDA" ) ) );
-				row.addElement( getTipoFrete(rs.getString( "VLRDESCITVENDA" )) );
+				row.addElement( Funcoes.bdToStr( rs.getBigDecimal( "VLRDESCITVENDA" ) ) );
 				row.addElement( Funcoes.bdToStr( rs.getBigDecimal( "VLRLIQITVENDA" ) ) );
 				row.addElement( tipovenda );
 			}
