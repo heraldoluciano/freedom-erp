@@ -337,80 +337,41 @@ public class DAOConsultaCli extends AbstractDAO {
 		return result;
 	}
 
-	public Vector<Vector<Object>> loadProdVendas( Integer codempvd, Integer codfilialvd
+	public Vector<Object> loadProdItemVenda(Integer codempvd, Integer codfilialvd, Date dtemitvenda
 			, Integer codempcl, Integer codfilialcl, Integer codcli 
-			, Integer codemppd, Integer codfilialpd, Integer codprod
-			, Date dtini, Date dtfim) throws Exception {
-		Vector<Vector<Object>> result = new Vector<Vector<Object>>();
+			, Integer codemppd, Integer codfilialpd, Integer codprod) throws Exception {
+		Vector<Object> row = new Vector<Object>();
 		try {
-			StringBuilder sql = new StringBuilder();/*
+			StringBuilder sql = new StringBuilder();
+			/*
 					STATUSVENDA, STATUSPGTO, CODVENDA, DOCVENDA, DTEMITVENDA, CODPROD, DESCPROD, QTDITVENDA, PRECOITVENDA, PERCDESCITVENDA
 		, VLRDESCITVENDA, VLRLIQITVENDA, TIPOVENDA;*/
-			sql.append("select vd.statusvenda, vd.codvenda, vd.docvenda, vd.dtemitvenda");
+			sql.append("select first 1 vd.statusvenda, vd.codvenda, vd.docvenda, vd.dtemitvenda");
 			sql.append(", pd.codprod, pd.descprod, iv.qtditvenda, iv.precoitvenda, iv.percdescitvenda ");
 			sql.append(", iv.vlrdescitvenda, iv.vlrliqitvenda, vd.tipovenda ");
-			sql.append("from eqproduto pd ");
-			sql.append("inner join vdvenda vd on ");
-			sql.append("vd.codemp=? and vd.codfilial=? and vd.dtemitvenda between ? and ? ");
-			sql.append("and vd.tipovenda='V' ");
+			sql.append("from vdvenda vd ");
+			sql.append("inner join vditvenda iv ");
+			sql.append("on iv.codemp=vd.codemp and iv.codfilial=vd.codfilial and iv.tipovenda=vd.tipovenda and iv.codvenda=vd.codvenda ");
+			sql.append("and iv.codemppd=? and iv.codfilialpd=? and iv.codprod=? ");
+			sql.append("inner join eqproduto pd ");
+			sql.append("on pd.codemp=iv.codemppd and pd.codfilial=iv.codfilialpd and pd.codprod=iv.codprod ");
+			sql.append("where vd.codemp=? and vd.codfilial=? and vd.tipovenda='V' and dtemitvenda=? ");
 			sql.append("and substring(vd.statusvenda from 1 for 1) not in ('C','N') ");
 			sql.append("and vd.codempcl=? and vd.codfilialcl=? and vd.codcli=? " );
-			sql.append("and vd.codvenda=(select first 1 vd2.codvenda from vdvenda vd2, vditvenda iv2 ");
-			sql.append("where vd2.codemp=? and vd2.codfilial=? and vd2.tipovenda='V' ");
-			sql.append("and vd2.dtemitvenda between ? and ? ");
-			sql.append("and vd2.codempcl=? and vd2.codfilialcl=? and vd2.codcli=? ");
-			sql.append("and iv2.codemp=vd2.codemp and iv2.codfilial=vd2.codfilial and iv2.tipovenda=vd2.tipovenda and iv2.codvenda=vd2.codvenda ");
-			sql.append("and iv2.codemppd=pd.codemp and iv2.codfilialpd=pd.codfilial and iv2.codprod=pd.codprod ");
-			sql.append("order by vd2.dtemitvenda desc) ");
-			sql.append("inner join vditvenda iv on ");
-			sql.append("iv.codemp=vd.codemp and iv.codfilial=vd.codfilial and iv.tipovenda=vd.tipovenda and iv.codvenda=vd.codvenda ");
-			sql.append("and iv.coditvenda=(select first 1 iv2.coditvenda from vditvenda iv2 ");
-			sql.append("where iv2.codemp=vd.codemp and iv2.codfilial=vd.codfilial and iv2.tipovenda=vd.tipovenda and iv2.codvenda=vd.codvenda ");
-			sql.append("and iv2.codemppd=pd.codemp and iv2.codfilialpd=pd.codfilial and iv2.codprod=pd.codprod) ");
-			sql.append("where pd.codemp=? and pd.codfilial=? " );
-			if ( codprod > 0 ) {
-				sql.append("and pd.codprod=? ");
-			}
-			sql.append("and exists " );
-			sql.append("(select vd2.codvenda from vdvenda vd2, vditvenda iv2 ");
-			sql.append("where vd2.codemp=? and vd2.codfilial=? and vd2.tipovenda='V' ");
-			sql.append("and vd2.dtemitvenda between ? and ? ");
-			sql.append("and vd2.codempcl=? and vd2.codfilialcl=? and vd2.codcli=? ");
-			sql.append("and iv2.codemp=vd2.codemp and iv2.codfilial=vd2.codfilial and iv2.tipovenda=vd2.tipovenda and iv2.codvenda=vd2.codvenda ");
-			sql.append("and iv2.codemppd=pd.codemp and iv2.codfilialpd=pd.codfilial and iv2.codprod=pd.codprod) ");
-			sql.append("order by vd.dtemitvenda desc, pd.descprod" );
+			sql.append("order by vd.dtemitvenda desc" );
 			PreparedStatement ps = getConn().prepareStatement( sql.toString() );
 			int iparam = 1;
-			ps.setInt( iparam++, codempvd );
-			ps.setInt( iparam++, codfilialvd );
-			ps.setDate( iparam++, Funcoes.dateToSQLDate( dtini ) );
-			ps.setDate( iparam++, Funcoes.dateToSQLDate( dtfim ) );
-			ps.setInt( iparam++, codempcl );
-			ps.setInt( iparam++, codfilialcl );
-			ps.setInt( iparam++, codcli );
-			ps.setInt( iparam++, codempvd );
-			ps.setInt( iparam++, codfilialvd );
-			ps.setDate( iparam++, Funcoes.dateToSQLDate( dtini ) );
-			ps.setDate( iparam++, Funcoes.dateToSQLDate( dtfim ) );
-			ps.setInt( iparam++, codempcl );
-			ps.setInt( iparam++, codfilialcl );
-			ps.setInt( iparam++, codcli );
 			ps.setInt( iparam++, codemppd );
 			ps.setInt( iparam++, codfilialpd );
-			if ( codprod.intValue() > 0 ) {
-				ps.setInt( iparam++, codprod );
-			}
+			ps.setInt( iparam++, codprod );
 			ps.setInt( iparam++, codempvd );
 			ps.setInt( iparam++, codfilialvd );
-			ps.setDate( iparam++, Funcoes.dateToSQLDate( dtini ) );
-			ps.setDate( iparam++, Funcoes.dateToSQLDate( dtfim ) );
+			ps.setDate( iparam++, Funcoes.dateToSQLDate( dtemitvenda ) );
 			ps.setInt( iparam++, codempcl );
 			ps.setInt( iparam++, codfilialcl );
 			ps.setInt( iparam++, codcli );
 			ResultSet rs = ps.executeQuery();
-			
-			while ( rs.next() ) {
-				Vector<Object> row = new Vector<Object>();
+			if (rs.next()) {
 				String tipovenda = rs.getString( "TIPOVENDA" );
 				Integer codvenda = rs.getInt( "CODVENDA" );
 				String statusvenda = rs.getString( "STATUSVENDA" );
@@ -436,6 +397,61 @@ public class DAOConsultaCli extends AbstractDAO {
 				row.addElement( getTipoFrete(rs.getString( "VLRDESCITVENDA" )) );
 				row.addElement( Funcoes.bdToStr( rs.getBigDecimal( "VLRLIQITVENDA" ) ) );
 				row.addElement( tipovenda );
+			}
+			rs.close();
+			ps.close();
+		} catch (SQLException e) {
+			getConn().rollback();
+			throw new Exception(e.getMessage());
+		}
+		return row;
+ 
+	}
+	
+	public Vector<Vector<Object>> loadProdVendas( Integer codempvd, Integer codfilialvd
+			, Integer codempcl, Integer codfilialcl, Integer codcli 
+			, Integer codemppd, Integer codfilialpd, Integer codprod
+			, Date dtini, Date dtfim) throws Exception {
+		Vector<Vector<Object>> result = new Vector<Vector<Object>>();
+		try {
+			StringBuilder sql = new StringBuilder();
+			/*
+					STATUSVENDA, STATUSPGTO, CODVENDA, DOCVENDA, DTEMITVENDA, CODPROD, DESCPROD, QTDITVENDA, PRECOITVENDA, PERCDESCITVENDA
+		, VLRDESCITVENDA, VLRLIQITVENDA, TIPOVENDA;*/
+			sql.append("select pd.codprod, pd.descprod, max(vd.dtemitvenda) dtemitvenda ");
+			sql.append("from vdvenda vd ");
+			sql.append("inner join vditvenda iv ");
+			sql.append("on iv.codemp=vd.codemp and iv.codfilial=vd.codfilial and iv.tipovenda=vd.tipovenda and iv.codvenda=vd.codvenda ");
+			sql.append("inner join eqproduto pd ");
+			sql.append("on pd.codemp=iv.codemppd and pd.codfilial=iv.codfilialpd and pd.codprod=iv.codprod ");
+			sql.append("where vd.codemp=? and vd.codfilial=? and vd.dtemitvenda between ? and ? ");
+			sql.append("and vd.tipovenda='V' and vd.codempcl=? and vd.codfilialcl=? and vd.codcli=? ");
+			sql.append("and substring(vd.statusvenda from 1 for 1) not in ('C','N') ");
+			sql.append("and pd.codemp=? and pd.codfilial=? ");
+			if ( codprod > 0 ) {
+				sql.append("and pd.codprod=? ");
+			}
+			sql.append("group by 1, 2 ");
+			sql.append("order by 3 desc, 2 ");
+			PreparedStatement ps = getConn().prepareStatement( sql.toString() );
+			int iparam = 1;
+			ps.setInt( iparam++, codempvd );
+			ps.setInt( iparam++, codfilialvd );
+			ps.setDate( iparam++, Funcoes.dateToSQLDate( dtini ) );
+			ps.setDate( iparam++, Funcoes.dateToSQLDate( dtfim ) );
+			ps.setInt( iparam++, codempcl );
+			ps.setInt( iparam++, codfilialcl );
+			ps.setInt( iparam++, codcli );
+			ps.setInt( iparam++, codemppd );
+			ps.setInt( iparam++, codfilialpd );
+			if ( codprod.intValue() > 0 ) {
+				ps.setInt( iparam++, codprod );
+			}
+			ResultSet rs = ps.executeQuery();
+			while ( rs.next() ) {
+				Integer codprodvd = rs.getInt( "CODPROD" );
+				Date dtemitvenda = rs.getDate( "DTEMITVENDA" );
+				Vector<Object> row = loadProdItemVenda( codempvd, codfilialvd, dtemitvenda, codempcl, codfilialcl, codcli, codemppd, codfilialpd, codprodvd );
 				result.addElement( row );
 			}
 			rs.close();
