@@ -3,15 +3,16 @@ package org.freedom.modulos.std.orcamento.bean;
 import java.math.BigDecimal;
 
 public class Item {
-	Integer codemp;
-	Integer codfilial;
-	Integer codprod;
-	String descprod;
-	BigDecimal qtd;
-	BigDecimal preco;
-	BigDecimal percdesc;
-	BigDecimal vlrdesc;
-	BigDecimal vlrliq;
+	private Integer codemp;
+	private Integer codfilial;
+	private Integer codprod;
+	private String descprod;
+	private BigDecimal qtd;
+	private BigDecimal preco;
+	private BigDecimal percdesc;
+	private BigDecimal vlrdesc;
+	private BigDecimal vlrliq;
+	private Boolean sel = new Boolean(false);
 	public Item() {
 		setQtd(BigDecimal.ZERO);
 		setPreco(BigDecimal.ZERO);
@@ -87,5 +88,11 @@ public class Item {
 	}
 	public void setVlrliq(BigDecimal vlrliq) {
 		this.vlrliq = vlrliq;
+	}
+	public Boolean getSel() {
+		return sel;
+	}
+	public void setSel(Boolean sel) {
+		this.sel = sel;
 	}
 }

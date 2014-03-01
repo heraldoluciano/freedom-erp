@@ -14,7 +14,7 @@ public class Cesta {
 	private BigDecimal qtdcesta;
 	private BigDecimal vlrdesccesta;
 	private BigDecimal vlrliqcesta;
-	public Boolean sel;
+	public Boolean sel = new Boolean(false);
 	private List<Item> itens;
 	public Cesta() {
 		setItens(new LinkedList<Item>());
