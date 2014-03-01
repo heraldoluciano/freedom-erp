@@ -218,7 +218,11 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 
 	private ListaCampos lcProd = new ListaCampos( this );
 
-	private boolean carregandoVendas = false;
+	private boolean loadingVendas = false;
+	
+	private boolean loadingItensCesta = false;
+	
+	private boolean loadingCestas = false;
 	
 	private CestaFactory cestaFactory;
 
@@ -382,8 +386,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		panelTabCestas.setBorder( BorderFactory.createTitledBorder( "Cestas" ) );
 		panelTabItensCesta.setBorder( BorderFactory.createTitledBorder( "Itens da cesta selecionada" ) );
 		panelTabItensCesta.setPreferredSize( new Dimension( 700, 120 ) );
-//		panelCesta.add
-		
+		// Final de configurações tabCestas
 		panelResumoVendas.adic( new JLabelPad( "Última Venda" ), 10, 10, 90, 20 );
 		panelResumoVendas.adic( txtUltimaVenda, 10, 30, 90, 20 );
 		panelResumoVendas.adic( new JLabelPad( "Vlr. últ. venda" ), 103, 10, 95, 20 );
@@ -574,7 +577,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 			return;
 		}
 		try {
-			carregandoVendas = true;
+			loadingVendas = true;
 			Integer codempvd = Aplicativo.iCodEmp;
 			Integer codfilialvd = ListaCampos.getMasterFilial( "VDVENDA" );
 			Integer codemprc = Aplicativo.iCodEmp;
@@ -634,7 +637,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 			e.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro carregando vendas !\n"+e.getMessage() );
 		} finally {
-			carregandoVendas = false;
+			loadingVendas = false;
 		}
 	}
 	
@@ -729,8 +732,8 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 			List<Cesta> cestas = cestaFactory.getCestas();
 			if (cestas.size()>0) {
 				tabCestas.limpa();
+				int row = 0;
 				for (Cesta cesta: cestas) {
-					int row = tabCestas.getNumLinhas();
 					tabCestas.adicLinha();
 					tabCestas.setValor( cesta.getSel(), row, CESTAS.SELECAO.ordinal() );
 					tabCestas.setValor( cesta.getCodcli(), row, CESTAS.CODCLI.ordinal() );
@@ -739,41 +742,60 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 					tabCestas.setValor( cesta.getQtdcesta(), row, CESTAS.QTDCESTA.ordinal() );
 					tabCestas.setValor( cesta.getVlrdesccesta(), row, CESTAS.VLRDESCCESTA.ordinal() );
 					tabCestas.setValor( cesta.getVlrliqcesta(), row, CESTAS.VLRLIQCESTA.ordinal() );
+					row ++;
 				}
 			}
-			loadTabItensCesta();
+			if (! loadingItensCesta ) {
+				loadTabItensCesta();
+			}
 		}
 	}
 	public void loadTabItensCesta() {
-		tabItensCesta.limpa();
-		if (tabCestas.getNumLinhas()>0) {
-			int selectedRow = tabCestas.getSelectedRow();
-			if (selectedRow==-1) {
-				selectedRow = 0;
+		loadingItensCesta = true;
+		try {		
+			tabItensCesta.limpa();
+			if (tabCestas.getNumLinhas()>0) {
+				int selectedRow = tabCestas.getSelectedRow();
+				if (selectedRow==-1) {
+					selectedRow = 0;
+				}
+				Integer codemp = Aplicativo.iCodEmp;
+				Integer codfilial = ListaCampos.getMasterFilial( "VDCLIENTE" );
+				Integer codcli = (Integer) tabCestas.getValor( selectedRow, CESTAS.CODCLI.ordinal() );
+				Cesta cesta = cestaFactory.getCesta( codemp, codfilial, codcli );
+				if (cesta!=null) {
+					loadTabItensCesta(cesta);
+				}
 			}
-			Integer codemp = Aplicativo.iCodEmp;
-			Integer codfilial = ListaCampos.getMasterFilial( "VDCLIENTE" );
-			Integer codcli = (Integer) tabCestas.getValor( selectedRow, CESTAS.CODCLI.ordinal() );
-			Cesta cesta = cestaFactory.getCesta( codemp, codfilial, codcli );
-		}
-		
+		} finally {
+			loadingItensCesta = false;
+		}		
 	}
 	public void loadTabItensCesta(Cesta cesta) {
-		if (cesta!=null) {
-			for (Item item: cesta.getItens()) {
-				int row = tabItensCesta.getNumLinhas();
-				tabItensCesta.adicLinha();
-				tabItensCesta.setValor( item.getCodprod(), row, ITENSCESTA.CODPROD.ordinal() );
-				tabItensCesta.setValor( item.getDescprod(), row, ITENSCESTA.DESCPROD.ordinal() );
+
+			if (cesta!=null) {
+				int row = 0;
+				tabItensCesta.limpa();
+				for (Item item: cesta.getItens()) {
+					tabItensCesta.adicLinha();
+					tabItensCesta.setValor( item.getSel(), row, ITENSCESTA.SELECAO.ordinal() );
+					tabItensCesta.setValor( item.getCodprod(), row, ITENSCESTA.CODPROD.ordinal() );
+					tabItensCesta.setValor( item.getDescprod(), row, ITENSCESTA.DESCPROD.ordinal() );
+					tabItensCesta.setValor( item.getQtd(), row, ITENSCESTA.QTDITCESTA.ordinal() );
+					tabItensCesta.setValor( item.getPreco(), row, ITENSCESTA.PRECOITCESTA.ordinal() );
+					tabItensCesta.setValor( item.getVlrdesc(), row, ITENSCESTA.VLRDESCITCESTA.ordinal() );
+					tabItensCesta.setValor( item.getVlrliq(), row, ITENSCESTA.VLRLIQITCESTA.ordinal() );
+					row ++;
+				}
 			}
-		}
+
 	}
 	public void valorAlterado( TabelaSelEvent e ) {
 
-		if ( e.getTabela() == tabVendas && tabVendas.getLinhaSel() > -1 && !carregandoVendas ) {
+		if ( e.getTabela() == tabVendas && tabVendas.getLinhaSel() > -1 && !loadingVendas ) {
 			loadTabVendas();
-		} else if (e.getTabela() == tabCestas) {
-			loadTabCestas();
+		} else if (e.getTabela() == tabCestas && !loadingCestas) {
+			loadTabItensCesta();
 		}
 	}
 
@@ -898,7 +920,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 			if (tabbedDetail.getSelectedComponent()==panelCestas) {
 				pinToolBarVendas.setVisible( false );
 				pinToolBarCesta.setVisible( true );
-				loadCestas();
+				loadTabCestas();
 			} else  {
 				pinToolBarVendas.setVisible( true );
 				pinToolBarCesta.setVisible( false );
@@ -907,18 +929,4 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		
 	}
 	
-	public void loadCestas() {
-		tabCestas.limpa();
-		List<Cesta> cestas = cestaFactory.getCestas();
-		for (Cesta cesta:cestas) {
-			int row = tabCestas.getNumLinhas();
-			tabCestas.adicLinha();
-			tabCestas.setValor( cesta.getCodcli(), row, CESTAS.CODCLI.ordinal() );
-			tabCestas.setValor( cesta.getRazcli(), row, CESTAS.RAZCLI.ordinal() );
-			tabCestas.setValor( cesta.getDatacesta(), row, CESTAS.DATACESTA.ordinal() );
-			tabCestas.setValor( cesta.getQtdcesta(), row, CESTAS.QTDCESTA.ordinal() );
-			tabCestas.setValor( cesta.getVlrdesccesta(), row, CESTAS.VLRDESCCESTA.ordinal() );
-			tabCestas.setValor( cesta.getVlrliqcesta(), row, CESTAS.VLRLIQCESTA.ordinal() );
-		}
-	}
 }
