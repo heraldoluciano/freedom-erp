@@ -62,6 +62,8 @@ import javax.swing.SwingConstants;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
+import org.freedom.acao.CancelEvent;
+import org.freedom.acao.CancelListener;
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.DeleteEvent;
@@ -137,7 +139,7 @@ import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FVendedor;
 import org.freedom.modulos.std.view.frame.report.FRBoleto;
 
-public class FVenda extends FVD implements PostListener, CarregaListener, FocusListener, ActionListener, InsertListener, DeleteListener, KeyListener, InterVenda {
+public class FVenda extends FVD implements PostListener, CarregaListener, FocusListener, ActionListener, InsertListener, DeleteListener, KeyListener, InterVenda, CancelListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -939,6 +941,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		txtNumSerie.addFocusListener( this );
 
 		lcCampos.addCarregaListener( this );
+		lcCampos.addCancelListener( this );
 		lcVendedor.addCarregaListener( this );
 		lcCli.addCarregaListener( this );
 		lcFisc.addCarregaListener( this );
@@ -3791,6 +3794,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 		if ( ievt.getListaCampos() == lcCampos ) {
 
+			bloqCamposNfe();
+			
 			habilitaMultiComis();
 
 			if ( (Boolean) oPrefs[ POS_PREFS.USAPEDSEQ.ordinal() ] ) {
@@ -4237,6 +4242,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				bloqueiaItemComissao( (Boolean) oPrefs[POS_PREFS.BLOQCOMISSVD.ordinal()] );
 			}
 			else if ( cevt.getListaCampos() == lcCampos ) {
+				bloqCamposNfe();
 				codvendold = txtCodVend.getVlrInteger();
 				String codvenda = txtCodVenda.getVlrString();
 				lcVenda2.carregaDados();// Carrega os Totais
@@ -4343,6 +4349,17 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		}
 	}
 
+	private void bloqCamposNfe() {
+		boolean enable = false;
+		if ("".equals(txtChaveNfe.getVlrString().trim())) {
+			enable = true;
+		} 
+		txtCodTipoMov.setEnabled( enable );
+		txtDtEmitVenda.setEnabled( enable );
+		txtCodCli.setEnabled( enable );
+		txtCodTranCli.setEnabled( enable );
+	}
+	
 	private void bloqueiaCommissionado( Boolean bloqueia, String statusvenda ) {
 
 		if ( (bloqueia) && ( "P1--P2--V1".indexOf( statusvenda )==-1 ) ) {
@@ -5208,5 +5225,17 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	public void bloqueiaItemComissao(boolean bloqueia) {
 		txtVlrComisItVenda.setAtivo(!bloqueia);
 		txtPercComItVenda.setAtivo(!bloqueia);
+	}
+
+	public void beforeCancel( CancelEvent cevt ) {
+
+	}
+
+	public void afterCancel( CancelEvent cevt ) {
+
+		if (cevt.getListaCampos()==lcCampos) {
+			bloqCamposNfe();
+		}
+		
 	}
 }
