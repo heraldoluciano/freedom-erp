@@ -352,7 +352,8 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 	DAOVenda daovenda = null;
 	
 	public DLFechaVenda( DbConnection cn, Integer iCodVenda, Component cOrig, String impPed, String impNf, String impBol
-			, String impRec, String reImpNf, Integer codtran, String tpFrete, BigDecimal volumes, boolean NFe, String codmarca ) {
+			, String impRec, String reImpNf, Integer codtran, String tpFrete, BigDecimal volumes, boolean NFe
+			, String codmarca, boolean bloqtransp ) {
 
 		super( cOrig );
 
@@ -908,6 +909,9 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		lcVenda.edit();
 		lcFreteVD.addCarregaListener( this );
 		lcTran.addCarregaListener( this );
+		if (bloqtransp) {
+			txtCodTran.setEnabled( false );
+		}
 	}
 
 	private void calcPeso() {

@@ -610,7 +610,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		, OBSCLIVEND, IPIVENDA, CONTESTOQ, DIASPEDT, RECALCCPVENDA, USALAYOUTPED, ICMSVENDA, USAPRECOZERO, MULTICOMIS, CONS_CRED_ITEM, CONS_CRED_FECHA
 		, TIPOCLASPED, VENDAIMOBILIZADO, VISUALIZALUCR, INFCPDEVOLUCAO, INFVDREMESSA, TIPOCUSTO, BUSCACODPRODGEN, CODPLANOPAGSV, CODTIPOMOVDS, COMISSAODESCONTO
 		, VENDAMATCONSUM, OBSITVENDAPED, BLOQSEQIVD, VDPRODQQCLAS, CONSISTENDENTVD, BLOQDESCCOMPVD, BLOQPRECOVD, BLOQCOMISSVD, BLOQPEDVD, SOLDTSAIDA
-		, PROCEMINFE, AMBIENTENFE, CNPJFILIAL, SIGLAUF, TIPOEMISSAONFE
+		, PROCEMINFE, AMBIENTENFE, CNPJFILIAL, SIGLAUF, TIPOEMISSAONFE, BLOQNFEVDAUTORIZ
 	}
 
 	private enum ECOL_ITENS{
@@ -2614,7 +2614,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			DLFechaVenda dl = new DLFechaVenda( con, txtCodVenda.getVlrInteger(), this, impPedido, chbImpNfTipoMov.getVlrString()
 					, chbImpBolTipoMov.getVlrString(), chbImpRecTipoMov.getVlrString(), chbReImpNfTipoMov.getVlrString()
 					, codtran, txtTipoFrete.getVlrString(),
-					getVolumes(), ( nfecf.getHasNFE() && "E".equals( txtTipoModNota.getVlrString() ) ), txtDescMarca.getVlrString() );
+					getVolumes(), ( nfecf.getHasNFE() && "E".equals( txtTipoModNota.getVlrString() ) ), txtDescMarca.getVlrString()
+					, isBloqNfeAutoriz() );
 			// dl.getDadosCli();
 			dl.setVisible( true );
 
@@ -3597,7 +3598,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			sSQL.append( ", P1.COMISSAODESCONTO, P8.CODTIPOMOVDS, P1.VENDACONSUM, P1.OBSITVENDAPED, P1.BLOQSEQIVD, P1.LOCALSERV ");
 			sSQL.append( ", P1.VDPRODQQCLAS, P1.CONSISTENDENTVD, P1.BLOQDESCCOMPVD, P1.BLOQPRECOVD, P1.BLOQCOMISSVD ");
 			sSQL.append( ", P1.BLOQPEDVD, P1.SOLDTSAIDA, COALESCE(P1.PROCEMINFE,'3') PROCEMINFE, COALESCE(P1.AMBIENTENFE,'2') AMBIENTENFE " );
-			sSQL.append( ", F.CNPJFILIAL, F.SIGLAUF, coalesce(P1.TIPOEMISSAONFE,'1') TIPOEMISSAONFE " );
+			sSQL.append( ", F.CNPJFILIAL, F.SIGLAUF, coalesce(P1.TIPOEMISSAONFE,'1') TIPOEMISSAONFE, coalesce(P1.BLOQNFEVDAUTORIZ,'S') BLOQNFEVDAUTORIZ " );
 
 			sSQL.append( "FROM SGPREFERE1 P1 ");
 			sSQL.append( "INNER JOIN SGFILIAL F ");
@@ -3668,6 +3669,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				retorno[ POS_PREFS.CNPJFILIAL.ordinal()] = rs.getString( POS_PREFS.CNPJFILIAL.toString() );
 				retorno[ POS_PREFS.SIGLAUF.ordinal()] = rs.getString( POS_PREFS.SIGLAUF.toString() );
 				retorno[ POS_PREFS.TIPOEMISSAONFE.ordinal()] = rs.getString( POS_PREFS.TIPOEMISSAONFE.toString() );
+				retorno[ POS_PREFS.BLOQNFEVDAUTORIZ.ordinal()] = rs.getString( POS_PREFS.BLOQNFEVDAUTORIZ.toString() );
 				localServ = rs.getString( "LOCALSERV" );
 			}
 			rs.close();
@@ -3787,6 +3789,13 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 		if ( ievt.getListaCampos() == lcCampos ) {
 			tabOrcamentos.limpa();
+		} else if (ievt.getListaCampos() == lcDet) {
+			if (isBloqNfeAutoriz()) {
+				Funcoes.mensagemInforma( this, "Não é permitido inserção de itens em nota fiscal autorizada!" );
+				ievt.cancela();
+				return;
+			}
+
 		}
 	}
 
@@ -3937,6 +3946,11 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			}
 		}
 		else if ( pevt.getListaCampos() == lcDet ) {
+			if (isBloqNfeAutoriz()) {
+				Funcoes.mensagemInforma( this, "Item não pode ser alterado.\nNota fiscal já foi autorizada." );
+				pevt.cancela();
+				return;
+			}
 			if ( lcDet.getStatus() == ListaCampos.LCS_INSERT || lcDet.getStatus() == ListaCampos.LCS_EDIT ) {
 				if ( txtQtdItVenda.getVlrBigDecimal().floatValue() <= 0 ) {
 					Funcoes.mensagemInforma( this, "Quantidade invalida!" );
@@ -4349,15 +4363,30 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		}
 	}
 
+	private boolean getBloqNfeVdAutoriz() {
+		boolean result = "S".equals(oPrefs[POS_PREFS.BLOQNFEVDAUTORIZ.ordinal()]);
+		return result;
+	}
+	
+	private boolean isBloqNfeAutoriz() {
+		boolean result = false;
+		if (getBloqNfeVdAutoriz()) {
+			if (!"".equals(txtChaveNfe.getVlrString().trim())) {
+				result = true;
+			} 
+		}
+		return result;
+	}
+	
 	private void bloqCamposNfe() {
-		boolean enable = false;
-		if ("".equals(txtChaveNfe.getVlrString().trim())) {
-			enable = true;
-		} 
-		txtCodTipoMov.setEnabled( enable );
-		txtDtEmitVenda.setEnabled( enable );
-		txtCodCli.setEnabled( enable );
-		txtCodTranCli.setEnabled( enable );
+		if (getBloqNfeVdAutoriz()) {
+			boolean enabled = ( ! isBloqNfeAutoriz() );
+			txtCodTipoMov.setEnabled( enabled );
+			txtDtEmitVenda.setEnabled( enabled );
+			txtDtSaidaVenda.setEnabled( enabled );
+			txtCodCli.setEnabled( enabled );
+			txtCodTranCli.setEnabled( enabled );
+		}
 	}
 	
 	private void bloqueiaCommissionado( Boolean bloqueia, String statusvenda ) {
@@ -4385,7 +4414,13 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	}
 
 	public void beforeDelete( DeleteEvent devt ) {
-
+		if (devt.getListaCampos()==lcDet) {
+			if (isBloqNfeAutoriz()) {
+				Funcoes.mensagemInforma( this, "Não é permitido exclusão de itens de nota fiscal autorizada !" );
+				devt.cancela();
+				return;
+			}
+		}
 	}
 
 	public void afterDelete( DeleteEvent devt ) {
