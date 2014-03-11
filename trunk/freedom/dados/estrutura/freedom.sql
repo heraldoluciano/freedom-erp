@@ -40911,13 +40911,18 @@ BEGIN
         end
         if ( ( new.subtipovenda <> 'NC') or (iCodTipoMov is null) ) then 
         begin
-             SELECT T2.CODTIPOMOV, T2.SERIE FROM EQTIPOMOV T2, EQTIPOMOV T WHERE T2.CODEMP=T.CODEMPTM
+             SELECT T2.CODTIPOMOV
+             , (case when p.tipoemissaonfe='3' then coalesce(T2.SERIEC, T2.SERIE) else T2.SERIE end) SERIE 
+             FROM EQTIPOMOV T2, EQTIPOMOV T, SGPREFERE1 P 
+             WHERE T2.CODEMP=T.CODEMPTM
                AND T2.CODFILIAL=T.CODFILIALTM AND T2.CODTIPOMOV = T.CODTIPOMOVTM
                AND T.CODEMP=new.CODEMPTM AND T.CODFILIAL=new.CODFILIALTM AND T.CODTIPOMOV=new.CODTIPOMOV
+               AND P.CODEMP=T.CODEMP AND P.CODFILIAL=:iCodFilialPref
                INTO :iCodTipoMov, :sSerie;
         end
         IF (iCodTipoMov IS NULL) THEN
-          SELECT T.CODTIPOMOV, T.SERIE FROM SGPREFERE1 P, EQTIPOMOV T WHERE P.CODEMPTM=T.CODEMP AND
+          SELECT T.CODTIPOMOV, T.SERIE FROM SGPREFERE1 P, EQTIPOMOV T 
+          WHERE P.CODEMPTM=T.CODEMP AND
                  P.CODFILIALTM=T.CODFILIAL AND P.CODTIPOMOV = T.CODTIPOMOV
                  AND P.CODEMP=new.CODEMP AND P.CODFILIAL = :iCodFilialPref INTO :iCodTipoMov, :sSerie;
         new.CODTIPOMOV = :iCodTipoMov;
