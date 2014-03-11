@@ -5263,13 +5263,15 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	}
 
 	public void beforeCancel( CancelEvent cevt ) {
-
+/*		if (cevt.getListaCampos()==lcCampos) {
+		}*/
 	}
 
 	public void afterCancel( CancelEvent cevt ) {
 
 		if (cevt.getListaCampos()==lcCampos) {
 			bloqCamposNfe();
+			txtTipoVenda.setVlrString( "V" );
 		}
 		
 	}
