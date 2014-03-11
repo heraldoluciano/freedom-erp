@@ -758,9 +758,10 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	
 	private final JCheckBoxPad cbAtualizaAgenda= new JCheckBoxPad("Atualiza agenda", "S", "N");
 
-
 	private JCheckBoxPad cbSolDtSaida = new JCheckBoxPad("Solicita dt.saída/entrega na busca de orçamento", "S", "N");
-	
+
+	private JCheckBoxPad cbBloqNfeVdAutoriz = new JCheckBoxPad("Bloquear NFe de venda autorizada", "S", "N");
+
 	private PainelImagem imgAssOrc = new PainelImagem(65000);
 
 	private ListaCampos lcMoeda = new ListaCampos(this, "MO");
@@ -1601,6 +1602,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB(cbBloqPrecoVD, 290, 280, 270, 20, "BloqPrecoVD", "", true);
 		adicDB(cbDesabDescFechaVD, 290, 300, 270, 20, "DesabDescFechaVD", "", true);
 		adicDB(cbSolDtSaida, 290, 320, 270, 20, "SolDtSaida", "", true);
+		adicDB(cbBloqNfeVdAutoriz, 290, 340, 270, 20, "BloqNfeVdAutoriz", "", true);
 		
 
 		// Compra
@@ -2391,6 +2393,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 			txtNumdiasbloqvd.setVlrInteger(new Integer(0));
 			rgLeiTransp.setVlrString("N");
 			rgTipoImpDanfe.setVlrString("F");
+			cbBloqNfeVdAutoriz.setVlrString("S");
 		}
 	}
 
