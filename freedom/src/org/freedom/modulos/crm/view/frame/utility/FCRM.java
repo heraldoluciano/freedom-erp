@@ -367,7 +367,10 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 	public enum COL_ATENDIMENTO {
 
-		DOCATENDO, STATUSATENDO, DATAATENDO, CODATENDO, CODORC, DATAATENDOFIN, NOMECLI, OBSATENDO, CODATEND, NOMEATEND, HORAATENDO, HORAATENDOFIN, TEMPO, TEMPOCOB, CODCHAMADO, CODCLI, CODESPEC, DESCESPEC
+		DOCATENDO, STATUSATENDO, DATAATENDO, CODATENDO, CODORC, DATAATENDOFIN, NOMECLI, OBSATENDO, CODATEND
+		, NOMEATEND, HORAATENDO, HORAATENDOFIN, TEMPO, TEMPOCOB, CODCHAMADO, CODCLI, CODESPEC, DESCESPEC
+		, IDUSUINS, DTINS, HINS, IDUSUALT, DTALT, HALT
+		  
 
 	}
 
@@ -753,6 +756,14 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		tabatd.adicColuna( "Cod.Cli." ); // Código do cliente
 		tabatd.adicColuna( "Cód.Esp." ); // Código da especificação
 		tabatd.adicColuna( "Descrição da especificação" ); // Descrição da especificação
+		tabatd.adicColuna( "ID.usu.ins." ); // ID Usuário inserção
+		tabatd.adicColuna( "DT.ins." ); // Data inserção
+		tabatd.adicColuna( "h.ins." ); // Hora inserção
+		tabatd.adicColuna( "ID.usu.alt." ); // ID Usuário última alteração
+		tabatd.adicColuna( "DT.alt." ); // Data da alteração
+		tabatd.adicColuna( "h.alt." ); // Hora da alteração 
+		
+		
 
 		tabatd.setTamColuna( 45, COL_ATENDIMENTO.CODATENDO.ordinal() );
 		tabatd.setTamColuna( 45, COL_ATENDIMENTO.CODORC.ordinal() );
@@ -771,6 +782,12 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		tabatd.setColunaInvisivel( COL_ATENDIMENTO.CODATEND.ordinal() );
 		tabatd.setColunaInvisivel( COL_ATENDIMENTO.CODCLI.ordinal() );
 		tabatd.setColunaInvisivel( COL_ATENDIMENTO.CODESPEC.ordinal() );
+		tabatd.setTamColuna( 60, COL_ATENDIMENTO.IDUSUINS.ordinal() );
+		tabatd.setTamColuna( 60, COL_ATENDIMENTO.DTINS.ordinal() );
+		tabatd.setTamColuna( 60, COL_ATENDIMENTO.HINS.ordinal() );
+		tabatd.setTamColuna( 60, COL_ATENDIMENTO.IDUSUALT.ordinal() );
+		tabatd.setTamColuna( 60, COL_ATENDIMENTO.DTALT.ordinal() );
+		tabatd.setTamColuna( 60, COL_ATENDIMENTO.HALT.ordinal() );
 
 		tabatd.setRowHeight( 20 );
 
@@ -1235,7 +1252,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			sql.append( ", a.nomeatend, a.horaatendo, a.codchamado, a.codcli, a.codespec, a.descespec, a.nomecli" );
 			sql.append( ", coalesce(a.mrelcobespec, 'N') mrelcobespec, coalesce(a.bhespec, 'N') bhespec" );
 			sql.append( ", coalesce(a.contmetaespec, 'N') contmetaespec, coalesce(a.cobcliespec, 'N') cobcliespec " );
-			sql.append( ", a.totalmin, a.totalgeral, a.totalcobcli, a.codorc  " );
+			sql.append( ", a.totalmin, a.totalgeral, a.totalcobcli, a.codorc, a.idusuins, a.dtins, a.hins, a.idusualt, a.dtalt, a.halt " );
 			sql.append( "from atatendimentovw02 a " );
 
 			sql.append( "where  " );
@@ -1411,6 +1428,14 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 					tabatd.setValor( rs.getString( COL_ATENDIMENTO.CODESPEC.name() ) != null ? ( rs.getString( COL_ATENDIMENTO.CODESPEC.name() ).trim() + " " + rs.getString( COL_ATENDIMENTO.DESCESPEC.name() ).trim() ) : "", i, COL_ATENDIMENTO.DESCESPEC.ordinal() );
 
 					tabatd.setValor( rs.getString( COL_ATENDIMENTO.CODCLI.name() ).trim() + " " + rs.getString( COL_ATENDIMENTO.NOMECLI.name() ), i, COL_ATENDIMENTO.NOMECLI.ordinal() );
+
+					tabatd.setValor( rs.getString( COL_ATENDIMENTO.IDUSUINS.name() ).trim(), i, COL_ATENDIMENTO.IDUSUINS.ordinal() );
+					tabatd.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( COL_ATENDIMENTO.DTINS.name() ) ), i, COL_ATENDIMENTO.DTINS.ordinal() );
+					tabatd.setValor( Funcoes.copy( rs.getTime( COL_ATENDIMENTO.HINS.name() ).toString(), 5 ), i, COL_ATENDIMENTO.HINS.ordinal() );
+					
+					tabatd.setValor( rs.getString( COL_ATENDIMENTO.IDUSUALT.name() ).trim(), i, COL_ATENDIMENTO.IDUSUALT.ordinal() );
+					tabatd.setValor( StringFunctions.sqlDateToStrDate( rs.getDate( COL_ATENDIMENTO.DTALT.name() ) ), i, COL_ATENDIMENTO.DTALT.ordinal() );
+					tabatd.setValor( Funcoes.copy( rs.getTime( COL_ATENDIMENTO.HALT.name() ).toString(), 5 ), i, COL_ATENDIMENTO.HALT.ordinal() );
 
 					total_horas_atend = total_horas_atend.add( rs.getBigDecimal( "totalgeral" ) );
 					total_cobcli = total_cobcli.add( rs.getBigDecimal( "totalcobcli" ) );
