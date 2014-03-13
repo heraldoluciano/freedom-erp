@@ -238,8 +238,8 @@ public class FCancVenda extends FFilho implements ActionListener {
 	
 					try {
 						// Desbloquear a venda, caso seja necessário
-						sql.append( "UPDATE VDVENDA SET EMMANUT='S', BLOQVENDA='N' ");
-						sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='V' AND BLOQVENDA='S' ");
+						sql.append( "update vdvenda set emmanut='S', bloqvenda='N' ");
+						sql.append( "where codemp=? and codfilial=? and codvenda=? and tipovenda='V' and bloqvenda='S' ");
 						ps = con.prepareStatement( sql.toString() );
 						int param = 1;
 						ps.setInt( param++, Aplicativo.iCodEmp );
@@ -249,8 +249,8 @@ public class FCancVenda extends FFilho implements ActionListener {
 						ps.close();
 						// Ajusta o emmanut para 'N'
 						sql.delete( 0, sql.length() ); 
-						sql.append( "UPDATE VDVENDA SET EMMANUT='N' ");
-						sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='V' AND EMMANUT='S' ");
+						sql.append( "update vdvenda set emmanut='N' ");
+						sql.append( "where codemp=? and codfilial=? and codvenda=? and tipovenda='V' and emmanut='S' ");
 						ps = con.prepareStatement( sql.toString() );
 						param = 1;
 						ps.setInt( param++, Aplicativo.iCodEmp );
@@ -258,10 +258,42 @@ public class FCancVenda extends FFilho implements ActionListener {
 						ps.setInt( param++, codvenda );
 						ps.executeUpdate();
 						ps.close();
+						// Verifica se o cliente está inativo para evitar exceção por trigger
+						sql.delete( 0, sql.length() ); 
+						sql.append( "select c.ativocli from vdcliente c, vdvenda v ");
+						sql.append( "where v.codemp=? and v.codfilial=? and v.codvenda=? and v.tipovenda='V' ");
+						sql.append( "and c.codemp=v.codempcl and c.codfilial=v.codfilialcl and c.codcli=v.codcli ");
+						ps = con.prepareStatement( sql.toString() );
+						param = 1;
+						ps.setInt( param++, Aplicativo.iCodEmp );
+						ps.setInt( param++, ListaCampos.getMasterFilial( "VDVENDA" ) );
+						ps.setInt( param++, codvenda );
+						ResultSet rs = ps.executeQuery();
+						boolean ativocli = true;
+						if (rs.next()) {
+						    ativocli = "S".equals(rs.getString( "ativocli" ));
+						}
+						rs.close();
+						ps.close();
+						if (!ativocli) {
+							// Ativa o cliente
+							sql.delete( 0, sql.length() ); 
+							sql.append( "update vdcliente c set c.ativocli='S' ");
+							sql.append( "where exists( select * from vdvenda v ");
+							sql.append( "where v.codemp=? and v.codfilial=? and v.codvenda=? and tipovenda='V' ");
+							sql.append( "and c.codemp=v.codempcl and c.codfilial=v.codfilialcl and c.codcli=v.codcli )");
+							ps = con.prepareStatement( sql.toString() );
+							param = 1;
+							ps.setInt( param++, Aplicativo.iCodEmp );
+							ps.setInt( param++, ListaCampos.getMasterFilial( "VDVENDA" ) );
+							ps.setInt( param++, codvenda );
+							ps.executeUpdate();
+							ps.close();
+						}
 						// Executa o cancelamento
 						sql.delete( 0, sql.length() ); 
-						sql.append( "UPDATE VDVENDA SET MOTIVOCANCVENDA=?, STATUSVENDA = ? " ); 
-						sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='V'");
+						sql.append( "update vdvenda set motivocancvenda=?, statusvenda=? " ); 
+						sql.append( "where codemp=? and codfilial=? and codvenda=? and tipovenda='V'");
 						ps = con.prepareStatement( sql.toString() );
 						param = 1;
 						ps.setString( param++, motivocancvenda );
@@ -270,14 +302,26 @@ public class FCancVenda extends FFilho implements ActionListener {
 						ps.setInt( param++, ListaCampos.getMasterFilial( "VDVENDA" ) );
 						ps.setInt( param++, codvenda );
 						ps.executeUpdate();
-	
 						ps.close();
 						con.commit();
-	
+						if (!ativocli) {
+							// Inativa o cliente se for necessário
+							sql.delete( 0, sql.length() ); 
+							sql.append( "update vdcliente c set c.ativocli='N' ");
+							sql.append( "where exists( select * from vdvenda v ");
+							sql.append( "where v.codemp=? and v.codfilial=? and v.codvenda=? and tipovenda='V' ");
+							sql.append( "and c.codemp=v.codempcl and c.codfilial=v.codfilialcl and c.codcli=v.codcli )");
+							ps = con.prepareStatement( sql.toString() );
+							param = 1;
+							ps.setInt( param++, Aplicativo.iCodEmp );
+							ps.setInt( param++, ListaCampos.getMasterFilial( "VDVENDA" ) );
+							ps.setInt( param++, codvenda );
+							ps.executeUpdate();
+							ps.close();
+							con.commit();
+						}
 						result = true;
-	
 						FCancVendaOrc.cancelar( con, codvenda, txtTipoVenda.getVlrString(), txtStatusVenda.getVlrString(), txtBloqVenda.getVlrString(), false );
-	
 					} catch ( SQLException err ) {
 						Funcoes.mensagemErro( null, "Erro ao cancelar a venda!\n" + err.getMessage(), true, con, err );
 					} finally {
