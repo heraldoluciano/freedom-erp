@@ -74,6 +74,7 @@ import org.freedom.modulos.crm.dao.DAOConsultaCli.PRODVENDAS;
 import org.freedom.modulos.crm.dao.DAOConsultaCli.RESULT_RECEBER;
 import org.freedom.modulos.crm.dao.DAOConsultaCli.RESULT_ULTVENDA;
 import org.freedom.modulos.crm.dao.DAOConsultaCli.VENDAS;
+import org.freedom.modulos.crm.view.dialog.utility.DLConfirmItem;
 import org.freedom.modulos.std.orcamento.bean.Cesta;
 import org.freedom.modulos.std.orcamento.bean.Item;
 import org.freedom.modulos.std.orcamento.bussiness.CestaFactory;
@@ -710,10 +711,26 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 			vlrliqitvenda = ((StringDireita) tabItensVenda.getValor( selectedRow, ITENSVENDA.VLRLIQITVENDA.ordinal() )).getBigDecimal();
 		}
 		//Item
-		Cesta cesta = cestaFactory.createNewCesta(codempcl, codfilialcl, codcli, razcli);
-		if (cesta!=null) {
-			cesta.addItem( codemppd, codfilialpd, codprod, descprod, qtditvenda, precoitvenda, percdescitvenda, vlrdescitvenda, vlrliqitvenda );
+		Item item = new Item(codemppd, codfilialpd, codprod, descprod);
+		item.setQtd( qtditvenda );
+		item.setPreco( precoitvenda );
+		item.setPercdesc( percdescitvenda );
+		item.setVlrdesc( vlrdescitvenda );
+		item.setVlrliq( vlrliqitvenda );
+		DLConfirmItem dlconfirm = new DLConfirmItem();
+		dlconfirm.setValues( item );
+		dlconfirm.setVisible( true );
+		if (dlconfirm.OK) {
+			item = dlconfirm.getResult();
+			dlconfirm.dispose();
+			if (item!=null) {
+				Cesta cesta = cestaFactory.createNewCesta(codempcl, codfilialcl, codcli, razcli);
+				if (cesta!=null) {
+					cesta.addItem( codemppd, codfilialpd, codprod, descprod, qtditvenda, precoitvenda, percdescitvenda, vlrdescitvenda, vlrliqitvenda );
+				}
+			}
 		}
+		
 	}
 	
 	private void loadTabVendas() {
