@@ -251,6 +251,26 @@ public class FRRazFor extends FRelatorio {
 			sSQL.append( "SL.CODEMP=? AND SL.CODFILIAL=? AND " );
 			sSQL.append( "SL.DATASUBLANCA BETWEEN ? AND ? " );
 			/**
+			 * Query dos cancelamentos
+			 */
+			sSQL.append( "UNION ALL ");
+			sSQL.append( " SELECT F.CODFOR CODEMIT, F.RAZFOR RAZEMIT, " );
+			sSQL.append( " IP.DTVENCITPAG DATA, 'X' TIPO, " );
+			sSQL.append( "'X' TIPOSUBLANCA, ");
+			sSQL.append( "P.DOCPAG DOC, COALESCE(SUM(IP.VLRCANCITPAG),0) VLRCRED, 0.00 VLRDEB " );
+			sSQL.append( "FROM FNPAGAR P, FNITPAGAR IP, CPFORNECED F WHERE P.CODEMP=? AND P.CODFILIAL=? AND P.CODEMPFR=F.CODEMP AND " );
+			sSQL.append( "P.CODFILIALFR=F.CODFILIAL AND P.CODFOR=F.CODFOR ");
+			sSQL.append( "AND IP.CODEMP=P.CODEMP AND IP.CODFILIAL=P.CODFILIAL AND IP.CODPAG=P.CODPAG AND IP.STATUSITPAG IN ('CP') ");
+			if ( codfor != 0 ) {
+				sSQL.append( "AND C.CODFOR=? " );
+			}
+			//sSQL.append( "AND R.CODEMP=? AND R.CODFILIAL=? AND " );
+			sSQL.append( "AND R.DATAREC BETWEEN ? AND ? " );
+			sSQL.append( "GROUP BY 1, 2, 3, 4, 5, 6 ");
+			/**
+
+			
+			/**
 			 * Query das devoluções
 			 */
 			sSQL.append( "UNION ALL SELECT F.CODFOR CODEMIT, F.RAZFOR RAZEMIT, VD.DTEMITVENDA DATA, " );
@@ -342,14 +362,22 @@ public class FRRazFor extends FRelatorio {
 			ps.setInt( param++, ListaCampos.getMasterFilial( "FNSUBLANCA" ) ); // 32
 			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 33
 			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) ); // 34
-			// Parâmetros das devoluções
+			// Parâmetros cancelamentos
+			ps.setInt( param++, Aplicativo.iCodEmp ); // 35
+			ps.setInt( param++, ListaCampos.getMasterFilial( "FNPAGAR" ) ); // 36
 			if ( codfor != 0 ) {
-				ps.setInt( param++, codfor ); // 35
+				ps.setInt( param++, codfor ); // 37
 			}
-			ps.setInt( param++, Aplicativo.iCodEmp ); // 36
-			ps.setInt( param++, ListaCampos.getMasterFilial( "VDVENDA" ) ); // 37
 			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 38
 			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) ); // 39
+			// Parâmetros das devoluções
+			if ( codfor != 0 ) {
+				ps.setInt( param++, codfor ); // 40
+			}
+			ps.setInt( param++, Aplicativo.iCodEmp ); // 41
+			ps.setInt( param++, ListaCampos.getMasterFilial( "VDVENDA" ) ); // 42
+			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 43
+			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) ); // 44
 
 			// Parametros dos descontos
 			
