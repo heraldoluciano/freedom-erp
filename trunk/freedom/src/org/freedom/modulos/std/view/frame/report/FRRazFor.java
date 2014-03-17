@@ -253,7 +253,7 @@ public class FRRazFor extends FRelatorio {
 			/**
 			 * Query dos cancelamentos
 			 */
-			sSQL.append( "UNION ALL ");
+			/*sSQL.append( "UNION ALL ");
 			sSQL.append( " SELECT F.CODFOR CODEMIT, F.RAZFOR RAZEMIT, " );
 			sSQL.append( " IP.DTVENCITPAG DATA, 'X' TIPO, " );
 			sSQL.append( "'X' TIPOSUBLANCA, ");
@@ -262,14 +262,12 @@ public class FRRazFor extends FRelatorio {
 			sSQL.append( "P.CODFILIALFR=F.CODFILIAL AND P.CODFOR=F.CODFOR ");
 			sSQL.append( "AND IP.CODEMP=P.CODEMP AND IP.CODFILIAL=P.CODFILIAL AND IP.CODPAG=P.CODPAG AND IP.STATUSITPAG IN ('CP') ");
 			if ( codfor != 0 ) {
-				sSQL.append( "AND C.CODFOR=? " );
+				sSQL.append( "AND F.CODFOR=? " );
 			}
 			//sSQL.append( "AND R.CODEMP=? AND R.CODFILIAL=? AND " );
-			sSQL.append( "AND R.DATAREC BETWEEN ? AND ? " );
+			sSQL.append( "AND P.DATAPAG BETWEEN ? AND ? " );
 			sSQL.append( "GROUP BY 1, 2, 3, 4, 5, 6 ");
-			/**
-
-			
+				*/		
 			/**
 			 * Query das devoluções
 			 */
@@ -363,13 +361,14 @@ public class FRRazFor extends FRelatorio {
 			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 33
 			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) ); // 34
 			// Parâmetros cancelamentos
-			ps.setInt( param++, Aplicativo.iCodEmp ); // 35
+			/*ps.setInt( param++, Aplicativo.iCodEmp ); // 35
 			ps.setInt( param++, ListaCampos.getMasterFilial( "FNPAGAR" ) ); // 36
 			if ( codfor != 0 ) {
 				ps.setInt( param++, codfor ); // 37
 			}
 			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 38
 			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) ); // 39
+	        */
 			// Parâmetros das devoluções
 			if ( codfor != 0 ) {
 				ps.setInt( param++, codfor ); // 40
