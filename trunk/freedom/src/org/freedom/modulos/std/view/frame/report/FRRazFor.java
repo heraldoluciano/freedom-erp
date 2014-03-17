@@ -189,7 +189,7 @@ public class FRRazFor extends FRelatorio {
 			sql.append( "and (v.codfilialvd is null or v.codfilialvd=? ) ");
 			sql.append( ") ");
 			sql.append( "order by 1, 2, 3, 4, 6, 5" );
-
+			System.out.println( "QUERY" + sql.toString() );
 			ps = con.prepareStatement( sql.toString() );
 			ps.setInt( param++, Aplicativo.iCodEmp );
 			ps.setInt( param++, ListaCampos.getMasterFilial( "CPFORNECED" ) ); 
@@ -216,7 +216,6 @@ public class FRRazFor extends FRelatorio {
 			ps.setInt( param++, ListaCampos.getMasterFilial( "FNSUBLANCA" ) ); 
 			ps.setInt( param++, Aplicativo.iCodEmp );
 			ps.setInt( param++, ListaCampos.getMasterFilial( "VDVENDA" ) );
-			System.out.println( "QUERY" + sql.toString() );
 
 			rs = ps.executeQuery();
 
