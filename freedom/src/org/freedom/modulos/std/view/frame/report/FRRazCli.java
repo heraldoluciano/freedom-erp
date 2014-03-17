@@ -123,280 +123,104 @@ public class FRRazCli extends FRelatorio {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		StringBuffer sSQL = new StringBuffer();
-		StringBuffer sCab = new StringBuffer();
+		StringBuffer sql = new StringBuffer();
+		StringBuffer cab = new StringBuffer();
 
 		try {
 
 			codcli = txtCodCli.getVlrInteger().intValue();
 			if ( codcli != 0 ) {
-				sCab.append( "CLIENTE - " + txtDescCli.getVlrString() );
+				cab.append( "Cli: " );
+				cab.append( codcli );
+				cab.append( " - " );
+				cab.append( txtDescCli.getVlrString().trim() );
 			}
-			sCab.append("\nPeríodo: " + txtDataini.getVlrString() + " Até: " + txtDatafim.getVlrString() );
+			cab.append( "\nPeríodo de: " );
+			cab.append( txtDataini.getVlrString() );
+			cab.append( " até: " );
+			cab.append( txtDatafim.getVlrString() );
 			
-
-			sSQL.append( " SELECT C.CODCLI CODEMIT, C.RAZCLI RAZEMIT, " );
-			sSQL.append( " CAST( ' " );
-			sSQL.append( Funcoes.dateToStrDB( txtDataini.getVlrDate() ) );
+			sql.append( "select v.codcli codemit, v.razcli razemit ");
+			sql.append( ", cast( '" );
+			sql.append( Funcoes.dateToStrDB( txtDataini.getVlrDate() ) );
 			/**
 			 * Tipo A = Saldo anteiror Busca na FNRECEBER todos as vendas com valor financeiro a receber (VLRREC)
 			 */
-			sSQL.append( "' AS DATE) DATA, 'A' TIPO, " );
-			sSQL.append( "'A' TIPOSUBLANCA, ");
-			sSQL.append( "0 DOC, (COALESCE( ( SELECT SUM(R.VLRPARCREC) " );
-			sSQL.append( "FROM FNRECEBER R WHERE R.CODEMP=? AND R.CODFILIAL=? AND R.CODEMPCL=C.CODEMP AND " );
-			sSQL.append( "R.CODFILIALCL=C.CODFILIAL AND R.CODCLI=C.CODCLI AND R.DATAREC < ? ");
-			sSQL.append( " ),0) - " );
-
+			sql.append( "' as date) data, 'A' tipo, 'A' tiposublanca ");
+			sql.append( ", 0 doc, sum(v.vlrdeb+v.vlrcred) vlrdeb ");
+			sql.append( ", 0 vlrcred ");
+			sql.append( "from fnrazclivw01 v ");
+			sql.append( "where v.codempcl=? and v.codfilialcl=? ");
+			if (codcli!=0) {
+				sql.append( " and v.codcli=? " );
+			}
+			sql.append( "and v.data < ? " );
+			sql.append( "and ( ");
+			sql.append( "(v.codemprc is null or v.codemprc=? ) ");
+			sql.append( "and (v.codfilialrc is null or v.codfilialrc=? ) ");
+			sql.append( "and (v.codempsl is null or v.codempsl=? ) ");
+			sql.append( "and (v.codfilialsl is null or v.codfilialsl=? ) ");
+			sql.append( "and (v.codempcp is null or v.codempcp=? ) ");
+			sql.append( "and (v.codfilialcp is null or v.codfilialcp=? ) ");
+			sql.append( ")");
+			sql.append( " group by 1, 2 ");
 			/**
-			 * 
-			 * Subtrai o valor recebido do saldo anterior
+			 * Query dos lancamentos
 			 */
-
-			sSQL.append( "COALESCE( ( SELECT SUM(SL.VLRSUBLANCA*-1) FROM FNSUBLANCA SL WHERE  " );
-			sSQL.append( " SL.CODEMPCL=C.CODEMP AND SL.CODFILIALCL=C.CODFILIAL AND SL.CODCLI=C.CODCLI AND " );
-			sSQL.append( " SL.TIPOSUBLANCA='P' AND SL.CODSUBLANCA<>0 AND ");
-			sSQL.append( " SL.CODEMP=? AND SL.CODFILIAL=? AND SL.DATASUBLANCA < ? ), 0) - " );
-
-			/**
-			 * Subtrai o valor do desconto na data do lançamento financeiro
-			 * Não será necessário, pois a soma total já está com desconto
-			 */
-
-/*			sSQL.append( "COALESCE( ( SELECT SUM(SL.VLRSUBLANCA) FROM FNSUBLANCA SL WHERE  " );
-			sSQL.append( " SL.CODEMPCL=C.CODEMP AND SL.CODFILIALCL=C.CODFILIAL AND SL.CODCLI=C.CODCLI AND " );
-			sSQL.append( " SL.TIPOSUBLANCA=? AND " );
-			sSQL.append( " SL.CODEMP=? AND SL.CODFILIAL=? AND SL.DATASUBLANCA < ? ), 0) - " ); /*
-
-			/**
-			 * Subtrai as devoluções do saldo anterior
-			 */
-			sSQL.append( "( COALESCE( ( SELECT SUM(CP.VLRLIQCOMPRA) " );
-			sSQL.append( "FROM CPCOMPRA CP, EQTIPOMOV TM, EQCLIFOR CF " );
-			sSQL.append( "WHERE CP.CODEMP=? AND CP.CODFILIAL=? AND  TM.CODEMP=CP.CODEMPTM AND " );
-			sSQL.append( "TM.CODFILIAL = CP.CODFILIALTM AND TM.ESTIPOMOV='E' AND TM.TIPOMOV='DV' AND " );
-			sSQL.append( "TM.CODTIPOMOV=CP.CODTIPOMOV AND " );
-			sSQL.append( "CF.CODEMP=C.CODEMP AND CF.CODFILIAL=C.CODFILIAL AND CF.CODCLI=C.CODCLI AND " );
-			sSQL.append( "CP.CODEMPFR=CF.CODEMPFR AND CP.CODFILIALFR=CF.CODFILIALFR AND " );
-			sSQL.append( "CP.CODFOR=CF.CODFOR AND CP.DTENTCOMPRA < ? ),0) ) ) " );
-			sSQL.append( "VLRDEB, 0.00 VLRCRED " );
-			/**
-			 * Filtro do cliente
-			 */
-			sSQL.append( "FROM VDCLIENTE C WHERE C.CODEMP=? AND C.CODFILIAL=? AND " );
+			sql.append( "union all " );
+			sql.append( "select v.codcli codemit, v.razcli razemit " );
+			sql.append( ", v.data, v.tipo, v.tiposublanca ");
+			sql.append( ", v.doc, v.vlrdeb, v.vlrcred " );
+			sql.append( "from fnrazclivw01 v " );
+			sql.append( "where codempcl=? and codfilialcl=? " );
+			sql.append( "and  " );
 			if ( codcli != 0 ) {
-				sSQL.append( "C.CODCLI=? AND " );
+				sql.append( "v.codcli=? " );
 			}
-			/**
-			 * Verifica a existência dos valores
-			 */
-			sSQL.append( "( EXISTS (SELECT * FROM FNRECEBER R2 WHERE R2.CODEMP=? AND R2.CODFILIAL=? AND " );
-			sSQL.append( "R2.CODEMPCL=C.CODEMP AND R2.CODFILIALCL=C.CODFILIAL AND R2.CODCLI=C.CODCLI AND " );
-			sSQL.append( " DATAREC BETWEEN ? AND ? ) OR " );
-			sSQL.append( "EXISTS (SELECT * FROM FNSUBLANCA SL2, FNRECEBER R2 " );
-			sSQL.append( "WHERE SL2.CODEMPRC=R2.CODEMP AND SL2.CODFILIALRC=R2.CODFILIAL AND " );
-			sSQL.append( "SL2.CODREC=R2.CODREC AND C.CODEMP=R2.CODEMPCL AND C.CODFILIAL=R2.CODFILIALCL AND " );
-			sSQL.append( "C.CODCLI=R2.CODCLI AND R2.CODEMP=? AND R2.CODFILIAL=? AND SL2.DATASUBLANCA BETWEEN ?  AND ?) OR " );
-			sSQL.append( " EXISTS (SELECT * FROM CPCOMPRA CP, EQTIPOMOV TM, EQCLIFOR CF " );
-			sSQL.append( "WHERE CP.CODEMP=? AND CP.CODFILIAL=? AND  TM.CODEMP=CP.CODEMPTM AND " );
-			sSQL.append( "TM.CODFILIAL = CP.CODFILIALTM AND TM.CODTIPOMOV=CP.CODTIPOMOV AND TM.ESTIPOMOV='E' AND " );
-			sSQL.append( "TM.TIPOMOV='DV' AND CF.CODEMP=C.CODEMP AND CF.CODFILIAL=C.CODFILIAL AND CF.CODCLI=C.CODCLI AND " );
-			sSQL.append( "CP.CODEMPFR=CF.CODEMPFR AND CP.CODFILIALFR=CF.CODFILIALFR AND " );
-			sSQL.append( "CP.CODFOR=CF.CODFOR AND CP.DTENTCOMPRA BETWEEN ? AND ? ) ) " );
-			/**
-			 * Fim da query de saldo anterior
-			 */
+			sql.append( "and v.data between ? and ? " );
+			sql.append( "and ( ");
+			sql.append( "(v.codemprc is null or v.codemprc=? ) ");
+			sql.append( "and (v.codfilialrc is null or v.codfilialrc=? ) ");
+			sql.append( "and (v.codempsl is null or v.codempsl=? ) ");
+			sql.append( "and (v.codfilialsl is null or v.codfilialsl=? ) ");
+			sql.append( "and (v.codempcp is null or v.codempcp=? ) ");
+			sql.append( "and (v.codfilialcp is null or v.codfilialcp=? ) ");
+			sql.append( ") ");
+			sql.append( "order by 1, 2, 3, 4, 6, 5" );
 
-			/**
-			 * Query das vendas
-			 */
-			sSQL.append( "UNION ALL SELECT R.CODCLI CODEMIT, C.RAZCLI RAZEMIT, R.DATAREC DATA, ");
-			sSQL.append( "'Q' TIPO, ");
-			sSQL.append( "'V' TIPOSUBLANCA, ");
-			sSQL.append( "R.DOCREC DOC, " );
-			// (R.VLRMULTAREC-R.VLRJUROSREC)*-1 Removido multa e juros da venda
-			// Não faz parte do momento da venda.
-			sSQL.append( "R.VLRPARCREC VLRDEB, 0.00 VLRCRED " );
-			sSQL.append( "FROM FNRECEBER R, VDCLIENTE C WHERE C.CODEMP=R.CODEMPCL AND " );
-			sSQL.append( "C.CODFILIAL=R.CODFILIALCL AND C.CODCLI=R.CODCLI AND R.CODEMP=? AND " );
-			sSQL.append( "R.CODFILIAL=? AND " );
-			if ( codcli != 0 ) {
-				sSQL.append( "C.CODCLI=? AND " );
+			ps = con.prepareStatement( sql.toString() );
+			System.out.println( "QUERY" + sql.toString() );
+
+			ps = con.prepareStatement( sql.toString() );
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "VDCLIENTE" ) ); 
+			if (codcli!=0) {
+				ps.setInt( param++, codcli );
 			}
-			sSQL.append( "R.DATAREC BETWEEN ? AND ? " );
-
-			/**
-			 * Query dos recebimentos
-			 */
-			sSQL.append( "UNION ALL SELECT R.CODCLI CODEMIT, C.RAZCLI RAZEMIT, SL.DATASUBLANCA DATA, " );
-			sSQL.append( " (CASE WHEN SL.TIPOSUBLANCA='P' THEN 'R' ELSE 'X' END) TIPO, ");
-			sSQL.append( "SL.TIPOSUBLANCA, ");
-			sSQL.append( "R.DOCREC DOC, ");
-			sSQL.append( "(CASE WHEN SL.TIPOSUBLANCA IN ('J','D','M') THEN SL.VLRSUBLANCA*-1 ELSE 0.00 END) VLRDEB, ");
-			sSQL.append( "SL.VLRSUBLANCA VLRCRED " );
-			sSQL.append( "FROM FNSUBLANCA SL, FNRECEBER R, VDCLIENTE C " );
-			sSQL.append( "WHERE SL.CODEMPRC=R.CODEMP AND SL.CODFILIALRC=R.CODFILIAL AND ");
-			// Busca todos os tipos de sublançamentos com exceção do tipo desconto, pois o mesmo é computado a parte
-			//sSQL.append( "SL.TIPOSUBLANCA <>'D' AND " );
-			sSQL.append( "SL.CODREC=R.CODREC AND C.CODEMP=R.CODEMPCL AND C.CODFILIAL=R.CODFILIALCL AND " );
-			sSQL.append( "C.CODCLI=R.CODCLI AND SL.CODSUBLANCA<>0 AND  " );
-			if ( codcli != 0 ) {
-				sSQL.append( "C.CODCLI=? AND " );
+			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) );
+			ps.setInt( param++, Aplicativo.iCodEmp ); 
+			ps.setInt( param++, ListaCampos.getMasterFilial( "FNRECEBER" ) );
+			ps.setInt( param++, Aplicativo.iCodEmp ); 
+			ps.setInt( param++, ListaCampos.getMasterFilial( "FNSUBLANCA" ) ); 
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "VDCLIENTE" ) ); 
+			if (codcli!=0) {
+				ps.setInt( param++, codcli );
 			}
-			sSQL.append( "R.CODEMP=? AND R.CODFILIAL=? AND " );
-			sSQL.append( "SL.DATASUBLANCA BETWEEN ? AND ? " );
-			/**
-			 * Query dos cancelamentos
-			 * */
-			sSQL.append( "UNION ALL ");
-			sSQL.append( " SELECT C.CODCLI CODEMIT, C.RAZCLI RAZEMIT, " );
-			sSQL.append( " IR.DTVENCITREC DATA, 'X' TIPO, " );
-			sSQL.append( "'X' TIPOSUBLANCA, ");
-			sSQL.append( "R.DOCREC DOC, 0.00 VLRDEB, COALESCE(SUM(IR.VLRCANCITREC),0)*-1 VLRCRED " );
-			sSQL.append( "FROM FNRECEBER R, FNITRECEBER IR, VDCLIENTE C WHERE R.CODEMP=? AND R.CODFILIAL=? AND R.CODEMPCL=C.CODEMP AND " );
-			sSQL.append( "R.CODFILIALCL=C.CODFILIAL AND R.CODCLI=C.CODCLI ");
-			sSQL.append( "AND IR.CODEMP=R.CODEMP AND IR.CODFILIAL=R.CODFILIAL AND IR.CODREC=R.CODREC AND IR.STATUSITREC IN ('CR') ");
-			if ( codcli != 0 ) {
-				sSQL.append( "AND C.CODCLI=? " );
-			}
-			//sSQL.append( "AND R.CODEMP=? AND R.CODFILIAL=? AND " );
-			sSQL.append( "AND R.DATAREC BETWEEN ? AND ? " );
-			sSQL.append( "GROUP BY 1, 2, 3, 4, 5, 6 ");
-			/**
-			 * Query das devoluções
-			 */
-			sSQL.append( "UNION ALL SELECT C.CODCLI CODEMIT, C.RAZCLI RAZEMIT, CP.DTENTCOMPRA DATA, " );
-			sSQL.append( " 'Z' TIPO, ");
-			sSQL.append( "'Z' TIPOSUBLANCA, ");
-			sSQL.append( "CP.DOCCOMPRA DOC, 0.00 VLRDEB, (CP.VLRLIQCOMPRA * -1) VLRCRED " );
-			sSQL.append( "FROM CPCOMPRA CP, EQTIPOMOV TM, EQCLIFOR CF, VDCLIENTE C " );
-			sSQL.append( "WHERE TM.CODEMP=CP.CODEMPTM AND TM.CODFILIAL=CP.CODFILIALTM AND " );
-			sSQL.append( "TM.CODTIPOMOV=CP.CODTIPOMOV AND TM.ESTIPOMOV='E' AND TM.TIPOMOV='DV' AND " );
-			sSQL.append( "CF.CODEMP=C.CODEMP AND CF.CODFILIAL=C.CODFILIAL AND CF.CODCLI=C.CODCLI AND " );
-			sSQL.append( "CP.CODEMPFR=CF.CODEMPFR AND CP.CODFILIALFR=CF.CODFILIALFR AND " );
-			sSQL.append( "CP.CODFOR=CF.CODFOR AND " );
-			if ( codcli != 0 ) {
-				sSQL.append( "C.CODCLI=? AND " );
-			}
-			sSQL.append( "CP.CODEMP=? AND CP.CODFILIAL=? AND " );
-			sSQL.append( "CP.DTENTCOMPRA BETWEEN ? AND ? " );
-
-			/**
-			 * Query dos descontos
-			 */
-			/*sSQL.append( "UNION ALL SELECT R.CODCLI CODEMIT, C.RAZCLI RAZEMIT, SL.DATASUBLANCA DATA, " );
-			sSQL.append( " 'X' TIPO, R.DOCREC DOC, 0.00 VLRDEB , SL.VLRSUBLANCA VLRCRED " );
-			sSQL.append( "FROM FNSUBLANCA SL, FNRECEBER R, VDCLIENTE C " );
-			sSQL.append( "WHERE SL.CODEMPRC=R.CODEMP AND SL.CODFILIALRC=R.CODFILIAL AND " );
-			sSQL.append( " SL.TIPOSUBLANCA=? AND " );
-			sSQL.append( " SL.CODREC=R.CODREC AND C.CODEMP=R.CODEMPCL AND C.CODFILIAL=R.CODFILIALCL AND " );
-			sSQL.append( "C.CODCLI=R.CODCLI AND " );
-			if ( codcli != 0 ) {
-				sSQL.append( "C.CODCLI=? AND " );
-			}
-			sSQL.append( "R.CODEMP=? AND R.CODFILIAL=? AND " );
-			sSQL.append( "SL.DATASUBLANCA BETWEEN ? AND ?  " );
-			*/
-
-			sSQL.append( "ORDER BY 1, 2, 3, 4, 6, 5 " );
-
-			ps = con.prepareStatement( sSQL.toString() );
-
-			ps.setInt( param++, Aplicativo.iCodEmp ); // 1
-			ps.setInt( param++, ListaCampos.getMasterFilial( "FNRECEBER" ) ); // 2
-			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 3
-
-			ps.setInt( param++, Aplicativo.iCodEmp ); // 4
-			ps.setInt( param++, ListaCampos.getMasterFilial( "FNSUBLANCA" ) ); // 5
-			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 6
-
-			// Parametros do desconto
-			// Não será mais necessário, pois os lançamentos financeiros de desconto estão separados pelo TIPOSUBLANCA
-
-//			ps.setInt( param++, Aplicativo.iCodEmp ); // 4
-//			ps.setInt( param++, ListaCampos.getMasterFilial( "SGPREFERE1" ) ); // 5
-			// Tiposublanca = D - Desconto
-			/*ps.setString( param++, "D" ); // 4
-			ps.setInt( param++, Aplicativo.iCodEmp ); // 4
-			ps.setInt( param++, ListaCampos.getMasterFilial( "FNSUBLANCA" ) ); // 5
-			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 6 */
-
-			// Parametros do saldo de devoluções
-			ps.setInt( param++, Aplicativo.iCodEmp ); // 7
-			ps.setInt( param++, ListaCampos.getMasterFilial( "CPCOMPRA" ) ); // 8
-			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 9
-			// Parametros de filtro do cliente
-			ps.setInt( param++, Aplicativo.iCodEmp ); // 10
-			ps.setInt( param++, ListaCampos.getMasterFilial( "VDCLIENTE" ) ); // 11
-			if ( codcli != 0 ) {
-				ps.setInt( param++, codcli ); // 12
-			}
-			// Parametros do exists
-			ps.setInt( param++, Aplicativo.iCodEmp ); // 13
-			ps.setInt( param++, ListaCampos.getMasterFilial( "FNRECEBER" ) ); // 14
-			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 15
-			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) ); // 16
-			ps.setInt( param++, Aplicativo.iCodEmp ); // 17
-			ps.setInt( param++, ListaCampos.getMasterFilial( "FNRECEBER" ) ); // 18
-			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 19
-			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) ); // 20
-			// Parametros do exists referente ao saldo de devoluções
-			ps.setInt( param++, Aplicativo.iCodEmp ); // 21
-			ps.setInt( param++, ListaCampos.getMasterFilial( "CPCOMPRA" ) ); // 22
-			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 23
-			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) ); // 24
-			ps.setInt( param++, Aplicativo.iCodEmp ); // 25
-			ps.setInt( param++, ListaCampos.getMasterFilial( "FNRECEBER" ) ); // 26
-			if ( codcli != 0 ) {
-				ps.setInt( param++, codcli ); // 27
-			}
-			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 28
-			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) ); // 29
-			if ( codcli != 0 ) {
-				ps.setInt( param++, codcli ); // 30
-			}
-			ps.setInt( param++, Aplicativo.iCodEmp ); // 31
-			ps.setInt( param++, ListaCampos.getMasterFilial( "FNRECEBER" ) ); // 32
-			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 33
-			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) ); // 34
-			// Parâmetros cancelamentos
-			ps.setInt( param++, Aplicativo.iCodEmp ); // 35
-			ps.setInt( param++, ListaCampos.getMasterFilial( "FNRECEBER" ) ); // 36
-			if ( codcli != 0 ) {
-				ps.setInt( param++, codcli ); // 37
-			}
-			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 38
-			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) ); // 39
-			// Parâmetros das devoluções
-			if ( codcli != 0 ) {
-				ps.setInt( param++, codcli ); // 40
-			}
-			ps.setInt( param++, Aplicativo.iCodEmp ); // 41
-			ps.setInt( param++, ListaCampos.getMasterFilial( "CPCOMPRA" ) ); // 42
-			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 43
-			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) ); // 44
-
-			// Parametros dos descontos
-
-			//ps.setInt( param++, Aplicativo.iCodEmp ); // 4
-			//ps.setInt( param++, ListaCampos.getMasterFilial( "SGPREFERE1" ) ); // 5
-			
-			// Tiposublanca = "D" - Descontos
-			/*ps.setString( param++, "D" );
-
-			if ( codcli != 0 ) {
-				ps.setInt( param++, codcli ); // 41
-			}
-			ps.setInt( param++, Aplicativo.iCodEmp ); // 42
-			ps.setInt( param++, ListaCampos.getMasterFilial( "FNSUBLANCA" ) ); // 43
-			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 44
-			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) ); // 45
-*/
-			System.out.println( "QUERY" + sSQL.toString() );
+			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) );
+			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) ); 
+			ps.setInt( param++, Aplicativo.iCodEmp ); 
+			ps.setInt( param++, ListaCampos.getMasterFilial( "FNRECEBER" ) );
+			ps.setInt( param++, Aplicativo.iCodEmp ); 
+			ps.setInt( param++, ListaCampos.getMasterFilial( "FNSUBLANCA" ) ); 
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
 
 			rs = ps.executeQuery();
 
-			imprimiGrafico( bVisualizar, rs, sCab.toString() );
+			imprimiGrafico( bVisualizar, rs, cab.toString() );
 
 			rs.close();
 			ps.close();
@@ -410,7 +234,7 @@ public class FRRazCli extends FRelatorio {
 		}
 	}
 
-	private void imprimiGrafico( final TYPE_PRINT bVisualizar, final ResultSet rs, final String sCab ) {
+	private void imprimiGrafico( final TYPE_PRINT bVisualizar, final ResultSet rs, final String cab ) {
 
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
@@ -418,9 +242,9 @@ public class FRRazCli extends FRelatorio {
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "FNRECEBER" ) );
 		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
-		hParam.put( "FILTROS", sCab );
+		hParam.put( "FILTROS", cab );
 
-		dlGr = new FPrinterJob( "relatorios/FRRazCli.jasper", "Relatório de Razão por Cliente", sCab, rs, hParam, this );
+		dlGr = new FPrinterJob( "relatorios/FRRazCli.jasper", "Relatório de Razão por Cliente", cab, rs, hParam, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
