@@ -12892,6 +12892,72 @@ slp.codemppg=ip.codemp and slp.codfilialpg=ip.codfilial and slp.codpag=ip.codpag
 lp.codemp=slp.codemp and lp.codfilial=slp.codfilial and lp.codlanca=slp.codlanca  and lp.transflanca = 'N'
 ;
 
+create view fnrazclivw01 (
+ codempcl, codfilialcl, codcli, razcli
+ , codemprc, codfilialrc
+ , codempsl, codfilialsl
+ , codempcp, codfilialcp
+ , data, tipo, tiposublanca
+ , doc, vlrdeb, vlrcred
+) as
+-- Parcelas
+select c.codemp codempcl, c.codfilial codfilialcl
+, c.codcli, c.razcli
+, r.codemp codemprc, r.codfilial codfilialrc
+, null codempsl, null codfilialsl
+, null codempcp, null codfilialcp
+, r.datarec data
+, 'Q' tipo, 'V' tiposublanca
+, r.docrec doc, r.vlrparcrec vlrdeb, 0.00 vlrcred
+from fnreceber r, vdcliente c
+where c.codemp=r.codempcl and c.codfilial=r.codfilialcl and c.codcli=r.codcli
+union all
+-- Pagamentos
+select c.codemp codempcl, c.codfilial codfilialcl
+, c.codcli, c.razcli
+, null codemprc, null codfilialrc
+, sl.codemp codempsl, sl.codfilial codfilialsl
+, null codempcp, null codfilialcp
+, sl.datasublanca data
+, (case when sl.tiposublanca='P' then 'R' else 'X' end) tipo
+, sl.tiposublanca, r.docrec doc
+, (case when sl.tiposublanca in ('J','D','M') then sl.vlrsublanca*-1 else 0.00 end) vlrdeb,
+sl.vlrsublanca vlrcred
+from fnsublanca sl, fnreceber r, vdcliente c
+where sl.codemprc=r.codemp and sl.codfilialrc=r.codfilial
+and sl.codrec=r.codrec and c.codemp=r.codempcl and c.codfilial=r.codfilialcl
+and c.codcli=r.codcli and sl.codsublanca<>0
+union all
+-- Cancelamento
+select c.codemp codempcl, c.codfilial codfilialcl
+, c.codcli, c.razcli
+, r.codemp codemprc, r.codfilial codfilialrc
+, null codempsl, null codfilialsl
+, null codempcp, null codfilialcp
+, ir.dtvencitrec data
+, 'X' tipo, 'X' tiposublanca
+, r.docrec doc, 0.00 vlrdeb, coalesce(sum(ir.vlrcancitrec),0)*-1 vlrcred
+from fnreceber r, fnitreceber ir, vdcliente c
+where r.codempcl=c.codemp and r.codfilialcl=c.codfilial and r.codcli=c.codcli
+and ir.codemp=r.codemp and ir.codfilial=r.codfilial and ir.codrec=r.codrec and ir.statusitrec in ('CR')
+group by 1, 2, 3, 4, 5, 6, 11, 14
+-- Devoluções
+union all
+select c.codemp codempcl, c.codfilial codfilialcl
+, c.codcli, c.razcli
+, null codemprc, null codfilialrc
+, null codempsl, null codfilialsl
+, cp.codemp codempcp, cp.codfilial codfilialcp
+, cp.dtentcompra data
+, 'Z' tipo, 'Z' tiposublanca, cp.doccompra doc, 0.00 vlrdeb
+, (cp.vlrliqcompra * -1) vlrcred
+from cpcompra cp, eqtipomov tm, eqclifor cf, vdcliente c
+where tm.codemp=cp.codemptm and tm.codfilial=cp.codfilialtm
+and tm.codtipomov=cp.codtipomov and tm.estipomov='E' and tm.tipomov='DV'
+and cf.codemp=c.codemp and cf.codfilial=c.codfilial and cf.codcli=c.codcli
+and cp.codempfr=cf.codempfr and cp.codfilialfr=cf.codfilialfr and cp.codfor=cf.codfor
+order by 3, 4, 11, 12, 14, 13 ;
+
 create view fnrazforvw01 (
   codempfr, codfilialfr, codfor, razfor
   , codemppg, codfilialpg
@@ -12901,7 +12967,7 @@ create view fnrazforvw01 (
   , tipo, tiposublanca
   , doc, vlrdeb, vlrcred
 ) as
-select f.codemp codempfr, f.codfilial codfilialfr, f.codfor codemit, f.razfor razemit
+select f.codemp codempfr, f.codfilial codfilialfr, f.codfor, f.razfor
 , p.codemp codemppg, p.codfilial codfilialpg
 , null codempsl, null codfilialsl
 , null codempvd, null codfilialvd
@@ -12910,7 +12976,7 @@ select f.codemp codempfr, f.codfilial codfilialfr, f.codfor codemit, f.razfor ra
 from fnpagar p, cpforneced f
 where f.codemp=p.codempfr and f.codfilial=p.codfilialfr and f.codfor=p.codfor
 union all
-select f.codemp codempfr, f.codfilial codfilialfr, f.codfor codemit, f.razfor razemit
+select f.codemp codempfr, f.codfilial codfilialfr, f.codfor, f.razfor
 , null codemppg, null codfilialpg
 , sl.codemp codempsl, sl.codfilial codfilialsl
 , null codempvd, null codfilialvd
@@ -12923,7 +12989,7 @@ where f.codemp=sl.codempfr and f.codfilial=sl.codfilialfr
 and p.codemp=sl.codemppg and p.codfilial=sl.codfilialpg and p.codpag=sl.codpag
 and f.codfor=sl.codfor and sl.codsublanca<>0 
 union all
-select f.codemp codempfr, f.codfilial codfilialfr, f.codfor codemit, f.razfor razemit
+select f.codemp codempfr, f.codfilial codfilialfr, f.codfor, f.razfor
 , null codemppg, null codfilialpg
 , null codempsl, null codfilialsl
 , vd.codemp codempvd, vd.codfilialvd
@@ -42071,6 +42137,7 @@ GRANT SELECT ON FNPLANOPAG TO PROCEDURE FNGERAITRECEBERSP01;
 GRANT DELETE, INSERT, SELECT, UPDATE ON FNRECEBER TO ROLE ADM;
 GRANT SELECT ON FNRECEBER TO PROCEDURE FNADICLANCASP01;
 GRANT SELECT ON FNRAZFORVW01 TO ROLE ADM;
+GRANT SELECT ON FNRAZCLIVW01 TO ROLE ADM;
 GRANT DELETE, INSERT, SELECT, UPDATE ON FNRECEBER TO PROCEDURE FNADICRECEBERSP01;
 GRANT SELECT ON FNRECEBER TO PROCEDURE FNCHECAPGTOATRASOSP;
 GRANT SELECT ON FNRECEBER TO PROCEDURE FNCHECAPGTOSP;
