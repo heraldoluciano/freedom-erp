@@ -12892,6 +12892,49 @@ slp.codemppg=ip.codemp and slp.codfilialpg=ip.codfilial and slp.codpag=ip.codpag
 lp.codemp=slp.codemp and lp.codfilial=slp.codfilial and lp.codlanca=slp.codlanca  and lp.transflanca = 'N'
 ;
 
+create view fnrazforvw01 (
+  codempfr, codfilialfr, codfor, razfor
+  , codemppg, codfilialpg
+  , codempsl, codfilialsl
+  , codempvd, codfilialvd
+  , data
+  , tipo, tiposublanca
+  , doc, vlrdeb, vlrcred
+) as
+select f.codemp codempfr, f.codfilial codfilialfr, f.codfor codemit, f.razfor razemit
+, p.codemp codemppg, p.codfilial codfilialpg
+, null codempsl, null codfilialsl
+, null codempvd, null codfilialvd
+, p.datapag data
+, 'C' tipo, 'C' tiposublanca, p.docpag doc, 0.00 vlrdeb, p.vlrparcpag vlrcred
+from fnpagar p, cpforneced f
+where f.codemp=p.codempfr and f.codfilial=p.codfilialfr and f.codfor=p.codfor
+union all
+select f.codemp codempfr, f.codfilial codfilialfr, f.codfor codemit, f.razfor razemit
+, null codemppg, null codfilialpg
+, sl.codemp codempsl, sl.codfilial codfilialsl
+, null codempvd, null codfilialvd
+, sl.datasublanca data
+,  (case when sl.tiposublanca='P' then 'P' else 'X' end) tipo, sl.tiposublanca
+, p.docpag doc, sl.vlrsublanca vlrdeb, (case when sl.tiposublanca in ('J','D','M')
+then sl.vlrsublanca else 0.00 end) vlrcred
+from fnsublanca sl , cpforneced f, fnpagar p
+where f.codemp=sl.codempfr and f.codfilial=sl.codfilialfr
+and p.codemp=sl.codemppg and p.codfilial=sl.codfilialpg and p.codpag=sl.codpag
+and f.codfor=sl.codfor and sl.codsublanca<>0 
+union all
+select f.codemp codempfr, f.codfilial codfilialfr, f.codfor codemit, f.razfor razemit
+, null codemppg, null codfilialpg
+, null codempsl, null codfilialsl
+, vd.codemp codempvd, vd.codfilialvd
+, vd.dtemitvenda data
+, 'Z' tipo, 'Z' tiposublanca, vd.docvenda doc, vd.vlrliqvenda vlrcred, 0.00 vlrdeb
+from vdvenda vd, eqtipomov tm, eqclifor cf, cpforneced f
+where tm.codemp=vd.codemptm and tm.codfilial=vd.codfilialtm and tm.codtipomov=vd.codtipomov
+and tm.estipomov='S' and tm.tipomov='DV' and cf.codempfr=f.codemp and cf.codfilialfr=f.codfilial
+and cf.codfor=f.codfor and vd.codempcl=cf.codemp and vd.codfilialcl=cf.codfilial
+and vd.codcli=cf.codcli;
+
 /* View: TKCONTCLIVW01, Owner: SYSDBA */
 CREATE VIEW TKCONTCLIVW01 (TIPOCTO, CODEMP, CODFILIAL, CODCTO, RAZCTO, NOMECTO, CONTCTO, EMAILCTO, OBSCTO, CODEMPTO, CODFILIALTO, CODTIPOCONT, CODEMPSR, CODFILIALSR, CODSETOR, CODEMPOC, CODFILIALOC, CODORIGCONT, CODEMPTI, CODFILIALTI, CODTIPOCLI, CODEMPCC, CODFILIALCC, CODCLASCLI, ATIVO, DTINS, DTALT, DTINSCC, DTALTCC) AS
 
