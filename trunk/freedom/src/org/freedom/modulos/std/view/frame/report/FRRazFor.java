@@ -141,264 +141,81 @@ public class FRRazFor extends FRelatorio {
 			cab.append( " até: " );
 			cab.append( txtDatafim.getVlrString() );
 
-			sql.append( "SELECT F.CODFOR CODEMIT, F.RAZFOR RAZEMIT, " );
-			sql.append( "CAST( '" );
+			sql.append( "select v.codfor codemit, v.razfor razemit, " );
+			sql.append( "cast( '" );
 			sql.append( Funcoes.dateToStrDB( txtDataini.getVlrDate() ) );
 			/**
 			 * Tipo A = Saldo anterior Busca na FNPAGAR todas as compras com valor financeiro a pagar (VLRPAG)
 			 */
-			sql.append( "' AS DATE) DATA, 'A' TIPO, ");
-			sql.append( "'A' TIPOSUBLANCA, ");
-			sql.append( "0 DOC, 0.00 VLRDEB, " );
-			sql.append( "(COALESCE( ( SELECT SUM(P.VLRPARCPAG) " );
-			sql.append( "FROM FNPAGAR P " );
-			sql.append( "WHERE P.CODEMP=? AND P.CODFILIAL=? AND " );
-			sql.append( "P.CODEMPFR=F.CODEMP AND P.CODFILIALFR=F.CODFILIAL AND " );
-			sql.append( "P.CODFOR=F.CODFOR AND " );
-			sql.append( "P.DATAPAG < ? ),0) + " );
-			/**
-			 * Subtrai o valor pago do saldo anterior O sinal do sublanca é invertido, então o sinal - está subtraindo
-			 */
-			sql.append( "COALESCE( ( SELECT SUM(SL.VLRSUBLANCA*-1) " );
-			sql.append( "FROM FNSUBLANCA SL " );
-			sql.append( "WHERE SL.CODEMPFR=F.CODEMP AND SL.CODFILIALFR=F.CODFILIAL AND " );
-			sql.append( "SL.CODFOR=F.CODFOR AND SL.CODSUBLANCA<>0 AND " );
-			sql.append( "SL.CODEMP=? AND SL.CODFILIAL=? AND " );
-			sql.append( "SL.DATASUBLANCA < ? ), 0) +  " );
-
-			/**
-			 * Subtrai o valor do desconto na data do lançamento financeiro
-			 */
-
-			/*sql.append( "COALESCE( ( SELECT SUM(SL.VLRSUBLANCA) FROM FNSUBLANCA SL, SGPREFERE1 PF WHERE  " );
-			sql.append( " SL.CODEMPFR=F.CODEMP AND SL.CODFILIALFR=F.CODFILIAL AND SL.CODFOR=F.CODFOR AND " );
-			//sql.append( " SL.CODEMPPN=PF.CODEMPDR AND SL.CODFILIALPN=PF.CODFILIALDR AND SL.CODPLAN=PF.CODPLANDR AND " );
-			sql.append( " SL.TIPOSUBLANCA=? AND " );
-			sql.append( " SL.CODEMP=? AND SL.CODFILIAL=? AND SL.DATASUBLANCA < ? ), 0) - " );
-*/
-			/**
-			 * Subtrai o valor das devoluções do saldo anterior
-			 */
-			sql.append( "( COALESCE( ( SELECT SUM(VD.VLRLIQVENDA) " );
-			sql.append( "FROM VDVENDA VD, EQTIPOMOV TM, EQCLIFOR CF " );
-			sql.append( "WHERE VD.CODEMP=? AND VD.CODFILIAL=? AND  TM.CODEMP=VD.CODEMPTM AND " );
-			sql.append( "TM.CODFILIAL=VD.CODFILIALTM AND TM.ESTIPOMOV='S' AND TM.TIPOMOV='DV' AND " );
-			sql.append( "TM.CODTIPOMOV=VD.CODTIPOMOV AND CF.CODEMPFR=F.CODEMP AND " );
-			sql.append( "CF.CODFILIALFR=F.CODFILIAL AND CF.CODFOR=F.CODFOR AND VD.CODEMPCL=CF.CODEMP AND " );
-			sql.append( "VD.CODFILIALCL=CF.CODFILIAL AND VD.CODCLI=CF.CODCLI AND VD.DTEMITVENDA < ? ),0) ) ) " );
-			sql.append( " VLRCRED " );
-			/**
-			 * Filtro do fornecedor
-			 */
-			sql.append( "FROM CPFORNECED F " );
-			sql.append( "WHERE F.CODEMP=? AND F.CODFILIAL=? AND " );
-			if ( codfor != 0 ) {
-				sql.append( "F.CODFOR=? AND " );
+			sql.append( "' as date) data, 'A' tipo, ");
+			sql.append( "'A' tiposublanca, ");
+			sql.append( "0 DOC, 0.00 vlrdeb, " );
+			sql.append( "sum(v.vlrcred-v.vlrdeb) vlrcred " );
+			sql.append( "from fnrazforvw01 v " );
+			sql.append( "where v.codempfr=? and v.codfilialfr=? ");
+			if (codfor!=0) {
+				sql.append( " and v.codfor=? ");
 			}
+			sql.append( "and v.data < ? " );
+			sql.append( "and ( ");
+			sql.append( "(v.codemppg is null or v.codemppg=? ) ");
+			sql.append( "and (v.codfilialpg is null or v.codfilialpg=? ) ");
+			sql.append( "and (v.codempsl is null or v.codempsl=? ) ");
+			sql.append( "and (v.codfilialsl is null or v.codfilialsl=? ) ");
+			sql.append( "and (v.codempvd is null or v.codempvd=? ) ");
+			sql.append( "and (v.codfilialvd is null or v.codfilialvd=? ) ");
+			sql.append( ")");
+			sql.append( " group by 1, 2 ");
 			/**
-			 * Verifica a existência dos valores
+			 * Query dos lancamentos
 			 */
-			sql.append( "( EXISTS (SELECT * FROM FNPAGAR P2 " );
-			sql.append( "WHERE P2.CODEMP=? AND P2.CODFILIAL=? AND " );
-			sql.append( "P2.CODEMPFR=F.CODEMP AND P2.CODFILIALFR=F.CODFILIAL AND " );
-			sql.append( "P2.CODFOR=F.CODFOR AND DATAPAG BETWEEN ? AND ? )" );
-			sql.append( "OR EXISTS (SELECT * FROM FNSUBLANCA SL2 " );
-			sql.append( "WHERE F.CODEMP=SL2.CODEMPFR AND " );
-			sql.append( "F.CODFILIAL=SL2.CODFILIALFR AND F.CODFOR=SL2.CODFOR AND " );
-			sql.append( "SL2.CODEMP=? AND SL2.CODFILIAL=? AND " );
-			sql.append( "SL2.DATASUBLANCA BETWEEN ? AND ? ) OR " );
-			sql.append( " EXISTS (SELECT * FROM VDVENDA VD, EQTIPOMOV TM, EQCLIFOR CF " );
-			sql.append( "WHERE VD.CODEMP=? AND VD.CODFILIAL=? AND TM.CODEMP=VD.CODEMPTM AND " );
-			sql.append( "TM.CODFILIAL=VD.CODFILIALTM AND TM.CODTIPOMOV=VD.CODTIPOMOV AND " );
-			sql.append( "TM.ESTIPOMOV='S' AND TM.TIPOMOV='DV' AND " );
-			sql.append( "CF.CODEMPFR=F.CODEMP AND CF.CODFILIALFR=F.CODFILIAL AND CF.CODFOR=F.CODFOR AND " );
-			sql.append( "VD.CODEMPCL=CF.CODEMP AND VD.CODFILIALCL=CF.CODFILIAL AND " );
-			sql.append( "VD.CODCLI=CF.CODCLI AND VD.DTEMITVENDA BETWEEN ? AND ? ) ) " );
-			/**
-			 * Fim da query do saldo anterior
-			 */
-
-			/**
-			 * Query das compras
-			 */
-			sql.append( "UNION ALL " );
-			sql.append( "SELECT P.CODFOR CODEMIT, F.RAZFOR RAZEMIT, " );
-			sql.append( "P.DATAPAG DATA, 'C' TIPO, ");
-			sql.append( "'C' TIPOSUBLANCA, ");
-
-			sql.append( "P.DOCPAG DOC, " );
-			sql.append( "0.00 VLRDEB, P.VLRPARCPAG VLRCRED " );
-			sql.append( "FROM FNPAGAR P, CPFORNECED F " );
-			sql.append( "WHERE F.CODEMP=P.CODEMPFR AND F.CODFILIAL=P.CODFILIALFR AND " );
-			sql.append( "F.CODFOR=P.CODFOR AND " );
-			sql.append( "P.CODEMP=? AND P.CODFILIAL=? AND " );
+			sql.append( "union all " );
+			sql.append( "select v.codfor codemit, v.razfor razemit, " );
+			sql.append( "v.data, v.tipo, v.tiposublanca ");
+			sql.append( ",v.doc, v.vlrdeb, v.vlrcred " );
+			sql.append( "from fnrazforvw01 v " );
+			sql.append( "where codempfr=? and codfilialfr=? " );
+			sql.append( "and  " );
 			if ( codfor != 0 ) {
-				sql.append( "F.CODFOR=? AND " );
+				sql.append( "v.codfor=? " );
 			}
-			sql.append( "P.DATAPAG BETWEEN ? AND ? " );
-
-			/**
-			 * Query dos pagamentos
-			 */
-			sql.append( "UNION ALL " );
-			sql.append( "SELECT SL.CODFOR CODEMIT, F.RAZFOR RAZEMIT, " );
-			sql.append( "SL.DATASUBLANCA DATA, ");
-			sql.append( " (CASE WHEN SL.TIPOSUBLANCA='P' THEN 'P' ELSE 'X' END) TIPO, ");
-			sql.append( "SL.TIPOSUBLANCA, ");
-			sql.append( "P.DOCPAG DOC, SL.VLRSUBLANCA VLRDEB, ");
-			sql.append( "(CASE WHEN SL.TIPOSUBLANCA IN ('J','D','M') THEN SL.VLRSUBLANCA ELSE 0.00 END) VLRCRED " );
-			sql.append( "FROM FNSUBLANCA SL, CPFORNECED F, FNPAGAR P " );
-			sql.append( "WHERE F.CODEMP=SL.CODEMPFR AND F.CODFILIAL=SL.CODFILIALFR AND " );
-			sql.append( "P.CODEMP=SL.CODEMPPG AND P.CODFILIAL=SL.CODFILIALPG AND P.CODPAG=SL.CODPAG AND " );
-			// Incluido no tiposublanca P - Padrão, M - Multa e J-Juros
-			//sql.append( "SL.TIPOSUBLANCA IN ('P','M','J') AND ");
-			sql.append( "F.CODFOR=SL.CODFOR AND SL.CODSUBLANCA<>0 AND " );
-			if ( codfor != 0 ) {
-				sql.append( "F.CODFOR=? AND " );
-			}
-			sql.append( "SL.CODEMP=? AND SL.CODFILIAL=? AND " );
-			sql.append( "SL.DATASUBLANCA BETWEEN ? AND ? " );
-			/**
-			 * Query dos cancelamentos
-			 */
-			/*sql.append( "UNION ALL ");
-			sql.append( " SELECT F.CODFOR CODEMIT, F.RAZFOR RAZEMIT, " );
-			sql.append( " IP.DTVENCITPAG DATA, 'X' TIPO, " );
-			sql.append( "'X' TIPOSUBLANCA, ");
-			sql.append( "P.DOCPAG DOC, COALESCE(SUM(IP.VLRCANCITPAG),0) VLRCRED, 0.00 VLRDEB " );
-			sql.append( "FROM FNPAGAR P, FNITPAGAR IP, CPFORNECED F WHERE P.CODEMP=? AND P.CODFILIAL=? AND P.CODEMPFR=F.CODEMP AND " );
-			sql.append( "P.CODFILIALFR=F.CODFILIAL AND P.CODFOR=F.CODFOR ");
-			sql.append( "AND IP.CODEMP=P.CODEMP AND IP.CODFILIAL=P.CODFILIAL AND IP.CODPAG=P.CODPAG AND IP.STATUSITPAG IN ('CP') ");
-			if ( codfor != 0 ) {
-				sql.append( "AND F.CODFOR=? " );
-			}
-			//sql.append( "AND R.CODEMP=? AND R.CODFILIAL=? AND " );
-			sql.append( "AND P.DATAPAG BETWEEN ? AND ? " );
-			sql.append( "GROUP BY 1, 2, 3, 4, 5, 6 ");
-				*/		
-			/**
-			 * Query das devoluções
-			 */
-			sql.append( "UNION ALL SELECT F.CODFOR CODEMIT, F.RAZFOR RAZEMIT, VD.DTEMITVENDA DATA, " );
-			sql.append( " 'Z' TIPO, ");
-			sql.append( "'Z' TIPOSUBLANCA, " );
-			sql.append( "VD.DOCVENDA DOC, VD.VLRLIQVENDA VLRCRED, 0.00 VLRDEB " );
-			sql.append( "FROM VDVENDA VD, EQTIPOMOV TM, EQCLIFOR CF, CPFORNECED F " );
-			sql.append( "WHERE TM.CODEMP=VD.CODEMPTM AND TM.CODFILIAL=VD.CODFILIALTM AND " );
-			sql.append( "TM.CODTIPOMOV=VD.CODTIPOMOV AND TM.ESTIPOMOV='S' AND TM.TIPOMOV='DV' AND " );
-			sql.append( "CF.CODEMPFR=F.CODEMP AND CF.CODFILIALFR=F.CODFILIAL AND CF.CODFOR=F.CODFOR AND " );
-			sql.append( "VD.CODEMPCL=CF.CODEMP AND VD.CODFILIALCL=CF.CODFILIAL AND " );
-			sql.append( "VD.CODCLI=CF.CODCLI AND " );
-			if ( codfor != 0 ) {
-				sql.append( "F.CODFOR=? AND " );
-			}
-			sql.append( "VD.CODEMP=? AND VD.CODFILIAL=? AND " );
-			sql.append( "VD.DTEMITVENDA BETWEEN ? AND ? " );
-
-			/**
-			 * Query dos descontos
-			 */
-/*			sql.append( "UNION ALL SELECT F.CODFOR CODEMIT, F.RAZFOR RAZEMIT, SL.DATASUBLANCA DATA, " );
-			sql.append( " 'X' TIPO, P.DOCPAG DOC, (SL.VLRSUBLANCA * -1) VLRDEB,  0.00 VLRCRED " );
-			sql.append( "FROM FNSUBLANCA SL, FNPAGAR P, CPFORNECED F " );
-			sql.append( "WHERE SL.CODEMPPG=P.CODEMP AND SL.CODFILIALPG=P.CODFILIAL AND " );
-			sql.append( " SL.TIPOSUBLANCA=? AND " );
-			sql.append( " SL.CODPAG=P.CODPAG AND F.CODEMP=P.CODEMPFR AND F.CODFILIAL=P.CODFILIALFR AND " );
-			sql.append( "F.CODFOR=P.CODFOR AND " );
-			if ( codfor != 0 ) {
-				sql.append( "F.CODFOR=? AND " );
-			}
-			sql.append( "P.CODEMP=? AND P.CODFILIAL=? AND " );
-			sql.append( "SL.DATASUBLANCA BETWEEN ? AND ?  " );
-*/
-			sql.append( "ORDER BY 1, 2, 3, 4, 6, 5" );
+			sql.append( "and v.data between ? and ? " );
+			sql.append( "and ( ");
+			sql.append( "(v.codemppg is null or v.codemppg=? ) ");
+			sql.append( "and (v.codfilialpg is null or v.codfilialpg=? ) ");
+			sql.append( "and (v.codempsl is null or v.codempsl=? ) ");
+			sql.append( "and (v.codfilialsl is null or v.codfilialsl=? ) ");
+			sql.append( "and (v.codempvd is null or v.codempvd=? ) ");
+			sql.append( "and (v.codfilialvd is null or v.codfilialvd=? ) ");
+			sql.append( ") ");
+			sql.append( "order by 1, 2, 3, 4, 6, 5" );
 
 			ps = con.prepareStatement( sql.toString() );
-			ps.setInt( param++, Aplicativo.iCodEmp ); // 1
-			ps.setInt( param++, ListaCampos.getMasterFilial( "FNPAGAR" ) ); // 2
-			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 3
-			ps.setInt( param++, Aplicativo.iCodEmp ); // 4
-			ps.setInt( param++, ListaCampos.getMasterFilial( "FNSUBLANCA" ) ); // 5
-			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 6
-
-			// Paramatro do saldo de descontos
-
-			// Tipo sublanca = "D" Desconto
-			/*ps.setString( param++, "D" ); // 7
-			ps.setInt( param++, Aplicativo.iCodEmp ); // 4
-			ps.setInt( param++, ListaCampos.getMasterFilial( "FNSUBLANCA" ) ); // 5
-			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 6
-*/
-			// Parametros do saldo de devoluções
-			ps.setInt( param++, Aplicativo.iCodEmp ); // 7
-			ps.setInt( param++, ListaCampos.getMasterFilial( "VDVENDA" ) ); // 8
-			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 9
-			//
-			ps.setInt( param++, Aplicativo.iCodEmp ); // 10
-			ps.setInt( param++, ListaCampos.getMasterFilial( "CPFORNECED" ) ); // 11
-			if ( codfor != 0 ) {
-				ps.setInt( param++, codfor ); // 12
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "CPFORNECED" ) ); 
+			if (codfor!=0) {
+				ps.setInt( param++, codfor );
 			}
-			// Parametros do exists
-			ps.setInt( param++, Aplicativo.iCodEmp ); // 13
-			ps.setInt( param++, ListaCampos.getMasterFilial( "FNPAGAR" ) ); // 14
-			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 15
-			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) ); // 16
-			ps.setInt( param++, Aplicativo.iCodEmp ); // 17
-			ps.setInt( param++, ListaCampos.getMasterFilial( "FNSUBLANCA" ) ); // 18
-			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 19
-			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) ); // 20
-			// Parametros do exists referente ao saldo de devoluções
-			ps.setInt( param++, Aplicativo.iCodEmp ); // 21
-			ps.setInt( param++, ListaCampos.getMasterFilial( "VDVENDA" ) ); // 22
-			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 23
-			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) ); // 24
-			//
-			ps.setInt( param++, Aplicativo.iCodEmp ); // 25
-			ps.setInt( param++, ListaCampos.getMasterFilial( "FNPAGAR" ) ); // 26
-			if ( codfor != 0 ) {
-				ps.setInt( param++, codfor ); // 27
+			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) );
+			ps.setInt( param++, Aplicativo.iCodEmp ); 
+			ps.setInt( param++, ListaCampos.getMasterFilial( "FNPAGAR" ) );
+			ps.setInt( param++, Aplicativo.iCodEmp ); 
+			ps.setInt( param++, ListaCampos.getMasterFilial( "FNSUBLANCA" ) ); 
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "VDVENDA" ) );
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "CPFORNECED" ) ); 
+			if (codfor!=0) {
+				ps.setInt( param++, codfor );
 			}
-			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 28
-			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) ); // 29
-			if ( codfor != 0 ) {
-				ps.setInt( param++, codfor ); // 30
-			}
-			ps.setInt( param++, Aplicativo.iCodEmp ); // 31
-			ps.setInt( param++, ListaCampos.getMasterFilial( "FNSUBLANCA" ) ); // 32
-			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 33
-			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) ); // 34
-			// Parâmetros cancelamentos
-			/*ps.setInt( param++, Aplicativo.iCodEmp ); // 35
-			ps.setInt( param++, ListaCampos.getMasterFilial( "FNPAGAR" ) ); // 36
-			if ( codfor != 0 ) {
-				ps.setInt( param++, codfor ); // 37
-			}
-			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 38
-			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) ); // 39
-	        */
-			// Parâmetros das devoluções
-			if ( codfor != 0 ) {
-				ps.setInt( param++, codfor ); // 40
-			}
-			ps.setInt( param++, Aplicativo.iCodEmp ); // 41
-			ps.setInt( param++, ListaCampos.getMasterFilial( "VDVENDA" ) ); // 42
-			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 43
-			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) ); // 44
-
-			// Parametros dos descontos
-			
-            // Tipo sublanca = D - Descontos
-			/*ps.setString( param++, "D" ); // 4
-
-			if ( codfor != 0 ) {
-				ps.setInt( param++, codfor ); // 41
-			}
-			ps.setInt( param++, Aplicativo.iCodEmp ); // 42
-			ps.setInt( param++, ListaCampos.getMasterFilial( "FNSUBLANCA" ) ); // 43
-			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) ); // 44
-			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) ); // 45
-*/
+			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) );
+			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) ); 
+			ps.setInt( param++, Aplicativo.iCodEmp ); 
+			ps.setInt( param++, ListaCampos.getMasterFilial( "FNPAGAR" ) );
+			ps.setInt( param++, Aplicativo.iCodEmp ); 
+			ps.setInt( param++, ListaCampos.getMasterFilial( "FNSUBLANCA" ) ); 
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "VDVENDA" ) );
 			System.out.println( "QUERY" + sql.toString() );
 
 			rs = ps.executeQuery();
