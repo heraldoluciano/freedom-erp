@@ -717,7 +717,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		item.setPercdesc( percdescitvenda );
 		item.setVlrdesc( vlrdescitvenda );
 		item.setVlrliq( vlrliqitvenda );
-		DLConfirmItem dlconfirm = new DLConfirmItem();
+		DLConfirmItem dlconfirm = new DLConfirmItem(this);
 		dlconfirm.setValues( item );
 		dlconfirm.setVisible( true );
 		if (dlconfirm.OK) {

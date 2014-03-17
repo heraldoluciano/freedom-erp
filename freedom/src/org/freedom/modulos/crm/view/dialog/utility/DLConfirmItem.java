@@ -23,6 +23,7 @@
 
 package org.freedom.modulos.crm.view.dialog.utility;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
@@ -37,21 +38,27 @@ public class DLConfirmItem extends FFDialogo {
 	
 	private final JTextFieldFK txtDescprod = new JTextFieldFK( JTextFieldFK.TP_STRING, 100, 0);
 	
-	private final JTextFieldFK txtQtd = new JTextFieldFK( JTextFieldFK.TP_DECIMAL, 15, 5 );
+	private final JTextFieldPad txtQtd = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 5 );
 
-	private final JTextFieldPad txtPreco = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 5 );
-	
+	private final JTextFieldFK txtPreco = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 5 );
+
+	private final JTextFieldFK txtPercDesc = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 5 );
+
+	private final JTextFieldFK txtVlrDesc = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 5 );
+
+	private final JTextFieldFK txtVlrLiq = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 5 );
+
 	private Item result = null;
 
 	private Integer codemp;
 	
 	private Integer codfilial;
 	
-	public DLConfirmItem() {
+	public DLConfirmItem(Component cOrig) {
 
-		super();
+		super(cOrig);
 		setTitulo( "Confirmação de item" );
-		setAtribos( 50, 50, 450, 200 );
+		setAtribos( 600, 250 );
 		montaTela();
 	
 	}
@@ -59,9 +66,12 @@ public class DLConfirmItem extends FFDialogo {
 	public void montaTela(){
 
 		adic( txtCodprod, 7, 25, 70, 20, "Cód.prod." );
-		adic( txtDescprod, 80, 25, 300, 20, "Descrição");
+		adic( txtDescprod, 80, 25, 390, 20, "Descrição");
 		adic( txtQtd, 7, 65, 90, 20, "Quantidade" );
 		adic( txtPreco, 100, 65, 90, 20, "Preço");
+		adic( txtPercDesc, 193, 65, 90, 20, "% Desconto");
+		adic( txtVlrDesc, 286, 65, 90, 20, "Vlr.desconto");
+		adic( txtVlrLiq, 379, 65, 90, 20, "Vlr.líquido");
 		
 	}
 	
@@ -72,6 +82,9 @@ public class DLConfirmItem extends FFDialogo {
 		txtDescprod.setVlrString( item.getDescprod() );
 		txtQtd.setVlrBigDecimal( item.getQtd() );
 		txtPreco.setVlrBigDecimal( item.getPreco() );
+		txtPercDesc.setVlrBigDecimal( item.getPercdesc() );
+		txtVlrDesc.setVlrBigDecimal( item.getVlrdesc() );
+		txtVlrLiq.setVlrBigDecimal( item.getVlrliq() );
 		
 	}
 	
