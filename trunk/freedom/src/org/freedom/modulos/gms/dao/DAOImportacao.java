@@ -863,7 +863,7 @@ public class DAOImportacao extends AbstractDAO {
 			
 			sql.append( "select coditfisc from lfitclfiscal " );
 			sql.append( "where " );
-			sql.append( "codemp=? and codfilial=? and codfisc=? and tipousoitfisc='CP' and codpais=?" );
+			sql.append( "codemp=? and codfilial=? and codfisc=? and tipousoitfisc='CP' and codpais=? and ativoitfisc='S'" );
 
 			ps = getConn().prepareStatement( sql.toString() );
 			
