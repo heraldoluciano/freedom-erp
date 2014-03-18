@@ -300,7 +300,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 
 	private JTextFieldPad txtVlrIiUnidTrib = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 9, 2 );
 
-	private JCheckBoxPad cbGeralFisc = new JCheckBoxPad( "Regra geral?", "S", "N" );
+	private JCheckBoxPad cbGeralFisc = new JCheckBoxPad( "Regra geral", "S", "N" );
 
 	private JTextFieldPad txtCodPais = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -402,6 +402,8 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 	
 	private JCheckBoxPad cbCalcSTCM = new JCheckBoxPad( "Cálculo de ST por carga média. ", "S", "N" );
 	
+	private JCheckBoxPad cbAtivoItFisc = new JCheckBoxPad( "Ativo", "S", "N" );
+	
 	private JTextFieldPad txtCSOSN = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
 
 	private JTextFieldFK txtDescCSOSN = new JTextFieldFK( JTextFieldPad.TP_STRING, 200, 0 );
@@ -487,6 +489,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		
 	}
 
+	@ SuppressWarnings ( "unchecked" )
 	private void montaCombos() {
 
 		/*		Vector<String> vLabsOrig = new Vector<String>();
@@ -946,8 +949,9 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		adicDB( rgNoUF, 471, 20, 150, 60, "NoUFItFisc", "Destino da mercadoria", true );
 		adicDB( rgTipo, 631, 20, 100, 60, "TipoUsoItFisc", "Uso para", true );
 
-		adicDB( cbGeralFisc, 471, 100, 150, 20, "GeralFisc", "Padrão", true );
-
+		adicDB( cbGeralFisc, 471, 100, 100, 20, "GeralFisc", "", true );
+		adicDB( cbAtivoItFisc, 574, 100, 100, 20, "AtivoItFisc", "", true );
+		
 		adicCampo( txtCodPais, 7, 140, 70, 20, "CodPais", "Cod.país", ListaCampos.DB_FK, txtDescPais, false );
 		adicDescFK( txtDescPais, 80, 140, 227, 20, "NomePais", "Nome do país" );
 		adicCampo( txtSiglaUF, 310, 140, 70, 20, "SiglaUf", "Sigla UF", ListaCampos.DB_FK, txtNomeUF, false );
@@ -1375,6 +1379,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 			cbCalcSTCM.setVlrString( "N" );
 			cbAdicICMSTotNota.setVlrString( "".equals( txtAdicICMSTotNotaPrefere.getVlrString().trim() ) ? "N" : txtAdicICMSTotNotaPrefere.getVlrString() );
 			txtAliqCSocialFisc.setVlrBigDecimal( BigDecimal.ZERO);
+			cbAtivoItFisc.setVlrString( "S" );
 		}
 	}
 

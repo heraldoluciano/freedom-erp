@@ -4782,6 +4782,7 @@ CREATE TABLE LFITCLFISCAL (CODEMP INTEGER NOT NULL,
         CODFILIALTT INTEGER NOT NULL,
         TIPOFISC CHAR(2) NOT NULL,
         TPREDICMSFISC CHAR(1) DEFAULT 'B' NOT NULL,
+        ATIVOITFISC CHAR(1) DEFAULT 'S' NOT NULL,
         REDFISC NUMERIC(9, 2),
         CODTRATTRIB CHAR(2) NOT NULL,
         NOUFITFISC CHAR(1) DEFAULT 'N' NOT NULL,
@@ -20336,7 +20337,7 @@ begin
             , substring(fc.codncm from 1 for 2) cod_gen
             , fc.codserv,
             (select first 1 ifc.aliqfisc from lfitclfiscal ifc where ifc.codemp=fc.codemp and ifc.codfilial=fc.codfilial and
-            ifc.geralfisc='S' and ifc.noufitfisc='S') aliq_icms
+            ifc.geralfisc='S' and ifc.noufitfisc='S' and ifc.ativoitfisc='S') aliq_icms
             , fc.codnbm, lt.codlote, lt.venctolote, lt.sldlote, p.codgrup, gp.siglagrup
         from eqproduto p
         left outer join lfclfiscal fc
@@ -20374,7 +20375,7 @@ begin
             , substring(fc.codncm from 1 for 2) cod_gen
             , fc.codserv,
             (select first 1 ifc.aliqfisc from lfitclfiscal ifc where ifc.codemp=fc.codemp and ifc.codfilial=fc.codfilial and
-            ifc.geralfisc='S' and ifc.noufitfisc='S') aliq_icms
+            ifc.geralfisc='S' and ifc.noufitfisc='S' and ifc.ativoitfisc='S') aliq_icms
             , fc.codnbm
         from eqproduto p
         left outer join lfclfiscal fc
@@ -22119,6 +22120,7 @@ begin
                 and  ((it.codfisccli=:codfisccf and it.codempfc=:codempfccf and it.codfilialfc=:codfilialfccf) or (it.codfisccli is null))
                 and it.siglauf=:ufcf and it.tipousoitfisc=:tipobusca
                 and f.codemp=:codemp and f.codfilial=:codfilial
+                and it.ativoitfisc='S'
             order by it.codtipomov desc, it.codfisccli desc
         into origfisc,codtrattrib,redfisc,aliqfisc,tipofisc,codmens,aliqipifisc,tpredicmsfisc,tipost,margemvlagr,
             codempif,codfilialif,codfisc,coditfisc,aliqfiscintra,aliqpis,aliqcofins,aliqcsocial,aliqir, redbasest
@@ -22150,6 +22152,7 @@ begin
                 and   (it.codfisccli=:codfisccf and it.codempfc=:codempfccf and it.codfilialfc=:codfilialfccf))
                 and it.tipousoitfisc=:tipobusca
                 and f.codemp=:codemp and f.codfilial=:codfilial
+                and it.ativoitfisc='S'
             order by it.coditfisc
         into origfisc,codtrattrib,redfisc,aliqfisc,tipofisc,codmens,aliqipifisc,tpredicmsfisc,tipost,margemvlagr,
             codempif,codfilialif,codfisc,coditfisc,aliqfiscintra,aliqpis,aliqcofins,aliqcsocial,aliqir, redbasest
@@ -22185,6 +22188,7 @@ begin
                   (it.codfisccli=:codfisccf and it.codempfc=:codempfccf and it.codfilialfc=:codfilialfccf) or
                   (it.codfisccli is null and it.codtipomov is null) ) and it.tipousoitfisc=:tipobusca
                    and f.codemp=:codemp and f.codfilial=:codfilial
+                   and it.ativoitfisc='S'
             order by it.coditfisc
             into origfisc,codtrattrib,redfisc,aliqfisc,tipofisc,codmens,aliqipifisc,tpredicmsfisc,tipost,margemvlagr,
                 codempif,codfilialif,codfisc,coditfisc,aliqfiscintra,aliqpis,aliqcofins,aliqcsocial,aliqir, redbasest
@@ -22215,6 +22219,7 @@ begin
             f.codemp=p.codempfc and f.codfilial=p.codfilialfc and f.codfisc=p.codfisc and
             f.geralfisc='S' and f.tipousoitfisc=:tipobusca
             and f1.codemp=:codemp and f1.codfilial=:codfilial
+            and f.ativoitfisc='S'
         into origfisc,codtrattrib,redfisc,aliqfisc,tipofisc,aliqipifisc,tpredicmsfisc,tipost,margemvlagr,
             codempif,codfilialif,codfisc,coditfisc,aliqfiscintra,aliqpis,aliqcofins,aliqcsocial,aliqir,redbasest
             ,aliqiss, :adicipibaseicms, :calcstcm, :aliqicmsstcm;
@@ -22242,6 +22247,7 @@ begin
             from lfitclfiscal it, sgfilial f
             where it.codemp=:codempifp and it.codfilial=:codfilialifp and it.codfisc=:codfiscp and it.coditfisc=:coditfiscp
              and f.codemp=:codemp and f.codfilial=:codfilial
+             and it.ativoitfisc='S'
         into origfisc,codtrattrib,redfisc,aliqfisc,tipofisc,codmens,aliqipifisc,tpredicmsfisc,tipost,margemvlagr,
             codempif,codfilialif,codfisc,coditfisc,aliqfiscintra,aliqpis,aliqcofins,aliqcsocial,aliqir, redbasest
             , aliqiss, :adicipibaseicms, :calcstcm, :aliqicmsstcm
@@ -22346,6 +22352,7 @@ begin
         coalesce(ic.vlrdescitcompra,0) vlrdescit
         from cpitcompra ic left outer join lfitclfiscal li on
         li.codemp=ic.codempif and li.codfilial=ic.codfilialif and li.codfisc=ic.codfisc and li.coditfisc=ic.coditfisc
+        and li.ativoitfisc='S'
         left outer join sgfilial fi on
         fi.codemp=ic.codemp and fi.codfilial=ic.codfilial
         where
@@ -22512,6 +22519,7 @@ begin
     select first 1 r.codnat from eqproduto p, lfitregrafiscal r, lfclfiscal c
     left outer join lfitclfiscal icf on
     icf.codemp=c.codemp and icf.codfilial=c.codfilial and icf.codfisc=c.codfisc and icf.coditfisc=:coditfisc
+    and icf.ativoitfisc='S'
     where p.codprod=:codprod and p.codfilial=:codfilialpd and p.codemp=:codemppd
     and c.codfisc = p.codfisc and c.codfilial = p.codfilialfc and c.codemp = p.codempfc
     and r.codregra = coalesce(icf.codregra, c.codregra) and r.codfilial = c.codfilialra and r.codemp = c.codempra
@@ -22526,6 +22534,7 @@ begin
         select first 1 r.codnat from eqproduto p, lfitregrafiscal r, lfclfiscal c
         left outer join lfitclfiscal icf on
         icf.codemp=c.codemp and icf.codfilial=c.codfilial and icf.codfisc=c.codfisc and icf.coditfisc=:coditfisc
+        and icf.ativoitfisc='S'
         where p.codprod=:codprod and p.codfilial=:codfilialpd and p.codemp=:codemppd
         and c.codfisc=p.codfisc and c.codfilial=p.codfilialfc and c.codemp = p.codempfc and r.codregra = coalesce(icf.codregra, c.codregra)
         and r.codfilial = c.codfilialra and r.codemp = c.codempra
@@ -26196,7 +26205,8 @@ begin
          WHERE P.CODPROD=:CODPROD AND P.CODFILIAL=:CODFILIALPD
          AND P.CODEMP=:CODEMPPD AND C.CODFISC=P.CODFISC AND C.CODFILIAL=P.CODFILIALFC and
          C.geralfisc='S'
-         AND C.CODEMP=P.CODEMPFC INTO PERCIPIITVENDA;
+         AND C.CODEMP=P.CODEMPFC INTO PERCIPIITVENDA
+         and c.ativoitfisc='S';
 
   SELECT CODNAT FROM
       LFBUSCANATSP(:CODFILIAL,:CODEMP,:CODFILIALPD,
@@ -35128,7 +35138,7 @@ begin
     begin
        update lfitclfiscal set geralfisc='N'
        where codemp=new.codemp and codfilial=new.codfilial and codfisc=new.codfisc and
-             coditfisc!=new.coditfisc and geralfisc='S';
+             coditfisc!=new.coditfisc and geralfisc='S' and ativoitfisc='S';
     end
 end ^
 
@@ -39329,7 +39339,8 @@ BEGIN
                     into ufcli, ufemp;
 
                     -- Buscando aliquota do ICMS ST da tabela de classificação fiscal
-                    select coalesce(ic.aliqfiscintra,0),coalesce(ic.aliqfisc,0), coalesce(ic.redfisc,0), coalesce(ic.redbasest,'S') from lfitclfiscal ic
+                    select coalesce(ic.aliqfiscintra,0),coalesce(ic.aliqfisc,0), coalesce(ic.redfisc,0), coalesce(ic.redbasest,'S') 
+                    from lfitclfiscal ic
                     where ic.codemp=new.codempif and ic.codfilial=new.codfilialif and ic.codfisc=new.codfisc and ic.coditfisc=new.coditfisc
                     into percicmsst, percicms, redfisc, redbasest;
 
@@ -39375,7 +39386,8 @@ BEGIN
                 into ufcli;
 
                 -- Buscando aliquota do ICMS ST da tabela de classificação fiscal
-                select coalesce(ic.aliqfiscintra,0), coalesce(ic.redfisc,0), coalesce(ic.redbasest,'S'), coalesce(ic.aliqicmsstcm,0.00) from lfitclfiscal ic
+                select coalesce(ic.aliqfiscintra,0), coalesce(ic.redfisc,0), coalesce(ic.redbasest,'S'), coalesce(ic.aliqicmsstcm,0.00) 
+                from lfitclfiscal ic
                 where ic.codemp=new.codempif and ic.codfilial=new.codfilialif and ic.codfisc=new.codfisc and ic.coditfisc=new.coditfisc
                 into percicmsst, redfisc, redbasest, percicmscm  ;
                 -- Buscando aliquota do ICMS ST da tabela de alíquotas (caso não encontre na busca anterior)
@@ -39750,7 +39762,8 @@ BEGIN
                     into ufcli, ufemp;
 
                     -- Buscando aliquota do ICMS ST da tabela de classificação fiscal
-                    select coalesce(ic.aliqfiscintra,0),coalesce(ic.aliqfisc,0), coalesce(ic.redfisc,0), coalesce(ic.redbasest,'S') from lfitclfiscal ic
+                    select coalesce(ic.aliqfiscintra,0),coalesce(ic.aliqfisc,0), coalesce(ic.redfisc,0), coalesce(ic.redbasest,'S') 
+                    from lfitclfiscal ic
                     where ic.codemp=new.codempif and ic.codfilial=new.codfilialif and ic.codfisc=new.codfisc and ic.coditfisc=new.coditfisc
                     into percicmsst, percicms, redfisc, redbasest ;
 
@@ -39790,7 +39803,8 @@ BEGIN
                     into ufcli;
 
                    -- Buscando aliquota do ICMS ST da tabela de classificação fiscal
-                    select coalesce(ic.aliqfiscintra,0), ic.redbasest, ic.redfisc, coalesce(ic.aliqicmsstcm,0.00) from lfitclfiscal ic
+                    select coalesce(ic.aliqfiscintra,0), ic.redbasest, ic.redfisc, coalesce(ic.aliqicmsstcm,0.00)
+                    from lfitclfiscal ic
                     where ic.codemp=new.codempif and ic.codfilial=new.codfilialif and ic.codfisc=new.codfisc and ic.coditfisc=new.coditfisc
                     into PERCICMSST,redbasest, redfisc, percicmscm;
 
