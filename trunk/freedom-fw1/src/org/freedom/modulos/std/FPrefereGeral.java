@@ -1482,7 +1482,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adic(pinValidacoesGeral, 350, 10, 340, 155);
 
 		adic(pinOpcoesGeral, 7, 170, 340, 230);
-		adic(pinConsistenciasGeral, 350, 170, 340, 193);
+		adic(pinConsistenciasGeral, 350, 170, 340, 230);
 
 		pinCentrosdecustoGeral.setBorder(SwingParams.getPanelLabel("Centro de custo", Color.BLUE));
 		pinCasasDecGeral.setBorder(SwingParams.getPanelLabel("Casas decimais", Color.BLUE));
@@ -2397,6 +2397,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 			rgLeiTransp.setVlrString("N");
 			rgTipoImpDanfe.setVlrString("F");
 			cbBloqNfeVdAutoriz.setVlrString("S");
+			cbObrigTipoFisc.setVlrString("N");
 		}
 	}
 
