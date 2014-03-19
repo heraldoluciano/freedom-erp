@@ -4243,8 +4243,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				recriaSqlWhereLcProdutos();
 			}
 			else if ( cevt.getListaCampos() == lcFisc && lcDet.getStatus() == ListaCampos.LCS_INSERT ) {
-				getCFOP();
 				getTratTrib();
+				getCFOP();
 			}
 			else if ( cevt.getListaCampos() == lcNat ) {
 				if ( cevt.ok && lcDet.getStatus() == ListaCampos.LCS_INSERT ) {
