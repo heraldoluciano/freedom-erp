@@ -1875,7 +1875,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 	public String[] getParansPass() {
 
-		return new String[] { "venda", String.valueOf( txtCodVenda.getVlrInteger().intValue() ), String.valueOf( txtCodItVenda.getVlrInteger().intValue() ), String.valueOf( txtCodProd.getVlrInteger().intValue() ), String.valueOf( txtVlrProdItVenda.getVlrInteger().intValue() ) };
+		return new String[] { "venda", String.valueOf( txtCodVenda.getVlrInteger().intValue() ), String.valueOf( txtCodItVenda.getVlrInteger().intValue() )
+				, String.valueOf( txtCodProd.getVlrInteger().intValue() ), String.valueOf( txtVlrProdItVenda.getVlrInteger().intValue() ) };
 	}
 
 	public int[] getParansPreco() {
