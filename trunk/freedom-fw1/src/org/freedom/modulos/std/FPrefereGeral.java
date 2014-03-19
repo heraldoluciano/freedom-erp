@@ -727,7 +727,9 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private final JCheckBoxPad cbEnderecoObrigCli = new JCheckBoxPad("Endereço obrigatório para o cadastro de clientes", "S", "N");
 	
 	private final JCheckBoxPad cbEntregaObrigCli = new JCheckBoxPad("Aba Entrega obrigatória para o cadastro de clientes", "S", "N");
-	
+
+	private final JCheckBoxPad cbObrigTipoFisc = new JCheckBoxPad("Tipo fiscal obrigatório no cadastro de clientes", "S", "N");
+
 	private final JCheckBoxPad cbRevalidarLoteCompra = new JCheckBoxPad("Permitir Revalidar Lote.", "S", "N");
 
 	private final JCheckBoxPad cbAutenticaSMTP = new JCheckBoxPad("Autenticar ?", "S", "N");
@@ -1520,6 +1522,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB(cbUsuAtivCli, 7, 100, 400, 20, "UsuAtivCli", "", true);
 		adicDB(cbEnderecoObrigCli, 7, 120, 400, 20, "EnderecoObrigCli", "", true);
 		adicDB(cbEntregaObrigCli, 7, 140, 400, 20, "EntregaObrigCli", "", true);
+		adicDB(cbObrigTipoFisc, 7, 160, 400, 20, "ObrigTipoFisc", "", true);
 
 		setPainel(pinValidacoesGeral);
 
