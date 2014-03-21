@@ -45,6 +45,8 @@ import javax.swing.event.ChangeListener;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
+import org.freedom.acao.CheckBoxEvent;
+import org.freedom.acao.CheckBoxListener;
 import org.freedom.acao.EditEvent;
 import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
@@ -84,7 +86,7 @@ import org.freedom.modulos.std.view.frame.crud.plain.FMensagem;
 import org.freedom.modulos.std.view.frame.crud.plain.FTipoFisc;
 import org.freedom.modulos.std.view.frame.report.FRegraFiscal;
 
-public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener, CarregaListener, InsertListener, RadioGroupListener, PostListener, JComboBoxListener {
+public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener, CarregaListener, InsertListener, RadioGroupListener, PostListener, JComboBoxListener, CheckBoxListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -300,6 +302,12 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 
 	private JTextFieldPad txtVlrIiUnidTrib = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 9, 2 );
 
+//	private JCheckBoxPad cbMostraSoItFiscAtivo = new JCheckBoxPad( "Mostrar apenas itens ativos", "S", "N" );
+
+	//private JTextFieldPad txtMostraSoItFiscAtivo = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0);
+
+	//private JTextFieldPad txtMostraItFisc = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0);
+	
 	private JCheckBoxPad cbGeralFisc = new JCheckBoxPad( "Regra geral", "S", "N" );
 
 	private JTextFieldPad txtCodPais = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -410,8 +418,6 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 	
 	private DLCopiaClassificacao dlCopiar = null;
 	
-	
-
 	public FCLFiscal() {
 		super( false );
 		nav.setNavigation( true );
@@ -486,6 +492,9 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 
 		tpnGeral.addChangeListener( this );
 		tpnPrincipal.addChangeListener( this );
+		
+		//cbMostraSoItFiscAtivo.addCheckBoxListener( this );
+		
 		
 	}
 
@@ -655,6 +664,9 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 	}
 
 	private void montaListaCampos() {
+
+		//cbMostraSoItFiscAtivo.setVlrString( "S" );
+		//txtMostraSoItFiscAtivo.setVlrString( "S" );
 
 		// Regra fiscal padrão no cabeçalho
 		lcRegraFiscalIt.setUsaME( true );
@@ -840,10 +852,11 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 	}
 
 	private void montaTela() {
-		
+
 		montaCombos();
 		montaListaCampos();
 
+		
 		pnPrincipal.add( tpnPrincipal );
 
 		lcDet.setMaster( lcCampos );
@@ -860,7 +873,8 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		adicCampo( txtDescFisc, 110, 20, 595, 20, "DescFisc", "Descrição da classificação fiscal", ListaCampos.DB_SI, true );
 
 		adicCampo( txtCodRegra, 7, 60, 100, 20, "CodRegra", "Cód.reg.CFOP", ListaCampos.DB_FK, txtDescRegra, true );
-		adicDescFK( txtDescRegra, 110, 60, 595, 20, "DescRegra", "Descrição da regra fiscal" );
+		adicDescFK( txtDescRegra, 110, 60, 400, 20, "DescRegra", "Descrição da regra fiscal" );
+		//adic(cbMostraSoItFiscAtivo, 513, 60, 200, 20);
 		
 		// ********** Aba Nomenclatura Comum **********
 
@@ -1102,8 +1116,10 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		}
 			
 		setListaCampos( true, "ITCLFISCAL", "LF" );
+		//txtMostraItFisc.setVlrString( "S" );
+		
 		lcDet.setQueryInsert( false );
-
+		//lcDet.addDinWhereAdic( "", txtMostraItFisc );
 		montaTab();
 
 		tab.setTamColuna( 30, 0 ); // Ítem
@@ -1150,6 +1166,9 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		adicListeners();
 		
 		setTipoFiscCOFPIS();
+		// No final de tudo para evitar sobreposição da where
+		//lcDet.setDinWhereAdic( "ATIVOITFISC in ( #S )", txtMostraSoItFiscAtivo );
+
 	}
 	
 	private void copiarClassificao(){
@@ -1406,8 +1425,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 				rgTipoST.setVlrString( "SI" );
 				rgTipoST.setAtivo( false );
 			}
-		}
-		else if ( e.getSource() == rgTipoST || e.getSource() == rgTipoFisc ) {
+		} else if ( e.getSource() == rgTipoST || e.getSource() == rgTipoFisc ) {
 			if ( /* "SU".equals( rgTipoST.getVlrString() ) && */"FF".equals( rgTipoFisc.getVlrString() ) ) { // Substituído
 				txtMargemVlAgr.setAtivo( true );
 				cbModBCICMSST.setAtivo( true );
@@ -1417,8 +1435,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 				txtMargemVlAgr.setAtivo( false );
 				cbModBCICMSST.setAtivo( false );
 			}
-		}
-		else if ( e.getSource() == rgTipo ) {
+		} else if ( e.getSource() == rgTipo ) {
 			tpnGeral.setEnabledAt( 8, "CP".equals( rgTipo.getVlrString() ) );
 			if("VD".equals( rgTipo.getVlrString() )){
 				txtAliqCSocialFisc.setVlrBigDecimal( new BigDecimal(0) );
@@ -1433,7 +1450,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 			//lcCampos.carregaDados();
 			//lcSitTribPIS.carregaDados();
 			//lcSitTribCOF.carregaDados();
-		}
+		} 
 	}
 
     private void setTipoFiscCOFPIS() {
@@ -1570,5 +1587,19 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 		txtImpSitTribIR.setVlrString( "IR" );
 		txtImpSitTribISS.setVlrString( "IS" );
 		txtImpSitTribPIS.setVlrString( "PI" );
+	}
+
+	public void valorAlterado( CheckBoxEvent evt ) {
+
+		/*if ( evt.getCheckBox()==cbMostraSoItFiscAtivo ) {
+			if ("S".equals( cbMostraSoItFiscAtivo.getVlrString() ) ) {
+				txtMostraSoItFiscAtivo.setVlrString( "S" );
+			} else {
+				txtMostraSoItFiscAtivo.setVlrString( "N','S" );
+			}
+			if (lcCampos.getStatus()==ListaCampos.LCS_SELECT && lcDet.getStatus()==ListaCampos.LCS_SELECT ) {
+				lcDet.carregaDados();
+			}
+		}*/		
 	}
 }
