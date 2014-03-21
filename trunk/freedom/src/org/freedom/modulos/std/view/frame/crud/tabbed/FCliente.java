@@ -147,6 +147,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 	private JPanelPad pinCliFor = new JPanelPad( 0, 80 );
 
+	private JPanelPad pinRevisao = new JPanelPad( 0, 80 );
+
 	private JPanelPad pinTesteFor = new JPanelPad( 0, 30 );
 
 	private JPanelPad pnCto = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
@@ -517,6 +519,14 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	private JTextFieldPad txtCodCartCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 3, 0 );
 
 	private JTextFieldFK txtDescCartCob = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+
+	private JRadioGroup<String, String> rgSitRev = null;
+	
+	private JTextFieldPad txtDtRevCli = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0);
+
+	private JTextFieldPad txtHRevCli = new JTextFieldPad( JTextFieldPad.TP_TIME, 8, 0);
+	
+	private JTextFieldPad txtIdUsuRevCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 100, 0);
 
 	/*private JTextFieldPad txtCodAtendAtendo = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -1253,6 +1263,32 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 		 btGrpCli.addActionListener( this );
 
+		 pinRevisao = new JPanelPad( 500, 290 );
+		 setPainel( pinRevisao );
+		 adicTab( "Revisão", pinRevisao );
+		 
+		 Vector<String> revisaoLab = new Vector<String>();
+		 Vector<String> revisaoVal = new Vector<String>();
+
+		 revisaoLab.addElement( "Não revisar" );
+		 revisaoLab.addElement( "Obrigatório" );
+		 revisaoLab.addElement( "Revisado" );
+		 revisaoVal.addElement( "N" );
+		 revisaoVal.addElement( "O" );
+		 revisaoVal.addElement( "R" );
+		 rgSitRev = new JRadioGroup<String, String>( 1, 3, revisaoLab, revisaoVal );
+		 rgSitRev.addRadioGroupListener( this );
+
+		 txtDtRevCli.setSoLeitura( true );
+		 txtHRevCli.setSoLeitura( true );
+		 txtIdUsuRevCli.setSoLeitura( true );
+		 
+		 adicDB( rgSitRev, 7, 20, 400, 35, "sitrevcli", "Situação da revisão", true );
+		 adicCampo( txtIdUsuRevCli, 7, 80, 150, 20, "idusurevcli", "Usuário revisor", ListaCampos.DB_SI, false);
+		 adicCampo( txtDtRevCli, 7, 120, 150, 20, "dtrevcli", "Data da última revisão", ListaCampos.DB_SI, false);
+		 adicCampo( txtHRevCli, 7, 160, 150, 20, "hrevcli", "Hora da última revisão", ListaCampos.DB_SI, false);
+		 
+		 
 		 adicTab( "Observações", pnObs1 );
 		 adicDBLiv( txaObs, "ObsCli", "Observações", false );
 
@@ -4608,6 +4644,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 				txtCodCli.setVlrInteger( daocli.testaCodPK( "VDCLIENTE" ) );
 			}
 			txtCodVend.setEnabled( true );
+			rgSitRev.setVlrString( "N" );
 		} 
 	}
 

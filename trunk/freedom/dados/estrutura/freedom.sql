@@ -9141,6 +9141,11 @@ CREATE TABLE VDCLIENTE (CODEMP INTEGER NOT NULL,
         DESCIPI CHAR(1),
         IDENTCLIBCO CHAR(1) DEFAULT 'D' NOT NULL,
         DTNASCCLI DATE,
+        -- REVISÃO DO CLIENTE N=NÃO REVISAR, O=OBRIGATÓRIA A REVISÃO, R=REVISADO
+        SITREVCLI CHAR(1) DEFAULT 'N' NOT NULL,
+        IDUSUREVCLI VARCHAR(128),
+        DTREVCLI DATE,
+        HREVCLI DATE,
         DTINS DATE DEFAULT 'now' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
@@ -27417,27 +27422,16 @@ ALTER PROCEDURE VDCLIENTEATIVOSP (ICODEMP INTEGER,
 SCODFILIAL SMALLINT,
 ICODCLI INTEGER)
 AS 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
 DECLARE VARIABLE CATIVOCLI CHAR(1);
+DECLARE VARIABLE SITREVCLI CHAR(1);
 begin
-  SELECT ATIVOCLI FROM VDCLIENTE WHERE CODEMP=:ICODEMP AND
+  SELECT ATIVOCLI, COALESCE(SITREVCLI,'N') FROM VDCLIENTE WHERE CODEMP=:ICODEMP AND
     CODFILIAL=:SCODFILIAL AND CODCLI=:ICODCLI
-    INTO :CATIVOCLI;
+    INTO :CATIVOCLI, SITREVCLI;
   IF ( (CATIVOCLI IS NOT NULL) AND (CATIVOCLI='N') ) then
      exception vdvendaex01 'CLIENTE INATIVO!';
+  IF ( SITREVCLI='O' ) then
+     exception vdvendaex01 'É OBRIGATÓRIA A REVISÃO CADASTRAL DO CLIENTE !!!';
   suspend;
 end ^
 
@@ -38394,6 +38388,13 @@ begin
         new.ufcob=new.siglaufcob;
     end
 
+    /* Dados da última revisão do cliente*/
+    if ( (coalesce(old.sitrevcli,'N')='O') and (coalesce(new.sitrevcli,'R')='O') ) then
+    begin
+       new.dtrevcli = cast('now' as date);
+       new.hrevcli = cast('now' as time);
+       new.idusurevcli = upper(user);
+    end 
     /* Fim da atualização do campo cidade */
 
     -- Geração de código unificador (SGUNIFCOD)
