@@ -38389,7 +38389,7 @@ begin
     end
 
     /* Dados da última revisão do cliente*/
-    if ( (coalesce(old.sitrevcli,'N')='O') and (coalesce(new.sitrevcli,'R')='O') ) then
+    if ( (coalesce(old.sitrevcli,'N')='O') and (coalesce(new.sitrevcli,'O')='R') ) then
     begin
        new.dtrevcli = cast('now' as date);
        new.hrevcli = cast('now' as time);
