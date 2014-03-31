@@ -22157,6 +22157,7 @@ begin
                 and it.codfilial=p.codfilialfc and it.codfisc=p.codfisc and it.noufitfisc=:noestcf
                 and (((it.codtipomov=:codtipomov and it.codemptm=:codemptm and it.codfilial=:codfilialtm) or (it.codtipomov is null))
                 and   (it.codfisccli=:codfisccf and it.codempfc=:codempfccf and it.codfilialfc=:codfilialfccf))
+                and ( it.siglauf=:ufcf or it.siglauf is null )
                 and it.tipousoitfisc=:tipobusca
                 and f.codemp=:codemp and f.codfilial=:codfilial
                 and it.ativoitfisc='S'
@@ -22193,7 +22194,9 @@ begin
                 it.noufitfisc=:noestcf and
                 ( (it.codtipomov=:codtipomov and it.codemptm=:codemptm and it.codfilial=:codfilialtm) or
                   (it.codfisccli=:codfisccf and it.codempfc=:codempfccf and it.codfilialfc=:codfilialfccf) or
-                  (it.codfisccli is null and it.codtipomov is null) ) and it.tipousoitfisc=:tipobusca
+                  (it.codfisccli is null and it.codtipomov is null) ) 
+                   and ( it.siglauf=:ufcf or it.siglauf is null )
+                   and it.tipousoitfisc=:tipobusca
                    and f.codemp=:codemp and f.codfilial=:codfilial
                    and it.ativoitfisc='S'
             order by it.coditfisc
