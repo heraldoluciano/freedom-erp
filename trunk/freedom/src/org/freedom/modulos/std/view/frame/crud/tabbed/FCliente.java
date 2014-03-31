@@ -986,10 +986,10 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		 adicCampo( txtCodTipoCli, 7, 100, 80, 20, "CodTipoCli", "Cód.tp.cli.", ListaCampos.DB_FK, txtDescTipoCli, true );
 		 adicDescFK( txtDescTipoCli, 90, 100, 325, 20, "DescTipoCli", "Descrição do tipo de cliente" );
 
-		 adicDB( cbSimples, 425, 100, 80, 20, "SimplesCli", "", true );
-		 adicDB( cbProdRural, 425, 120, 80, 20, "ProdRuralCli", "", true );
-		 adicDB( cbConsumidor, 425, 140, 80, 20, "ConsumidorCli", "", true );
-		 adicDB( cbContato, 425, 160, 80, 20, "CtoCli", "", true );
+		 adicDB( cbSimples, 425, 100, 100, 20, "SimplesCli", "", true );
+		 adicDB( cbProdRural, 425, 120, 100, 20, "ProdRuralCli", "", true );
+		 adicDB( cbConsumidor, 425, 140, 100, 20, "ConsumidorCli", "", true );
+		 adicDB( cbContato, 425, 160, 100, 20, "CtoCli", "", true );
 
 		 adicCampo( txtCodClas, 7, 140, 80, 20, "CodClasCli", "Cód.c.cli", ListaCampos.DB_FK, txtDescClas, true );
 		 adicDescFK( txtDescClas, 90, 140, 325, 20, "DescClasCli", "Descrição da classificação do cliente" );
