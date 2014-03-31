@@ -1117,7 +1117,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 			
 		setListaCampos( true, "ITCLFISCAL", "LF" );
 		//txtMostraItFisc.setVlrString( "S" );
-		
+		lcDet.setOrdem( "coditfisc" );
 		lcDet.setQueryInsert( false );
 		//lcDet.addDinWhereAdic( "", txtMostraItFisc );
 		montaTab();
