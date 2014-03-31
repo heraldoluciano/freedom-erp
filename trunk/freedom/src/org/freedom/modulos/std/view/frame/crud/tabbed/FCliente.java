@@ -558,6 +558,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 	private JCheckBoxPad cbSimples = new JCheckBoxPad( "Simples", "S", "N" );
 
+	private JCheckBoxPad cbConsumidor = new JCheckBoxPad( "Consumidor", "S", "N" );
+
 	private JCheckBoxPad cbProdRural = new JCheckBoxPad( "Rural", "S", "N" );
 
 	private JCheckBoxPad cbContato = new JCheckBoxPad( "Contato", "O", "C" );
@@ -986,7 +988,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
 		 adicDB( cbSimples, 425, 100, 80, 20, "SimplesCli", "", true );
 		 adicDB( cbProdRural, 425, 120, 80, 20, "ProdRuralCli", "", true );
-		 adicDB( cbContato, 425, 140, 80, 20, "CtoCli", "", true );
+		 adicDB( cbConsumidor, 425, 140, 80, 20, "ConsumidorCli", "", true );
+		 adicDB( cbContato, 425, 160, 80, 20, "CtoCli", "", true );
 
 		 adicCampo( txtCodClas, 7, 140, 80, 20, "CodClasCli", "Cód.c.cli", ListaCampos.DB_FK, txtDescClas, true );
 		 adicDescFK( txtDescClas, 90, 140, 325, 20, "DescClasCli", "Descrição da classificação do cliente" );
@@ -4645,6 +4648,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			}
 			txtCodVend.setEnabled( true );
 			rgSitRev.setVlrString( "N" );
+			cbConsumidor.setVlrString( "N" );
 		} 
 	}
 
