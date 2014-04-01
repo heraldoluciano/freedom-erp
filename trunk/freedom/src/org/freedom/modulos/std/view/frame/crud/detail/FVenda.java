@@ -301,6 +301,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 	private JTextFieldPad txtVlrLiqItVenda = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecPre );
 
+	private JTextFieldPad txtVlrICMSStItVenda = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecPre );
+
 	private JTextFieldPad txtEstCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
 	private JTextFieldPad txtDescIpi = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
@@ -982,6 +984,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		txtVlrBaseICMSItVenda.setAtivo( (Boolean) oPrefs[ POS_PREFS.ICMSVENDA.ordinal() ] );
 		txtPercICMSItVenda.setAtivo( (Boolean) oPrefs[ POS_PREFS.ICMSVENDA.ordinal() ] );
 		txtVlrICMSItVenda.setAtivo( (Boolean) oPrefs[ POS_PREFS.ICMSVENDA.ordinal() ] );
+		txtVlrICMSStItVenda.setAtivo( false );
 
 		// FK Produto
 
@@ -1317,6 +1320,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		adicCampoInvisivel( txtTipoST, "TipoST", "Tipo Sub.Trib.", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtCodMens, "CodMens", "Cód.mens.", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtMargemVlAgr, "MargemVlAgrItVenda", "Margem.Vlr.Agreg.", ListaCampos.DB_SI, false );
+		adicCampoInvisivel( txtVlrICMSStItVenda, "VlrIcmsStItVenda", "Vlr.ICMS.ST", ListaCampos.DB_SI, false );
 		adicCampo( txtVlrLiqItVenda, 670, 60, 65, 20, "VlrLiqItVenda", "Vlr.item", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtCodEmpLG, "CodEmpLG", "Emp.log.", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtCodFilialLG, "CodFilialLG", "Filial log.", ListaCampos.DB_SI, false );
