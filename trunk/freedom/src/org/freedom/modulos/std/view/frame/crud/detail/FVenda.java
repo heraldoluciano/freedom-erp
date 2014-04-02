@@ -605,6 +605,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	// Campo flag para definir se os itens devem ser reprocessados para ajuste de comissão
 	private boolean proccomis = false;
 	
+	//private boolean carregandoNfeComplementar = false;
+	
     private DAOBuscaOrc daobuscaorc = null;
 
 	private enum POS_PREFS {
@@ -2442,6 +2444,10 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 
 	private boolean testaLucro() {
+		// Se for nota fiscal complementar
+		if ("NC".equals( txtSubtipoVenda.getVlrString() )) {
+			return true;
+		}
 		BigDecimal precoitvenda = txtPrecoItVenda.getVlrBigDecimal();
 		if (fatLucro == null) {
 			fatLucro = new BigDecimal(1);
