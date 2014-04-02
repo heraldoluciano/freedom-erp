@@ -9,6 +9,7 @@ public class UpdateVenda {
 	private BigDecimal vlrliqprodvenda;
 	private BigDecimal vlradicvenda;
 	private BigDecimal Vlrdescvenda;
+	private BigDecimal vlrdescitvenda;
 	
 	public BigDecimal getVlrprodvenda() {
 	
@@ -48,6 +49,18 @@ public class UpdateVenda {
 	public void setVlrdescvenda( BigDecimal vlrdescvenda ) {
 	
 		Vlrdescvenda = vlrdescvenda;
+	}
+
+	
+	public BigDecimal getVlrdescitvenda() {
+	
+		return vlrdescitvenda;
+	}
+
+	
+	public void setVlrdescitvenda( BigDecimal vlrdescitvenda ) {
+	
+		this.vlrdescitvenda = vlrdescitvenda;
 	}
 
 }

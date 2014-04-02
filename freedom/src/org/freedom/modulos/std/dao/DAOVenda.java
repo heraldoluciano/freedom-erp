@@ -76,7 +76,7 @@ public class DAOVenda extends AbstractDAO {
 		try{
 	
 			sql = new StringBuilder();
-			sql.append( "SELECT IV.CODPROD, IV.REFPROD, IV.PRECOITVENDA, IV.QTDITVENDA, IV.PERCDESCITVENDA, IV.CODLOTE " );
+			sql.append( "SELECT IV.CODPROD, IV.REFPROD, IV.PRECOITVENDA, IV.QTDITVENDA, IV.PERCDESCITVENDA, IV.VLRDESCITVENDA, IV.CODLOTE " );
 			sql.append( "FROM VDITVENDA IV " );
 			sql.append( "WHERE IV.CODEMP=? AND IV.CODFILIAL=? AND IV.CODVENDA=? " );
 			sql.append( "ORDER BY IV.CODITVENDA ");
@@ -96,7 +96,8 @@ public class DAOVenda extends AbstractDAO {
 				item.setRefProd( getString( rs.getString( "REFPROD" ) ));
 				item.setPrecoprod( getBigDecimal( rs.getBigDecimal( "PRECOITVENDA") ) );
 				item.setQtdprod( getBigDecimal( rs.getBigDecimal( "QTDITVENDA" ) ) );
-				item.setPercprod( getBigDecimal(  rs.getBigDecimal( "PERCDESCITVENDA" ) ) );
+				//item.setPercdesc( getBigDecimal(  rs.getBigDecimal( "PERCDESCITVENDA" ) ) );
+				item.setVlrdesc( getBigDecimal(  rs.getBigDecimal( "VLRDESCITVENDA" ) ) );
 				item.setCodlote( getString(  rs.getString( "CODLOTE" ) ) );
 				
 				itens.add( item );
@@ -202,6 +203,7 @@ public class DAOVenda extends AbstractDAO {
 			sql.append( ", v.vlrliqvenda ");
 			sql.append( ", v.vlradicvenda ");
 			sql.append( ", v.vlrdescvenda ");
+			sql.append( ", v.vlrdescitvenda ");
 			sql.append( "from  vdvenda v ");
 			sql.append( "where v.codemp=? and v.codfilial=? "); 
 			sql.append( "and v.tipovenda=? and v.codvenda=? ");
@@ -221,12 +223,13 @@ public class DAOVenda extends AbstractDAO {
 				valores.setVlrdescvenda( rs.getBigDecimal( "vlrdescvenda" ) );
 				valores.setVlrliqprodvenda( rs.getBigDecimal( "vlrliqvenda" ) );
 				valores.setVlrprodvenda( rs.getBigDecimal( "vlrprodvenda" ) );
+				valores.setVlrdescitvenda( rs.getBigDecimal("vlrdescitvenda") );
 			}
 			
 			getConn().commit();
 		
 		} catch (SQLException e) {
-			Funcoes.mensagemErro( null, "Erro ao realizar update da nota complementarss" );
+			Funcoes.mensagemErro( null, "Erro ao realizar update da nota complementar" );
 			e.printStackTrace();
 		}
 		
@@ -247,13 +250,13 @@ public class DAOVenda extends AbstractDAO {
 			sql.append( "select v1.coditvenda coditvenda ");
 			sql.append( ", coalesce(v1.qtditvenda,0)-coalesce(v2.qtditvenda,0) qtditvenda ");
 			sql.append( ", coalesce(v1.precoitvenda,0)-coalesce(v2.precoitvenda,0) precoitvenda ");
-			sql.append( ", coalesce(v1.vlrdescitvenda,0)-coalesce(v2.vlrdescitvenda,0) vlrdescitvenda ");
+			sql.append( ", 0 vlrdescitvenda ");
 			sql.append( ", coalesce(v1.vlrbaseicmsitvenda,0)-coalesce(v2.vlrbaseicmsitvenda,0) vlrbaseicmsitvenda ");
 			sql.append( ", coalesce(v1.vlricmsitvenda,0)-coalesce(v2.vlricmsitvenda,0) vlricmsitvenda ");
 			sql.append( ", coalesce(v1.vlrbaseipiitvenda,0)-coalesce(v2.vlrbaseipiitvenda,0) vlrbaseipiitvenda ");
 			sql.append( ", coalesce(v1.vlripiitvenda,0)-coalesce(v2.vlripiitvenda,0) vlripiitvenda ");
 			sql.append( ", coalesce(v1.vlrliqitvenda,0)-coalesce(v2.vlrliqitvenda,0) vlrliqitvenda ");
-			sql.append( ", coalesce(v1.vlrcomisitvenda,0)-coalesce(v2.vlrcomisitvenda,0) vlrcomisitvenda ");
+			sql.append( ", 0 vlrcomisitvenda ");
 			sql.append( ", coalesce(v1.vlradicitvenda,0)-coalesce(v2.vlradicitvenda,0) vlradicitvenda ");
 			sql.append( ", coalesce(v1.vlrissitvenda,0)-coalesce(v2.vlrissitvenda,0) vlrissitvenda ");
 			sql.append( ", coalesce(v1.vlrfreteitvenda,0)-coalesce(v2.vlrfreteitvenda,0) vlrfreteitvenda "); 
@@ -346,6 +349,17 @@ public class DAOVenda extends AbstractDAO {
 				
 			}
 			
+			/*sql.delete( 0, sql.length() );
+			sql.append( "update vdvenda set vlrdescvenda=0, vlrdescitvenda=0 ");
+			sql.append( "where codemp=? and codfilial=? and tipovenda=? and codvenda=?");
+			PreparedStatement ps3 = getConn().prepareStatement( sql.toString() );
+			param = 1;
+			ps3.setInt( param++, codempvo );
+			ps3.setInt( param++, codfilialvo );
+			ps3.setString( param++, tipovendavo );
+			ps3.setInt( param++, codvenda );
+			ps3.executeUpdate();
+*/
 			getConn().commit();
 		
 		} catch (SQLException e) {

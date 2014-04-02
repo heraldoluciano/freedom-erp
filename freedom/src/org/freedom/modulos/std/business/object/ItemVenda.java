@@ -9,7 +9,7 @@ public class ItemVenda {
 	private String refProd; 
 	private BigDecimal qtdprod;  
 	private BigDecimal precoprod; 
-	private BigDecimal percprod;
+	private BigDecimal vlrdesc;
 	private String codlote;
 	
 	public Integer getCodprod() {
@@ -32,11 +32,6 @@ public class ItemVenda {
 		return precoprod;
 	}
 	
-	public BigDecimal getPercprod() {
-	
-		return percprod;
-	}
-	
 	public void setCodprod( Integer codprod ) {
 	
 		this.codprod = codprod;
@@ -57,12 +52,6 @@ public class ItemVenda {
 		this.precoprod = precoprod;
 	}
 	
-	public void setPercprod( BigDecimal percprod ) {
-	
-		this.percprod = percprod;
-	}
-
-	
 	public String getCodlote() {
 	
 		return codlote;
@@ -72,6 +61,18 @@ public class ItemVenda {
 	public void setCodlote( String codlote ) {
 	
 		this.codlote = codlote;
+	}
+
+	
+	public BigDecimal getVlrdesc() {
+	
+		return vlrdesc;
+	}
+
+	
+	public void setVlrdesc( BigDecimal vlrdesc ) {
+	
+		this.vlrdesc = vlrdesc;
 	}
 	
 }

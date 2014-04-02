@@ -3728,11 +3728,11 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 		lcCampos.post();
 
-		return txtCodVenda.getVlrInteger();
+		return txtCodVenda.getVlrInteger(); 
 		//txtCodTipoMov.setVlrInteger( iVal );
 	}
 
-	public void insertItem(Integer codprod, String refprod, BigDecimal qtd, BigDecimal precoprod, BigDecimal percdesc, String codlote) {
+	public void insertItem(Integer codprod, String refprod, BigDecimal qtd, BigDecimal precoprod, BigDecimal vlrdesc, String codlote) {
 
 		lcDet.insert( true );
 		txtCodProd.requestFocus();
@@ -3749,16 +3749,21 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			txtPrecoItVenda.setVlrBigDecimal( buscaPreco( getParansPreco() ) );	
 		}
 
-		if (percdesc!=null) {
+		/*if (percdesc!=null) {
 			txtPercDescItVenda.setVlrBigDecimal( percdesc );
-		}
+		}*/
 
+		if (vlrdesc!=null) {
+			txtVlrDescItVenda.setVlrBigDecimal( vlrdesc );
+		}
+		
 		if (codlote != null) {
 			txtCodLote.setVlrString( codlote );
 		}
 
-
-		calcDescIt();
+		if (vlrdesc==null) {
+			calcDescIt();
+		}
 		calcVlrProd();
 
 		getCFOP();
