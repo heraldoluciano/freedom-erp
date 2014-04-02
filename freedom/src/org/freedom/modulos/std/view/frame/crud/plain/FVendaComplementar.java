@@ -396,7 +396,8 @@ public class FVendaComplementar extends FFilho implements ActionListener, Carreg
 				for (int i = 0; i < itensVenda.size(); i++) {
 					venda.insertItem( itensVenda.get( i ).getCodprod(), itensVenda.get( i ).getRefProd(), itensVenda.get( i ).getQtdprod(), itensVenda.get( i ).getPrecoprod()
 							, itensVenda.get(i).getVlrdesc(), itensVenda.get( i ).getCodlote(), true);
-					daovenda.insereItvendaItvenda( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDITVENDA" ), txtTipoVenda.getVlrString(), txtCodVenda.getVlrInteger(), novavenda, i+1, itensVenda.get( i ).getQtdprod() );
+					daovenda.insereItvendaItvenda( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDITVENDA" ), txtTipoVenda.getVlrString()
+							, txtCodVenda.getVlrInteger(), novavenda, i+1, itensVenda.get( i ).getQtdprod() );
 				}
 			} catch (Exception e) {
 				Funcoes.mensagemErro( this, "Não foi possível gerar a nota complementar de venda!!!" );
