@@ -573,6 +573,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		txtVlrAdicVenda.setListaCampos( lcVenda );
 		txtPercAdicVenda.setListaCampos( lcVenda );
 		txtVlrDescVenda.setListaCampos( lcVenda );
+		txtVlrDescItVenda.setListaCampos( lcVenda );
 		txtPercDescVenda.setListaCampos( lcVenda );
 		txtStatusVenda.setListaCampos( lcVenda );
 		txtCodPlanoPag.setListaCampos( lcVenda );
@@ -1089,6 +1090,8 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 				txtVlrProdVenda.setVlrBigDecimal( valores.getVlrprodvenda() );
 				txtVlrAdicVenda.setVlrBigDecimal( valores.getVlradicvenda() );
 				txtVlrDescVenda.setVlrBigDecimal( valores.getVlrdescvenda() );
+				txtVlrDescItVenda.setVlrBigDecimal( valores.getVlrdescitvenda() );
+				
 				// Define o padrão da situação da nota complementar como C = processo Completo.
 				txtSitComplVenda.setVlrString( "C" );
 				
