@@ -3732,7 +3732,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		//txtCodTipoMov.setVlrInteger( iVal );
 	}
 
-	public void insertItem(Integer codprod, String refprod, BigDecimal qtd, BigDecimal precoprod, BigDecimal vlrdesc, String codlote) {
+	public void insertItem(Integer codprod, String refprod, BigDecimal qtd
+			, BigDecimal precoprod, BigDecimal vlrdesc, String codlote, boolean recargacfop) {
 
 		lcDet.insert( true );
 		txtCodProd.requestFocus();
@@ -3768,6 +3769,10 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 		getCFOP();
 		getTratTrib();
+		
+		if (recargacfop) {
+			getCFOP();
+		}
 
 		calcImpostos( true );
 		getCalcImpostos();
