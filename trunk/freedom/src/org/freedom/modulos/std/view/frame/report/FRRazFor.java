@@ -175,9 +175,8 @@ public class FRRazFor extends FRelatorio {
 			sql.append( ",v.doc, v.vlrdeb, v.vlrcred " );
 			sql.append( "from fnrazforvw01 v " );
 			sql.append( "where codempfr=? and codfilialfr=? " );
-			sql.append( "and  " );
 			if ( codfor != 0 ) {
-				sql.append( "v.codfor=? " );
+				sql.append( " and v.codfor=? " );
 			}
 			sql.append( "and v.data between ? and ? " );
 			sql.append( "and ( ");
