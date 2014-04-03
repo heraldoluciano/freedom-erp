@@ -95,6 +95,7 @@ import org.freedom.modulos.lvf.view.frame.report.FRIcmsNcm;
 import org.freedom.modulos.lvf.view.frame.report.FRIpi;
 import org.freedom.modulos.lvf.view.frame.report.FRMovPisCofins;
 import org.freedom.modulos.lvf.view.frame.report.FRPisCofins;
+import org.freedom.modulos.lvf.view.frame.report.FRProdICMS;
 import org.freedom.modulos.lvf.view.frame.utility.FSintegra;
 import org.freedom.modulos.pcp.view.frame.report.FRInventario;
 import org.freedom.modulos.std.view.frame.crud.detail.FCalcCusto;
@@ -596,8 +597,10 @@ public class FreedomSTD extends AplicativoPD {
 		addOpcao( 800600000, TP_OPCAO_ITEM, "ICMS por NCM/CFOP", "ICMS por NCM", 'N', 800604000, 2, true, FRIcmsNcm.class );
 		addOpcao( 800600000, TP_OPCAO_ITEM, "IPI", "IPI", 'P', 800605000, 2, true, FRIpi.class );
 		addOpcao( 800600000, TP_OPCAO_ITEM, "ISS", "ISS", 'S', 800602000, 2, true, FRImpServ.class );
-		addOpcao( 800600000, TP_OPCAO_ITEM, "PIS/COFINS", "Mov. PIS/COFINS", 'P', 800603000, 2, true, FRPisCofins.class );
-		addOpcao( 800600000, TP_OPCAO_ITEM, "Mov. PIS/COFINS", "Mov. PIS/COFINS", 'P', 800606000, 2, true, FRMovPisCofins.class );
+		addOpcao( 800600000, TP_OPCAO_ITEM, "PIS/COFINS", "Mov. PIS/COFINS", 'C', 800603000, 2, true, FRPisCofins.class );
+		addOpcao( 800600000, TP_OPCAO_ITEM, "Mov. PIS/COFINS", "Mov. PIS/COFINS", 'M', 800606000, 2, true, FRMovPisCofins.class );
+		addOpcao( 800600000, TP_OPCAO_ITEM, "Produtos/ICMS", "Produtos/ICMS", 'o', 800607000, 2, true, FRProdICMS.class );
+		
 
 		addBotao( "btPrefere.png", "Preferências gerais", "Preferências Gerais", 100310000, FPrefereGeral.class );
 		addBotao( "btCliente.png", "Cliente", "Clientes", 100101030, FCliente.class );
