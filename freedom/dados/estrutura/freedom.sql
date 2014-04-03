@@ -12900,14 +12900,24 @@ slp.codemppg=ip.codemp and slp.codfilialpg=ip.codfilial and slp.codpag=ip.codpag
 lp.codemp=slp.codemp and lp.codfilial=slp.codfilial and lp.codlanca=slp.codlanca  and lp.transflanca = 'N'
 ;
 
-create view fnrazclivw01 (
- codempcl, codfilialcl, codcli, razcli
- , codemprc, codfilialrc
- , codempsl, codfilialsl
- , codempcp, codfilialcp
- , data, tipo, tiposublanca
- , doc, vlrdeb, vlrcred
-) as
+CREATE VIEW FNRAZCLIVW01(
+    CODEMPCL,
+    CODFILIALCL,
+    CODCLI,
+    RAZCLI,
+    CODEMPRC,
+    CODFILIALRC,
+    CODEMPSL,
+    CODFILIALSL,
+    CODEMPCP,
+    CODFILIALCP,
+    DATA,
+    TIPO,
+    TIPOSUBLANCA,
+    DOC,
+    VLRDEB,
+    VLRCRED)
+AS
 -- Parcelas
 select c.codemp codempcl, c.codfilial codfilialcl
 , c.codcli, c.razcli
@@ -12916,9 +12926,11 @@ select c.codemp codempcl, c.codfilial codfilialcl
 , null codempcp, null codfilialcp
 , r.datarec data
 , 'Q' tipo, 'V' tiposublanca
-, r.docrec doc, r.vlrparcrec vlrdeb, 0.00 vlrcred
-from fnreceber r, vdcliente c
+, r.docrec doc, sum(ir.vlrparcitrec) vlrdeb, 0.00 vlrcred
+from fnreceber r, vdcliente c, fnitreceber ir
 where c.codemp=r.codempcl and c.codfilial=r.codfilialcl and c.codcli=r.codcli
+and ir.codemp=r.codemp and ir.codfilial=r.codfilial and ir.codrec=r.codrec
+group by 1, 2, 3, 4, 5, 6, 11, 14
 union all
 -- Pagamentos
 select c.codemp codempcl, c.codfilial codfilialcl
@@ -12947,7 +12959,8 @@ select c.codemp codempcl, c.codfilial codfilialcl
 , r.docrec doc, 0.00 vlrdeb, coalesce(sum(ir.vlrcancitrec),0)*-1 vlrcred
 from fnreceber r, fnitreceber ir, vdcliente c
 where r.codempcl=c.codemp and r.codfilialcl=c.codfilial and r.codcli=c.codcli
-and ir.codemp=r.codemp and ir.codfilial=r.codfilial and ir.codrec=r.codrec and ir.statusitrec in ('CR')
+and ir.codemp=r.codemp and ir.codfilial=r.codfilial and ir.codrec=r.codrec
+and ir.statusitrec in ('CR')
 group by 1, 2, 3, 4, 5, 6, 11, 14
 -- Devoluções
 union all
@@ -12964,18 +12977,30 @@ where tm.codemp=cp.codemptm and tm.codfilial=cp.codfilialtm
 and tm.codtipomov=cp.codtipomov and tm.estipomov='E' and tm.tipomov='DV'
 and cf.codemp=c.codemp and cf.codfilial=c.codfilial and cf.codcli=c.codcli
 and cp.codempfr=cf.codempfr and cp.codfilialfr=cf.codfilialfr and cp.codfor=cf.codfor
-order by 3, 4, 11, 12, 14, 13 ;
+order by 3, 4, 11, 12, 14, 13
+;
 
-create view fnrazforvw01 (
-  codempfr, codfilialfr, codfor, razfor
-  , codemppg, codfilialpg
-  , codempsl, codfilialsl
-  , codempvd, codfilialvd
-  , data
-  , tipo, tiposublanca
-  , doc, vlrdeb, vlrcred
-) as
-select f.codemp codempfr, f.codfilial codfilialfr, f.codfor, f.razfor
+CREATE VIEW FNRAZFORVW01(
+    CODEMPFR,
+    CODFILIALFR,
+    CODFOR,
+    RAZFOR,
+    CODEMPPG,
+    CODFILIALPG,
+    CODEMPSL,
+    CODFILIALSL,
+    CODEMPVD,
+    CODFILIALVD,
+    DATA,
+    TIPO,
+    TIPOSUBLANCA,
+    DOC,
+    VLRDEB,
+    VLRCRED)
+AS
+-- Parcelas
+select f.codemp codempfr, f.codfilial codfilialfr
+, f.codfor codemit, f.razfor razemit
 , p.codemp codemppg, p.codfilial codfilialpg
 , null codempsl, null codfilialsl
 , null codempvd, null codfilialvd
@@ -12984,30 +13009,51 @@ select f.codemp codempfr, f.codfilial codfilialfr, f.codfor, f.razfor
 from fnpagar p, cpforneced f
 where f.codemp=p.codempfr and f.codfilial=p.codfilialfr and f.codfor=p.codfor
 union all
-select f.codemp codempfr, f.codfilial codfilialfr, f.codfor, f.razfor
+-- Pagamentos
+select f.codemp codempfr, f.codfilial codfilialfr
+, f.codfor codemit, f.razfor razemit
 , null codemppg, null codfilialpg
 , sl.codemp codempsl, sl.codfilial codfilialsl
 , null codempvd, null codfilialvd
 , sl.datasublanca data
-,  (case when sl.tiposublanca='P' then 'P' else 'X' end) tipo, sl.tiposublanca
-, p.docpag doc, sl.vlrsublanca vlrdeb, (case when sl.tiposublanca in ('J','D','M')
+,  (case when sl.tiposublanca='P' then 'P' else 'X' end) tipo
+, sl.tiposublanca, p.docpag doc
+, sl.vlrsublanca vlrdeb, (case when sl.tiposublanca in ('J','D','M')
 then sl.vlrsublanca else 0.00 end) vlrcred
 from fnsublanca sl , cpforneced f, fnpagar p
 where f.codemp=sl.codempfr and f.codfilial=sl.codfilialfr
 and p.codemp=sl.codemppg and p.codfilial=sl.codfilialpg and p.codpag=sl.codpag
 and f.codfor=sl.codfor and sl.codsublanca<>0 
 union all
-select f.codemp codempfr, f.codfilial codfilialfr, f.codfor, f.razfor
+-- Cancelamento
+select f.codemp codempfr, f.codfilial codfilialfr
+, f.codfor, f.razfor
+, p.codemp codemppg, p.codfilial codfilialpg
+, null codempsl, null codfilialsl
+, null codempvd, null codfilialvd
+, ip.dtvencitpag data
+, 'X' tipo, 'X' tiposublanca
+, p.docpag doc, coalesce(sum(ip.vlrcancitpag),0) vlrdeb
+, 0.00 vlrcred
+from fnpagar p, fnitpagar ip, cpforneced f
+where f.codemp=p.codempfr and f.codfilial=p.codfilialfr and p.codfor=f.codfor
+and ip.codemp=p.codemp and ip.codfilial=p.codfilial and ip.codpag=p.codpag
+and ip.statusitpag in ('CP')
+group by 1, 2, 3, 4, 5, 6, 11, 14
+union all
+--  Devoluções
+select f.codemp codempfr, f.codfilial codfilialfr, f.codfor codemit, f.razfor razemit
 , null codemppg, null codfilialpg
 , null codempsl, null codfilialsl
 , vd.codemp codempvd, vd.codfilialvd
 , vd.dtemitvenda data
-, 'Z' tipo, 'Z' tiposublanca, vd.docvenda doc, vd.vlrliqvenda vlrcred, 0.00 vlrdeb
+, 'Z' tipo, 'Z' tiposublanca, vd.docvenda doc, vd.vlrliqvenda vlrdeb, 0.00 vlrcred
 from vdvenda vd, eqtipomov tm, eqclifor cf, cpforneced f
 where tm.codemp=vd.codemptm and tm.codfilial=vd.codfilialtm and tm.codtipomov=vd.codtipomov
 and tm.estipomov='S' and tm.tipomov='DV' and cf.codempfr=f.codemp and cf.codfilialfr=f.codfilial
 and cf.codfor=f.codfor and vd.codempcl=cf.codemp and vd.codfilialcl=cf.codfilial
-and vd.codcli=cf.codcli;
+and vd.codcli=cf.codcli
+;
 
 /* View: TKCONTCLIVW01, Owner: SYSDBA */
 CREATE VIEW TKCONTCLIVW01 (TIPOCTO, CODEMP, CODFILIAL, CODCTO, RAZCTO, NOMECTO, CONTCTO, EMAILCTO, OBSCTO, CODEMPTO, CODFILIALTO, CODTIPOCONT, CODEMPSR, CODFILIALSR, CODSETOR, CODEMPOC, CODFILIALOC, CODORIGCONT, CODEMPTI, CODFILIALTI, CODTIPOCLI, CODEMPCC, CODFILIALCC, CODCLASCLI, ATIVO, DTINS, DTALT, DTINSCC, DTALTCC) AS
@@ -33226,11 +33272,10 @@ BEGIN
            EXCEPTION FNITPAGAREX01;
         END
         new.VLRCANCITPAG = new.VLRAPAGITPAG;
-        new.VLRPARCITPAG = 0;
+        new.VLRAPAGITPAG = 0;
         new.VLRDESCITPAG = 0;
         new.VLRJUROSITPAG = 0;
         new.VLRDEVITPAG = 0;
-        new.VLRITPAG = 0;
      END
 
      SELECT ICODFILIAL FROM SGRETFILIAL(new.CODEMP,'FNSUBLANCA') INTO :CODFILIALLC;
@@ -33238,7 +33283,7 @@ BEGIN
            AND CODEMPPG= new.CODEMP AND CODFILIALPG=new.CODFILIAL
            AND CODEMP=new.CODEMP AND CODFILIAL = :CODFILIALLC INTO :COUNTLANCA;
 
-     new.VLRITPAG = new.VLRPARCITPAG - new.VLRDESCITPAG - new.VLRDEVITPAG + new.VLRJUROSITPAG + new.VLRMULTAITPAG + new.VLRADICITPAG;
+     new.VLRITPAG = new.VLRPARCITPAG - new.VLRDESCITPAG  - new.VLRCANCITPAG - new.VLRDEVITPAG + new.VLRJUROSITPAG + new.VLRMULTAITPAG + new.VLRADICITPAG;
 
      IF ( new.STATUSITPAG = 'P1' ) THEN
      BEGIN
@@ -33506,11 +33551,10 @@ BEGIN
            EXCEPTION FNITRECEBEREX02;
         END
         new.VLRCANCITREC = new.VLRAPAGITREC;
-        new.VLRPARCITREC = 0;
+        new.VLRAPAGITREC = 0;
         new.VLRDESCITREC = 0;
         new.VLRJUROSITREC = 0;
         new.VLRDEVITREC = 0;
-        new.VLRITREC = 0;
      END
 
      SELECT ICODFILIAL FROM SGRETFILIAL(new.CODEMP,'FNSUBLANCA') INTO :CODFILIALLC;
@@ -33518,7 +33562,7 @@ BEGIN
               AND CODEMPRC= new.CODEMP AND CODFILIALRC=new.CODFILIAL
               AND CODEMP=new.CODEMP AND CODFILIAL = :CODFILIALLC INTO :COUNTLANCA;
 
-     new.VLRITREC = new.VLRPARCITREC - new.VLRDESCITREC - new.VLRDEVITREC + new.VLRJUROSITREC + new.VLRMULTAITREC;
+     new.VLRITREC = new.VLRPARCITREC - new.VLRCANCITREC - new.VLRDESCITREC - new.VLRDEVITREC + new.VLRJUROSITREC + new.VLRMULTAITREC;
      new.VLRAPAGITREC = new.VLRITREC - new.VLRPAGOITREC;
      if (new.VLRAPAGITREC < 0 or new.VLRAPAGITREC is null ) then /* se o valor a pagar for menor que zero */
         new.VLRAPAGITREC = 0;  /* entÃ£o valor a pagar serÃ¡ zero */

@@ -173,9 +173,8 @@ public class FRRazCli extends FRelatorio {
 			sql.append( ", v.doc, v.vlrdeb, v.vlrcred " );
 			sql.append( "from fnrazclivw01 v " );
 			sql.append( "where codempcl=? and codfilialcl=? " );
-			sql.append( "and  " );
 			if ( codcli != 0 ) {
-				sql.append( "v.codcli=? " );
+				sql.append( "and v.codcli=? " );
 			}
 			sql.append( "and v.data between ? and ? " );
 			sql.append( "and ( ");
