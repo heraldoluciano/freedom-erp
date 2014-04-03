@@ -60,7 +60,11 @@ public class FRProdICMS extends FRelatorio {
 	private JTextFieldFK txtDescFiscCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JCheckBoxPad cbSoST = new JCheckBoxPad( "Somente produtos com ST", "S", "N" );
+
+	private JCheckBoxPad cbSoSaidas = new JCheckBoxPad( "Somente regras de saída", "S", "N" );
 	
+	private JCheckBoxPad cbSoProdVenda = new JCheckBoxPad( "Somente produtos de venda", "S", "N" );
+
 	private ListaCampos lcUF = new ListaCampos( this );
 
 	private ListaCampos lcTipoFiscCli = new ListaCampos( this );
@@ -68,7 +72,7 @@ public class FRProdICMS extends FRelatorio {
 	public FRProdICMS() {
 
 		setTitulo( "Produtos/ICMS" );
-		setAtribos( 100, 100, 500, 200 );
+		setAtribos( 100, 100, 500, 250 );
 
 		montaListaCampos();
 		montaTela();
@@ -85,7 +89,11 @@ public class FRProdICMS extends FRelatorio {
 		adic( new JLabelPad( "Descrição" ), 80, 40, 250, 20 );
 		adic( txtDescFiscCli, 80, 60, 250, 20 );
 		adic( cbSoST, 7, 85, 250, 25 );
+		adic( cbSoSaidas, 7, 110, 250, 25 );
+		adic( cbSoProdVenda, 7, 135, 250, 25 );
 		cbSoST.setVlrString( "S" );
+		cbSoSaidas.setVlrString( "S" );
+		cbSoProdVenda.setVlrString( "S" );
 	}
 
 	private void montaListaCampos() {
@@ -191,6 +199,18 @@ public class FRProdICMS extends FRelatorio {
 				sql.append(" and icf.tipofisc='FF' ");
 				filtros.append( " ( " );
 				filtros.append(cbSoST.getText());
+				filtros.append( " ) ");
+			}
+			if ("S".equals(cbSoSaidas.getVlrString())) {
+				sql.append(" and icf.tipousoitfisc='VD' ");
+				filtros.append( " ( " );
+				filtros.append(cbSoSaidas.getText());
+				filtros.append( " ) ");
+			}
+			if ("S".equals(cbSoProdVenda.getVlrString())) {
+				sql.append(" and pd.cvprod in ('V','A') ");
+				filtros.append( " ( " );
+				filtros.append(cbSoProdVenda.getText());
 				filtros.append( " ) ");
 			}
 			sql.append(" and icf.ativoitfisc='S' ");
