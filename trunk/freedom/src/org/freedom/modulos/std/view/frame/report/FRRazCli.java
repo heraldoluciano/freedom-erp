@@ -64,7 +64,7 @@ public class FRRazCli extends FRelatorio {
 
 	public FRRazCli() {
 
-		setTitulo( "Compras por Razão/Cliente" );
+		setTitulo( "Razão Clientes" );
 		setAtribos( 50, 50, 340, 195 );
 
 		montaTela();
