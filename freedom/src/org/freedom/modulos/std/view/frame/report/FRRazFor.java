@@ -65,7 +65,7 @@ public class FRRazFor extends FRelatorio {
 	public FRRazFor() {
 
 		super( false );
-		setTitulo( "Compras por Razão" );
+		setTitulo( "Razão Fornecedores" );
 		setAtribos( 50, 50, 340, 195 );
 
 		montaTela();

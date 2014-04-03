@@ -455,7 +455,7 @@ public class FreedomSTD extends AplicativoPD {
 		addOpcao( 400000000, TP_OPCAO_MENU, "Listagens", "", 's', 400400000, 1, false, null );
 		addOpcao( 400400000, TP_OPCAO_ITEM, "Pagar/Pagas", "Pagar/Pagas", 'P', 400401000, 2, true, FRPagar.class );
 		addOpcao( 400400000, TP_OPCAO_ITEM, "Comissões", "Comissão", 'C', 400402000, 2, true, FRComissoes.class );
-		addOpcao( 400400000, TP_OPCAO_ITEM, "Razão", "Razão", 'R', 400403000, 2, true, FRRazFor.class );
+		addOpcao( 400400000, TP_OPCAO_ITEM, "Razão", "Razão Fornecedores", 'R', 400403000, 2, true, FRRazFor.class );
 		addOpcao( 400400000, TP_OPCAO_ITEM, "Pagamentos em aberto", "Pagamentos em aberto", 'a', 400404000, 2, true, FRPagarAberto.class );
 
 		addSeparador( 400000000 );
@@ -470,7 +470,7 @@ public class FreedomSTD extends AplicativoPD {
 		addOpcao( 500300000, TP_OPCAO_ITEM, "Inadimplentes", "Inadimplentes", 'I', 500302000, 2, true, FRInadimplentes.class );
 		addOpcao( 500300000, TP_OPCAO_ITEM, "Bordero de cobrança", "Bordero de cobrança", 'B', 500303000, 2, true, FRBordero.class );
 		addOpcao( 500300000, TP_OPCAO_ITEM, "Descontos por setor", "Descontos por setor", 'D', 500304000, 2, true, FRReceberSetor.class );
-		addOpcao( 500300000, TP_OPCAO_ITEM, "Razão", "Razão", 'R', 500305000, 2, true, FRRazCli.class );
+		addOpcao( 500300000, TP_OPCAO_ITEM, "Razão", "Razão Clientes", 'R', 500305000, 2, true, FRRazCli.class );
 		addOpcao( 500300000, TP_OPCAO_ITEM, "Recebimentos por Mês", "Recebimentos por Mês", 'M', 500306000, 2, true, FRReceberMes.class );
 		addOpcao( 500300000, TP_OPCAO_ITEM, "Relatório de cobrança", "Relatório de cobrança", 'o', 500307000, 2, true, FRCobranca.class );
 		addOpcao( 500300000, TP_OPCAO_ITEM, "Carta de cobrança", "Carta de cobrança", 'C', 500308000, 2, true, FRCartaCobranca.class );
