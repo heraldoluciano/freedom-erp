@@ -141,7 +141,7 @@ public class FRRazFor extends FRelatorio {
 			cab.append( " até: " );
 			cab.append( txtDatafim.getVlrString() );
 
-			sql.append( "select v.codfor codemit, v.razfor razemit, " );
+			sql.append( "select f.codfor codemit, f.razfor razemit, " );
 			sql.append( "cast( '" );
 			sql.append( Funcoes.dateToStrDB( txtDataini.getVlrDate() ) );
 			/**
@@ -150,12 +150,10 @@ public class FRRazFor extends FRelatorio {
 			sql.append( "' as date) data, 'A' tipo, ");
 			sql.append( "'A' tiposublanca, ");
 			sql.append( "0 DOC, 0.00 vlrdeb, " );
-			sql.append( "sum(v.vlrcred-v.vlrdeb) vlrcred " );
+			sql.append( "(select sum(v.vlrcred-v.vlrdeb) " );
 			sql.append( "from fnrazforvw01 v " );
-			sql.append( "where v.codempfr=? and v.codfilialfr=? ");
-			if (codfor!=0) {
-				sql.append( " and v.codfor=? ");
-			}
+			sql.append( "where v.codempfr=f.codemp and v.codfilialfr=f.codfilial ");
+			sql.append( "and v.codfor=f.codfor ");
 			sql.append( "and v.data < ? " );
 			sql.append( "and ( ");
 			sql.append( "(v.codemppg is null or v.codemppg=? ) ");
@@ -164,8 +162,26 @@ public class FRRazFor extends FRelatorio {
 			sql.append( "and (v.codfilialsl is null or v.codfilialsl=? ) ");
 			sql.append( "and (v.codempvd is null or v.codempvd=? ) ");
 			sql.append( "and (v.codfilialvd is null or v.codfilialvd=? ) ");
-			sql.append( ")");
-			sql.append( " group by 1, 2 ");
+			sql.append( ")  ) vlrcred ");
+			sql.append( "from cpforneced f ");
+			sql.append( "where f.codemp=? and f.codfilial=? ");
+			if (codfor!=0) {
+				sql.append( " and f.codfor=? ");
+			}
+			sql.append( " and exists( select * from fnrazforvw01 v ");
+			sql.append( "where v.codempfr=f.codemp and v.codfilialfr=f.codfilial ");
+			sql.append( "and v.codfor=f.codfor ");
+			sql.append( "and v.data between ? and ? " );
+			sql.append( "and ( ");
+			sql.append( "(v.codemppg is null or v.codemppg=? ) ");
+			sql.append( "and (v.codfilialpg is null or v.codfilialpg=? ) ");
+			sql.append( "and (v.codempsl is null or v.codempsl=? ) ");
+			sql.append( "and (v.codfilialsl is null or v.codfilialsl=? ) ");
+			sql.append( "and (v.codempvd is null or v.codempvd=? ) ");
+			sql.append( "and (v.codfilialvd is null or v.codfilialvd=? ) ");
+			sql.append( ") ) ");
+			
+			//sql.append( " group by 1, 2 ");
 			/**
 			 * Query dos lancamentos
 			 */
@@ -190,12 +206,20 @@ public class FRRazFor extends FRelatorio {
 			sql.append( "order by 1, 2, 3, 4, 6, 5" );
 			System.out.println( "QUERY" + sql.toString() );
 			ps = con.prepareStatement( sql.toString() );
+			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) );
+			ps.setInt( param++, Aplicativo.iCodEmp ); 
+			ps.setInt( param++, ListaCampos.getMasterFilial( "FNPAGAR" ) );
+			ps.setInt( param++, Aplicativo.iCodEmp ); 
+			ps.setInt( param++, ListaCampos.getMasterFilial( "FNSUBLANCA" ) ); 
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "VDVENDA" ) );
 			ps.setInt( param++, Aplicativo.iCodEmp );
 			ps.setInt( param++, ListaCampos.getMasterFilial( "CPFORNECED" ) ); 
 			if (codfor!=0) {
 				ps.setInt( param++, codfor );
 			}
 			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) );
+			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) ); 
 			ps.setInt( param++, Aplicativo.iCodEmp ); 
 			ps.setInt( param++, ListaCampos.getMasterFilial( "FNPAGAR" ) );
 			ps.setInt( param++, Aplicativo.iCodEmp ); 
