@@ -90,6 +90,8 @@ public class FCancVenda extends FFilho implements ActionListener {
 	
 	private JCheckBoxPad cbFiscaltipomov = new JCheckBoxPad( "Fiscal", "S", "N" );
 
+	private JTextFieldPad txtOperTipomov = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+
 	private JTextAreaPad txaMotivoCancVenda = new JTextAreaPad(250);
 
 	private JScrollPane spnMotivoCancVenda = new JScrollPane( txaMotivoCancVenda );
@@ -142,6 +144,7 @@ public class FCancVenda extends FFilho implements ActionListener {
 		lcTipomov.add( new GuardaCampo( txtDesctipomov, "Desctipomov", "Descrição tipo de movimento", ListaCampos.DB_SI, null, false ) );
 		lcTipomov.add( new GuardaCampo( txtCodmodnota, "Codmodnota", "Cód.mod.nf.", ListaCampos.DB_SI, null, false ) );
 		lcTipomov.add( new GuardaCampo( cbFiscaltipomov, "Fiscaltipomov", "Fiscal", ListaCampos.DB_SI, null, false ) );
+		lcTipomov.add( new GuardaCampo( txtOperTipomov, "OperTipoMov", "Operação", ListaCampos.DB_SI, null, false ) );
 		lcTipomov.montaSql( false, "TIPOMOV", "EQ" );
 		lcTipomov.setReadOnly( true );
 		txtCodtipomov.setTabelaExterna( lcTipomov, null );
@@ -218,7 +221,7 @@ public class FCancVenda extends FFilho implements ActionListener {
 				String tipovenda = "V";
 				String fiscaltipomov = cbFiscaltipomov.getVlrString();
 				String chavenfe = txtChaveNfe.getVlrString();
-				if ( APLIC_CONTRIB_NFE.equals(oPrefs[POS_PREFS.PROCEMINFE.ordinal()]) && "S".equals( fiscaltipomov )) {
+				if ( APLIC_CONTRIB_NFE.equals(oPrefs[POS_PREFS.PROCEMINFE.ordinal()]) && "S".equals( fiscaltipomov ) && !"S".equals( txtOperTipomov.getVlrString() )) {
 					if ("".equals(chavenfe)) {
 						Funcoes.mensagemInforma( this, "Nota fiscal eletrônica sem chave de acesso não pode ser cancelada !" );
 						return result;
