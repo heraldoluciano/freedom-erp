@@ -140,21 +140,19 @@ public class FRRazCli extends FRelatorio {
 			cab.append( " até: " );
 			cab.append( txtDatafim.getVlrString() );
 			
-			sql.append( "select v.codcli codemit, v.razcli razemit ");
+			sql.append( "select c.codcli codemit, c.razcli razemit ");
 			sql.append( ", cast( '" );
 			sql.append( Funcoes.dateToStrDB( txtDataini.getVlrDate() ) );
 			/**
 			 * Tipo A = Saldo anteiror Busca na FNRECEBER todos as vendas com valor financeiro a receber (VLRREC)
 			 */
 			sql.append( "' as date) data, 'A' tipo, 'A' tiposublanca ");
-			sql.append( ", 0 doc, sum(v.vlrdeb+v.vlrcred) vlrdeb ");
-			sql.append( ", 0 vlrcred ");
+			sql.append( ", 0 doc ");
+			sql.append(", ( select sum(v.vlrdeb+v.vlrcred) ");
 			sql.append( "from fnrazclivw01 v ");
-			sql.append( "where v.codempcl=? and v.codfilialcl=? ");
-			if (codcli!=0) {
-				sql.append( " and v.codcli=? " );
-			}
-			sql.append( "and v.data < ? " );
+			sql.append( "where v.codempcl=c.codemp and v.codfilialcl=c.codfilial ");
+			sql.append( "and v.codcli=c.codcli " );
+			sql.append( "and v.data < ? ");
 			sql.append( "and ( ");
 			sql.append( "(v.codemprc is null or v.codemprc=? ) ");
 			sql.append( "and (v.codfilialrc is null or v.codfilialrc=? ) ");
@@ -162,8 +160,34 @@ public class FRRazCli extends FRelatorio {
 			sql.append( "and (v.codfilialsl is null or v.codfilialsl=? ) ");
 			sql.append( "and (v.codempcp is null or v.codempcp=? ) ");
 			sql.append( "and (v.codfilialcp is null or v.codfilialcp=? ) ");
-			sql.append( ")");
-			sql.append( " group by 1, 2 ");
+			sql.append( ") ");
+			sql.append(") vlrdeb " );
+			sql.append( ", 0 vlrcred ");
+			sql.append( "from vdcliente c ");
+			sql.append( "where c.codemp=? and c.codfilial=? ");
+			if (codcli!=0) {
+				sql.append( " and c.codcli=? " );
+			}
+			sql.append( "and exists ( select * from fnrazclivw01 v2 " );
+			sql.append( "where v2.codempcl=c.codemp and v2.codfilialcl=c.codfilial and v2.codcli=c.codcli " );
+			sql.append( "and v2.data between ? and ? " );
+			sql.append( "and ( ");
+			sql.append( "(v2.codemprc is null or v2.codemprc=? ) ");
+			sql.append( "and (v2.codfilialrc is null or v2.codfilialrc=? ) ");
+			sql.append( "and (v2.codempsl is null or v2.codempsl=? ) ");
+			sql.append( "and (v2.codfilialsl is null or v2.codfilialsl=? ) ");
+			sql.append( "and (v2.codempcp is null or v2.codempcp=? ) ");
+			sql.append( "and (v2.codfilialcp is null or v2.codfilialcp=? ) ");
+			sql.append( ") ");
+			sql.append( " ) ");
+
+			/* Filtros para evitar saldo inicial para registros sem movimento no período*/
+			/*sql.append( "and exists ( select * from fnrazclivw01 v2 " );
+			sql.append( "where v2.codempcl=v.codempcl and v2.codfilialcl=v.codfilialcl and v2.codcli=v.codcli " );
+			sql.append( "and v2.data between ? and ? " );
+			sql.append( " ) ");*/
+			/* Fim do filtro de lançamentos no período*/
+			//sql.append( " group by 1, 2 ");
 			/**
 			 * Query dos lancamentos
 			 */
@@ -189,14 +213,21 @@ public class FRRazCli extends FRelatorio {
 
 			ps = con.prepareStatement( sql.toString() );
 			System.out.println( "QUERY" + sql.toString() );
-
-			ps = con.prepareStatement( sql.toString() );
+			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) );
+			ps.setInt( param++, Aplicativo.iCodEmp ); 
+			ps.setInt( param++, ListaCampos.getMasterFilial( "FNRECEBER" ) );
+			ps.setInt( param++, Aplicativo.iCodEmp ); 
+			ps.setInt( param++, ListaCampos.getMasterFilial( "FNSUBLANCA" ) ); 
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
 			ps.setInt( param++, Aplicativo.iCodEmp );
 			ps.setInt( param++, ListaCampos.getMasterFilial( "VDCLIENTE" ) ); 
 			if (codcli!=0) {
 				ps.setInt( param++, codcli );
 			}
+			/* Filtro do saldo inicial*/
 			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) );
+			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) );
 			ps.setInt( param++, Aplicativo.iCodEmp ); 
 			ps.setInt( param++, ListaCampos.getMasterFilial( "FNRECEBER" ) );
 			ps.setInt( param++, Aplicativo.iCodEmp ); 
