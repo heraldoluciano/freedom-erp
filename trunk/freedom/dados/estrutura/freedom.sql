@@ -12980,7 +12980,7 @@ and cp.codempfr=cf.codempfr and cp.codfilialfr=cf.codfilialfr and cp.codfor=cf.c
 order by 3, 4, 11, 12, 14, 13
 ;
 
-CREATE VIEW FNRAZFORVW01(
+CREATE OR ALTER VIEW FNRAZFORVW01(
     CODEMPFR,
     CODFILIALFR,
     CODFOR,
@@ -13005,9 +13005,12 @@ select f.codemp codempfr, f.codfilial codfilialfr
 , null codempsl, null codfilialsl
 , null codempvd, null codfilialvd
 , p.datapag data
-, 'C' tipo, 'C' tiposublanca, p.docpag doc, 0.00 vlrdeb, p.vlrparcpag vlrcred
-from fnpagar p, cpforneced f
+, 'C' tipo, 'C' tiposublanca
+, p.docpag doc, 0.00 vlrdeb, sum(ip.vlrparcitpag) vlrcred
+from fnpagar p, cpforneced f, fnitpagar ip
 where f.codemp=p.codempfr and f.codfilial=p.codfilialfr and f.codfor=p.codfor
+and ip.codemp=p.codemp and ip.codfilial=p.codfilial and ip.codpag=p.codpag
+group by 1, 2, 3, 4, 5, 6, 11, 14
 union all
 -- Pagamentos
 select f.codemp codempfr, f.codfilial codfilialfr
