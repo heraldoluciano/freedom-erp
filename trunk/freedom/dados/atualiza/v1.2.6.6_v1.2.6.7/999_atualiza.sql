@@ -8,6 +8,15 @@ update fnitreceber r set r.emmanut='S', r.vlrparcitrec=r.vlrcancitrec where r.st
 
 commit work;
 
-update fnitreceber r set r.emmanut='N' where emmanut='S';
+update fnitreceber r set r.emmanut='N' where r.emmanut='S';
 
 commit work;
+
+update fnitpagar p set p.emmanut='S', p.vlrparcitpag=p.vlrcancitpag where p.statusitpag='CP';
+
+commit work;
+
+update fnitpagar p set p.emmanut='N' where p.emmanut='S';
+
+commit work;
+
