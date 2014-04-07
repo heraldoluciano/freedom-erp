@@ -220,10 +220,46 @@ public class FCancCompra extends FFilho implements ActionListener {
 
 
 	}
+	
+	private boolean verifPagar( int codemp, int codfilial, int codcompra ) {
+		boolean result = true;
+		StringBuilder sql = new StringBuilder();
+		try {
+			sql.append("select ip.statusitpag from fnpagar p, fnitpagar ip ");
+			sql.append("where p.codempcp=? and p.codfilialcp=? and p.codcompra=? ");
+			sql.append("and ip.codemp=p.codemp and ip.codfilial=p.codfilial and ip.codpag=p.codpag ");
+			sql.append("and ip.statusitpag in ('PL','PP')");
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
+			int param = 1;
+			ps.setInt( param++, codemp );
+			ps.setInt( param++, codfilial );
+			ps.setInt( param++, codcompra );
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				result = false;
+			}
+			rs.close();
+			ps.close();
+			con.commit();
+			
+		} catch (SQLException err) {
+			err.printStackTrace();
+			try {
+				con.rollback();
+			} catch (SQLException err2) {
+				err2.printStackTrace();
+			}
+			result = false;
+		}
+		return result;
+	}
+	
 
 	public boolean cancelar( int codcompra, String status, String motivocanccompra ) {
 
 		boolean result = false;
+		int codemp = Aplicativo.iCodEmp;
+		int codfilial = ListaCampos.getMasterFilial( "CPCOMPRA" );
 		String justificativa = txaMotivoCancCompra.getVlrString().trim();
 		if ( codcompra == 0 ) {
 			Funcoes.mensagemInforma( null, "Nenhuma compra foi selecionada!" );
@@ -235,11 +271,12 @@ public class FCancCompra extends FFilho implements ActionListener {
 		} else if (justificativa.length()>255) {
 			Funcoes.mensagemInforma( null, "Tamanho máximo para motivo/justificativa é de 255 caracteres !" );
 		} else if ( "CPD".indexOf( status.substring( 0, 1 ) ) != -1 ) {
-
+			if (!verifPagar(codemp, codfilial, codcompra )) {
+				Funcoes.mensagemInforma( this, "Esta compra possui títulos pagos.\nExecute o estorno na manutenção de contas a pagar !" );
+				return result;
+			}
 			if ( Funcoes.mensagemConfirma( null, "Deseja realmente cancelar esta compra ?" ) == JOptionPane.YES_OPTION ) {
 				boolean cancCompra = true;
-				int codemp = Aplicativo.iCodEmp;
-				int codfilial = ListaCampos.getMasterFilial( "CPCOMPRA" );
 				int modelo = txtCodmodnota.getVlrInteger();
 				String serie = txtSerie.getVlrString();
 				int doccompra = txtDocCompra.getVlrInteger();
@@ -260,52 +297,12 @@ public class FCancCompra extends FFilho implements ActionListener {
 					cancCompra = nfecf.getObjNFEFactory().isAutorizada();
 				}
 				if (cancCompra) {
-					
-					PreparedStatement ps = null;
-					StringBuilder sql = new StringBuilder(); 
-	
 					try {
-						// Desbloquear a compra, caso seja necessário
-						sql.append( "UPDATE CPCOMPRA SET EMMANUT='S', BLOQCOMPRA='N' ");
-						sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODCOMPRA=? AND BLOQCOMPRA='S' ");
-						ps = con.prepareStatement( sql.toString() );
-						int param = 1;
-						ps.setInt( param++, Aplicativo.iCodEmp );
-						ps.setInt( param++, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
-						ps.setInt( param++, codcompra );
-						ps.executeUpdate();
-						ps.close();
-						// Ajusta o emmanut para 'N'
-						sql.delete( 0, sql.length() ); 
-						sql.append( "UPDATE CPCOMPRA SET EMMANUT='N' ");
-						sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODCOMPRA=? AND EMMANUT='S' ");
-						ps = con.prepareStatement( sql.toString() );
-						param = 1;
-						ps.setInt( param++, Aplicativo.iCodEmp );
-						ps.setInt( param++, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
-						ps.setInt( param++, codcompra );
-						ps.executeUpdate();
-						ps.close();
-						// Executa o cancelamento
-						sql.delete( 0, sql.length() ); 
-						sql.append( "UPDATE CPCOMPRA SET MOTIVOCANCCOMPRA=?, STATUSCOMPRA = ? " ); 
-						sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODCOMPRA=?" );
-						ps = con.prepareStatement( sql.toString() );
-						param = 1;
-						ps.setString( param++, motivocanccompra );
-						ps.setString( param++, "X"+status.substring( 0, 1 ) );
-						ps.setInt( param++, Aplicativo.iCodEmp );
-						ps.setInt( param++, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
-						ps.setInt( param++, codcompra );
-						ps.executeUpdate();
-						ps.close();
-						con.commit();
+						cancCompraFreedom(codemp, codfilial, codcompra, status, motivocanccompra);
 						result = true;
 					} catch ( SQLException err ) {
 						Funcoes.mensagemErro( null, "Erro ao cancelar a compra !\n" + err.getMessage(), true, con, err );
 					} finally {
-						ps = null;
-						sql = null;
 						lcCompra.carregaDados();
 					}
 				}
@@ -317,6 +314,47 @@ public class FCancCompra extends FFilho implements ActionListener {
 
 	}
 
+	private void cancCompraFreedom(int codemp, int codfilial, int codcompra, String status, String motivocanccompra) throws SQLException {
+		PreparedStatement ps = null;
+		StringBuilder sql = new StringBuilder(); 
+
+		// Desbloquear a compra, caso seja necessário
+		sql.append( "UPDATE CPCOMPRA SET EMMANUT='S', BLOQCOMPRA='N' ");
+		sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODCOMPRA=? AND BLOQCOMPRA='S' ");
+		ps = con.prepareStatement( sql.toString() );
+		int param = 1;
+		ps.setInt( param++, codemp );
+		ps.setInt( param++, codfilial );
+		ps.setInt( param++, codcompra );
+		ps.executeUpdate();
+		ps.close();
+		// Ajusta o emmanut para 'N'
+		sql.delete( 0, sql.length() ); 
+		sql.append( "UPDATE CPCOMPRA SET EMMANUT='N' ");
+		sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODCOMPRA=? AND EMMANUT='S' ");
+		ps = con.prepareStatement( sql.toString() );
+		param = 1;
+		ps.setInt( param++, codemp );
+		ps.setInt( param++, codfilial );
+		ps.setInt( param++, codcompra );
+		ps.executeUpdate();
+		ps.close();
+		// Executa o cancelamento
+		sql.delete( 0, sql.length() ); 
+		sql.append( "UPDATE CPCOMPRA SET MOTIVOCANCCOMPRA=?, STATUSCOMPRA = ? " ); 
+		sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODCOMPRA=?" );
+		ps = con.prepareStatement( sql.toString() );
+		param = 1;
+		ps.setString( param++, motivocanccompra );
+		ps.setString( param++, "X"+status.substring( 0, 1 ) );
+		ps.setInt( param++, codemp );
+		ps.setInt( param++, codfilial );
+		ps.setInt( param++, codcompra );
+		ps.executeUpdate();
+		ps.close();
+		con.commit();
+
+	}
 	public void actionPerformed( ActionEvent e ) {
 
 		if ( e.getSource() == btSair ) {
