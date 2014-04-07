@@ -169,7 +169,13 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 	private JTextFieldFK txtTotalAberto = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, Aplicativo.casasDecFin );
 	
 	private JTextFieldFK txtTotalAtraso = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, Aplicativo.casasDecFin );
+	
+	private JTextFieldFK txtMediaVendas = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, Aplicativo.casasDecFin );
+	
+	private JTextFieldFK txtMaiorVenda = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, Aplicativo.casasDecFin );
 
+	private JTextFieldFK txtAtrasoMedio = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, Aplicativo.casasDecFin );
+	
 	private JTextFieldPad txtCodProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
 
 	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
@@ -354,7 +360,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		
 		// ***** Detalhamento (abas)
 
-		panelResumoVendas.setPreferredSize( new Dimension( 700, 73 ) );
+		panelResumoVendas.setPreferredSize( new Dimension( 700, 80 ) );
 		panelGeral.add( panelDetail, BorderLayout.CENTER );
 		panelDetail.add( panelResumoVendas, BorderLayout.NORTH );
 		panelDetail.add( tabbedDetail, BorderLayout.CENTER );
@@ -388,16 +394,16 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		panelTabItensCesta.setBorder( BorderFactory.createTitledBorder( "Itens da cesta selecionada" ) );
 		panelTabItensCesta.setPreferredSize( new Dimension( 700, 120 ) );
 		// Final de configurações tabCestas
-		panelResumoVendas.adic( new JLabelPad( "Última Venda" ), 10, 10, 90, 20 );
-		panelResumoVendas.adic( txtUltimaVenda, 10, 30, 90, 20 );
-		panelResumoVendas.adic( new JLabelPad( "Vlr. últ. venda" ), 103, 10, 95, 20 );
-		panelResumoVendas.adic( txtVlrUltimaVenda, 103, 30, 95, 20 );
-		panelResumoVendas.adic( new JLabelPad( "Total de vendas" ), 201, 10, 95, 20 );
-		panelResumoVendas.adic( txtTotalVendas, 201, 30, 95, 20 );
-		panelResumoVendas.adic( new JLabelPad( "Valor em aberto" ), 299, 10, 95, 20 );
-		panelResumoVendas.adic( txtTotalAberto, 299, 30, 95, 20 );
-		panelResumoVendas.adic( new JLabelPad( "Valor em atraso" ), 397, 10, 95, 20 );
-		panelResumoVendas.adic( txtTotalAtraso, 397, 30, 95, 20 );
+		panelResumoVendas.adic( new JLabelPad( "Última Venda" ), 10, 0, 90, 20 );
+		panelResumoVendas.adic( txtUltimaVenda, 10, 20, 90, 20 );
+		panelResumoVendas.adic( new JLabelPad( "Vlr. últ. venda" ), 103, 0, 95, 20 );
+		panelResumoVendas.adic( txtVlrUltimaVenda, 103, 20, 95, 20 );
+		panelResumoVendas.adic( new JLabelPad( "Total de vendas" ), 201, 0, 95, 20 );
+		panelResumoVendas.adic( txtTotalVendas, 201, 20, 95, 20 );
+		panelResumoVendas.adic( new JLabelPad( "Valor em aberto" ), 299, 0, 95, 20 );
+		panelResumoVendas.adic( txtTotalAberto, 299, 20, 95, 20 );
+		panelResumoVendas.adic( new JLabelPad( "Valor em atraso" ), 397, 0, 95, 20 );
+		panelResumoVendas.adic( txtTotalAtraso, 397, 20, 95, 20 );
 
 		Color statusColor = new Color( 111, 106, 177 );
 		Font statusFont = new Font( "Tomoha", Font.PLAIN, 11 );
