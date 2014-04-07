@@ -304,8 +304,8 @@ public class FCancVenda extends FFilho implements ActionListener {
 		sql.append( "where codemp=? and codfilial=? and codvenda=? and tipovenda='V' and bloqvenda='S' ");
 		ps = con.prepareStatement( sql.toString() );
 		int param = 1;
-		ps.setInt( param++, Aplicativo.iCodEmp );
-		ps.setInt( param++, ListaCampos.getMasterFilial( "VDVENDA" ) );
+		ps.setInt( param++, codemp );
+		ps.setInt( param++, codfilial );
 		ps.setInt( param++, codvenda );
 		ps.executeUpdate();
 		ps.close();
@@ -315,8 +315,8 @@ public class FCancVenda extends FFilho implements ActionListener {
 		sql.append( "where codemp=? and codfilial=? and codvenda=? and tipovenda='V' and emmanut='S' ");
 		ps = con.prepareStatement( sql.toString() );
 		param = 1;
-		ps.setInt( param++, Aplicativo.iCodEmp );
-		ps.setInt( param++, ListaCampos.getMasterFilial( "VDVENDA" ) );
+		ps.setInt( param++, codemp );
+		ps.setInt( param++, codfilial );
 		ps.setInt( param++, codvenda );
 		ps.executeUpdate();
 		ps.close();
@@ -327,8 +327,8 @@ public class FCancVenda extends FFilho implements ActionListener {
 		sql.append( "and c.codemp=v.codempcl and c.codfilial=v.codfilialcl and c.codcli=v.codcli ");
 		ps = con.prepareStatement( sql.toString() );
 		param = 1;
-		ps.setInt( param++, Aplicativo.iCodEmp );
-		ps.setInt( param++, ListaCampos.getMasterFilial( "VDVENDA" ) );
+		ps.setInt( param++, codemp );
+		ps.setInt( param++, codfilial );
 		ps.setInt( param++, codvenda );
 		ResultSet rs = ps.executeQuery();
 		boolean ativocli = true;
@@ -346,8 +346,8 @@ public class FCancVenda extends FFilho implements ActionListener {
 			sql.append( "and c.codemp=v.codempcl and c.codfilial=v.codfilialcl and c.codcli=v.codcli )");
 			ps = con.prepareStatement( sql.toString() );
 			param = 1;
-			ps.setInt( param++, Aplicativo.iCodEmp );
-			ps.setInt( param++, ListaCampos.getMasterFilial( "VDVENDA" ) );
+			ps.setInt( param++, codemp );
+			ps.setInt( param++, codfilial );
 			ps.setInt( param++, codvenda );
 			ps.executeUpdate();
 			ps.close();
@@ -360,8 +360,8 @@ public class FCancVenda extends FFilho implements ActionListener {
 		param = 1;
 		ps.setString( param++, motivocancvenda );
 		ps.setString( param++, "C"+status.substring( 0, 1 ) );
-		ps.setInt( param++, Aplicativo.iCodEmp );
-		ps.setInt( param++, ListaCampos.getMasterFilial( "VDVENDA" ) );
+		ps.setInt( param++, codemp );
+		ps.setInt( param++, codfilial );
 		ps.setInt( param++, codvenda );
 		ps.executeUpdate();
 		ps.close();
@@ -375,8 +375,8 @@ public class FCancVenda extends FFilho implements ActionListener {
 			sql.append( "and c.codemp=v.codempcl and c.codfilial=v.codfilialcl and c.codcli=v.codcli )");
 			ps = con.prepareStatement( sql.toString() );
 			param = 1;
-			ps.setInt( param++, Aplicativo.iCodEmp );
-			ps.setInt( param++, ListaCampos.getMasterFilial( "VDVENDA" ) );
+			ps.setInt( param++, codemp );
+			ps.setInt( param++, codfilial );
 			ps.setInt( param++, codvenda );
 			ps.executeUpdate();
 			ps.close();
