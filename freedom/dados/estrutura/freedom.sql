@@ -36191,7 +36191,8 @@ begin
                 and op.codemp=new.codemp and op.codfilial=new.codfilial and op.codop=new.codop
                 and op.seqop=new.seqop
                 into new.codemptm,new.codfilialtm,new.codtipomov;
-                new.sitop='FN';
+                if (new.sitop<>'CA') then 
+                	new.sitop='FN';
             end
     
         end
@@ -36205,7 +36206,8 @@ begin
                 and op.codemp=new.codemp and op.codfilial=new.codfilial and op.codop=new.codop
                 and op.seqop=new.seqop
                 into new.codemptm,new.codfilialtm,new.codtipomov;
-                new.sitop='FN';
+                if (new.sitop<>'CA') then 
+	                new.sitop='FN';
             end
          end
     
