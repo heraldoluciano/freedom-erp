@@ -36,6 +36,7 @@ import org.freedom.bmps.Icone;
 import org.freedom.infra.dao.AbstractDAO;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
+import org.freedom.library.type.StringDireita;
 
 public class DAOConsultaCli extends AbstractDAO {
 	private ImageIcon imgVencida = Icone.novo( "clVencido.gif" );
@@ -57,7 +58,7 @@ public class DAOConsultaCli extends AbstractDAO {
 	private ImageIcon imgVencimento = null;
 
 	public static enum VENDAS {
-		STATUSVENDA, STATUSPGTO, CODVENDA, NOTA, DATA, PAGAMENTO, VENDEDOR, VALOR_PRODUTOS, VALOR_DESCONTO, VALOR_ADICIONAL, FRETE, VALOR_LIQUIDO, TIPOVENDA;
+		STATUSVENDA, STATUSPGTO, ATRASO, CODVENDA, NOTA, DATA, PAGAMENTO, VENDEDOR, VALOR_PRODUTOS, VALOR_DESCONTO, VALOR_ADICIONAL, FRETE, VALOR_LIQUIDO, TIPOVENDA;
 	}
 	public static enum CESTAS {
 		SELECAO, CODCLI, RAZCLI, DATACESTA, QTDCESTA, VLRDESCCESTA, VLRLIQCESTA;
@@ -76,10 +77,10 @@ public class DAOConsultaCli extends AbstractDAO {
 		DTEMITVENDA, VLRLIQVENDA
 	}
 	public static enum RESULT_RECEBER{ 
-		TOTAL_ABERTO, TOTAL_ATRASO
+		TOTAL_ABERTO, TOTAL_ATRASO, ATRASO_MEDIO
 	}
 	public static enum RESULT_RECEBER2{
-		EMABERTO, PAGO
+		EMABERTO, PAGO, ATRASO
 	}
 	public DAOConsultaCli( DbConnection connection ) {
 		super( connection );
@@ -143,6 +144,8 @@ public class DAOConsultaCli extends AbstractDAO {
 			StringBuilder sql = new StringBuilder();
 			sql.append( "select sum(ir.vlrapagitrec) total_aberto ");
 			sql.append( ", sum(case when ir.dtvencitrec<cast('now' as date) then ir.vlrapagitrec else 0 end) total_atraso ");
+			sql.append( ", avg(case when ir.dtvencitrec<coalesce(ir.dtliqitrec,cast('now' as date)) ");
+			sql.append( "then coalesce(ir.dtliqitrec,cast('now' as date)) - ir.dtvencitrec else 0 end) atraso_medio ");
 			//sql.append( ", min(datarec), max(datarec) " );
 			sql.append( "from fnreceber rc, fnitreceber ir " );
 			sql.append( "where rc.codemp=ir.codemp and rc.codfilial=ir.codfilial and rc.codrec=ir.codrec and " );
@@ -161,7 +164,9 @@ public class DAOConsultaCli extends AbstractDAO {
 			if ( rs.next() ) {
 				//result[RESULT_RECEBER.TOTAL_VENDAS.ordinal()] = rs.getBigDecimal( RESULT_RECEBER.TOTAL_VENDAS.name() ); 
 				result[RESULT_RECEBER.TOTAL_ABERTO.ordinal()] = rs.getBigDecimal( RESULT_RECEBER.TOTAL_ABERTO.name() ); 
-				result[RESULT_RECEBER.TOTAL_ATRASO.ordinal()] = rs.getBigDecimal( RESULT_RECEBER.TOTAL_ATRASO.name() ); 
+				result[RESULT_RECEBER.TOTAL_ATRASO.ordinal()] = rs.getBigDecimal( RESULT_RECEBER.TOTAL_ATRASO.name() );
+				result[RESULT_RECEBER.ATRASO_MEDIO.ordinal()] = rs.getBigDecimal( RESULT_RECEBER.ATRASO_MEDIO.name() );
+			
 			}
 			rs.close();
 			ps.close();
@@ -274,15 +279,22 @@ public class DAOConsultaCli extends AbstractDAO {
 				String statusvenda = rs.getString( "STATUSVENDA" );
 				java.sql.Date emaberto = null;
 				Integer pago = null;
+				Integer atraso = null;
+				StringDireita stratraso = new StringDireita("");
 				Object[] result_receber2 = loadReceber2( codempvd, codfilialvd, tipovenda, codvenda );
 				if (result_receber2!=null) {
 					pago = (Integer) result_receber2[RESULT_RECEBER2.PAGO.ordinal()];
 					emaberto = (java.sql.Date) result_receber2[RESULT_RECEBER2.EMABERTO.ordinal()];
+					atraso = (Integer) result_receber2[RESULT_RECEBER2.ATRASO.ordinal()];
+					if ( (atraso!=null) && ( atraso.intValue()!=0) ) {
+						stratraso = new StringDireita(atraso.toString());
+					}
 				}
 				imgColuna = getImgStatus(statusvenda);
-				imgVencimento = getImgVencimento(statusvenda, emaberto, pago);
+				imgVencimento = getImgVencimento(statusvenda, emaberto, pago, atraso);
 				row.addElement( imgColuna);
 				row.addElement( imgVencimento );
+				row.addElement( stratraso );
 				row.addElement( codvenda );
 				row.addElement( rs.getString( "DOCVENDA" ) );
 				row.addElement( Funcoes.dateToStrDate( rs.getDate( "DTEMITVENDA" ) ) );
@@ -316,10 +328,16 @@ public class DAOConsultaCli extends AbstractDAO {
 		sql.append(" order by ir.dtvencitrec) ");
 		sql.append(" emaberto ");
 		sql.append(", (select first 1 ir.dtvencitrec - ir.dtliqitrec ");
-		sql.append("       from fnitreceber ir ");
-		sql.append("      where ir.codemp=rc.codemp and ir.codfilial=rc.codfilial and ir.codrec=rc.codrec and ir.statusitrec = 'RP' ");
-		sql.append("      order by ir.dtvencitrec) ");
+		sql.append(" from fnitreceber ir ");
+		sql.append(" where ir.codemp=rc.codemp and ir.codfilial=rc.codfilial and ir.codrec=rc.codrec and ir.statusitrec = 'RP' ");
+		sql.append(" order by ir.dtvencitrec) ");
 		sql.append(" pago ");
+		sql.append(", (select max( case when ir.dtvencitrec<coalesce(ir.dtliqitrec, cast('now' as date)) ");
+		sql.append(" then coalesce(ir.dtliqitrec, cast('now' as date)) - ir.dtvencitrec else 0 end ) ");
+		sql.append(" from fnitreceber ir ");
+		sql.append(" where ir.codemp=rc.codemp and ir.codfilial=rc.codfilial and ir.codrec=rc.codrec ");
+		sql.append(" ) ");
+		sql.append(" atraso ");
 		sql.append("from fnreceber rc ");
 		sql.append("where rc.codempva=? and rc.codfilialva=? and rc.tipovenda=? and rc.codvenda=?");
 		PreparedStatement ps = getConn().prepareStatement( sql.toString() );
@@ -333,6 +351,8 @@ public class DAOConsultaCli extends AbstractDAO {
 			result = new Object[RESULT_RECEBER2.values().length];
 			result[RESULT_RECEBER2.EMABERTO.ordinal()] = rs.getDate( RESULT_RECEBER2.EMABERTO.name() );
 			result[RESULT_RECEBER2.PAGO.ordinal()] = new Integer(rs.getInt( RESULT_RECEBER2.PAGO.name() ));
+			result[RESULT_RECEBER2.ATRASO.ordinal()] = new Integer(rs.getInt( RESULT_RECEBER2.ATRASO.name() ));
+			
 		}
 		return result;
 	}
@@ -377,13 +397,15 @@ public class DAOConsultaCli extends AbstractDAO {
 				String statusvenda = rs.getString( "STATUSVENDA" );
 				java.sql.Date emaberto = null;
 				Integer pago = null;
+				Integer atraso = null;
 				Object[] result_receber2 = loadReceber2( codempvd, codfilialvd, tipovenda, codvenda );
 				if (result_receber2!=null) {
 					pago = (Integer) result_receber2[RESULT_RECEBER2.PAGO.ordinal()];
 					emaberto = (java.sql.Date) result_receber2[RESULT_RECEBER2.EMABERTO.ordinal()];
+					atraso = (Integer) result_receber2[RESULT_RECEBER2.ATRASO.ordinal()];
 				}
 				imgColuna = getImgStatus(statusvenda);
-				imgVencimento = getImgVencimento(statusvenda, emaberto, pago);
+				imgVencimento = getImgVencimento(statusvenda, emaberto, pago, atraso);
 				row.addElement( imgColuna);
 				row.addElement( imgVencimento );
 				row.addElement( codvenda );
@@ -464,25 +486,36 @@ public class DAOConsultaCli extends AbstractDAO {
 		return result;
 	}
 
-	private ImageIcon getImgVencimento(String statusvenda, java.sql.Date emaberto, Integer pago) {
+	private ImageIcon getImgVencimento(String statusvenda, java.sql.Date emaberto, Integer pago, Integer atraso) {
 		ImageIcon result = null;
 		if ( "C".equals( statusvenda.substring( 0, 1 ) ) ) {
-			result = imgVencida;
+			result = imgPgEmDia;
 		}
 		else{
-			if (emaberto!=null ) {
-				result = imgAVencer;
+			if (emaberto!=null && (pago==null || pago.intValue()==0)) {
+				if (atraso!=null && atraso.intValue()>0) {
+					result = imgPgEmAtraso;
+				} else {
+					result = imgAVencer;
+				}
 				Date vencimento = emaberto;
 				Calendar hoje = Calendar.getInstance();
 				if (hoje.after( vencimento )){
 					result = imgVencida;
 				}
 			}
-			else if ( pago!=null ) {
-				result = imgPgEmDia;
-				int diferenca = pago;
-				if (diferenca < 0){
+			else if ( pago!=null && emaberto!=null && pago.intValue()>0  ) {
+				if (atraso!=null && atraso.intValue()>0) {
 					result = imgPgEmAtraso;
+				} else {
+					result = imgPgEmDia;
+				}
+			}
+			else if ( pago!=null && emaberto==null ) {
+				if (atraso!=null && atraso.intValue()>0) {
+					result = imgPgEmAtraso;
+				} else {
+					result = imgPgEmDia;
 				}
 			}
 			else if ( emaberto==null && pago==null ) {

@@ -174,7 +174,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 	
 	private JTextFieldFK txtMaiorVenda = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, Aplicativo.casasDecFin );
 
-	private JTextFieldFK txtAtrasoMedio = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 12, Aplicativo.casasDecFin );
+	private JTextFieldFK txtAtrasoMedio = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
 	private JTextFieldPad txtCodProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
 
@@ -394,16 +394,22 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		panelTabItensCesta.setBorder( BorderFactory.createTitledBorder( "Itens da cesta selecionada" ) );
 		panelTabItensCesta.setPreferredSize( new Dimension( 700, 120 ) );
 		// Final de configurações tabCestas
-		panelResumoVendas.adic( new JLabelPad( "Última Venda" ), 10, 0, 90, 20 );
-		panelResumoVendas.adic( txtUltimaVenda, 10, 20, 90, 20 );
-		panelResumoVendas.adic( new JLabelPad( "Vlr. últ. venda" ), 103, 0, 95, 20 );
-		panelResumoVendas.adic( txtVlrUltimaVenda, 103, 20, 95, 20 );
-		panelResumoVendas.adic( new JLabelPad( "Total de vendas" ), 201, 0, 95, 20 );
-		panelResumoVendas.adic( txtTotalVendas, 201, 20, 95, 20 );
-		panelResumoVendas.adic( new JLabelPad( "Valor em aberto" ), 299, 0, 95, 20 );
-		panelResumoVendas.adic( txtTotalAberto, 299, 20, 95, 20 );
-		panelResumoVendas.adic( new JLabelPad( "Valor em atraso" ), 397, 0, 95, 20 );
-		panelResumoVendas.adic( txtTotalAtraso, 397, 20, 95, 20 );
+		panelResumoVendas.adic( new JLabelPad( "Última venda" ), 10, 0, 90, 18 );
+		panelResumoVendas.adic( txtUltimaVenda, 10, 18, 90, 20 );
+		panelResumoVendas.adic( new JLabelPad( "Vlr. últ. venda" ), 103, 0, 95, 18 );
+		panelResumoVendas.adic( txtVlrUltimaVenda, 103, 18, 95, 20 );
+		panelResumoVendas.adic( new JLabelPad( "Total de vendas" ), 201, 0, 95, 18 );
+		panelResumoVendas.adic( txtTotalVendas, 201, 18, 95, 20 );
+		panelResumoVendas.adic( new JLabelPad( "Valor em aberto" ), 299, 0, 95, 18 );
+		panelResumoVendas.adic( txtTotalAberto, 299, 18, 95, 20 );
+		panelResumoVendas.adic( new JLabelPad( "Valor em atraso" ), 397, 0, 95, 18 );
+		panelResumoVendas.adic( txtTotalAtraso, 397, 18, 95, 20 );
+		panelResumoVendas.adic( new JLabelPad( "Média vendas/mês" ), 10, 38, 110, 18 );
+		panelResumoVendas.adic( txtMediaVendas, 10, 54, 110, 20 );
+		panelResumoVendas.adic( new JLabelPad( "Maior venda" ), 123, 38, 95, 18 );
+		panelResumoVendas.adic( txtMaiorVenda, 123, 54, 95, 20 );
+		panelResumoVendas.adic( new JLabelPad( "Atraso médio" ), 221, 38, 85, 18 );
+		panelResumoVendas.adic( txtAtrasoMedio, 221, 54, 85, 20 );
 
 		Color statusColor = new Color( 111, 106, 177 );
 		Font statusFont = new Font( "Tomoha", Font.PLAIN, 11 );
@@ -452,6 +458,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		// Grid de vendas
 		tabVendas.adicColuna( "S.V." );
 		tabVendas.adicColuna( "S.R." );
+		tabVendas.adicColuna( "Atraso" );
 		tabVendas.adicColuna( "Código" );
 		tabVendas.adicColuna( "Doc." );
 		tabVendas.adicColuna( "Data" );
@@ -465,6 +472,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		tabVendas.adicColuna( "Tipo venda" );
 		tabVendas.setTamColuna( 30, VENDAS.STATUSVENDA.ordinal() );
 		tabVendas.setTamColuna( 30, VENDAS.STATUSPGTO.ordinal() );
+		tabVendas.setTamColuna( 40, VENDAS.ATRASO.ordinal() );
 		tabVendas.setTamColuna( 60, VENDAS.CODVENDA.ordinal() );
 		tabVendas.setTamColuna( 60, VENDAS.NOTA.ordinal() );
 		tabVendas.setTamColuna( 70, VENDAS.DATA.ordinal() );
@@ -574,6 +582,9 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		txtTotalVendas.setVlrString( "" );
 		txtTotalAberto.setVlrString( "" );
 		txtTotalAtraso.setVlrString( "" );
+		txtMediaVendas.setVlrString( "" );
+		txtMaiorVenda.setVlrString( "" );
+		txtAtrasoMedio.setVlrString( "" );
 	}
 
 	private void loadVendas() {
@@ -598,6 +609,8 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 			Date dtini = txtDataini.getVlrDate();
 			Date dtfim = txtDatafim.getVlrDate();
 			BigDecimal totalVendas = new BigDecimal(0);
+			BigDecimal mediaVendas = new BigDecimal(0);
+			BigDecimal maiorVenda = new BigDecimal(0);
 			Vector<Vector<Object>> vendas = daoconsultacli.loadVendas(codempvd, codfilialvd
 					, codempcl, codfilialcl, codcli, codemppd, codfilialpd, codprod, dtini, dtfim);
 			for (Vector<Object> row: vendas) {
@@ -606,6 +619,9 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 				BigDecimal vlrItem = strVlrItem.getBigDecimal();
 				if (vlrItem!=null) {
 					totalVendas = totalVendas.add( vlrItem );
+					if (vlrItem.compareTo( maiorVenda )>0) {
+						maiorVenda = vlrItem;
+					}
 				}
 			}
 			Object[] ultimaVenda = daoconsultacli.loadUltimaVenda(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDVENDA" )
@@ -620,14 +636,28 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 			//BigDecimal totalVendas = (BigDecimal) receber[RESULT_RECEBER.TOTAL_VENDAS.ordinal()];
 			BigDecimal totalAberto = (BigDecimal) receber[RESULT_RECEBER.TOTAL_ABERTO.ordinal()];
 			BigDecimal totalAtraso = (BigDecimal) receber[RESULT_RECEBER.TOTAL_ATRASO.ordinal()];
+			BigDecimal atrasoMedio = (BigDecimal) receber[RESULT_RECEBER.ATRASO_MEDIO.ordinal()];
 			if (totalVendas != null && !totalVendas.equals( BigDecimal.ZERO )){
 				txtTotalVendas.setVlrBigDecimal( totalVendas );
+				long dias = Funcoes.getNumDiasAbs( txtDataini.getVlrDate(), txtDatafim.getVlrDate() );
+				double meses = dias / 30;
+				BigDecimal numMeses = new BigDecimal(meses); 
+				mediaVendas = totalVendas.divide( numMeses, BigDecimal.ROUND_HALF_EVEN );
+				if (mediaVendas!=null && !mediaVendas.equals( BigDecimal.ZERO)) {
+					txtMediaVendas.setVlrBigDecimal( mediaVendas );
+				}
 			}
 			if (totalAberto != null && !totalAberto.equals( BigDecimal.ZERO )){
 				txtTotalAberto.setVlrBigDecimal( totalAberto );
 			}
 			if (totalAtraso != null  && !totalAtraso.equals( BigDecimal.ZERO )){
 				txtTotalAtraso.setVlrBigDecimal( totalAtraso);
+			}
+			if (atrasoMedio != null && !atrasoMedio.equals( BigDecimal.ZERO )) {
+				txtAtrasoMedio.setVlrInteger( atrasoMedio.intValue() );
+			}
+			if (maiorVenda != null  && !maiorVenda.equals( BigDecimal.ZERO )){
+				txtMaiorVenda.setVlrBigDecimal( maiorVenda );
 			}
 			if (tabVendas.getDataVector().size()>0) {
 				tabVendas.setLinhaSel( 0 );
