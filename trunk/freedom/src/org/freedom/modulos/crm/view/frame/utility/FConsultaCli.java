@@ -616,7 +616,11 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 			for (Vector<Object> row: vendas) {
 				tabVendas.adicLinha( row );
 				StringDireita strVlrItem = (StringDireita) row.elementAt(VENDAS.VALOR_LIQUIDO.ordinal());
+				ImageIcon imgStatusVenda = (ImageIcon ) row.elementAt(VENDAS.STATUSVENDA.ordinal());
 				BigDecimal vlrItem = strVlrItem.getBigDecimal();
+				if ( imgStatusVenda!=null && imgStatusVenda==imgCancelado ) {
+					vlrItem = BigDecimal.ZERO;
+				}
 				if (vlrItem!=null) {
 					totalVendas = totalVendas.add( vlrItem );
 					if (vlrItem.compareTo( maiorVenda )>0) {
