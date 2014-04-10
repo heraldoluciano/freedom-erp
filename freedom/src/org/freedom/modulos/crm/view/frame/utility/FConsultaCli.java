@@ -642,7 +642,11 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 				long dias = Funcoes.getNumDiasAbs( txtDataini.getVlrDate(), txtDatafim.getVlrDate() );
 				double meses = dias / 30;
 				BigDecimal numMeses = new BigDecimal(meses); 
-				mediaVendas = totalVendas.divide( numMeses, BigDecimal.ROUND_HALF_EVEN );
+				if (numMeses.doubleValue()==0) {
+					mediaVendas = BigDecimal.ZERO;
+				} else {
+					mediaVendas = totalVendas.divide( numMeses, BigDecimal.ROUND_HALF_EVEN );
+				}
 				if (mediaVendas!=null && !mediaVendas.equals( BigDecimal.ZERO)) {
 					txtMediaVendas.setVlrBigDecimal( mediaVendas );
 				}
