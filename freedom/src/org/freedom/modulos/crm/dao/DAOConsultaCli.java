@@ -238,7 +238,7 @@ public class DAOConsultaCli extends AbstractDAO {
 			sql.append(", p.descplanopag, v.codvend, vd.nomevend, coalesce(v.vlrprodvenda,0) vlrprodvenda, coalesce(v.vlrdescvenda,0) vlrdescvenda" );
 			sql.append(", coalesce(v.vlradicvenda,0) vlradicvenda , coalesce(v.vlrfretevenda,0) vlrfretevenda, coalesce(v.vlrliqvenda,0) vlrliqvenda, v.tipovenda" );
 			sql.append(" , coalesce((select vf.tipofretevd from vdfretevd vf where vf.codemp = v.codemp and vf.codfilial = v.codfilial and vf.tipovenda = v.tipovenda and vf.codvenda = v.codvenda), 'N')  as tipofrete ");
-			sql.append( "from vdvenda v, fnplanopag p, vdvendedor vd " );
+			sql.append( "from vdvenda v, fnplanopag p, vdvendedor vd, eqtipomov tm " );
 			sql.append( "where v.codemp=? and v.codfilial=? and v.tipovenda='V' and v.dtemitvenda between ? and ?" );
 			//sql.append( "and substring( v.statusvenda from 1 for 1) not in ('D','C') ");
 			sql.append( "and p.codemp=v.codemppg and p.codfilial=v.codfilialpg and p.codplanopag=v.codplanopag " );
@@ -252,7 +252,9 @@ public class DAOConsultaCli extends AbstractDAO {
 				sql.append( " iv.codemp=v.codemp and iv.codfilial=v.codfilial and iv.codvenda=v.codvenda and iv.tipovenda=v.tipovenda " );
 				sql.append( " and iv.codemppd=? and iv.codfilialpd=? and iv.codprod=? ) " );
 			}
-			sql.append( "order by v.dtemitvenda desc, v.docvenda desc" );
+			sql.append( " and tm.codemp=v.codemptm and tm.codfilial=v.codfilialtm and tm.codtipomov=v.codtipomov " );
+			sql.append( " and tm.somavdtipomov='S' " );
+			sql.append( " order by v.dtemitvenda desc, v.docvenda desc" );
 			PreparedStatement ps = getConn().prepareStatement( sql.toString() );
 			int iparam = 1;
 			ps.setInt( iparam++, codempvd );
