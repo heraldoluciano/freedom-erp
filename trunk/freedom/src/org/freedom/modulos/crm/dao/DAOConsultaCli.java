@@ -26,7 +26,6 @@ package org.freedom.modulos.crm.dao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Vector;
 
@@ -494,15 +493,15 @@ public class DAOConsultaCli extends AbstractDAO {
 		else{
 			if (emaberto!=null && (pago==null || pago.intValue()==0)) {
 				if (atraso!=null && atraso.intValue()>0) {
-					result = imgPgEmAtraso;
+					result = imgVencida;
 				} else {
 					result = imgAVencer;
 				}
-				Date vencimento = emaberto;
+/*				Date vencimento = emaberto;
 				Calendar hoje = Calendar.getInstance();
 				if (hoje.after( vencimento )){
 					result = imgVencida;
-				}
+				}*/
 			}
 			else if ( pago!=null && emaberto!=null && pago.intValue()>0  ) {
 				if (atraso!=null && atraso.intValue()>0) {
