@@ -59,6 +59,12 @@ public class DLConfirmItem extends FFDialogo implements FocusListener {
 	
 	private Integer codfilial;
 	
+	private static enum FIELDS_CONFIRM {CODPROD, DESCPROD, QTD, PRECO, PERCDESC, VLRDESC, VLRLIQ}
+
+	private BigDecimal percdesc_old = null;
+	
+	private BigDecimal vlrdesc_old = null;
+	
 	public DLConfirmItem(Component cOrig) {
 
 		super(cOrig);
@@ -102,6 +108,9 @@ public class DLConfirmItem extends FFDialogo implements FocusListener {
             result = new Item(getCodemp(), getCodfilial(), txtCodprod.getVlrInteger(), txtDescprod.getVlrString());
             result.setQtd( txtQtd.getVlrBigDecimal() );
             result.setPreco( txtPreco.getVlrBigDecimal() );
+            result.setPercdesc( txtPercDesc.getVlrBigDecimal() );
+            result.setVlrdesc( txtVlrDesc.getVlrBigDecimal() );
+            result.setVlrliq( txtVlrLiq.getVlrBigDecimal() );
 		} else if (evt.getSource()==btCancel) {
 			result = null;
 		}
@@ -145,20 +154,49 @@ public class DLConfirmItem extends FFDialogo implements FocusListener {
 	}
 
 	public void focusGained( FocusEvent e ) {
-
+		if (e.getSource()==txtPercDesc) {
+			percdesc_old = txtPercDesc.getVlrBigDecimal();
+		} else if (e.getSource()==txtVlrDesc) {
+			vlrdesc_old = txtVlrDesc.getVlrBigDecimal();
+		}
 	}
 
 	public void focusLost( FocusEvent e ) {
-		calcVlrLiq();
+		FIELDS_CONFIRM param = null;
+		if (e.getSource()==txtQtd) {
+			param = FIELDS_CONFIRM.QTD;
+		} else if (e.getSource()==txtPreco) {
+			param = FIELDS_CONFIRM.PRECO;
+		} else if (e.getSource()==txtPercDesc) {
+			param = FIELDS_CONFIRM.PERCDESC;
+		} else if (e.getSource()==txtVlrDesc) {
+			param = FIELDS_CONFIRM.VLRDESC;
+		} else if (e.getSource()==txtVlrLiq) {
+			param = FIELDS_CONFIRM.VLRLIQ;
+		}
+		calcVlrLiq(param);
 		
 	}
 
-	private void calcVlrLiq() {
+	private void calcVlrLiq(FIELDS_CONFIRM field) {
 		BigDecimal qtd = txtQtd.getVlrBigDecimal();
 		BigDecimal preco = txtPreco.getVlrBigDecimal();
 		BigDecimal percdesc = txtPercDesc.getVlrBigDecimal();
 		BigDecimal vlrdesc = txtVlrDesc.getVlrBigDecimal();
 		BigDecimal vlrliq = txtVlrLiq.getVlrBigDecimal();
+		if (field==FIELDS_CONFIRM.PERCDESC && !percdesc.equals( percdesc_old ))  {
+			vlrdesc = qtd.multiply( preco ).multiply( percdesc ).divide( new BigDecimal(100f) );
+			txtVlrDesc.setVlrBigDecimal( vlrdesc );
+		}
+		if (field==FIELDS_CONFIRM.VLRDESC && !vlrdesc.equals( vlrdesc_old ))  {
+			percdesc = BigDecimal.ZERO;
+			txtPercDesc.setVlrBigDecimal( percdesc );
+		}
+		
+		if (field!=FIELDS_CONFIRM.VLRLIQ ) {
+			vlrliq = qtd.multiply( preco ).subtract( vlrdesc );
+			txtVlrLiq.setVlrBigDecimal( vlrliq );
+		} 
 		
 	}
 }

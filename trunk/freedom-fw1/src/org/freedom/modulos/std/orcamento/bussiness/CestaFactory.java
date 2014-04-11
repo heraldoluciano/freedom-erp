@@ -43,4 +43,8 @@ public class CestaFactory {
 		}
 		return result;
 	}
+	
+	public void resetCestas() {
+		setCestas(null);
+	}
 }
