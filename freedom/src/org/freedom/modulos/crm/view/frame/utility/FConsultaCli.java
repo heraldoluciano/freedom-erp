@@ -42,13 +42,15 @@ import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
+import org.freedom.acao.TabelaEditEvent;
+import org.freedom.acao.TabelaEditListener;
 import org.freedom.acao.TabelaSelEvent;
 import org.freedom.acao.TabelaSelListener;
 import org.freedom.bmps.Icone;
@@ -80,7 +82,7 @@ import org.freedom.modulos.std.orcamento.bean.Item;
 import org.freedom.modulos.std.orcamento.bussiness.CestaFactory;
 import org.freedom.modulos.std.view.frame.crud.detail.FVenda;
 public class FConsultaCli extends FFilho implements ActionListener, TabelaSelListener, MouseListener
-			, KeyListener, CarregaListener, FocusListener, ChangeListener {
+			, KeyListener, CarregaListener, FocusListener, ChangeListener , TabelaEditListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -197,13 +199,15 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 	
 	private JPanelPad pinToolBarVendas = new JPanelPad(40, 120);
 
-	private JButtonPad btResetCesta = new JButtonPad( Icone.novo( "btReset.png" ) );
+	private JButtonPad btResetCesta = new JButtonPad( Icone.novo( "btExcluir.png" ) );
 
 	private JButtonPad btAddCesta = new JButtonPad( Icone.novo( "btAdic2.gif" ) );
 
 	private JButtonPad btExec = new JButtonPad( Icone.novo( "btExecuta.png" ) );
 
-	private JButtonPad btTudoOrc = new JButtonPad( Icone.novo( "btTudo.png" ) );
+	private JButtonPad btTudo = new JButtonPad( Icone.novo( "btTudo.png" ) );
+
+	private JButtonPad btNada = new JButtonPad( Icone.novo( "btNada.png" ) );
 
 	private JButtonPad btEditQtd = new JButtonPad( Icone.novo( "btEditar.gif" ) );
 
@@ -271,11 +275,15 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		tabVendas.addTabelaSelListener( this );
 		tabVendas.addMouseListener( this );
 		tabCestas.addTabelaSelListener( this );
+		tabCestas.addTabelaEditListener( this );
+		tabCestas.addMouseListener( this );
 		tabProdVendas.addTabelaSelListener( this );
 		tabProdVendas.addMouseListener( this );
 		tabItensVenda.addMouseListener( this );
 		btBuscar.addKeyListener( this );
 		btResetCesta.addActionListener( this );
+		btTudo.addActionListener( this );
+		btNada.addActionListener( this );
 		btAddCesta.addActionListener( this );
 		txtCodCli.addFocusListener( this );
 		tabbedDetail.addChangeListener( this );
@@ -314,10 +322,14 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 	private void montaTela() {
 
 		// **** Preparando barra de ferramentas
-		btResetCesta.setToolTipText( "Esvazia todas as cestas" );
+		btResetCesta.setToolTipText( "Apaga todas as cestas da memória" );
+		btTudo.setToolTipText( "Seleciona todas as cestas" );
+		btNada.setToolTipText( "Desseleciona todas as cestas" );
 		pinToolBar.add( pinToolBarCesta, BorderLayout.NORTH );
 		pinToolBar.add( pinToolBarVendas, BorderLayout.CENTER );
 		pinToolBarCesta.adic( btResetCesta, 3, 3, 30, 30 );
+		pinToolBarCesta.adic( btTudo, 3, 33, 30, 30 );
+		pinToolBarCesta.adic( btNada, 3, 63, 30, 30 );
 		pinToolBarVendas.adic( btAddCesta, 3, 3, 30, 30 );
 		// ToolBarCesta inicializa invisível
 		pinToolBarCesta.setVisible( false );
@@ -550,6 +562,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		tabCestas.setTamColuna( 100, CESTAS.QTDCESTA.ordinal() );
 		tabCestas.setTamColuna( 100, CESTAS.VLRDESCCESTA.ordinal() );
 		tabCestas.setTamColuna( 100, CESTAS.VLRLIQCESTA.ordinal() );
+		tabCestas.setColunaEditavel( CESTAS.SELECAO.ordinal(), true );
 		panelTabCestas.add( new JScrollPane( tabCestas ) );
 		// Gride de itens da cesta
 		tabItensCesta.adicColuna( "Sel." );
@@ -567,6 +580,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		tabItensCesta.setTamColuna( 90, ITENSCESTA.VLRDESCITCESTA.ordinal() );
 		tabItensCesta.setTamColuna( 90, ITENSCESTA.VLRLIQITCESTA.ordinal() );
 		panelTabItensCesta.add( new JScrollPane( tabItensCesta ) );		
+		tabItensCesta.setColunaEditavel( ITENSCESTA.SELECAO.ordinal(), true );
 		// ***** Rodapé
 		panelGeral.add( panelSouth, BorderLayout.SOUTH );
 		panelSouth.setBorder( BorderFactory.createEtchedBorder() );
@@ -707,9 +721,32 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 			loadVendas();
 		} else if ( e.getSource() == btAddCesta ) {
 			addCesta();
+		} else if ( e.getSource() == btResetCesta ) {
+			resetCesta();
+		} else if ( e.getSource() == btTudo ) {
+			selAllCestas(true);
+		} else if ( e.getSource() == btNada ) {
+			selAllCestas(false);
 		}
 	}
 
+	private void selAllCestas(boolean sel) {
+		for (Cesta cesta: cestaFactory.getCestas() ) {
+			cesta.setSel( sel );
+			for (Item item: cesta.getItens()) {
+				item.setSel( sel );
+			}
+		}
+		loadTabCestas();
+	}
+	
+	private void resetCesta() {
+		if (Funcoes.mensagemConfirma( this, "Confirma exclusão de todas as cestas da memória ?" )==JOptionPane.YES_OPTION) {
+			cestaFactory.resetCestas();
+			loadTabCestas();
+		}
+	}
+	
 	private void addCesta() {
 		int selectedRow = -1;
 		boolean prodShowing = panelProdVendas.isShowing();
@@ -770,7 +807,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 			if (item!=null) {
 				Cesta cesta = cestaFactory.createNewCesta(codempcl, codfilialcl, codcli, razcli);
 				if (cesta!=null) {
-					cesta.addItem( codemppd, codfilialpd, codprod, descprod, qtditvenda, precoitvenda, percdescitvenda, vlrdescitvenda, vlrliqitvenda );
+					cesta.addItem( item );
 				}
 			}
 		}
@@ -791,8 +828,8 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 	private void loadTabCestas() {
 		if (cestaFactory!=null) {
 			List<Cesta> cestas = cestaFactory.getCestas();
+			tabCestas.limpa();
 			if (cestas.size()>0) {
-				tabCestas.limpa();
 				int row = 0;
 				for (Cesta cesta: cestas) {
 					tabCestas.adicLinha();
@@ -874,8 +911,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 				}
 				venda.exec( (Integer) tabVendas.getValor( tabVendas.getLinhaSel(), VENDAS.CODVENDA.ordinal() )
 						, (String) tabVendas.getValor( tabVendas.getLinhaSel(), VENDAS.TIPOVENDA.ordinal() ) );
-			}
-			else if ( e.getSource() == tabItensVenda && tabItensVenda.getLinhaSel() > -1 ) {
+			} else if ( e.getSource() == tabItensVenda && tabItensVenda.getLinhaSel() > -1 ) {
 				FVenda venda = null;
 				if ( Aplicativo.telaPrincipal.temTela( FVenda.class.getName() ) ) {
 					venda = (FVenda) Aplicativo.telaPrincipal.getTela( FVenda.class.getName() );
@@ -888,7 +924,14 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 						, (Integer) tabItensVenda.getValor( tabItensVenda.getLinhaSel(), ITENSVENDA.CODITVENDA.ordinal() )
 						, (String) tabItensVenda.getValor( tabItensVenda.getLinhaSel(), ITENSVENDA.TIPOVENDA
 						.ordinal() ) );
-			}
+			} /* else if ( e.getSource() == tabCestas ) {
+				int selectedRow = tabCestas.getLinhaSel();
+				if (selectedRow>-1) {
+					Boolean sel = (Boolean) tabCestas.getValor( selectedRow, CESTAS.SELECAO.ordinal() );
+					sel = new Boolean(!sel.booleanValue());
+					
+				}
+			}*/
 		}
 	}
 
@@ -989,5 +1032,24 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		}
 		
 	}
-	
+
+	public void valorAlterado( TabelaEditEvent evt ) {
+
+		if (evt.getTabela()==tabCestas && !loadingCestas && !loadingItensCesta) {
+			int editedRow = tabCestas.getLinhaEditada();
+			int editedCol = tabCestas.getColunaEditada();
+			if (editedRow>-1 && editedCol==CESTAS.SELECAO.ordinal()) {
+				boolean sel = (Boolean) tabCestas.getValor( editedRow, CESTAS.SELECAO.ordinal() );
+				Cesta cesta = cestaFactory.getCestas().get( editedRow );
+				cesta.setSel( sel );
+				for (Item item: cesta.getItens()) {
+					item.setSel( sel );
+				}
+/*				for (int i=0; i<tabItensCesta.getNumLinhas(); i++) {
+					tabItensCesta.setValor( sel, i, ITENSCESTA.SELECAO.ordinal() );
+				} */
+				loadTabItensCesta();
+			}
+		}
+	}
 }
