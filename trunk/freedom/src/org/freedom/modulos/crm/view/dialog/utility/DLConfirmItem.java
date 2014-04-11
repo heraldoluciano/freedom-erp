@@ -25,12 +25,17 @@ package org.freedom.modulos.crm.view.dialog.utility;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.math.BigDecimal;
+
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
+import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.std.orcamento.bean.Item;
 
-public class DLConfirmItem extends FFDialogo {
+public class DLConfirmItem extends FFDialogo implements FocusListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -38,15 +43,15 @@ public class DLConfirmItem extends FFDialogo {
 	
 	private final JTextFieldFK txtDescprod = new JTextFieldFK( JTextFieldFK.TP_STRING, 100, 0);
 	
-	private final JTextFieldPad txtQtd = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, 5 );
+	private final JTextFieldPad txtQtd = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDec );
 
-	private final JTextFieldFK txtPreco = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 5 );
+	private final JTextFieldPad txtPreco = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecPre );
 
-	private final JTextFieldFK txtPercDesc = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 5 );
+	private final JTextFieldPad txtPercDesc = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecPre );
 
-	private final JTextFieldFK txtVlrDesc = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 5 );
+	private final JTextFieldPad txtVlrDesc = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecPre );
 
-	private final JTextFieldFK txtVlrLiq = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, 5 );
+	private final JTextFieldFK txtVlrLiq = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 15, Aplicativo.casasDecPre );
 
 	private Item result = null;
 
@@ -72,6 +77,10 @@ public class DLConfirmItem extends FFDialogo {
 		adic( txtPercDesc, 193, 65, 90, 20, "% Desconto");
 		adic( txtVlrDesc, 286, 65, 90, 20, "Vlr.desconto");
 		adic( txtVlrLiq, 379, 65, 90, 20, "Vlr.líquido");
+		txtQtd.addFocusListener( this );
+		txtPreco.addFocusListener( this );
+		txtPercDesc.addFocusListener( this );
+		txtVlrDesc.addFocusListener( this );
 		
 	}
 	
@@ -135,4 +144,21 @@ public class DLConfirmItem extends FFDialogo {
 		this.codfilial = codfilial;
 	}
 
+	public void focusGained( FocusEvent e ) {
+
+	}
+
+	public void focusLost( FocusEvent e ) {
+		calcVlrLiq();
+		
+	}
+
+	private void calcVlrLiq() {
+		BigDecimal qtd = txtQtd.getVlrBigDecimal();
+		BigDecimal preco = txtPreco.getVlrBigDecimal();
+		BigDecimal percdesc = txtPercDesc.getVlrBigDecimal();
+		BigDecimal vlrdesc = txtVlrDesc.getVlrBigDecimal();
+		BigDecimal vlrliq = txtVlrLiq.getVlrBigDecimal();
+		
+	}
 }
