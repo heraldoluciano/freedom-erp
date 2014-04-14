@@ -423,7 +423,7 @@ public class FreedomSTD extends AplicativoPD {
 		addOpcao( 301000000, TP_OPCAO_ITEM, "Ultimas Vendas por Plano de Pagamento", "Ultimas Vendas por Plano de pagamento", 'd', 301001500, 2, true, FRVendasPlanoPag.class );
 		addOpcao( 301000000, TP_OPCAO_ITEM, "Desempenho por vendedor", "Desempenho por vendedor", 'v', 301001600, 2, true, FRDesempVend.class );
 		addOpcao( 301000000, TP_OPCAO_ITEM, "Vendas por vendedor", "Vendas por vendedor", 'r', 301001700, 2, true, FRVendasVend.class );
-		addOpcao( 301000000, TP_OPCAO_ITEM, "Vendas canceladas", "Vendas canceladas", 'e', 301001800, 2, true, FRVendasCanc.class );
+		addOpcao( 301000000, TP_OPCAO_ITEM, "Vendas canceladas/denegadas", "Vendas canceladas e denegadas", 'e', 301001800, 2, true, FRVendasCanc.class );
 		addOpcao( 301000000, TP_OPCAO_ITEM, "Ultimas Vendas por Tipo de Movimento", "Ultimas Vendas por Tipo de Movimento", 'l', 301001900, 2, true, FRVendasTipoMov.class );
 		addSeparador( 301000000 );
 		addOpcao( 301000000, TP_OPCAO_ITEM, "Volume de vendas por produto", "Volume de vendas por produto", 'r', 301002000, 2, true, FRVolVendasProd.class );
