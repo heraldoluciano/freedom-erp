@@ -148,6 +148,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		montaListaCampos();
 		montaRadioGroups();
 		montaTela();
+		btExportXLS.setEnabled( true );
 
 	}
 
@@ -566,11 +567,23 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 
 			rs = ps.executeQuery();
 
-			if ( "G".equals( rgModo.getVlrString() ) ) {
-				imprimirGrafico( bVisualizar, rs, sCab.toString() );
-			}
-			else {
-				imprimirTexto( bVisualizar, rs, sCab.toString(), sCampoTotal );
+			if (bVisualizar==TYPE_PRINT.EXPORT) {
+				if (btExportXLS.execute(rs, getTitle())) {
+					Funcoes.mensagemInforma( this, "Arquivo exportado com sucesso !" );
+				}
+				try {
+					rs.close();
+					con.commit();
+				} catch ( SQLException e ) {
+					e.printStackTrace();
+				}
+			} else {
+				if ( "G".equals( rgModo.getVlrString() ) ) {
+					imprimirGrafico( bVisualizar, rs, sCab.toString() );
+				}
+				else {
+					imprimirTexto( bVisualizar, rs, sCab.toString(), sCampoTotal );
+				}
 			}
 
 			rs.close();
