@@ -72,7 +72,7 @@ public class FRVendasCanc extends FRelatorio {
 
 	public FRVendasCanc() {
 
-		setTitulo( "Vendas Canceladas" );
+		setTitulo( "Vendas canceladas e denegadas" );
 		setAtribos( 80, 80, 295, 270 );
 
 		GregorianCalendar cPeriodo = new GregorianCalendar();
@@ -131,7 +131,7 @@ public class FRVendasCanc extends FRelatorio {
 
 		try {
 
-			sSQL.append( "select v.codvenda, v.docvenda, v.dtemitvenda, v.dtsaidavenda, v.codcli, " );
+			sSQL.append( "select v.statusvenda, v.codvenda, v.docvenda, v.dtemitvenda, v.dtsaidavenda, v.codcli, " );
 			sSQL.append( "c.razcli, d.codvend, d.nomevend , v.motivocancvenda, (select sum(it.vlrliqitvenda) from vditvenda it " );
 			sSQL.append( "where it.codemp = v.codemp and it.codfilial=v.codfilial and it.codvenda=v.codvenda and " );
 			sSQL.append( "it.tipovenda=v.tipovenda) valorcanc " );
@@ -207,7 +207,7 @@ public class FRVendasCanc extends FRelatorio {
 
 	public void imprimirGrafico( final TYPE_PRINT bVisualizar, final ResultSet rs, final String sCab ) {
 
-		FPrinterJob dlGr = new FPrinterJob( "layout/rel/REL_VENDAS_CANC.jasper", "Vendas Canceladas", sCab, rs, null, this );
+		FPrinterJob dlGr = new FPrinterJob( "layout/rel/REL_VENDAS_CANC.jasper", "Vendas Canceladas e Denegadas", sCab, rs, null, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
