@@ -50,7 +50,7 @@ import org.freedom.library.swing.util.SwingParams;
 public abstract class Login extends FDialogo implements ActionListener, FocusListener {
 	private static final long serialVersionUID = 1L;
 	protected JTextFieldPad txtUsuario = new JTextFieldPad(JTextFieldPad.TP_STRING, 15, 0);
-	protected JPasswordFieldPad txpSenha = new JPasswordFieldPad(9);
+	protected JPasswordFieldPad txpSenha = new JPasswordFieldPad(128);
 	protected Vector<String> vVals = new Vector<String>();
 	protected Vector<String> vLabs = new Vector<String>();
 	protected JComboBoxPad cbEmp = new JComboBoxPad(vLabs, vVals, JComboBoxPad.TP_STRING, 20, 0);
