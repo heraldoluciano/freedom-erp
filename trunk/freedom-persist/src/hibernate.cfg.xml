@@ -26,8 +26,8 @@
         <mapping resource="org/freedom/persist/entity/Cpitsolitsol.hbm.xml" />
         <mapping resource="org/freedom/persist/entity/Ppopentrada.hbm.xml" />
         <mapping resource="org/freedom/persist/entity/Pvcaixa.hbm.xml" />
-        <mapping resource="org/freedom/persist/entity/Tkcampanha.hbm.xml" />
         <mapping resource="org/freedom/persist/entity/Vdetiqcli.hbm.xml" />
+        <mapping resource="org/freedom/persist/entity/Tkcampanha.hbm.xml" />
         <mapping resource="org/freedom/persist/entity/Sgacessomg.hbm.xml" />
         <mapping resource="org/freedom/persist/entity/Sgacessomu.hbm.xml" />
         <mapping resource="org/freedom/persist/entity/Lfregrafiscal.hbm.xml" />
@@ -270,8 +270,8 @@
         <mapping resource="org/freedom/persist/entity/Eqmovprod.hbm.xml" />
         <mapping resource="org/freedom/persist/entity/Atclasatendo.hbm.xml" />
         <mapping resource="org/freedom/persist/entity/Sgitprefere6.hbm.xml" />
-        <mapping resource="org/freedom/persist/entity/Lfmoddocfisc.hbm.xml" />
         <mapping resource="org/freedom/persist/entity/Cpitordcomprape.hbm.xml" />
+        <mapping resource="org/freedom/persist/entity/Lfmoddocfisc.hbm.xml" />
         <mapping resource="org/freedom/persist/entity/Atsetor.hbm.xml" />
         <mapping resource="org/freedom/persist/entity/Lffretevenda.hbm.xml" />
         <mapping resource="org/freedom/persist/entity/Pvcaixaimp.hbm.xml" />
@@ -305,8 +305,8 @@
         <mapping resource="org/freedom/persist/entity/Cpimportacao.hbm.xml" />
         <mapping resource="org/freedom/persist/entity/Rhtabelairrf.hbm.xml" />
         <mapping resource="org/freedom/persist/entity/Vdveiculo.hbm.xml" />
-        <mapping resource="org/freedom/persist/entity/Lfmensagem.hbm.xml" />
         <mapping resource="org/freedom/persist/entity/Cpitcompraitcompra.hbm.xml" />
+        <mapping resource="org/freedom/persist/entity/Lfmensagem.hbm.xml" />
         <mapping resource="org/freedom/persist/entity/Vdvendedor.hbm.xml" />
         <mapping resource="org/freedom/persist/entity/Fnsublanca.hbm.xml" />
         <mapping resource="org/freedom/persist/entity/Eqmarca.hbm.xml" />
@@ -373,6 +373,7 @@
         <mapping resource="org/freedom/persist/entity/Pptipoanalise.hbm.xml" />
         <mapping resource="org/freedom/persist/entity/Fnplanejamento.hbm.xml" />
         <mapping resource="org/freedom/persist/entity/Cprateio.hbm.xml" />
+        <mapping resource="org/freedom/persist/entity/Fnrazclivw01.hbm.xml" />
         <mapping resource="org/freedom/persist/entity/Fnfbncli.hbm.xml" />
         <mapping resource="org/freedom/persist/entity/Tkctoativ.hbm.xml" />
         <mapping resource="org/freedom/persist/entity/Vdclicontas.hbm.xml" />
@@ -409,6 +410,7 @@
         <mapping resource="org/freedom/persist/entity/Ppestrufase.hbm.xml" />
         <mapping resource="org/freedom/persist/entity/Sgitprocesso.hbm.xml" />
         <mapping resource="org/freedom/persist/entity/Eqgrupo.hbm.xml" />
+        <mapping resource="org/freedom/persist/entity/Fnrazforvw01.hbm.xml" />
         <mapping resource="org/freedom/persist/entity/Fnitmodboleto.hbm.xml" />
         <mapping resource="org/freedom/persist/entity/Lfitvenda.hbm.xml" />
         <mapping resource="org/freedom/persist/entity/SgsquidMethod.hbm.xml" />
