@@ -1,6 +1,6 @@
 package org.freedom.persist.entity;
 
-// Generated 18/02/2014 15:53:28 by Hibernate Tools 4.0.0
+// Generated 14/04/2014 10:17:08 by Hibernate Tools 4.0.0
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -80,6 +80,12 @@ public class Atatendimentovw02Id implements java.io.Serializable {
 	private Short codfilialoc;
 	private Character tipoorc;
 	private Integer codorc;
+	private String idusuins;
+	private Date dtins;
+	private Date hins;
+	private String idusualt;
+	private Date dtalt;
+	private Date halt;
 
 	public Atatendimentovw02Id() {
 	}
@@ -108,7 +114,9 @@ public class Atatendimentovw02Id implements java.io.Serializable {
 			BigDecimal totalgeral, BigDecimal totalmeta, BigDecimal totalcomis,
 			BigDecimal totalcobcli, BigDecimal totalbh, String sitrevatendo,
 			Character tipoatendo, Integer docatendo, Integer codempoc,
-			Short codfilialoc, Character tipoorc, Integer codorc) {
+			Short codfilialoc, Character tipoorc, Integer codorc,
+			String idusuins, Date dtins, Date hins, String idusualt,
+			Date dtalt, Date halt) {
 		this.codemp = codemp;
 		this.codfilial = codfilial;
 		this.codatendo = codatendo;
@@ -179,6 +187,12 @@ public class Atatendimentovw02Id implements java.io.Serializable {
 		this.codfilialoc = codfilialoc;
 		this.tipoorc = tipoorc;
 		this.codorc = codorc;
+		this.idusuins = idusuins;
+		this.dtins = dtins;
+		this.hins = hins;
+		this.idusualt = idusualt;
+		this.dtalt = dtalt;
+		this.halt = halt;
 	}
 
 	public Integer getCodemp() {
@@ -741,6 +755,54 @@ public class Atatendimentovw02Id implements java.io.Serializable {
 		this.codorc = codorc;
 	}
 
+	public String getIdusuins() {
+		return this.idusuins;
+	}
+
+	public void setIdusuins(String idusuins) {
+		this.idusuins = idusuins;
+	}
+
+	public Date getDtins() {
+		return this.dtins;
+	}
+
+	public void setDtins(Date dtins) {
+		this.dtins = dtins;
+	}
+
+	public Date getHins() {
+		return this.hins;
+	}
+
+	public void setHins(Date hins) {
+		this.hins = hins;
+	}
+
+	public String getIdusualt() {
+		return this.idusualt;
+	}
+
+	public void setIdusualt(String idusualt) {
+		this.idusualt = idusualt;
+	}
+
+	public Date getDtalt() {
+		return this.dtalt;
+	}
+
+	public void setDtalt(Date dtalt) {
+		this.dtalt = dtalt;
+	}
+
+	public Date getHalt() {
+		return this.halt;
+	}
+
+	public void setHalt(Date halt) {
+		this.halt = halt;
+	}
+
 	public boolean equals(Object other) {
 		if ((this == other))
 			return true;
@@ -1028,7 +1090,27 @@ public class Atatendimentovw02Id implements java.io.Serializable {
 						.getTipoorc().equals(castOther.getTipoorc())))
 				&& ((this.getCodorc() == castOther.getCodorc()) || (this
 						.getCodorc() != null && castOther.getCodorc() != null && this
-						.getCodorc().equals(castOther.getCodorc())));
+						.getCodorc().equals(castOther.getCodorc())))
+				&& ((this.getIdusuins() == castOther.getIdusuins()) || (this
+						.getIdusuins() != null
+						&& castOther.getIdusuins() != null && this
+						.getIdusuins().equals(castOther.getIdusuins())))
+				&& ((this.getDtins() == castOther.getDtins()) || (this
+						.getDtins() != null && castOther.getDtins() != null && this
+						.getDtins().equals(castOther.getDtins())))
+				&& ((this.getHins() == castOther.getHins()) || (this.getHins() != null
+						&& castOther.getHins() != null && this.getHins()
+						.equals(castOther.getHins())))
+				&& ((this.getIdusualt() == castOther.getIdusualt()) || (this
+						.getIdusualt() != null
+						&& castOther.getIdusualt() != null && this
+						.getIdusualt().equals(castOther.getIdusualt())))
+				&& ((this.getDtalt() == castOther.getDtalt()) || (this
+						.getDtalt() != null && castOther.getDtalt() != null && this
+						.getDtalt().equals(castOther.getDtalt())))
+				&& ((this.getHalt() == castOther.getHalt()) || (this.getHalt() != null
+						&& castOther.getHalt() != null && this.getHalt()
+						.equals(castOther.getHalt())));
 	}
 
 	public int hashCode() {
@@ -1246,6 +1328,18 @@ public class Atatendimentovw02Id implements java.io.Serializable {
 				+ (getTipoorc() == null ? 0 : this.getTipoorc().hashCode());
 		result = 37 * result
 				+ (getCodorc() == null ? 0 : this.getCodorc().hashCode());
+		result = 37 * result
+				+ (getIdusuins() == null ? 0 : this.getIdusuins().hashCode());
+		result = 37 * result
+				+ (getDtins() == null ? 0 : this.getDtins().hashCode());
+		result = 37 * result
+				+ (getHins() == null ? 0 : this.getHins().hashCode());
+		result = 37 * result
+				+ (getIdusualt() == null ? 0 : this.getIdusualt().hashCode());
+		result = 37 * result
+				+ (getDtalt() == null ? 0 : this.getDtalt().hashCode());
+		result = 37 * result
+				+ (getHalt() == null ? 0 : this.getHalt().hashCode());
 		return result;
 	}
 

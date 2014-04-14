@@ -1,6 +1,6 @@
 package org.freedom.persist.entity;
 
-// Generated 18/02/2014 15:53:28 by Hibernate Tools 4.0.0
+// Generated 14/04/2014 10:17:08 by Hibernate Tools 4.0.0
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -29,6 +29,7 @@ public class Lfitclfiscal implements java.io.Serializable {
 	private char origfisc;
 	private String tipofisc;
 	private char tpredicmsfisc;
+	private char ativoitfisc;
 	private BigDecimal redfisc;
 	private char noufitfisc;
 	private BigDecimal aliqfisc;
@@ -77,11 +78,12 @@ public class Lfitclfiscal implements java.io.Serializable {
 
 	public Lfitclfiscal(LfitclfiscalId id, Lfclfiscal lfclfiscal,
 			Lftrattrib lftrattrib, char origfisc, String tipofisc,
-			char tpredicmsfisc, char noufitfisc, BigDecimal aliqipifisc,
-			BigDecimal aliqpisfisc, BigDecimal aliqcofinsfisc,
-			BigDecimal aliqcsocialfisc, BigDecimal aliqirfisc,
-			BigDecimal aliqfunruralfisc, BigDecimal aliqiifisc, char geralfisc,
-			short modbcicms, short modbcicmsst, String tipousoitfisc,
+			char tpredicmsfisc, char ativoitfisc, char noufitfisc,
+			BigDecimal aliqipifisc, BigDecimal aliqpisfisc,
+			BigDecimal aliqcofinsfisc, BigDecimal aliqcsocialfisc,
+			BigDecimal aliqirfisc, BigDecimal aliqfunruralfisc,
+			BigDecimal aliqiifisc, char geralfisc, short modbcicms,
+			short modbcicmsst, String tipousoitfisc,
 			BigDecimal perccredpresimp, char adicipibaseicms,
 			char adicicmstotnota, Date dtins, Date hins, String idusuins) {
 		this.id = id;
@@ -90,6 +92,7 @@ public class Lfitclfiscal implements java.io.Serializable {
 		this.origfisc = origfisc;
 		this.tipofisc = tipofisc;
 		this.tpredicmsfisc = tpredicmsfisc;
+		this.ativoitfisc = ativoitfisc;
 		this.noufitfisc = noufitfisc;
 		this.aliqipifisc = aliqipifisc;
 		this.aliqpisfisc = aliqpisfisc;
@@ -120,16 +123,16 @@ public class Lfitclfiscal implements java.io.Serializable {
 			Lftrattrib lftrattrib, Eqtipomov eqtipomov, Lfcsosn lfcsosn,
 			Lfsittrib lfsittribByLfitclsfiscalfklfsittribipi, Sguf sguf,
 			char origfisc, String tipofisc, char tpredicmsfisc,
-			BigDecimal redfisc, char noufitfisc, BigDecimal aliqfisc,
-			BigDecimal aliqfiscintra, BigDecimal aliqlfisc,
-			BigDecimal aliqipifisc, BigDecimal aliqpisfisc,
-			BigDecimal aliqcofinsfisc, BigDecimal aliqcsocialfisc,
-			BigDecimal aliqirfisc, BigDecimal aliqfunruralfisc,
-			BigDecimal aliqiifisc, String tipost, BigDecimal margemvlagr,
-			char geralfisc, Character tpcalcipi, BigDecimal vlripiunidtrib,
-			short modbcicms, short modbcicmsst, BigDecimal vlrpisunidtrib,
-			BigDecimal vlrcofunidtrib, String tipousoitfisc,
-			Character redbasest, Character redbasefrete,
+			char ativoitfisc, BigDecimal redfisc, char noufitfisc,
+			BigDecimal aliqfisc, BigDecimal aliqfiscintra,
+			BigDecimal aliqlfisc, BigDecimal aliqipifisc,
+			BigDecimal aliqpisfisc, BigDecimal aliqcofinsfisc,
+			BigDecimal aliqcsocialfisc, BigDecimal aliqirfisc,
+			BigDecimal aliqfunruralfisc, BigDecimal aliqiifisc, String tipost,
+			BigDecimal margemvlagr, char geralfisc, Character tpcalcipi,
+			BigDecimal vlripiunidtrib, short modbcicms, short modbcicmsst,
+			BigDecimal vlrpisunidtrib, BigDecimal vlrcofunidtrib,
+			String tipousoitfisc, Character redbasest, Character redbasefrete,
 			BigDecimal aliqissfisc, Character retensaoiss,
 			Character indapuripi, BigDecimal aliqicmsimp,
 			BigDecimal perccredpresimp, char adicipibaseicms,
@@ -154,6 +157,7 @@ public class Lfitclfiscal implements java.io.Serializable {
 		this.origfisc = origfisc;
 		this.tipofisc = tipofisc;
 		this.tpredicmsfisc = tpredicmsfisc;
+		this.ativoitfisc = ativoitfisc;
 		this.redfisc = redfisc;
 		this.noufitfisc = noufitfisc;
 		this.aliqfisc = aliqfisc;
@@ -336,6 +340,14 @@ public class Lfitclfiscal implements java.io.Serializable {
 
 	public void setTpredicmsfisc(char tpredicmsfisc) {
 		this.tpredicmsfisc = tpredicmsfisc;
+	}
+
+	public char getAtivoitfisc() {
+		return this.ativoitfisc;
+	}
+
+	public void setAtivoitfisc(char ativoitfisc) {
+		this.ativoitfisc = ativoitfisc;
 	}
 
 	public BigDecimal getRedfisc() {

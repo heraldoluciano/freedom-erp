@@ -1,6 +1,6 @@
 package org.freedom.persist.entity;
 
-// Generated 18/02/2014 15:53:28 by Hibernate Tools 4.0.0
+// Generated 14/04/2014 10:17:08 by Hibernate Tools 4.0.0
 
 import java.util.Date;
 import java.util.HashSet;
@@ -20,7 +20,8 @@ public class Lfserie implements java.io.Serializable {
 	private Date dtalt;
 	private Date halt;
 	private String idusualt;
-	private Set eqtipomovs = new HashSet(0);
+	private Set eqtipomovsForEqtipomovfklfserco = new HashSet(0);
+	private Set eqtipomovsForEqtipomovfklfserie = new HashSet(0);
 	private Set vdvendas = new HashSet(0);
 
 	public Lfserie() {
@@ -38,7 +39,8 @@ public class Lfserie implements java.io.Serializable {
 
 	public Lfserie(LfserieId id, Sgfilial sgfilial, int docserie, Date dtins,
 			Date hins, String idusuins, Date dtalt, Date halt, String idusualt,
-			Set eqtipomovs, Set vdvendas) {
+			Set eqtipomovsForEqtipomovfklfserco,
+			Set eqtipomovsForEqtipomovfklfserie, Set vdvendas) {
 		this.id = id;
 		this.sgfilial = sgfilial;
 		this.docserie = docserie;
@@ -48,7 +50,8 @@ public class Lfserie implements java.io.Serializable {
 		this.dtalt = dtalt;
 		this.halt = halt;
 		this.idusualt = idusualt;
-		this.eqtipomovs = eqtipomovs;
+		this.eqtipomovsForEqtipomovfklfserco = eqtipomovsForEqtipomovfklfserco;
+		this.eqtipomovsForEqtipomovfklfserie = eqtipomovsForEqtipomovfklfserie;
 		this.vdvendas = vdvendas;
 	}
 
@@ -124,12 +127,22 @@ public class Lfserie implements java.io.Serializable {
 		this.idusualt = idusualt;
 	}
 
-	public Set getEqtipomovs() {
-		return this.eqtipomovs;
+	public Set getEqtipomovsForEqtipomovfklfserco() {
+		return this.eqtipomovsForEqtipomovfklfserco;
 	}
 
-	public void setEqtipomovs(Set eqtipomovs) {
-		this.eqtipomovs = eqtipomovs;
+	public void setEqtipomovsForEqtipomovfklfserco(
+			Set eqtipomovsForEqtipomovfklfserco) {
+		this.eqtipomovsForEqtipomovfklfserco = eqtipomovsForEqtipomovfklfserco;
+	}
+
+	public Set getEqtipomovsForEqtipomovfklfserie() {
+		return this.eqtipomovsForEqtipomovfklfserie;
+	}
+
+	public void setEqtipomovsForEqtipomovfklfserie(
+			Set eqtipomovsForEqtipomovfklfserie) {
+		this.eqtipomovsForEqtipomovfklfserie = eqtipomovsForEqtipomovfklfserie;
 	}
 
 	public Set getVdvendas() {

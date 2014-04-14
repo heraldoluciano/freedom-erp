@@ -1,6 +1,6 @@
 package org.freedom.persist.entity;
 
-// Generated 18/02/2014 15:53:28 by Hibernate Tools 4.0.0
+// Generated 14/04/2014 10:17:08 by Hibernate Tools 4.0.0
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -35,6 +35,7 @@ public class Vdcliente implements java.io.Serializable {
 	private String nomecli;
 	private Date datacli;
 	private char pessoacli;
+	private char consumidorcli;
 	private char ativocli;
 	private String cnpjcli;
 	private String insccli;
@@ -117,6 +118,10 @@ public class Vdcliente implements java.io.Serializable {
 	private Character descipi;
 	private char identclibco;
 	private Date dtnasccli;
+	private char sitrevcli;
+	private String idusurevcli;
+	private Date dtrevcli;
+	private Date hrevcli;
 	private Date dtins;
 	private Date hins;
 	private String idusuins;
@@ -166,8 +171,9 @@ public class Vdcliente implements java.io.Serializable {
 
 	public Vdcliente(VdclienteId id, Vdtipocli vdtipocli, Sgfilial sgfilial,
 			String razcli, String nomecli, Date datacli, char pessoacli,
-			char ativocli, char prodruralcli, char ctocli, char identclibco,
-			Date dtins, Date hins, String idusuins) {
+			char consumidorcli, char ativocli, char prodruralcli, char ctocli,
+			char identclibco, char sitrevcli, Date dtins, Date hins,
+			String idusuins) {
 		this.id = id;
 		this.vdtipocli = vdtipocli;
 		this.sgfilial = sgfilial;
@@ -175,10 +181,12 @@ public class Vdcliente implements java.io.Serializable {
 		this.nomecli = nomecli;
 		this.datacli = datacli;
 		this.pessoacli = pessoacli;
+		this.consumidorcli = consumidorcli;
 		this.ativocli = ativocli;
 		this.prodruralcli = prodruralcli;
 		this.ctocli = ctocli;
 		this.identclibco = identclibco;
+		this.sitrevcli = sitrevcli;
 		this.dtins = dtins;
 		this.hins = hins;
 		this.idusuins = idusuins;
@@ -193,9 +201,9 @@ public class Vdcliente implements java.io.Serializable {
 			Lftipofisccli lftipofisccli, Vdvendedor vdvendedor,
 			Vdsetor vdsetor, Vdtransp vdtransp, Fncartcob fncartcob,
 			Sgittabela sgittabela, String razcli, String nomecli, Date datacli,
-			char pessoacli, char ativocli, String cnpjcli, String insccli,
-			String cpfcli, String rgcli, String sspcli, String endcli,
-			Integer numcli, String complcli, String edificiocli,
+			char pessoacli, char consumidorcli, char ativocli, String cnpjcli,
+			String insccli, String cpfcli, String rgcli, String sspcli,
+			String endcli, Integer numcli, String complcli, String edificiocli,
 			String baircli, String cidcli, String ufcli, String cepcli,
 			String dddcli, String fonecli, String ramalcli, String dddfaxcli,
 			String faxcli, String emailcli, String emailcob, String emailent,
@@ -215,18 +223,20 @@ public class Vdcliente implements java.io.Serializable {
 			byte[] imgasscli, String suframacli, char prodruralcli,
 			char ctocli, String codcnae, String inscmuncli,
 			BigDecimal percdesccli, String contclicob, String contclient,
-			Character descipi, char identclibco, Date dtnasccli, Date dtins,
-			Date hins, String idusuins, Date dtalt, Date halt, String idusualt,
-			Set atatendimentos, Set tkcampanhactos, Set atmodatendos,
-			Set tkhistoricos, Set tkcontclis, Set vdclirefps, Set eqrecmercs,
-			Set vdclirefcs, Set vdcliimovs, Set fnrestricaos, Set eqmovexps,
-			Set eqclifors, Set fnlibcreds, Set fnsublancas, Set vdclicontases,
-			Set vdclimetavends, Set vdcliterras, Set crchamados,
-			Set sgprefere4s, Set vdsetorrotas, Set vdvendas, Set sgeqvclifors,
-			Set vdvendaconsigs, Set vdobsclis, Set vdcliautps, Set tksitcamps,
-			Set vdorcamentos, Set fnfbnclis, Set vdcliveics, Set fnlancas,
-			Vdclicompl vdclicompl, Set vdcontratos, Set vdclisocioses,
-			Set tkcampanhaclis, Set svoses, Set fnrecebers, Set eqlanctoexps) {
+			Character descipi, char identclibco, Date dtnasccli,
+			char sitrevcli, String idusurevcli, Date dtrevcli, Date hrevcli,
+			Date dtins, Date hins, String idusuins, Date dtalt, Date halt,
+			String idusualt, Set atatendimentos, Set tkcampanhactos,
+			Set atmodatendos, Set tkhistoricos, Set tkcontclis, Set vdclirefps,
+			Set eqrecmercs, Set vdclirefcs, Set vdcliimovs, Set fnrestricaos,
+			Set eqmovexps, Set eqclifors, Set fnlibcreds, Set fnsublancas,
+			Set vdclicontases, Set vdclimetavends, Set vdcliterras,
+			Set crchamados, Set sgprefere4s, Set vdsetorrotas, Set vdvendas,
+			Set sgeqvclifors, Set vdvendaconsigs, Set vdobsclis,
+			Set vdcliautps, Set tksitcamps, Set vdorcamentos, Set fnfbnclis,
+			Set vdcliveics, Set fnlancas, Vdclicompl vdclicompl,
+			Set vdcontratos, Set vdclisocioses, Set tkcampanhaclis, Set svoses,
+			Set fnrecebers, Set eqlanctoexps) {
 		this.id = id;
 		this.vdtipocli = vdtipocli;
 		this.sgmunicipioByVdclientefksgmuniccob = sgmunicipioByVdclientefksgmuniccob;
@@ -250,6 +260,7 @@ public class Vdcliente implements java.io.Serializable {
 		this.nomecli = nomecli;
 		this.datacli = datacli;
 		this.pessoacli = pessoacli;
+		this.consumidorcli = consumidorcli;
 		this.ativocli = ativocli;
 		this.cnpjcli = cnpjcli;
 		this.insccli = insccli;
@@ -332,6 +343,10 @@ public class Vdcliente implements java.io.Serializable {
 		this.descipi = descipi;
 		this.identclibco = identclibco;
 		this.dtnasccli = dtnasccli;
+		this.sitrevcli = sitrevcli;
+		this.idusurevcli = idusurevcli;
+		this.dtrevcli = dtrevcli;
+		this.hrevcli = hrevcli;
 		this.dtins = dtins;
 		this.hins = hins;
 		this.idusuins = idusuins;
@@ -562,6 +577,14 @@ public class Vdcliente implements java.io.Serializable {
 
 	public void setPessoacli(char pessoacli) {
 		this.pessoacli = pessoacli;
+	}
+
+	public char getConsumidorcli() {
+		return this.consumidorcli;
+	}
+
+	public void setConsumidorcli(char consumidorcli) {
+		this.consumidorcli = consumidorcli;
 	}
 
 	public char getAtivocli() {
@@ -1218,6 +1241,38 @@ public class Vdcliente implements java.io.Serializable {
 
 	public void setDtnasccli(Date dtnasccli) {
 		this.dtnasccli = dtnasccli;
+	}
+
+	public char getSitrevcli() {
+		return this.sitrevcli;
+	}
+
+	public void setSitrevcli(char sitrevcli) {
+		this.sitrevcli = sitrevcli;
+	}
+
+	public String getIdusurevcli() {
+		return this.idusurevcli;
+	}
+
+	public void setIdusurevcli(String idusurevcli) {
+		this.idusurevcli = idusurevcli;
+	}
+
+	public Date getDtrevcli() {
+		return this.dtrevcli;
+	}
+
+	public void setDtrevcli(Date dtrevcli) {
+		this.dtrevcli = dtrevcli;
+	}
+
+	public Date getHrevcli() {
+		return this.hrevcli;
+	}
+
+	public void setHrevcli(Date hrevcli) {
+		this.hrevcli = hrevcli;
 	}
 
 	public Date getDtins() {

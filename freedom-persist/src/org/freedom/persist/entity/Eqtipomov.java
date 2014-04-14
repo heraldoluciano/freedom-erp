@@ -1,6 +1,6 @@
 package org.freedom.persist.entity;
 
-// Generated 18/02/2014 15:53:28 by Hibernate Tools 4.0.0
+// Generated 14/04/2014 10:17:08 by Hibernate Tools 4.0.0
 
 import java.util.Date;
 import java.util.HashSet;
@@ -16,9 +16,10 @@ public class Eqtipomov implements java.io.Serializable {
 	private Vdregracomis vdregracomis;
 	private Lfmoddocfisc lfmoddocfisc;
 	private Lfmensagem lfmensagem;
+	private Lfserie lfserieByEqtipomovfklfserco;
 	private Lfmodnota lfmodnota;
 	private Vdtabpreco vdtabpreco;
-	private Lfserie lfserie;
+	private Lfserie lfserieByEqtipomovfklfserie;
 	private Eqtipomov eqtipomovByEqtipomovfkeqtipoc;
 	private Fnplanopag fnplanopag;
 	private Vdtransp vdtransp;
@@ -93,17 +94,17 @@ public class Eqtipomov implements java.io.Serializable {
 	}
 
 	public Eqtipomov(EqtipomovId id, Sgfilial sgfilial, Lfmodnota lfmodnota,
-			Lfserie lfserie, String desctipomov, char estipomov,
-			char fiscaltipomov, char estoqtipomov, String tipomov,
-			char imppedtipomov, char impnftipomov, char impboltipomov,
-			char imprectipomov, char reimpnftipomov, char tusutipomov,
-			char seqnftipomov, char vlrmfintipomov, char mcomistipomov,
-			char opertipomov, char emitnfcpmov, char desbloqcv, Date dtins,
-			Date hins, String idusuins) {
+			Lfserie lfserieByEqtipomovfklfserie, String desctipomov,
+			char estipomov, char fiscaltipomov, char estoqtipomov,
+			String tipomov, char imppedtipomov, char impnftipomov,
+			char impboltipomov, char imprectipomov, char reimpnftipomov,
+			char tusutipomov, char seqnftipomov, char vlrmfintipomov,
+			char mcomistipomov, char opertipomov, char emitnfcpmov,
+			char desbloqcv, Date dtins, Date hins, String idusuins) {
 		this.id = id;
 		this.sgfilial = sgfilial;
 		this.lfmodnota = lfmodnota;
-		this.lfserie = lfserie;
+		this.lfserieByEqtipomovfklfserie = lfserieByEqtipomovfklfserie;
 		this.desctipomov = desctipomov;
 		this.estipomov = estipomov;
 		this.fiscaltipomov = fiscaltipomov;
@@ -128,18 +129,19 @@ public class Eqtipomov implements java.io.Serializable {
 
 	public Eqtipomov(EqtipomovId id, Sgfilial sgfilial,
 			Vdregracomis vdregracomis, Lfmoddocfisc lfmoddocfisc,
-			Lfmensagem lfmensagem, Lfmodnota lfmodnota, Vdtabpreco vdtabpreco,
-			Lfserie lfserie, Eqtipomov eqtipomovByEqtipomovfkeqtipoc,
-			Fnplanopag fnplanopag, Vdtransp vdtransp,
-			Eqtipomov eqtipomovByEqtipomovfkeqtipom, String desctipomov,
-			char estipomov, char fiscaltipomov, char estoqtipomov,
-			String tipomov, String especietipomov, char imppedtipomov,
-			char impnftipomov, char impboltipomov, char imprectipomov,
-			char reimpnftipomov, char tusutipomov, Character somavdtipomov,
-			char seqnftipomov, char vlrmfintipomov, char mcomistipomov,
-			char opertipomov, Character ctipofrete, char emitnfcpmov,
-			String descnatcompl, char desbloqcv, Date dtins, Date hins,
-			String idusuins, Date dtalt, Date halt, String idusualt,
+			Lfmensagem lfmensagem, Lfserie lfserieByEqtipomovfklfserco,
+			Lfmodnota lfmodnota, Vdtabpreco vdtabpreco,
+			Lfserie lfserieByEqtipomovfklfserie,
+			Eqtipomov eqtipomovByEqtipomovfkeqtipoc, Fnplanopag fnplanopag,
+			Vdtransp vdtransp, Eqtipomov eqtipomovByEqtipomovfkeqtipom,
+			String desctipomov, char estipomov, char fiscaltipomov,
+			char estoqtipomov, String tipomov, String especietipomov,
+			char imppedtipomov, char impnftipomov, char impboltipomov,
+			char imprectipomov, char reimpnftipomov, char tusutipomov,
+			Character somavdtipomov, char seqnftipomov, char vlrmfintipomov,
+			char mcomistipomov, char opertipomov, Character ctipofrete,
+			char emitnfcpmov, String descnatcompl, char desbloqcv, Date dtins,
+			Date hins, String idusuins, Date dtalt, Date halt, String idusualt,
 			Set sgprefere8sForSgprefere8fkeqtipomovds, Set lfitregrafiscals,
 			Set lfitclfiscals, Set sgprefere1sForSgprefere1fk9eqtip,
 			Set sgprefere1sForSgprefere1fk5eqtip,
@@ -168,9 +170,10 @@ public class Eqtipomov implements java.io.Serializable {
 		this.vdregracomis = vdregracomis;
 		this.lfmoddocfisc = lfmoddocfisc;
 		this.lfmensagem = lfmensagem;
+		this.lfserieByEqtipomovfklfserco = lfserieByEqtipomovfklfserco;
 		this.lfmodnota = lfmodnota;
 		this.vdtabpreco = vdtabpreco;
-		this.lfserie = lfserie;
+		this.lfserieByEqtipomovfklfserie = lfserieByEqtipomovfklfserie;
 		this.eqtipomovByEqtipomovfkeqtipoc = eqtipomovByEqtipomovfkeqtipoc;
 		this.fnplanopag = fnplanopag;
 		this.vdtransp = vdtransp;
@@ -282,6 +285,15 @@ public class Eqtipomov implements java.io.Serializable {
 		this.lfmensagem = lfmensagem;
 	}
 
+	public Lfserie getLfserieByEqtipomovfklfserco() {
+		return this.lfserieByEqtipomovfklfserco;
+	}
+
+	public void setLfserieByEqtipomovfklfserco(
+			Lfserie lfserieByEqtipomovfklfserco) {
+		this.lfserieByEqtipomovfklfserco = lfserieByEqtipomovfklfserco;
+	}
+
 	public Lfmodnota getLfmodnota() {
 		return this.lfmodnota;
 	}
@@ -298,12 +310,13 @@ public class Eqtipomov implements java.io.Serializable {
 		this.vdtabpreco = vdtabpreco;
 	}
 
-	public Lfserie getLfserie() {
-		return this.lfserie;
+	public Lfserie getLfserieByEqtipomovfklfserie() {
+		return this.lfserieByEqtipomovfklfserie;
 	}
 
-	public void setLfserie(Lfserie lfserie) {
-		this.lfserie = lfserie;
+	public void setLfserieByEqtipomovfklfserie(
+			Lfserie lfserieByEqtipomovfklfserie) {
+		this.lfserieByEqtipomovfklfserie = lfserieByEqtipomovfklfserie;
 	}
 
 	public Eqtipomov getEqtipomovByEqtipomovfkeqtipoc() {
