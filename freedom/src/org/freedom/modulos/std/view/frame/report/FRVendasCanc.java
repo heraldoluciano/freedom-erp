@@ -136,7 +136,8 @@ public class FRVendasCanc extends FRelatorio {
 			sSQL.append( "where it.codemp = v.codemp and it.codfilial=v.codfilial and it.codvenda=v.codvenda and " );
 			sSQL.append( "it.tipovenda=v.tipovenda) valorcanc " );
 			sSQL.append( "from vdvenda v, vdcliente c, eqtipomov t, vdvendedor d " );
-			sSQL.append( "where substring(v.statusvenda from 1 for 1) = 'C' and " );
+			/* Status C = Cancelada e N = Denegada */
+			sSQL.append( "where substring(v.statusvenda from 1 for 1) in ('C','N') and " );
 			sSQL.append( "c.codemp = v.codempcl and c.codfilial = v.codfilialcl and c.codcli=v.codcli and " );
 			sSQL.append( "d.codemp = v.codempvd and d.codfilial = v.codfilialvd and d.codvend= v.codvend and " );
 			sSQL.append( "t.codemp = v.codemptm and t.codfilial=v.codfilialtm and t.codtipomov=v.codtipomov and " );
