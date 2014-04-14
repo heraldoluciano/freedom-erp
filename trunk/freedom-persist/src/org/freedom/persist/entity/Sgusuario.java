@@ -1,6 +1,6 @@
 package org.freedom.persist.entity;
 
-// Generated 18/02/2014 15:53:28 by Hibernate Tools 4.0.0
+// Generated 14/04/2014 10:17:08 by Hibernate Tools 4.0.0
 
 import java.util.Date;
 import java.util.HashSet;
@@ -19,6 +19,7 @@ public class Sgusuario implements java.io.Serializable {
 	private Tkconfemail tkconfemail;
 	private Fncc fncc;
 	private String nomeusu;
+	private char tipousu;
 	private String pnomeusu;
 	private String unomeusu;
 	private String comentusu;
@@ -51,6 +52,7 @@ public class Sgusuario implements java.io.Serializable {
 	private char acesopbtretorno;
 	private char acesopveritens;
 	private char cadoutusu;
+	private String senhausu;
 	private Date dtins;
 	private Date hins;
 	private String idusuins;
@@ -77,7 +79,7 @@ public class Sgusuario implements java.io.Serializable {
 	}
 
 	public Sgusuario(SgusuarioId id, Sgfilial sgfilial, String nomeusu,
-			char ativcli, char liberacredusu, int coragenda,
+			char tipousu, char ativcli, char liberacredusu, int coragenda,
 			char vendapatrimusu, char rmaoutcc, char ativousu,
 			char visualizalucr, char liberacampopesagem, char aprovordcp,
 			char acesopbtcadlote, char acesopbtrma, char acesopbtqualid,
@@ -88,6 +90,7 @@ public class Sgusuario implements java.io.Serializable {
 		this.id = id;
 		this.sgfilial = sgfilial;
 		this.nomeusu = nomeusu;
+		this.tipousu = tipousu;
 		this.ativcli = ativcli;
 		this.liberacredusu = liberacredusu;
 		this.coragenda = coragenda;
@@ -115,20 +118,20 @@ public class Sgusuario implements java.io.Serializable {
 
 	public Sgusuario(SgusuarioId id, Sgfilial sgfilial, Eqalmox eqalmox,
 			Sggrpusu sggrpusu, Sgagente sgagente, Tkconfemail tkconfemail,
-			Fncc fncc, String nomeusu, String pnomeusu, String unomeusu,
-			String comentusu, Character baixocustousu, Character abregavetausu,
-			String aprovcpsolicitacaousu, Character almoxarifeusu,
-			String aprovrmausu, Character comprasusu, Character altparcvenda,
-			Character aprovreceita, char ativcli, char liberacredusu,
-			int coragenda, Character cancelaop, char vendapatrimusu,
-			char rmaoutcc, char ativousu, char visualizalucr,
-			char liberacampopesagem, char aprovordcp, char acesopbtcadlote,
-			char acesopbtrma, char acesopbtqualid, char acesopbtdistr,
-			char acesopbtfase, char acesopbtcanc, char acesopbtsubprod,
-			char acesopbtremessa, char acesopbtretorno, char acesopveritens,
-			char cadoutusu, Date dtins, Date hins, String idusuins, Date dtalt,
-			Date halt, String idusualt, Set sgconexaos,
-			Set eqrmasForEqrmafksgusuarioap, Set eqtipomovusus,
+			Fncc fncc, String nomeusu, char tipousu, String pnomeusu,
+			String unomeusu, String comentusu, Character baixocustousu,
+			Character abregavetausu, String aprovcpsolicitacaousu,
+			Character almoxarifeusu, String aprovrmausu, Character comprasusu,
+			Character altparcvenda, Character aprovreceita, char ativcli,
+			char liberacredusu, int coragenda, Character cancelaop,
+			char vendapatrimusu, char rmaoutcc, char ativousu,
+			char visualizalucr, char liberacampopesagem, char aprovordcp,
+			char acesopbtcadlote, char acesopbtrma, char acesopbtqualid,
+			char acesopbtdistr, char acesopbtfase, char acesopbtcanc,
+			char acesopbtsubprod, char acesopbtremessa, char acesopbtretorno,
+			char acesopveritens, char cadoutusu, String senhausu, Date dtins,
+			Date hins, String idusuins, Date dtalt, Date halt, String idusualt,
+			Set sgconexaos, Set eqrmasForEqrmafksgusuarioap, Set eqtipomovusus,
 			Set sgatribusus, Set atatendentes, Set pvmovcaixas, Set eqrmaals,
 			Set fncontausus, Set eqrmasForEqrmafksgusuarioex, Set fnlibcreds,
 			Set sgacessoeus, Set atatendimentos, Set cpsolicitacaos,
@@ -141,6 +144,7 @@ public class Sgusuario implements java.io.Serializable {
 		this.tkconfemail = tkconfemail;
 		this.fncc = fncc;
 		this.nomeusu = nomeusu;
+		this.tipousu = tipousu;
 		this.pnomeusu = pnomeusu;
 		this.unomeusu = unomeusu;
 		this.comentusu = comentusu;
@@ -173,6 +177,7 @@ public class Sgusuario implements java.io.Serializable {
 		this.acesopbtretorno = acesopbtretorno;
 		this.acesopveritens = acesopveritens;
 		this.cadoutusu = cadoutusu;
+		this.senhausu = senhausu;
 		this.dtins = dtins;
 		this.hins = hins;
 		this.idusuins = idusuins;
@@ -258,6 +263,14 @@ public class Sgusuario implements java.io.Serializable {
 
 	public void setNomeusu(String nomeusu) {
 		this.nomeusu = nomeusu;
+	}
+
+	public char getTipousu() {
+		return this.tipousu;
+	}
+
+	public void setTipousu(char tipousu) {
+		this.tipousu = tipousu;
 	}
 
 	public String getPnomeusu() {
@@ -514,6 +527,14 @@ public class Sgusuario implements java.io.Serializable {
 
 	public void setCadoutusu(char cadoutusu) {
 		this.cadoutusu = cadoutusu;
+	}
+
+	public String getSenhausu() {
+		return this.senhausu;
+	}
+
+	public void setSenhausu(String senhausu) {
+		this.senhausu = senhausu;
 	}
 
 	public Date getDtins() {

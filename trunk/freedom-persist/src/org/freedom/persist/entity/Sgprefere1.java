@@ -1,6 +1,6 @@
 package org.freedom.persist.entity;
 
-// Generated 18/02/2014 15:53:28 by Hibernate Tools 4.0.0
+// Generated 14/04/2014 10:17:08 by Hibernate Tools 4.0.0
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -10,6 +10,10 @@ import java.util.Date;
  */
 public class Sgprefere1 implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2277369918385683466L;
 	private Sgprefere1Id id;
 	private Vdtabpreco vdtabpreco;
 	private Fnplanejamento fnplanejamentoBySgprefere1fkplandr;
@@ -264,6 +268,8 @@ public class Sgprefere1 implements java.io.Serializable {
 	private char tipoimpdanfe;
 	private char replicaorc;
 	private String sqlreplicaorc;
+	private char bloqnfevdautoriz;
+	private char obrigtipofisc;
 	private Date dtins;
 	private Date hins;
 	private String idusuins;
@@ -319,7 +325,8 @@ public class Sgprefere1 implements java.io.Serializable {
 			char permitimporcantap, char bloqeditorcaposap,
 			char bloqvdporatraso, short numdiasbloqvd,
 			BigDecimal fatorsegestoq, char leitransp, char tipoimpdanfe,
-			char replicaorc, Date dtins, Date hins, String idusuins) {
+			char replicaorc, char bloqnfevdautoriz, char obrigtipofisc,
+			Date dtins, Date hins, String idusuins) {
 		this.sgfilial = sgfilial;
 		this.fnmoeda = fnmoeda;
 		this.usarefprod = usarefprod;
@@ -456,6 +463,8 @@ public class Sgprefere1 implements java.io.Serializable {
 		this.leitransp = leitransp;
 		this.tipoimpdanfe = tipoimpdanfe;
 		this.replicaorc = replicaorc;
+		this.bloqnfevdautoriz = bloqnfevdautoriz;
+		this.obrigtipofisc = obrigtipofisc;
 		this.dtins = dtins;
 		this.hins = hins;
 		this.idusuins = idusuins;
@@ -560,7 +569,9 @@ public class Sgprefere1 implements java.io.Serializable {
 			char permitimporcantap, char bloqeditorcaposap,
 			char bloqvdporatraso, short numdiasbloqvd,
 			BigDecimal fatorsegestoq, char leitransp, char tipoimpdanfe,
-			char replicaorc, String sqlreplicaorc) {
+			char replicaorc, String sqlreplicaorc, char bloqnfevdautoriz/*,
+			char obrigtipofisc, Date dtins, Date hins, String idusuins,
+			Date dtalt, Date halt, String idusualt*/) {
 		this.vdtabpreco = vdtabpreco;
 		this.fnplanejamentoBySgprefere1fkplandr = fnplanejamentoBySgprefere1fkplandr;
 		this.fnplanejamentoBySgprefere1fkplancheque = fnplanejamentoBySgprefere1fkplancheque;
@@ -814,12 +825,14 @@ public class Sgprefere1 implements java.io.Serializable {
 		this.tipoimpdanfe = tipoimpdanfe;
 		this.replicaorc = replicaorc;
 		this.sqlreplicaorc = sqlreplicaorc;
+		this.bloqnfevdautoriz = bloqnfevdautoriz;
+		/*this.obrigtipofisc = obrigtipofisc;
 		this.dtins = dtins;
 		this.hins = hins;
 		this.idusuins = idusuins;
 		this.dtalt = dtalt;
 		this.halt = halt;
-		this.idusualt = idusualt;
+		this.idusualt = idusualt;*/
 	}
 
 	public Sgprefere1Id getId() {
@@ -2875,6 +2888,22 @@ public class Sgprefere1 implements java.io.Serializable {
 
 	public void setSqlreplicaorc(String sqlreplicaorc) {
 		this.sqlreplicaorc = sqlreplicaorc;
+	}
+
+	public char getBloqnfevdautoriz() {
+		return this.bloqnfevdautoriz;
+	}
+
+	public void setBloqnfevdautoriz(char bloqnfevdautoriz) {
+		this.bloqnfevdautoriz = bloqnfevdautoriz;
+	}
+
+	public char getObrigtipofisc() {
+		return this.obrigtipofisc;
+	}
+
+	public void setObrigtipofisc(char obrigtipofisc) {
+		this.obrigtipofisc = obrigtipofisc;
 	}
 
 	public Date getDtins() {

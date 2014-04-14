@@ -1,6 +1,6 @@
 package org.freedom.persist.entity;
 
-// Generated 18/02/2014 15:53:28 by Hibernate Tools 4.0.0
+// Generated 14/04/2014 10:17:08 by Hibernate Tools 4.0.0
 
 import java.util.Date;
 import java.util.HashSet;
@@ -27,6 +27,7 @@ public class Sgestacao implements java.io.Serializable {
 	private String nomecontest;
 	private String ramalest;
 	private String emailest;
+	private String pathpdfreader;
 	private Date dtins;
 	private Date hins;
 	private String idusuins;
@@ -57,8 +58,8 @@ public class Sgestacao implements java.io.Serializable {
 			char mododemoest, char nfeest, char ativaest, Short tamfontetxt,
 			String fontetxt, String pathcacerts, String hostest, String ipest,
 			String macaddressest, String desclocalest, String nomecontest,
-			String ramalest, String emailest, Date dtins, Date hins,
-			String idusuins, Date dtalt, Date halt, String idusualt,
+			String ramalest, String emailest, String pathpdfreader, Date dtins,
+			Date hins, String idusuins, Date dtalt, Date halt, String idusualt,
 			Set pvcaixas, Set sgestacaobals, Set sgestacaoimps,
 			Set ppprocessaoptmps) {
 		this.id = id;
@@ -77,6 +78,7 @@ public class Sgestacao implements java.io.Serializable {
 		this.nomecontest = nomecontest;
 		this.ramalest = ramalest;
 		this.emailest = emailest;
+		this.pathpdfreader = pathpdfreader;
 		this.dtins = dtins;
 		this.hins = hins;
 		this.idusuins = idusuins;
@@ -215,6 +217,14 @@ public class Sgestacao implements java.io.Serializable {
 
 	public void setEmailest(String emailest) {
 		this.emailest = emailest;
+	}
+
+	public String getPathpdfreader() {
+		return this.pathpdfreader;
+	}
+
+	public void setPathpdfreader(String pathpdfreader) {
+		this.pathpdfreader = pathpdfreader;
 	}
 
 	public Date getDtins() {
