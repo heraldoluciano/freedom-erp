@@ -233,6 +233,7 @@ public class FRCobranca extends FRelatorio implements RadioGroupListener {
 		vVals2.addElement( "D" );
 		rgOrdem2 = new JRadioGroup<String, String>( 1, 2, vLabs2, vVals2 );
 		rgOrdem2.setVlrString( "R" );
+		btExportXLS.setEnabled( true );
 	}
 
 	private void montaTela() {
@@ -489,8 +490,13 @@ public class FRCobranca extends FRelatorio implements RadioGroupListener {
 
 			String sCab = " Período de " + txtDataini.getVlrString() + " até " + txtDatafim.getVlrString();
 
-			imprimirGrafico( bVisualizar, rs, sCab );
-
+			if (bVisualizar==TYPE_PRINT.EXPORT) {
+				if (btExportXLS.execute(rs, getTitle())) {
+					Funcoes.mensagemInforma( this, "Arquivo exportado com sucesso !" );
+				}
+			} else {
+				imprimirGrafico( bVisualizar, rs, sCab );
+			}
 			rs.close();
 			ps.close();
 			con.commit();
