@@ -60,6 +60,7 @@ import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JButtonPad;
 import org.freedom.library.swing.component.JCheckBoxPad;
+import org.freedom.library.swing.component.JComboBoxPad;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JPasswordFieldPad;
@@ -119,10 +120,16 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 	private JCheckBoxPad cbAprovOrdCP = new JCheckBoxPad( "Aprova ordens de compra", "S", "N" );
 	
 	private JCheckBoxPad cbCadOutUsu = new JCheckBoxPad("Cadastra outros usuários", "S", "N");
+	
+	private Vector<String> labelTipousu = new Vector<String>();
+	
+	private Vector<String> valueTipousu = new Vector<String>();
+	
+	private JComboBoxPad cbTipoUsu = null;
 
-	private JList lsDisp = new JList();
+	private JList<Object> lsDisp = new JList<Object>();
 
-	private JList lsEmp = new JList();
+	private JList<Object> lsEmp = new JList<Object>();
 
 	private JPanelPad pinAcesso = new JPanelPad();
 
@@ -149,6 +156,10 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 	private JPasswordFieldPad txpConfirma = new JPasswordFieldPad( 8 );
 
 	private JPasswordFieldPad txpSenha = new JPasswordFieldPad( 8 );
+
+	private JPasswordFieldPad txpConfirmaWeb = new JPasswordFieldPad( 128 );
+
+	private JPasswordFieldPad txpSenhaWeb = new JPasswordFieldPad( 128 );
 
 	private JTextFieldPad txtAnoCC = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 4, 0 );
 
@@ -228,8 +239,18 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 
 		super();
 		setTitulo( "Cadastro de Usuários" );
-		setAtribos( 50, 50, 470, 490 );
+		setAtribos( 50, 50, 470, 530 );
 
+		labelTipousu.addElement("Banco de dados");
+		labelTipousu.addElement( "Web" );
+		labelTipousu.addElement( "Ambos" );
+		
+		valueTipousu.add( "D" );
+		valueTipousu.add( "W" );
+		valueTipousu.add( "A" );
+		
+		cbTipoUsu = new JComboBoxPad( labelTipousu, valueTipousu, JComboBoxPad.TP_STRING, 1, 0 );
+		
 		vAprovaSolicitacaoLab.add( "Nenhuma" );
 		vAprovaSolicitacaoLab.add( "Mesmo Centro de Custo" );
 		vAprovaSolicitacaoLab.add( "Todas" );
@@ -254,6 +275,9 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 		setBordaReq( txpSenha );
 		setBordaReq( txpConfirma );
 
+		txpSenhaWeb.setEnabled( false );
+		txpConfirmaWeb.setEnabled( false );
+		
 		lcGrup.add( new GuardaCampo( txtIDGrpUsu, "IDGRPUSU", "ID grupo", ListaCampos.DB_PK, true ) );
 		lcGrup.add( new GuardaCampo( txtDescGrup, "NOMEGRPUSU", "Descriçao do grupo", ListaCampos.DB_SI, false ) );
 		lcGrup.montaSql( false, "GRPUSU", "SG" );
@@ -291,29 +315,34 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 		setPainel( pinGeral );
 
 		adicCampo( txtIDUsu, 7, 20, 80, 20, "IDUsu", "ID.usu.", ListaCampos.DB_PK, true );
-		adicCampo( txtNomeUsu, 90, 20, 350, 20, "NomeUsu", "Nome do usuário", ListaCampos.DB_SI, true );
+		adicCampo( txtNomeUsu, 90, 20, 250, 20, "NomeUsu", "Nome do usuário", ListaCampos.DB_SI, true );
+		adicDB( cbTipoUsu, 343, 20, 100, 30, "TIPOUSU", "Tipo de usuário", true );
 		adicCampo( txtPNomeUsu, 7, 60, 180, 20, "PNomeUsu", "Primeiro nome", ListaCampos.DB_SI, true );
 		adicCampo( txtUNomeUsu, 190, 60, 250, 20, "UNomeUsu", "Último nome", ListaCampos.DB_SI, true );
 		adicCampo( txtIDGrpUsu, 7, 100, 70, 20, "IDGRPUSU", "ID.grupo", ListaCampos.DB_FK, true );
-		adicDescFK( txtDescGrup, 80, 100, 216, 20, "NOMEGRPUSU", "Descrição do grupo do usuário" );
+		adicDescFK( txtDescGrup, 80, 100, 360, 20, "NOMEGRPUSU", "Descrição do grupo do usuário" );
 		adicCampoInvisivel( txtCorAgenda, "CORAGENDA", "", ListaCampos.DB_SI, false );
-		adic( new JLabelPad( "Senha" ), 300, 80, 70, 20 );
-		adic( txpSenha, 300, 100, 70, 20 );
-		adic( new JLabelPad( "Confirma" ), 373, 80, 70, 20 );
-		adic( txpConfirma, 373, 100, 70, 20 );
-		adicCampo( txtAnoCC, 7, 140, 50, 20, "AnoCC", "Ano c.c.", ListaCampos.DB_FK, txtDescCC, false );
-		adicCampo( txtCodCC, 60, 140, 110, 20, "CodCC", "Cód.c.c.", ListaCampos.DB_FK, txtDescCC, false );
-		adicDescFK( txtDescCC, 173, 140, 269, 20, "DescCC", "Descrição do centro de custo" );
+		adic( new JLabelPad( "Senha" ), 7, 120, 100, 20 );
+		adic( txpSenha, 7, 140, 100, 20 );
+		adic( new JLabelPad( "Confirma" ), 110, 120, 100, 20 );
+		adic( txpConfirma, 110, 140, 100, 20 );
+		adicDB( txpSenhaWeb, 213, 140, 100, 20, "SenhaUsu", "Senha web", false );
+		adic( new JLabelPad( "Confirma web" ), 316, 120, 100, 20 );
+		adic( txpConfirmaWeb, 316, 140, 100, 20 );
+		
+		adicCampo( txtAnoCC, 7, 180, 50, 20, "AnoCC", "Ano c.c.", ListaCampos.DB_FK, txtDescCC, false );
+		adicCampo( txtCodCC, 60, 180, 110, 20, "CodCC", "Cód.c.c.", ListaCampos.DB_FK, txtDescCC, false );
+		adicDescFK( txtDescCC, 173, 180, 269, 20, "DescCC", "Descrição do centro de custo" );
 
 		adicDBLiv( txaComentUsu, "ComentUsu", "Comentário", false );
-		adic( new JLabelPad( "Comentário" ), 7, 160, 100, 20 );
-		adic( spnObs, 7, 180, 435, 60 );
-		adic( new JLabelPad( "Filiais disponíveis:" ), 7, 240, 120, 20 );
-		adic( spnDisp, 7, 260, 195, 100 );
-		adic( btAdicEmp, 210, 275, 30, 30 );
-		adic( btDelEmp, 210, 315, 30, 30 );
-		adic( new JLabelPad( "Acesso:" ), 247, 240, 158, 20 );
-		adic( spnEmp, 247, 260, 195, 100 );
+		adic( new JLabelPad( "Comentário" ), 7, 200, 100, 20 );
+		adic( spnObs, 7, 220, 435, 60 );
+		adic( new JLabelPad( "Filiais disponíveis:" ), 7, 280, 120, 20 );
+		adic( spnDisp, 7, 300, 195, 100 );
+		adic( btAdicEmp, 210, 315, 30, 30 );
+		adic( btDelEmp, 210, 355, 30, 30 );
+		adic( new JLabelPad( "Acesso:" ), 247, 280, 158, 20 );
+		adic( spnEmp, 247, 300, 195, 100 );
 
 		adicTab( "Acesso", pinAcesso );
 		pinAcesso.adic( pnPermissoes, 3, 0, 440, 170 );
@@ -746,6 +775,7 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 		cbAcesOpBtVeritens.setVlrString( "S" );
 		cbAprovOrdCP.setVlrString( "N" );
 		cbCadOutUsu.setVlrString( "N" );
+		cbTipoUsu.setVlrString( "D" );
 		if (Aplicativo.FIREBIRD_15.equals( Aplicativo.strFbVersao )) {
 			cbCadOutUsu.setEnabled( false );
 		}
