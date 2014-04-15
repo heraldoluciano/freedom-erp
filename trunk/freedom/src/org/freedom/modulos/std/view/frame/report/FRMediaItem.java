@@ -24,15 +24,20 @@
 
 package org.freedom.modulos.std.view.frame.report;
 
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
+
+import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
@@ -47,32 +52,47 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.AplicativoPD;
+import org.freedom.library.swing.frame.FPrinterJob;
 import org.freedom.library.swing.frame.FRelatorio;
 import org.freedom.library.type.TYPE_PRINT;
 
-public class FRMediaItem extends FRelatorio {
+public class FRMediaItem extends FRelatorio implements FocusListener {
 
 	private static final long serialVersionUID = 1L;
 
-	private JTextFieldPad txtMesfim = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 2, 0 );
+	private JTextFieldPad txtAnoini = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 4, 0 );
+
+	private JTextFieldPad txtMesini = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 2, 0 );
 
 	private JTextFieldPad txtAnofim = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 4, 0 );
 
-	private JTextFieldPad txtNumMes = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 2, 0 );
+	private JTextFieldPad txtMesfim = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 2, 0 );
 
 	private JTextFieldPad txtCodGrup = new JTextFieldPad( JTextFieldPad.TP_STRING, 14, 0 );
 
-	private JTextFieldPad txtDescGrup = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
+	private JTextFieldFK txtDescGrup = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JTextFieldPad txtCodMarca = new JTextFieldPad( JTextFieldPad.TP_STRING, 6, 0 );
 
-	private JTextFieldPad txtDescMarca = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
+	private JTextFieldFK txtDescMarca = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JTextFieldPad txtSiglaMarca = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
+
+	private JTextFieldPad txtCodProd = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
+
+	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 100, 0 );
+	
+	private JTextFieldFK txtRefprod = new JTextFieldFK( JTextFieldPad.TP_STRING, 20 , 0 );
 
 	private JTextFieldPad txtCodVend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
 	private JTextFieldFK txtDescVend = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+
+	private JTextFieldPad txtDataini = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+
+	private JTextFieldPad txtDatafim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+
+ 	private JRadioGroup<?, ?> rgTipoimp = null;
 
 	private JLabelPad lbOrdem = new JLabelPad( "Ordenar por:" );
 
@@ -96,12 +116,18 @@ public class FRMediaItem extends FRelatorio {
 
 	private Vector<String> vValsFin = new Vector<String>();
 
+	private Vector<String> vLabsTipoimp = new Vector<String>();
+
+	private Vector<String> vValsTipoimp = new Vector<String>();
+
 	private ListaCampos lcGrup = new ListaCampos( this );
 
 	private ListaCampos lcMarca = new ListaCampos( this );
 
+	private ListaCampos lcProd = new ListaCampos( this );
+
 	private ListaCampos lcVend = new ListaCampos( this );
-	
+
 	private JRadioGroup<?, ?> rgEmitidos = null;
 	
 	private Vector<String> vLabsEmit = new Vector<String>();
@@ -110,12 +136,8 @@ public class FRMediaItem extends FRelatorio {
 	
 	public FRMediaItem() {
 
-		setTitulo( "Media de vendas por item" );
-		setAtribos( 80, 80, 335, 540 );
-
-		txtDescGrup.setAtivo( false );
-		txtDescMarca.setAtivo( false );
-
+		setTitulo( "Média de vendas por item" );
+		setAtribos( 80, 80, 335, 600 );
 		lcGrup.add( new GuardaCampo( txtCodGrup, "CodGrup", "Cód.grupo", ListaCampos.DB_PK, false ) );
 		lcGrup.add( new GuardaCampo( txtDescGrup, "DescGrup", "Descrição do grupo", ListaCampos.DB_SI, false ) );
 		txtCodGrup.setTabelaExterna( lcGrup, null );
@@ -127,6 +149,20 @@ public class FRMediaItem extends FRelatorio {
 		lcMarca.add( new GuardaCampo( txtCodMarca, "CodMarca", "Cód.marca", ListaCampos.DB_PK, false ) );
 		lcMarca.add( new GuardaCampo( txtDescMarca, "DescMarca", "Descrição da marca", ListaCampos.DB_SI, false ) );
 		lcMarca.add( new GuardaCampo( txtSiglaMarca, "SiglaMarca", "Sigla", ListaCampos.DB_SI, false ) );
+		txtCodMarca.setTabelaExterna( lcMarca, null );
+		txtCodMarca.setNomeCampo( "CodMarca" );
+		txtCodMarca.setFK( true );
+		lcMarca.setReadOnly( true );
+		lcMarca.montaSql( false, "MARCA", "EQ" );
+
+		lcProd.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false ) );
+		lcProd.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
+		lcProd.add( new GuardaCampo( txtRefprod, "RefProd", "Ref.prod.", ListaCampos.DB_SI, false ) );
+		txtCodProd.setTabelaExterna( lcProd, null );
+		txtCodProd.setNomeCampo( "CodProd" );
+		txtCodProd.setFK( true );
+		lcProd.setReadOnly( true );
+		lcProd.montaSql( false, "PRODUTO", "EQ" );
 
 		lcVend.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.comiss.", ListaCampos.DB_PK, false ) );
 		lcVend.add( new GuardaCampo( txtDescVend, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, false ) );
@@ -136,11 +172,6 @@ public class FRMediaItem extends FRelatorio {
 		lcVend.setReadOnly( true );
 		lcVend.montaSql( false, "VENDEDOR", "VD" );
 
-		txtCodMarca.setTabelaExterna( lcMarca, null );
-		txtCodMarca.setNomeCampo( "CodMarca" );
-		txtCodMarca.setFK( true );
-		lcMarca.setReadOnly( true );
-		lcMarca.montaSql( false, "MARCA", "EQ" );
 
 		vLabs.addElement( "Código" );
 		vLabs.addElement( "Descrição" );
@@ -148,6 +179,13 @@ public class FRMediaItem extends FRelatorio {
 		vVals.addElement( "D" );
 		rgOrdem = new JRadioGroup<String, String>( 1, 2, vLabs, vVals );
 		rgOrdem.setVlrString( "D" );
+
+		vLabsTipoimp.addElement( "Texto" );
+		vLabsTipoimp.addElement( "Gráfico" );
+		vValsTipoimp.addElement( "T" );
+		vValsTipoimp.addElement( "G" );
+		rgTipoimp = new JRadioGroup<String, String>( 2, 1, vLabsTipoimp, vValsTipoimp );
+		rgTipoimp.setVlrString( "G" );
 
 		vLabsFat.addElement( "Faturado" );
 		vLabsFat.addElement( "Não Faturado" );
@@ -186,16 +224,24 @@ public class FRMediaItem extends FRelatorio {
 		JLabelPad lbLinha4 = new JLabelPad();
 		lbLinha4.setBorder( BorderFactory.createEtchedBorder() );
 
-		adic( new JLabelPad( "Média de vendas anteriores a:" ), 7, 5, 240, 20 );
-		adic( lbLinha, 180, 15, 100, 2 );
-		adic( new JLabelPad( "Mes:" ), 7, 30, 40, 20 );
-		adic( txtMesfim, 40, 30, 47, 20 );
-		adic( new JLabelPad( "Ano:" ), 100, 30, 37, 20 );
-		adic( txtAnofim, 130, 30, 70, 20 );
-		adic( new JLabelPad( "Calcular a média dos últmos meses:" ), 7, 60, 240, 20 );
-		adic( lbLinha2, 218, 70, 62, 2 );
-		adic( new JLabelPad( "Nº de meses (máx. 12):" ), 7, 85, 200, 20 );
-		adic( txtNumMes, 150, 85, 40, 20 );
+		txtDataini.setVlrDate( new Date() );
+		txtDatafim.setVlrDate( new Date() );
+		adic( new JLabelPad( "Periodo:" ), 7, 5, 100, 20 );
+		adic( lbLinha, 60, 15, 210, 2 );
+		adic( new JLabelPad( "Mês" ), 10, 25, 40, 20 );
+		adic( txtMesini, 10, 45, 40, 20 );
+		adic( new JLabelPad( "/" ), 54, 45, 5, 20 );
+		adic( new JLabelPad( "Ano" ), 64, 25, 40, 20 );
+		adic( txtAnoini, 64, 45, 60, 20 );
+		adic( new JLabelPad( "Mês" ), 140, 25, 40, 20 );
+		adic( txtMesfim, 140, 45, 40, 20 );
+		adic( new JLabelPad( "/" ), 184, 45, 5, 20 );
+		adic( new JLabelPad( "Ano" ), 194, 25, 40, 20 );
+		adic( txtAnofim, 194, 45, 60, 20 );
+		adic( new JLabelPad( "De:" ), 10, 70, 97, 20 );
+		adic( txtDataini, 32, 70, 97, 20 );
+		adic( new JLabelPad( "Até:" ), 140, 70, 100, 20 );
+		adic( txtDatafim, 170, 70, 100, 20 );
 		adic( lbLinha3, 7, 117, 273, 2 );
 		adic( new JLabelPad( "Cód.grupo" ), 7, 125, 240, 20 );
 		adic( txtCodGrup, 7, 145, 90, 20 );
@@ -205,21 +251,30 @@ public class FRMediaItem extends FRelatorio {
 		adic( txtCodMarca, 7, 185, 90, 20 );
 		adic( new JLabelPad( "Descrição da Marca" ), 100, 165, 240, 20 );
 		adic( txtDescMarca, 100, 185, 180, 20 );
-		adic( new JLabelPad( "Cód.comiss." ), 7, 205, 200, 20 );
-		adic( txtCodVend, 7, 225, 70, 20 );
-		adic( new JLabelPad( "Nome do comissionado" ), 80, 205, 200, 20 );
+		adic( new JLabelPad( "Cód.prod." ), 7, 205, 240, 20 );
+		adic( txtCodProd, 7, 225, 90, 20 );
+		adic( new JLabelPad( "Descrição do produto" ), 100, 205, 240, 20 );
+		adic( txtDescProd, 100, 225, 180, 20 );
 		
-		adic( txtDescVend, 80, 225, 200, 20 );
-
-		adic( lbOrdem, 7, 250, 80, 15 );
-		adic( rgOrdem, 7, 275, 273, 30 );
-
-		adic( rgFaturados, 		  7,	315, 	120, 	75 );
-		adic( rgFinanceiro, 	158, 	315, 	120, 	75 );		
-		adic( rgEmitidos,		  7,	395, 	120, 	70 );
-		
-		adic( cbVendaCanc, 158, 395, 200, 20 );
-
+		adic( new JLabelPad( "Cód.comiss." ), 7, 245, 200, 20 );
+		adic( txtCodVend, 7, 265, 70, 20 );
+		adic( new JLabelPad( "Nome do comissionado" ), 80, 245, 200, 20 );
+		adic( txtDescVend, 80, 265, 200, 20 );
+		adic( lbOrdem, 7, 290, 80, 15 );
+		adic( rgOrdem, 7, 315, 273, 30 );
+		adic( rgFaturados, 		  7,	355, 	120, 	75 );
+		adic( rgFinanceiro, 	158, 	355, 	120, 	75 );		
+		adic( rgEmitidos,		  7,	435, 	120, 	70 );
+		adic( new JLabelPad("Tipo de impressão"), 158, 435, 120, 20);
+		adic( rgTipoimp, 158, 455, 120, 50);
+		adic( cbVendaCanc, 7, 505, 200, 20 );
+		txtAnoini.addFocusListener( this );
+		txtMesini.addFocusListener( this );
+		txtAnofim.addFocusListener( this );
+		txtMesfim.addFocusListener( this );
+		txtDataini.setAtivo( false );
+		txtDatafim.setAtivo( false );
+		btExportXLS.setEnabled( true );
 
 	}
 
@@ -245,257 +300,328 @@ public class FRMediaItem extends FRelatorio {
 		return bRetorno;
 	}
 
-	public void imprimir( TYPE_PRINT bVisualizar ) {
-
-		ImprimeOS imp = new ImprimeOS( "", con );
-		int linPag = imp.verifLinPag() - 1;
-
-		String sWhere = " WHERE ";
-		String sWhere1 = "";
-		String sWhere2 = "";
-		String sWhere3 = "";
-		String sWhere4 = "";
-		String sFiltroVend = "";
-		String sCab = "";
-		String sCab1 = "";
-		String sOrder = "";
-		String sSubSel = "";
-		String sCodProd = "";
-		String sSubCab = "";
-		String sSubWhere = "";
-		
-		double dQtd[] = new double[ 12 ];
-		int iPos = 68;
-		int iAno = txtAnofim.getVlrInteger().intValue();
-		int iMes = txtMesfim.getVlrInteger().intValue();
-		int iNumMes = txtNumMes.getVlrInteger().intValue();
-		int iNumItens = 0;
-		
-		if ( iAno < 1 ) {
-			Funcoes.mensagemInforma( this, "Ano inválido!" );
+	public void imprimir( TYPE_PRINT visualizar ) {
+		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
+			Funcoes.mensagemInforma( this, "Data final menor que a data inicial!" );
 			return;
 		}
-		else if ( ( iMes < 1 ) || ( iMes > 12 ) ) {
-			Funcoes.mensagemInforma( this, "Mês inválido!" );
+		Vector<String> meses = Funcoes.getMeses( txtDataini.getVlrDate(), txtDatafim.getVlrDate() );
+		if ( meses.size()>12 && visualizar!=TYPE_PRINT.EXPORT ) {
+			Funcoes.mensagemInforma( this
+					, "Não é permitido a visualização ou impressão do relatório com período superior a 12 meses!\n" );
 			return;
 		}
-		else if ( ( iNumMes < 1 ) || ( iNumMes > 12 ) ) {
-			Funcoes.mensagemInforma( this, "Num de Médias Inválido!" );
-			return;
-		}
-		GregorianCalendar cFim = new GregorianCalendar( iAno, iMes - 1, 1 );
-		int iMesIni = cFim.get( Calendar.MONTH ) - iNumMes;
-		int iAnoIni = cFim.get( Calendar.YEAR );
-		GregorianCalendar cIni = new GregorianCalendar( iAnoIni, iMesIni, 1 );
 
-		if ( comRef() ) {
-			sCodProd = "REFPROD";
-		}
-		else {
-			sCodProd = "CODPROD";
-		}
-		if ( rgOrdem.getVlrString().equals( "C" ) ) {
-			sOrder = "P." + sCodProd;
-		}
-		else {
-			sOrder = "P.DESCPROD";
-		}
-
-		if ( rgFaturados.getVlrString().equals( "S" ) ) {
-			sWhere1 = " AND TM.FISCALTIPOMOV='S' ";
-			sCab1 += " - SO FATURADO";
-		}
-		else if ( rgFaturados.getVlrString().equals( "N" ) ) {
-			sWhere1 = " AND TM.FISCALTIPOMOV='N' ";
-			sCab1 += " - NAO FATURADO";
-		}
-		else if ( rgFaturados.getVlrString().equals( "A" ) ) {
-			sWhere1 = " AND TM.FISCALTIPOMOV IN ('S','N') ";
-		}
-		if ( rgFinanceiro.getVlrString().equals( "S" ) ) {
-			sWhere2 = " AND TM.SOMAVDTIPOMOV='S' ";
-			sCab1 += " - SO FINANCEIRO";
-		}
-		else if ( rgFinanceiro.getVlrString().equals( "N" ) ) {
-			sWhere2 = " AND TM.SOMAVDTIPOMOV='N' ";
-			sCab1 += " - NAO FINANCEIRO";
-		}
-		else if ( rgFinanceiro.getVlrString().equals( "A" ) ) {
-			sWhere2 = " AND TM.SOMAVDTIPOMOV IN ('S','N') ";
-		}
-
-		if ( cbVendaCanc.getVlrString().equals( "N" ) )
-			sWhere3 = " AND NOT SUBSTR(V.STATUSVENDA,1,1)='C' ";
-		
-		if ( rgEmitidos.getVlrString().equals( "S" ) ) {
-			sWhere4 = " AND V.STATUSVENDA IN ('V2','V3','P3') " ;
-		}
-		else if ( rgEmitidos.getVlrString().equals( "N" ) ) {
-			sWhere4 = " AND V.STATUSVENDA NOT IN ('V2','V3','P3') ";
-		}
-
-		int iSoma = 0;
-		String sOr = "";
-		
-		for ( int i = 0; i < iNumMes; i++ ) {
-			
-			cIni.set( Calendar.MONTH, cIni.get( Calendar.MONTH ) + 1 );
-			
-			if ( txtCodVend.getText().trim().length() > 0 ) {
-				sFiltroVend = " V" + ( i + 2 ) + ".CODVEND = " + txtCodVend.getText().trim();
-				String sTmp = "REPR.: " + txtCodVend.getVlrString() + " - " + txtDescVend.getText().trim();
-				sFiltroVend += " AND V" + ( i + 2 ) + ".CODEMPVD=" + Aplicativo.iCodEmp + " AND V" + ( i + 2 ) 
-				+ ".CODFILIALVD=" + lcVend.getCodFilial() + " AND ";
-				sCab = sTmp;
-			}
-			
-			sSubSel += ",(SELECT SUM(IT.QTDITVENDA) FROM VDITVENDA IT, VDVENDA V,\n" 
-				+ " EQTIPOMOV TM WHERE V.FLAG IN " + AplicativoPD.carregaFiltro( con, org.freedom.library.swing.frame.Aplicativo.iCodEmp ) 
-				+ " AND IT.CODVENDA=V.CODVENDA AND IT.TIPOVENDA=V.TIPOVENDA AND IT.CODPROD=P.CODPROD\n"
-				+ " AND TM.CODTIPOMOV=V.CODTIPOMOV" 
-				+ sWhere1 
-				+ sWhere2 
-				+ sWhere3
-				+ sWhere4 
-				+ " AND TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM" 
-				+ " AND TM.TIPOMOV IN ('VD','PV','VT','SE') AND V.DTEMITVENDA BETWEEN '" 
-				+ Funcoes.dateToStrDB( cIni.getTime() ) 
-				+ "' AND '"
-				+ Funcoes.dateToStrDB( Funcoes.periodoMes( cIni.get( Calendar.MONTH ) + 1, cIni.get( Calendar.YEAR ) )[ 1 ] ) + "')";
-			
-			
-			sSubWhere += sOr + "EXISTS (SELECT IT" + ( i + 2 ) + ".CODPROD FROM VDITVENDA IT" + ( i + 2 ) + ",\n" + "VDVENDA V" + ( i + 2 ) + " WHERE " + sFiltroVend + "V" + ( i + 2 ) + ".FLAG IN " + AplicativoPD.carregaFiltro( con, org.freedom.library.swing.frame.Aplicativo.iCodEmp ) + " AND IT"
-					+ ( i + 2 ) + ".CODPROD = P.CODPROD\n" + " AND V" + ( i + 2 ) + ".CODVENDA = IT" + ( i + 2 ) + ".CODVENDA\n" + " AND V" + ( i + 2 ) + ".TIPOVENDA = IT" + ( i + 2 ) + ".TIPOVENDA\n" + " AND V" + ( i + 2 ) + ".DTEMITVENDA BETWEEN '" + Funcoes.dateToStrDB( cIni.getTime() )
-					+ "' AND '" + Funcoes.dateToStrDB( Funcoes.periodoMes( cIni.get( Calendar.MONTH ) + 1, cIni.get( Calendar.YEAR ) )[ 1 ] ) + "')";
-			sSubCab += "| " + StringFunctions.strZero( "" + ( cIni.get( Calendar.MONTH ) + 1 ), 2 ) ;
-			sSubCab += "/" + ( cIni.get( Calendar.YEAR ) ) + " ";
-			sOr = " OR ";
-			iSoma++;
-		}
-		
-		sSubCab += "|Media       |";
-		
-		if ( txtCodGrup.getText().trim().length() > 0 ) {
-			sWhere += "P.CODGRUP LIKE '" + txtCodGrup.getText().trim() + "%' AND ";
-			sCab = "GRUPO: " + txtDescGrup.getText().trim();
-		}
-		if ( txtCodMarca.getText().trim().length() > 0 ) {
-			sWhere += "P.CODMARCA = '" + txtCodMarca.getText().trim() + "' AND ";
-			sCab = "MARCA: " + txtDescMarca.getText().trim();
-		}
-
-		String sSQL = "SELECT P." + sCodProd + ",P.DESCPROD,P.SLDPROD,P.DTULTCPPROD,P.QTDULTCPPROD\n" 
-		+ sSubSel + " FROM EQPRODUTO P" 
-		+ sWhere + " (" + sSubWhere + ") ORDER BY " + sOrder;
-		
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		System.out.println( sSQL );
 		try {
-			ps = con.prepareStatement( sSQL );
-			rs = ps.executeQuery();
-			imp.limpaPags();
 
-			imp.setTitulo( "Relatório de media de vendas por item" );
-			imp.addSubTitulo( "RELATORIO DE MEDIAS DE VENDAS POR ITEM" );
-			if ( sCab.length() > 0 ) {
-				imp.addSubTitulo( sCab );
-				imp.addSubTitulo( sCab1 );
+			StringBuilder filtros = new StringBuilder();
+			filtros.append( "Período de ");
+			filtros.append( txtDataini.getVlrString());
+			filtros.append( " até " );
+			filtros.append( txtDatafim.getVlrString() );
+
+			int codemp = Aplicativo.iCodEmp;
+			int codfilialpd = ListaCampos.getMasterFilial( "EQPRODUTO" );
+			int codfilialvd = ListaCampos.getMasterFilial( "VDVENDA" );
+			int codfilialva = ListaCampos.getMasterFilial( "VDVENDEDOR" );
+			int codfilialgp = ListaCampos.getMasterFilial( "EQGRUPO" );
+			int codfilialmc = ListaCampos.getMasterFilial( "EQMARCA" );
+			int codvend = txtCodVend.getVlrInteger();
+			Date dataini = txtDataini.getVlrDate();
+			Date datafim = txtDatafim.getVlrDate();
+			String codgrup = txtCodGrup.getVlrString();
+			String codmarca = txtCodMarca.getVlrString();
+			int codprod = txtCodProd.getVlrInteger();
+			String faturado = rgFaturados.getVlrString();
+			String financeiro = rgFinanceiro.getVlrString();
+			String cancelado = cbVendaCanc.getVlrString();
+			String ordem = rgOrdem.getVlrString();
+			ResultSet rs = null;
+			if (visualizar==TYPE_PRINT.EXPORT || "G".equals( rgTipoimp.getVlrString() )) {
+				rs = getResultSetReport( codemp, codfilialpd, codprod, codfilialvd, dataini, datafim, codfilialgp
+						, codgrup, codfilialmc, codmarca, codfilialva, codvend, faturado, financeiro
+						, cancelado, ordem, filtros, meses, visualizar );
 			}
 
-			while ( rs.next() ) {
-				if ( imp.pRow() == 0 ) {
-					imp.montaCab();
-					imp.impCab( 136, true );
-
-					imp.say( imp.pRow() + 0, 0, "" + imp.comprimido() );
-					imp.say( imp.pRow() + 0, 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
-					imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-					imp.say( imp.pRow() + 0, 0, "| Cod. Prod     " );
-					imp.say( imp.pRow() + 0, 16, "  Desc. Produto                            " );
-					imp.say( imp.pRow() + 0, 59, "| Estoque  " );
-					imp.say( imp.pRow() + 0, 70, "| Dt.Ult.Cp. " );
-					imp.say( imp.pRow() + 0, 83, "| Q.Ult.Cp |" );
-					imp.say( imp.pRow() + 0, 135, "|" );
-					imp.say( imp.pRow() + 1, 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
-					imp.say( imp.pRow() + 1, 0, sSubCab );
-					imp.say( imp.pRow() + 0, 135, "|" );
-					imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-					imp.say( imp.pRow() + 0, 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
+			if (visualizar==TYPE_PRINT.EXPORT) {
+				if (btExportXLS.execute(rs, getTitle())) {
+					Funcoes.mensagemInforma( this, "Arquivo exportado com sucesso !" );
 				}
-				imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-				imp.say( imp.pRow() + 0, 0, "| " + Funcoes.copy( rs.getString( 1 ), 0, 13 ) + " " );
-				imp.say( imp.pRow() + 0, 16, "  " + Funcoes.copy( rs.getString( "DescProd" ), 0, 40 ) + " " );
-				imp.say( imp.pRow() + 0, 59, "| " + Funcoes.strDecimalToStrCurrency( 8, 0, rs.getString( "SldProd" ) ) + " " );
-				if ( rs.getDate( "DTULTCPPROD" ) != null ) {
-					imp.say( imp.pRow() + 0, 70, "| " + StringFunctions.sqlDateToStrDate( rs.getDate( "DTULTCPPROD" ) ) + " " );
+			} else {
+				if ("G".equals(rgTipoimp.getVlrString())) {
+					imprimirGrafico( visualizar, rs, filtros, meses );
+				} else {
+					imprimirTexto( codemp, codfilialpd, codprod, codfilialvd, dataini, datafim, codfilialgp
+							, codgrup, codfilialmc, codmarca, codfilialva, codvend, faturado, financeiro
+							, cancelado, ordem, filtros, meses, visualizar );
 				}
-				else {
-					imp.say( imp.pRow() + 0, 70, "|    N/C   " );
-				}
-				
-				imp.say( imp.pRow() + 0, 83, "| " + Funcoes.strDecimalToStrCurrency( 8, 0, "" + rs.getDouble( "QTDULTCPPROD" ) ) + "  " );
-				imp.say( imp.pRow() + 0, 135, "|" );
-				imp.say( imp.pRow() + 1, 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
-				imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-				
-				double dSomaItem = 0;
-				double dMediaItem = 0;
-
-				iPos = 0;
-				
-				for ( int i = 0; i < iSoma; i++ ) {
-					
-					imp.say( imp.pRow() + 0, iPos, "| " + Funcoes.strDecimalToStrCurrency( 7, 0, rs.getString( 6 + i ) != null ? rs.getString( 6 + i ) : "0" ) + " " );
-					dQtd[ i ] += rs.getDouble( 6 + i );
-					dSomaItem += rs.getDouble( 6 + i );
-					iPos += 10;
-					
-				}
-				
-				dMediaItem = dSomaItem / iNumMes;
-				
-				imp.say( imp.pRow() + 0, iPos, " | " + Funcoes.strDecimalToStrCurrency( 7, 0, "" + dMediaItem ) );
-				imp.say( imp.pRow() + 0, 94, "|" );
-				imp.say( imp.pRow() + 0, 135, "|" );
-				imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-				imp.say( imp.pRow() + 0, 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
-				
-				if ( imp.pRow() >= ( linPag - 1 ) ) {
-					imp.incPags();
-					imp.eject();
-				}
-				
-				iNumItens++;
 			}
-			imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-			imp.say( imp.pRow() + 0, 0, "+" + StringFunctions.replicate( "=", 133 ) + "+" );
-			imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-			imp.say( imp.pRow() + 0, 0, "| T:" );
-
-			iPos = 4;
-			for ( int i = 0; i < iSoma; i++ ) {
-				BigDecimal bVal = new BigDecimal( dQtd[ i ] );
-				bVal = bVal.setScale( 1 );
-				imp.say( imp.pRow() + 0, iPos, "| " + Funcoes.strDecimalToStrCurrency( 7, 0, "" + bVal ) );
-				iPos += 10;
-			}
-
-			imp.say( imp.pRow() + 0, 135, "|" );
-			imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-			imp.say( imp.pRow() + 0, 0, "+" + StringFunctions.replicate( "=", 133 ) + "+" );
-
-			imp.eject();
-
-			imp.fechaGravacao();
-
+			rs.close();
+			//ps.close();
 			con.commit();
 
 		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro consulta tabela vendas!" + err.getMessage(), true, con, err );
+			Funcoes.mensagemErro( this, "Erro consulta tabela de vendas!\n" + err.getMessage(), true, con, err );
+		} finally {
+			System.gc();
+		}
+	}
+
+	private void imprimirGrafico( final TYPE_PRINT bVisualizar, final ResultSet rs, final StringBuilder filtros, Vector<String> meses ) {
+
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put( "MESES", meses );
+		
+		FPrinterJob dlGr = null;
+
+		dlGr = new FPrinterJob( "relatorios/mediavendasitem.jasper", "Média de vendas por item", filtros.toString(), rs, params, this );
+
+		if ( bVisualizar == TYPE_PRINT.VIEW ) {
+			dlGr.setVisible( true );
+		}
+		else {
+			try {
+				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+			} catch ( Exception err ) {
+				Funcoes.mensagemErro( this, "Erro na impressão de relatório!\n" + err.getMessage(), true, con, err );
+			}
+		}
+	}
+
+	private ResultSet getResultSetReport(Integer codemp, Integer codfilialpd, Integer codprod
+			, Integer codfilialvd, Date dataini, Date datafim 
+			, Integer codfilialgp, String codgrup
+			, Integer codfilialmc, String codmarca
+			, Integer codfilialva, Integer codvend
+			, String faturado, String financeiro, String cancelado
+			, String ordem, StringBuilder filtros, Vector<String> meses, TYPE_PRINT visualizar  ) throws SQLException {
+
+		ResultSet result = null;
+		StringBuilder sql = new StringBuilder();
+		sql.append( "select p.codprod, p.refprod, p.descprod, p.sldliqprod " );
+		for ( int i = 0; i < meses.size(); i++ ) {
+			String anomes = meses.elementAt( i );
+			String ano = anomes.substring( 0, 4 );
+			String mes = anomes.substring( 4 );
+			sql.append( ", sum((case when extract(month from v.dtemitvenda)=" );
+			sql.append( mes );
+			sql.append( " and extract(year from v.dtemitvenda)=" );
+			sql.append( ano );
+			sql.append( " then iv.qtditvenda else 0 end)) qtd" );
+			if (visualizar==TYPE_PRINT.EXPORT) {
+				sql.append(mes);
+				//sql.append("_");
+				sql.append(ano);
+			} else {
+				sql.append( i + 1 );
+			}
+		}
+		sql.append( ", sum(iv.qtditvenda) / ");
+		sql.append(meses.size());
+		sql.append(" qtdmedia ");
+		sql.append( " from eqproduto p ");
+		sql.append( " inner join vditvenda iv on ");
+		sql.append( " iv.codemppd=p.codemp and iv.codfilialpd=p.codfilial and iv.codprod=p.codprod ");
+		sql.append( " inner join vdvenda v on ");
+		sql.append( " v.codemp=iv.codemp and v.codfilial=iv.codfilial and v.tipovenda=iv.tipovenda and v.codvenda=iv.codvenda ");
+		sql.append( " inner join eqtipomov tm on ");
+		sql.append( " tm.codemp=v.codemptm and tm.codfilial=v.codfilialtm and tm.codtipomov=v.codtipomov ");
+		sql.append( " inner join fnplanopag pp on ");
+		sql.append( " pp.codemp=v.codemppg and pp.codfilial=v.codfilialpg and pp.codplanopag=v.codplanopag ");
+		sql.append( " where p.codemp=? and p.codfilial=? ");
+		if ( codprod!=0 ) {
+			sql.append( " and p.codprod=? ");
+			filtros.append( ", cód.produto: " );
+			filtros.append( codprod );
+		}
+		sql.append( " and v.codemp=? and v.codfilial=? and v.dtemitvenda between ? and ? ");
+		sql.append( " and v.flag in ");
+		sql.append( AplicativoPD.carregaFiltro( con, org.freedom.library.swing.frame.Aplicativo.iCodEmp ) );
+		if ( "S".equalsIgnoreCase( faturado ) ) {
+			sql.append( " and tm.fiscaltipomov='S' " );
+			filtros.append( ", faturados" );
+		}
+		else if ( "N".equalsIgnoreCase( faturado ) ) {
+			sql.append( " and tm.fiscaltipomov='N' " );
+			filtros.append( ", não faturados" );
+		}
+		if ( "S".equalsIgnoreCase( financeiro ) ) {
+			sql.append( " and tm.somavdtipomov='S' and pp.parcplanopag>0 " );
+			filtros.append( ", financeiros" );
+		}
+		else if ( "N".equalsIgnoreCase( financeiro ) ) {
+			sql.append( " and tm.somavdtipomov='N' " );
+			filtros.append( ", não financeiros" );
+		}
+		if ("N".equalsIgnoreCase( cancelado )) {
+			sql.append( " and substring(v.statusvenda from 1 for 1) not in ('C','N') ");
+		}
+		if (!"".equals( codgrup.trim() ) ) {
+			sql.append( " and p.codempgp=? and p.codfilialgp=? and p.codgrup like ? ");
+			filtros.append( ", cód.grupo: " );
+			filtros.append( codgrup );
+		}
+		if (!"".equals( codmarca.trim() ) ) {
+			sql.append( " and p.codempmc=? and p.codfilialmc=? and p.codmarca = ? ");
+			filtros.append( ", cód.marca: " );
+			filtros.append( codmarca );
+		}
+		if ( codvend!=0 ) {
+			sql.append( " and v.codempvd=? and c.codfilialvd=? and c.codvend=? ");
+			filtros.append( ", cód.comissioando: " );
+			filtros.append( codvend );
+		}
+		sql.append( " group by p.codprod, p.refprod, p.descprod, p.sldliqprod ");
+		sql.append( " order by p.descprod, p.codprod ");
+		PreparedStatement ps = con.prepareStatement( sql.toString() );
+		int param = 1;
+		ps.setInt( param++, codemp );
+		ps.setInt( param++, codfilialpd );
+		if (codprod!=0) {
+			ps.setInt( param++, codprod );
+		}
+		ps.setInt( param++, codemp );
+		ps.setInt( param++, codfilialvd );
+		ps.setDate( param++, Funcoes.dateToSQLDate( dataini ) );
+		ps.setDate( param++, Funcoes.dateToSQLDate( datafim ) );
+		if (!"".equals( codgrup.trim() ) ) {
+			ps.setInt( param++, codemp );
+			ps.setInt( param++, codfilialgp );
+			ps.setString( param++, codgrup.trim()+"%" );
+		}
+		if (!"".equals( codmarca.trim() ) ) {
+			ps.setInt( param++, codemp );
+			ps.setInt( param++, codfilialmc );
+			ps.setString( param++, codmarca.trim()+"%" );
+		}
+		if ( codvend!=0 ) {
+			ps.setInt( param++, codemp );
+			ps.setInt( param++, codfilialva );
+			ps.setInt( param++, codvend );
 		}
 
-		if ( bVisualizar==TYPE_PRINT.VIEW ) {
+		ResultSet rs = ps.executeQuery();
+
+		result = ps.executeQuery();
+		return result;
+	}
+
+	public void imprimirTexto( Integer codemp, Integer codfilialpd, Integer codprod
+			, Integer codfilialvd, Date dataini, Date datafim 
+			, Integer codfilialgp, String codgrup
+			, Integer codfilialmc, String codmarca
+			, Integer codfilialva, Integer codvend
+			, String faturado, String financeiro, String cancelado
+			, String ordem, StringBuilder filtros, Vector<String> meses, TYPE_PRINT visualizar ) throws SQLException {
+
+		ImprimeOS imp = new ImprimeOS( "", con );
+		int linPag = imp.verifLinPag() - 1;
+		String fcodprod = "CODPROD"; 
+		if ( comRef() ) {
+			fcodprod = "REFPROD";
+		}
+		int pos = 0;
+		int numitens = 0;
+		int nummeses = 12;
+		double[] qtd = new double[nummeses]; 
+		imp.limpaPags();
+		imp.setTitulo( "Relatório de media de vendas por item" );
+		imp.addSubTitulo( "RELATORIO DE MEDIAS DE VENDAS POR ITEM" );
+		if ( filtros.length() > 0 ) {
+			imp.addSubTitulo( filtros.toString() );
+		}
+		ResultSet rs = getResultSetReport( codemp, codfilialpd, codprod, codfilialvd, dataini, datafim, codfilialgp
+				, codgrup, codfilialmc, codmarca, codfilialva, codvend, faturado, financeiro
+				, cancelado, ordem, filtros, meses, visualizar );
+
+		while ( rs.next() ) {
+			if ( imp.pRow() == 0 ) {
+				imp.montaCab();
+				imp.impCab( 136, true );
+				imp.say( imp.pRow() + 0, 0, "" + imp.comprimido() );
+				imp.say( imp.pRow() + 0, 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
+				imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
+				imp.say( imp.pRow() + 0, 0, "| Cod. Prod     " );
+				imp.say( imp.pRow() + 0, 16, "  Desc. Produto                            " );
+				imp.say( imp.pRow() + 0, 59, "| Estoque  " );
+				imp.say( imp.pRow() + 0, 70, "| Dt.Ult.Cp. " );
+				imp.say( imp.pRow() + 0, 83, "| Q.Ult.Cp |" );
+				imp.say( imp.pRow() + 0, 135, "|" );
+				imp.say( imp.pRow() + 1, 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
+/*				imp.say( imp.pRow() + 1, 0, sSubCab );
+				imp.say( imp.pRow() + 0, 135, "|" );
+				imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
+				imp.say( imp.pRow() + 0, 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
+				*/
+			}
+			imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
+			imp.say( imp.pRow() + 0, 0, "| " + Funcoes.copy( rs.getString( fcodprod ), 0, 13 ) + " " );
+			imp.say( imp.pRow() + 0, 16, "  " + Funcoes.copy( rs.getString( "descprod" ), 0, 40 ) + " " );
+			imp.say( imp.pRow() + 0, 59, "| " + Funcoes.strDecimalToStrCurrency( 8, 0, rs.getString( "sldliqprod" ) ) + " " );
+			/*if ( rs.getDate( "dtultcpprod" ) != null ) {
+				imp.say( imp.pRow() + 0, 70, "| " + StringFunctions.sqlDateToStrDate( rs.getDate( "dtultcpprod" ) ) + " " );
+			}
+			else {
+				imp.say( imp.pRow() + 0, 70, "|    N/C   " );
+			}*/
+			
+			//imp.say( imp.pRow() + 0, 83, "| " + Funcoes.strDecimalToStrCurrency( 8, 0, "" + rs.getDouble( "qtdultcpprod" ) ) + "  " );
+			imp.say( imp.pRow() + 0, 135, "|" );
+			imp.say( imp.pRow() + 1, 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
+			imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
+			
+			double dSomaItem = 0;
+			double dMediaItem = 0;
+
+			pos = 0;
+			
+			for ( int i = 0; i < nummeses; i++ ) {
+				
+				imp.say( imp.pRow() + 0, pos, "| " + Funcoes.strDecimalToStrCurrency( 7, 0, rs.getString( "qtd" + (i+1) ) != null ? rs.getString( "qtd" + (i+1) ) : "0" ) + " " );
+				qtd[ i ] += rs.getDouble( "qtd" + (i+1) );
+				dSomaItem += rs.getDouble( "qtd" + (i+1) );
+				pos += 10;
+				
+			}
+			
+			imp.say( imp.pRow() + 0, pos, " | " + Funcoes.strDecimalToStrCurrency( 7, 0, rs.getString( "qtdmedia" ) ) );
+			imp.say( imp.pRow() + 0, 94, "|" );
+			imp.say( imp.pRow() + 0, 135, "|" );
+			imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
+			imp.say( imp.pRow() + 0, 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
+			
+			if ( imp.pRow() >= ( linPag - 1 ) ) {
+				imp.incPags();
+				imp.eject();
+			}
+			
+			numitens++;
+		}
+		imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
+		imp.say( imp.pRow() + 0, 0, "+" + StringFunctions.replicate( "=", 133 ) + "+" );
+		imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
+		imp.say( imp.pRow() + 0, 0, "| T:" );
+
+		pos = 4;
+		for ( int i = 0; i < nummeses; i++ ) {
+			BigDecimal bVal = new BigDecimal( qtd[ i ] );
+			bVal = bVal.setScale( 1 );
+			imp.say( imp.pRow() + 0, pos, "| " + Funcoes.strDecimalToStrCurrency( 7, 0, "" + bVal ) );
+			pos += 10;
+		}
+
+		imp.say( imp.pRow() + 0, 135, "|" );
+		imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
+		imp.say( imp.pRow() + 0, 0, "+" + StringFunctions.replicate( "=", 133 ) + "+" );
+
+		imp.eject();
+
+		imp.fechaGravacao();
+
+		con.commit();
+
+
+		if ( visualizar==TYPE_PRINT.VIEW ) {
 			imp.preview( this );
 		}
 		else {
@@ -509,5 +635,49 @@ public class FRMediaItem extends FRelatorio {
 		lcGrup.setConexao( con );
 		lcMarca.setConexao( con );
 		lcVend.setConexao( con );
+		lcProd.setConexao( con );
+
 	}
+	
+	public void focusGained( FocusEvent e ) {
+
+	}
+
+	private void setDataini() {
+		
+		txtDataini.setVlrDate( Funcoes.encodeDate( txtAnoini.getVlrInteger(), txtMesini.getVlrInteger(), 1 ) );
+	}
+
+	private void setParamIni() {
+		
+		Calendar cal = Calendar.getInstance();
+		Date dataini = cal.getTime();
+		cal.add( Calendar.YEAR, -1 );
+		Date datafim = cal.getTime();
+		txtMesfim.setVlrInteger( Funcoes.getMes( dataini ) );
+		txtAnofim.setVlrInteger( Funcoes.getAno( dataini ) );
+		txtMesini.setVlrInteger( Funcoes.getMes( datafim ) );
+		txtAnoini.setVlrInteger( Funcoes.getAno( datafim ) );
+		setDataini();
+		setDatafim();
+	}
+	
+	private void setDatafim() {
+		
+		Calendar cal = Calendar.getInstance();
+		cal.setTime( Funcoes.encodeDate( txtAnofim.getVlrInteger(), txtMesfim.getVlrInteger()+1, 1 ) );
+		cal.add( Calendar.DAY_OF_MONTH, -1 );
+		txtDatafim.setVlrDate( cal.getTime() );
+	}
+
+	public void focusLost( FocusEvent e ) {
+
+		if ( e.getSource()==txtAnoini || e.getSource()==txtMesini ) {
+			setDataini();
+		} else if ( e.getSource()==txtAnofim || e.getSource()==txtMesfim ) {
+			setDatafim();
+		}
+		
+	}
+
 }
