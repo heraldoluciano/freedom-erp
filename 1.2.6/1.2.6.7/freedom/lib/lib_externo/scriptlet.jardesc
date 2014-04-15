@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<jardesc>
+    <jar path="freedom/lib/lib_externo/freedom_scriptlet.jar"/>
+    <options buildIfNeeded="true" compress="true" descriptionLocation="/freedom/lib/lib_externo/scriptlet.jardesc" exportErrors="false" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
+    <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
+    <selectedProjects/>
+    <manifest generateManifest="true" manifestLocation="" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
+        <sealing sealJar="false">
+            <packagesToSeal/>
+            <packagesToUnSeal/>
+        </sealing>
+    </manifest>
+    <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.scriptlet"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm.business.component{Constant.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm.business.object{Contrato.java"/>
+        <javaElement handleIdentifier="=freedom-infra/src&lt;org.freedom.infra.pojos"/>
+    </selectedElements>
+</jardesc>
