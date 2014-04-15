@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<jardesc>
+    <jar path="freedom/lib/freedomrep.jar"/>
+    <options buildIfNeeded="true" compress="true" descriptionLocation="/freedom/lib/jardesc/freedomrep.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
+    <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
+    <selectedProjects/>
+    <manifest generateManifest="false" mainClassHandleIdentifier="=freedom/src&lt;org.freedom.modulos.rep{FreedomREP.java[FreedomREP" manifestLocation="/freedom/META-INF/MANIFEST.MF" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
+        <sealing sealJar="false">
+            <packagesToSeal/>
+            <packagesToUnSeal/>
+        </sealing>
+    </manifest>
+    <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
+        <javaElement handleIdentifier="=freedom-infra/src"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.rep.relatorios"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.doc.release_notes"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.rep"/>
+        <javaElement handleIdentifier="=freedom-fw1/src"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.images"/>
+    </selectedElements>
+</jardesc>

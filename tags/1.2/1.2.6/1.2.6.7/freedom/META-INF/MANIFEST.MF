@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Main-Class: org.freedom.modulos.std.FreedomSTD
+Signature-Version: 1.2.6.7 (15/04/2014)
+Class-path: *
+Caller-Allowable-Codebase: *
+Application-Library-Allowable-Codebase: *
+ 
+Name: Freedom
+Specification-Title: FreedomERP 
+Specification-Version: 1.2.6.7
+Specification-Vendor: Setpoint Informática Ltda.
+

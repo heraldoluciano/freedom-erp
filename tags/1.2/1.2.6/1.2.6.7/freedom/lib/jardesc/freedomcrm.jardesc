@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<jardesc>
+    <jar path="freedom/lib/freedomcrm.jar"/>
+    <options buildIfNeeded="true" compress="true" descriptionLocation="/freedom/lib/jardesc/freedomcrm.jardesc" exportErrors="false" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
+    <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
+    <selectedProjects/>
+    <manifest generateManifest="false" manifestLocation="/freedom/META-INF/MANIFEST.MF" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
+        <sealing sealJar="false">
+            <packagesToSeal/>
+            <packagesToUnSeal/>
+        </sealing>
+    </manifest>
+    <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm.business.component"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm.business.object"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm.view.dialog.report"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm.view.frame.main"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm.dao"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm.view.frame.crud.special"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm.view.frame.report"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm.view.frame.crud.detail"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm.view.frame.crud.tabbed"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm.view.frame.utility"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm.view.dialog.utility"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.crm.view.frame.crud.plain"/>
+    </selectedElements>
+</jardesc>
