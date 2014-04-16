@@ -429,6 +429,7 @@ public class FRMediaItem extends FRelatorio implements FocusListener {
 				sql.append( i + 1 );
 			}
 		}
+		sql.append( ", sum(iv.qtditvenda) subtotal ");
 		sql.append( ", sum(iv.qtditvenda) / ");
 		sql.append(meses.size());
 		sql.append(" qtdmedia ");

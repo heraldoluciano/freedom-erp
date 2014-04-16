@@ -3639,15 +3639,25 @@ public class Funcoes {
 		calini.setTime(dataini);
 		Calendar calfim = Calendar.getInstance();
 		calfim.setTime(datafim);
-		while (calini.get(Calendar.YEAR) < calfim.get(Calendar.YEAR)
-				|| calini.get(Calendar.MONTH) < calfim.get(Calendar.MONTH)) {
-			String ano = String.valueOf(calini.get(Calendar.YEAR));
-			String mes = String.valueOf(calini.get(Calendar.MONTH) + 1);
+		String anofim = String.valueOf(calfim.get(Calendar.YEAR));
+		String mesfim = String.valueOf(calfim.get(Calendar.MONTH) + 1);
+		String ano = "0000";
+		String mes = "00";
+		if (mesfim.length() == 1) {
+			mesfim = "0" + mesfim;
+		}
+		int dtfim = Integer.parseInt(anofim+mesfim);
+		int dt = 0;
+ 
+		while ( dt<dtfim ) {
+			ano = String.valueOf(calini.get(Calendar.YEAR));
+			mes = String.valueOf(calini.get(Calendar.MONTH) + 1);
 			if (mes.length() == 1) {
 				mes = "0" + mes;
 			}
 			result.add(ano + mes);
 			calini.add(Calendar.MONTH, 1);
+			dt = Integer.parseInt(ano+mes);
 		}
 		return result;
 	}
