@@ -268,6 +268,9 @@ public class FRMediaItem extends FRelatorio implements FocusListener {
 		adic( new JLabelPad("Tipo de impressão"), 158, 435, 120, 20);
 		adic( rgTipoimp, 158, 455, 120, 50);
 		adic( cbVendaCanc, 7, 505, 200, 20 );
+		
+		setParamIni();
+		
 		txtAnoini.addFocusListener( this );
 		txtMesini.addFocusListener( this );
 		txtAnofim.addFocusListener( this );
@@ -674,13 +677,15 @@ public class FRMediaItem extends FRelatorio implements FocusListener {
 	private void setParamIni() {
 		
 		Calendar cal = Calendar.getInstance();
-		Date dataini = cal.getTime();
-		cal.add( Calendar.YEAR, -1 );
+		cal.add( Calendar.MONTH, -1 );
 		Date datafim = cal.getTime();
-		txtMesfim.setVlrInteger( Funcoes.getMes( dataini ) );
-		txtAnofim.setVlrInteger( Funcoes.getAno( dataini ) );
-		txtMesini.setVlrInteger( Funcoes.getMes( datafim ) );
-		txtAnoini.setVlrInteger( Funcoes.getAno( datafim ) );
+		cal.add( Calendar.MONTH, +1 );
+		cal.add( Calendar.YEAR, -1 );
+		Date dataini = cal.getTime();
+		txtMesfim.setVlrInteger( Funcoes.getMes( datafim ) );
+		txtAnofim.setVlrInteger( Funcoes.getAno( datafim ) );
+		txtMesini.setVlrInteger( Funcoes.getMes( dataini ) );
+		txtAnoini.setVlrInteger( Funcoes.getAno( dataini ) );
 		setDataini();
 		setDatafim();
 	}
