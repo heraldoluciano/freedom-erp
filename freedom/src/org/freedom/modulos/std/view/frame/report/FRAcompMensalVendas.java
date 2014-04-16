@@ -355,13 +355,15 @@ public class FRAcompMensalVendas extends FRelatorio implements FocusListener {
 	private void setParamIni() {
 		
 		Calendar cal = Calendar.getInstance();
-		Date dataini = cal.getTime();
-		cal.add( Calendar.YEAR, -1 );
+		cal.add( Calendar.MONTH, -1 );
 		Date datafim = cal.getTime();
-		txtMesfim.setVlrInteger( Funcoes.getMes( dataini ) );
-		txtAnofim.setVlrInteger( Funcoes.getAno( dataini ) );
-		txtMesini.setVlrInteger( Funcoes.getMes( datafim ) );
-		txtAnoini.setVlrInteger( Funcoes.getAno( datafim ) );
+		cal.add( Calendar.MONTH, +1 );
+		cal.add( Calendar.YEAR, -1 );
+		Date dataini = cal.getTime();
+		txtMesfim.setVlrInteger( Funcoes.getMes( datafim ) );
+		txtAnofim.setVlrInteger( Funcoes.getAno( datafim ) );
+		txtMesini.setVlrInteger( Funcoes.getMes( dataini ) );
+		txtAnoini.setVlrInteger( Funcoes.getAno( dataini ) );
 		setDataini();
 		setDatafim();
 	}

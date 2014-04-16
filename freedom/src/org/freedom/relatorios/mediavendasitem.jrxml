@@ -3,7 +3,7 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="142"/>
+	<property name="ireport.x" value="1"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -339,7 +339,7 @@ and extract(year from v.dtemitvenda)=2013 then iv.qtditvenda else 0 end)) qtd1
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{QTD12}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00" isBlankWhenNull="true">
-					<reportElement key="textField-7" x="599" y="0" width="35" height="12"/>
+					<reportElement key="textField-7" x="599" y="0" width="45" height="12"/>
 					<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
 						<pen lineWidth="0.75"/>
 						<topPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
@@ -353,7 +353,7 @@ and extract(year from v.dtemitvenda)=2013 then iv.qtditvenda else 0 end)) qtd1
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SUBTOTAL}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00" isBlankWhenNull="true">
-					<reportElement key="textField-7" x="634" y="0" width="35" height="12"/>
+					<reportElement key="textField-7" x="644" y="0" width="40" height="12"/>
 					<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
 						<pen lineWidth="0.75"/>
 						<topPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
@@ -678,7 +678,7 @@ and extract(year from v.dtemitvenda)=2013 then iv.qtditvenda else 0 end)) qtd1
 +((String) $P{MESES}.elementAt(11)).substring(0,4)]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement key="textField-10" x="634" y="0" width="35" height="12"/>
+				<reportElement key="textField-10" x="644" y="0" width="40" height="12"/>
 				<box>
 					<pen lineWidth="0.75"/>
 					<topPen lineWidth="0.75"/>
@@ -692,7 +692,7 @@ and extract(year from v.dtemitvenda)=2013 then iv.qtditvenda else 0 end)) qtd1
 				<text><![CDATA[Média]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="textField-10" x="669" y="0" width="35" height="12"/>
+				<reportElement key="textField-10" x="684" y="0" width="45" height="12"/>
 				<box>
 					<pen lineWidth="0.75"/>
 					<topPen lineWidth="0.75"/>
@@ -706,7 +706,7 @@ and extract(year from v.dtemitvenda)=2013 then iv.qtditvenda else 0 end)) qtd1
 				<text><![CDATA[U.Compra]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="textField-10" x="704" y="0" width="35" height="12"/>
+				<reportElement key="textField-10" x="729" y="0" width="40" height="12"/>
 				<box>
 					<pen lineWidth="0.75"/>
 					<topPen lineWidth="0.75"/>
@@ -720,7 +720,7 @@ and extract(year from v.dtemitvenda)=2013 then iv.qtditvenda else 0 end)) qtd1
 				<text><![CDATA[Qtd.u.cp.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="textField-10" x="739" y="0" width="35" height="12"/>
+				<reportElement key="textField-10" x="769" y="0" width="45" height="12"/>
 				<box>
 					<pen lineWidth="0.75"/>
 					<topPen lineWidth="0.75"/>
@@ -734,7 +734,7 @@ and extract(year from v.dtemitvenda)=2013 then iv.qtditvenda else 0 end)) qtd1
 				<text><![CDATA[Saldo]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="textField-10" x="599" y="0" width="35" height="12"/>
+				<reportElement key="textField-10" x="599" y="0" width="45" height="12"/>
 				<box>
 					<pen lineWidth="0.75"/>
 					<topPen lineWidth="0.75"/>
@@ -934,7 +934,7 @@ and extract(year from v.dtemitvenda)=2013 then iv.qtditvenda else 0 end)) qtd1
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{QTD12}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-7" stretchType="RelativeToBandHeight" x="634" y="0" width="35" height="12"/>
+				<reportElement key="textField-7" stretchType="RelativeToBandHeight" x="644" y="0" width="40" height="12"/>
 				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
 					<pen lineWidth="0.75"/>
 					<topPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
@@ -948,7 +948,7 @@ and extract(year from v.dtemitvenda)=2013 then iv.qtditvenda else 0 end)) qtd1
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{QTDMEDIA}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement key="textField-7" stretchType="RelativeToBandHeight" x="669" y="0" width="35" height="12"/>
+				<reportElement key="textField-7" stretchType="RelativeToBandHeight" x="684" y="0" width="45" height="12"/>
 				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
 					<pen lineWidth="0.75"/>
 					<topPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
@@ -962,7 +962,7 @@ and extract(year from v.dtemitvenda)=2013 then iv.qtditvenda else 0 end)) qtd1
 				<textFieldExpression class="java.util.Date"><![CDATA[$F{DTULTCPPROD}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-7" stretchType="RelativeToBandHeight" x="704" y="0" width="35" height="12"/>
+				<reportElement key="textField-7" stretchType="RelativeToBandHeight" x="729" y="0" width="40" height="12"/>
 				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
 					<pen lineWidth="0.75"/>
 					<topPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
@@ -976,7 +976,7 @@ and extract(year from v.dtemitvenda)=2013 then iv.qtditvenda else 0 end)) qtd1
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{QTDULTCPPROD}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-7" stretchType="RelativeToBandHeight" x="739" y="0" width="35" height="12"/>
+				<reportElement key="textField-7" stretchType="RelativeToBandHeight" x="769" y="0" width="45" height="12"/>
 				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
 					<pen lineWidth="0.75"/>
 					<topPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
@@ -990,7 +990,7 @@ and extract(year from v.dtemitvenda)=2013 then iv.qtditvenda else 0 end)) qtd1
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{SLDLIQPROD}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-7" stretchType="RelativeToBandHeight" x="599" y="0" width="35" height="12"/>
+				<reportElement key="textField-7" stretchType="RelativeToBandHeight" x="599" y="0" width="45" height="12"/>
 				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
 					<pen lineWidth="0.75"/>
 					<topPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
