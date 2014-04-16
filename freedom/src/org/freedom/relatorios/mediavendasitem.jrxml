@@ -763,7 +763,7 @@ and extract(year from v.dtemitvenda)=2013 then iv.qtditvenda else 0 end)) qtd1
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="7"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{REFPROD}+" / "+$F{DESCPROD}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{REFPROD}.trim()+" / "+$F{DESCPROD}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-7" stretchType="RelativeToBandHeight" x="179" y="0" width="35" height="12"/>
