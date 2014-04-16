@@ -412,20 +412,25 @@ public class FRMediaItem extends FRelatorio implements FocusListener {
 		sql.append( "  and mp.codprod=p.codprod and mp.tipomovprod='E' and mp.codcompra is not null " );
 		sql.append( "  order by mp.dtmovprod desc, mp.codmovprod desc " );
 		sql.append( " ) qtdultcpprod " );
-		for ( int i = 0; i < meses.size(); i++ ) {
-			String anomes = meses.elementAt( i );
-			String ano = anomes.substring( 0, 4 );
-			String mes = anomes.substring( 4 );
-			sql.append( ", sum((case when extract(month from v.dtemitvenda)=" );
-			sql.append( mes );
-			sql.append( " and extract(year from v.dtemitvenda)=" );
-			sql.append( ano );
-			sql.append( " then iv.qtditvenda else 0 end)) qtd" );
-			if (visualizar==TYPE_PRINT.EXPORT) {
-				sql.append(mes);
-				//sql.append("_");
-				sql.append(ano);
+		for ( int i = 0; i < 12; i++ ) {
+			if (i<meses.size()) {
+				String anomes = meses.elementAt( i );
+				String ano = anomes.substring( 0, 4 );
+				String mes = anomes.substring( 4 );
+				sql.append( ", sum((case when extract(month from v.dtemitvenda)=" );
+				sql.append( mes );
+				sql.append( " and extract(year from v.dtemitvenda)=" );
+				sql.append( ano );
+				sql.append( " then iv.qtditvenda else 0 end)) qtd" );
+				if (visualizar==TYPE_PRINT.EXPORT) {
+					sql.append(mes);
+					//sql.append("_");
+					sql.append(ano);
+				} else {
+					sql.append( i + 1 );
+				}
 			} else {
+				sql.append(", cast(null as decimal(15,5)) qtd");
 				sql.append( i + 1 );
 			}
 		}
