@@ -471,7 +471,7 @@ and extract(year from v.dtemitvenda)=2013 then iv.qtditvenda else 0 end)) qtd1
 				<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 					<font fontName="SansSerif" size="7" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Courier-Bold" pdfEncoding="Cp1250" isPdfEmbedded="false"/>
 				</textElement>
-				<text><![CDATA[Referência / Descrição do produto]]></text>
+				<text><![CDATA[Código / Referência / Descrição do prod.]]></text>
 			</staticText>
 			<textField pattern="" isBlankWhenNull="true">
 				<reportElement key="textField-10" x="179" y="0" width="35" height="12"/>
@@ -763,7 +763,7 @@ and extract(year from v.dtemitvenda)=2013 then iv.qtditvenda else 0 end)) qtd1
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="7"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{REFPROD}.trim()+" / "+$F{DESCPROD}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{CODPROD}+" / "+$F{REFPROD}.trim()+" / "+$F{DESCPROD}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-7" stretchType="RelativeToBandHeight" x="179" y="0" width="35" height="12"/>

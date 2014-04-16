@@ -120,8 +120,8 @@ public class ResultSetToExcel {
         break;
       case DATE:
         cell.setCellValue((Date) value);
-        /*HSSFCellUtil.setCellStyleProperty(cell, workbook, HSSFCellUtil.DATA_FORMAT,
-            HSSFDataFormat.getBuiltinFormat(("m/d/yy")));*/
+       //HSSFCellUtil.setCellStyleProperty(cell, workbook, HSSFCellUtil.DATA_FORMAT,
+//            HSSFDataFormat.getBuiltinFormat(("m/d/yy")));
         break;
       case MONEY:
         cell.setCellValue(((Number) value).intValue());
