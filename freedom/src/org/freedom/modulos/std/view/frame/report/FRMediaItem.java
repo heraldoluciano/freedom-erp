@@ -321,6 +321,7 @@ public class FRMediaItem extends FRelatorio implements FocusListener {
 			filtros.append( txtDatafim.getVlrString() );
 
 			int codemp = Aplicativo.iCodEmp;
+			int codfilialmp = ListaCampos.getMasterFilial( "EQMOVPROD" );
 			int codfilialpd = ListaCampos.getMasterFilial( "EQPRODUTO" );
 			int codfilialvd = ListaCampos.getMasterFilial( "VDVENDA" );
 			int codfilialva = ListaCampos.getMasterFilial( "VDVENDEDOR" );
@@ -338,7 +339,7 @@ public class FRMediaItem extends FRelatorio implements FocusListener {
 			String ordem = rgOrdem.getVlrString();
 			ResultSet rs = null;
 			if (visualizar==TYPE_PRINT.EXPORT || "G".equals( rgTipoimp.getVlrString() )) {
-				rs = getResultSetReport( codemp, codfilialpd, codprod, codfilialvd, dataini, datafim, codfilialgp
+				rs = getResultSetReport( codemp, codfilialmp, codfilialpd, codprod, codfilialvd, dataini, datafim, codfilialgp
 						, codgrup, codfilialmc, codmarca, codfilialva, codvend, faturado, financeiro
 						, cancelado, ordem, filtros, meses, visualizar );
 			}
@@ -351,7 +352,7 @@ public class FRMediaItem extends FRelatorio implements FocusListener {
 				if ("G".equals(rgTipoimp.getVlrString())) {
 					imprimirGrafico( visualizar, rs, filtros, meses );
 				} else {
-					imprimirTexto( codemp, codfilialpd, codprod, codfilialvd, dataini, datafim, codfilialgp
+					imprimirTexto( codemp, codfilialmp, codfilialpd, codprod, codfilialvd, dataini, datafim, codfilialgp
 							, codgrup, codfilialmc, codmarca, codfilialva, codvend, faturado, financeiro
 							, cancelado, ordem, filtros, meses, visualizar );
 				}
@@ -388,7 +389,7 @@ public class FRMediaItem extends FRelatorio implements FocusListener {
 		}
 	}
 
-	private ResultSet getResultSetReport(Integer codemp, Integer codfilialpd, Integer codprod
+	private ResultSet getResultSetReport(Integer codemp, Integer codfilialmp, Integer codfilialpd, Integer codprod
 			, Integer codfilialvd, Date dataini, Date datafim 
 			, Integer codfilialgp, String codgrup
 			, Integer codfilialmc, String codmarca
@@ -398,7 +399,19 @@ public class FRMediaItem extends FRelatorio implements FocusListener {
 
 		ResultSet result = null;
 		StringBuilder sql = new StringBuilder();
-		sql.append( "select p.codprod, p.refprod, p.descprod, p.sldliqprod " );
+		sql.append( "select p.codemp, p.codfilial, p.codprod, p.refprod, p.descprod, p.sldliqprod " );
+		sql.append( ", (select first 1 dtmovprod from eqmovprod mp " );
+		sql.append( " where mp.codemp=? and mp.codfilial=? " );
+		sql.append( " and mp.codemppd=p.codemp and mp.codfilialpd=p.codfilial " );
+		sql.append( " and mp.codprod=p.codprod and mp.tipomovprod='E' and mp.codcompra is not null " );
+		sql.append( " order by mp.dtmovprod desc, mp.codmovprod desc " );
+		sql.append( " ) dtultcpprod " );
+		sql.append( " , (select first 1 qtdmovprod from eqmovprod mp " );
+		sql.append( "  where mp.codemp=? and mp.codfilial=? " );
+		sql.append( "  and mp.codemppd=p.codemp and mp.codfilialpd=p.codfilial " );
+		sql.append( "  and mp.codprod=p.codprod and mp.tipomovprod='E' and mp.codcompra is not null " );
+		sql.append( "  order by mp.dtmovprod desc, mp.codmovprod desc " );
+		sql.append( " ) qtdultcpprod " );
 		for ( int i = 0; i < meses.size(); i++ ) {
 			String anomes = meses.elementAt( i );
 			String ano = anomes.substring( 0, 4 );
@@ -471,10 +484,14 @@ public class FRMediaItem extends FRelatorio implements FocusListener {
 			filtros.append( ", cód.comissioando: " );
 			filtros.append( codvend );
 		}
-		sql.append( " group by p.codprod, p.refprod, p.descprod, p.sldliqprod ");
+		sql.append( " group by p.codemp, p.codfilial, p.codprod, p.refprod, p.descprod, p.sldliqprod ");
 		sql.append( " order by p.descprod, p.codprod ");
 		PreparedStatement ps = con.prepareStatement( sql.toString() );
 		int param = 1;
+		ps.setInt( param++, codemp );
+		ps.setInt( param++, codfilialmp );
+		ps.setInt( param++, codemp );
+		ps.setInt( param++, codfilialmp );
 		ps.setInt( param++, codemp );
 		ps.setInt( param++, codfilialpd );
 		if (codprod!=0) {
@@ -506,7 +523,7 @@ public class FRMediaItem extends FRelatorio implements FocusListener {
 		return result;
 	}
 
-	public void imprimirTexto( Integer codemp, Integer codfilialpd, Integer codprod
+	public void imprimirTexto( Integer codemp, Integer codfilialmp, Integer codfilialpd, Integer codprod
 			, Integer codfilialvd, Date dataini, Date datafim 
 			, Integer codfilialgp, String codgrup
 			, Integer codfilialmc, String codmarca
@@ -530,7 +547,7 @@ public class FRMediaItem extends FRelatorio implements FocusListener {
 		if ( filtros.length() > 0 ) {
 			imp.addSubTitulo( filtros.toString() );
 		}
-		ResultSet rs = getResultSetReport( codemp, codfilialpd, codprod, codfilialvd, dataini, datafim, codfilialgp
+		ResultSet rs = getResultSetReport( codemp, codfilialmp, codfilialpd, codprod, codfilialvd, dataini, datafim, codfilialgp
 				, codgrup, codfilialmc, codmarca, codfilialva, codvend, faturado, financeiro
 				, cancelado, ordem, filtros, meses, visualizar );
 
@@ -558,14 +575,14 @@ public class FRMediaItem extends FRelatorio implements FocusListener {
 			imp.say( imp.pRow() + 0, 0, "| " + Funcoes.copy( rs.getString( fcodprod ), 0, 13 ) + " " );
 			imp.say( imp.pRow() + 0, 16, "  " + Funcoes.copy( rs.getString( "descprod" ), 0, 40 ) + " " );
 			imp.say( imp.pRow() + 0, 59, "| " + Funcoes.strDecimalToStrCurrency( 8, 0, rs.getString( "sldliqprod" ) ) + " " );
-			/*if ( rs.getDate( "dtultcpprod" ) != null ) {
+			if ( rs.getDate( "dtultcpprod" ) != null ) {
 				imp.say( imp.pRow() + 0, 70, "| " + StringFunctions.sqlDateToStrDate( rs.getDate( "dtultcpprod" ) ) + " " );
 			}
 			else {
 				imp.say( imp.pRow() + 0, 70, "|    N/C   " );
-			}*/
+			}
 			
-			//imp.say( imp.pRow() + 0, 83, "| " + Funcoes.strDecimalToStrCurrency( 8, 0, "" + rs.getDouble( "qtdultcpprod" ) ) + "  " );
+			imp.say( imp.pRow() + 0, 83, "| " + Funcoes.strDecimalToStrCurrency( 8, 0, "" + rs.getDouble( "qtdultcpprod" ) ) + "  " );
 			imp.say( imp.pRow() + 0, 135, "|" );
 			imp.say( imp.pRow() + 1, 0, "|" + StringFunctions.replicate( "-", 133 ) + "|" );
 			imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
