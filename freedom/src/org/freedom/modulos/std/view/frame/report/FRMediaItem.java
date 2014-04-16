@@ -494,7 +494,12 @@ public class FRMediaItem extends FRelatorio implements FocusListener {
 			filtros.append( codvend );
 		}
 		sql.append( " group by p.codemp, p.codfilial, p.codprod, p.refprod, p.descprod, p.sldliqprod ");
-		sql.append( " order by p.descprod, p.codprod ");
+		sql.append( " order by ");
+		if ("D".equals(ordem)) {
+			sql.append(" p.descprod, p.codprod ");
+		} else {
+			sql.append(" p.codprod ");
+		}
 		PreparedStatement ps = con.prepareStatement( sql.toString() );
 		int param = 1;
 		ps.setInt( param++, codemp );
