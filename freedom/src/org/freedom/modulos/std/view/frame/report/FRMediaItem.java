@@ -265,8 +265,8 @@ public class FRMediaItem extends FRelatorio implements FocusListener {
 		adic( rgFaturados, 		  7,	355, 	120, 	75 );
 		adic( rgFinanceiro, 	158, 	355, 	120, 	75 );		
 		adic( rgEmitidos,		  7,	435, 	120, 	70 );
-		adic( new JLabelPad("Tipo de impressão"), 158, 435, 120, 20);
-		adic( rgTipoimp, 158, 455, 120, 50);
+//		adic( new JLabelPad("Tipo de impressão"), 158, 435, 120, 20);
+		//adic( rgTipoimp, 158, 455, 120, 50);
 		adic( cbVendaCanc, 7, 505, 200, 20 );
 		
 		setParamIni();
@@ -403,16 +403,20 @@ public class FRMediaItem extends FRelatorio implements FocusListener {
 		ResultSet result = null;
 		StringBuilder sql = new StringBuilder();
 		sql.append( "select p.codemp, p.codfilial, p.codprod, p.refprod, p.descprod, p.sldliqprod " );
-		sql.append( ", (select first 1 dtmovprod from eqmovprod mp " );
+		sql.append( ", (select first 1 dtmovprod from eqmovprod mp, eqtipomov tmm " );
 		sql.append( " where mp.codemp=? and mp.codfilial=? " );
 		sql.append( " and mp.codemppd=p.codemp and mp.codfilialpd=p.codfilial " );
 		sql.append( " and mp.codprod=p.codprod and mp.tipomovprod='E' and mp.codcompra is not null " );
+		sql.append( " and tmm.codemp=mp.codemptm and tmm.codfilial=mp.codfilialtm and tmm.codtipomov=mp.codtipomov ");
+		sql.append( " and tmm.somavdtipomov='S' ");
 		sql.append( " order by mp.dtmovprod desc, mp.codmovprod desc " );
 		sql.append( " ) dtultcpprod " );
-		sql.append( " , (select first 1 qtdmovprod from eqmovprod mp " );
-		sql.append( "  where mp.codemp=? and mp.codfilial=? " );
-		sql.append( "  and mp.codemppd=p.codemp and mp.codfilialpd=p.codfilial " );
-		sql.append( "  and mp.codprod=p.codprod and mp.tipomovprod='E' and mp.codcompra is not null " );
+		sql.append( " , (select first 1 qtdmovprod from eqmovprod mp, eqtipomov tmm " );
+		sql.append( " where mp.codemp=? and mp.codfilial=? " );
+		sql.append( " and mp.codemppd=p.codemp and mp.codfilialpd=p.codfilial " );
+		sql.append( " and mp.codprod=p.codprod and mp.tipomovprod='E' and mp.codcompra is not null " );
+		sql.append( " and tmm.codemp=mp.codemptm and tmm.codfilial=mp.codfilialtm and tmm.codtipomov=mp.codtipomov ");
+		sql.append( " and tmm.somavdtipomov='S' ");
 		sql.append( "  order by mp.dtmovprod desc, mp.codmovprod desc " );
 		sql.append( " ) qtdultcpprod " );
 		for ( int i = 0; i < 12; i++ ) {
