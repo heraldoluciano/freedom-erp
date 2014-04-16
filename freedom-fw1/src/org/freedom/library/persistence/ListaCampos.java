@@ -173,6 +173,8 @@ CarregaListener, MouseListener {
 	private boolean bCancelCancel = false;
 
 	private boolean muiltiselecaoF2 = false;
+	
+	private int colunaInicialAtivaF2 = 2;
 
 	private String sTabela;
 
@@ -3802,6 +3804,14 @@ CarregaListener, MouseListener {
 
 	public void setUseId(boolean useId) {
 		this.useId = useId;
+	}
+
+	public int getColunaInicialAtivaF2() {
+		return colunaInicialAtivaF2;
+	}
+
+	public void setColunaInicialAtivaF2(int colunaInicialAtivaF2) {
+		this.colunaInicialAtivaF2 = colunaInicialAtivaF2;
 	}
 
 	// public boolean isCarregando() {

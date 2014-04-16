@@ -193,6 +193,8 @@ public class FCheque extends FDetalhe implements CarregaListener, InsertListener
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
 		cbTipoCheq.addComboBoxListener( this );
+		// Definique a coluna ativa do F2 sendo a do número do cheque.
+		lcCampos.setColunaInicialAtivaF2( 5 );
 	}
 
 	public void exec( int seqcheq ) {
