@@ -99,7 +99,9 @@ public class DLF2 extends FFDialogo implements KeyListener, WindowFocusListener,
 
 	private boolean multiselecao;
 	
-	int ColunaAtiva = -1;
+	int colunaAtiva = -1;
+	
+	int colunaInicialAtiva = 2;
 
 	String sNomeCampoAtual = "";
 
@@ -114,6 +116,9 @@ public class DLF2 extends FFDialogo implements KeyListener, WindowFocusListener,
 	public DLF2(ListaCampos lc, Component cOrig) {
 
 		super(cOrig);
+		if (lc!=null) {
+		    this.colunaInicialAtiva = lc.getColunaInicialAtivaF2();
+		}
 		setMultiselecao(lc.isMuiltiselecaoF2());
 		setAlwaysOnTop(true);
 		btExecuta.setFocusable(false);
@@ -151,8 +156,10 @@ public class DLF2 extends FFDialogo implements KeyListener, WindowFocusListener,
 
 		montaColunas();
 
-		trocaColuna();
-		trocaColuna();
+		// Vai ativar a coluna conforme o valor definido no ListaCampos
+		for (int i=0; i<colunaInicialAtiva; i++) {
+			trocaColuna();
+		}
 
 		setPrimeiroFoco(txtPesq);
 		
@@ -237,35 +244,35 @@ public class DLF2 extends FFDialogo implements KeyListener, WindowFocusListener,
 		int iMascara = 0;
 
 		if (tab.getNumColunas() > 0) {
-			if (ColunaAtiva == ( tab.getNumColunas() - 1 )) {
-				tab.getColumnModel().getColumn(ColunaAtiva).setHeaderRenderer(cabAnt);
-				ColunaAtiva = 0;
+			if (colunaAtiva == ( tab.getNumColunas() - 1 )) {
+				tab.getColumnModel().getColumn(colunaAtiva).setHeaderRenderer(cabAnt);
+				colunaAtiva = 0;
 			}
 			else
-				ColunaAtiva++;
-			if (ColunaAtiva > 0) {
-				tab.getColumnModel().getColumn(ColunaAtiva - 1).setHeaderRenderer(cabAnt);
+				colunaAtiva++;
+			if (colunaAtiva > 0) {
+				tab.getColumnModel().getColumn(colunaAtiva - 1).setHeaderRenderer(cabAnt);
 			}
-			cabAnt = ( DefaultTableCellRenderer ) tab.getColumnModel().getColumn(ColunaAtiva).getHeaderRenderer();
+			cabAnt = ( DefaultTableCellRenderer ) tab.getColumnModel().getColumn(colunaAtiva).getHeaderRenderer();
 			cab.setBackground(Color.gray);
 			cab.setForeground(Color.yellow);
-			tab.getColumnModel().getColumn(ColunaAtiva).setHeaderRenderer(cab);
-			lbPesq.setText(( ( GuardaCampo ) ( lcF2.getComponent(ColunaAtiva) ) ).getTituloCampo());
-			if (( ( GuardaCampo ) ( lcF2.getComponent(ColunaAtiva) ) ).getCampo() != null) {
-				iTipo = ( ( GuardaCampo ) ( lcF2.getComponent(ColunaAtiva) ) ).getCampo().getTipoCampo();
-				iTam = ( ( GuardaCampo ) ( lcF2.getComponent(ColunaAtiva) ) ).getCampo().getTamanho();
-				iDec = ( ( GuardaCampo ) ( lcF2.getComponent(ColunaAtiva) ) ).getCampo().getDecimal();
-				iMascara = ( ( GuardaCampo ) ( lcF2.getComponent(ColunaAtiva) ) ).getCampo().getIMascara();
+			tab.getColumnModel().getColumn(colunaAtiva).setHeaderRenderer(cab);
+			lbPesq.setText(( ( GuardaCampo ) ( lcF2.getComponent(colunaAtiva) ) ).getTituloCampo());
+			if (( ( GuardaCampo ) ( lcF2.getComponent(colunaAtiva) ) ).getCampo() != null) {
+				iTipo = ( ( GuardaCampo ) ( lcF2.getComponent(colunaAtiva) ) ).getCampo().getTipoCampo();
+				iTam = ( ( GuardaCampo ) ( lcF2.getComponent(colunaAtiva) ) ).getCampo().getTamanho();
+				iDec = ( ( GuardaCampo ) ( lcF2.getComponent(colunaAtiva) ) ).getCampo().getDecimal();
+				iMascara = ( ( GuardaCampo ) ( lcF2.getComponent(colunaAtiva) ) ).getCampo().getIMascara();
 			}
 			else {
-				iTipo = ( ( GuardaCampo ) ( lcF2.getComponent(ColunaAtiva) ) ).getTipo();
+				iTipo = ( ( GuardaCampo ) ( lcF2.getComponent(colunaAtiva) ) ).getTipo();
 			}
 			txtPesq.setTipo(iTipo, iTam, iDec);
 			if (txtPesq.getEhMascara())
 				txtPesq.setMascara(iMascara);
 			else
 				txtPesq.setEhMascara(false);
-			sNomeCampoAtual = ( ( GuardaCampo ) ( lcF2.getComponent(ColunaAtiva) ) ).getNomeCampo();
+			sNomeCampoAtual = ( ( GuardaCampo ) ( lcF2.getComponent(colunaAtiva) ) ).getNomeCampo();
 			repaint();
 		}
 		habBtPesq();
@@ -291,33 +298,33 @@ public class DLF2 extends FFDialogo implements KeyListener, WindowFocusListener,
 		int iDec = 0;
 		int iMascara = 0;
 		if (tab.getNumColunas() > 0) {
-			if (ColunaAtiva == ( 0 )) {
-				tab.getColumnModel().getColumn(ColunaAtiva).setHeaderRenderer(cabAnt);
-				ColunaAtiva = tab.getNumColunas() - 1;
+			if (colunaAtiva == ( 0 )) {
+				tab.getColumnModel().getColumn(colunaAtiva).setHeaderRenderer(cabAnt);
+				colunaAtiva = tab.getNumColunas() - 1;
 			}
 			else
-				ColunaAtiva--;
-			if (ColunaAtiva < tab.getNumColunas() - 1) {
-				tab.getColumnModel().getColumn(ColunaAtiva + 1).setHeaderRenderer(cabAnt);
+				colunaAtiva--;
+			if (colunaAtiva < tab.getNumColunas() - 1) {
+				tab.getColumnModel().getColumn(colunaAtiva + 1).setHeaderRenderer(cabAnt);
 			}
-			cabAnt = ( DefaultTableCellRenderer ) tab.getColumnModel().getColumn(ColunaAtiva).getHeaderRenderer();
+			cabAnt = ( DefaultTableCellRenderer ) tab.getColumnModel().getColumn(colunaAtiva).getHeaderRenderer();
 			cab.setBackground(Color.gray);
 			cab.setForeground(Color.yellow);
-			tab.getColumnModel().getColumn(ColunaAtiva).setHeaderRenderer(cab);
-			lbPesq.setText(( ( GuardaCampo ) ( lcF2.getComponent(ColunaAtiva) ) ).getTituloCampo());
-			if (( ( GuardaCampo ) ( lcF2.getComponent(ColunaAtiva) ) ).getCampo() != null) {
-				iTipo = ( ( GuardaCampo ) ( lcF2.getComponent(ColunaAtiva) ) ).getCampo().getTipoCampo();
-				iTam = ( ( GuardaCampo ) ( lcF2.getComponent(ColunaAtiva) ) ).getCampo().getTamanho();
-				iDec = ( ( GuardaCampo ) ( lcF2.getComponent(ColunaAtiva) ) ).getCampo().getDecimal();
-				iMascara = ( ( GuardaCampo ) ( lcF2.getComponent(ColunaAtiva) ) ).getCampo().getIMascara();
+			tab.getColumnModel().getColumn(colunaAtiva).setHeaderRenderer(cab);
+			lbPesq.setText(( ( GuardaCampo ) ( lcF2.getComponent(colunaAtiva) ) ).getTituloCampo());
+			if (( ( GuardaCampo ) ( lcF2.getComponent(colunaAtiva) ) ).getCampo() != null) {
+				iTipo = ( ( GuardaCampo ) ( lcF2.getComponent(colunaAtiva) ) ).getCampo().getTipoCampo();
+				iTam = ( ( GuardaCampo ) ( lcF2.getComponent(colunaAtiva) ) ).getCampo().getTamanho();
+				iDec = ( ( GuardaCampo ) ( lcF2.getComponent(colunaAtiva) ) ).getCampo().getDecimal();
+				iMascara = ( ( GuardaCampo ) ( lcF2.getComponent(colunaAtiva) ) ).getCampo().getIMascara();
 			}
 			else {
-				iTipo = ( ( GuardaCampo ) ( lcF2.getComponent(ColunaAtiva) ) ).getTipo();
+				iTipo = ( ( GuardaCampo ) ( lcF2.getComponent(colunaAtiva) ) ).getTipo();
 			}
 			txtPesq.setTipo(iTipo, iTam, iDec);
 			if (txtPesq.getEhMascara())
 				txtPesq.setMascara(iMascara);
-			sNomeCampoAtual = ( ( GuardaCampo ) ( lcF2.getComponent(ColunaAtiva) ) ).getNomeCampo();
+			sNomeCampoAtual = ( ( GuardaCampo ) ( lcF2.getComponent(colunaAtiva) ) ).getNomeCampo();
 			repaint();
 		}
 		habBtPesq();
