@@ -184,10 +184,13 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 	private int casasDecPre = 2;
 
 	private String origem;
+	
+	private boolean contingencia = false;
 
-	public DLBuscaOrc(Object vdparam, String tipo, String origem ) {
+	public DLBuscaOrc(Object vdparam, String tipo, String origem, boolean contingencia) {
 		super();
 		this.origem = origem;
+		this.contingencia = contingencia;
 		sTipoVenda = tipo;
 		vd = vdparam;
 		casasDec = Aplicativo.casasDec;
@@ -675,7 +678,7 @@ private boolean gerarVenda() {
 			//Boolean que determina se data de saida/entrega aparecerá na dialog de Confirmação.
 			boolean solDtSaida = ( Boolean) prefs.get(COL_PREFS.SOLDTSAIDA.name());
 
-			diag = new DLCriaVendaCompra( !usaPedSeq, sTipoVenda, solDtSaida );
+			diag = new DLCriaVendaCompra( !usaPedSeq, sTipoVenda, solDtSaida, contingencia );
 
 			if ( sTipoVenda.equals( "V" ) && !usaPedSeq && vendaSTD!=null) {
 				diag.setNewCodigo( Integer.parseInt( vendaSTD.lcCampos.getNovoCodigo() ) );

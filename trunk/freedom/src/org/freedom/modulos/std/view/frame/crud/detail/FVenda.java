@@ -2550,7 +2550,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	private void abreBuscaOrc() {
 
 		if ( !Aplicativo.telaPrincipal.temTela( "Busca orçamento" ) ) {
-			DLBuscaOrc tela = new DLBuscaOrc( this, "V", "Venda" );
+			// Se o tipo de emissão for diferente de 1, então ambiente está setado para contingência.
+			boolean contingencia = !"1".equals(oPrefs[ POS_PREFS.TIPOEMISSAONFE.ordinal()]); 
+			DLBuscaOrc tela = new DLBuscaOrc( this, "V", "Venda", contingencia );
 			Aplicativo.telaPrincipal.criatela( "Orcamento", tela, con );
 		}
 	}

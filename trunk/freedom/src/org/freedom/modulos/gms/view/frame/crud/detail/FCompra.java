@@ -2591,7 +2591,9 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 	private void abreBuscaCompra() {
 
 		if ( !Aplicativo.telaPrincipal.temTela( "Busca pedido de compra" ) ) {
-			DLBuscaPedCompra tela = new DLBuscaPedCompra( this, bloqprecoaprov );
+			// Se o tipo de emissão for diferente de 1-Normal, então está em contingência.
+			boolean contingencia = tipoemissao!=1;
+			DLBuscaPedCompra tela = new DLBuscaPedCompra( this, bloqprecoaprov, contingencia );
 			Aplicativo.telaPrincipal.criatela( "Busca pedido de compra", tela, con );
 		}
 	}
