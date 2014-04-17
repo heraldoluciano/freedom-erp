@@ -15,7 +15,6 @@ import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
-import org.freedom.modulos.gms.business.object.TipoMov;
 import org.freedom.modulos.lvf.business.object.SeqSerie;
 
 public class DLCriaVendaCompra extends FDialogo implements CarregaListener, ActionListener {
@@ -38,9 +37,11 @@ public class DLCriaVendaCompra extends FDialogo implements CarregaListener, Acti
 	
 	private JTextFieldPad txtDataAtual = new JTextFieldPad( JTextFieldPad.TP_DATE, 8, 0 );
 
-	private JTextFieldPad txtDoc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldFK txtDoc = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldPad txtSerie = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
+	private JTextFieldFK txtSerie = new JTextFieldFK( JTextFieldPad.TP_STRING, 4, 0 );
+
+	private JTextFieldFK txtSerieCo = new JTextFieldFK( JTextFieldPad.TP_STRING, 4, 0 );
 
 	private JTextFieldPad txtEmitNota = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
@@ -55,11 +56,14 @@ public class DLCriaVendaCompra extends FDialogo implements CarregaListener, Acti
 	private boolean cancelaEvento = false;
 	
 	private boolean soldtsaida = false;
+	
+	private boolean contingencia = false;
 
-	public DLCriaVendaCompra( boolean confirmacodigo, String tipo, boolean soldtsaida ) {
+	public DLCriaVendaCompra( boolean confirmacodigo, String tipo, boolean soldtsaida, boolean contingencia ) {
 		
 		this.soldtsaida = soldtsaida;
-
+		this.contingencia = contingencia;
+		
 		setTitulo( "Confirmação" );
 
 		String labeltipo = "";
@@ -109,8 +113,11 @@ public class DLCriaVendaCompra extends FDialogo implements CarregaListener, Acti
 			adic( txtDescTipoMov, 173, 20, 200, 20 );
 
 			adic( new JLabelPad( "Serie" ), 376, 0, 60, 20 );
-			adic( txtSerie, 376, 20, 60, 20 );
-
+			if (contingencia) {
+				adic( txtSerieCo, 376, 20, 60, 20 );
+			} else {
+				adic( txtSerie, 376, 20, 60, 20 );
+			}
 			adic( new JLabelPad( "Nro.Doc." ), 439, 0, 80, 20 );
 			adic( txtDoc, 439, 20, 80, 20 );
 
@@ -121,7 +128,6 @@ public class DLCriaVendaCompra extends FDialogo implements CarregaListener, Acti
 			adic( txtDescPlanoPag, 90, 60, 284, 20 );
 
 		}
-
 		lcSerie.addCarregaListener( this );
 
 	}
@@ -143,10 +149,18 @@ public class DLCriaVendaCompra extends FDialogo implements CarregaListener, Acti
 		lcTipoMov.add( new GuardaCampo( txtCodModNota, "CodModNota", "Código do modelo de nota", ListaCampos.DB_FK, false ) );
 		lcTipoMov.add( new GuardaCampo( txtTipoMov, "TipoMov", "Tipo de movimento", ListaCampos.DB_SI, false ) );
 		lcTipoMov.add( new GuardaCampo( txtSerie, "serie", "serie", ListaCampos.DB_FK, false ) );
+		lcTipoMov.add( new GuardaCampo( txtSerieCo, "serieco", "serie c.", ListaCampos.DB_FK, false ) );
 		lcTipoMov.add( new GuardaCampo( txtEmitNota, "EmitNfCpMov", "emit.nota", ListaCampos.DB_SI, false ) );
 
-		lcTipoMov.setWhereAdic( "((ESTIPOMOV = 'E') AND" + " ( TUSUTIPOMOV='S' OR	EXISTS (SELECT * FROM EQTIPOMOVUSU TU " + "WHERE TU.CODEMP=EQTIPOMOV.CODEMP AND TU.CODFILIAL=EQTIPOMOV.CODFILIAL AND " + "TU.CODTIPOMOV=EQTIPOMOV.CODTIPOMOV AND TU.CODEMPUS=" + Aplicativo.iCodEmp
-				+ " AND TU.CODFILIALUS=" + ListaCampos.getMasterFilial( "SGUSUARIO" ) + " AND TU.IDUSU='" + Aplicativo.getUsuario().getIdusu() + "') ) )" );
+		lcTipoMov.setWhereAdic( "((ESTIPOMOV = 'E') AND" 
+		        + " ( TUSUTIPOMOV='S' OR	EXISTS (SELECT * FROM EQTIPOMOVUSU TU "
+				+ "WHERE TU.CODEMP=EQTIPOMOV.CODEMP AND TU.CODFILIAL=EQTIPOMOV.CODFILIAL AND "
+		        + "TU.CODTIPOMOV=EQTIPOMOV.CODTIPOMOV AND TU.CODEMPUS=" 
+				+ Aplicativo.iCodEmp
+				+ " AND TU.CODFILIALUS=" 
+				+ ListaCampos.getMasterFilial( "SGUSUARIO" ) 
+				+ " AND TU.IDUSU='" + Aplicativo.getUsuario().getIdusu()
+				+ "') ) )" );
 		lcTipoMov.montaSql( false, "TIPOMOV", "EQ" );
 		lcTipoMov.setQueryCommit( false );
 		lcTipoMov.setReadOnly( true );
@@ -206,13 +220,19 @@ public class DLCriaVendaCompra extends FDialogo implements CarregaListener, Acti
 	}
 
 	public String getSerie() {
-
-		return txtSerie.getVlrString();
+		if (contingencia) {
+			return txtSerieCo.getVlrString();			
+		} else {
+			return txtSerie.getVlrString();
+		}
 	}
 
 	public void setSerie( String serie ) {
-
-		txtSerie.setVlrString( serie );
+		if (contingencia) {
+			txtSerieCo.setVlrString( serie );
+		} else {
+			txtSerie.setVlrString( serie );
+		}
 	}
 
 	public void setConexao( DbConnection cn ) {
@@ -248,12 +268,15 @@ public class DLCriaVendaCompra extends FDialogo implements CarregaListener, Acti
 		if ( cevt.getListaCampos() == lcSerie ) {
 			try {
 				// Set for um pedido de compra deve gerar o nro do documento automaticamente e bloquear os campos ;
-				if ( TipoMov.TM_PEDIDO_COMPRA.getValue().equals( txtTipoMov.getVlrString() ) && "S".equals( txtEmitNota.getVlrString() ) ) {
+				if ( "S".equals( txtEmitNota.getVlrString() ) ) {
 
-					SeqSerie ss = new SeqSerie( txtSerie.getVlrString() );
+					SeqSerie ss = null;
+					if (contingencia) {
+						new SeqSerie( txtSerieCo.getVlrString() );
+					} else {
+						new SeqSerie( txtSerie.getVlrString() );
+					}
 					txtDoc.setVlrInteger( ss.getDocserie() + 1 );
-					txtSerie.setAtivo( false );
-					txtDoc.setAtivo( false );
 				}
 
 			} catch ( Exception e ) {

@@ -16732,20 +16732,6 @@ CODFILIALPG SMALLINT,
 CODPLANOPAG INTEGER)
 RETURNS (IRET INTEGER)
 AS 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
 declare variable codempse integer;
 declare variable codfilialse smallint;
 declare variable serie char(4);
@@ -16761,8 +16747,8 @@ begin
     --Definição do status da compra
     statuscompra = 'P1';
 
-    --Buscando doccompra
-    select doc from lfnovodocsp(:serie, :codempse , :codfilialse) into doccompra;
+    --Buscando doccompra 
+	-- select doc from lfnovodocsp(:serie, :codempse , :codfilialse) into doccompra;
 
     insert into cpcompra (
     codemp, codfilial, codcompra, codemppg, codfilialpg, codplanopag, codempfr, codfilialfr, codfor,

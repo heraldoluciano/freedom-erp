@@ -621,7 +621,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 	private void abreAdicOrc() {
 
 		if ( !Aplicativo.telaPrincipal.temTela( "Busca orçamento" ) ) {
-			DLBuscaOrc tela = new DLBuscaOrc( this, "E", "Venda" );
+			DLBuscaOrc tela = new DLBuscaOrc( this, "E", "Venda", false );
 			Aplicativo.telaPrincipal.criatela( "Orcamento", tela, con );
 		}
 	}

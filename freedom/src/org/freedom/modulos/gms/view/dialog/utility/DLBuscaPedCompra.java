@@ -157,6 +157,8 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 	private org.freedom.modulos.gms.view.frame.crud.detail.FCompra telacompra = null;
 
 	private PrefereGMS preferegms = PrefereGMS.getInstance();
+
+	boolean contingencia = false;
 	
 	private boolean bloqprecoaprov = false;
 	
@@ -173,7 +175,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 		SEL, CODITCOMPRA, CODEMPPD, CODFILIALPD, CODPROD, DESCPROD, QTDITCOMPRA, PRECOITCOMPRA, VLRDESCITCOMPRA, VLRLIQITCOMPRA, TPAGRUP, AGRUP, VLRAGRUP, CODCOMPRA, CODLOTE, APROVPRECO, CODEMPFR, CODFILIALFR, CODFOR, DTENTCOMPRA
 	}
 
-	public DLBuscaPedCompra( Object cp, boolean bloqprecoaprov ) {
+	public DLBuscaPedCompra( Object cp, boolean bloqprecoaprov, boolean contingencia ) {
 
 		super();
 
@@ -643,7 +645,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 
 				}
 
-				diag = new DLCriaVendaCompra( true, "C", false );
+				diag = new DLCriaVendaCompra( true, "C", false, contingencia );
 				diag.setCodplanopag( codplanopag );
 				diag.setCodTipoMov( codtipomov );
 
@@ -773,6 +775,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 
 				}
 
+				con.commit();
 				if ( Funcoes.mensagemConfirma( null, "Compra '" + codcompra + "' gerada com sucesso!!!\n\n" + "Deseja edita-la?" ) == JOptionPane.YES_OPTION ) {
 					telacompra.exec( codcompra );
 					dispose();
@@ -1111,6 +1114,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 	}
 
 	
+	@ SuppressWarnings ( "resource" )
 	private void recarregaPrecos() {
 		StringBuilder sql_preco = new StringBuilder();
 		StringBuilder sql_update = new StringBuilder();
@@ -1217,6 +1221,8 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 					preconovo = null;
 				}
 			
+				ps.close();
+				rs.close();
 				if(preconovo!=null) {
 
 					ps = con.prepareStatement( sql_update.toString() );
