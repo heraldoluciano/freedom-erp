@@ -654,9 +654,9 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		adicCampo( txtCodTipoMov, 90, 20, 77, 20, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_FK, txtDescTipoMov, true );
 		adicDescFK( txtDescTipoMov, 170, 20, 247, 20, "DescTipoMov", "Descrição do tipo de movimento" );
 		if (contingencia) {
-			adicCampo( txtSerieCompra, 420, 20, 77, 20, "Serie", "Série", ListaCampos.DB_FK, true );
-		} else {
 			adicCampo( txtSerieCCompra, 420, 20, 77, 20, "Serie", "Série", ListaCampos.DB_FK, true );
+		} else {
+			adicCampo( txtSerieCompra, 420, 20, 77, 20, "Serie", "Série", ListaCampos.DB_FK, true );
 		}
 		adicCampo( txtDocCompra, 500, 20, 77, 20, "DocCompra", "Documento", ListaCampos.DB_SI, true );
 		adicCampo( txtDtEmitCompra, 580, 20, 75, 20, "DtEmitCompra", "Dt.emissão", ListaCampos.DB_SI, true );
