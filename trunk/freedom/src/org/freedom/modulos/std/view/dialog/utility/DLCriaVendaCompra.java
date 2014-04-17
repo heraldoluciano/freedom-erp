@@ -41,7 +41,7 @@ public class DLCriaVendaCompra extends FDialogo implements CarregaListener, Acti
 
 	private JTextFieldFK txtSerie = new JTextFieldFK( JTextFieldPad.TP_STRING, 4, 0 );
 
-	private JTextFieldFK txtSerieCo = new JTextFieldFK( JTextFieldPad.TP_STRING, 4, 0 );
+	private JTextFieldFK txtSerieC = new JTextFieldFK( JTextFieldPad.TP_STRING, 4, 0 );
 
 	private JTextFieldPad txtEmitNota = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
@@ -114,7 +114,7 @@ public class DLCriaVendaCompra extends FDialogo implements CarregaListener, Acti
 
 			adic( new JLabelPad( "Serie" ), 376, 0, 60, 20 );
 			if (contingencia) {
-				adic( txtSerieCo, 376, 20, 60, 20 );
+				adic( txtSerieC, 376, 20, 60, 20 );
 			} else {
 				adic( txtSerie, 376, 20, 60, 20 );
 			}
@@ -149,7 +149,7 @@ public class DLCriaVendaCompra extends FDialogo implements CarregaListener, Acti
 		lcTipoMov.add( new GuardaCampo( txtCodModNota, "CodModNota", "Código do modelo de nota", ListaCampos.DB_FK, false ) );
 		lcTipoMov.add( new GuardaCampo( txtTipoMov, "TipoMov", "Tipo de movimento", ListaCampos.DB_SI, false ) );
 		lcTipoMov.add( new GuardaCampo( txtSerie, "serie", "serie", ListaCampos.DB_FK, false ) );
-		lcTipoMov.add( new GuardaCampo( txtSerieCo, "serieco", "serie c.", ListaCampos.DB_FK, false ) );
+		lcTipoMov.add( new GuardaCampo( txtSerieC, "seriec", "serie c.", ListaCampos.DB_FK, false ) );
 		lcTipoMov.add( new GuardaCampo( txtEmitNota, "EmitNfCpMov", "emit.nota", ListaCampos.DB_SI, false ) );
 
 		lcTipoMov.setWhereAdic( "((ESTIPOMOV = 'E') AND" 
@@ -221,7 +221,7 @@ public class DLCriaVendaCompra extends FDialogo implements CarregaListener, Acti
 
 	public String getSerie() {
 		if (contingencia) {
-			return txtSerieCo.getVlrString();			
+			return txtSerieC.getVlrString();			
 		} else {
 			return txtSerie.getVlrString();
 		}
@@ -229,7 +229,7 @@ public class DLCriaVendaCompra extends FDialogo implements CarregaListener, Acti
 
 	public void setSerie( String serie ) {
 		if (contingencia) {
-			txtSerieCo.setVlrString( serie );
+			txtSerieC.setVlrString( serie );
 		} else {
 			txtSerie.setVlrString( serie );
 		}
@@ -272,9 +272,9 @@ public class DLCriaVendaCompra extends FDialogo implements CarregaListener, Acti
 
 					SeqSerie ss = null;
 					if (contingencia) {
-						new SeqSerie( txtSerieCo.getVlrString() );
+						 ss = new SeqSerie( txtSerieC.getVlrString() );
 					} else {
-						new SeqSerie( txtSerie.getVlrString() );
+						 ss = new SeqSerie( txtSerie.getVlrString() );
 					}
 					txtDoc.setVlrInteger( ss.getDocserie() + 1 );
 				}
