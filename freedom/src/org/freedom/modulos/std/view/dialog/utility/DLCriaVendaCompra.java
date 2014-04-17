@@ -169,12 +169,20 @@ public class DLCriaVendaCompra extends FDialogo implements CarregaListener, Acti
 		txtCodTipoMov.setNomeCampo( "codtipomov" );
 
 		// Lista campos para a serie da compra
-		lcSerie.add( new GuardaCampo( txtSerie, "Serie", "Série", ListaCampos.DB_PK, false ) );
+		if (contingencia) {
+			lcSerie.add( new GuardaCampo( txtSerieC, "Serie", "Série", ListaCampos.DB_PK, false ) );
+		} else {
+			lcSerie.add( new GuardaCampo( txtSerie, "Serie", "Série", ListaCampos.DB_PK, false ) );
+		}
 		lcSerie.add( new GuardaCampo( txtDoc, "DocSerie", "Doc", ListaCampos.DB_SI, false ) );
 		lcSerie.montaSql( false, "SERIE", "LF" );
 		lcSerie.setQueryCommit( false );
 		lcSerie.setReadOnly( true );
-		txtSerie.setTabelaExterna( lcSerie, null );
+		if (contingencia) {
+			txtSerieC.setTabelaExterna( lcSerie, null );
+		} else {
+			txtSerie.setTabelaExterna( lcSerie, null );
+		}
 
 	}
 

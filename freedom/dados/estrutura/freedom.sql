@@ -16717,38 +16717,40 @@ begin
   end
 end ^
 
-ALTER PROCEDURE CPADICCOMPRAPEDSP (CODEMP INTEGER,
-CODFILIAL SMALLINT,
-CODCOMPRA INTEGER,
-DOCCOMPRA INTEGER,
-CODEMPTM INTEGER,
-CODFILIALTM SMALLINT,
-CODTIPOMOV INTEGER,
-CODEMPFR INTEGER,
-CODFILIALFR SMALLINT,
-CODFOR INTEGER,
-CODEMPPG INTEGER,
-CODFILIALPG SMALLINT,
-CODPLANOPAG INTEGER)
-RETURNS (IRET INTEGER)
-AS 
-declare variable codempse integer;
-declare variable codfilialse smallint;
-declare variable serie char(4);
+CREATE OR ALTER PROCEDURE CPADICCOMPRAPEDSP (
+    codemp integer,
+    codfilial smallint,
+    codcompra integer,
+    doccompra integer,
+    codemptm integer,
+    codfilialtm smallint,
+    codtipomov integer,
+    codempfr integer,
+    codfilialfr smallint,
+    codfor integer,
+    codemppg integer,
+    codfilialpg smallint,
+    codplanopag integer,
+    codempse integer,
+    codfilialse smallint,
+    serie char(4))
+returns (
+    iret integer)
+as
 declare variable statuscompra char(2);
 begin
 
-    --Buscando a série da compra
-    select tm.codempse, tm.codfilialse, tm.serie
+    --Buscando a sÃ©rie da compra
+    /*select tm.codempse, tm.codfilialse, tm.serie
     from eqtipomov tm
     where tm.codemp=:codemptm and tm.codfilial=:codfilialtm and tm.codtipomov=:codtipomov
     into :codempse, :codfilialse, :serie;
-
-    --Definição do status da compra
+    */
+    --DefiniÃ§Ã£o do status da compra
     statuscompra = 'P1';
 
     --Buscando doccompra 
-	-- select doc from lfnovodocsp(:serie, :codempse , :codfilialse) into doccompra;
+    -- select doc from lfnovodocsp(:serie, :codempse , :codfilialse) into doccompra;
 
     insert into cpcompra (
     codemp, codfilial, codcompra, codemppg, codfilialpg, codplanopag, codempfr, codfilialfr, codfor,
@@ -16762,7 +16764,7 @@ begin
 
     suspend;
 
-end ^
+end^
 
 ALTER PROCEDURE CPADICFORSP (CODEMP INTEGER,
 CODFILIAL INTEGER,
