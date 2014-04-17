@@ -180,6 +180,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 		super();
 
 		this.bloqprecoaprov = bloqprecoaprov;
+		this.contingencia = contingencia;
 		
 		setTitulo( "Busca pedido de compra", this.getClass().getName() );
 
@@ -626,6 +627,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 		Integer codfor = null;
 		Integer doccompra = null;
 		Integer codtipomov = preferegms.getCodtipomovtc();
+		String serie = null;
 
 		try {
 
@@ -661,6 +663,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 					codplanopag = diag.getCodplanopag();
 					codtipomov = diag.getCodTipoMov();
 					doccompra = diag.getDoc();
+					serie = diag.getSerie();
 				}
 				else {
 					return false;
@@ -686,7 +689,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 
 							// Executando procedure para geração do cabeçalho da compra.
 
-							sSQL = "SELECT IRET FROM CPADICCOMPRAPEDSP(?,?,?,?,?,?,?,?,?,?,?,?,?)";
+							sSQL = "SELECT IRET FROM CPADICCOMPRAPEDSP(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 							ps = con.prepareStatement( sSQL );
 
 							ps.setInt( param++, Aplicativo.iCodEmp );
@@ -705,6 +708,10 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 							ps.setInt( param++, Aplicativo.iCodEmp );
 							ps.setInt( param++, ListaCampos.getMasterFilial( "FNPLANOPAG" ) );
 							ps.setInt( param++, codplanopag );
+
+							ps.setInt( param++, Aplicativo.iCodEmp );
+							ps.setInt( param++, ListaCampos.getMasterFilial( "LFSERIE" ) );
+							ps.setString( param++, serie );
 
 							rs = ps.executeQuery();
 
