@@ -325,6 +325,8 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 
 	private JTextFieldPad txtSerieCompra = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
 
+	private JTextFieldPad txtSerieCCompra = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
+
 	private JTextFieldPad txtDocSerie = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 9, 0 ); // Tem que ter esse campo para não gerar N.de documento automático
 
 	private JTextFieldPad txtDocCompra = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 9, 0 );
@@ -595,6 +597,8 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 	
 	private Integer tipoemissao = new Integer(1);
 
+	private boolean contingencia = false;
+	
 	private enum PROCEDUREOP {
 		TIPOPROCESS, CODEMPOP, CODFILIALOP, CODOP, SEQOP, CODEMPPD, CODFILIALPD, CODPROD, CODEMPOC, CODFILIALOC, CODORC, TIPOORC, CODITORC, QTDSUGPRODOP, DTFABROP, SEQEST, CODEMPET, CODFILIALET, CODEST, AGRUPDATAAPROV, AGRUPDTFABROP, AGRUPCODCLI, CODEMPCL, CODFILIALCL, CODCLI, DATAAPROV, CODEMPCP, CODFILIALCP, CODCOMPRA, CODITCOMPRA, JUSTFICQTDPROD, CODEMPPDENTRADA, CODFILIALPDENTRADA, CODPRODENTRADA, QTDENTRADA
 	}
@@ -649,7 +653,11 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		adicCampo( txtCodCompra, 7, 20, 80, 20, "CodCompra", "Nº Compra", ListaCampos.DB_PK, true );
 		adicCampo( txtCodTipoMov, 90, 20, 77, 20, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_FK, txtDescTipoMov, true );
 		adicDescFK( txtDescTipoMov, 170, 20, 247, 20, "DescTipoMov", "Descrição do tipo de movimento" );
-		adicCampo( txtSerieCompra, 420, 20, 77, 20, "Serie", "Série", ListaCampos.DB_FK, true );
+		if (contingencia) {
+			adicCampo( txtSerieCompra, 420, 20, 77, 20, "Serie", "Série", ListaCampos.DB_FK, true );
+		} else {
+			adicCampo( txtSerieCCompra, 420, 20, 77, 20, "Serie", "Série", ListaCampos.DB_FK, true );
+		}
 		adicCampo( txtDocCompra, 500, 20, 77, 20, "DocCompra", "Documento", ListaCampos.DB_SI, true );
 		adicCampo( txtDtEmitCompra, 580, 20, 75, 20, "DtEmitCompra", "Dt.emissão", ListaCampos.DB_SI, true );
 		adicCampo( txtDtEntCompra, 658, 20, 75, 20, "DtEntCompra", "Dt.entrada", ListaCampos.DB_SI, true );
@@ -760,21 +768,35 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		lcTipoMov.add( new GuardaCampo( txtTipoMov, "TipoMov", "Tipo mov.", ListaCampos.DB_SI, false ) );
 		lcTipoMov.add( new GuardaCampo( cbSeqNfTipoMov, "SeqNfTipomov", "Aloc.NF", ListaCampos.DB_SI, true ) );
 		lcTipoMov.add( new GuardaCampo( txtSerieCompra, "Serie", "Série", ListaCampos.DB_FK, false ) );
+		lcTipoMov.add( new GuardaCampo( txtSerieCCompra, "SerieC", "Série C.", ListaCampos.DB_FK, false ) );
 		lcTipoMov.add( new GuardaCampo( txtDesBloqCV, "DesBloqCV", "Desabilita Bloqueio Compra/Venda", ListaCampos.DB_SI, false ) );	
-		lcTipoMov.setWhereAdic( "((ESTIPOMOV = 'E') AND" + " ( TUSUTIPOMOV='S' OR	EXISTS (SELECT * FROM EQTIPOMOVUSU TU " + "WHERE TU.CODEMP=EQTIPOMOV.CODEMP AND TU.CODFILIAL=EQTIPOMOV.CODFILIAL AND " + "TU.CODTIPOMOV=EQTIPOMOV.CODTIPOMOV AND TU.CODEMPUS=" + Aplicativo.iCodEmp
-				+ " AND TU.CODFILIALUS=" + ListaCampos.getMasterFilial( "SGUSUARIO" ) + " AND TU.IDUSU='" + Aplicativo.getUsuario().getIdusu() + "') ) )" );
+		lcTipoMov.setWhereAdic( "((ESTIPOMOV = 'E') AND" 
+		        + " ( TUSUTIPOMOV='S' OR	EXISTS (SELECT * FROM EQTIPOMOVUSU TU " 
+				+ "WHERE TU.CODEMP=EQTIPOMOV.CODEMP AND TU.CODFILIAL=EQTIPOMOV.CODFILIAL AND " 
+		        + "TU.CODTIPOMOV=EQTIPOMOV.CODTIPOMOV AND TU.CODEMPUS=" 
+				+ Aplicativo.iCodEmp
+				+ " AND TU.CODFILIALUS=" 
+				+ ListaCampos.getMasterFilial( "SGUSUARIO" ) 
+				+ " AND TU.IDUSU='" 
+				+ Aplicativo.getUsuario().getIdusu() + "') ) )" );
 		lcTipoMov.montaSql( false, "TIPOMOV", "EQ" );
 		lcTipoMov.setQueryCommit( false );
 		lcTipoMov.setReadOnly( true );
 		txtCodTipoMov.setTabelaExterna( lcTipoMov, FTipoMov.class.getCanonicalName() );
-
-		lcSerie.add( new GuardaCampo( txtSerieCompra, "Serie", "Série", ListaCampos.DB_PK, false ) );
+		if (contingencia) {
+			lcSerie.add( new GuardaCampo( txtSerieCCompra, "Serie", "Série", ListaCampos.DB_PK, false ) );
+		} else {
+			lcSerie.add( new GuardaCampo( txtSerieCompra, "Serie", "Série", ListaCampos.DB_PK, false ) );
+		}
 		lcSerie.add( new GuardaCampo( txtDocSerie, "DocSerie", "Documento", ListaCampos.DB_SI, false ) );
 		lcSerie.montaSql( false, "SERIE", "LF" );
 		lcSerie.setQueryCommit( false );
 		lcSerie.setReadOnly( true );
-		txtSerieCompra.setTabelaExterna( lcSerie, FSerie.class.getCanonicalName() );
-
+		if (contingencia) {
+			txtSerieCCompra.setTabelaExterna( lcSerie, FSerie.class.getCanonicalName() );
+		} else {
+			txtSerieCompra.setTabelaExterna( lcSerie, FSerie.class.getCanonicalName() );
+		}
 		lcImportacao.add( new GuardaCampo( txtCodImp, "CodImp", "Cód.Imp.", ListaCampos.DB_PK, false ) );
 		lcImportacao.add( new GuardaCampo( txtCodForImp, "CodFor", "Cód.For.", ListaCampos.DB_SI, false ) );
 		lcImportacao.add( new GuardaCampo( txtCodPlanoPagImp, "CodPlanoPag", "Cód.P.Pag.", ListaCampos.DB_SI, false ) );
@@ -1580,8 +1602,14 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 
 		nfecf.setTpNF( AbstractNFEFactory.TP_NF_IN );
 
+		String serie = null;
+		if (contingencia) {
+			serie = txtSerieCCompra.getVlrString();
+		} else {
+			serie = txtSerieCompra.getVlrString();
+		}
 		nfecf.setKey( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPCOMPRA" )
-				, txtCodCompra.getVlrInteger(), txtCodModNota.getVlrInteger(), txtSerieCompra.getVlrString(), txtDocCompra.getVlrInteger() );
+				, txtCodCompra.getVlrInteger(), txtCodModNota.getVlrInteger(), serie, txtDocCompra.getVlrInteger() );
 		nfecf.setSiglaUfEmitente( siglauffilial  );
 		nfecf.post();
 
@@ -1656,7 +1684,11 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		lcFor.carregaDados();
 		txtCodTipoMov.setVlrString( iCodTipoMov + "" );
 		lcTipoMov.carregaDados();
-		txtSerieCompra.setVlrString( sSerie );
+		if (contingencia) {
+			txtSerieCCompra.setVlrString( sSerie );
+		} else {
+			txtSerieCompra.setVlrString( sSerie );
+		}
 		txtDocCompra.setVlrString( iDoc + "" );
 	}
 
@@ -1816,6 +1848,8 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 				cnpjfilial = rs.getString("CNPJFILIAL");
 				siglauffilial = rs.getString( "SIGLAUF" );
 				tipoemissao = new Integer(rs.getString( "TIPOEMISSAONFE" ));
+				// Se o tipo de emissão for diferente de 1-Normal, então está em contingência.
+				contingencia = tipoemissao!=1;
 			}
 			con.commit();
 		} catch ( Exception e ) {
@@ -2025,9 +2059,15 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		}
 		if ( result && "N".equals( emitnfcpmov ) && nfecf != null ) { 
 
+			String serie = null;
+			if (contingencia) {
+				serie = txtSerieCCompra.getVlrString();
+			} else {
+				serie = txtSerieCompra.getVlrString();
+			}
 			nfecf.setKindEnv( ambientenfe );
 			nfecf.setKey( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPCOMPRA" ), txtCodCompra.getVlrInteger()
-					, txtCodModNota.getVlrInteger(), txtSerieCompra.getVlrString(), txtDocCompra.getVlrInteger() );
+					, txtCodModNota.getVlrInteger(), serie, txtDocCompra.getVlrInteger() );
 
 			try {
 				nfecf.setSiglaUfEmitente( txtSiglaUFFor.getVlrString() );
@@ -2591,8 +2631,6 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 	private void abreBuscaCompra() {
 
 		if ( !Aplicativo.telaPrincipal.temTela( "Busca pedido de compra" ) ) {
-			// Se o tipo de emissão for diferente de 1-Normal, então está em contingência.
-			boolean contingencia = tipoemissao!=1;
 			DLBuscaPedCompra tela = new DLBuscaPedCompra( this, bloqprecoaprov, contingencia );
 			Aplicativo.telaPrincipal.criatela( "Busca pedido de compra", tela, con );
 		}
@@ -3115,8 +3153,12 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 			if ( lcCampos.getStatus() == ListaCampos.LCS_INSERT && "S".equals( cbSeqNfTipoMov.getVlrString() ) ) {
 				// Busca de sequencia pela LFSEQSERIE
 				try {
-
-					SeqSerie ss = new SeqSerie( txtSerieCompra.getVlrString() );
+					SeqSerie ss = null;
+					if (contingencia) {
+						ss = new SeqSerie( txtSerieCCompra.getVlrString() );
+					} else {
+						ss = new SeqSerie( txtSerieCompra.getVlrString() );
+					}
 					txtDocSerie.setVlrInteger( ss.getDocserie() );
 
 				} catch ( Exception e ) {
@@ -4333,14 +4375,19 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 
 			ps = con.prepareStatement( sSql );
 
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
-			ps.setInt( 3, txtDocCompra.getVlrInteger() );
-			ps.setString( 4, txtSerieCompra.getVlrString() );
-			ps.setInt( 5, Aplicativo.iCodEmp );
-			ps.setInt( 6, ListaCampos.getMasterFilial( "CPFORNECED" ) );
-			ps.setInt( 7, txtCodFor.getVlrInteger() );
-			ps.setInt( 8, txtCodCompra.getVlrInteger() ); 
+			int param = 1;
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
+			ps.setInt( param++, txtDocCompra.getVlrInteger() );
+			if (contingencia) {
+				ps.setString( param++, txtSerieCCompra.getVlrString() );
+			} else {
+				ps.setString( param++, txtSerieCompra.getVlrString() );
+			}
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "CPFORNECED" ) );
+			ps.setInt( param++, txtCodFor.getVlrInteger() );
+			ps.setInt( param++, txtCodCompra.getVlrInteger() ); 
 
 			rs = ps.executeQuery();
 
