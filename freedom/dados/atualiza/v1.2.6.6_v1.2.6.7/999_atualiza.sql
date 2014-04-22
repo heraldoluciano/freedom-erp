@@ -1,4 +1,4 @@
-update lffrete set emmanut='S', dtmovfrete=dtemitfrete where dtmovfrete is null;
+update lffrete set emmanut='S', qtdfrete=coalesce(qtdfrete,0), vlrmercadoria=coalesce(vlrmercadoria,0), dtmovfrete=dtemitfrete where dtmovfrete is null;
 
 update lffrete set emmanut='N' where emmanut='S';
 
