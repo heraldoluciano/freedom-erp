@@ -173,7 +173,7 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 		lcPlan.add( new GuardaCampo( txtDescPlan, "DescPlan", "Descrição", ListaCampos.DB_SI, false ) );
 		lcPlan.add( new GuardaCampo( txtCodRedPlan, "CodRedPlan", "Cód.Reduz.", ListaCampos.DB_SI, false ) );
 		
-		lcPlan.setWhereAdic( "TIPOPLAN = 'D' AND NIVELPLAN = 6" );
+		lcPlan.setWhereAdic( " ( TIPOPLAN = 'D' OR LANCTOXPLAN='S' ) AND NIVELPLAN = 6" );
 		lcPlan.montaSql( false, "PLANEJAMENTO", "FN" );
 		lcPlan.setReadOnly( true );
 		txtCodPlan.setTabelaExterna( lcPlan, FPlanejamento.class.getCanonicalName() );
