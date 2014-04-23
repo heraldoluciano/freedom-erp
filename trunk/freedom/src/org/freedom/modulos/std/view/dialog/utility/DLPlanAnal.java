@@ -34,6 +34,7 @@ import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.component.JTabbedPanePad;
@@ -97,9 +98,13 @@ public class DLPlanAnal extends FFDialogo {
 
 	private JRadioGroup<String, String> rgClasFinPlan = null;
 
+	private JCheckBoxPad cbLanctoXPlan = new JCheckBoxPad( "Lançamento cruzado", "S", "N" );
+	
 	private ListaCampos lcHist = new ListaCampos( this, "HP" );
 
-	public DLPlanAnal( Component cOrig, String sCodPai, String sDescPai, String sCod, String sDesc, String sTipo, String sFin, String sCodContCred, String sCodContDeb, int iCodHist, String sFinalidade, String sESFin, String sClasFin, Integer codredplan ) {
+	public DLPlanAnal( Component cOrig, String sCodPai, String sDescPai, String sCod, String sDesc
+			, String sTipo, String sFin, String sCodContCred, String sCodContDeb, int iCodHist
+			, String sFinalidade, String sESFin, String sClasFin, Integer codredplan, String lanctoxplan ) {
 
 		super( cOrig );
 		
@@ -149,6 +154,7 @@ public class DLPlanAnal extends FFDialogo {
 		}
 		rgEsFinPlan.setVlrString( sESFin );
 		rgClasFinPlan.setVlrString( sClasFin );
+		cbLanctoXPlan.setVlrString( lanctoxplan );
 		txtDescAnal.requestFocus();
 	}
 
@@ -239,6 +245,7 @@ public class DLPlanAnal extends FFDialogo {
 		panelfields.adic( rgFinPlan			, 7		, 215	, 383	, 130	, "Finalidade" 						);
 		panelfields.adic( rgEsFinPlan		, 7		, 370	, 383	, 30	, "Origem" 							);
 		panelfields.adic( rgClasFinPlan		, 7		, 420	, 383	, 30	, "Classificação" 					);
+		panelfields.adic( cbLanctoXPlan		, 7		, 460	, 383	, 20	, "" 					);
 
 		panelcontabil.adic( txtCodContDeb	, 7		, 20	, 150	, 20	, "Cód.cont.débito" 				);
 		panelcontabil.adic( txtCodContCred	, 160	, 20	, 150	, 20	, "Cód.cont.crédito" 				);
@@ -277,7 +284,7 @@ public class DLPlanAnal extends FFDialogo {
 
 	public Object[] getValores() {
 
-		Object[] ret = new Object[ 8 ];
+		Object[] ret = new Object[ 9 ];
 		
 		ret[ 0 ] = txtDescAnal.getVlrString();
 		ret[ 1 ] = rgFinPlan.getVlrString();
@@ -287,6 +294,7 @@ public class DLPlanAnal extends FFDialogo {
 		ret[ 5 ] = rgEsFinPlan.getVlrString();
 		ret[ 6 ] = rgClasFinPlan.getVlrString();
 		ret[ 7 ] = txtCodRedAnal.getVlrInteger();
+		ret[ 8 ] = cbLanctoXPlan.getVlrString();
 
 		return ret;
 	}

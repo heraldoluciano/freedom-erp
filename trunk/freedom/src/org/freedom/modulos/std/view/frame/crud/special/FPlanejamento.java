@@ -95,7 +95,7 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 	private JButtonPad btPrevimp = new JButtonPad( Icone.novo( "btPrevimp.png" ) );
 
 	private enum COL_PLAN {
-		CODIGO, CODRED, DESC, RD, FIN, ESFIN, CLASFIN
+		CODIGO, CODRED, DESC, RD, FIN, ESFIN, CLASFIN, LANCTOX
 	};
 
 	public FPlanejamento() {
@@ -137,6 +137,7 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 		tab.adicColuna( "Fin." );
 		tab.adicColuna( "Orig." );
 		tab.adicColuna( "Clas." );
+		tab.adicColuna( "L.X.");
 		tab.setTamColuna( 140, COL_PLAN.CODIGO.ordinal() );
 		tab.setTamColuna( 70, COL_PLAN.CODRED.ordinal() );
 		tab.setTamColuna( 320, COL_PLAN.DESC.ordinal() );
@@ -144,6 +145,7 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 		tab.setTamColuna( 43, COL_PLAN.FIN.ordinal() );
 		tab.setTamColuna( 43, COL_PLAN.ESFIN.ordinal() );
 		tab.setTamColuna( 43, COL_PLAN.CLASFIN.ordinal() );
+		tab.setTamColuna( 20, COL_PLAN.LANCTOX.ordinal() );
 		btSair.addActionListener( this );
 		btPrim.addActionListener( this );
 		btSint.addActionListener( this );
@@ -162,7 +164,9 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 
 	private void montaTab() {
 
-		String sSQL = "SELECT CODPLAN, CODREDPLAN, DESCPLAN, TIPOPLAN, FINPLAN, ESFINPLAN, CLASFINPLAN " + " FROM FNPLANEJAMENTO " + "WHERE CODEMP=? AND CODFILIAL =? ORDER BY CODPLAN";
+		String sSQL = "SELECT CODPLAN, CODREDPLAN, DESCPLAN, TIPOPLAN, FINPLAN, ESFINPLAN, CLASFINPLAN, LANCTOXPLAN " 
+				+ " FROM FNPLANEJAMENTO " 
+				+ "WHERE CODEMP=? AND CODFILIAL =? ORDER BY CODPLAN";
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		tab.limpa();
@@ -180,6 +184,7 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 				tab.setValor( rs.getString( "FinPlan" ) != null ? rs.getString( "FinPlan" ) : "", i, COL_PLAN.FIN.ordinal() );
 				tab.setValor( rs.getString( "EsFinPlan" ) != null ? rs.getString( "EsFinPlan" ) : "", i, COL_PLAN.ESFIN.ordinal() );
 				tab.setValor( rs.getString( "ClasFinPlan" ) != null ? rs.getString( "ClasFinPlan" ) : "", i, COL_PLAN.CLASFIN.ordinal() );
+				tab.setValor( rs.getString( "LanctoXPlan" ) != null ? rs.getString( "LanctoXPlan" ) : "", i, COL_PLAN.LANCTOX.ordinal() );
 			}
 			// rs.close();
 			// ps.close();
@@ -265,7 +270,9 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 		int iNivelPai = 0;
 		int iNivelFilho = 0;
 		String sMax = "";
-		String sSQLQuery = "SELECT G.NIVELPLAN,(SELECT MAX(M.CODPLAN) FROM FNPLANEJAMENTO M " + "WHERE M.CODSUBPLAN=G.CODPLAN AND M.CODEMP=G.CODEMP AND M.CODFILIAL=G.CODFILIAL)" + "FROM FNPLANEJAMENTO G WHERE G.CODPLAN='" + sCodPai + "' AND G.CODEMP=? AND G.CODFILIAL=?";
+		String sSQLQuery = "SELECT G.NIVELPLAN,(SELECT MAX(M.CODPLAN) FROM FNPLANEJAMENTO M " 
+		+ "WHERE M.CODSUBPLAN=G.CODPLAN AND M.CODEMP=G.CODEMP AND M.CODFILIAL=G.CODFILIAL)" 
+				+ "FROM FNPLANEJAMENTO G WHERE G.CODPLAN='" + sCodPai + "' AND G.CODEMP=? AND G.CODFILIAL=?";
 		PreparedStatement psQuery = null;
 		ResultSet rs = null;
 		try {
@@ -335,7 +342,7 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 		String sDescPai = String.valueOf( tab.getValor( tab.getLinhaSel(), COL_PLAN.DESC.ordinal() ) ).trim();
 		String sTipoFilho = String.valueOf( tab.getValor( tab.getLinhaSel(), COL_PLAN.RD.ordinal() ) ).trim();
 		String sFinPlanP = String.valueOf( tab.getValor( tab.getLinhaSel(), COL_PLAN.FIN.ordinal() ) ).trim();
-
+		String lanctoxplan = String.valueOf( tab.getValor( tab.getLinhaSel(), COL_PLAN.LANCTOX.ordinal() ) ).trim();
 		if ( sCodPai.length() == 13 ) {
 			Funcoes.mensagemInforma( this, "Não é possível criar uma conta analítica de outra conta analítica! ! !" );
 			return;
@@ -426,7 +433,10 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 				return;
 			}
 
-			String sSQLCont = "INSERT INTO FNCONTA (" + "CODEMP,CODFILIAL,NUMCONTA,CODEMPBO,CODFILIALBO,CODBANCO,CODEMPPN,CODFILIALPN,CODPLAN," + "DESCCONTA,TIPOCONTA,DATACONTA,AGENCIACONTA,CODEMPMA,CODFILIALMA,CODMOEDA) " + "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+			String sSQLCont = "INSERT INTO FNCONTA (" 
+			+ "CODEMP,CODFILIAL,NUMCONTA,CODEMPBO,CODFILIALBO,CODBANCO,CODEMPPN,CODFILIALPN,CODPLAN," 
+					+ "DESCCONTA,TIPOCONTA,DATACONTA,AGENCIACONTA,CODEMPMA,CODFILIALMA,CODMOEDA) " 
+			+ "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
 			try {
 				PreparedStatement psCont = con.prepareStatement( sSQLCont );
@@ -467,7 +477,7 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 		}
 		else if ( "DR".indexOf( sTipoFilho ) >= 0 ) {
 			
-			DLPlanAnal dl = new DLPlanAnal( this, sCodPai, sDescPai, sCodFilho, null, sTipoFilho, "", null, null, 0, sFinPlanP, null, null, iCodRed );
+			DLPlanAnal dl = new DLPlanAnal( this, sCodPai, sDescPai, sCodFilho, null, sTipoFilho, "", null, null, 0, sFinPlanP, null, null, iCodRed, lanctoxplan );
 			
 			dl.setConexao( con );
 			dl.setVisible( true ); 
@@ -486,6 +496,7 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 			String sESFinPlan = (String) ret[ 5 ];
 			String sClasFinPlan = (String) ret[ 6 ];
 			iCodRed = (Integer) ret[7];
+		    lanctoxplan = (String) ret[ 8 ];
 
 			dl.dispose();
 
@@ -493,44 +504,46 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 			
 			sSQL.append( "INSERT INTO FNPLANEJAMENTO " );
 			sSQL.append( "(CODEMP,CODFILIAL,CODPLAN,DESCPLAN,NIVELPLAN,CODREDPLAN,CODSUBPLAN,TIPOPLAN,FINPLAN," );
-			sSQL.append( "CODCONTDEB,CODCONTCRED,CODHIST,CODEMPHP,CODFILIALHP, ESFINPLAN, CLASFINPLAN) " );
-			sSQL.append( "VALUES (?,?,?,?,6,?,?,?,?,?,?,?,?,?,?,?)" );
+			sSQL.append( "CODCONTDEB,CODCONTCRED,CODHIST,CODEMPHP,CODFILIALHP, ESFINPLAN, CLASFINPLAN, LANCTOXPLAN ) " );
+			sSQL.append( "VALUES (?,?,?,?,6,?,?,?,?,?,?,?,?,?,?,?,?)" );
 
 			try {
 				PreparedStatement ps = con.prepareStatement( sSQL.toString() );
-				ps.setInt( 1, Aplicativo.iCodEmp );
-				ps.setInt( 2, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
-				ps.setString( 3, sCodFilho );
-				ps.setString( 4, sDescFilho );
-				ps.setInt( 5, iCodRed );
-				ps.setString( 6, sCodPai.trim() );
-				ps.setString( 7, sTipoFilho );
-				ps.setString( 8, sFinPlan );
+				int param = 1;
+				ps.setInt( param++, Aplicativo.iCodEmp );
+				ps.setInt( param++, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
+				ps.setString( param++, sCodFilho );
+				ps.setString( param++, sDescFilho );
+				ps.setInt( param++, iCodRed );
+				ps.setString( param++, sCodPai.trim() );
+				ps.setString( param++, sTipoFilho );
+				ps.setString( param++, sFinPlan );
 				if ( sCodContDeb != null && sCodContDeb.trim().length() > 0 ) {
-					ps.setString( 9, sCodContDeb );
+					ps.setString( param++, sCodContDeb );
 				}
 				else {
-					ps.setNull( 9, Types.CHAR );
+					ps.setNull( param++, Types.CHAR );
 				}
 				if ( sCodContCred != null && sCodContCred.trim().length() > 0 ) {
-					ps.setString( 10, sCodContCred );
+					ps.setString( param++, sCodContCred );
 				}
 				else {
-					ps.setNull( 10, Types.CHAR );
+					ps.setNull( param++, Types.CHAR );
 				}
 				if ( iCodHist > 0 ) {
-					ps.setInt( 11, iCodHist );
-					ps.setInt( 12, Aplicativo.iCodEmp );
-					ps.setInt( 13, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
+					ps.setInt( param++, iCodHist );
+					ps.setInt( param++, Aplicativo.iCodEmp );
+					ps.setInt( param++, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
 				}
 				else {
-					ps.setNull( 11, Types.INTEGER );
-					ps.setInt( 12, Aplicativo.iCodEmp );
-					ps.setInt( 13, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
+					ps.setNull( param++, Types.INTEGER );
+					ps.setInt( param++, Aplicativo.iCodEmp );
+					ps.setInt( param++, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
 				}
-				ps.setString( 14, sESFinPlan );
-				ps.setString( 15, sClasFinPlan );
-
+				ps.setString( param++, sESFinPlan );
+				ps.setString( param++, sClasFinPlan );
+				ps.setString( param++, lanctoxplan );
+				
 				if ( ps.executeUpdate() == 0 ) {
 					Funcoes.mensagemInforma( this, "Não foi possível inserir registro na tabela PALNEJAMENTO! ! !" );
 					return;
@@ -636,9 +649,10 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 		Integer iCodRed = null;
 		String sDescPai = "";
 		String sCodPai = "";
+		String lanctoxplan = "N";
 
 		StringBuilder sSQLQuery = new StringBuilder();
-		sSQLQuery.append( "SELECT P.DESCPLAN,F.CODSUBPLAN,F.CODCONTDEB,F.CODCONTCRED,F.CODHIST, F.CODREDPLAN " );
+		sSQLQuery.append( "SELECT P.DESCPLAN,F.CODSUBPLAN,F.CODCONTDEB,F.CODCONTCRED,F.CODHIST, F.CODREDPLAN, F.LANCTOXPLAN " );
 		sSQLQuery.append( "FROM FNPLANEJAMENTO P, FNPLANEJAMENTO F " );
 		sSQLQuery.append( "WHERE F.CODPLAN=? AND P.CODPLAN=F.CODSUBPLAN AND P.CODEMP=F.CODEMP AND " );
 		sSQLQuery.append( "P.CODFILIAL=F.CODFILIAL AND F.CODEMP=? AND F.CODFILIAL=?" );
@@ -658,6 +672,7 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 				sCodContDeb = rs.getString( "CODCONTDEB" );
 				iCodHist = rs.getInt( "CODHIST" );
 				iCodRed = rs.getInt( "CODREDPLAN" );
+				lanctoxplan = rs.getString( "LANCTOXPLAN" );
 			}
 			else {
 				Funcoes.mensagemInforma( this, "Não foi possível consultar a tabela PLANEJAMENTO! ! !" );
@@ -671,7 +686,7 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 			return;
 		}
 
-		DLPlanAnal dl = new DLPlanAnal( this, sCodPai, sDescPai, sCodFilho, sDescFilho, sTipoFilho, sFinPlan, sCodContCred, sCodContDeb, iCodHist, sFinPlan, sESFinPlan, sClasFinPlan, iCodRed );
+		DLPlanAnal dl = new DLPlanAnal( this, sCodPai, sDescPai, sCodFilho, sDescFilho, sTipoFilho, sFinPlan, sCodContCred, sCodContDeb, iCodHist, sFinPlan, sESFinPlan, sClasFinPlan, iCodRed, lanctoxplan );
 		dl.setConexao( con );
 		dl.setVisible( true );
 		

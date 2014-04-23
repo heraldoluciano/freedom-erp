@@ -167,7 +167,7 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 
 		lcPlan.add( new GuardaCampo( txtCodPlan, "CodPlan", "Cód.plan.", ListaCampos.DB_PK, false ) );
 		lcPlan.add( new GuardaCampo( txtDescPlan, "DescPlan", "Descrição", ListaCampos.DB_SI, false ) );
-		lcPlan.setWhereAdic( "TIPOPLAN = 'R' AND NIVELPLAN = 6" );
+		lcPlan.setWhereAdic( " ( TIPOPLAN = 'R' OR LANCTOXPLAN='S' ) AND NIVELPLAN = 6" );
 		lcPlan.montaSql( false, "PLANEJAMENTO", "FN" );
 		lcPlan.setReadOnly( true );
 		txtCodPlan.setTabelaExterna( lcPlan, null );
