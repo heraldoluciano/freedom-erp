@@ -109,7 +109,7 @@ public class DLPlanAnal extends FFDialogo {
 		super( cOrig );
 		
 		setTitulo( "Planejamento financeiro (Conta Analítica)" );
-		setAtribos( 430, 570 );
+		setAtribos( 430, 600 );
 
 		montaListaCampos();
 		montaRadioGroup();

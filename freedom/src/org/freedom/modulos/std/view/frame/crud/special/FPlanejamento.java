@@ -703,58 +703,60 @@ public class FPlanejamento extends FFilho implements ActionListener, MouseListen
 		sESFinPlan = (String) ret[ 5 ];
 		sClasFinPlan = (String) ret[ 6 ];
 		iCodRed = (Integer) ret[7];
+		lanctoxplan = (String) ret[8];
 
 		dl.dispose();
 		StringBuilder sSQL = new StringBuilder();
 		
 		sSQL.append( "UPDATE FNPLANEJAMENTO SET " );
-		sSQL.append( "DESCPLAN=?, FINPLAN=?, CODCONTDEB=?, CODCONTCRED=?, CODEMPHP=?, " );
-		sSQL.append( "CODFILIALHP=?, CODHIST=?, ESFINPLAN=?, CLASFINPLAN=?, CODREDPLAN=? " );
+		sSQL.append( "DESCPLAN=?, FINPLAN=?, CODCONTDEB=?, CODCONTCRED=?, CODEMPHP=? " );
+		sSQL.append( ", CODFILIALHP=?, CODHIST=?, ESFINPLAN=?, CLASFINPLAN=?, CODREDPLAN=? " );
+		sSQL.append( ", LANCTOXPLAN=? " );
 		sSQL.append( "WHERE CODPLAN=? AND CODEMP=? AND CODFILIAL=?" );
 
 		try {
 
 			PreparedStatement ps = con.prepareStatement( sSQL.toString() );
-			ps.setString( 1, sDescFilho );
-			ps.setString( 2, sFinPlan );
+			int param = 1;
+			ps.setString( param++, sDescFilho );
+			ps.setString( param++, sFinPlan );
 			
 			if ( sCodContDeb != null && sCodContDeb.trim().length() > 0 ) {
-				ps.setString( 3, sCodContDeb );
+				ps.setString( param++, sCodContDeb );
 			}
 			else {
-				ps.setNull( 3, Types.CHAR );
+				ps.setNull( param++, Types.CHAR );
 			}
 			if ( sCodContCred != null && sCodContCred.trim().length() > 0 ) {
-				ps.setString( 4, sCodContCred );
+				ps.setString( param++, sCodContCred );
 			}
 			else {
-				ps.setNull( 4, Types.CHAR );
+				ps.setNull( param++, Types.CHAR );
 			}
 			
-			ps.setInt( 5, Aplicativo.iCodEmp );
-			ps.setInt( 6, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
 			
 			if ( iCodHist > 0 ) {
-				ps.setInt( 7, iCodHist );
+				ps.setInt( param++, iCodHist );
 			}
 			else {
-				ps.setNull( 7, Types.INTEGER );
+				ps.setNull( param++, Types.INTEGER );
 			}
 			
-			ps.setString( 8, sESFinPlan );
-			ps.setString( 9, sClasFinPlan );
+			ps.setString( param++, sESFinPlan );
+			ps.setString( param++, sClasFinPlan );
 			
 			if( iCodRed!=null && iCodRed > 0 ) {
-				ps.setInt( 10, iCodRed );
+				ps.setInt( param++, iCodRed );
 			}
 			else {
-				ps.setNull( 10, Types.INTEGER );
+				ps.setNull( param++, Types.INTEGER );
 			}
-			
-			
-			ps.setString( 11, sCodFilho );
-			ps.setInt( 12, Aplicativo.iCodEmp );
-			ps.setInt( 13, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
+			ps.setString( param++, lanctoxplan );
+			ps.setString( param++, sCodFilho );
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
 			ps.executeUpdate();
 			
 			con.commit();
