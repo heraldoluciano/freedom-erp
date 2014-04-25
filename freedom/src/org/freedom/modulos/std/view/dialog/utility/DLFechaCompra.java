@@ -466,7 +466,7 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 		
 		lcItPagar.add( new GuardaCampo( txtNParcPag		, "NParcPag"	, "N.parc."		, ListaCampos.DB_PK, false ) );
 		lcItPagar.add( new GuardaCampo( txtVlrParcItPag	, "VlrParcItPag", "Valor tot."	, ListaCampos.DB_SI, false ) );
-		lcItPagar.add( new GuardaCampo( txtDtVencItPag	, "DtVencItPag"	, "Valor tot."	, ListaCampos.DB_SI, false ) );
+		lcItPagar.add( new GuardaCampo( txtDtVencItPag	, "DtVencItPag"	, "Data venc."	, ListaCampos.DB_SI, false ) );
 		
 		lcItPagar.montaSql( false, "ITPAGAR", "FN" );
 		lcItPagar.setConexao( cn );
