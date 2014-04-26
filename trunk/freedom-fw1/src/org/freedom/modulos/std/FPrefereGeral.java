@@ -717,6 +717,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private final JCheckBoxPad cdReplicaOrc = new JCheckBoxPad("Habilita replicação de orçamentos", "S", "N");
 
 	private final JCheckBoxPad cbLancaFinContr = new JCheckBoxPad("Permite lançamento financeiro em contrato.", "S", "N");
+	
+	private final JCheckBoxPad cbMatricEmpFn = new JCheckBoxPad("Matrícula do empregado nos lançamentos financeiros.", "S", "N");
 
 	private final JCheckBoxPad cbLancaRMAContr = new JCheckBoxPad("Permite lançamento de RMA em contrato.", "S", "N");
 
@@ -1378,6 +1380,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		cbImpDocBol.setVlrString("N");
 		cbFechaCaixa.setVlrString("N");
 		cbFechaCaixaAuto.setVlrString("N");
+		cbMatricEmpFn.setVlrString("N");
 		
 		rgTipoValidOrc = new JRadioGroup<String, String>(1, 2, vLabsTpValidOrc1, vValsTpValidOrc1);
 		rgTipoValidOrc.setVlrString("D");
@@ -1802,7 +1805,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDescFK(txtDescPlanPC, 613, 210, 240, 20, "DescPlan", "Planejamento p/pagto com cheques");
 
 		lbFinOpcoes.setBorder(BorderFactory.createTitledBorder(opcoes));
-		adic(lbFinOpcoes, 500, 255, 370, 215);
+		adic(lbFinOpcoes, 500, 255, 370, 235);
 
 		adicDB(cbAltItRecImpBol, 510, 275, 310, 20, "AtBancoImpBol", "", false);
 		adicDB(cbJurosPosCalc, 510, 295, 310, 20, "JurosPosCalc", "", false);
@@ -1814,6 +1817,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB(cbImpDocBol, 510, 395, 350, 20, "ImpDocBol", "", true);
 		adicDB(cbFechaCaixa, 510, 415, 350, 20, "FechaCaixa", "", true);
 		adicDB(cbFechaCaixaAuto, 510, 435, 350, 20, "FechaCaixaAuto", "", true);
+		adicDB(cbMatricEmpFn, 510, 455, 350, 20, "MatricEmpFn", "", true);
 
 
 		lbFinPagar.setBorder(BorderFactory.createTitledBorder("Contratos/Projetos"));
@@ -2398,6 +2402,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 			rgTipoImpDanfe.setVlrString("F");
 			cbBloqNfeVdAutoriz.setVlrString("S");
 			cbObrigTipoFisc.setVlrString("N");
+			cbMatricEmpFn.setVlrString("N");
 		}
 	}
 

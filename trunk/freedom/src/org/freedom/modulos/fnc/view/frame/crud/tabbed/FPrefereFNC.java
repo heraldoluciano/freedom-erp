@@ -149,6 +149,8 @@ public class FPrefereFNC extends FTabDados implements InsertListener{
 	private JCheckBoxPad cbFechaCaixa = new JCheckBoxPad("Habilitar bloqueio de caixas.", "S", "N");
 
 	private JCheckBoxPad cbFechaCaixaAuto = new JCheckBoxPad("Efetua bloqueio automático.", "S", "N");
+	
+	private final JCheckBoxPad cbMatricEmpFn = new JCheckBoxPad("Matrícula do empregado nos lançamentos financeiros.", "S", "N");
 
 	private final JCheckBoxPad cbImpDocBol = new JCheckBoxPad("Imprime documento/parcela nos boletos.", "S", "N");
 	
@@ -365,7 +367,7 @@ public class FPrefereFNC extends FTabDados implements InsertListener{
 		// Painel de opções 
 		
 		pnOpcoes.setBorder(BorderFactory.createTitledBorder(opcoes));
-		adic(pnOpcoes				, 530	, 10	, 370	, 275);
+		adic(pnOpcoes				, 530	, 10	, 370	, 295);
 
 		setPainel( pnOpcoes );
 		
@@ -382,13 +384,14 @@ public class FPrefereFNC extends FTabDados implements InsertListener{
 		adicDB(cbAlinhaTelaLanca	, 7		, 180	, 350	, 20, "AlinhaTelaLanca"		, ""	, true);
 		adicDB(cbHabLogPagar		, 7		, 200	, 350	, 20, "HabLogPagar"			, ""	, true);
 		adicDB(cbHabLogReceber		, 7		, 220	, 350	, 20, "HabLogReceber"		, ""	, true);
+		adicDB(cbMatricEmpFn		, 7		, 240	, 350	, 20, "MatricEmpFn"		, ""	, true);
 		
 		setPainel( pinGeral );
 		
 		// Painel para identificação do cliente - SIACC
 		
 		pnIdentCliBco.setBorder(BorderFactory.createTitledBorder("Identificação do cliente - (SIACC)"));
-		adic( pnIdentCliBco		, 530		, 283	, 370	, 90 );
+		adic( pnIdentCliBco		, 530		, 303	, 370	, 90 );
 
 		setPainel( pnIdentCliBco );
 		
@@ -542,6 +545,7 @@ public class FPrefereFNC extends FTabDados implements InsertListener{
 		if(ievt.getListaCampos() == lcCampos){
 			cbHabLogPagar.setVlrString( "N" );
 			cbHabLogReceber.setVlrString( "N" );
+			cbMatricEmpFn.setVlrString( "N" );
 		}
 		
 	}
