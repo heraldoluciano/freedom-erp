@@ -393,7 +393,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 		, CHEQUES, NPARCPAG, DOC, DOCCOMPRA, CODORDCP, VLRPARCITPAG
 		, DTPAGOITPAG, VLRPAGOITPAG, VLRDESCITPAG, VLRJUROSITPAG, VLRDEVITPAG, VLRADICITPAG, VLRAPAGITPAG
 		, VLRCANCITPAG, NUMCONTA, DESCPLAN, DESCCC, CODTIPOCOB, DESCTIPOCOB, CODCOMPRA, CODPLAN, CODCC
-		, DTITPAG, CODCONTR, DESCCONTR, CODITCONTR, DESCITCONTR   }
+		, DTITPAG, CODCONTR, DESCCONTR, CODITCONTR, DESCITCONTR, MATEMPR, NOMEEMPR   }
 
 	public enum enum_tab_baixa {STATUS, DTVENCTO, NPARC, DOC, CODCOMPRA, VLRPARC, DTPAGTO, VLRPAGO, VLRDESC
 		, VLRJUROS, VLRAPAG, VLRCANC, NUMCONTA, DESCCONTA, CODPLAN, DESCPLAN, CODCC,  DESCCC, OBS
@@ -1201,6 +1201,8 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 		tabManut.adicColuna( "Descrição do contrato/projeto" ); // DESCCONTR		
 		tabManut.adicColuna( "Cód.it.contr." ); 				// CODITCONTR
 		tabManut.adicColuna( "Descrição do item de cont./proj." ); // DESCITCONTR		
+		tabManut.adicColuna( "Matrícula" ); 				// MATEMPR
+		tabManut.adicColuna( "Nome do empregado/colaborador" ); // MOMEEMPR		
 
 		tabManut.setColunaEditavel( enum_tab_manut.SEL.ordinal(), true );
 
@@ -1239,6 +1241,8 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 		tabManut.setTamColuna( 150, enum_tab_manut.DESCCONTR.ordinal() );		
 		tabManut.setTamColuna( 60, 	enum_tab_manut.CODITCONTR.ordinal() );
 		tabManut.setTamColuna( 150, enum_tab_manut.DESCITCONTR.ordinal() );		
+		tabManut.setTamColuna( 60, 	enum_tab_manut.MATEMPR.ordinal() );
+		tabManut.setTamColuna( 150, enum_tab_manut.NOMEEMPR.ordinal() );		
 
 		tabManut.setRowHeight( 20 );
 	}
@@ -1997,12 +2001,14 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 				sql.append( "coalesce((select count(*) from fnpagcheq pc where pc.codemp=it.codemp and pc.codfilial=it.codfilial and pc.codpag=it.codpag and pc.nparcpag=it.nparcpag),0) temcheque " );
 
 				sql.append( ", ct.codcontr, ct.desccontr, ict.coditcontr, ict.descitcontr ");
+				sql.append( ", em.matempr, em.nomeempr ");
 
 				sql.append( "from fnpagar p, cpforneced f, fnitpagar it  " );
 
 				sql.append( "LEFT OUTER JOIN FNSINAL SN ON SN.CODEMP=It.CODEMPSN AND SN.CODFILIAL=It.CODFILIALSN AND SN.CODSINAL=It.CODSINAL ");
 				sql.append( "left outer join vdcontrato ct on ct.codemp=it.codempct and ct.codfilial=it.codfilialct and ct.codcontr=it.codcontr ");
 				sql.append( "left outer join vditcontrato ict on ict.codemp=it.codempct and ict.codfilial=it.codfilialct and ict.codcontr=it.codcontr and ict.coditcontr=it.coditcontr ");
+				sql.append( "left outer join rhempregado emp on emp.codemp=it.codempem and emp.codfilial=it.codfilialem and emp.matempr=it.matempr ");
 
 				sql.append( "WHERE P.CODPAG=IT.CODPAG AND F.CODFOR=P.CODFOR AND F.CODEMP=P.CODEMPFR AND F.CODFILIAL=P.CODFILIALFR " );
 				sql.append( sWhereManut );
@@ -2134,6 +2140,8 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 						tabManut.setValor( rs.getString( enum_tab_manut.DESCCONTR.name()	), i, enum_tab_manut.DESCCONTR.ordinal(), corsinal );
 						tabManut.setValor( rs.getString( enum_tab_manut.CODITCONTR.name()	), i, enum_tab_manut.CODITCONTR.ordinal(), corsinal );
 						tabManut.setValor( rs.getString( enum_tab_manut.DESCITCONTR.name()	), i, enum_tab_manut.DESCITCONTR.ordinal(), corsinal );
+						tabManut.setValor( rs.getString( enum_tab_manut.MATEMPR.name()	), i, enum_tab_manut.MATEMPR.ordinal(), corsinal );
+						tabManut.setValor( rs.getString( enum_tab_manut.NOMEEMPR.name()	), i, enum_tab_manut.NOMEEMPR.ordinal(), corsinal );
 
 						vCodPed.addElement( rs.getString( enum_tab_manut.CODCOMPRA.name()  ) );
 						vNumContas.addElement( rs.getString( enum_tab_manut.NUMCONTA.name() ) );
@@ -2910,6 +2918,8 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 
 				sVals[ EDIT_PAG_SETVALORES.CODCONTR.ordinal() ] =  (String) tabManut.getValor( iLin, enum_tab_manut.CODCONTR.ordinal() );
 				sVals[ EDIT_PAG_SETVALORES.CODITCONTR.ordinal() ] = (String) tabManut.getValor( iLin, enum_tab_manut.CODITCONTR.ordinal() );
+
+				sVals[ EDIT_PAG_SETVALORES.MATEMPR.ordinal() ] =  (String) tabManut.getValor( iLin, enum_tab_manut.MATEMPR.ordinal() );
 
 				// Se o doccompra estiver em branco getvalor(8) quer dizer que o lançamento foi feito pelo usuário.
 				dl.setValores( sVals, "".equals( tabManut.getValor( iLin, enum_tab_manut.DOCCOMPRA.ordinal() ).toString().trim() ) );

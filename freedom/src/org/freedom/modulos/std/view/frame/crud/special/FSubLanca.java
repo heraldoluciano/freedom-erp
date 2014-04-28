@@ -464,8 +464,8 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 	public void valorAlterado( RadioGroupEvent rgevt ) {
 
 		if ( rgTipoLanca.getVlrString().compareTo( "A" ) == 0 ) {
-			setAtribos( this.getX(), this.getY(), 655, 450 );
-			setAltDet( 100 );
+			//setAtribos( this.getX(), this.getY(), 655, 450 );
+			//setAltDet( 100 );
 
 			txtCodCli.setVisible( false );
 			txtRazCli.setVisible( false );
