@@ -2170,7 +2170,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 		String codplanjp = ( (String) prefere.get( "codplanjp" ) ).trim();
 		Integer codcontr = null;
 		Integer coditcontr = null;
-
+		Integer matempr = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		StringBuilder sqlLanca = new StringBuilder();
@@ -2278,8 +2278,14 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			} else {
 				coditcontr = new Integer((String)tabManut.getValor( row , enum_tab_manut.CODITCONTR.ordinal() ));
 			}
+			if ("".equals( tabManut.getValor( row , enum_tab_manut.MATEMPR.ordinal() ) ) ) {
+				matempr = null;
+			} else {
+				matempr = new Integer((String)tabManut.getValor( row , enum_tab_manut.MATEMPR.ordinal() ));
+			}
+
 			daoMovimento.gerarSublanca(codpag, nparcpag, codlanca, codsublanca, codplan, codfor, codcc, 
-					dtitpag, datasublanca, dtprevsublanca, vlrsublanca, "P", codcontr, coditcontr, iAnoCC);
+					dtitpag, datasublanca, dtprevsublanca, vlrsublanca, "P", codcontr, coditcontr, iAnoCC, matempr);
 
 			if(vlrdescitpag.compareTo( new BigDecimal( 0 ) ) > 0 ) {	
 				codsublanca++;
@@ -2289,7 +2295,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 					codplan = codplandr;
 				}
 				daoMovimento.gerarSublanca(codpag, nparcpag, codlanca, codsublanca, codplan, codfor, 
-						codcc, dtitpag, datasublanca, dtprevsublanca, vlrsublanca, "D", codcontr, coditcontr, iAnoCC);
+						codcc, dtitpag, datasublanca, dtprevsublanca, vlrsublanca, "D", codcontr, coditcontr, iAnoCC, matempr);
 
 			}
 
@@ -2301,7 +2307,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 					codplan = (String) prefere.get( "codplanjp" );
 				}
 				daoMovimento.gerarSublanca(codpag, nparcpag, codlanca, codsublanca, codplan, codfor, codcc, dtitpag, 
-						datasublanca, dtprevsublanca, vlrsublanca, "J", codcontr, coditcontr, iAnoCC);
+						datasublanca, dtprevsublanca, vlrsublanca, "J", codcontr, coditcontr, iAnoCC, matempr);
 
 			}
 
@@ -2309,76 +2315,6 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 		}
 
 	}
-
-	/*private void geraSublanca(Integer codpag, Integer nparcpag, Integer codlanca, Integer codsublanca, String codplan, Integer codfor, 
-				String codcc, String dtitpag, String datasublanca, String dtprevsublanca, BigDecimal vlrsublanca, String tiposublanca
-				, Integer codcontr, Integer coditcontr) throws SQLException {
-			PreparedStatement ps = null;
-			StringBuilder sqlSubLanca = new StringBuilder();
-			sqlSubLanca.append( "INSERT INTO FNSUBLANCA (CODEMP,CODFILIAL,CODLANCA,CODSUBLANCA,CODEMPFR,CODFILIALFR,CODFOR,CODEMPPN,CODFILIALPN, CODPLAN, ");
-			sqlSubLanca.append( "CODEMPPG, CODFILIALPG, CODPAG, NPARCPAG," );
-			sqlSubLanca.append( "CODEMPCC,CODFILIALCC,ANOCC,CODCC,ORIGSUBLANCA,DTCOMPSUBLANCA,DATASUBLANCA,DTPREVSUBLANCA,VLRSUBLANCA, TIPOSUBLANCA");
-			sqlSubLanca.append( ", CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR) ");
-			sqlSubLanca.append( "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,'E', ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-
-			ps = con.prepareStatement( sqlSubLanca.toString() );
-
-			int param = 1;
-
-			ps.setInt( param++, Aplicativo.iCodEmp );
-			ps.setInt( param++, ListaCampos.getMasterFilial( "FNSUBLANCA" ) );
-			ps.setInt( param++, codlanca );
-			ps.setInt( param++, codsublanca );
-
-			ps.setInt( param++, Aplicativo.iCodEmp );
-			ps.setInt( param++, ListaCampos.getMasterFilial( "CPFORNECED" ) );
-			ps.setInt( param++, codfor );
-
-			ps.setInt( param++, Aplicativo.iCodEmp );
-			ps.setInt( param++, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
-			ps.setString( param++, codplan );
-			ps.setInt( param++, Aplicativo.iCodEmp );
-			ps.setInt( param++, ListaCampos.getMasterFilial( "FNPLANEJAMENTO" ) );
-			ps.setInt( param++, codpag );
-			ps.setInt( param++, nparcpag );
-
-
-			if ( "".equals( codcc ) ) {
-				ps.setNull( param++, Types.INTEGER );
-				ps.setNull( param++, Types.INTEGER );
-				ps.setNull( param++, Types.CHAR );
-				ps.setNull( param++, Types.INTEGER );
-			} else {
-				ps.setInt( param++, Aplicativo.iCodEmp );
-				ps.setInt( param++, ListaCampos.getMasterFilial( "FNCC" ) );
-				ps.setInt( param++, iAnoCC );
-				ps.setString( param++, codcc );
-			}
-
-			ps.setDate( param++, Funcoes.dateToSQLDate( 
-					ConversionFunctions.strDateToDate( dtitpag ) )  ) ;
-
-			ps.setDate( param++, Funcoes.strDateToSqlDate( datasublanca ) );
-			ps.setDate( param++, Funcoes.strDateToSqlDate( dtprevsublanca) );
-
-			ps.setBigDecimal( param++, vlrsublanca );
-			ps.setString( param++, tiposublanca );
-
-			if ( codcontr==null || coditcontr==null ) {
-				ps.setNull( param++, Types.INTEGER );
-				ps.setNull( param++, Types.INTEGER );
-				ps.setNull( param++, Types.INTEGER );
-				ps.setNull( param++, Types.INTEGER );
-			} else {
-				ps.setInt( param++, Aplicativo.iCodEmp );
-				ps.setInt( param++, ListaCampos.getMasterFilial( "VDITCONTRATO" ) );
-				ps.setInt( param++, codcontr );
-				ps.setInt( param++, coditcontr );
-			}
-
-			ps.executeUpdate();
-
-		}*/
 
 	private void editar() {
 

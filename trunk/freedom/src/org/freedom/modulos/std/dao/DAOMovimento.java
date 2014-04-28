@@ -1400,14 +1400,14 @@ public class DAOMovimento extends AbstractDAO {
 	
 	public void gerarSublanca(Integer codpag, Integer nparcpag, Integer codlanca, Integer codsublanca, String codplan, Integer codfor, 
 			String codcc, String dtitpag, String datasublanca, String dtprevsublanca, BigDecimal vlrsublanca, String tiposublanca
-			, Integer codcontr, Integer coditcontr, Integer anocc) throws SQLException {
+			, Integer codcontr, Integer coditcontr, Integer anocc, Integer matempr) throws SQLException {
 		PreparedStatement ps = null;
 		StringBuilder sqlSubLanca = new StringBuilder();
 		sqlSubLanca.append( "INSERT INTO FNSUBLANCA (CODEMP,CODFILIAL,CODLANCA,CODSUBLANCA,CODEMPFR,CODFILIALFR,CODFOR,CODEMPPN,CODFILIALPN, CODPLAN, ");
 		sqlSubLanca.append( "CODEMPPG, CODFILIALPG, CODPAG, NPARCPAG," );
 		sqlSubLanca.append( "CODEMPCC,CODFILIALCC,ANOCC,CODCC,ORIGSUBLANCA,DTCOMPSUBLANCA,DATASUBLANCA,DTPREVSUBLANCA,VLRSUBLANCA, TIPOSUBLANCA");
-		sqlSubLanca.append( ", CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR) ");
-		sqlSubLanca.append( "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,'E', ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+		sqlSubLanca.append( ", CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR, CODEMPEM, CODFILIALEM, MATEMPR) ");
+		sqlSubLanca.append( "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,'E', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
 		ps = getConn().prepareStatement( sqlSubLanca.toString() );
 
@@ -1462,6 +1462,16 @@ public class DAOMovimento extends AbstractDAO {
 			ps.setInt( param++, ListaCampos.getMasterFilial( "VDITCONTRATO" ) );
 			ps.setInt( param++, codcontr );
 			ps.setInt( param++, coditcontr );
+		}
+
+		if (matempr==null) {
+			ps.setNull( param++, Types.INTEGER );
+			ps.setNull( param++, Types.INTEGER );
+			ps.setNull( param++, Types.INTEGER );
+		} else {
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "RHEMPREGADO" ) );
+			ps.setInt( param++, matempr );
 		}
 
 		ps.executeUpdate();
