@@ -24,7 +24,9 @@
 
 package org.freedom.modulos.fnc.view.dialog.utility;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -37,6 +39,8 @@ import org.freedom.library.business.object.Historico;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.component.JPanelPad;
+import org.freedom.library.swing.component.JTabbedPanePad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
 import org.freedom.library.swing.dialog.FFDialogo;
@@ -48,6 +52,12 @@ import org.freedom.modulos.std.view.frame.crud.special.FPlanejamento;
 public class DLBaixaPag extends FFDialogo implements CarregaListener {
 
 	private static final long serialVersionUID = 1L;
+
+	private JTabbedPanePad tpn = new JTabbedPanePad();
+
+	private JPanelPad pnGeral = new JPanelPad();
+
+	private JPanelPad pnContrato = new JPanelPad();
 
 	private final JTextFieldPad txtCodFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 10, 0 );
 
@@ -134,8 +144,9 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 		super( cOrig );
 		this.lancafincontr = lancafincontr;
 		this.categoriaRequerida = categoriaRequerida;
-		setTitulo( "Baixa" );
-		setAtribos( 360, 520 );
+		setTitulo( "Baixa de contas a pagar" );
+		setAtribos( 368, 450 );
+
 		
 		montaListaCampos();
 		montaTela();
@@ -239,6 +250,14 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 
 	private void montaTela() {
 		
+		Container c = getContentPane();
+		c.setLayout( new BorderLayout() );
+		c.add( pnBordRodape, BorderLayout.SOUTH );
+		c.add( tpn, BorderLayout.CENTER );
+
+		tpn.addTab( "Informações gerais", pnGeral );
+		tpn.addTab( "Contrato/Empregado", pnContrato );
+		
 		if(categoriaRequerida) {
 			Funcoes.setBordReq( txtCodPlan );
 		}
@@ -257,29 +276,32 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 		txtDtVenc.setAtivo( false );
 		txtVlrParc.setAtivo( false );
 
-		adic( txtCodFor			, 7		, 20	, 80	, 20, "Cód.for." );
-		adic( txtRazFor			, 90	, 20	, 250	, 20, "Razão do fornecedor" );
-		adic( txtCodConta		, 7		, 60	, 80	, 20, "Cód.conta" );
-		adic( txtDescConta		, 90	, 60	, 250	, 20, "Descrição da conta" );
-		adic( txtCodPlan		, 7		, 100	, 100	, 20, "Cód.categoria" );
-		adic( txtDescPlan		, 110	, 100	, 230	, 20, "Descrição da categoria" );
-		adic( txtCodCC			, 7		, 140	, 100	, 20, "Cód.C.C." );
-		adic( txtDescCC			, 110	, 140	, 230	, 20, "Descrição do centro de custo" );
+		pnGeral.adic( txtCodFor			, 7		, 20	, 80	, 20, "Cód.for." );
+		pnGeral.adic( txtRazFor			, 90	, 20	, 250	, 20, "Razão do fornecedor" );
+		pnGeral.adic( txtCodConta		, 7		, 60	, 80	, 20, "Cód.conta" );
+		pnGeral.adic( txtDescConta		, 90	, 60	, 250	, 20, "Descrição da conta" );
+		pnGeral.adic( txtCodPlan		, 7		, 100	, 100	, 20, "Cód.categoria" );
+		pnGeral.adic( txtDescPlan		, 110	, 100	, 230	, 20, "Descrição da categoria" );
+		pnGeral.adic( txtCodCC			, 7		, 140	, 100	, 20, "Cód.C.C." );
+		pnGeral.adic( txtDescCC			, 110	, 140	, 230	, 20, "Descrição do centro de custo" );
 
-		adic( txtCodTipoCob		, 7		, 180	, 80	, 20, "Cod.Tp.Cob" );
-		adic( txtDescTipoCob	, 90	, 180	, 250	, 20, "Descrição do tipo de cobrança" );
+		pnGeral.adic( txtCodTipoCob		, 7		, 180	, 80	, 20, "Cod.Tp.Cob" );
+		pnGeral.adic( txtDescTipoCob	, 90	, 180	, 250	, 20, "Descrição do tipo de cobrança" );
 
-		adic( txtDoc			, 7		, 220	, 110	, 20, "Doc." );
-		adic( txtDtEmis			, 120	, 220	, 107	, 20, "Emissão" );
-		adic( txtDtVenc			, 230	, 220	, 110	, 20, "Vencimento" );
-		adic( txtVlrParc		, 7		, 260	, 110	, 20, "Vlr. Parc." );
-		adic( txtDtPagto		, 120	, 260	, 107	, 20, "Dt. Pagto." );
-		adic( txtVlrPago		, 230	, 260	, 110	, 20, "Vlr. Pago" );
-		adic( txtObs			, 7		, 300	, 333	, 20, "Observações"  );
-		adic( txtCodcontr, 7, 340, 80, 20, "Cód.contr."  );
-		adic( txtDesccontr, 90, 340, 250, 20, "Descrição do contrato" );
-		adic( txtCoditcontr, 7, 380, 80, 20, "Cód.it.contr.");
-		adic( txtDescitcontr, 90, 380, 250, 20, "Descrição do item de contrato" );
+		pnGeral.adic( txtDoc			, 7		, 220	, 110	, 20, "Doc." );
+		pnGeral.adic( txtDtEmis			, 120	, 220	, 107	, 20, "Emissão" );
+		pnGeral.adic( txtDtVenc			, 230	, 220	, 110	, 20, "Vencimento" );
+		pnGeral.adic( txtVlrParc		, 7		, 260	, 110	, 20, "Vlr. Parc." );
+		pnGeral.adic( txtDtPagto		, 120	, 260	, 107	, 20, "Dt. Pagto." );
+		pnGeral.adic( txtVlrPago		, 230	, 260	, 110	, 20, "Vlr. Pago" );
+		pnGeral.adic( txtObs			, 7		, 300	, 333	, 20, "Observações"  );
+		pnContrato.adic( txtCodcontr, 7, 20, 80, 20, "Cód.contr."  );
+		pnContrato.adic( txtDesccontr, 90, 20, 250, 20, "Descrição do contrato" );
+		pnContrato.adic( txtCoditcontr, 7, 60, 80, 20, "Cód.it.contr.");
+		pnContrato.adic( txtDescitcontr, 90, 60, 250, 20, "Descrição do item de contrato" );
+		pnContrato.adic( txtMatEmpr, 7, 100, 80, 20, "Matrícula"  );
+		pnContrato.adic( txtNomeEmpr, 90, 100, 250, 20, "Nome empregado/colaborador" );
+
 		
 		if ( ! lancafincontr) {
 			txtCodcontr.setAtivo( false );
