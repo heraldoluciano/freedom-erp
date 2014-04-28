@@ -111,7 +111,11 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 	private JTextFieldFK txtDesccontr = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 );
 
 	private JTextFieldFK txtDescitcontr = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 );
-	
+
+	private JTextFieldPad txtMatEmpr = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldFK txtNomeEmpr = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
+
 	private final ListaCampos lcConta = new ListaCampos( this );
 
 	private final ListaCampos lcPlan = new ListaCampos( this );
@@ -123,10 +127,14 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 	private ListaCampos lcContrato = new ListaCampos( this, "CT" );
 
 	private ListaCampos lcItContrato = new ListaCampos( this, "CT" );
-	
+
+	private ListaCampos lcEmpregado = new ListaCampos( this, "EM" );
+
 	private JTabbedPanePad tpn = new JTabbedPanePad();
 
 	private JPanelPad pnGeral = new JPanelPad();
+
+	private JPanelPad pnContrato = new JPanelPad();
 
 	private JPanelPad pnCheques = new JPanelPad( new BorderLayout() );
 
@@ -144,9 +152,9 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 		SEQCHEQ, NUMCHEQ, DTEMITCHEQ, DTVENCTOCHEQ, VLRCHEQ, SITCHEQ
 	};
 
-	public enum EDIT_PAG_SETVALORES { CODFOR, RAZFOR, CODCONTA, CODPLAN, CODCC, DOC, DTEMIS, DTVENC, VLRPARC, VLRJUROS, VLRDESC, VLRADIC, OBS, CODTIPOCOB, VLRDEV, CODPAG, NPARCPAG, CODCONTR, CODITCONTR }
+	public enum EDIT_PAG_SETVALORES { CODFOR, RAZFOR, CODCONTA, CODPLAN, CODCC, DOC, DTEMIS, DTVENC, VLRPARC, VLRJUROS, VLRDESC, VLRADIC, OBS, CODTIPOCOB, VLRDEV, CODPAG, NPARCPAG, CODCONTR, CODITCONTR, MATEMPR }
 
-	public enum EDIT_PAG_GETVALORES {CODCONTA, CODPLAN, CODCC, DOC, VLRPARC, VLRJUROS, VLRADIC, VLRDESC, DTVENC, OBS, CODTIPOCOB, VLRDEV, CODCONTR, CODITCONTR}
+	public enum EDIT_PAG_GETVALORES {CODCONTA, CODPLAN, CODCC, DOC, VLRPARC, VLRJUROS, VLRADIC, VLRDESC, DTVENC, OBS, CODTIPOCOB, VLRDEV, CODCONTR, CODITCONTR, MATEMPR}
 
 	public DLEditaPag( Component cOrig, boolean edita, boolean lancafincontr ) {
 
@@ -234,6 +242,14 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 		txtDescitcontr.setListaCampos( lcContrato );
 		txtCoditcontr.setFK( true );
 		
+		lcEmpregado.add( new GuardaCampo( txtMatEmpr, "MatEmpr", "Matrícula", ListaCampos.DB_PK, false ) );
+		lcEmpregado.add( new GuardaCampo( txtNomeEmpr, "NomeEmpr", "Nome empregado/colaborador", ListaCampos.DB_SI, false ) );
+		lcEmpregado.setReadOnly( true );
+		lcEmpregado.setQueryCommit( false );
+		lcEmpregado.montaSql( false, "EMPREGADO", "RH" );
+		txtMatEmpr.setTabelaExterna( lcEmpregado, null );
+
+		
 	}
 
 	private void montaTela() {
@@ -250,6 +266,7 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 		c.add( tpn, BorderLayout.CENTER );
 
 		tpn.addTab( "Informações gerais", pnGeral );
+		tpn.addTab( "Contrato/Empregado", pnContrato );
 
 		// ABA GERAL
 
@@ -295,15 +312,21 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 
 		pnGeral.adic( new JLabelPad( "Observações" ), 7, 280, 200, 20 );
 		pnGeral.adic( txtObs, 7, 300, 333, 20 );
+		
 
-		pnGeral.adic( new JLabelPad("Cód.contr."), 7, 320, 80, 20 );
-		pnGeral.adic( txtCodcontr, 7, 340, 80, 20 );
-		pnGeral.adic( new JLabelPad("Descrição do contrato"), 90, 320, 250, 20 );
-		pnGeral.adic( txtDesccontr, 90, 340, 250, 20 );
-		pnGeral.adic( new JLabelPad("Cód.it.contr."), 7, 360, 80, 20 );
-		pnGeral.adic( txtCoditcontr, 7, 380, 80, 20);
-		pnGeral.adic( new JLabelPad("Descrição do item de contrato"), 90, 360, 250, 20 );
-		pnGeral.adic( txtDescitcontr, 90, 380, 250, 20 );
+		pnContrato.adic( new JLabelPad("Cód.contr."), 7, 20, 80, 20 );
+		pnContrato.adic( txtCodcontr, 7, 40, 80, 20 );
+		pnContrato.adic( new JLabelPad("Descrição do contrato"), 90, 20, 250, 20 );
+		pnContrato.adic( txtDesccontr, 90, 40, 250, 20 );
+		pnContrato.adic( new JLabelPad("Cód.it.contr."), 7, 60, 80, 20 );
+		pnContrato.adic( txtCoditcontr, 7, 80, 80, 20);
+		pnContrato.adic( new JLabelPad("Descrição do item de contrato"), 90, 60, 250, 20 );
+		pnContrato.adic( txtDescitcontr, 90, 80, 250, 20 );
+		pnContrato.adic( new JLabelPad("Matrícula"), 7, 100, 80, 20 );
+		pnContrato.adic( txtMatEmpr, 7, 120, 80, 20 );
+		pnContrato.adic( new JLabelPad("Nome do empregado/colaborador"), 90, 100, 250, 20 );
+		pnContrato.adic( txtNomeEmpr, 90, 120, 250, 20 );
+
 		
 		if ( ! lancafincontr) {
 			txtCodcontr.setAtivo( false );
@@ -344,6 +367,9 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 		if (! "".equals( sVals[ EDIT_PAG_SETVALORES.CODITCONTR.ordinal() ] ) ) {
 			txtCoditcontr.setVlrString( (String) sVals[ EDIT_PAG_SETVALORES.CODITCONTR.ordinal() ] );
 		}
+		if (! "".equals( sVals[ EDIT_PAG_SETVALORES.MATEMPR.ordinal() ] ) ) {
+			txtMatEmpr.setVlrInteger( (Integer) sVals[ EDIT_PAG_SETVALORES.MATEMPR.ordinal() ] );
+		}
 		txtVlrParc.setAtivo( bLancaUsu );
 	}
 
@@ -364,6 +390,7 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 		sRetorno[ EDIT_PAG_GETVALORES.VLRDEV.ordinal() ] = txtVlrDev.getVlrString();
 		sRetorno[ EDIT_PAG_GETVALORES.CODCONTR.ordinal() ] = txtCodcontr.getVlrString();
 		sRetorno[ EDIT_PAG_GETVALORES.CODITCONTR.ordinal() ] = txtCoditcontr.getVlrString();
+		sRetorno[ EDIT_PAG_GETVALORES.MATEMPR.ordinal() ] = txtMatEmpr.getVlrString();
 		return sRetorno;
 	}
 
@@ -389,6 +416,7 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 		sql.append( ", VLRDESCITPAG=?,DTVENCITPAG=?,OBSITPAG=? " );
 		sql.append( ", CODTIPOCOB=?,CODEMPTC=?,CODFILIALTC=?,VLRDEVITPAG=? , EDITITPAG='S' " );
 		sql.append( ", CODCONTR=?, CODITCONTR=?, CODEMPCT=?, CODFILIALCT=? ");
+		sql.append( ", CODEMPEM=?, CODFILIALEM=? AND MATEMPR=? ");
 		sql.append( "WHERE CODPAG=? AND NPARCPAG=? AND CODEMP=? AND CODFILIAL=?" );
 
 		try {
@@ -499,6 +527,17 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 				ps.setInt( param++, Aplicativo.iCodEmp );
 				ps.setInt( param++, ListaCampos.getMasterFilial( "VDITCONTRATO" ) );
 			}
+			if ( "".equals( sRets[  EDIT_PAG_GETVALORES.MATEMPR.ordinal() ].trim() ) ) {
+				ps.setNull( param++, Types.INTEGER );
+				ps.setNull( param++, Types.INTEGER );
+				ps.setNull( param++, Types.INTEGER );
+			}
+			else {
+				ps.setInt( param++, Aplicativo.iCodEmp );
+				ps.setInt( param++, ListaCampos.getMasterFilial( "RHEMPREGADO" ) );
+				ps.setInt( param++, Integer.parseInt( sRets[  EDIT_PAG_GETVALORES.MATEMPR.ordinal() ] ) );
+			}
+
 			ps.setInt( param++, txtCodPag.getVlrInteger() );
 			ps.setInt( param++, txtNParcPag.getVlrInteger() );
 			ps.setInt( param++, Aplicativo.iCodEmp );
@@ -721,6 +760,8 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 		lcContrato.carregaDados();
 		lcItContrato.setConexao( cn );
 		lcItContrato.carregaDados();
+		lcEmpregado.setConexao( cn );
+		lcEmpregado.carregaDados();
 		carregaCheques();
 	}
 }
