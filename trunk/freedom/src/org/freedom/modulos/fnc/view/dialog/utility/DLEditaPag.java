@@ -372,7 +372,7 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 			txtCoditcontr.setVlrString( (String) sVals[ EDIT_PAG_SETVALORES.CODITCONTR.ordinal() ] );
 		}
 		if (! "".equals( sVals[ EDIT_PAG_SETVALORES.MATEMPR.ordinal() ] ) ) {
-			txtMatEmpr.setVlrInteger( (Integer) sVals[ EDIT_PAG_SETVALORES.MATEMPR.ordinal() ] );
+			txtMatEmpr.setVlrString( (String) sVals[ EDIT_PAG_SETVALORES.MATEMPR.ordinal() ] );
 		}
 		txtVlrParc.setAtivo( bLancaUsu );
 	}
@@ -420,7 +420,7 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 		sql.append( ", VLRDESCITPAG=?,DTVENCITPAG=?,OBSITPAG=? " );
 		sql.append( ", CODTIPOCOB=?,CODEMPTC=?,CODFILIALTC=?,VLRDEVITPAG=? , EDITITPAG='S' " );
 		sql.append( ", CODCONTR=?, CODITCONTR=?, CODEMPCT=?, CODFILIALCT=? ");
-		sql.append( ", CODEMPEM=?, CODFILIALEM=? AND MATEMPR=? ");
+		sql.append( ", CODEMPEM=?, CODFILIALEM=?, MATEMPR=? ");
 		sql.append( "WHERE CODPAG=? AND NPARCPAG=? AND CODEMP=? AND CODFILIAL=?" );
 
 		try {
