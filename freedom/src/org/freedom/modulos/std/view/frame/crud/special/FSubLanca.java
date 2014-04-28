@@ -37,7 +37,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Vector;
 
-import javax.swing.BorderFactory;
+//import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
 import javax.swing.event.InternalFrameEvent;
 
@@ -67,6 +67,8 @@ import org.freedom.library.swing.component.JComboBoxPad;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JRadioGroup;
+import org.freedom.library.swing.component.JTabbedPanePad;
+import org.freedom.library.swing.component.JTablePad;
 import org.freedom.library.swing.component.JTextAreaPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
@@ -74,6 +76,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.modulos.crm.view.frame.crud.detail.FContrato;
 import org.freedom.modulos.fnc.library.swing.component.JTextFieldPlan;
+//import org.freedom.modulos.grh.view.frame.crud.tabbed.FEmpregado;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FFornecedor;
 
@@ -83,7 +86,13 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 
 	private JPanelPad pinCab = new JPanelPad( 500, 200 );
 
-	private JPanelPad pinDet = new JPanelPad( 500, 130 );
+//	private JPanelPad pinDet = new JPanelPad( 500, 130 );
+
+	private JPanelPad pinDetalhe = new JPanelPad(); 
+
+	private JPanelPad pinContrato = new JPanelPad(); 
+
+	private JPanelPad pinEmpregado = new JPanelPad(); 
 
 	private JTextFieldPad txtCodLanca = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -123,6 +132,10 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 
 	private JTextFieldPad txtCodContr = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
+	private JTextFieldPad txtMatEmpr = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldFK txtNomeEmpr = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
+
 	private JTextFieldPad txtCodPag = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
 	private JTextFieldPad txtCodRec = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -157,6 +170,8 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 
 	private ListaCampos lcItContrato = new ListaCampos( this, "CT" );
 	
+	private ListaCampos lcEmpregado = new ListaCampos( this, "EM" );
+
 	//private ListaCampos lcLanca = new ListaCampos(this);
 
 	private String sCodLanca = "";
@@ -179,8 +194,18 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 
 	private HashMap<String, Object> prefere = null;
 
-	private JPanelPad pnTipoLanca = new JPanelPad();
+	//private JPanelPad pnTipoLanca = new JPanelPad();
+	
+	private JTabbedPanePad tpnDetalhe = new JTabbedPanePad();
 
+	private JTablePad tabProjetos = new JTablePad();
+
+	private JScrollPane spProjetos = new JScrollPane( tabProjetos );
+
+	private JTablePad tabGeral = new JTablePad();
+
+	private JScrollPane spGeral = new JScrollPane( tabGeral );
+	
 	private Vector<String> vValsTipo = null;
 
 	private Vector<String> vLabsTipo = null;
@@ -269,7 +294,14 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 		lcItContrato.setQueryCommit( false );
 		lcItContrato.montaSql( false, "ITCONTRATO", "VD" );
 		txtCodItContr.setTabelaExterna( lcItContrato, null );
-		
+
+		lcEmpregado.add( new GuardaCampo( txtMatEmpr, "MatEmpr", "Matrícula", ListaCampos.DB_PK, false ) );
+		lcEmpregado.add( new GuardaCampo( txtNomeEmpr, "NomeEmpr", "Nome empregado/colaborador", ListaCampos.DB_SI, false ) );
+		lcEmpregado.setReadOnly( true );
+		lcEmpregado.setQueryCommit( false );
+		lcEmpregado.montaSql( false, "EMPREGADO", "RH" );
+		txtMatEmpr.setTabelaExterna( lcEmpregado, null );
+
 		//lcLanca.add( new GuardaCampo( txtCodLanca, "CodLanca", "Cód.Lanc.", ListaCampos.DB_PK, false ) );
 //		lcLanca.add( new GuardaCampo( txtCodPag, "CodPag", "Cód.Pag.", ListaCampos.DB_SI, false ) );
 //		lcLanca.add( new GuardaCampo( txtCodRec, "CodRec", "Cód.Rec.", ListaCampos.DB_SI, false ) );
@@ -303,9 +335,16 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 		adic( btSalvar, 37, 150, 30, 30 );
 
 		setListaCampos( true, "LANCA", "FN" );
-		//setAltDet( 100 );
-		setPainel( pinDet, pnDet );
-
+		setAltDet( 140 );
+		pnDet.add( tpnDetalhe );
+		//pinDet.add( pnDet );
+		tpnDetalhe.addTab( "Lançamento", pinDetalhe );
+		tpnDetalhe.addTab( "Contrato/Projeto", pinContrato );
+		tpnDetalhe.addTab( "Empregado/Colaborador", pinEmpregado );
+		//pinDetalhe.add( pinDet );
+		//setPainel( pinDetalhe, pnDet );
+		//pinDetalhe.add( pnDet );
+		setPainel(pinDetalhe);
 		setListaCampos( lcDet );
 		setNavegador( navRod );
 		adicCampoInvisivel( txtCodSubLanca, "CodSubLanca", "Item", ListaCampos.DB_PK, false );
@@ -332,10 +371,11 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 		txtCodFor.setVisible( false );
 		txtRazFor.setVisible( false );
 
-		adic( pnTipoLanca, 7, 85, 618, 55 );
-		pnTipoLanca.setVisible( false );
+		//adic( pnTipoLanca, 7, 85, 618, 55 );
+		//pnTipoLanca.setVisible( false );
 
-		setPainel( pnTipoLanca );
+		//setPainel( pnTipoLanca );
+		setPainel(pinContrato);
 
 		lbCodCli = adicCampo( txtCodCli, 2, 18, 95, 20, "CodCli", "Cód. Cliente", ListaCampos.DB_FK, false );
 		lbRazCli = adicDescFK( txtRazCli, 100, 18, 503, 20, "RazCli", "Razão social do cliente" );
@@ -354,6 +394,11 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 		adic( new JLabelPad( "Item" ), 294, 40, 320, 20 );
 		adic( cbitContr, 294, 60, 310, 20 );
 
+		setPainel(pinEmpregado);
+		adicCampo( txtMatEmpr, 2, 18, 95, 20, "MatEmpr", "Matrícula", ListaCampos.DB_FK, false );
+		adicDescFK( txtNomeEmpr, 100, 18, 503, 20, "NomeEmpr", "Nome do empregado/colaborador" );
+
+		
 		lcDet.setWhereAdic( "CODSUBLANCA > 0" );
 		setListaCampos( true, "SUBLANCA", "FN" );
 		montaTab();
@@ -432,16 +477,16 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 			lbCodFor.setVisible( false );
 			lbRazFor.setVisible( false );
 
-			pnTipoLanca.setVisible( false );
+			//pnTipoLanca.setVisible( false );
 
 		}
 		else if ( rgTipoLanca.getVlrString().compareTo( "F" ) == 0 ) {
-			setAtribos( this.getX(), this.getY(), 655, 520 );
+			/*setAtribos( this.getX(), this.getY(), 655, 520 );
 			setAltDet( 200 );
 			pnTipoLanca.setBorder( BorderFactory.createTitledBorder( "" ) );
 			pnTipoLanca.setSize( pnTipoLanca.getWidth(), 55 + 40 );
 
-			pnTipoLanca.setVisible( true );
+			pnTipoLanca.setVisible( true );*/
 			txtCodCli.setVisible( false );
 			txtRazCli.setVisible( false );
 			txtCodFor.setVisible( true );
@@ -453,12 +498,12 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 			lbRazFor.setVisible( true );
 		}
 		else if ( rgTipoLanca.getVlrString().compareTo( "C" ) == 0 ) {
-			setAtribos( this.getX(), this.getY(), 655, 520 );
+			/*setAtribos( this.getX(), this.getY(), 655, 520 );
 			setAltDet( 160 );
 			pnTipoLanca.setBorder( BorderFactory.createTitledBorder( "" ) );
 			pnTipoLanca.setSize( pnTipoLanca.getWidth(), 55 );
 
-			pnTipoLanca.setVisible( true );
+			pnTipoLanca.setVisible( true );*/
 			txtCodCli.setVisible( true );
 			txtRazCli.setVisible( true );
 			txtCodFor.setVisible( false );
@@ -470,12 +515,12 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 			lbRazFor.setVisible( false );
 		}
 		else if ( rgTipoLanca.getVlrString().compareTo( "O" ) == 0 ) {
-			setAtribos( this.getX(), this.getY(), 655, 540 );
+			/*setAtribos( this.getX(), this.getY(), 655, 540 );
 			setAltDet( 200 );
 			pnTipoLanca.setBorder( BorderFactory.createTitledBorder( "" ) );
 			pnTipoLanca.setSize( pnTipoLanca.getWidth(), 55 + 40 );
 			pnTipoLanca.setVisible( true );
-
+*/
 			txtCodCli.setVisible( true );
 			txtRazCli.setVisible( true );
 
@@ -735,7 +780,7 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 		lcCli.setConexao( cn );
 		lcContrato.setConexao( cn );
 		lcItContrato.setConexao( cn );
-
+		lcEmpregado.setConexao( cn );
 		carregar();
 	}
 
