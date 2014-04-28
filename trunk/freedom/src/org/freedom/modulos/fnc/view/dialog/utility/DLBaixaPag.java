@@ -97,6 +97,10 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 
 	private JTextFieldFK txtDescitcontr = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 );
 
+	private JTextFieldPad txtMatEmpr = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldFK txtNomeEmpr = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
+
 	private final ListaCampos lcConta = new ListaCampos( this );
 
 	private final ListaCampos lcPlan = new ListaCampos( this );
@@ -109,6 +113,8 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 
 	private ListaCampos lcItContrato = new ListaCampos( this, "CT" );
 	
+	private ListaCampos lcEmpregado = new ListaCampos( this, "EM" );
+	
 	private boolean multiBaixa;
 	
 	private boolean categoriaRequerida = true;
@@ -119,9 +125,9 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 
 	private boolean lancafincontr = false;
 
-	public static enum RET_BAIXA_PAG {CODCONTA, CODPLAN, DOC, DTPAGTO, VLRPAGO, CODCC, CODTIPOCOB, OBS, CODCONTR, CODITCONTR}
+	public static enum RET_BAIXA_PAG {CODCONTA, CODPLAN, DOC, DTPAGTO, VLRPAGO, CODCC, CODTIPOCOB, OBS, CODCONTR, CODITCONTR, MATEMPR}
 
-	public static enum VAL_BAIXAMANUT {CODFOR, RAZFOR, CODCONTA, CODPLAN, DOC, DTEMIS, DTVENC, VLRPARC, DTPAGTO, VLRPAGO, CODCC, CODTIPOCOB, OBS, CODCONTR, CODITCONTR}
+	public static enum VAL_BAIXAMANUT {CODFOR, RAZFOR, CODCONTA, CODPLAN, DOC, DTEMIS, DTVENC, VLRPARC, DTPAGTO, VLRPAGO, CODCC, CODTIPOCOB, OBS, CODCONTR, CODITCONTR, MATEMPR}
 	
 	public DLBaixaPag( Component cOrig, boolean lancafincontr, boolean categoriaRequerida ) {
 
@@ -217,6 +223,18 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 		txtDescitcontr.setListaCampos( lcContrato );
 		txtCoditcontr.setFK( true );
 		
+		txtMatEmpr.setNomeCampo( "matempr" );
+		lcEmpregado.add( new GuardaCampo( txtMatEmpr, "MatEmpr", "Matrícula", ListaCampos.DB_PK, false ) );
+		lcEmpregado.add( new GuardaCampo( txtNomeEmpr, "NomeEmpr", "Nome empregado/colaborador", ListaCampos.DB_SI, false ) );
+		lcEmpregado.setReadOnly( true );
+		lcEmpregado.setQueryCommit( false );
+		lcEmpregado.montaSql( false, "EMPREGADO", "RH" );
+		txtMatEmpr.setTabelaExterna( lcEmpregado, null );
+		txtMatEmpr.setListaCampos( lcEmpregado );
+		txtNomeEmpr.setListaCampos( lcEmpregado );
+		txtMatEmpr.setFK( true );
+
+		
 	}
 
 	private void montaTela() {
@@ -300,6 +318,9 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 		if (!"".equals( sVals[ VAL_BAIXAMANUT.CODITCONTR.ordinal()])) {
 			txtCoditcontr.setVlrString(sVals[ VAL_BAIXAMANUT.CODITCONTR.ordinal() ] );
 		}
+		if (!"".equals( sVals[ VAL_BAIXAMANUT.MATEMPR.ordinal()])) {
+			txtCoditcontr.setVlrString(sVals[ VAL_BAIXAMANUT.MATEMPR.ordinal() ] );
+		}
 	}
 
 	public String[] getValores() {
@@ -316,6 +337,7 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 		sRetorno[ RET_BAIXA_PAG.OBS.ordinal() ] = txtObs.getVlrString();
 		sRetorno[ RET_BAIXA_PAG.CODCONTR.ordinal() ] = txtCodcontr.getVlrString();
 		sRetorno[ RET_BAIXA_PAG.CODITCONTR.ordinal() ] = txtCoditcontr.getVlrString();
+		sRetorno[ RET_BAIXA_PAG.MATEMPR.ordinal() ] = txtMatEmpr.getVlrString();
 
 		return sRetorno;
 
@@ -422,6 +444,10 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 		lcContrato.carregaDados();
 		lcItContrato.setConexao( cn );
 		lcItContrato.carregaDados();
+		
+		lcEmpregado.setConexao( cn );
+		lcEmpregado.carregaDados();
+
 
 	}
 

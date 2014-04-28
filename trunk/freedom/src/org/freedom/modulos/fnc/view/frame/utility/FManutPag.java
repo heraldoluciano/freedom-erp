@@ -383,11 +383,12 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 
 	private static final String CANCELADO = "CP";
 
-	private enum UPDATE_BAIXAMANUT_PARAMS {NONE, NUMCONTA, CODEMPCA, CODFILIALCA, CODPLAN, CODEMPPN, CODFILIALPN,
-		DOCLANCAITPAG, DTPAGOITPAG, VLRDESCITPAG, VLRJUROSITPAG, VLRPAGOITPAG, ANOCC, CODCC, CODEMPCC, CODFILIALCC,
-		CODTIPOCOB, CODEMPTC, CODFILIALTC, OBSITPAG, MULTIBAIXA, 
-		CODCONTR, CODITCONTR, CODEMPCT, CODFILIALCT,
-		CODPAG, NPARCPAG, CODEMP, CODFILIAL}
+	private enum UPDATE_BAIXAMANUT_PARAMS {NONE, NUMCONTA, CODEMPCA, CODFILIALCA, CODPLAN, CODEMPPN, CODFILIALPN
+		, DOCLANCAITPAG, DTPAGOITPAG, VLRDESCITPAG, VLRJUROSITPAG, VLRPAGOITPAG, ANOCC, CODCC, CODEMPCC, CODFILIALCC
+		, CODTIPOCOB, CODEMPTC, CODFILIALTC, OBSITPAG, MULTIBAIXA 
+		, CODCONTR, CODITCONTR, CODEMPCT, CODFILIALCT
+		, CODEMPEM, CODFILIALEM, MATEMPR
+		, CODPAG, NPARCPAG, CODEMP, CODFILIAL}
 
 	public enum enum_tab_manut {SEL, IMGSTATUS, DTVENCITPAG, STATUSITPAG, CODFOR, RAZFOR, OBSITPAG, CODPAG
 		, CHEQUES, NPARCPAG, DOC, DOCCOMPRA, CODORDCP, VLRPARCITPAG
@@ -397,7 +398,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 
 	public enum enum_tab_baixa {STATUS, DTVENCTO, NPARC, DOC, CODCOMPRA, VLRPARC, DTPAGTO, VLRPAGO, VLRDESC
 		, VLRJUROS, VLRAPAG, VLRCANC, NUMCONTA, DESCCONTA, CODPLAN, DESCPLAN, CODCC,  DESCCC, OBS
-		, CODCONTR, DESCCONTR, CODITCONTR, DESCITCONTR}
+		, CODCONTR, DESCCONTR, CODITCONTR, DESCITCONTR, MATEMPR, NOMEEMPR}
 
 	public FManutPag() {
 
@@ -1103,6 +1104,8 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 		tabBaixa.adicColuna( "Descrição do contrato/projeto" ); // DESCCONTR		
 		tabBaixa.adicColuna( "Cód.it.contr." ); 				// CODITCONTR
 		tabBaixa.adicColuna( "Descrição do item de cont./proj." ); // DESCITCONTR		
+		tabBaixa.adicColuna( "Matrícula" ); 				// MATEMPR
+		tabBaixa.adicColuna( "Nome do empregado/colaborador" ); // NOMEEMPR		
 
 		tabBaixa.setTamColuna( 0, enum_tab_baixa.STATUS.ordinal() );
 		tabBaixa.setTamColuna( 110, enum_tab_baixa.DTVENCTO.ordinal() );
@@ -1128,6 +1131,8 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 		tabBaixa.setTamColuna( 200, enum_tab_manut.DESCCONTR.ordinal() );		
 		tabBaixa.setTamColuna( 60, 	enum_tab_manut.CODITCONTR.ordinal() );
 		tabBaixa.setTamColuna( 200, enum_tab_manut.DESCITCONTR.ordinal() );		
+		tabBaixa.setTamColuna( 60, 	enum_tab_manut.MATEMPR.ordinal() );
+		tabBaixa.setTamColuna( 200, enum_tab_manut.NOMEEMPR.ordinal() );		
 
 
 		tabBaixa.setRowHeight( 20 );
@@ -1751,9 +1756,11 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			sSQL.append( "WHERE CC.CODCC=IT.CODCC AND CC.CODEMP=IT.CODEMPCC AND CC.CODFILIAL=IT.CODFILIALCC AND CC.ANOCC=IT.ANOCC) DESCCC " );
 			sSQL.append( ", IT.OBSITPAG,IT.NPARCPAG,IT.VLRJUROSITPAG,IT.DTITPAG, IT.VLRCANCITPAG " );
 			sSQL.append( ", ct.codcontr, ct.desccontr, ict.coditcontr, ict.descitcontr ");
+			sSQL.append( ", emp.matempr, emp.nomeempr ");
 			sSQL.append( "FROM FNPAGAR P, FNITPAGAR IT " );
 			sSQL.append( "left outer join vdcontrato ct on ct.codemp=it.codempct and ct.codfilial=it.codfilialct and ct.codcontr=it.codcontr ");
 			sSQL.append( "left outer join vditcontrato ict on ict.codemp=it.codempct and ict.codfilial=it.codfilialct and ict.codcontr=it.codcontr and ict.coditcontr=it.coditcontr ");
+			sSQL.append( "left outer join rhempregado emp on emp.codemp=it.codempem and emp.codfilial=it.codfilialem and emp.matempr=it.codempr ");
 			sSQL.append( "WHERE P.CODPAG=? AND P.CODEMP=? AND P.CODFILIAL=? " );
 			sSQL.append( "AND IT.CODPAG=P.CODPAG AND IT.CODEMP=P.CODEMP AND IT.CODFILIAL=P.CODFILIAL " );
 			sSQL.append( "ORDER BY IT.DTVENCITPAG,IT.STATUSITPAG " );
@@ -1821,6 +1828,9 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 				tabBaixa.setValor( rs.getString( enum_tab_baixa.DESCCONTR.name() ), i, enum_tab_baixa.DESCCONTR.ordinal() );
 				tabBaixa.setValor( rs.getString( enum_tab_baixa.CODITCONTR.name() ), i, enum_tab_baixa.CODITCONTR.ordinal() );
 				tabBaixa.setValor( rs.getString( enum_tab_baixa.DESCITCONTR.name() ), i, enum_tab_baixa.DESCITCONTR.ordinal() );
+				tabBaixa.setValor( rs.getString( enum_tab_baixa.MATEMPR.name() ), i, enum_tab_baixa.MATEMPR.ordinal() );
+				tabBaixa.setValor( rs.getString( enum_tab_baixa.NOMEEMPR.name() ), i, enum_tab_baixa.NOMEEMPR.ordinal() );
+
 				vCodPed.addElement( rs.getString( "CodCompra" ) );
 				vNParcBaixa.addElement( rs.getString( "NParcPag" ) );
 				vNumContas.addElement( rs.getString( "NumConta" ) == null ? "" : rs.getString( "NumConta" ) );
@@ -2274,6 +2284,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 				sVals[VAL_BAIXAMANUT.OBS.ordinal() ] = (String) tabBaixa.getValor( iLin, enum_tab_baixa.OBS.ordinal() );
 				sVals[VAL_BAIXAMANUT.CODCONTR.ordinal()] = (String) tabBaixa.getValor( iLin, enum_tab_baixa.CODCONTR.ordinal() );
 				sVals[VAL_BAIXAMANUT.CODITCONTR.ordinal()] = (String) tabBaixa.getValor( iLin, enum_tab_baixa.CODITCONTR.ordinal() );
+				sVals[VAL_BAIXAMANUT.MATEMPR.ordinal()] = (String) tabBaixa.getValor( iLin, enum_tab_baixa.MATEMPR.ordinal() );
 
 				dl.setValores( sVals );
 				dl.setConexao( con );
@@ -2288,6 +2299,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 					sSQL.append( ",ANOCC=?,CODCC=?,CODEMPCC=?,CODFILIALCC=?,DOCLANCAITPAG =?,DTPAGOITPAG=?,VLRPAGOITPAG=? " );
 					sSQL.append( ", OBSITPAG=?,STATUSITPAG='PP' " );
 					sSQL.append( ", CODCONTR=?, CODITCONTR=?, CODEMPCT=?, CODFILIALCT=? " );
+					sSQL.append( ", CODEMPEM=?, CODFILIALEM=?, MATEMPR=? ");
 					sSQL.append( "WHERE CODPAG=? AND NPARCPAG=? AND CODEMP=? AND CODFILIAL=?" );
 
 					try {
@@ -2329,6 +2341,16 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 							ps.setInt( param++, Aplicativo.iCodEmp );
 							ps.setInt( param++, ListaCampos.getMasterFilial( "VDITCONTR" ) );
 						}
+						if ( "".equals( sRets[ RET_BAIXA_PAG.MATEMPR.ordinal() ].trim() ) ) { 
+							ps.setNull( param++, Types.INTEGER );
+							ps.setNull( param++, Types.INTEGER );
+							ps.setNull( param++, Types.INTEGER );
+						} else {
+							ps.setInt( param++, Aplicativo.iCodEmp );
+							ps.setInt( param++, ListaCampos.getMasterFilial( "RHEMPREGADO" ) );
+							ps.setInt( param++, new Integer(sRets[ RET_BAIXA_PAG.MATEMPR.ordinal()] ) );
+						}
+
 						ps.setInt( param++, iCodPag );
 						ps.setInt( param++, iNParcPag );
 						ps.setInt( param++, Aplicativo.iCodEmp );
@@ -2481,6 +2503,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 
 					sVals[VAL_BAIXAMANUT.CODCONTR.ordinal()] = (String) tabManut.getValor( selecionados.get( 0 ), enum_tab_manut.CODCONTR.ordinal() );
 					sVals[VAL_BAIXAMANUT.CODITCONTR.ordinal()] = (String) tabManut.getValor( selecionados.get( 0 ), enum_tab_manut.CODITCONTR.ordinal() );
+					sVals[VAL_BAIXAMANUT.MATEMPR.ordinal()] = (String) tabManut.getValor( selecionados.get( 0 ), enum_tab_manut.MATEMPR.ordinal() );
 
 					dl.setValores( sVals );
 					dl.setConexao( con );
@@ -2515,6 +2538,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 						sSQL.append( ", ANOCC=?,CODCC=?,CODEMPCC=?,CODFILIALCC=? " );
 						sSQL.append( ", CODTIPOCOB=?,CODEMPTC=?,CODFILIALTC=?,OBSITPAG=?, MULTIBAIXA = ?, STATUSITPAG='PP' " );
 						sSQL.append( ", CODCONTR=?, CODITCONTR=?, CODEMPCT=?, CODFILIALCT=? " );
+						sSQL.append( ", CODEMPEM=?, CODFILIALEM=?, MATEMPR=? " );
 						sSQL.append( "WHERE CODPAG=? AND NPARCPAG=? AND CODEMP=? AND CODFILIAL=?" );
 
 						String multibaixa = (selecionados.size() > 1 ? "S" : "N");
@@ -2604,6 +2628,16 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 									ps.setInt( UPDATE_BAIXAMANUT_PARAMS.CODFILIALCT.ordinal(), ListaCampos.getMasterFilial( "VDITCONTRATO" ) );
 								}
 
+								if ( "".equals( sRets[ RET_BAIXA_PAG.MATEMPR.ordinal() ].trim() ) ) { 
+									ps.setNull( UPDATE_BAIXAMANUT_PARAMS.CODEMPEM.ordinal(), Types.INTEGER );
+									ps.setNull( UPDATE_BAIXAMANUT_PARAMS.CODFILIALEM.ordinal(), Types.INTEGER );
+									ps.setNull( UPDATE_BAIXAMANUT_PARAMS.MATEMPR.ordinal(), Types.INTEGER );
+								} else {
+									ps.setInt( UPDATE_BAIXAMANUT_PARAMS.CODEMPEM.ordinal(), Aplicativo.iCodEmp );
+									ps.setInt( UPDATE_BAIXAMANUT_PARAMS.CODFILIALEM.ordinal(), ListaCampos.getMasterFilial( "RHEMPREGADO" ) );
+									ps.setInt( UPDATE_BAIXAMANUT_PARAMS.MATEMPR.ordinal(), Integer.parseInt( sRets[ RET_BAIXA_PAG.MATEMPR.ordinal() ] ) );
+								}
+								
 								ps.setInt( UPDATE_BAIXAMANUT_PARAMS.CODPAG.ordinal(), iCodPag );
 								ps.setInt( UPDATE_BAIXAMANUT_PARAMS.NPARCPAG.ordinal(), iNParcPag );
 								ps.setInt( UPDATE_BAIXAMANUT_PARAMS.CODEMP.ordinal(), Aplicativo.iCodEmp );
