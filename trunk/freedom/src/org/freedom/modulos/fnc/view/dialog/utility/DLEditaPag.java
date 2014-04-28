@@ -162,7 +162,7 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 
 		this.lancafincontr = lancafincontr;
 		setTitulo( "Edição de contas a pagar" );
-		setAtribos( 368, 545 );
+		setAtribos( 368, 450 );
 
 		montaListaCampos();
 		montaTela();
@@ -242,12 +242,16 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 		txtDescitcontr.setListaCampos( lcContrato );
 		txtCoditcontr.setFK( true );
 		
+		txtMatEmpr.setNomeCampo( "matempr" );
 		lcEmpregado.add( new GuardaCampo( txtMatEmpr, "MatEmpr", "Matrícula", ListaCampos.DB_PK, false ) );
 		lcEmpregado.add( new GuardaCampo( txtNomeEmpr, "NomeEmpr", "Nome empregado/colaborador", ListaCampos.DB_SI, false ) );
 		lcEmpregado.setReadOnly( true );
 		lcEmpregado.setQueryCommit( false );
 		lcEmpregado.montaSql( false, "EMPREGADO", "RH" );
 		txtMatEmpr.setTabelaExterna( lcEmpregado, null );
+		txtMatEmpr.setListaCampos( lcEmpregado );
+		txtNomeEmpr.setListaCampos( lcEmpregado );
+		txtMatEmpr.setFK( true );
 
 		
 	}
