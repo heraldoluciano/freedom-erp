@@ -742,7 +742,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 		c.add( tpn, BorderLayout.CENTER );
 
 		//pnLegendaBack.add( pnLegenda );
-		pnLegenda.setPreferredSize( new Dimension( 840, 50 ) );
+		pnLegenda.setPreferredSize( new Dimension( 475, 50 ) );
 		pnLegenda.setLayout( null );
 
 		lbVencido.setBounds( 5, 0, 150, 17 );
