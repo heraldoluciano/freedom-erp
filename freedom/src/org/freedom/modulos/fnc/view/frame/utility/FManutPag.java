@@ -2001,7 +2001,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 				sql.append( "coalesce((select count(*) from fnpagcheq pc where pc.codemp=it.codemp and pc.codfilial=it.codfilial and pc.codpag=it.codpag and pc.nparcpag=it.nparcpag),0) temcheque " );
 
 				sql.append( ", ct.codcontr, ct.desccontr, ict.coditcontr, ict.descitcontr ");
-				sql.append( ", em.matempr, em.nomeempr ");
+				sql.append( ", emp.matempr, emp.nomeempr ");
 
 				sql.append( "from fnpagar p, cpforneced f, fnitpagar it  " );
 
