@@ -125,13 +125,13 @@ public class FuncoesCRM {
 			vVals.addElement(-1);
 			vLabs.addElement(textonulo);
 
-			int icont = 0;
+			//int icont = 0;
 
 			while (rs.next()) {
 
 				vVals.addElement(new Integer(rs.getInt("coditcontr")));
 				vLabs.addElement(rs.getString("descitcontr"));
-				icont++;
+				//icont++;
 
 			}
 
