@@ -99,6 +99,8 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 
 	// private static final String HISTORICO_PADRAO = "PAGAMENTO REF. A COMPRA: <DOCUMENTO>";
 
+	private JPanelPad pnBtSair = new JPanelPad( JPanelPad.TP_JPANEL );
+	
 	private ImageIcon imgVencido = Icone.novo( "clVencido.gif" );
 
 	private ImageIcon imgPago = Icone.novo( "clPago.gif" );
@@ -111,6 +113,8 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 
 	private ImageIcon imgPagoComParciais = Icone.novo( "clQuitadoParcial.gif" );
 
+	//private JPanelPad pnLegendaBack = new JPanelPad();
+	
 	private JPanelPad pnLegenda = new JPanelPad( JPanelPad.TP_JPANEL );
 
 	private JLabelPad lbVencido = new JLabelPad( "Vencido", imgVencido, SwingConstants.LEFT );
@@ -737,6 +741,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 		c.add( pnRod, BorderLayout.SOUTH );
 		c.add( tpn, BorderLayout.CENTER );
 
+		//pnLegendaBack.add( pnLegenda );
 		pnLegenda.setPreferredSize( new Dimension( 840, 50 ) );
 		pnLegenda.setLayout( null );
 
@@ -750,7 +755,9 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 		txtTotalVencer.setBounds( 5, 54, 150, 18 );
 		lbCancelado.setBounds( 160, 36, 150, 17 );
 		txtTotalCancelado.setBounds( 160, 54, 150, 18 );
-		btSair.setBounds( 720, 18, 90, 40 );
+		//btSair.setBounds( 0, 0, 90, 30 );
+		pnBtSair.add( btSair );
+		//pnBtSair.setPreferredSize( new Dimension(90, 30) );
 
 		pnLegenda.add( lbVencido );
 		pnLegenda.add( txtTotalVencido );
@@ -762,7 +769,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 		pnLegenda.add( txtTotalVencer );
 		pnLegenda.add( lbCancelado );
 		pnLegenda.add( txtTotalCancelado );
-		pnLegenda.add( btSair );
+		//pnLegenda.add( pnBtSair );
 
 		txtTotalVencido.setSoLeitura( true );
 		txtTotalParcial.setSoLeitura( true );
@@ -779,6 +786,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 		pnRod.setBorder( BorderFactory.createEtchedBorder() );
 		pnRod.setPreferredSize( new Dimension( 600, 80 ) );
 		pnRod.add( pnLegenda, BorderLayout.WEST );
+		pnRod.add( pnBtSair, BorderLayout.EAST );
 
 		btSair.addActionListener( this );
 		btImpRec.addActionListener( this );
