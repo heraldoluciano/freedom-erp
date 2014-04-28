@@ -341,7 +341,7 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 			txtCoditcontr.setVlrString(sVals[ VAL_BAIXAMANUT.CODITCONTR.ordinal() ] );
 		}
 		if (!"".equals( sVals[ VAL_BAIXAMANUT.MATEMPR.ordinal()])) {
-			txtCoditcontr.setVlrString(sVals[ VAL_BAIXAMANUT.MATEMPR.ordinal() ] );
+			txtMatEmpr.setVlrString(sVals[ VAL_BAIXAMANUT.MATEMPR.ordinal() ] );
 		}
 	}
 
