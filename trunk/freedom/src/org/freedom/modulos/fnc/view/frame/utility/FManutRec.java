@@ -125,6 +125,8 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 
 	private JTablePad tabBaixa = new JTablePad();
 
+	private JPanelPad pnBtSair = new JPanelPad( JPanelPad.TP_JPANEL );
+	
 	private JScrollPane spnBaixa = new JScrollPane( tabBaixa );
 
 	private JTablePad tabManut = new JTablePad();
@@ -442,7 +444,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		c.add( tpn, BorderLayout.CENTER );
 	//	btSair.setPreferredSize( new Dimension( 90, 30 ) );
 
-		pnLegenda.setPreferredSize( new Dimension( 940, 40 ) );
+		pnLegenda.setPreferredSize( new Dimension( 630, 40 ) );
 		pnLegenda.setLayout( null );
 
 		lbVencido.setBounds( 5, 0, 150, 17 );
@@ -463,7 +465,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		txtTotalRenegociado.setBounds( 315, 54, 150, 18 );
 		lbEmRenegociacao.setBounds( 470, 36, 150, 17 );
 		txtTotalEmRenegociacao.setBounds( 470, 54, 150, 18 );
-		btSair.setBounds( 820, 18, 90, 40);
+		//btSair.setBounds( 820, 18, 90, 40);
 
 		pnLegenda.add( lbVencido );
 		pnLegenda.add( txtTotalVencido );
@@ -481,7 +483,6 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		pnLegenda.add( txtTotalRenegociado );
 		pnLegenda.add( lbEmRenegociacao );
 		pnLegenda.add( txtTotalEmRenegociacao );
-		pnLegenda.add( btSair );
 		
 		txtTotalVencido.setSoLeitura( true );
 		txtTotalParcial.setSoLeitura( true );
@@ -500,11 +501,13 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 		txtTotalEmBordero.setFont( SwingParams.getFontbold() );
 		txtTotalRenegociado.setFont( SwingParams.getFontbold() );
 		txtTotalEmRenegociacao.setFont( SwingParams.getFontbold() );
+		pnBtSair.add( btSair );
 
 		pnRod.setBorder( BorderFactory.createEtchedBorder() );
 		pnRod.setPreferredSize( new Dimension( 500, 80 ) );
 		//pnRod.add( btSair, BorderLayout.EAST );
 		pnRod.add( pnLegenda, BorderLayout.WEST );
+		pnRod.add( pnBtSair, BorderLayout.EAST );
 
 		btSair.addActionListener( this );
 		tabManut.addMouseListener( this );
