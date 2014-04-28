@@ -13152,7 +13152,9 @@ select tipocto, codemp, codfilial, codcto
 ;
 
 /* View: VDCONTRATOVW01, Owner: SYSDBA */
-CREATE VIEW VDCONTRATOVW01 (IDX, INDICE, IDX01, IDX02, IDX03, IDX04, IDX05, TIPO, CODEMPCT, CODFILIALCT, CODCONTR, DESCCONTR, CODEMPSC, CODFILIALSC, CODCONTRSC, DESCCONTRSC, CODITCONTR, DESCITCONTR, CODEMPTA, CODFILIALTA, CODTAREFA, DESCTAREFA, CODEMPST, CODFILIALST, CODTAREFAST, DESCTAREFAST) AS
+CREATE VIEW VDCONTRATOVW01 (IDX, INDICE, IDX01, IDX02, IDX03, IDX04, IDX05, TIPO, CODEMPCT, CODFILIALCT, CODCONTR
+, DESCCONTR, CODEMPSC, CODFILIALSC, CODCONTRSC, DESCCONTRSC, CODITCONTR, DESCITCONTR, CODEMPTA, CODFILIALTA, CODTAREFA, DESCTAREFA
+, CODEMPST, CODFILIALST, CODTAREFAST, DESCTAREFAST) AS
 
 
 select 1 idx,
@@ -13435,20 +13437,8 @@ SELECT P.CODEMP, P.CODFILIAL, P.ATIVOPROD, P.DESCPROD,P.CODPROD,P.REFPROD,P.SLDL
 
 /* View: VWCUSTOPROJ01, Owner: SYSDBA */
 CREATE VIEW VWCUSTOPROJ01 (CODEMP, CODFILIAL, CODCLI, DATA, DESCCUSTO, CODCONTR, CODITCONTR, TPCONTR, VLRPREVREC, QTDCUSTO, VLRCUSTO, TIPOCUSTO) AS
-
-
-
-
-
-
-
-
-
-
-
-
-
-select ad.codemp, ad.codfilial, ad.codcli, ad.dataatendo ,cast('Hora trabalhada - ' || rtrim(ae.nomeatend)  as varchar(200)) as desccusto, ad.codcontr,ad.coditcontr, co.tpcontr ,ic.vlritcontr * ic.qtditcontr as vlrreceitaprev,
+select ad.codemp, ad.codfilial, ad.codcli, ad.dataatendo ,cast('Hora trabalhada - ' || rtrim(ae.nomeatend)  as varchar(200)) as desccusto, ad.codcontr
+,ad.coditcontr, co.tpcontr ,ic.vlritcontr * ic.qtditcontr as vlrreceitaprev,
  ( ad.horaatendofin  - ad.horaatendo ) / 3600 as qtd , sa.custohoratrab as custo, 'M' as tipo
 from
 vditcontrato ic, atatendimento ad, atatendente ae, rhempregado em, rhempregadosal sa, vdcontrato co
@@ -20732,11 +20722,12 @@ DVLRDESC NUMERIC(15, 5),
 CODEMPCT INTEGER,
 CODFILIALCT SMALLINT,
 CODCONTR INTEGER,
-CODITCONTR SMALLINT)
+CODITCONTR SMALLINT,
+CODEMPEM INTEGER,
+CODFILIALEM SMALLINT,
+MATEMPR INTEGER
+)
 AS 
- 
- 
- 
 declare variable icodlanca integer;
 declare variable scodplanconta char(13);
 declare variable icodemppconta integer;
@@ -20791,10 +20782,12 @@ BEGIN
 
     INSERT INTO FNSUBLANCA (CODEMP,CODFILIAL,CODLANCA,CODSUBLANCA,CODEMPCL,CODFILIALCL,CODCLI,CODEMPPN,CODFILIALPN,CODPLAN,
                 CODEMPRC, CODFILIALRC, CODREC, NPARCITREC,
-                CODEMPCC, CODFILIALCC,ANOCC,CODCC,ORIGSUBLANCA, DTCOMPSUBLANCA, DATASUBLANCA,DTPREVSUBLANCA,VLRSUBLANCA,FLAG, CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR)
+                CODEMPCC, CODFILIALCC,ANOCC,CODCC,ORIGSUBLANCA, DTCOMPSUBLANCA, DATASUBLANCA,DTPREVSUBLANCA,VLRSUBLANCA,FLAG, CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR
+                , CODEMPEM, CODFILIALEM, MATEMPR)
         VALUES (:ICODEMP,:IFILIALLANCA,:iCodLanca,:CODSUBLANCA,:ICODEMPCL,:ICODFILIALCL,:ICODCLI,:ICODEMPPN,:ICODFILIALPN,:SCODPLAN,
                 :ICODEMP, :ICODFILIAL, :ICODREC, :INPARCITREC,
                 :ICODEMPCC,:ICODFILIALCC,:IANOCC,:SCODCC,'S',:dDtCompItRec,:dDtPagoItRec,:dDtPagoItRec,:dVlrPagoItRec*-1,:cFlag, :codempct, :codfilialct, :codcontr, :coditcontr
+                , :codempem, :codfilialem, :matempr
         );
 
     -- Lançamento dos juros em conta distinta.
@@ -20806,10 +20799,12 @@ BEGIN
 
         INSERT INTO FNSUBLANCA (CODEMP,CODFILIAL,CODLANCA,CODSUBLANCA,CODEMPCL,CODFILIALCL,CODCLI,CODEMPPN,CODFILIALPN,CODPLAN,
                  CODEMPRC, CODFILIALRC, CODREC, NPARCITREC,
-                  CODEMPCC, CODFILIALCC,ANOCC,CODCC,ORIGSUBLANCA,DTCOMPSUBLANCA,DATASUBLANCA,DTPREVSUBLANCA,VLRSUBLANCA,FLAG, TIPOSUBLANCA, CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR)
+                  CODEMPCC, CODFILIALCC,ANOCC,CODCC,ORIGSUBLANCA,DTCOMPSUBLANCA,DATASUBLANCA,DTPREVSUBLANCA,VLRSUBLANCA,FLAG, TIPOSUBLANCA, CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR
+                  , CODEMPEM, CODFILIALEM, MATEMPR)
         VALUES (:ICODEMP,:IFILIALLANCA,:iCodLanca,:CODSUBLANCA,:ICODEMPCL,:ICODFILIALCL,:ICODCLI,:CODEMPJR,:CODFILIALJR,:CODPLANJR,
                 :ICODEMP, :ICODFILIAL, :ICODREC, :INPARCITREC,
                 :ICODEMPCC, :ICODFILIALCC,:IANOCC,:SCODCC,'S',:dDtCompItRec,:dDtPagoItRec,:dDtPagoItRec,:DVLRPAGOJUROS*-1,:cFlag, 'J', :codempct, :codfilialct, :codcontr, :coditcontr
+                , :codempem, :codfilialem, :matempr
         );
 
     END
@@ -20824,11 +20819,13 @@ BEGIN
         INSERT INTO FNSUBLANCA (CODEMP,CODFILIAL,CODLANCA,CODSUBLANCA,CODEMPCL,CODFILIALCL,CODCLI,CODEMPPN,CODFILIALPN,CODPLAN,
              CODEMPRC, CODFILIALRC, CODREC, NPARCITREC,
              CODEMPCC, CODFILIALCC,ANOCC,CODCC,ORIGSUBLANCA,DTCOMPSUBLANCA,DATASUBLANCA,DTPREVSUBLANCA,VLRSUBLANCA,FLAG, TIPOSUBLANCA
-             ,CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR)
+             , CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR
+             , CODEMPEM, CODFILIALEM, MATEMPR)
         VALUES (:ICODEMP,:IFILIALLANCA,:iCodLanca,:CODSUBLANCA,:ICODEMPCL,:ICODFILIALCL,:ICODCLI,:CODEMPDC,:CODFILIALDC,:CODPLANDC,
                :ICODEMP, :ICODFILIAL, :ICODREC, :INPARCITREC,
              :ICODEMPCC, :ICODFILIALCC,:IANOCC,:SCODCC,'S',:dDtCompItRec,:dDtPagoItRec,:dDtPagoItRec,:DVLRDESC,:cFlag, 'D'
              , :codempct, :codfilialct, :codcontr, :coditcontr
+             , :codempem, :codfilialem, :matempr
         );
 
     END
@@ -20863,11 +20860,13 @@ DVLRDESC NUMERIC(15, 5),
 CODEMPCT INTEGER,
 CODFILIALCT SMALLINT,
 CODCONTR INTEGER,
-CODITCONTR SMALLINT)
+CODITCONTR SMALLINT,
+CODEMPEMP INTEGER,
+CODFILIALEM SMALLINT,
+MATEMPR INTEGER
+)
 AS 
- 
- 
- 
+
 declare variable icodlanca integer;
 declare variable scodplanconta char(13);
 declare variable icodemppconta integer;
@@ -20929,11 +20928,11 @@ BEGIN
     INSERT INTO FNSUBLANCA (CODEMP,CODFILIAL,CODLANCA,CODSUBLANCA,CODEMPFR,CODFILIALFR,CODFOR,CODEMPPN,CODFILIALPN, CODPLAN,
         CODEMPPG, CODFILIALPG, CODPAG, NPARCPAG,
         CODEMPCC,CODFILIALCC,ANOCC,CODCC,ORIGSUBLANCA,DTCOMPSUBLANCA,DATASUBLANCA,DTPREVSUBLANCA,VLRSUBLANCA,FLAG,
-        CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR)
+        CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR, CODEMPEM, CODFILIALEM, MATEMPR)
         VALUES (:ICODEMP,:IFILIALLANCA,:iCodLanca,:CODSUBLANCA,:ICODEMPFR,:ICODFILIALFR,:ICODFOR,:ICODEMPPN,:ICODFILIALPN, :sCodplan,
         :ICODEMP,:ICODFILIAL,:iCodPag, :iNParcPag,
         :ICODEMPCC,:ICODFILIALCC,:IANOCC,:SCODCC,'E',:dDtCompItPag,:dDtPagoItPag,:dDtPagoItPag,:dVlrPagoItPag,:cFlag,
-        :codempct, :codfilialct, :codcontr, :coditcontr);
+        :codempct, :codfilialct, :codcontr, :coditcontr, :codempem, :codfilialem, :matempr);
 
     -- Lançamento dos juros em conta distinta.
 
@@ -20945,12 +20944,12 @@ BEGIN
         INSERT INTO FNSUBLANCA (CODEMP,CODFILIAL,CODLANCA,CODSUBLANCA,CODEMPFR,CODFILIALFR,CODFOR,
              CODEMPPN,CODFILIALPN,CODPLAN,CODEMPCC,CODFILIALCC,ANOCC,CODCC,ORIGSUBLANCA,DTCOMPSUBLANCA,DATASUBLANCA,DTPREVSUBLANCA,VLRSUBLANCA,
              CODEMPPG, CODFILIALPG, CODPAG, NPARCPAG, FLAG, TIPOSUBLANCA
-             , CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR
+             , CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR, CODEMPEM, CODFILIALEM, MATEMPR
              )
             VALUES (:ICODEMP,:IFILIALLANCA,:iCodLanca,:CODSUBLANCA,:ICODEMPFR,:ICODFILIALFR,:ICODFOR,
             :CODEMPJP,:CODFILIALJP,:CODPLANJP,:ICODEMPCC,:ICODFILIALCC,:IANOCC,:SCODCC,'E',:dDtCompItPag,:dDtPagoItPag,:dDtPagoItPag,:DVLRJUROSPAG,
             :ICODEMP, :ICODFILIAL, :iCodPag, :iNParcPag,:cFlag, 'J'
-            , :codempct, :codfilialct, :codcontr, :coditcontr
+            , :codempct, :codfilialct, :codcontr, :coditcontr, :codempem, :codfilialem, :matempr
             );
 
     END
@@ -20965,11 +20964,11 @@ BEGIN
         INSERT INTO FNSUBLANCA (CODEMP,CODFILIAL,CODLANCA,CODSUBLANCA,CODEMPFR,CODFILIALFR,CODFOR,
         CODEMPPN,CODFILIALPN,CODPLAN,CODEMPCC,CODFILIALCC,ANOCC,CODCC,ORIGSUBLANCA,DTCOMPSUBLANCA,DATASUBLANCA,DTPREVSUBLANCA,VLRSUBLANCA,
               CODEMPPG, CODFILIALPG, CODPAG, NPARCPAG, FLAG, TIPOSUBLANCA
-              , CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR)
+              , CODEMPCT, CODFILIALCT, CODCONTR, CODITCONTR, CODEMPEMP, CODFILIALEM, MATEMPR)
             VALUES (:ICODEMP,:IFILIALLANCA,:iCodLanca,:CODSUBLANCA,:ICODEMPFR,:ICODFILIALFR,:ICODFOR,
              :CODEMPDR,:CODFILIALDR,:CODPLANDR,:ICODEMPCC,:ICODFILIALCC,:IANOCC,:SCODCC,'E',:dDtCompItPag,:dDtPagoItPag,:dDtPagoItPag,:DVLRDESC*-1
              ,:ICODEMP, :ICODFILIAL, :iCodPag, :iNParcPag, :cFlag, 'D'
-             ,:codempct, :codfilialct, :codcontr, :coditcontr
+             ,:codempct, :codfilialct, :codcontr, :coditcontr, :codempemp, :codfilialem, :matempr
              );
 
     END
@@ -33323,7 +33322,7 @@ BEGIN
            EXECUTE PROCEDURE FNADICLANCASP02(new.CodPag,new.NParcPag,new.NumConta,new.CODEMPCA,new.CODFILIALCA,:ICODFOR,:ICODEMPFR,:ICODFILIALFR,
                               new.CodPlan,new.CODEMPPN,new.CODFILIALPN,new.AnoCC,new.CodCC,new.CODEMPCC,new.CODFILIALCC, new.DTCOMPITPAG,
                               new.DtPagoItPag,new.DocLancaItPag,new.ObsItPag,new.VlrPagoItPag,new.CODEMP,new.CODFILIAL,new.vlrjurositpag,new.vlrdescitpag
-                              ,new.codempct, new.codfilialct, new.codcontr, new.coditcontr);
+                              ,new.codempct, new.codfilialct, new.codcontr, new.coditcontr, new.codempem, new.codfilialem, new.matempr);
        END
 
        /* Altera o valor pago e o valor a pagar */
@@ -33728,7 +33727,8 @@ BEGIN
              EXECUTE PROCEDURE FNADICLANCASP01(new.CodRec,new.NParcItRec,new.PDVITREC,new.NumConta,new.CODEMPCA,new.CODFILIALCA,:ICODCLI,:ICODEMPCL,:ICODFILIALCL,
                         new.CodPlan,new.CODEMPPN,new.CODFILIALPN,new.ANOCC,new.CODCC,new.CODEMPCC,new.CODFILIALCC, new.dtCompItRec, new.DtPagoItRec, 
                         new.DocLancaItRec, SUBSTRING(new.ObsItRec FROM 1 FOR 50),new.VlrPagoItRec-old.VlrPagoItRec,new.CODEMP,new.CODFILIAL,new.vlrjurositrec,new.vlrdescitrec
-                        ,new.codempct, new.codfilialct, new.codcontr, new.coditcontr);
+                        , new.codempct, new.codfilialct, new.codcontr, new.coditcontr
+                        , new.codempem, new.codfilialem, new.matempr);
           END
         END
         IF (new.STATUSITREC = 'RP') THEN
