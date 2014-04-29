@@ -147,6 +147,8 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 	private JTextFieldPad txtNParcPag = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 	
 	private boolean lancafincontr = false;
+	
+	private boolean edita = true;
 
 	private enum enum_grid_cheques {
 		SEQCHEQ, NUMCHEQ, DTEMITCHEQ, DTVENCTOCHEQ, VLRCHEQ, SITCHEQ
@@ -160,6 +162,7 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 
 		super( cOrig );
 
+		this.edita = edita;
 		this.lancafincontr = lancafincontr;
 		setTitulo( "Edição de contas a pagar" );
 		setAtribos( 368, 450 );
@@ -167,6 +170,7 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 		montaListaCampos();
 		montaTela();
 		montaGridCheques();
+		habilitaCampos( edita );
 
 	}
 
@@ -332,10 +336,12 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 		pnContrato.adic( txtNomeEmpr, 90, 120, 250, 20 );
 
 		
-		if ( ! lancafincontr) {
+		if ( (!lancafincontr) || (!edita)) {
 			txtCodcontr.setAtivo( false );
 			txtCoditcontr.setAtivo( false );
 		}
+
+		btOK.setEnabled( edita );
 
 		// ABA CHEQUES
 
@@ -374,7 +380,7 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 		if (! "".equals( sVals[ EDIT_PAG_SETVALORES.MATEMPR.ordinal() ] ) ) {
 			txtMatEmpr.setVlrString( (String) sVals[ EDIT_PAG_SETVALORES.MATEMPR.ordinal() ] );
 		}
-		txtVlrParc.setAtivo( bLancaUsu );
+		txtVlrParc.setAtivo( bLancaUsu && edita );
 	}
 
 	public String[] getValores() {
@@ -747,6 +753,25 @@ public class DLEditaPag extends FFDialogo implements CarregaListener {
 
 	public void afterCarrega( CarregaEvent cevt ) {
 
+	}
+	
+	private void habilitaCampos(boolean ativo) {
+		txtCodConta.setAtivo( ativo );
+		txtCodPlan.setAtivo( ativo );
+		txtCodCC.setAtivo( ativo );
+		txtCodTipoCob.setAtivo( ativo );
+		txtDoc.setAtivo( ativo );
+		txtDtVenc.setAtivo( ativo );
+		txtVlrParc.setAtivo( ativo );
+		txtVlrDesc.setAtivo( ativo );
+		txtVlrJuros.setAtivo( ativo );
+		txtVlrDev.setAtivo( ativo );
+		txtVlrAdic.setAtivo( ativo );
+		txtObs.setAtivo( ativo );
+		txtCodcontr.setAtivo( ativo );
+		txtCoditcontr.setAtivo( ativo );
+		txtMatEmpr.setAtivo( ativo );
+		
 	}
 
 	public void setConexao( DbConnection cn ) {
