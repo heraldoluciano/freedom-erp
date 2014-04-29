@@ -2334,10 +2334,15 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 
 				codhistpag = (Integer) prefere.get( "codhistpag" );
 
-				imgStatusAt = (ImageIcon) tabManut.getValor( tabManut.getLinhaSel(), enum_tab_manut.IMGSTATUS.ordinal() );
-
 				iLin = tabManut.getLinhaSel();
 
+				imgStatusAt = (ImageIcon) tabManut.getValor( iLin, enum_tab_manut.IMGSTATUS.ordinal() );
+
+				/*if ( imgStatusAt == imgPago ) {
+					Funcoes.mensagemInforma( this, "Parcela(s) selecionada(s) já baixada(s)!" );
+					return;
+				}
+				*/
 				iCodPag =  (Integer) tabManut.getValor( iLin, enum_tab_manut.CODPAG.ordinal() );
 				iNParcPag = (Integer) tabManut.getValor( iLin, enum_tab_manut.NPARCPAG.ordinal() );
 
