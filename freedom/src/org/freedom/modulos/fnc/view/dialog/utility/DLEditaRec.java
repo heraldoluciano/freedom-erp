@@ -365,7 +365,7 @@ public class DLEditaRec extends FFDialogo implements CarregaListener, FocusListe
 			txtVlrParc.setAtivo( bEdita );
 			txtCodBordero.setAtivo( bEdita );
 			cbDescPont.setEnabled( bEdita );
-			btOK.setVisible( bEdita );
+			btOK.setEnabled( bEdita );
 		}
 		
 	}
