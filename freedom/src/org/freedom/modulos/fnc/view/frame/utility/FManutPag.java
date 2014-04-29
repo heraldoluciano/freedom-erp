@@ -1243,7 +1243,7 @@ public class FManutPag extends FFilho implements ActionListener, CarregaListener
 			sSQL.append( "FROM FNPAGAR P, FNITPAGAR IT " );
 			sSQL.append( "left outer join vdcontrato ct on ct.codemp=it.codempct and ct.codfilial=it.codfilialct and ct.codcontr=it.codcontr ");
 			sSQL.append( "left outer join vditcontrato ict on ict.codemp=it.codempct and ict.codfilial=it.codfilialct and ict.codcontr=it.codcontr and ict.coditcontr=it.coditcontr ");
-			sSQL.append( "left outer join rhempregado emp on emp.codemp=it.codempem and emp.codfilial=it.codfilialem and emp.matempr=it.codempr ");
+			sSQL.append( "left outer join rhempregado emp on emp.codemp=it.codempem and emp.codfilial=it.codfilialem and emp.matempr=it.matempr ");
 			sSQL.append( "WHERE P.CODPAG=? AND P.CODEMP=? AND P.CODFILIAL=? " );
 			sSQL.append( "AND IT.CODPAG=P.CODPAG AND IT.CODEMP=P.CODEMP AND IT.CODFILIAL=P.CODFILIAL " );
 			sSQL.append( "ORDER BY IT.DTVENCITPAG,IT.STATUSITPAG " );
