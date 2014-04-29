@@ -24,10 +24,14 @@
 package org.freedom.modulos.crm.view.frame.report;
 
 import java.awt.Component;
+
+import org.freedom.acao.CheckBoxEvent;
+import org.freedom.acao.CheckBoxListener;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
+import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
@@ -39,6 +43,7 @@ import org.freedom.library.type.TYPE_PRINT;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -46,7 +51,7 @@ import javax.swing.BorderFactory;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
-public class FRBalancoProj extends FRelatorio {
+public class FRBalancoProj extends FRelatorio implements CheckBoxListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -76,6 +81,12 @@ public class FRBalancoProj extends FRelatorio {
 
 	private JTextFieldFK txtNumCli = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 10, 0 );
 
+	private JCheckBoxPad cbResumoPgto = new JCheckBoxPad( "Resumo de pagamentos de colaboradores", "S", "N" );
+
+	private JTextFieldPad txtDataini = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+
+	private JTextFieldPad txtDatafim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+
 	private ListaCampos lcCli = new ListaCampos( this );
 
 	private ListaCampos lcContr = new ListaCampos( this );
@@ -91,6 +102,7 @@ public class FRBalancoProj extends FRelatorio {
 
 		montaListaCampos();
 		montaTela();
+		iniPeriodo();
 		tela = this;
 
 	}
@@ -114,9 +126,24 @@ public class FRBalancoProj extends FRelatorio {
 		adic( txtCodContr, 7, 63, 80, 20 );
 		adic( new JLabelPad( "Descrição do contrato" ), 90, 43, 250, 20 );
 		adic( txtDescContr, 90, 63, 225, 20 );
-
+		adic( cbResumoPgto, 7, 83, 300, 30);
+		adic( new JLabelPad("Período"), 7, 113, 100, 20);
+		adic( txtDataini, 7, 133, 90, 20);
+		adic( txtDatafim, 100, 133, 90, 20);
+		
+		cbResumoPgto.addCheckBoxListener( this );
+		habilitaPeriodo( false );
 	}
 
+	private void iniPeriodo() {
+		Calendar cal = Calendar.getInstance();
+		Date dtfim = cal.getTime();
+		cal.add( Calendar.MONTH, -1 );
+		Date dtini = cal.getTime();
+		txtDataini.setVlrDate( dtini );
+		txtDatafim.setVlrDate( dtfim );
+	}
+	
 	private void montaListaCampos() {
 
 		// Cliente
@@ -155,6 +182,16 @@ public class FRBalancoProj extends FRelatorio {
 			return;
 		}
 
+		if ( "S".equals(cbResumoPgto.getVlrString()) ) {
+			if ("".equals(txtDataini.getVlrString().trim()) || "".equals(txtDatafim.getVlrString().trim()) ) {
+				Funcoes.mensagemInforma( this, "Preecha o período para o resumo de pagamentos !" );
+				return;
+			}
+			if (txtDataini.getVlrDate().compareTo( txtDatafim.getVlrDate() )>0) {
+				Funcoes.mensagemInforma( this, "Período inválido !" );
+				return;
+			}
+		}
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -255,9 +292,18 @@ public class FRBalancoProj extends FRelatorio {
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
 
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
-		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "CPCOMPRA" ) );
+		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+		hParam.put( "CODFILIALSL", ListaCampos.getMasterFilial( "FNSUBLANCA" ) );
+		hParam.put( "CODFILIALEM", ListaCampos.getMasterFilial( "RHEMPREGADO" ) );
+		hParam.put( "CODFILIALAO", ListaCampos.getMasterFilial( "ATATENDIMENTO" ) );
+		hParam.put( "CODFILIALCT", ListaCampos.getMasterFilial( "VDCONTRATO" ) );
+		hParam.put( "CODCONTR", txtCodContr.getVlrInteger() );
 		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
-		hParam.put( "SUBREPORT_DIR", "org/freedom/relatorios/" );
+		hParam.put( "SUBREPORT_DIR", "org/freedom/layout/rel/" );
+		hParam.put( "RESUMOPGTO", cbResumoPgto.getVlrString() );
+		hParam.put( "DATAINI", txtDataini.getVlrDate() );
+		hParam.put( "DATAFIM", txtDatafim.getVlrDate() );
+		hParam.put( "CONEXAO", con.getConnection() );
 
 		dlGr = new FPrinterJob( "layout/rel/REL_BAL_PROJ.jasper", "Balanço de projeto/contrato", "", rs, hParam, this );
 
@@ -280,4 +326,20 @@ public class FRBalancoProj extends FRelatorio {
 		lcContr.setConexao( cn );
 	}
 
+	public void valorAlterado( CheckBoxEvent evt ) {
+
+		if (evt.getCheckBox()==cbResumoPgto) {
+			if ("S".equals( cbResumoPgto.getVlrString()) ) {
+				habilitaPeriodo( true );
+			} else {
+				habilitaPeriodo( false );
+			}
+		}
+		
+	}
+
+	private void habilitaPeriodo(boolean habilita) {
+		txtDataini.setAtivo( habilita );
+		txtDatafim.setAtivo( habilita );
+	}
 }

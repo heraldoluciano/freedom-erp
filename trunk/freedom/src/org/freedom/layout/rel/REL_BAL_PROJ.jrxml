@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="REL_FIN_PROJ_01" pageWidth="595" pageHeight="842" columnWidth="567" leftMargin="14" rightMargin="14" topMargin="8" bottomMargin="14">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="REL_BAL_PROJ" pageWidth="595" pageHeight="842" columnWidth="567" leftMargin="14" rightMargin="14" topMargin="8" bottomMargin="14">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="137"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -14,6 +14,37 @@
 	<parameter name="RAZEMP" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="LOGOEMP" class="java.lang.Object" isForPrompting="false"/>
 	<parameter name="USUARIO" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="RESUMOPGTO" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["N"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CODEMP" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Integer(104)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CODFILIALSL" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CODFILIALEM" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CODFILIALAO" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CODFILIALCT" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CODCONTR" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Integer(22)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DATAINI" class="java.util.Date" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DATAFIM" class="java.util.Date" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/home/robson/workspace/freedom/src/org/freedom/layout/rel/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CONEXAO" class="java.lang.Object" isForPrompting="false"/>
 	<queryString>
 		<![CDATA[select 'R' tipo, 'V' tiporecdesp,  vd.dtemitvenda data , vc.codcontr
 , cl.codcli, cl.razcli , vc.coditcontr, ct.desccontr
@@ -856,6 +887,37 @@ and vc.codempct=104 and vc.codfilialct=1 and vc.codcontr=7
 		</band>
 	</pageFooter>
 	<summary>
-		<band splitType="Stretch"/>
+		<band height="50" splitType="Stretch">
+			<printWhenExpression><![CDATA["S".equals($P{RESUMOPGTO})]]></printWhenExpression>
+			<subreport>
+				<reportElement x="0" y="0" width="567" height="50"/>
+				<subreportParameter name="CODEMP">
+					<subreportParameterExpression><![CDATA[$P{CODEMP}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="CODFILIALSL">
+					<subreportParameterExpression><![CDATA[$P{CODFILIALSL}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="CODFILIALEM">
+					<subreportParameterExpression><![CDATA[$P{CODFILIALEM}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="CODFILIALAO">
+					<subreportParameterExpression><![CDATA[$P{CODFILIALAO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="CODFILIALCT">
+					<subreportParameterExpression><![CDATA[$P{CODFILIALCT}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="CODCONTR">
+					<subreportParameterExpression><![CDATA[$P{CODCONTR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="DATAINI">
+					<subreportParameterExpression><![CDATA[$P{DATAINI}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="DATAFIM">
+					<subreportParameterExpression><![CDATA[$P{DATAFIM}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{CONEXAO}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "REL_BAL_PROJ_RESUMO.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
 	</summary>
 </jasperReport>
