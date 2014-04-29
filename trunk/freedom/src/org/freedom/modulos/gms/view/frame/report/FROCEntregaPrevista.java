@@ -53,7 +53,7 @@ public class FROCEntregaPrevista extends FRelatorio {
 		txtDataini.setVlrDate( new Date() );
 		txtDatafim.setVlrDate( new Date() );
 
-		lcForneced.add( new GuardaCampo( txtCodFor, "CodFor", "Cód.cli.", ListaCampos.DB_PK, false ) );
+		lcForneced.add( new GuardaCampo( txtCodFor, "CodFor", "Cód.for.", ListaCampos.DB_PK, false ) );
 		lcForneced.add( new GuardaCampo( txtRazFor, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false ) );
 		txtCodFor.setTabelaExterna( this.lcForneced, null );
 		txtCodFor.setNomeCampo( "CodFor" );
