@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="137"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -46,30 +46,42 @@
 	</parameter>
 	<parameter name="CONEXAO" class="java.lang.Object" isForPrompting="false"/>
 	<queryString>
-		<![CDATA[select 'R' tipo, 'V' tiporecdesp,  vd.dtemitvenda data , vc.codcontr
-, cl.codcli, cl.razcli , vc.coditcontr, ct.desccontr
-, ic.descitcontr
-, cast('Faturamento/venda - pedido: '||vd.codvenda||' - serie/doc: '||vd.serie||'/'||vd.docvenda as varchar(200)) descricao
-, iv.qtditvenda qtdade, cast((iv.vlrliqitvenda / case when iv.qtditvenda=0 then 1 else iv.qtditvenda end) as decimal(15,5)) vlrunit
-, iv.vlrliqitvenda as vlrtotal from vditvendavditcontr vc, vditvenda iv, vdvenda vd , vdcontrato ct
-, vditcontrato ic, vdcliente cl where ct.codemp=vc.codempct and ct.codfilial=vc.codfilialct
-and ct.codcontr=vc.codcontr and ic.codemp=ct.codemp and ic.codfilial=ct.codfilial
-and ic.codcontr=ct.codcontr and ic.coditcontr=vc.coditcontr and cl.codemp=ct.codempcl
-and cl.codfilial=ct.codfilialcl and cl.codcli=ct.codcli
-and vc.codempct=104 and vc.codfilialct=1 and vc.codcontr=7
- and iv.codemp=vc.codemp and iv.codfilial=vc.codfilial and iv.tipovenda=vc.tipovenda
+		<![CDATA[select 'Z' tipo, 'O' tiporecdesp,  o.dtorc data
+, co.codcontr, cl.codcli, cl.razcli , ic.coditcontr, ct.desccontr
+, ic.descitcontr , cast('Previsão/orçamento - orçamento: '||o.codorc as varchar(200)) descricao
+, ioc.qtditorc qtdade, (ioc.vlrliqitorc / case when ioc.qtditorc=0 then 1 else ioc.qtditorc end) vlrunit
+, ioc.vlrliqitorc as vlrtotal from vdcontrorc co, vditorcamento ioc, vdorcamento o
+, vdcontrato ct, vditcontrato ic, vdcliente cl
+where ct.codemp=co.codemp and ct.codfilial=co.codfilial
+and ct.codcontr=co.codcontr and ic.codemp=ct.codemp and ic.codfilial=ct.codfilial
+and ic.codcontr=ct.codcontr and ic.coditcontr=co.coditcontr and cl.codemp=ct.codempcl
+ and cl.codfilial=ct.codfilialcl and cl.codcli=ct.codcli and co.codemp=104 and co.codfilial=1
+ and co.codcontr=48 and ioc.codemp=co.codempor and ioc.codfilial=co.codfilialor and ioc.tipoorc=co.tipoorc
+ and ioc.codorc=co.codorc and ioc.coditorc=co.coditorc and o.codemp=ioc.codemp and o.codfilial=ioc.codfilial
+ and o.tipoorc=ioc.tipoorc and o.codorc=ioc.codorc and ioc.qtditorc>0
+
+ union all select 'R' tipo, 'V' tiporecdesp
+ ,  vd.dtemitvenda data , vc.codcontr, cl.codcli, cl.razcli , vc.coditcontr, ct.desccontr, ic.descitcontr
+ , cast('Faturamento/venda - pedido: '||vd.codvenda||' - serie/doc: '||vd.serie||'/'||vd.docvenda as varchar(200)) descricao
+ , iv.qtditvenda qtdade, (iv.vlrliqitvenda / case when iv.qtditvenda=0 then 1 else iv.qtditvenda end) vlrunit
+ , iv.vlrliqitvenda as vlrtotal from vditvendavditcontr vc, vditvenda iv, vdvenda vd , vdcontrato ct
+ , vditcontrato ic, vdcliente cl where ct.codemp=vc.codempct and ct.codfilial=vc.codfilialct
+ and ct.codcontr=vc.codcontr and ic.codemp=ct.codemp and ic.codfilial=ct.codfilial
+ and ic.codcontr=ct.codcontr and ic.coditcontr=vc.coditcontr and cl.codemp=ct.codempcl
+ and cl.codfilial=ct.codfilialcl and cl.codcli=ct.codcli and vc.codempct=104 and vc.codfilialct=1
+ and vc.codcontr=48 and iv.codemp=vc.codemp and iv.codfilial=vc.codfilial and iv.tipovenda=vc.tipovenda
  and iv.codvenda=vc.codvenda and iv.coditvenda=vc.coditvenda and vd.codemp=iv.codemp
  and vd.codfilial=iv.codfilial and vd.tipovenda=iv.tipovenda and vd.codvenda=iv.codvenda
- and iv.qtditvenda>0 union all select 'D' tipo, cp.tipocusto tiporecdesp,  cp.data
- , cp.codcontr, cl.codcli, cl.razcli , cp.coditcontr, ct.desccontr, ic.descitcontr
- , cp.desccusto descricao , cp.qtdcusto qtdade, cp.vlrcusto vlrunit
- , (cp.qtdcusto * cp.vlrcusto) as vlrtotal
- from vwcustoproj01 cp, vdcontrato ct, vditcontrato ic, vdcliente cl
- where ct.codemp=cp.codemp and ct.codfilial=cp.codfilial and ct.codcontr=cp.codcontr
- and ic.codemp=ct.codemp and ic.codfilial=ct.codfilial and ic.codcontr=ct.codcontr
- and ic.coditcontr=cp.coditcontr and cl.codemp=ct.codempcl and cl.codfilial=ct.codfilialcl
- and cl.codcli=ct.codcli and cp.codemp=104 and cp.codfilial=7
-  and cp.codcontr=7 order by 5, 4, 7, 1 desc, 2, 3]]>
+ and iv.qtditvenda>0
+ union all
+ select 'D' tipo, cp.tipocusto tiporecdesp,  cp.data , cp.codcontr, cl.codcli, cl.razcli
+ , cp.coditcontr, ct.desccontr, ic.descitcontr , cp.desccusto descricao , cp.qtdcusto qtdade
+ , cp.vlrcusto vlrunit , (cp.qtdcusto * cp.vlrcusto) as vlrtotal
+ from vwcustoproj01 cp, vdcontrato ct, vditcontrato ic, vdcliente cl where ct.codemp=cp.codemp
+ and ct.codfilial=cp.codfilial and ct.codcontr=cp.codcontr and ic.codemp=ct.codemp and ic.codfilial=ct.codfilial
+ and ic.codcontr=ct.codcontr and ic.coditcontr=cp.coditcontr and cl.codemp=ct.codempcl
+ and cl.codfilial=ct.codfilialcl and cl.codcli=ct.codcli and cp.codemp=104 and cp.codfilial=1 and cp.codcontr=48
+  order by 5, 4, 7, 1 desc, 2, 3]]>
 	</queryString>
 	<field name="TIPO" class="java.lang.String"/>
 	<field name="TIPORECDESP" class="java.lang.String"/>
@@ -650,19 +662,6 @@ and vc.codempct=104 and vc.codfilialct=1 and vc.codcontr=7
 				<line>
 					<reportElement key="line-27" x="370" y="0" width="1" height="17"/>
 				</line>
-				<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
-					<reportElement key="textField-4" x="385" y="-13" width="47" height="12"/>
-					<box>
-						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement textAlignment="Right">
-						<font fontName="SansSerif" size="8"/>
-					</textElement>
-					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{QTDADE}]]></textFieldExpression>
-				</textField>
 			</band>
 		</groupFooter>
 	</group>
@@ -838,6 +837,19 @@ and vc.codempct=104 and vc.codfilialct=1 and vc.codcontr=7
 			<line>
 				<reportElement key="line-15" x="326" y="-1" width="1" height="13"/>
 			</line>
+			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement key="textField-4" x="385" y="0" width="47" height="12"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{QTDADE}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<columnFooter>
