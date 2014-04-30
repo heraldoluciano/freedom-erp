@@ -659,7 +659,7 @@ public class FRemCnab extends FRemFBN {
 				clhoje = Calendar.getInstance();
 				String dia = StringFunctions.strZero( clhoje.get( Calendar.DAY_OF_MONTH ) + "", 2 );
 				String mes = StringFunctions.strZero( ( clhoje.get( Calendar.MONTH ) + 1 ) + "", 2 );
-				String seq = StringFunctions.strZero( prefs.get( EPrefs.NROSEQ ) + "", 2 );
+				String seq = prefs.get( EPrefs.NROSEQ ) + "";
 				sFileName = "CB" + dia + mes + seq + ".REM";
 			}
 			else if ( Banco.SICRED.equals( txtCodBanco.getVlrString() ) ) {
