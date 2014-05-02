@@ -1085,12 +1085,12 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 		String unid = null;
 		PreparedStatement ps = null; 
 
-		DAORecMerc recmerc = null;
+		DAORecMerc daorecmerc = null;
 
 		try {
 
 
-			recmerc = new DAORecMerc( corig, ticket, Aplicativo.getInstace().getConexao() );
+			daorecmerc = new DAORecMerc( corig, ticket, Aplicativo.getInstace().getConexao() );
 
 			if ( statustxt.equals( StatusOS.OS_ANALISE.getValue() ) ||
 					statustxt.equals( StatusOS.OS_ENCAMINHADO.getValue() ) ||
@@ -1110,7 +1110,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 					if(codorcgrid == null) {
 
 						if(parametros != null) {
-							codorc = recmerc.geraOrcamento(parametros, null);
+							codorc = daorecmerc.geraOrcamento(parametros, null);
 						}
 
 						if ( codorc != null && codorc > 0 ) {
@@ -1124,7 +1124,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 						if ( Funcoes.mensagemConfirma( corig, "Já existe o orçamento de nro.: " + codorcgrid + " para este ticket!\n" +
 								"Confirma o reprocessamento de orçamento?" ) == JOptionPane.YES_OPTION ) {
 
-							codorc = recmerc.geraOrcamento(parametros, codorcgrid);
+							codorc = daorecmerc.geraOrcamento(parametros, codorcgrid);
 
 						}
 
@@ -1137,8 +1137,13 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 			}
 
 		}
-
 		catch ( Exception e ) {
+			try {
+				daorecmerc.rollback();
+			} catch (SQLException err) {
+				Funcoes.mensagemErro( null, "Erro executando rollback na geração de orçamento !\n"+err.getMessage() );
+			}
+			Funcoes.mensagemErro( null, "Erro gerando orçamento !\n" + e.getMessage());
 			e.printStackTrace();
 		}
 

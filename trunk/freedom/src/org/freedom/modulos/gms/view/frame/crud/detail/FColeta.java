@@ -864,8 +864,10 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 				daorecmerc.setCodfor( codfor );
 				if(Funcoes.mensagemConfirma( this, "Confirmar geração da compra ?" ) == JOptionPane.YES_OPTION	){
 					codcompra = daorecmerc.geraCompra(true, txtDocRecMerc.getVlrString(), txtDtEnt.getVlrDate());
-					if (Funcoes.mensagemConfirma( this, "Gerada a compra número " + codcompra + ", deseja edita-la ?" )==JOptionPane.YES_OPTION) {
-						editaCompra(codcompra);
+					if (codcompra!=null) {
+						if (Funcoes.mensagemConfirma( this, "Gerada a compra número " + codcompra + ", deseja edita-la ?" )==JOptionPane.YES_OPTION) {
+							editaCompra(codcompra);
+						}
 					}
 				}
 			} else {
@@ -880,7 +882,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 			} catch (SQLException err) {
 				Funcoes.mensagemErro( this, "Erro executando rollback!\n"+err.getMessage() );
 			}
-			Funcoes.mensagemErro( this, "Erro carregando fornecedor!\n" + e.getMessage() );
+			Funcoes.mensagemErro( this, "Erro gerando compra!\n" + e.getMessage() );
 			e.printStackTrace();
 		}
 		
@@ -934,7 +936,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 
 		sql.append( "select " );
 		sql.append( "se.codsecao, se.descsecao, rm.dtent, rm.hins, rm.dtprevret, it.qtditrecmerc, pd.codprod, pd.refprod, " );
-		sql.append( "pd.descprod, rm.ticket, cl.codcli, cl.razcli, rm.docrecmerc, vd.nomevend, mn.nomemunic " );
+		sql.append( "pd.descprod, rm.ticket, cl.codcli, cl.razcli, rm.docrecmerc, vd.nomevend, mn.nomemunic, it.garantia, it.numserie " );
 		sql.append( "from " );
 		sql.append( "eqrecmerc rm " );
 		sql.append( "left outer join vdcliente cl on " );

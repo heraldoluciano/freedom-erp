@@ -120,4 +120,16 @@ public abstract class AbstractDAO {
 		return id;
 	}
 
+	public void rollback() throws SQLException {
+		if (getConn()!=null && getConn().isConnected() && getConn().isTransaction() ) {
+			getConn().rollback();
+		}
+	}
+	
+	public void commit() throws SQLException {
+		if (getConn()!=null && getConn().isConnected() && getConn().isTransaction() ) {
+			getConn().commit();
+		}
+	}
+	
 }

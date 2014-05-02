@@ -28,7 +28,7 @@ and it.codfilial=rm.codfilial and it.ticket=rm.ticket
 left outer join eqproduto pd on pd.codemp=it.codemppd and pd.codfilial=it.codfilialpd
 and pd.codprod=it.codprod left outer join eqsecao se on se.codemp=pd.codempsc
 and se.codfilial=pd.codfilialsc and se.codsecao=pd.codsecao
-where rm.codemp=71 and rm.codfilial=1 and rm.ticket=1
+where rm.codemp=71 and rm.codfilial=1 and rm.ticket=31316
 order by it.coditrecmerc]]>
 	</queryString>
 	<field name="CODSECAO" class="java.lang.String"/>
