@@ -299,6 +299,7 @@ public class NFEConnectionFactory implements NFEListener {
 
 	public void post() {
 
+		getObjNFEFactory().setValid( true );
 		getObjNFEFactory().post();
 	}
 
