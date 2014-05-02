@@ -918,7 +918,7 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 	}
 
-	public Integer geraCompra( boolean iscoleta, String doccoleta, Date dtentrada ) {
+	public Integer geraCompra( boolean iscoleta, String doccoleta, Date dtentrada ) throws SQLException {
 
 		StringBuilder sql = new StringBuilder();
 		StringBuilder obscompra = new StringBuilder();
@@ -1015,17 +1015,11 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 				getConn().commit();
 			}
 
-		} catch ( Exception e ) {
-			try {
-				getConn().rollback();
-			} catch ( SQLException err ) {
-				e.printStackTrace();
-			}
-			Funcoes.mensagemErro( null, "Erro ao gerar compra!", true, getConn(), e );
-			setCodcompra( null );
+		} catch ( SQLException e ) {
 			e.printStackTrace();
+			setCodcompra( null );
+			throw e;
 		}
-
 		return getCodcompra();
 
 	}
@@ -1238,7 +1232,7 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 	}
 
-	public Integer geraOrcamento( HashMap<Object, Object> parametros, Integer codorc_atu ) {
+	public Integer geraOrcamento( HashMap<Object, Object> parametros, Integer codorc_atu ) throws Exception {
 
 		StringBuilder sql = new StringBuilder();
 
@@ -1337,16 +1331,16 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 			/***********************************/
 
 		} catch ( Exception e ) {
-			Funcoes.mensagemErro( null, "Erro ao gerar orçamento!", true, getConn(), e );
 			setCodcompra( null );
 			e.printStackTrace();
+			throw e;
 		}
 
 		return getCodorc();
 
 	}
 
-	public Integer geraItemCompra( Integer codcompra, boolean iscoleta ) {
+	public Integer geraItemCompra( Integer codcompra, boolean iscoleta ) throws SQLException {
 
 		StringBuilder sql = new StringBuilder();
 
@@ -1399,10 +1393,10 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 			ps.execute();
 			ps.close();
 
-		} catch ( Exception e ) {
-			Funcoes.mensagemErro( null, "Erro ao gerar itens de compra!", true, getConn(), e );
+		} catch ( SQLException e ) {
 			setCodcompra( null );
 			e.printStackTrace();
+			throw e;
 		}
 
 		return getCodcompra();
