@@ -231,7 +231,7 @@ public class DAOBuscaOrc extends AbstractDAO {
 		int param = 1;
 		Boolean pedseq = (Boolean) getPrefs().get(COL_PREFS.USAPEDSEQ.name());
 		if (pedseq) {
-			sqlseq.append( "select iseq from sggeranum(?, ?, ?)");
+			sqlseq.append( "select iseq from sggeranumsp(?, ?, ?)");
 			PreparedStatement psseq = getConn().prepareStatement( sqlseq.toString() );
 			psseq.setInt( param++, codemp );
 			psseq.setInt( param++, codfilialvd );
