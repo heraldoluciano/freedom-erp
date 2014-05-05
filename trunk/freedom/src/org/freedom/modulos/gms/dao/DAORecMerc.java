@@ -490,7 +490,9 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 			if ( rs.next() ) {
 				setCodcompra( rs.getInt( "ISEQ" ) );
 			}
-
+			rs.close();
+			ps.close();
+			getConn().commit();
 		} catch ( SQLException e ) {
 			e.printStackTrace();
 		}

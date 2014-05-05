@@ -308,7 +308,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 		btExec.setToolTipText( "Executar montagem" );
 		btTudoOrc.setToolTipText( "Selecionar tudo" );
 		btNadaOrc.setToolTipText( "Limpar seleção" );
-		btGerar.setToolTipText( "Gerar no venda" );
+		btGerar.setToolTipText( "Gerar venda" );
 		btAgruparItens.setToolTipText( "Agrupar ítens" );
 
 
@@ -758,12 +758,13 @@ private boolean gerarVenda() {
 								rs.close();
 								ps.close();*/
 
-							iCodVenda = daobusca.executaVDAdicVendaORCSP( new Integer( tabitorc.getValor( i, GRID_ITENS.CODORC.ordinal() ).toString() ) , 
-									ListaCampos.getMasterFilial( "VDORCAMENTO" ), 
-									Aplicativo.iCodEmp, 
-									sTipoVenda, 
-									iCodVenda, 
-									dataSaida );
+							iCodVenda = daobusca.executaVDAdicVendaORCSP(  Aplicativo.iCodEmp
+									, ListaCampos.getMasterFilial( "VDORCAMENTO" )
+									, new Integer( tabitorc.getValor( i, GRID_ITENS.CODORC.ordinal() ).toString() )
+									, ListaCampos.getMasterFilial( "VDVENDA") 
+									, sTipoVenda 
+									, iCodVenda 
+									, dataSaida );
 
 						} catch ( SQLException err ) {
 							if ( err.getErrorCode() == 335544665 ) {

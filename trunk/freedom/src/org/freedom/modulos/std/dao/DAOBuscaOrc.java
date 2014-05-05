@@ -211,27 +211,72 @@ public class DAOBuscaOrc extends AbstractDAO {
 		
 	}
 	
+/*
+ *     codemp integer,
+    codfilial smallint,
+    codorc integer,
+    codfilialvd integer,
+    tipovenda char(1),
+    codvenda integer,
+    dtsaidavenda date)
 
-	public int executaVDAdicVendaORCSP(Integer codorc, Integer codfilialoc, Integer codempoc, String tipovenda, Integer codvenda, Date datasaida) throws SQLException {
+ * */
+	
+	public int executaVDAdicVendaORCSP(Integer codemp,  Integer codfilialoc, Integer codorc
+			, Integer codfilialvd, String tipovenda, Integer codvenda, Date datasaida) throws SQLException {
+		StringBuilder sql = new StringBuilder();
+		StringBuilder sqlseq = new StringBuilder();
+
 		int icodvenda = 0;
 		int param = 1;
-
-		String sql = "SELECT IRET FROM VDADICVENDAORCSP(?,?,?,?,?,?)";
-		PreparedStatement ps = getConn().prepareStatement( sql );
-		ps.setInt( param++, codorc);
+		Boolean pedseq = (Boolean) getPrefs().get(COL_PREFS.USAPEDSEQ.name());
+		if (pedseq) {
+			sqlseq.append( "select iseq from sggeranum(?, ?, ?)");
+			PreparedStatement psseq = getConn().prepareStatement( sqlseq.toString() );
+			psseq.setInt( param++, codemp );
+			psseq.setInt( param++, codfilialvd );
+			psseq.setString( param++, "VD" );
+			ResultSet rsseq = psseq.executeQuery();
+			if (rsseq.next()) {
+				codvenda = rsseq.getInt( "iseq" );
+			}
+			rsseq.close();
+			psseq.close();
+			getConn().commit();
+		} else {
+			if (codvenda==null || codvenda.intValue()==0) {
+				sqlseq.append( "select max(codvenda)+1 codvenda from vdvenda where codemp=? and codfilial=? and tipovenda=?");
+				PreparedStatement psseq = getConn().prepareStatement( sqlseq.toString() );
+				psseq.setInt( param++, codemp );
+				psseq.setInt( param++, codfilialvd );
+				psseq.setString( param++, "VD" );
+				ResultSet rsseq = psseq.executeQuery();
+				if (rsseq.next()) {
+					codvenda = rsseq.getInt( "codvenda" );
+				} 
+				rsseq.close();
+				psseq.close();
+				getConn().commit();
+				if (codvenda==null || codvenda.intValue()==0 ) {
+					codvenda = 1;
+				}
+			}
+		}
+		param = 1;
+		sql.append( "SELECT IRET FROM VDADICVENDAORCSP(?,?,?,?,?,?)" );
+		PreparedStatement ps = getConn().prepareStatement( sql.toString() );
+		ps.setInt( param++, codemp );
 		ps.setInt( param++, codfilialoc );
-		ps.setInt( param++, codempoc );
+		ps.setInt( param++, codorc);
+		ps.setInt( param++, codfilialvd );
 		ps.setString( param++, tipovenda );
 		ps.setInt( param++, codvenda);
 		ps.setDate( param++, Funcoes.dateToSQLDate( datasaida == null ? new Date() : datasaida ));
 		ResultSet rs = ps.executeQuery();
-
 		if ( rs.next() )
 			icodvenda = rs.getInt( 1 );
-
 		rs.close();
 		ps.close();
-
 		return icodvenda;
 	}
 
