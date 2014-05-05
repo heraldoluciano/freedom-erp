@@ -263,7 +263,7 @@ public class DAOBuscaOrc extends AbstractDAO {
 			}
 		}
 		param = 1;
-		sql.append( "SELECT IRET FROM VDADICVENDAORCSP(?,?,?,?,?,?)" );
+		sql.append( "select iret from vdadicvendaorcsp(?,?,?,?,?,?,?)" );
 		PreparedStatement ps = getConn().prepareStatement( sql.toString() );
 		ps.setInt( param++, codemp );
 		ps.setInt( param++, codfilialoc );
@@ -274,7 +274,7 @@ public class DAOBuscaOrc extends AbstractDAO {
 		ps.setDate( param++, Funcoes.dateToSQLDate( datasaida == null ? new Date() : datasaida ));
 		ResultSet rs = ps.executeQuery();
 		if ( rs.next() )
-			icodvenda = rs.getInt( 1 );
+			icodvenda = rs.getInt( "iret" );
 		rs.close();
 		ps.close();
 		return icodvenda;
