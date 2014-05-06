@@ -1006,16 +1006,16 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 			ps.close();
 
 			geraItemCompra( getCodcompra(), iscoleta );
-
+			
+			getConn().commit();
+			
 			// Ser for CIF (Por conta do comprador) deve gerar conhecimento para controle do pagamento.
 			if ( "C".equals( getTipofrete() ) ) {
 
 				geraFreteRecMerc();
 
 			}
-			else {
-				getConn().commit();
-			}
+	
 
 		} catch ( SQLException e ) {
 			e.printStackTrace();
@@ -1138,9 +1138,10 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 			ps.execute();
 
+			ps.close();
+
 			getConn().commit();
 
-			ps.close();
 
 		} catch ( Exception e ) {
 			Funcoes.mensagemErro( null, "Erro ao gerar conhecimento de frete!", true, getConn(), e );
