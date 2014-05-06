@@ -767,6 +767,7 @@ private boolean gerarVenda() {
 									, dataSaida );
 
 						} catch ( SQLException err ) {
+							con.rollback();
 							if ( err.getErrorCode() == 335544665 ) {
 								Funcoes.mensagemErro( null, "Número de pedido já existe!" );
 								return gerarVenda();
@@ -848,15 +849,13 @@ private boolean gerarVenda() {
 
 					} 
 					catch ( SQLException err ) {
-						Funcoes.mensagemErro( null, "Erro ao gerar itvenda: '" + ( i + 1 ) + "'!\n" + err.getMessage(), true, con, err );
 						try {
 							con.rollback();
 						} 
 						catch ( SQLException err1 ) {
-
 							err1.printStackTrace();
-
 						}
+						Funcoes.mensagemErro( null, "Erro ao gerar itvenda: '" + ( i + 1 ) + "'!\n" + err.getMessage(), true, con, err );
 						return false;
 					}
 
@@ -881,13 +880,17 @@ private boolean gerarVenda() {
 					try {
 						daobusca.executaVDAtuDescVendaORCSP( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDVENDA" ), "V", iCodVenda );
 					} catch ( SQLException err ) {
+						con.rollback();
 						Funcoes.mensagemErro( null, "Erro ao atualizar desconto da venda!\n" + err.getMessage(), true, con, err );
+						return false;
 					}
 
 					try {
 						daobusca.atualizaObsPed( obs, iCodVenda );
 					} catch ( SQLException err ) {
+						con.rollback();
 						Funcoes.mensagemErro( null, "Erro ao atualizar observações da venda!\n" + err.getMessage(), true, con, err );
+						return false;
 					}
 
 					con.commit();
@@ -928,7 +931,13 @@ private boolean gerarVenda() {
 		}
 		else
 			Funcoes.mensagemInforma( null, "Não existe nenhum item pra gerar uma venda!" );
+		con.commit();
 	} catch ( Exception e ) {
+		try {
+			con.rollback();
+		} catch (SQLException err) {
+			err.printStackTrace();
+		}
 		e.printStackTrace();
 	} finally {
 		ps = null;
