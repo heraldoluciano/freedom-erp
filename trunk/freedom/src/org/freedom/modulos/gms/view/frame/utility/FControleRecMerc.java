@@ -409,8 +409,8 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 		tabDet.setTamColuna( 200, DETALHAMENTO.NOMEFOR.ordinal() );
 		tabDet.setTamColuna( 100, DETALHAMENTO.PESOLIQUIDO.ordinal() );
 		tabDet.setTamColuna( 50, DETALHAMENTO.RENDA.ordinal() );
-//		tabDet.setTamColuna( 50, DETALHAMENTO.CODCOMPRA.ordinal() );
-		tabDet.setColunaInvisivel( DETALHAMENTO.CODCOMPRA.ordinal() );
+		tabDet.setTamColuna( 50, DETALHAMENTO.CODCOMPRA.ordinal() );
+//		tabDet.setColunaInvisivel( DETALHAMENTO.CODCOMPRA.ordinal() );
 		// tabDet.setColunaInvisivel( 2 );
 
 	}
