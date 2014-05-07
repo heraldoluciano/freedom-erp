@@ -527,6 +527,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 			prefere = new HashMap<String, Object>();
 
 			sql.append( "select coalesce(pf8.codtiporecmerc,0) codtiporecmerc, coalesce(sincticket,'N') sincticket " );
+			sql.append( ", coalesce(pf8.contingenciapesagem,'N') contingenciapesagem ");
 			sql.append( "from sgprefere8 pf8 " );
 			sql.append( "where pf8.codemp=? and pf8.codfilial=? " );
 
@@ -539,7 +540,8 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 
 			if ( rs.next() ) {
 				prefere.put( "codtiporecmerc", rs.getInt( "codtiporecmerc" ) );
-				prefere.put( "sincticket", rs.getString( "sincticket" ).equals( "S" ) );
+				prefere.put( "sincticket", new Boolean(rs.getString( "sincticket" ).equals( "S" ) ) );
+				prefere.put( "contingenciapesagem", new Boolean( rs.getString( "contingenciapesagem" ).equals( "S" ) ) );
 			}
 
 			con.commit();
@@ -1130,7 +1132,13 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 
 		try {
 
-			dl = new DLPesagem( this, txtTipoProcRecMerc.getVlrString(),false );
+			boolean contingencia = false;
+			
+			if (prefere!=null) {
+				contingencia = (Boolean) prefere.get( "contingenciapesagem" );
+			}
+			
+			dl = new DLPesagem( this, txtTipoProcRecMerc.getVlrString(),contingencia );
 
 			dl.setConexao( con );
 			dl.execShow();
