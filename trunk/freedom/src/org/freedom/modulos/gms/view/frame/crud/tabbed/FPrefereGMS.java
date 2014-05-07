@@ -81,7 +81,10 @@ public class FPrefereGMS extends FTabDados implements InsertListener {
 	private JCheckBoxPad cbUtilRendaCot = new JCheckBoxPad( "Utiliza renda na cotação", "S", "N" );
 	
 	private JCheckBoxPad cbDetItemPainel = new JCheckBoxPad( "Detalhar item no Painel de controle de serviço", "S", "N" );
+	
+	private JCheckBoxPad cbContingencia = new JCheckBoxPad( "Contingência de pesagem", "S", "N" );
 
+	
 	private JTextAreaPad txaObsPadOC = new JTextAreaPad();
 
 	private JScrollPane spnObsPadOC = new JScrollPane( txaObsPadOC );
@@ -137,6 +140,8 @@ public class FPrefereGMS extends FTabDados implements InsertListener {
 	private JPanelPad pinCompra = new JPanelPad();
 
 	private JPanelPad pinColeta = new JPanelPad();
+
+	private JPanelPad pinRecmerc = new JPanelPad();
 
 	private JTextFieldPad txtCodProdServ = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -346,6 +351,10 @@ public class FPrefereGMS extends FTabDados implements InsertListener {
 
 		adicDB( cbPermitDocColDupl, 7, 160, 330, 20, "PermitDocColDupl", "", true );
 		
+		setPainel( pinRecmerc );
+		adicTab( "Recebimento de mercadoria", pinRecmerc );
+		adicDB( cbContingencia, 7, 7, 330, 20, "ContingenciaPesagem", "", true );
+		
 		setListaCampos( false, "PREFERE8", "SG" );
 		nav.setAtivo( 0, false );
 		lcCampos.setPodeExc( false );
@@ -381,6 +390,7 @@ public class FPrefereGMS extends FTabDados implements InsertListener {
 			cbSolCpHomologFor.setVlrString( "N" );
 			cbUtilRendaCot.setVlrString( "S" );
 			txtPercPrecoColetaCP.setVlrBigDecimal( new BigDecimal( "100" ) );
+			cbContingencia.setVlrString( "N" );
 		}
 
 	}
