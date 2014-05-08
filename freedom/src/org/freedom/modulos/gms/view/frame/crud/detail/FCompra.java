@@ -38,6 +38,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.math.BigDecimal;
@@ -83,6 +84,7 @@ import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JRadioGroup;
 import org.freedom.library.swing.component.JTabbedPanePad;
+import org.freedom.library.swing.component.JTablePad;
 import org.freedom.library.swing.component.JTextAreaPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
@@ -131,6 +133,10 @@ import org.freedom.modulos.std.view.frame.crud.tabbed.FTransp;
 
 public class FCompra extends FDetalhe implements InterCompra, PostListener, CarregaListener, FocusListener, ActionListener, InsertListener, MouseListener {
 
+	private enum PEDIDO {
+		CODCOMPRA, CODFOR, RAZFOR, DTEMITCOMPRA, DTENTCOMPRA, QTDITENS
+	};
+
 	private static final long serialVersionUID = 1L;
 
 	private static final int TAMANHOCHAVE = 44;
@@ -145,9 +151,15 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 
 	private JTabbedPanePad tpnAbas = new JTabbedPanePad();
 
+	private JTablePad tabPedidos = new JTablePad();
+
+	private JScrollPane spPedidos = new JScrollPane( tabPedidos );
+
 	private JPanelPad pinCab = new JPanelPad();
 
 	private JPanelPad pinDet = new JPanelPad();
+
+	private JPanelPad pinCabPedidos = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
 	private JPanelPad pinCabCompra = new JPanelPad();
 
@@ -1237,14 +1249,113 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 			pinCabObs04.add( spnObs04 );
 			tpnCab.addTab( labelobs04cp.trim(), pinCabObs04 );
 		}
-
 		pinCabInfCompl.add( spnInfCompl );
-		tpnCab.addTab( "Inf.Compl (Fisco)", pinCabInfCompl );
 		
+		tpnCab.addTab( "Inf.Compl (Fisco)", pinCabInfCompl );
 		tpnCab.addTab( "Coleta/Recepção de mercadorias", pinCabRecmerc);
+		
+		montaTabPedidos();
+		
 
 	}
 
+	private void montaTabPedidos() {
+		tpnCab.addTab( "Pedidos", pinCabPedidos );
+		pinCabPedidos.add( spPedidos, BorderLayout.CENTER );
+
+		tabPedidos.adicColuna( "Cód.pedido" );
+		tabPedidos.adicColuna( "Cod.forn." );
+		tabPedidos.adicColuna( "Razão social do fornecedor" );
+		tabPedidos.adicColuna( "Dt.emissão" );
+		tabPedidos.adicColuna( "Dt.entrada" );
+		tabPedidos.adicColuna( "Qtd.itens" );
+		tabPedidos.setTamColuna( 80, PEDIDO.CODCOMPRA.ordinal() );
+		tabPedidos.setTamColuna( 80, PEDIDO.CODFOR.ordinal() );
+		tabPedidos.setTamColuna( 300, PEDIDO.RAZFOR.ordinal() );
+		tabPedidos.setTamColuna( 90, PEDIDO.DTEMITCOMPRA.ordinal() );
+		tabPedidos.setTamColuna( 90, PEDIDO.DTENTCOMPRA.ordinal() );
+		tabPedidos.setTamColuna( 90, PEDIDO.QTDITENS.ordinal() );
+
+		tabPedidos.addMouseListener( new MouseAdapter() {
+
+			public void mouseClicked( MouseEvent e ) {
+
+				if ( e.getClickCount() == 2 ) {
+					if ( e.getSource() == tabPedidos ) {
+						abrePedido();
+					}
+				}
+			}
+		} );
+		
+	}
+	
+	private void limpaTabPedidos() {
+		tabPedidos.limpa();
+	}
+	
+	private void loadPedidos() {
+		
+		limpaTabPedidos();
+		
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append( "select ped.codcompra, fr.codfor, fr.razfor, ped.dtemitcompra, ped.dtentcompra, count(*) qtditens " );
+			sql.append( "from cpcompraped cpped " );
+			sql.append( "inner join cpcompra cp " );
+			sql.append( "on cp.codemp=cpped.codemp and cp.codfilial=cpped.codfilial and cp.codcompra=cpped.codcompra " );
+			sql.append( "inner join cpcompra ped " );
+			sql.append( "on ped.codemp=cpped.codemppc and ped.codfilial=cpped.codfilialpc and ped.codcompra=cpped.codcomprapc " );
+			sql.append( "inner join cpforneced fr " );
+			sql.append( "on fr.codemp=ped.codempfr and fr.codfilial=ped.codfilialfr and fr.codfor=ped.codfor " );
+			sql.append( "where cpped.codemp=? and cpped.codfilial=? and cpped.codcompra=? " );
+			sql.append( "group by ped.codcompra, fr.codfor, fr.razfor, ped.dtemitcompra, ped.dtentcompra " );
+			sql.append( "order by ped.codcompra ");
+
+			PreparedStatement pstmt = con.prepareStatement( sql.toString() );
+			pstmt.setInt( 1, Aplicativo.iCodEmp );
+			pstmt.setInt( 2, lcCampos.getCodFilial() );
+			pstmt.setInt( 3, txtCodCompra.getVlrInteger().intValue() );
+
+			ResultSet rs = pstmt.executeQuery();
+			for ( int row = 0; rs.next(); row++ ) {
+
+				tabPedidos.adicLinha();
+
+				tabPedidos.setValor( rs.getInt( PEDIDO.CODCOMPRA.name() ), row, PEDIDO.CODCOMPRA.ordinal() );
+				tabPedidos.setValor( rs.getInt( PEDIDO.CODFOR.name() ), row, PEDIDO.CODFOR.ordinal() );
+				tabPedidos.setValor( rs.getString(  PEDIDO.RAZFOR.ordinal() ), row, PEDIDO.RAZFOR.ordinal() );
+				tabPedidos.setValor( Funcoes.sqlDateToDate( rs.getDate( PEDIDO.DTEMITCOMPRA.name() ) ), row, PEDIDO.DTEMITCOMPRA.ordinal() );
+				tabPedidos.setValor( Funcoes.sqlDateToDate( rs.getDate( PEDIDO.DTENTCOMPRA.name() ) ), row, PEDIDO.DTENTCOMPRA.ordinal() );
+				tabPedidos.setValor( rs.getInt( PEDIDO.QTDITENS.name() ), row, PEDIDO.QTDITENS.ordinal() );
+			}
+			rs.close();
+			pstmt.close();
+
+		} catch ( SQLException err ) {
+			Funcoes.mensagemErro( this, "Erro ao consultar pedidos!\n" + err.getMessage(), true, con, err );
+			err.printStackTrace();
+		}
+
+	}
+
+	private void abrePedido() {
+
+		if ( tabPedidos.getLinhaSel() > -1 ) {
+			/* FCompra tela = null;
+			if ( Aplicativo.telaPrincipal.temTela( FOrcamento.class.getName() ) ) {
+				tela = (FOrcamento) Aplicativo.telaPrincipal.getTela( FOrcamento.class.getName() );
+			}
+			else {
+				tela = new FOrcamento();
+				tela.setAtivaNavegacao( false );
+				Aplicativo.telaPrincipal.criatela( "Orçamento", tela, con );
+			}
+			tela.exec( (Integer) tabOrcamentos.getValor( tabOrcamentos.getLinhaSel(), ORCAMENTO.CODORCAMENTO.ordinal() ) );
+			*/
+		}
+	}
+	
 	private void adicListeners() {
 
 		// Mouse Listeners
@@ -3239,9 +3350,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 			String s = txtCodCompra.getText();
 			lcCompra2.carregaDados(); // Carrega os Totais
 			txtCodCompra.setVlrString( s );
-
 			if ( buscagenericaprod ) {
-
 				if ( comref ) {
 					txtRefProd.setBuscaGenProd( new DLCodProd( con, null, txtCodFor.getVlrInteger() ) );
 				}
@@ -3261,11 +3370,11 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 				}
 			}
 			txtChaveNfe.setEnabled( enableChave );
-			
 			if(!( lcCampos.getStatus() == ListaCampos.LCS_INSERT )) {
 				desabilitaBotoes( false );
 			}
 			loadRecmerc();
+			loadPedidos();
 		}
 		else if ( cevt.getListaCampos() == lcCompra2 ) {
 
@@ -3484,6 +3593,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 			txtDtEmitCompra.setVlrDate( new Date() );
 			desabilitaBotoes( true );
 			limpaRecmerc(true);
+			limpaTabPedidos();
 		} 
 	}
 
