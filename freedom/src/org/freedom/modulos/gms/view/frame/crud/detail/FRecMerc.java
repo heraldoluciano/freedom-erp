@@ -935,7 +935,10 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 
 		String renda = null;
 
-		DAORecMerc recmerc = new DAORecMerc( this, txtTicket.getVlrInteger(), con );
+		DAORecMerc recmerc = new DAORecMerc( this, Aplicativo.iCodEmp 
+				, ListaCampos.getMasterFilial( "EQRECMERC" )
+				, txtTicket.getVlrInteger(), con,
+				ListaCampos.getMasterFilial( "LFSEQSERIE" ) );
 
 		try {
 

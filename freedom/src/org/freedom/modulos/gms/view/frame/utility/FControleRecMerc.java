@@ -547,7 +547,9 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 				else if(status_recmerc.equals( DAORecMerc.STATUS_RECEBIMENTO_FINALIZADO.getValue() )){
 				
 				
-					recmerc = new DAORecMerc( null, rs.getInt( DETALHAMENTO.TICKET.toString().trim() ), con );
+					recmerc = new DAORecMerc( null, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQRECMERC" )
+							, rs.getInt( DETALHAMENTO.TICKET.toString().trim() ), con 
+							, ListaCampos.getMasterFilial( "LFSEQSERIE" ) );
 					
 					HashMap<String, Object> p1 = recmerc.getPrimeirapesagem();
 	
@@ -845,14 +847,20 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 		Integer codcompra = null;
 
 		try {
+			int row = tabDet.getLinhaSel();
 
-			if ( tabDet.getLinhaSel() > -1 ) {
+			if ( row > -1 ) {
 
 				ticket = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.TICKET.ordinal() );
 				codcompra = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.CODCOMPRA.ordinal() );
 
-				recmerc = new DAORecMerc( this, ticket, con );
-				String statustxt = (String) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.STATUSTXT.ordinal() ); 
+				recmerc = new DAORecMerc( this, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQRECMERC" )
+						, ticket, con, ListaCampos.getMasterFilial( "LFSEQSERIE" )  );
+				String statustxt = recmerc.getStatus(); 
+				tabDet.setValor( statustxt, row, DETALHAMENTO.STATUSTXT.ordinal() );
+				imgColuna = DAORecMerc.getImagem( statustxt, DAORecMerc.IMG_TAMANHO_M );
+				tabDet.setValor( imgColuna, row, DETALHAMENTO.STATUS.ordinal() );
+
 				if ( statustxt.equals( DAORecMerc.STATUS_RECEBIMENTO_FINALIZADO.getValue() ) || statustxt.equals( DAORecMerc.STATUS_PEDIDO_COMPRA_EMITIDO.getValue() ) || statustxt.equals( DAORecMerc.STATUS_NOTA_ENTRADA_EMITIDA.getValue() ) ) {
 
 					if(codcompra!=null && codcompra>0) {
@@ -862,7 +870,11 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 					
 						if ( Funcoes.mensagemConfirma( this, "Confirma a geração do pedido de compra para o ticket nro.:" + ticket.toString() + " ?" ) == JOptionPane.YES_OPTION ) {
 
-							codcompra = recmerc.geraCompra(false, null, null);
+							codcompra = recmerc.geraCompra(false, null, null, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "LFFRETE" )
+									, ListaCampos.getMasterFilial( "CPCOMPRA" ), ListaCampos.getMasterFilial( "VDPLANOPAG" )
+									, ListaCampos.getMasterFilial( "CPFORNECED" ), ListaCampos.getMasterFilial( "LFSEQSERIE" )
+									, ListaCampos.getMasterFilial( "EQTIPOMOV" ), ListaCampos.getMasterFilial( "VDTRANSP" )
+									, ListaCampos.getMasterFilial( "SGUNIFCOD" ));
 
 							if ( codcompra != null && codcompra > 0 ) {
 
@@ -910,7 +922,8 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 					
 					if ( Funcoes.mensagemConfirma( this, "Confirma a geração de cotação para o ticket nro.:" + forneced.toString() + " ?" ) == JOptionPane.YES_OPTION ) {
 
-						Integer codsolicitacao = DAORecMerc.getSolicitacao(this);
+						Integer codsolicitacao = DAORecMerc.getSolicitacao(this, con, Aplicativo.iCodEmp
+								, ListaCampos.getMasterFilial( "CPSOLICITACAO" ) );
 						
 						renda = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.RENDA.ordinal() );
 						

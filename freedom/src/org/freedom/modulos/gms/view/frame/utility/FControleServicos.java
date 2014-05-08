@@ -642,8 +642,8 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 				tabDet.setValor( rs.getString( DETALHAMENTO.NOMECLI.toString().trim() ), row, DETALHAMENTO.NOMECLI.ordinal() );
 				tabDet.setValor( rs.getString( DETALHAMENTO.CODORC.toString().trim() ), row, DETALHAMENTO.CODORC.ordinal() );
 
-				Vector<Integer> rmas = DAORecMerc.getRmasOS( rs.getInt( DETALHAMENTO.TICKET.toString().trim() ) );				
-				Vector<Integer> chamados = DAORecMerc.getChamadosOS( rs.getInt( DETALHAMENTO.TICKET.toString().trim() ) );
+				Vector<Integer> rmas = DAORecMerc.getRmasOS( con, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQRECMERC" ), rs.getInt( DETALHAMENTO.TICKET.toString().trim() ) );				
+				Vector<Integer> chamados = DAORecMerc.getChamadosOS( con, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CRCHAMADO" ), rs.getInt( DETALHAMENTO.TICKET.toString().trim() ) );
 
 				tabDet.setValor( Funcoes.vectorToString( rmas, "," ), row, DETALHAMENTO.CODRMAS.ordinal() );				
 				tabDet.setValor( Funcoes.vectorToString( chamados, "," ), row, DETALHAMENTO.CODCHAMADOS.ordinal() );
@@ -982,13 +982,18 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 
 				ticket = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.TICKET.ordinal() );
 
-				recmerc = new DAORecMerc( this, ticket, con );
+				recmerc = new DAORecMerc( this, Aplicativo.iCodEmp , ListaCampos.getMasterFilial( "EQRECMERC" ), ticket
+						, con, ListaCampos.getMasterFilial( "LFSEQSERIE" )  );
 
 				if ( tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.STATUSTXT.ordinal() ).equals( StatusOS.OS_ANALISE.getValue() ) ) {
 
 					if ( Funcoes.mensagemConfirma( this, "Confirma a geração do pedido de compra para o ticket nro.:" + ticket.toString() + " ?" ) == JOptionPane.YES_OPTION ) {
 
-						Integer codcompra = recmerc.geraCompra(false, null, null);
+						Integer codcompra = recmerc.geraCompra(false, null, null, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "LFFRETE" )
+								, ListaCampos.getMasterFilial( "CPCOMPRA" ), ListaCampos.getMasterFilial( "VDPLANOPAG" )
+								, ListaCampos.getMasterFilial( "CPFORNECED" ), ListaCampos.getMasterFilial( "LFSEQSERIE" )
+								, ListaCampos.getMasterFilial( "EQTIPOMOV" ), ListaCampos.getMasterFilial( "VDTRANSP" )
+								, ListaCampos.getMasterFilial( "SGUNIFCOD" ));
 
 						if ( codcompra != null && codcompra > 0 ) {
 
@@ -1090,7 +1095,8 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 		try {
 
 
-			daorecmerc = new DAORecMerc( corig, ticket, Aplicativo.getInstace().getConexao() );
+			daorecmerc = new DAORecMerc( corig, Aplicativo.iCodEmp , ListaCampos.getMasterFilial( "EQRECMERC" )
+					, ticket, Aplicativo.getInstace().getConexao(), ListaCampos.getMasterFilial( "LFSEQSERIE" )  );
 
 			if ( statustxt.equals( StatusOS.OS_ANALISE.getValue() ) ||
 					statustxt.equals( StatusOS.OS_ENCAMINHADO.getValue() ) ||
@@ -1110,7 +1116,10 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 					if(codorcgrid == null) {
 
 						if(parametros != null) {
-							codorc = daorecmerc.geraOrcamento(parametros, null);
+							codorc = daorecmerc.geraOrcamento(parametros, null, ListaCampos.getMasterFilial( "VDORCAMENTO" )
+									, ListaCampos.getMasterFilial( "SGPREFERE1" ), ListaCampos.getMasterFilial( "VDPLANOPAG" )
+									, ListaCampos.getMasterFilial( "VDCLIENTE" ), ListaCampos.getMasterFilial( "VDVENDEDOR" )
+									, ListaCampos.getMasterFilial( "EQTIPOMOV" ) );
 						}
 
 						if ( codorc != null && codorc > 0 ) {
@@ -1124,7 +1133,10 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 						if ( Funcoes.mensagemConfirma( corig, "Já existe o orçamento de nro.: " + codorcgrid + " para este ticket!\n" +
 								"Confirma o reprocessamento de orçamento?" ) == JOptionPane.YES_OPTION ) {
 
-							codorc = daorecmerc.geraOrcamento(parametros, codorcgrid);
+							codorc = daorecmerc.geraOrcamento(parametros, codorcgrid, ListaCampos.getMasterFilial( "VDORCAMENTO" )
+									, ListaCampos.getMasterFilial( "SGPREFERE1" ), ListaCampos.getMasterFilial( "VDPLANOPAG" )
+									, ListaCampos.getMasterFilial( "VDCLIENTE" ), ListaCampos.getMasterFilial( "VDVENDEDOR" )
+									, ListaCampos.getMasterFilial( "EQTIPOMOV" ) );
 
 						}
 
@@ -1175,7 +1187,8 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 			// Se nao houver RMA.. deve gerar...
 			if ( "".equals( codrmagrid ) || null == codrmagrid ) {
 
-				recmerc = new DAORecMerc( corig, ticket, Aplicativo.getInstace().getConexao() );
+				recmerc = new DAORecMerc( corig, Aplicativo.iCodEmp , ListaCampos.getMasterFilial( "EQRECMERC" )
+						, ticket, Aplicativo.getInstace().getConexao(), ListaCampos.getMasterFilial( "LFSEQSERIE" ) );
 
 				if ( statustxt.equals( StatusOS.OS_APROVADA.getValue() ) || 
 						statustxt.equals( StatusOS.OS_ANALISE.getValue() ) ||
@@ -1235,7 +1248,8 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 
 					ticket = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.TICKET.ordinal() );
 
-					recmerc = new DAORecMerc( this, ticket, con );
+					recmerc = new DAORecMerc( this, Aplicativo.iCodEmp , ListaCampos.getMasterFilial( "EQRECMERC" ), ticket
+							, con , ListaCampos.getMasterFilial( "LFSEQSERIE" ) );
 
 					String statustxt = (String) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.STATUSTXT.ordinal() ); 
 
@@ -1247,7 +1261,8 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 
 						if ( Funcoes.mensagemConfirma( this, "Confirma a geração de chamados para o ticket nro.:" + ticket.toString() + " ?" ) == JOptionPane.YES_OPTION ) {
 
-							Vector<Integer> chamados = recmerc.gerarChamados( );
+							Vector<Integer> chamados = recmerc.gerarChamados( ListaCampos.getMasterFilial( "CRCHAMADO" )
+									, ListaCampos.getMasterFilial( "VDCLIENTE" ), ListaCampos.getMasterFilial( "CRTIPOCHAMADO" )  );
 
 
 							if ( chamados != null && chamados.size() > 0 ) {
