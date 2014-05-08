@@ -914,7 +914,7 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 				setCalctrib( rs.getString( "calctrib" ) );
 			}
 
-			// getConn().commit();
+			 getConn().commit();
 
 		} catch ( Exception e ) {
 			Funcoes.mensagemErro( orig, "Erro ao buscar informações do recebimento de mercadorias!", true, getConn(), e );
