@@ -1331,6 +1331,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 			}
 			rs.close();
 			pstmt.close();
+			con.commit();
 
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao consultar pedidos!\n" + err.getMessage(), true, con, err );

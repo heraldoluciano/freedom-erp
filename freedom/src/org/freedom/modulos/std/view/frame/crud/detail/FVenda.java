@@ -1499,6 +1499,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				tabOrcamentos.setValor( rs.getInt( "codplanopag" ), row, ORCAMENTO.CODPPAG.ordinal() );
 				tabOrcamentos.setValor( rs.getString( "descplanopag" ), row, ORCAMENTO.DESCPPAG.ordinal() );
 			}
+			rs.close();
+			pstmt.close();
+			con.commit();
 
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao consultar orçamentos!\n" + err.getMessage(), true, con, err );
