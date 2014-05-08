@@ -1324,7 +1324,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 
 				tabPedidos.setValor( rs.getInt( PEDIDO.CODCOMPRA.name() ), row, PEDIDO.CODCOMPRA.ordinal() );
 				tabPedidos.setValor( rs.getInt( PEDIDO.CODFOR.name() ), row, PEDIDO.CODFOR.ordinal() );
-				tabPedidos.setValor( rs.getString(  PEDIDO.RAZFOR.ordinal() ), row, PEDIDO.RAZFOR.ordinal() );
+				tabPedidos.setValor( rs.getString(  PEDIDO.RAZFOR.name()), row, PEDIDO.RAZFOR.ordinal() );
 				tabPedidos.setValor( Funcoes.sqlDateToDate( rs.getDate( PEDIDO.DTEMITCOMPRA.name() ) ), row, PEDIDO.DTEMITCOMPRA.ordinal() );
 				tabPedidos.setValor( Funcoes.sqlDateToDate( rs.getDate( PEDIDO.DTENTCOMPRA.name() ) ), row, PEDIDO.DTENTCOMPRA.ordinal() );
 				tabPedidos.setValor( rs.getInt( PEDIDO.QTDITENS.name() ), row, PEDIDO.QTDITENS.ordinal() );
