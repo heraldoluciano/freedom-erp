@@ -20,9 +20,8 @@ import org.freedom.infra.dao.AbstractDAO;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.infra.pojos.Constant;
 import org.freedom.library.functions.Funcoes;
-import org.freedom.library.persistence.ListaCampos;
+//import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JLabelPad;
-import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.crm.business.object.Prioridade;
 import org.freedom.modulos.fnc.view.dialog.utility.DLInfoPlanoPag;
 import org.freedom.modulos.gms.business.object.StatusOS;
@@ -75,7 +74,7 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 	private HashMap<String, Object> segundapesagem = null;
 
 	private HashMap<String, Object> rendapesagem = null;
-
+	
 	private Integer ticket = null;
 
 	private Integer codfor = null;
@@ -202,14 +201,16 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 		this.codop = codop;
 	}
 
-	public DAORecMerc( Component orig, Integer ticket, DbConnection con ) {
+	public DAORecMerc( Component orig, Integer codemp, Integer codfilial, Integer ticket, DbConnection con, Integer codfilialss ) {
 
 		super( con );
+		setCodemp( codemp );
+		setCodfilial( codfilial);
 		setTicket( ticket );
 		setOrig( orig );
 
 		if ( ticket != null ) {
-			CarregaRecMerc();
+			CarregaRecMerc(codfilialss);
 			buscaPesagens();
 		}
 
@@ -319,8 +320,8 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 			ps = getConn().prepareStatement( sql.toString() );
 
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "EQRECMERC" ) );
+			ps.setInt( 1, getCodemp() );
+			ps.setInt( 2, getCodfilial() );
 			ps.setInt( 3, getTicket() );
 			ps.setString( 4, (String) TipoRecMerc.PROCESSO_PESAGEM_INICIAL.getValue() );
 
@@ -367,8 +368,8 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 			ps = getConn().prepareStatement( sql.toString() );
 
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "EQRECMERC" ) );
+			ps.setInt( 1, getCodemp() );
+			ps.setInt( 2, getCodfilial() );
 			ps.setInt( 3, getTicket() );
 			ps.setString( 4, (String) TipoRecMerc.PROCESSO_PESAGEM_FINAL.getValue() );
 
@@ -412,8 +413,8 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 			ps = getConn().prepareStatement( sql.toString() );
 
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "EQRECMERC" ) );
+			ps.setInt( 1, getCodemp() );
+			ps.setInt( 2, getCodfilial() );
 			ps.setInt( 3, getTicket() );
 			ps.setString( 4, (String) TipoRecMerc.PROCESSO_DESCARREGAMENTO.getValue() );
 
@@ -474,15 +475,15 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 		this.ticket = ticket;
 	}
 
-	private void geraCodCompra() {
+	private void geraCodCompra(Integer codfilialcp) {
 
 		// através do generator do banco
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
 			ps = getConn().prepareStatement( "SELECT ISEQ FROM SPGERANUM(?,?,?)" );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, Aplicativo.iCodFilial );
+			ps.setInt( 1, getCodemp() );
+			ps.setInt( 2, codfilialcp );
 			ps.setString( 3, "CP" );
 
 			rs = ps.executeQuery();
@@ -499,7 +500,7 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 	}
 
-	private void geraCodFrete() {
+	private void geraCodFrete(Integer codempft, Integer codfilialft) {
 
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
@@ -513,8 +514,8 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 			ps = getConn().prepareStatement( sql.toString() );
 
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "LFFRETE" ) );
+			ps.setInt( 1, codempft );
+			ps.setInt( 2, codfilialft );
 
 			rs = ps.executeQuery();
 
@@ -530,7 +531,10 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 	}
 
-	public Integer geraOP( Integer coditrecmerc, Integer coditos, Integer codprod, String refprod, BigDecimal qtd, Integer nrodiasvalid, Integer codalmox, String estdinamica, String garantia ) {
+	public Integer geraOP( Integer coditrecmerc, Integer coditos, Integer codprod, String refprod
+			, BigDecimal qtd, Integer nrodiasvalid, Integer codalmox, String estdinamica
+			, String garantia, Integer codfilialop, Integer codfilialpd, Integer codfilialtm
+			, Integer codfilialax, Integer codfilialp5 ) {
 
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
@@ -538,8 +542,8 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 		try {
 
-			geraCodOp();
-			buscaTipoMovPOP();
+			geraCodOp(codfilialop);
+			buscaTipoMovPOP(codfilialp5);
 
 			Calendar dtvalid = new GregorianCalendar();
 			dtvalid.setTime( getDtent() );
@@ -569,14 +573,14 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 			int param = 1;
 
-			ps.setInt( param++, Aplicativo.iCodEmp );
-			ps.setInt( param++, ListaCampos.getMasterFilial( "PPOP" ) );
+			ps.setInt( param++, getCodemp() );
+			ps.setInt( param++, codfilialop );
 			ps.setInt( param++, getCodop() );
 			ps.setInt( param++, 0 );
 
 			ps.setDate( param++, Funcoes.dateToSQLDate( getDtent() ) );
-			ps.setInt( param++, Aplicativo.iCodEmp );
-			ps.setInt( param++, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
+			ps.setInt( param++, getCodemp() );
+			ps.setInt( param++, codfilialpd );
 			ps.setInt( param++, codprod );
 			ps.setInt( param++, 1 );
 			ps.setString( param++, refprod );
@@ -585,12 +589,12 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 			ps.setBigDecimal( param++, qtd );
 			ps.setDate( param++, Funcoes.dateToSQLDate( dtvalid.getTime() ) );
 
-			ps.setInt( param++, Aplicativo.iCodEmp );
-			ps.setInt( param++, ListaCampos.getMasterFilial( "EQTIPOMOV" ) );
+			ps.setInt( param++, getCodemp());
+			ps.setInt( param++, codfilialtm );
 			ps.setInt( param++, getCodtipomovpcp() );
 
-			ps.setInt( param++, Aplicativo.iCodEmp );
-			ps.setInt( param++, ListaCampos.getMasterFilial( "EQALMOX" ) );
+			ps.setInt( param++, getCodemp() );
+			ps.setInt( param++, codfilialax );
 			ps.setInt( param++, codalmox );
 
 			ps.setString( param++, "PE" );
@@ -599,8 +603,8 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 			ps.setString( param++, estdinamica );
 			ps.setString( param++, garantia );
 
-			ps.setInt( param++, Aplicativo.iCodEmp );
-			ps.setInt( param++, ListaCampos.getMasterFilial( "EQRECMERC" ) );
+			ps.setInt( param++, getCodemp());
+			ps.setInt( param++, getCodfilial() );
 			ps.setInt( param++, getTicket() );
 			ps.setInt( param++, coditrecmerc );
 			ps.setInt( param++, coditos );
@@ -616,7 +620,7 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 		return getCodop();
 	}
 
-	private void buscaTipoMovPOP() {
+	private void buscaTipoMovPOP(Integer codfilialp5) {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -626,8 +630,8 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 		try {
 
 			ps = getConn().prepareStatement( sSQL );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+			ps.setInt( 1, getCodemp() );
+			ps.setInt( 2, codfilialp5 );
 
 			rs = ps.executeQuery();
 
@@ -650,7 +654,7 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 	}
 
-	private void geraCodOp() {
+	private void geraCodOp(Integer codfilialop) {
 
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
@@ -664,8 +668,8 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 			ps = getConn().prepareStatement( sql.toString() );
 
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "PPOP" ) );
+			ps.setInt( 1, getCodemp() );
+			ps.setInt( 2, codfilialop );
 
 			rs = ps.executeQuery();
 
@@ -681,7 +685,7 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 	}
 
-	private void geraCodOrc() {
+	private void geraCodOrc(Integer codfilialoc) {
 
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
@@ -695,8 +699,8 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 			ps = getConn().prepareStatement( sql.toString() );
 
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
+			ps.setInt( 1, getCodemp() );
+			ps.setInt( 2, codfilialoc );
 
 			rs = ps.executeQuery();
 
@@ -712,7 +716,7 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 	}
 
-	private void geraCodChamado() {
+	private void geraCodChamado(Integer codfilialch) {
 
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
@@ -726,8 +730,8 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 			ps = getConn().prepareStatement( sql.toString() );
 
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "CRCHAMADO" ) );
+			ps.setInt( 1, getCodemp() );
+			ps.setInt( 2, codfilialch );
 
 			rs = ps.executeQuery();
 
@@ -759,8 +763,8 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 			ps = getConn().prepareStatement( sql.toString() );
 
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "EQRECMERC" ) );
+			ps.setInt( 1, getCodemp() );
+			ps.setInt( 2, getCodfilial());
 			ps.setInt( 3, getTicket() );
 
 			rs = ps.executeQuery();
@@ -792,7 +796,7 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 	 * 
 	 * ps = getConn().prepareStatement( sql.toString() );
 	 * 
-	 * ps.setInt( 1, Aplicativo.iCodEmp ); ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+	 * ps.setInt( 1, getCodemp() ); ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
 	 * 
 	 * rs = ps.executeQuery();
 	 * 
@@ -804,7 +808,7 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 	 * 
 	 * }
 	 */
-	private void geraCodTipoMovOrc( boolean servico ) {
+	private void geraCodTipoMovOrc( boolean servico, Integer codfilialp1 ) {
 
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
@@ -826,8 +830,8 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 			ps = getConn().prepareStatement( sql.toString() );
 
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+			ps.setInt( 1, getCodemp() );
+			ps.setInt( 2, codfilialp1 );
 
 			rs = ps.executeQuery();
 
@@ -843,7 +847,7 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 	}
 
-	public void CarregaRecMerc() {
+	public void CarregaRecMerc(Integer codfilialss) {
 
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
@@ -883,10 +887,10 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 			System.out.println( "SQL:" + sql.toString() );
 
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "LFSEQSERIE" ) );
-			ps.setInt( 3, Aplicativo.iCodEmp );
-			ps.setInt( 4, ListaCampos.getMasterFilial( "EQRECMERC" ) );
+			ps.setInt( 1, getCodemp() );
+			ps.setInt( 2, codfilialss );
+			ps.setInt( 3, getCodemp() );
+			ps.setInt( 4, getCodfilial() );
 			ps.setInt( 5, getTicket() );
 
 			rs = ps.executeQuery();
@@ -920,7 +924,9 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 	}
 
-	public Integer geraCompra( boolean iscoleta, String doccoleta, Date dtentrada ) throws SQLException {
+	public Integer geraCompra( boolean iscoleta, String doccoleta, Date dtentrada, Integer codempft
+			, Integer codfilialft, Integer codfilialcp, Integer codfilialpg, Integer codfilialfr
+			, Integer codfilialse, Integer codfilialtm, Integer codfilialtr, Integer codfilialuc ) throws SQLException {
 
 		StringBuilder sql = new StringBuilder();
 		StringBuilder obscompra = new StringBuilder();
@@ -948,7 +954,7 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 				obscompra.append( Funcoes.dateToStrDate( dtentrada ) );
 			} 
 			
-			geraCodCompra();
+			geraCodCompra(codfilialcp);
 
 			sql.append( "insert into cpcompra (" );
 			sql.append( "codemp, codfilial, codcompra, " );
@@ -964,25 +970,25 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 			int param = 1;
 
-			ps.setInt( param++, Aplicativo.iCodEmp );
-			ps.setInt( param++, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
+			ps.setInt( param++, getCodemp() );
+			ps.setInt( param++, codfilialcp);
 			ps.setInt( param++, getCodcompra() );
 
-			ps.setInt( param++, Aplicativo.iCodEmp );
-			ps.setInt( param++, ListaCampos.getMasterFilial( "VDPLANOPAG" ) );
+			ps.setInt( param++, getCodemp() );
+			ps.setInt( param++, codfilialpg );
 			ps.setInt( param++, getCodplanopag() );
 
-			ps.setInt( param++, Aplicativo.iCodEmp );
-			ps.setInt( param++, ListaCampos.getMasterFilial( "CPFORNECED" ) );
+			ps.setInt( param++, getCodemp() );
+			ps.setInt( param++, codfilialfr );
 			ps.setInt( param++, getCodfor() );
 
-			ps.setInt( param++, Aplicativo.iCodEmp );
-			ps.setInt( param++, ListaCampos.getMasterFilial( "LFSEQSERIE" ) );
+			ps.setInt( param++, getCodemp() );
+			ps.setInt( param++, codfilialse );
 			ps.setString( param++, getSerie() );
 			ps.setInt( param++, getDocserie() );
 
-			ps.setInt( param++, Aplicativo.iCodEmp );
-			ps.setInt( param++, ListaCampos.getMasterFilial( "EQTIPOMOV" ) );
+			ps.setInt( param++, getCodemp() );
+			ps.setInt( param++, codfilialtm );
 			ps.setInt( param++, getCodtipomov() );
 
 			ps.setDate( param++, Funcoes.dateToSQLDate( new Date() ) );
@@ -990,12 +996,12 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 			ps.setString( param++, getTipofrete() );
 
-			ps.setInt( param++, Aplicativo.iCodEmp );
-			ps.setInt( param++, ListaCampos.getMasterFilial( "VDTRANSP" ) );
+			ps.setInt( param++, getCodemp() );
+			ps.setInt( param++, codfilialtr );
 			ps.setInt( param++, getCodtran() );
 
-			ps.setInt( param++, Aplicativo.iCodEmp );
-			ps.setInt( param++, ListaCampos.getMasterFilial( "EQRECMERC" ) );
+			ps.setInt( param++, getCodemp() );
+			ps.setInt( param++, getCodfilial() );
 			ps.setInt( param++, getTicket() );
 			ps.setString( param++, getCalctrib() );
 			
@@ -1005,14 +1011,14 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 			ps.close();
 
-			geraItemCompra( getCodcompra(), iscoleta );
+			geraItemCompra( codfilialcp, getCodcompra(), iscoleta );
 			
 			getConn().commit();
 			
 			// Ser for CIF (Por conta do comprador) deve gerar conhecimento para controle do pagamento.
 			if ( "C".equals( getTipofrete() ) ) {
 
-				geraFreteRecMerc();
+				geraFreteRecMerc(codfilialft, codfilialtr, codfilialtm, codfilialuc, codfilialcp);
 
 			}
 	
@@ -1026,7 +1032,7 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 	}
 
-	public void geraFreteRecMerc() {
+	public void geraFreteRecMerc(Integer codfilialft, Integer codfilialtr, Integer codfilialtm, Integer codfilialuc, Integer codfilialcp) {
 
 		StringBuilder sql = new StringBuilder();
 
@@ -1048,7 +1054,7 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 			pesoliq = peso1.subtract( peso2 );
 
-			geraCodFrete();
+			geraCodFrete(getCodemp(), codfilialft);
 
 			sql.append( "insert into lffrete (" );
 			sql.append( "codemp, codfilial, codfrete,  " );
@@ -1066,16 +1072,16 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 			int param = 1;
 
-			ps.setInt( param++, Aplicativo.iCodEmp );
-			ps.setInt( param++, ListaCampos.getMasterFilial( "LFFRETE" ) );
+			ps.setInt( param++, getCodemp() );
+			ps.setInt( param++, codfilialft );
 			ps.setInt( param++, getCodfrete() );
 
-			ps.setInt( param++, Aplicativo.iCodEmp );
-			ps.setInt( param++, ListaCampos.getMasterFilial( "VDTRANSP" ) );
+			ps.setInt( param++, getCodemp() );
+			ps.setInt( param++, codfilialtr );
 			ps.setInt( param++, getCodtran() );
 
-			ps.setInt( param++, Aplicativo.iCodEmp );
-			ps.setInt( param++, ListaCampos.getMasterFilial( "EQTIPOMOV" ) );
+			ps.setInt( param++, getCodemp() );
+			ps.setInt( param++, codfilialtm );
 
 			Integer codtipomov = TipoMov.getTipoMovFrete();
 			String serie = TipoMov.getSerieTipoMov( codtipomov );
@@ -1091,19 +1097,19 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 			ps.setString( param++, "A" ); // Frete a pagar
 
-			ps.setInt( param++, Aplicativo.iCodEmp );
-			ps.setInt( param++, ListaCampos.getMasterFilial( "SGUNIFCOD" ) );
+			ps.setInt( param++, getCodemp() );
+			ps.setInt( param++, codfilialuc );
 			ps.setInt( param++, getCodremet() );
 
-			ps.setInt( param++, Aplicativo.iCodEmp );
-			ps.setInt( param++, ListaCampos.getMasterFilial( "SGUNIFCOD" ) );
+			ps.setInt( param++, getCodemp() );
+			ps.setInt( param++, codfilialuc );
 			ps.setInt( param++, getCoddestinat() );
 
 			ps.setDate( param++, Funcoes.dateToSQLDate( getDtent() ) );
 
 			ps.setBigDecimal( param++, pesoliq );
 
-			ps.setBigDecimal( param++, getValorLiqCompra() );
+			ps.setBigDecimal( param++, getValorLiqCompra(getConn(), codfilialcp) );
 
 			ps.setBigDecimal( param++, getValorFrete( getPrecopeso(), pesoliq ) );
 
@@ -1111,9 +1117,9 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 			ps.setBigDecimal( param++, pesoliq );
 
-			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, getCodemp() );
 
-			ps.setInt( param++, ListaCampos.getMasterFilial( "EQRECMERC" ) );
+			ps.setInt( param++, getCodfilial() );
 
 			ps.setInt( param++, getTicket() );
 
@@ -1131,8 +1137,8 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 			param = 1;
 
-			ps.setInt( param++, Aplicativo.iCodEmp );
-			ps.setInt( param++, ListaCampos.getMasterFilial( "LFFRETE" ) );
+			ps.setInt( param++, getCodemp() );
+			ps.setInt( param++, codfilialft );
 			ps.setInt( param++, getCodfrete() );
 			ps.setInt( param++, getCodcompra() );
 
@@ -1156,7 +1162,7 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 	}
 
-	public BigDecimal getValorLiqCompra() {
+	public BigDecimal getValorLiqCompra(DbConnection con, Integer codfilialcp) {
 
 		BigDecimal ret = null;
 
@@ -1167,10 +1173,10 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 			sql.append( "select vlrliqcompra from cpcompra where " );
 			sql.append( "codemp=? and codfilial=? and codcompra=? " );
 
-			PreparedStatement ps = Aplicativo.getInstace().getConexao().prepareStatement( sql.toString() );
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
 
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
+			ps.setInt( 1, getCodemp() );
+			ps.setInt( 2, codfilialcp );
 			ps.setInt( 3, getCodcompra() );
 
 			ResultSet rs = ps.executeQuery();
@@ -1189,7 +1195,7 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 		return ret;
 	}
 
-	public Integer excluiOrcOS( Integer codorc ) {
+	public Integer excluiOrcOS( DbConnection con, Integer codfilialoc,  Integer codorc ) {
 
 		Integer ret = 0;
 
@@ -1204,10 +1210,10 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 			sql_item.append( "delete from vdorcamento where codemp=? and codfilial=? and codorc=? " );
 
 			// Apagando itens de orçamento
-			PreparedStatement ps = Aplicativo.getInstace().getConexao().prepareStatement( sql_item.toString() );
+			PreparedStatement ps = con.prepareStatement( sql_item.toString() );
 
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "VDITORCAMENTO" ) );
+			ps.setInt( 1, getCodemp() );
+			ps.setInt( 2, codfilialoc);
 			ps.setInt( 3, codorc );
 
 			ps.executeUpdate();
@@ -1216,10 +1222,10 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 			getConn().commit();
 
 			// Apagando cabeçalho do orçamento
-			ps = Aplicativo.getInstace().getConexao().prepareStatement( sql_orc.toString() );
+			ps = con.prepareStatement( sql_orc.toString() );
 
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "VDITORCAMENTO" ) );
+			ps.setInt( 1, getCodemp() );
+			ps.setInt( 2,codfilialoc );
 			ps.setInt( 3, codorc );
 
 			ret = ps.executeUpdate();
@@ -1235,7 +1241,8 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 	}
 
-	public Integer geraOrcamento( HashMap<Object, Object> parametros, Integer codorc_atu ) throws Exception {
+	public Integer geraOrcamento( HashMap<Object, Object> parametros, Integer codorc_atu, Integer codfilialoc
+			, Integer codfilialp1, Integer codfilialpg, Integer codfilialcl, Integer codfilialvd, Integer codfilialtm ) throws Exception {
 
 		StringBuilder sql = new StringBuilder();
 
@@ -1251,15 +1258,15 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 			if ( codorc_atu != null ) {
 
-				excluiOrcOS( codorc_atu );
+				excluiOrcOS( getConn(), codfilialoc, codorc_atu );
 
 			}
 
-			geraCodOrc();
+			geraCodOrc(codfilialoc);
 
 			geraCodVend();
 
-			geraCodTipoMovOrc( "S".equals( parametros.get( DLTipoProdServOrc.SERVICOS ) ) );
+			geraCodTipoMovOrc( "S".equals( parametros.get( DLTipoProdServOrc.SERVICOS ) ), codfilialp1 );
 
 			if ( oPrefs == null ) {
 				geraPrefereOrc();
@@ -1291,28 +1298,28 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 			int param = 1;
 
-			ps.setInt( param++, Aplicativo.iCodEmp );
-			ps.setInt( param++, ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
+			ps.setInt( param++, getCodemp() );
+			ps.setInt( param++, codfilialoc );
 			ps.setString( param++, "O" );
 			ps.setInt( param++, getCodorc() );
 
 			ps.setDate( param++, Funcoes.dateToSQLDate( new Date() ) );
 			ps.setDate( param++, Funcoes.dateToSQLDate( Orcamento.getVencimento( (Integer) oPrefs[ Orcamento.PrefOrc.DIASVENCORC.ordinal() ] ) ) );
 
-			ps.setInt( param++, Aplicativo.iCodEmp );
-			ps.setInt( param++, ListaCampos.getMasterFilial( "VDPLANOPAG" ) );
+			ps.setInt( param++, getCodemp() );
+			ps.setInt( param++, codfilialpg );
 			ps.setInt( param++, codplanopag );
 
-			ps.setInt( param++, Aplicativo.iCodEmp );
-			ps.setInt( param++, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
+			ps.setInt( param++, getCodemp() );
+			ps.setInt( param++, codfilialcl );
 			ps.setInt( param++, getCodcli() );
 
-			ps.setInt( param++, Aplicativo.iCodEmp );
-			ps.setInt( param++, ListaCampos.getMasterFilial( "VDVENDEDOR" ) );
+			ps.setInt( param++, getCodemp() );
+			ps.setInt( param++, codfilialvd );
 			ps.setInt( param++, getCodvend() );
 
-			ps.setInt( param++, Aplicativo.iCodEmp );
-			ps.setInt( param++, ListaCampos.getMasterFilial( "EQTIPOMOV" ) );
+			ps.setInt( param++, getCodemp() );
+			ps.setInt( param++, codfilialtm);
 			ps.setInt( param++, getCodtipomov() );
 
 			if ( getStatus().equals( StatusOS.OS_PRONTO.getValue() ) ) {
@@ -1329,7 +1336,7 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 			/** GERANDO OS ITENS DO ORCAMENTO **/
 
-			geraItemOrc( getCodorc(), parametros );
+			geraItemOrc( codfilialoc,  getCodorc(), parametros );
 
 			/***********************************/
 
@@ -1343,7 +1350,7 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 	}
 
-	public Integer geraItemCompra( Integer codcompra, boolean iscoleta ) throws SQLException {
+	public Integer geraItemCompra( Integer codfilialcp, Integer codcompra, boolean iscoleta ) throws SQLException {
 
 		StringBuilder sql = new StringBuilder();
 
@@ -1384,12 +1391,12 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 			ps = getConn().prepareStatement( sql.toString() );
 
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "EQRECMERC" ) );
+			ps.setInt( 1, getCodemp() );
+			ps.setInt( 2, getCodfilial() );
 			ps.setInt( 3, getTicket() );
 
-			ps.setInt( 4, Aplicativo.iCodEmp );
-			ps.setInt( 5, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
+			ps.setInt( 4, getCodemp() );
+			ps.setInt( 5, codfilialcp );
 			ps.setInt( 6, codcompra );
 			ps.setBigDecimal( 7, qtditcompra );
 
@@ -1447,8 +1454,8 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 			ps = getConn().prepareStatement( sql.toString() );
 
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "EQRECMERC" ) );
+			ps.setInt( 1, getCodemp() );
+			ps.setInt( 2, getCodfilial() );
 			ps.setInt( 3, getTicket() );
 
 			rs = ps.executeQuery();
@@ -1534,8 +1541,8 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 			ps = getConn().prepareStatement( sql.toString() );
 
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "EQRECMERC" ) );
+			ps.setInt( 1, getCodemp() );
+			ps.setInt( 2, getCodfilial() );
 			ps.setInt( 3, getTicket() );
 
 			rs = ps.executeQuery();
@@ -1589,8 +1596,8 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 			ps = getConn().prepareStatement( sql.toString() );
 
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "EQRECMERC" ) );
+			ps.setInt( 1, getCodemp() );
+			ps.setInt( 2, getCodfilial() );
 			ps.setInt( 3, getTicket() );
 			ps.setNull( 4, Types.INTEGER );
 
@@ -1654,8 +1661,8 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 						ps = getConn().prepareStatement( sql.toString() );
 
-						ps.setInt( 1, Aplicativo.iCodEmp );
-						ps.setInt( 2, ListaCampos.getMasterFilial( "EQRECMERC" ) );
+						ps.setInt( 1, getCodemp() );
+						ps.setInt( 2, getCodfilial() );
 						ps.setInt( 3, getTicket() );
 
 						Integer coditrecmerc = (Integer) item.get( COLS_ITRECMERC.CODITRECMERC.name() );
@@ -1699,7 +1706,7 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 	}
 
-	public Vector<Integer> gerarChamados() {
+	public Vector<Integer> gerarChamados(Integer codfilialch, Integer codfilialcl, Integer codfilialtch) {
 
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
@@ -1738,27 +1745,27 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 						if ( codtpchamado != null && codtpchamado > 0 ) {
 
-							geraCodChamado();
+							geraCodChamado(codfilialch);
 
 							ps = getConn().prepareStatement( sql.toString() );
 							int iparam = 1;
 
-							ps.setInt( iparam++, Aplicativo.iCodEmp );
-							ps.setInt( iparam++, ListaCampos.getMasterFilial( "CRCHAMADO" ) );
+							ps.setInt( iparam++, getCodemp() );
+							ps.setInt( iparam++, codfilialch );
 							ps.setInt( iparam++, getCodchamado() );
 
 							ps.setString( iparam++, descprod );
 							ps.setString( iparam++, (String) item.get( COLS_ITRECMERCITOS.OBSITOS.name() ) );
 
-							ps.setInt( iparam++, Aplicativo.iCodEmp );
-							ps.setInt( iparam++, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
+							ps.setInt( iparam++, getCodemp() );
+							ps.setInt( iparam++, codfilialcl );
 							ps.setInt( iparam++, getCodcli() );
 
 							ps.setString( iparam++, getSolicitante() );
 							ps.setInt( iparam++, (Integer) Prioridade.MEDIA.getValue() );
 
-							ps.setInt( iparam++, Aplicativo.iCodEmp );
-							ps.setInt( iparam++, ListaCampos.getMasterFilial( "CRTIPOCHAMADO" ) );
+							ps.setInt( iparam++, getCodemp() );
+							ps.setInt( iparam++, codfilialtch );
 							ps.setInt( iparam++, codtpchamado );
 
 							ps.setDate( iparam++, Funcoes.dateToSQLDate( getDtent() ) );
@@ -1772,8 +1779,8 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 							ps.setBigDecimal( iparam++, nrohoras.multiply( qtditos ) );
 
-							ps.setInt( iparam++, Aplicativo.iCodEmp );
-							ps.setInt( iparam++, ListaCampos.getMasterFilial( "EQITRECMERCITOS" ) );
+							ps.setInt( iparam++, getCodemp() );
+							ps.setInt( iparam++, getCodfilial() );
 							ps.setInt( iparam++, getTicket() );
 
 							ps.setInt( iparam++, (Integer) item.get( COLS_ITRECMERCITOS.CODITRECMERC.name() ) );
@@ -1819,7 +1826,7 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 	}
 
-	public static Vector<Integer> getRmasOS( Integer ticketrma ) {
+	public static Vector<Integer> getRmasOS( DbConnection con, Integer codempos, Integer codfilialos, Integer ticketrma ) {
 
 		StringBuilder sql = new StringBuilder();
 
@@ -1832,10 +1839,10 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 			sql.append( "select codrma from eqrma where codempos=? and codfilialos=? and ticket=? " );
 
-			ps = Aplicativo.getInstace().getConexao().prepareStatement( sql.toString() );
+			ps = con.prepareStatement( sql.toString() );
 
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "EQRMA" ) );
+			ps.setInt( 1, codempos );
+			ps.setInt( 2, codfilialos );
 			ps.setInt( 3, ticketrma );
 
 			rs = ps.executeQuery();
@@ -1856,7 +1863,7 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 	}
 
-	public static Vector<Integer> getChamadosOS( Integer ticketchamado ) {
+	public static Vector<Integer> getChamadosOS( DbConnection con, Integer codempch, Integer codfilialch, Integer ticketchamado ) {
 
 		StringBuilder sql = new StringBuilder();
 
@@ -1869,10 +1876,10 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 			sql.append( "select codchamado from crchamado where codempos=? and codfilialos=? and ticket=? " );
 
-			ps = Aplicativo.getInstace().getConexao().prepareStatement( sql.toString() );
+			ps = con.prepareStatement( sql.toString() );
 
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "CRCHAMADO" ) );
+			ps.setInt( 1, codempch);
+			ps.setInt( 2, codfilialch );
 			ps.setInt( 3, ticketchamado );
 
 			rs = ps.executeQuery();
@@ -1893,7 +1900,7 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 	}
 
-	public Integer geraItemOrc( Integer codorc, HashMap<Object, Object> tipoprodservorc ) {
+	public Integer geraItemOrc( Integer codfilialoc, Integer codorc, HashMap<Object, Object> tipoprodservorc ) {
 
 		StringBuilder sql = new StringBuilder();
 
@@ -1906,12 +1913,12 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 			ps = getConn().prepareStatement( sql.toString() );
 
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "EQRECMERC" ) );
+			ps.setInt( 1, getCodemp() );
+			ps.setInt( 2, getCodfilial() );
 			ps.setInt( 3, getTicket() );
 
-			ps.setInt( 4, Aplicativo.iCodEmp );
-			ps.setInt( 5, ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
+			ps.setInt( 4, getCodemp() );
+			ps.setInt( 5, codfilialoc );
 			ps.setInt( 6, getCodorc() );
 
 			ps.setString( 7, (String) tipoprodservorc.get( DLTipoProdServOrc.COMPONENTES ) );
@@ -1956,7 +1963,7 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 		return codplanopag;
 	}
 
-	public static Integer getSolicitacao( Component orig ) {
+	public static Integer getSolicitacao( Component orig, DbConnection con,  Integer codempsc, Integer codfilialsc ) {
 
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
@@ -1968,10 +1975,10 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 			sql.append( "select coalesce(max(codsol),0) from cpsolicitacao " );
 			sql.append( "where sitsol='AT' and codemp=? and codfilial=? " );
 
-			ps = Aplicativo.getInstace().getConexao().prepareStatement( sql.toString() );
+			ps = con.prepareStatement( sql.toString() );
 
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "CPSOLICITACAO" ) );
+			ps.setInt( 1, codempsc );
+			ps.setInt( 2, codfilialsc );
 
 			rs = ps.executeQuery();
 
@@ -2250,5 +2257,6 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 		this.calctrib = calctrib;
 	}
+
 
 }

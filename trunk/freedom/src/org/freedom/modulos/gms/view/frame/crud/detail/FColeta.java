@@ -860,10 +860,15 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 				daorecmerc.setCodcli( txtCodCli.getVlrInteger() );
 				//daorecmerc.setCodtipomov( getCodtipomovcn() );
 				daorecmerc.setTicket( txtTicket.getVlrInteger() );
-				daorecmerc.CarregaRecMerc();
+				daorecmerc.CarregaRecMerc(ListaCampos.getMasterFilial( "LFSEQSERIE" ));
 				daorecmerc.setCodfor( codfor );
 				if(Funcoes.mensagemConfirma( this, "Confirmar geração da compra ?" ) == JOptionPane.YES_OPTION	){
-					codcompra = daorecmerc.geraCompra(true, txtDocRecMerc.getVlrString(), txtDtEnt.getVlrDate());
+					codcompra = daorecmerc.geraCompra(true, txtDocRecMerc.getVlrString(), txtDtEnt.getVlrDate()
+							, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "LFFRETE" )
+							, ListaCampos.getMasterFilial( "CPCOMPRA" ), ListaCampos.getMasterFilial( "VDPLANOPAG" )
+							, ListaCampos.getMasterFilial( "CPFORNECED" ), ListaCampos.getMasterFilial( "LFSEQSERIE" )
+							, ListaCampos.getMasterFilial( "EQTIPOMOV" ), ListaCampos.getMasterFilial( "VDTRANSP" )
+							, ListaCampos.getMasterFilial( "SGUNIFCOD" ));
 					if (codcompra!=null) {
 						if (Funcoes.mensagemConfirma( this, "Gerada a compra número " + codcompra + ", deseja edita-la ?" )==JOptionPane.YES_OPTION) {
 							editaCompra(codcompra);
@@ -1005,7 +1010,8 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 		lcVenda.setConexao( cn );
 	
 		daocoleta = new DAOColeta( cn );
-		daorecmerc = new DAORecMerc( this, null, con );
+		daorecmerc = new DAORecMerc( this, Aplicativo.iCodEmp , ListaCampos.getMasterFilial( "EQRECMERC" ), null
+				, con, ListaCampos.getMasterFilial( "LFSEQSERIE" ) );
 
 		try{
 			daocli = new DAOCliente( cn );
