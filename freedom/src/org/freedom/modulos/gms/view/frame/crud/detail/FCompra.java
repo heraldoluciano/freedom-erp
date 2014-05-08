@@ -134,7 +134,7 @@ import org.freedom.modulos.std.view.frame.crud.tabbed.FTransp;
 public class FCompra extends FDetalhe implements InterCompra, PostListener, CarregaListener, FocusListener, ActionListener, InsertListener, MouseListener {
 
 	private enum PEDIDO {
-		CODCOMPRA, CODFOR, RAZFOR, DTEMITCOMPRA, DTENTCOMPRA, QTDITENS
+		TIPO, CODCOMPRA, CODFOR, RAZFOR, DTEMITCOMPRA, DTENTCOMPRA, QTDITENS
 	};
 
 	private static final long serialVersionUID = 1L;
@@ -1260,15 +1260,17 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 	}
 
 	private void montaTabPedidos() {
-		tpnCab.addTab( "Pedidos", pinCabPedidos );
+		tpnCab.addTab( "Pedidos/NF", pinCabPedidos );
 		pinCabPedidos.add( spPedidos, BorderLayout.CENTER );
 
+		tabPedidos.adicColuna( "Tipo" );
 		tabPedidos.adicColuna( "Cód.pedido" );
 		tabPedidos.adicColuna( "Cod.forn." );
 		tabPedidos.adicColuna( "Razão social do fornecedor" );
 		tabPedidos.adicColuna( "Dt.emissão" );
 		tabPedidos.adicColuna( "Dt.entrada" );
 		tabPedidos.adicColuna( "Qtd.itens" );
+		tabPedidos.setTamColuna( 50, PEDIDO.TIPO.ordinal() );
 		tabPedidos.setTamColuna( 80, PEDIDO.CODCOMPRA.ordinal() );
 		tabPedidos.setTamColuna( 80, PEDIDO.CODFOR.ordinal() );
 		tabPedidos.setTamColuna( 300, PEDIDO.RAZFOR.ordinal() );
@@ -1300,7 +1302,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		
 		try {
 			StringBuilder sql = new StringBuilder();
-			sql.append( "select ped.codcompra, fr.codfor, fr.razfor, ped.dtemitcompra, ped.dtentcompra, count(*) qtditens " );
+			sql.append( "select 'PEDIDO' tipo, ped.codcompra, fr.codfor, fr.razfor, ped.dtemitcompra, ped.dtentcompra, count(*) qtditens " );
 			sql.append( "from cpcompraped cpped " );
 			sql.append( "inner join cpcompra cp " );
 			sql.append( "on cp.codemp=cpped.codemp and cp.codfilial=cpped.codfilial and cp.codcompra=cpped.codcompra " );
@@ -1310,17 +1312,33 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 			sql.append( "on fr.codemp=ped.codempfr and fr.codfilial=ped.codfilialfr and fr.codfor=ped.codfor " );
 			sql.append( "where cpped.codemp=? and cpped.codfilial=? and cpped.codcompra=? " );
 			sql.append( "group by ped.codcompra, fr.codfor, fr.razfor, ped.dtemitcompra, ped.dtentcompra " );
-			sql.append( "order by ped.codcompra ");
+			sql.append( "union all ");
+			sql.append( "select 'NF' tipo, cp.codcompra, fr.codfor, fr.razfor, ped.dtemitcompra, ped.dtentcompra, count(*) qtditens " );
+			sql.append( "from cpcompraped cpped " );
+			sql.append( "inner join cpcompra cp " );
+			sql.append( "on cp.codemp=cpped.codemp and cp.codfilial=cpped.codfilial and cp.codcompra=cpped.codcompra " );
+			sql.append( "inner join cpcompra ped " );
+			sql.append( "on ped.codemp=cpped.codemppc and ped.codfilial=cpped.codfilialpc and ped.codcompra=cpped.codcomprapc " );
+			sql.append( "inner join cpforneced fr " );
+			sql.append( "on fr.codemp=cp.codempfr and fr.codfilial=cp.codfilialfr and fr.codfor=cp.codfor " );
+			sql.append( "where cpped.codemppc=? and cpped.codfilialpc=? and cpped.codcomprapc=? " );
+			sql.append( "group by cp.codcompra, fr.codfor, fr.razfor, ped.dtemitcompra, ped.dtentcompra " );
+			sql.append( "order by 1, 2 ");
 
 			PreparedStatement pstmt = con.prepareStatement( sql.toString() );
-			pstmt.setInt( 1, Aplicativo.iCodEmp );
-			pstmt.setInt( 2, lcCampos.getCodFilial() );
-			pstmt.setInt( 3, txtCodCompra.getVlrInteger().intValue() );
+			int param = 1;
+			pstmt.setInt( param++, Aplicativo.iCodEmp );
+			pstmt.setInt( param++, ListaCampos.getMasterFilial( "EQCOMPRAPED" ) );
+			pstmt.setInt( param++, txtCodCompra.getVlrInteger().intValue() );
+			pstmt.setInt( param++, Aplicativo.iCodEmp );
+			pstmt.setInt( param++, ListaCampos.getMasterFilial( "EQCOMPRAPED" ) );
+			pstmt.setInt( param++, txtCodCompra.getVlrInteger().intValue() );
 
 			ResultSet rs = pstmt.executeQuery();
 			for ( int row = 0; rs.next(); row++ ) {
 
 				tabPedidos.adicLinha();
+				tabPedidos.setValor( rs.getString( PEDIDO.TIPO.name() ), row, PEDIDO.TIPO.ordinal() );
 
 				tabPedidos.setValor( rs.getInt( PEDIDO.CODCOMPRA.name() ), row, PEDIDO.CODCOMPRA.ordinal() );
 				tabPedidos.setValor( rs.getInt( PEDIDO.CODFOR.name() ), row, PEDIDO.CODFOR.ordinal() );
