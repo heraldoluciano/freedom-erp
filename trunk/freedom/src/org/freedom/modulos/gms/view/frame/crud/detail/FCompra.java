@@ -1341,18 +1341,18 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 
 	private void abrePedido() {
 
-		if ( tabPedidos.getLinhaSel() > -1 ) {
-			/* FCompra tela = null;
-			if ( Aplicativo.telaPrincipal.temTela( FOrcamento.class.getName() ) ) {
-				tela = (FOrcamento) Aplicativo.telaPrincipal.getTela( FOrcamento.class.getName() );
+		int row = tabPedidos.getLinhaSel(); 
+		if ( row > -1 ) {
+			Integer codcompra = (Integer) tabPedidos.getValor( tabPedidos.getLinhaSel(), PEDIDO.CODCOMPRA.ordinal() );
+			if (codcompra!=null && codcompra.intValue()!=0) {
+				
 			}
-			else {
-				tela = new FOrcamento();
-				tela.setAtivaNavegacao( false );
-				Aplicativo.telaPrincipal.criatela( "Orçamento", tela, con );
+			if ( fPrim.temTela( "Pedido de compra: "+codcompra ) == false ) {
+				FCompra tela = new FCompra();
+				fPrim.criatela( "Pedido de compra: "+codcompra, tela, con );
+				tela.exec( codcompra );
 			}
-			tela.exec( (Integer) tabOrcamentos.getValor( tabOrcamentos.getLinhaSel(), ORCAMENTO.CODORCAMENTO.ordinal() ) );
-			*/
+
 		}
 	}
 	
