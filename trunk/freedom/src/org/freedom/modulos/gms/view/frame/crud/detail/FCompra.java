@@ -777,7 +777,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		rgFreteRM = new JRadioGroup<String, String>( 1, 2, vLabsFreteRM, vValsFreteRM, -4 );
 		 */
 		setPainel( pinCabRecmerc );
-		adicCampo( txtTicket, 7, 20, 70, 20, "ticket", "Ticket", ListaCampos.DB_FK, txtPlacaTranRM, true);
+		adicCampo( txtTicket, 7, 20, 70, 20, "ticket", "Ticket", ListaCampos.DB_FK, txtPlacaTranRM, false);
 		txtTicket.setSoLeitura( true );
 		//rgFreteRM.setEnabled( false );
 		adicDescFK( txtPlacaTranRM, 80, 20, 70, 20, "PlacaVeiculo", "Placa" );
