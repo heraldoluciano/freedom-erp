@@ -1080,7 +1080,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 
 		// * Almoxarifado RECMERC
 		
-		lcAlmoxRM.add( new GuardaCampo( txtCodAlmoxRM, "CodAlmox", "Cód.almox.", ListaCampos.DB_PK, true ) );
+		lcAlmoxRM.add( new GuardaCampo( txtCodAlmoxRM, "CodAlmox", "Cód.almox.", ListaCampos.DB_PK, false ) );
 		lcAlmoxRM.add( new GuardaCampo( txtDescAlmoxRM, "DescAlmox", "Descrição do almoxarifado", ListaCampos.DB_SI, false ) );
 		lcAlmoxRM.montaSql( false, "ALMOX", "EQ" );
 		lcAlmoxRM.setReadOnly( true );
