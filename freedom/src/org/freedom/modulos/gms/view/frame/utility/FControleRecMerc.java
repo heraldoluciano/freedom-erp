@@ -831,6 +831,12 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 	}
 
 	
+	private void setStatus(String statustxt, int row) {
+		tabDet.setValor( statustxt, row, DETALHAMENTO.STATUSTXT.ordinal() );
+		imgColuna = DAORecMerc.getImagem( statustxt, DAORecMerc.IMG_TAMANHO_M );
+		tabDet.setValor( imgColuna, row, DETALHAMENTO.STATUS.ordinal() );
+	}
+	
 	private void geraCompra() {
 
 		StringBuilder sql = new StringBuilder();
@@ -857,10 +863,7 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 				recmerc = new DAORecMerc( this, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQRECMERC" )
 						, ticket, con, ListaCampos.getMasterFilial( "LFSEQSERIE" )  );
 				String statustxt = recmerc.getStatus(); 
-				tabDet.setValor( statustxt, row, DETALHAMENTO.STATUSTXT.ordinal() );
-				imgColuna = DAORecMerc.getImagem( statustxt, DAORecMerc.IMG_TAMANHO_M );
-				tabDet.setValor( imgColuna, row, DETALHAMENTO.STATUS.ordinal() );
-
+				setStatus(statustxt, row);
 				if ( statustxt.equals( DAORecMerc.STATUS_RECEBIMENTO_FINALIZADO.getValue() ) || statustxt.equals( DAORecMerc.STATUS_PEDIDO_COMPRA_EMITIDO.getValue() ) || statustxt.equals( DAORecMerc.STATUS_NOTA_ENTRADA_EMITIDA.getValue() ) ) {
 
 					if(codcompra!=null && codcompra>0) {
@@ -878,6 +881,8 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 
 							if ( codcompra != null && codcompra > 0 ) {
 
+								tabDet.setValor( codcompra, row, DETALHAMENTO.CODCOMPRA.ordinal() );
+								setStatus("PC", row);
 								abrecompra( codcompra );
 
 							}
