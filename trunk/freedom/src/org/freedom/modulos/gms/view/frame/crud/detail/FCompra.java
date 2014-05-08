@@ -155,6 +155,8 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 
 	private JPanelPad pinCabFiscal = new JPanelPad();
 
+	private JPanelPad pinCabRecmerc = new JPanelPad();
+
 	private JPanelPad pinCabObs01 = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
 
 	private JPanelPad pinCabObs02 = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
@@ -421,6 +423,36 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 
 	private JTextFieldFK txtAceitaVenda = new JTextFieldFK( JTextFieldPad.TP_STRING, 1, 0 );
 
+	private JTextFieldFK  txtPlacaTranRM = new JTextFieldFK ( JTextFieldPad.TP_STRING, 40, 0 );
+
+	private JTextFieldFK  txtCodTipoRecMercRM = new JTextFieldFK ( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldFK  txtRefProdCabRM = new JTextFieldFK ( JTextFieldPad.TP_STRING, 20, 0 );
+
+	private JTextFieldFK  txtRefProdDetRM = new JTextFieldFK ( JTextFieldPad.TP_STRING, 20, 0 );
+
+	private JTextFieldFK txtDescTipoRecMercRM = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+
+	private JTextFieldFK  txtCodProdPadraoRM = new JTextFieldFK ( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldFK  txtCodTranRM = new JTextFieldFK ( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldFK txtNomeTranRM = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldFK  txtDtEntRM = new JTextFieldFK ( JTextFieldPad.TP_DATE, 10, 0 );
+
+	//private JRadioGroup<String, String> rgFreteRM = null;
+	
+	private JTextFieldFK txtDescontoRM = new JTextFieldFK( JTextFieldPad.TP_DECIMAL, 2, Aplicativo.casasDecFin );
+	
+	private JTextFieldFK txtCodAlmoxRM = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldFK txtDescAlmoxRM = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+
+	private JTextFieldFK txtCodForRM = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldFK txtRazForRM = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
+
 	private JCheckBoxPad cbChaveNFEValida = new JCheckBoxPad( "Chave Válida?", "S", "N" );
 
 	private JRadioGroup<?, ?> rgTipoDocImp = null;
@@ -472,6 +504,14 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 	private ListaCampos lcSolCompra = new ListaCampos( this, "SOL" );
 
 	private ListaCampos lcModNota = new ListaCampos( this, "MN" );
+
+	private ListaCampos lcRecmerc = new ListaCampos( this, "RM" );
+	
+	private ListaCampos lcTipoRecMerc = new ListaCampos( this, "TR" );
+
+	private ListaCampos lcAlmoxRM = new ListaCampos( this, "AX" );
+
+	private ListaCampos lcTranRM = new ListaCampos( this, "TN" );
 
 	private final ListaCampos lcTran = new ListaCampos( this, "TN" );
 
@@ -585,7 +625,9 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 
 	private JTextFieldPad txtCodItFisc = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldPad txtTicket = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
+	private JTextFieldPad txtTicket = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldPad txtTicketRM = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	public static BigDecimal zero = new BigDecimal( 0 );
 
@@ -622,7 +664,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 
 		adicPaineis();
 
-		adicListaCampos();
+		montaListaCampos();
 
 		adicToolTips();
 
@@ -721,10 +763,34 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		adicCampoInvisivel( txtCalcTrib, "CalcTrib", "Calculo de tributos", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtStatusCompra, "StatusCompra", "Status", ListaCampos.DB_SI, false );
 
-		adicCampoInvisivel( txtTicket, "ticket", "Ticket", ListaCampos.DB_SI, false );
 
 		adicDB( cbChaveNFEValida, 420, 20, 200, 15, "ChaveNFEValida", "",  ListaCampos.DB_SI, false);
 		cbChaveNFEValida.setEnabled( false );
+
+		// Informações da recepção de mercadorias
+		/*Vector<String> vValsFreteRM = new Vector<String>();
+		Vector<String> vLabsFreteRM = new Vector<String>();
+		vValsFreteRM.addElement( "C" );
+		vValsFreteRM.addElement( "F" );
+		vLabsFreteRM.addElement( "CIF" );
+		vLabsFreteRM.addElement( "FOB" );
+		rgFreteRM = new JRadioGroup<String, String>( 1, 2, vLabsFreteRM, vValsFreteRM, -4 );
+		 */
+		setPainel( pinCabRecmerc );
+		adicCampo( txtTicket, 7, 20, 70, 20, "ticket", "Ticket", ListaCampos.DB_FK, txtPlacaTranRM, true);
+		txtTicket.setSoLeitura( true );
+		//rgFreteRM.setEnabled( false );
+		adicDescFK( txtPlacaTranRM, 80, 20, 70, 20, "PlacaVeiculo", "Placa" );
+		adicDescFK( txtCodTipoRecMercRM, 153, 20, 40, 20, "CodTipoRecMerc", "Cód.T." );
+		adicDescFK( txtDescTipoRecMercRM, 196, 20, 228, 20, "DescTipoRecMerc", "Tipo de recebimento" );
+		adicDescFK( txtDtEntRM, 427, 20, 70, 20, "DtEnt", "Data" );
+		adicDescFK( txtCodAlmoxRM, 500, 20, 50, 20, "CodAlmox", "Almox." );
+		adicDescFK( txtDescAlmoxRM, 553, 20, 160, 20, "DescAlmox", "Descrição do almoxarifado" );
+		adicDescFK( txtCodTranRM, 7, 60, 70, 20, "CodTran", "Cod.Tran." );
+		adicDescFK( txtNomeTranRM, 80, 60, 345, 20, "NomeTran", "Nome da transportadora" );
+		adicDescFK( txtDescontoRM, 428, 60, 90, 20, "Desconto", "%Desc.Peso" );
+//		adic( rgFreteRM, 521, 60, 150, 20, "Frete" );
+		
 
 		setListaCampos( true, "COMPRA", "CP" );
 		lcCampos.setQueryInsert( false );
@@ -759,7 +825,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		txtDescProd.setToolTipText( "Clique aqui duas vezes para alterar a descrição." );
 	}
 
-	private void adicListaCampos() {
+	private void montaListaCampos() {
 
 		lcTipoMov.add( new GuardaCampo( txtCodTipoMov, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_PK, false ) );
 		lcTipoMov.add( new GuardaCampo( txtDescTipoMov, "DescTipoMov", "Descrição do tipo de movimento", ListaCampos.DB_SI, false ) );
@@ -1012,8 +1078,72 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		//lcLFItCompra.setMaster( lcDet );
 		lcLFItCompra.setReadOnly( true );
 
+		// * Almoxarifado RECMERC
+		
+		lcAlmoxRM.add( new GuardaCampo( txtCodAlmoxRM, "CodAlmox", "Cód.almox.", ListaCampos.DB_PK, true ) );
+		lcAlmoxRM.add( new GuardaCampo( txtDescAlmoxRM, "DescAlmox", "Descrição do almoxarifado", ListaCampos.DB_SI, false ) );
+		lcAlmoxRM.montaSql( false, "ALMOX", "EQ" );
+		lcAlmoxRM.setReadOnly( true );
+		lcAlmoxRM.setQueryCommit( false );
+		txtCodAlmoxRM.setTabelaExterna( lcAlmoxRM, FAlmox.class.getCanonicalName() );
+		
+		// * Transportadora RECMERC
+
+		lcTranRM.add( new GuardaCampo( txtCodTranRM, "CodTran", "Cód.For.", ListaCampos.DB_PK, false ) );
+		lcTranRM.add( new GuardaCampo( txtNomeTranRM, "NomeTran", "Nome da transportadora", ListaCampos.DB_SI, false ) );
+
+		txtCodTranRM.setTabelaExterna( lcTranRM, FTransp.class.getCanonicalName() );
+		txtCodTranRM.setNomeCampo( "CodTran" );
+		txtCodTranRM.setFK( true );
+
+		lcTranRM.setReadOnly( true );
+		lcTranRM.montaSql( false, "TRANSP", "VD" );
+		
+		// * Tipo de Recebimento RECMERC
+
+		lcTipoRecMerc.add( new GuardaCampo( txtCodTipoRecMercRM, "CodTipoRecMerc", "Cód.Tipo.Rec.", ListaCampos.DB_PK, false ) );
+		lcTipoRecMerc.add( new GuardaCampo( txtDescTipoRecMercRM, "DescTipoRecMerc", "Descrição do tipo de recepção de mercadoria", ListaCampos.DB_SI, false ) );
+
+		txtCodTipoRecMercRM.setTabelaExterna( lcTipoRecMerc, FTipoRecMerc.class.getCanonicalName() );
+		txtCodTipoRecMercRM.setNomeCampo( "CodTipoRecMerc" );
+		txtCodTipoRecMercRM.setFK( true );
+
+		lcTipoRecMerc.setReadOnly( true );
+		lcTipoRecMerc.montaSql( false, "TIPORECMERC", "EQ" );
+		
+		// FK Recmerc
+		//lcRecmerc.setMaster( lcCampos );
+		lcRecmerc.add( new GuardaCampo( txtTicketRM, "Ticket", "Ticket", ListaCampos.DB_PK, false ) );
+		lcRecmerc.add( new GuardaCampo( txtPlacaTranRM, "PlacaVeiculo", "Placa", ListaCampos.DB_SI, false ) );
+		lcRecmerc.add( new GuardaCampo( txtCodTipoRecMercRM, "CodTipoRecMerc", "Tipo recebimento", ListaCampos.DB_FK, txtDescTipoRecMercRM, false ) );
+		lcRecmerc.add( new GuardaCampo( txtDtEntRM, "DtEnt", "Data ent.", ListaCampos.DB_SI, false ) );
+		lcRecmerc.add( new GuardaCampo( txtCodAlmoxRM, "CodAlmox", "Cód.almox.", ListaCampos.DB_FK, txtDescAlmoxRM, false ) );
+		lcRecmerc.add( new GuardaCampo( txtCodTranRM, "CodTran", "Cód.transp.", ListaCampos.DB_FK, txtNomeTranRM, false ) );
+		lcRecmerc.add( new GuardaCampo( txtDescontoRM, "Desconto", "Desconto peso", ListaCampos.DB_SI, false ) );
+		
+		lcRecmerc.montaSql( false, "RECMERC", "EQ" );
+		lcRecmerc.setQueryCommit( false );
+		lcRecmerc.setReadOnly( true );
+
 	}
 
+	private void limpaRecmerc(boolean limpaticket) {
+		if (limpaticket) {
+			txtTicket.setVlrString( "" );
+		}
+		txtTicketRM.setVlrString( "" );
+		txtPlacaTranRM.setVlrString( "" );
+		txtCodTipoRecMercRM.setVlrString( "" );
+		txtDescTipoRecMercRM.setVlrString( "" );
+		txtDtEntRM.setVlrString( "" );
+		txtCodAlmoxRM.setVlrString( "" );
+		txtDescAlmoxRM.setVlrString( "" );
+		txtCodTranRM.setVlrString( "" );
+		txtNomeTranRM.setVlrString( "" );
+		txtDescontoRM.setVlrString( "" );
+		
+	}
+	
 	private void adicPaineis() {
 
 		pnNavCab.add( pnAdicionalCab, BorderLayout.EAST );
@@ -1110,6 +1240,8 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 
 		pinCabInfCompl.add( spnInfCompl );
 		tpnCab.addTab( "Inf.Compl (Fisco)", pinCabInfCompl );
+		
+		tpnCab.addTab( "Coleta/Recepção de mercadorias", pinCabRecmerc);
 
 	}
 
@@ -3013,6 +3145,8 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 				cevt.cancela(); // Cancela o carregaDados do lcLote para não
 				// zerar o codprod.
 			}
+		} else if ( cevt.getListaCampos() == lcCampos ) {
+			txtTicket.setVlrString( "" );
 		}
 	}
 
@@ -3131,6 +3265,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 			if(!( lcCampos.getStatus() == ListaCampos.LCS_INSERT )) {
 				desabilitaBotoes( false );
 			}
+			loadRecmerc();
 		}
 		else if ( cevt.getListaCampos() == lcCompra2 ) {
 
@@ -3319,6 +3454,12 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 
 	}
 
+	private void loadRecmerc() {
+		limpaRecmerc(false);
+		txtTicketRM.setVlrString( txtTicket.getVlrString() );
+		lcRecmerc.carregaDados();
+	}
+	
 	private void habilitaSerie() {
 
 		if ( "S".equals( txtSerieProd.getVlrString() ) && txtQtdItCompra.getVlrBigDecimal().compareTo( new BigDecimal( 1 ) ) == 0 ) {
@@ -3341,8 +3482,8 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 
 			txtDtEntCompra.setVlrDate( new Date() );
 			txtDtEmitCompra.setVlrDate( new Date() );
-
-			desabilitaBotoes( true );	
+			desabilitaBotoes( true );
+			limpaRecmerc(true);
 		} 
 	}
 
@@ -3823,7 +3964,10 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		lcUF.setConexao( cn );
 		lcImportacao.setConexao( cn );
 		lcLFItCompra.setConexao( cn );
-
+		lcRecmerc.setConexao( cn );
+		lcTipoRecMerc.setConexao( cn );
+		lcAlmoxRM.setConexao(cn);
+		lcTranRM.setConexao( cn );
 
 		montaTela();
 		montaDetalhe();
