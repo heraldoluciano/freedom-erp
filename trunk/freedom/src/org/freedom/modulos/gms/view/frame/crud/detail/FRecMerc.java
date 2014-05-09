@@ -281,7 +281,7 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 	
 	private boolean atualizaPesoManual = false;
 	
-	private JTextAreaPad txaObs = new JTextAreaPad();
+	private JTextAreaPad txaObs = new JTextAreaPad(1000);
 	
 	private JScrollPane spnObs = new JScrollPane( txaObs );
 	
