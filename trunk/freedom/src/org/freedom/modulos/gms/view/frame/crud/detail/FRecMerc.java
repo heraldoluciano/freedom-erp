@@ -605,7 +605,8 @@ public class FRecMerc extends FDetalhe implements FocusListener, JComboBoxListen
 	public void exec( int ticket, int tiporecmerc, FControleRecMerc tela_mae ) {
 
 		try {
-			lcCampos.edit();
+			//lcCampos.edit();
+			lcCampos.setState( ListaCampos.LCS_SELECT );
 			txtTicket.setVlrInteger( ticket );
 			txtCodTipoRecMerc.setVlrInteger( tiporecmerc );
 			lcCampos.carregaDados();
