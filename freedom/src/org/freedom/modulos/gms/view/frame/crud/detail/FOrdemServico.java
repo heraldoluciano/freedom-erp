@@ -1845,8 +1845,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 	public void exec( Integer ticket, Integer tiporecmerc, FFilho tela_mae ) {
 
 		try {
-
-			lcCampos.edit();
+            lcCampos.setState( ListaCampos.LCS_SELECT );
 			txtTicket.setVlrInteger( ticket );
 			txtCodTipoRecMerc.setVlrInteger( tiporecmerc );
 			lcCampos.carregaDados();
