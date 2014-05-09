@@ -121,52 +121,56 @@ public class DLImpBoletoRec extends FDialogo {
 			return;
 		}
 
-		StringBuffer sSQL = new StringBuffer();
+		StringBuffer sql = new StringBuffer();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
-		sSQL.append( "SELECT IM.DVCONVCOB, ITR.DTVENCITREC,ITR.NPARCITREC,ITR.VLRAPAGITREC, ITR.VLRPARCITREC, MB.PREIMPMODBOL, " );
-		sSQL.append( "F.UNIDFRANQUEADA, F.RAZFILIAL, F.ENDFILIAL, F.NUMFILIAL, F.CNPJFILIAL, F.BAIRFILIAL, F.COMPLFILIAL, F.SIGLAUF, F.EMAILFILIAL, " );
-		sSQL.append( "ITR.VLRDESCITREC, (ITR.VLRJUROSITREC+ITR.VLRMULTAITREC) VLRMULTA, R.DOCREC,ITR.CODBANCO, B.DVBANCO, " );
-		sSQL.append( "B.IMGBOLBANCO LOGOBANCO01, COALESCE(B.IMGBOLBANCO2,B.IMGBOLBANCO) LOGOBANCO02, B.IMGBOLBANCO LOGOBANCO03, B.IMGBOLBANCO LOGOBANCO04, IM.CODCARTCOB, " );
-		sSQL.append( "MB.ESPDOCMODBOL ESPDOC, MB.ACEITEMODBOL ACEITE, MB.MDECOB, ITR.dtitrec AS DTEMITVENDA, " );
-		sSQL.append( "C.RAZCLI,C.CPFCLI,C.CNPJCLI, C.ENDCLI,C.NUMCLI,C.COMPLCLI,C.CEPCLI,C.BAIRCLI, " );
-		sSQL.append( "C.CIDCLI,C.UFCLI, COALESCE(C.ENDCOB, C.ENDCLI) ENDCOB,C.NUMCOB,C.COMPLCOB,C.CEPCOB,C.BAIRCOB,C.CIDCOB,C.UFCOB, P.CODMOEDA, " );
-		sSQL.append( "C.PESSOACLI, (ITR.DTVENCITREC-CAST('07.10.1997' AS DATE)) FATVENC, M.CODFBNMOEDA, " );
-		sSQL.append( "M.SINGMOEDA, M.PLURMOEDA, M.DECSMOEDA, M.DECPMOEDA, " );
-		sSQL.append( "CT.AGENCIACONTA, CT.POSTOCONTA, IM.NUMCONTA, MB.DESCLPMODBOL, MB.INSTPAGMODBOL, IM.CONVCOB, ITR.DESCPONT, C.INSCCLI, ITR.OBSITREC OBS, TCO.VARIACAOCARTCOB, ");
-		sSQL.append( "R.CODREC, R.DATAREC, itr.seqnossonumero, r.vlrrec, mb.TxaModBol, ITR.DOCLANCAITREC " );
-		// Implementação para permitir a impressão de boleto pré-impresso.
-		sSQL.append( ",'' codorc, '' nomeconv, '' obsorc, r.docrec docvenda, 0 reciboitrec,");
-		sSQL.append( "(SELECT COUNT(*) FROM FNITRECEBER ITR2 WHERE ITR2.CODREC=R.CODREC AND ITR2.CODEMP=R.CODEMP AND ITR2.CODFILIAL=R.CODFILIAL) PARCS, ");
-		sSQL.append( "r.codcli, c.nomecli, c.rgcli, c.fonecli, c.dddcli, r.codvenda, r.vlrapagrec, '' nomevend, '' nomevend2, '' nomevend3, '' nomevend4, ");
-		sSQL.append( "f.endfilial, f.numfilial, f.cnpjfilial, f.cepfilial, f.uffilial, f.cidfilial, f.UnidFranqueada, f.WWWFranqueadora, f.MarcaFranqueadora, " );
-		sSQL.append( "mu.nomemunic cidcli ");
-		sSQL.append( "FROM FNRECEBER R, SGPREFERE1 P, FNMOEDA M, FNBANCO B, FNMODBOLETO MB, " );
-		sSQL.append( "FNITMODBOLETO IM, FNITRECEBER ITR, SGFILIAL F, FNCONTA CT, FNCARTCOB TCO, VDCLIENTE C " );
-		sSQL.append( "LEFT OUTER JOIN SGMUNICIPIO MU ON MU.CODPAIS=C.CODPAIS AND MU.SIGLAUF=C.SIGLAUF AND MU.CODMUNIC=C.CODMUNIC ");
-		sSQL.append( "WHERE " );
-		sSQL.append( "C.CODEMP=R.CODEMPCL AND C.CODFILIAL=R.CODFILIALCL AND C.CODCLI=R.CODCLI " );
-		sSQL.append( "AND P.CODEMP=R.CODEMP AND P.CODFILIAL=R.CODFILIAL " );
-		sSQL.append( "AND F.CODEMP=R.CODEMP AND F.CODFILIAL=R.CODFILIAL " );
-		sSQL.append( "AND M.CODEMP=P.CODEMPMO AND M.CODFILIAL=P.CODFILIALMO AND M.CODMOEDA=P.CODMOEDA " );
-		sSQL.append( "AND B.CODEMP=ITR.CODEMPBO AND B.CODFILIAL=ITR.CODFILIALBO AND B.CODBANCO=ITR.CODBANCO " );
-		sSQL.append( "AND IM.CODEMP=MB.CODEMP AND IM.CODFILIAL=MB.CODFILIAL AND IM.CODMODBOL=MB.CODMODBOL " );
-		sSQL.append( "AND IM.CODEMPBO=B.CODEMP AND IM.CODFILIALBO=B.CODFILIAL AND IM.CODBANCO=B.CODBANCO " );
-		sSQL.append( "AND IM.CODEMPCB=ITR.CODEMPCB AND IM.CODFILIALCB=ITR.CODFILIALCB AND IM.CODCARTCOB=ITR.CODCARTCOB " );
-		sSQL.append( "AND CT.CODEMP=IM.CODEMPCT AND CT.CODFILIAL=IM.CODFILIALCT AND CT.NUMCONTA=IM.NUMCONTA " );
-		sSQL.append( "AND ITR.CODEMP=R.CODEMP AND ITR.CODFILIAL=R.CODFILIAL AND ITR.CODREC=R.CODREC " );
-		sSQL.append( "AND ITR.STATUSITREC IN ('R1','RL','RB','RR') " );
-		sSQL.append( "AND MB.CODEMP=? AND MB.CODFILIAL=? AND MB.CODMODBOL=?" );
-		sSQL.append( "AND R.CODEMP=? AND R.CODFILIAL=? AND R.CODREC=? AND ITR.nparcitrec=? " );
-		sSQL.append( "AND TCO.CODEMP=ITR.CODEMPCB AND TCO.CODFILIAL=ITR.CODFILIALCB AND TCO.CODCARTCOB=ITR.CODCARTCOB ");
-		sSQL.append( "AND TCO.CODEMPBO=B.CODEMP AND TCO.CODFILIALBO=B.CODFILIAL AND TCO.CODBANCO=B.CODBANCO ");
+		sql.append( "select im.dvconvcob, itr.dtvencitrec,itr.nparcitrec,itr.vlrapagitrec, itr.vlrparcitrec, mb.preimpmodbol " );
+		sql.append( ", f.unidfranqueada, f.razfilial, f.endfilial, f.numfilial, f.cnpjfilial, f.bairfilial, f.complfilial, f.siglauf, f.emailfilial " );
+		sql.append( ", itr.vlrdescitrec, (itr.vlrjurositrec+itr.vlrmultaitrec) vlrmulta, r.docrec ");
+		sql.append( ", coalesce(bc.codbanco, b.codbanco) codbanco, coalesce(bc.dvbanco,b.dvbanco) dvbanco " );
+		sql.append( ", coalesce(bc.imgbolbanco, b.imgbolbanco) logobanco01 ");
+		sql.append( ", case when bc.codbanco is null then coalesce(b.imgbolbanco2,b.imgbolbanco) else coalesce(bc.imgbolbanco2,bc.imgbolbanco) end logobanco02 ");
+		sql.append( ", coalesce(bc.imgbolbanco, b.imgbolbanco) logobanco03, coalesce(bc.imgbolbanco, b.imgbolbanco) logobanco04 " );
+		sql.append( ", im.codcartcob, mb.espdocmodbol espdoc, mb.aceitemodbol aceite, mb.mdecob, itr.dtitrec as dtemitvenda " );
+		sql.append( ", c.razcli,c.cpfcli,c.cnpjcli, c.endcli,c.numcli,c.complcli,c.cepcli,c.baircli " );
+		sql.append( ", c.cidcli,c.ufcli, coalesce(c.endcob, c.endcli) endcob,c.numcob,c.complcob,c.cepcob,c.baircob,c.cidcob,c.ufcob, p.codmoeda " );
+		sql.append( ", c.pessoacli, (itr.dtvencitrec-cast('07.10.1997' as date)) fatvenc, m.codfbnmoeda " );
+		sql.append( ", m.singmoeda, m.plurmoeda, m.decsmoeda, m.decpmoeda " );
+		sql.append( ", ct.agenciaconta, ct.postoconta, im.numconta, mb.desclpmodbol, mb.instpagmodbol, im.convcob, itr.descpont, c.insccli, itr.obsitrec obs, tco.variacaocartcob ");
+		sql.append( ", r.codrec, r.datarec, itr.seqnossonumero, r.vlrrec, mb.txamodbol, itr.doclancaitrec " );
+		// implementação para permitir a impressão de boleto pré-impresso.
+		sql.append( ",'' codorc, '' nomeconv, '' obsorc, r.docrec docvenda, 0 reciboitrec ");
+		sql.append( ", (select count(*) from fnitreceber itr2 where itr2.codrec=r.codrec and itr2.codemp=r.codemp and itr2.codfilial=r.codfilial) parcs ");
+		sql.append( ", r.codcli, c.nomecli, c.rgcli, c.fonecli, c.dddcli, r.codvenda, r.vlrapagrec, '' nomevend, '' nomevend2, '' nomevend3, '' nomevend4 ");
+		sql.append( ", f.endfilial, f.numfilial, f.cnpjfilial, f.cepfilial, f.uffilial, f.cidfilial, f.unidfranqueada, f.wwwfranqueadora, f.marcafranqueadora " );
+		sql.append( ", mu.nomemunic cidcli ");
+		sql.append( " from fnreceber r, sgprefere1 p, fnmoeda m, fnbanco b, fnmodboleto mb " );
+		sql.append( ", fnitmodboleto im, fnitreceber itr, sgfilial f, fnconta ct, fncartcob tco, vdcliente c " );
+		sql.append( "left outer join sgmunicipio mu on mu.codpais=c.codpais and mu.siglauf=c.siglauf and mu.codmunic=c.codmunic ");
+		sql.append( "left outer join fnbanco bc on bc.codemp=b.codempbp and bc.codfilial=b.codfilialbp and bc.codbanco=b.codbancobp " );
+		sql.append( "where " );
+		sql.append( "c.codemp=r.codempcl and c.codfilial=r.codfilialcl and c.codcli=r.codcli " );
+		sql.append( "and p.codemp=r.codemp and p.codfilial=r.codfilial " );
+		sql.append( "and f.codemp=r.codemp and f.codfilial=r.codfilial " );
+		sql.append( "and m.codemp=p.codempmo and m.codfilial=p.codfilialmo and m.codmoeda=p.codmoeda " );
+		sql.append( "and b.codemp=itr.codempbo and b.codfilial=itr.codfilialbo and b.codbanco=itr.codbanco " );
+		sql.append( "and im.codemp=mb.codemp and im.codfilial=mb.codfilial and im.codmodbol=mb.codmodbol " );
+		sql.append( "and im.codempbo=b.codemp and im.codfilialbo=b.codfilial and im.codbanco=b.codbanco " );
+		sql.append( "and im.codempcb=itr.codempcb and im.codfilialcb=itr.codfilialcb and im.codcartcob=itr.codcartcob " );
+		sql.append( "and ct.codemp=im.codempct and ct.codfilial=im.codfilialct and ct.numconta=im.numconta " );
+		sql.append( "and itr.codemp=r.codemp and itr.codfilial=r.codfilial and itr.codrec=r.codrec " );
+		sql.append( "and itr.statusitrec in ('R1','RL','RB','RR') " );
+		sql.append( "and mb.codemp=? and mb.codfilial=? and mb.codmodbol=? " );
+		sql.append( "and r.codemp=? and r.codfilial=? and r.codrec=? and itr.nparcitrec=? " );
+		sql.append( "and tco.codemp=itr.codempcb and tco.codfilial=itr.codfilialcb and tco.codcartcob=itr.codcartcob ");
+		sql.append( "and tco.codempbo=b.codemp and tco.codfilialbo=b.codfilial and tco.codbanco=b.codbanco ");
 
 		try {
 
-			System.out.println( "QUERY DUPLICATA:" + sSQL.toString() );
+			System.out.println( "QUERY DUPLICATA:" + sql.toString() );
 
-			ps = con.prepareStatement( sSQL.toString() );
+			ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "FNRECEBER" ) );
 			ps.setInt( 3, txtCodModBol.getVlrInteger() );
@@ -188,7 +192,7 @@ public class DLImpBoletoRec extends FDialogo {
 		} catch ( SQLException err ) {
 
 			err.printStackTrace();
-			Funcoes.mensagemErro( this, "Erro ao buscar dados do boleto!" );
+			Funcoes.mensagemErro( this, "Erro ao buscar dados do boleto!\n"+err.getMessage() );
 		}
 		catch (Exception e) {
 			e.printStackTrace();
