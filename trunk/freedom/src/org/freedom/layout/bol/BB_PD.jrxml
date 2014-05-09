@@ -29,30 +29,36 @@
 	</parameter>
 	<parameter name="CNPJFILIAL" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[SELECT ITR.DTVENCITREC,ITR.NPARCITREC,ITR.VLRAPAGITREC, ITR.VLRPARCITREC,
-ITR.VLRDESCITREC, (ITR.VLRJUROSITREC+ITR.VLRMULTAITREC) VLRMULTA, R.DOCREC,ITR.CODBANCO, B.DVBANCO,
-B.IMGBOLBANCO LOGOBANCO01, B.IMGBOLBANCO LOGOBANCO02, B.IMGBOLBANCO LOGOBANCO03, IM.CODCARTCOB,
-MB.ESPDOCMODBOL ESPDOC, MB.ACEITEMODBOL ACEITE, MB.MDECOB, ITR.dtitrec AS DTEMITVENDA,
-C.RAZCLI,C.CPFCLI,C.CNPJCLI, C.ENDCLI,C.NUMCLI,C.COMPLCLI,C.CEPCLI,C.BAIRCLI,
-C.CIDCLI,C.UFCLI, C.ENDCOB,C.NUMCOB,C.COMPLCOB,C.CEPCOB,C.BAIRCOB,C.CIDCOB,C.UFCOB, P.CODMOEDA,
-C.PESSOACLI, (ITR.DTVENCITREC-CAST('07.10.1997' AS DATE)) FATVENC, M.CODFBNMOEDA,
-CT.AGENCIACONTA, MB.NUMCONTA, MB.DESCLPMODBOL, MB.INSTPAGMODBOL, IM.CONVCOB, ITR.DESCPONT, '' VARIACAOCARTCOB,
-ITR.SEQNOSSONUMERO, ITR.CODREC, F.ENDFILIAL, F.NUMFILIAL, F.CEPFILIAL, F.UFFILIAL,F.CIDFILIAL
-FROM VDCLIENTE C, FNRECEBER R, SGPREFERE1 P, FNMOEDA M, FNBANCO B, FNMODBOLETO MB,
-FNITMODBOLETO IM, FNITRECEBER ITR, SGFILIAL F, FNCONTA CT
-WHERE
-C.CODEMP=R.CODEMPCL AND C.CODFILIAL=R.CODFILIALCL AND C.CODCLI=R.CODCLI
-AND P.CODEMP=R.CODEMP AND P.CODFILIAL=R.CODFILIAL
-AND F.CODEMP=R.CODEMP AND F.CODFILIAL=R.CODFILIAL
-AND M.CODEMP=P.CODEMPMO AND M.CODFILIAL=P.CODFILIALMO AND M.CODMOEDA=P.CODMOEDA
-AND B.CODEMP=ITR.CODEMPBO AND B.CODFILIAL=ITR.CODFILIALBO AND B.CODBANCO=ITR.CODBANCO
-AND IM.CODEMP=MB.CODEMP AND IM.CODFILIAL=MB.CODFILIAL AND IM.CODMODBOL=MB.CODMODBOL
-AND IM.CODEMPBO=B.CODEMP AND IM.CODFILIALBO=B.CODFILIAL AND IM.CODBANCO=B.CODBANCO
-AND IM.CODEMPCB=ITR.CODEMPCB AND IM.CODFILIALCB=ITR.CODFILIALCB AND IM.CODCARTCOB=ITR.CODCARTCOB
-AND CT.CODEMP=MB.CODEMPCC AND CT.CODFILIAL=MB.CODFILIALCC AND CT.NUMCONTA=MB.NUMCONTA
-AND ITR.CODEMP=R.CODEMP AND ITR.CODFILIAL=R.CODFILIAL AND ITR.CODREC=R.CODREC
-AND MB.CODEMP=3 AND MB.CODFILIAL=1 AND MB.CODMODBOL=2
-AND R.CODEMP=3 AND R.CODFILIAL=1 AND R.CODREC = 116 AND ITR.nparcitrec = 1]]>
+		<![CDATA[select im.dvconvcob, im.codcartcob, itr.dtvencitrec,itr.nparcitrec,itr.vlrapagitrec, itr.vlrparcitrec, mb.preimpmodbol
+, f.unidfranqueada, f.razfilial, f.endfilial, f.numfilial, f.cnpjfilial, f.bairfilial, f.complfilial
+, f.siglauf, f.emailfilial , itr.vlrdescitrec, (itr.vlrjurositrec+itr.vlrmultaitrec) vlrmulta, r.docrec
+, coalesce(bc.codbanco, b.codbanco) codbanco, coalesce(bc.dvbanco,b.dvbanco) dvbanco
+, coalesce(bc.imgbolbanco, b.imgbolbanco) logobanco01 , case when bc.codbanco is null then coalesce(b.imgbolbanco2,b.imgbolbanco)
+else coalesce(bc.imgbolbanco2,bc.imgbolbanco) end logobanco02 , coalesce(bc.imgbolbanco, b.imgbolbanco) logobanco03
+, coalesce(bc.imgbolbanco, b.imgbolbanco) logobanco04 , mb.espdocmodbol espdoc, mb.aceitemodbol aceite, mb.mdecob
+, itr.dtitrec as dtemitvenda , c.razcli,c.cpfcli,c.cnpjcli, c.endcli,c.numcli,c.complcli,c.cepcli,c.baircli , c.cidcli,c.ufcli
+, coalesce(c.endcob, c.endcli) endcob,c.numcob,c.complcob,c.cepcob,c.baircob,c.cidcob,c.ufcob, p.codmoeda
+, c.pessoacli, (itr.dtvencitrec-cast('07.10.1997' as date)) fatvenc, m.codfbnmoeda , m.singmoeda
+, m.plurmoeda, m.decsmoeda, m.decpmoeda , ct.agenciaconta, ct.postoconta, im.numconta, mb.desclpmodbol, mb.instpagmodbol
+, im.convcob, itr.descpont, c.insccli, itr.obsitrec obs, tco.variacaocartcob , r.codrec, r.datarec, itr.seqnossonumero
+, r.vlrrec, mb.txamodbol, itr.doclancaitrec ,'' codorc, '' nomeconv, '' obsorc, r.docrec docvenda, 0 reciboitrec
+, (select count(*) from fnitreceber itr2 where itr2.codrec=r.codrec and itr2.codemp=r.codemp and itr2.codfilial=r.codfilial) parcs
+, r.codcli, c.nomecli, c.rgcli, c.fonecli, c.dddcli, r.codvenda, r.vlrapagrec, '' nomevend, '' nomevend2, '' nomevend3, '' nomevend4
+, f.endfilial, f.numfilial, f.cnpjfilial, f.cepfilial, f.uffilial, f.cidfilial, f.unidfranqueada, f.wwwfranqueadora
+, f.marcafranqueadora , mu.nomemunic cidcli  from fnreceber r, sgprefere1 p, fnmoeda m, fnbanco b, fnmodboleto mb
+, fnitmodboleto im, fnitreceber itr, sgfilial f, fnconta ct, fncartcob tco, vdcliente c
+ left outer join sgmunicipio mu on mu.codpais=c.codpais and mu.siglauf=c.siglauf and mu.codmunic=c.codmunic
+ left outer join fnbanco bc on bc.codemp=b.codempbp and bc.codfilial=b.codfilialbp and bc.codbanco=b.codbancobp
+ where c.codemp=r.codempcl and c.codfilial=r.codfilialcl and c.codcli=r.codcli and p.codemp=r.codemp and p.codfilial=r.codfilial
+ and f.codemp=r.codemp and f.codfilial=r.codfilial and m.codemp=p.codempmo and m.codfilial=p.codfilialmo and m.codmoeda=p.codmoeda
+ and b.codemp=itr.codempbo and b.codfilial=itr.codfilialbo and b.codbanco=itr.codbanco and im.codemp=mb.codemp and im.codfilial=mb.codfilial
+  and im.codmodbol=mb.codmodbol and im.codempbo=b.codemp and im.codfilialbo=b.codfilial and im.codbanco=b.codbanco and im.codempcb=itr.codempcb
+  and im.codfilialcb=itr.codfilialcb and im.codcartcob=itr.codcartcob and ct.codemp=im.codempct and ct.codfilial=im.codfilialct
+  and ct.numconta=im.numconta and itr.codemp=r.codemp and itr.codfilial=r.codfilial and itr.codrec=r.codrec
+   and itr.statusitrec in ('R1','RL','RB','RR') and mb.codemp=70 and mb.codfilial=1 and mb.codmodbol=1
+   and r.codemp=70 and r.codfilial=1 and r.codrec=15343 and itr.nparcitrec=3
+   and tco.codemp=itr.codempcb and tco.codfilial=itr.codfilialcb and tco.codcartcob=itr.codcartcob
+   and tco.codempbo=b.codemp and tco.codfilialbo=b.codfilial and tco.codbanco=b.codbanco]]>
 	</queryString>
 	<field name="DTVENCITREC" class="java.sql.Date"/>
 	<field name="NPARCITREC" class="java.lang.Integer"/>

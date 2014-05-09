@@ -773,15 +773,15 @@ public class FRBoleto extends FRelatorio implements CarregaListener {
 	public static String[] getMoeda() {
 
 		String sRet[] = new String[ 5 ];
-		StringBuilder sSQL = new StringBuilder();
+		StringBuilder sql = new StringBuilder();
 
 		try {
 
-			sSQL.append( "SELECT M.SINGMOEDA,M.PLURMOEDA,M.DECSMOEDA,M.DECPMOEDA,M.CODFBNMOEDA FROM FNMOEDA M, SGPREFERE1 P " );
-			sSQL.append( "WHERE M.CODMOEDA=P.CODMOEDA AND M.CODEMP=P.CODEMPMO AND M.CODFILIAL=P.CODFILIALMO " );
-			sSQL.append( "AND P.CODEMP=? AND P.CODFILIAL=?" );
+			sql.append( "select m.singmoeda,m.plurmoeda,m.decsmoeda,m.decpmoeda,m.codfbnmoeda from fnmoeda m, sgprefere1 p " );
+			sql.append( "where m.codmoeda=p.codmoeda and m.codemp=p.codempmo and m.codfilial=p.codfilialmo " );
+			sql.append( "and p.codemp=? and p.codfilial=?" );
 
-			PreparedStatement ps = Aplicativo.getInstace().getConexao().prepareStatement( sSQL.toString() );
+			PreparedStatement ps = Aplicativo.getInstace().getConexao().prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, Aplicativo.iCodFilial );
 			ResultSet rs = ps.executeQuery();
@@ -870,9 +870,9 @@ public class FRBoleto extends FRelatorio implements CarregaListener {
 
 			StringBuilder sql = new StringBuilder();
 
-			sql.append( "SELECT CODREC FROM FNRECEBER " );
-			sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND " );
-			sql.append( "CODEMPVA=? AND CODFILIALVA=? AND CODVENDA=? AND TIPOVENDA=?" );
+			sql.append( "select codrec from fnreceber " );
+			sql.append( "where codemp=? and codfilial=? and " );
+			sql.append( "codempva=? and codfilialva=? and codvenda=? and tipovenda=?" );
 
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
@@ -937,7 +937,7 @@ public class FRBoleto extends FRelatorio implements CarregaListener {
 
 		try {
 
-			String sql = "SELECT ATBANCOIMPBOL FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
+			String sql = "select atbancoimpbol from sgprefere1 where codemp=? and codfilial=?";
 
 			PreparedStatement ps = con.prepareStatement( sql );
 			ps.setInt( 1, Aplicativo.iCodEmp );
@@ -973,12 +973,12 @@ public class FRBoleto extends FRelatorio implements CarregaListener {
 
 				StringBuilder sql = new StringBuilder();
 
-				sql.append( "UPDATE FNRECEBER SET CODEMPBO=?, CODFILIALBO=?, CODBANCO=? " );
+				sql.append( "update fnreceber set codempbo=?, codfilialbo=?, codbanco=? " );
 				if ( bcart ) {
-					sql.append( ", CODEMPCB=?, CODFILIALCB=?,  CODCARTCOB=?, " );
-					sql.append( "CODEMPCA=?, CODFILIALCA=?, NUMCONTA=? ");
+					sql.append( ", codempcb=?, codfilialcb=?,  codcartcob=?, " );
+					sql.append( "codempca=?, codfilialca=?, numconta=? ");
 				}
-				sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODREC=?" );
+				sql.append( "where codemp=? and codfilial=? and codrec=?" );
 
 				PreparedStatement ps = con.prepareStatement( sql.toString() );
 				ps.setInt( iparam++, Aplicativo.iCodEmp );
@@ -1005,18 +1005,16 @@ public class FRBoleto extends FRelatorio implements CarregaListener {
 
 				sql = new StringBuilder();
 
-				sql.append( "UPDATE FNITRECEBER SET CODEMPBO=?, CODFILIALBO=?, CODBANCO=? " );
+				sql.append( "update fnitreceber set codempbo=?, codfilialbo=?, codbanco=? " );
 				if ( bcart ) {
-					sql.append( ", CODEMPCB=?, CODFILIALCB=?,  CODCARTCOB=?, " );
-					sql.append( "CODEMPCA=?, CODFILIALCA=?, NUMCONTA=? ");
+					sql.append( ", codempcb=?, codfilialcb=?,  codcartcob=?, " );
+					sql.append( "codempca=?, codfilialca=?, numconta=? ");
 				}
-				sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODREC=? " );
+				sql.append( "where codemp=? and codfilial=? and codrec=? " );
 				if ( codparc != null && codparc > 0 ) {
-					sql.append( "AND NPARCITREC=? " );
+					sql.append( "and nparcitrec=? " );
 				}
-
 				iparam = 1;
-
 				ps = con.prepareStatement( sql.toString() );
 				ps.setInt( iparam++, Aplicativo.iCodEmp );
 				ps.setInt( iparam++, ListaCampos.getMasterFilial( "FNBANCO" ) );
@@ -1079,165 +1077,145 @@ public class FRBoleto extends FRelatorio implements CarregaListener {
 		lsParcelas = lsParcParam;
 	}
 
-	private ResultSet execQuery( String sWhereGrid ) {
+	private ResultSet execQuery( String whereGrid ) {
 
 		ResultSet rsRetorno = null;
-		StringBuilder sSQL = new StringBuilder();
-		StringBuilder sWhere = new StringBuilder();
+		StringBuilder sql = new StringBuilder();
+		StringBuilder where = new StringBuilder();
 		final int codvenda = txtCodVenda.getVlrInteger().intValue();
 		final int codvenda2 = txtCodVenda2.getVlrInteger().intValue();
 		final int nparc = txtParc.getVlrInteger().intValue();
 		final String codbanco = txtCodBanco.getVlrString().trim();
 		final int codtipocob = txtCodTpCob.getVlrInteger().intValue();
-		final int codTipoMov = txtCodTipoMov.getVlrInteger().intValue();
+		final int codtipomov = txtCodTipoMov.getVlrInteger().intValue();
 		ImprimeOS imp = null;
 		PreparedStatement ps = null;
 		int param = 1;
 
-		if ( !sWhereGrid.equals( "" ) ) {
+		if ( !whereGrid.equals( "" ) ) {
 
-			String sWhereBol = getBoletos();
+			String whereBol = getBoletos();
 		}
 
-		sWhere.append( "MB.CODEMP=? AND MB.CODFILIAL=? AND MB.CODMODBOL=? AND " );
-
 		if ( codvenda != 0 && codvenda2 != 0 ) {
-			sWhere.append( "R.CODEMPVA=? AND R.CODFILIALVA=? AND R.CODVENDA BETWEEN ? AND ? " );
+			where.append( "r.codempva=? and r.codfilialva=? and r.codvenda between ? and ? " );
 		}
 
 		if ( codvenda != 0 && codvenda2 == 0 ) {
-			sWhere.append( "R.CODEMPVA=? AND R.CODFILIALVA=? AND R.CODVENDA=? " );
+			where.append( "r.codempva=? and r.codfilialva=? and r.codvenda=? " );
 		}
 		else if ( codvenda == 0 && codvenda2 == 0 ) {
-			sWhere.append( "V.DTEMITVENDA BETWEEN ? AND ? " );
+			where.append( "v.dtemitvenda between ? and ? " );
 		}
 		if ( !"".equals( codbanco ) ) {
-			sWhere.append( "AND B.CODEMP=? AND B.CODFILIAL=? AND B.CODBANCO=? " );
+			where.append( "and b.codemp=? and b.codfilial=? and b.codbanco=? " );
 		}
 		if ( codtipocob != 0 ) {
-			sWhere.append( "AND ITR.CODEMPTC=? AND ITR.CODFILIALTC=? AND ITR.CODTIPOCOB=? " );
+			where.append( "and itr.codemptc=? and itr.codfilialtc=? and itr.codtipocob=? " );
 		}
 		if ( nparc != 0 ) {
-			sWhere.append( "AND ITR.NPARCITREC=? " );
+			where.append( "and itr.nparcitrec=? " );
 		}
-		if ( codTipoMov != 0 ) {
-			sWhere.append( "AND V.CODEMPTM=? AND V.CODFILIALTM=? AND V.CODTIPOMOV=? " );
+		if ( codtipomov != 0 ) {
+			where.append( "and v.codemptm=? and v.codfilialtm=? and v.codtipomov=? " );
 		}
 
-		// sWhere.append( "AND R.CODVENDA IN " + "( " + sWhereBol.toString() + " )" );
+		// where.append( "AND R.CODVENDA IN " + "( " + whereBol.toString() + " )" );
 
 		if ( ( lsParcelas != null ) && ( lsParcelas.size() > 0 ) ) {
-			sWhere.append( "AND ITR.NPARCITREC IN (" );
+			where.append( "and itr.nparcitrec in (" );
 			for ( int i = 0; i < lsParcelas.size(); i++ ) {
 				if ( i != 0 ) {
-					sWhere.append( "," );
+					where.append( "," );
 				}
-				sWhere.append( lsParcelas.get( i ) );
+				where.append( lsParcelas.get( i ) );
 			}
-			sWhere.append( ")" );
+			where.append( ")" );
 		}
 
 		imp = new ImprimeOS( "", con );
 		imp.verifLinPag();
 		imp.setTitulo( "Boleto" );
 
-		sSQL.append( "SELECT V.CODVENDA,V.OBSVENDA,(SELECT COUNT(*) FROM FNITRECEBER ITR2 " );
-		sSQL.append( "WHERE ITR2.CODREC=R.CODREC AND ITR2.CODEMP=R.CODEMP AND ITR2.CODFILIAL=R.CODFILIAL) PARCS, " );
-		sSQL.append( "ITR.DTVENCITREC,ITR.NPARCITREC,ITR.VLRAPAGITREC,ITR.VLRPARCITREC,ITR.VLRDESCITREC, ITR.DOCLANCAITREC, " );
-		sSQL.append( "(ITR.VLRJUROSITREC+ITR.VLRMULTAITREC) VLRMULTA,  " );
-		sSQL.append( "R.DOCREC, R.DATAREC, R.VLRREC, ITR.CODBANCO, B.DVBANCO, " );
-		sSQL.append( "B.IMGBOLBANCO LOGOBANCO01, COALESCE(B.IMGBOLBANCO2,B.IMGBOLBANCO) LOGOBANCO02, B.IMGBOLBANCO LOGOBANCO03, B.IMGBOLBANCO LOGOBANCO04," );
-		sSQL.append( "IM.CODCARTCOB, MB.ESPDOCMODBOL ESPDOC, MB.ACEITEMODBOL ACEITE, MB.MDECOB, " );
-		sSQL.append( "MB.PREIMPMODBOL, MB.CLASSMODBOL, MB.TXAMODBOL, V.DTEMITVENDA, V.DOCVENDA, " );
-		sSQL.append( "C.CODCLI,C.RAZCLI,C.NOMECLI,C.CPFCLI,C.CNPJCLI,C.RGCLI,C.INSCCLI, " );
-		sSQL.append( "C.ENDCLI,C.NUMCLI,C.COMPLCLI,C.CEPCLI,C.BAIRCLI,C.CIDCLI,C.UFCLI, " );
-		sSQL.append( "C.ENDCOB,C.NUMCOB,C.COMPLCOB,C.CEPCOB,C.BAIRCOB,C.CIDCOB,C.UFCOB, " );
-		sSQL.append( "C.FONECLI,C.DDDCLI,R.CODREC, P.CODMOEDA, C.PESSOACLI, ITR.RECIBOITREC, " );
-		sSQL.append( "(ITR.DTVENCITREC-CAST('07.10.1997' AS DATE)) FATVENC, M.CODFBNMOEDA, " );
-		sSQL.append( "M.SINGMOEDA,M.PLURMOEDA,M.DECSMOEDA,M.DECPMOEDA, ");
-		sSQL.append( " F.RAZFILIAL,  F.ENDFILIAL, F.NUMFILIAL, F.BAIRFILIAL, F.CIDFILIAL, F.CEPFILIAL, F.FONEFILIAL, F.FAXFILIAL, " );
-		sSQL.append( "F.CNPJFILIAL, F.INSCFILIAL, F.WWWFILIAL, F.EMAILFILIAL, F.UNIDFRANQUEADA, F.COMPLFILIAL, F.SIGLAUF, " );
-
-		sSQL.append( "IV.CODNAT, N.DESCNAT, F.RAZFILIAL, CT.AGENCIACONTA, IM.NUMCONTA, " );
-		sSQL.append( "MB.DESCLPMODBOL, MB.INSTPAGMODBOL, IM.CONVCOB, IM.DVCONVCOB , R.VLRAPAGREC, VD.NOMEVEND, " );
-
-		sSQL.append( "(SELECT FIRST 1 VO.CODORC FROM VDVENDAORC VO " );
-		sSQL.append( "WHERE VO.CODEMP=V.CODEMP AND VO.CODFILIAL=VO.CODFILIAL AND " );
-		sSQL.append( "VO.CODVENDA = V.CODVENDA AND VO.TIPOVENDA=V.TIPOVENDA) AS CODORC, " );
-
-		sSQL.append( "(SELECT AC.NOMECONV FROM ATCONVENIADO AC,VDORCAMENTO VA " );
-		sSQL.append( "WHERE VA.CODEMP=V.CODEMP AND VA.CODFILIAL=V.CODFILIAL AND " );
-		sSQL.append( "VA.CODORC =(SELECT FIRST 1 VO.CODORC FROM VDVENDAORC VO " );
-		sSQL.append( "WHERE VO.CODEMP=V.CODEMP AND VO.CODFILIAL=VO.CODFILIAL AND " );
-		sSQL.append( "VO.CODVENDA = V.CODVENDA AND VO.TIPOVENDA=V.TIPOVENDA) AND " );
-		sSQL.append( "AC.CODEMP=VA.CODEMPCV AND AC.CODFILIAL=VA.CODFILIALCV AND " );
-		sSQL.append( "AC.CODCONV=VA.CODCONV) AS NOMECONV, " );
-
-		sSQL.append( "(SELECT VA.OBSORC FROM VDORCAMENTO VA " );
-		sSQL.append( "WHERE VA.CODEMP=V.CODEMP AND VA.CODFILIAL=V.CODFILIAL AND " );
-		sSQL.append( "VA.CODORC =(SELECT FIRST 1 VO.CODORC FROM VDVENDAORC VO " );
-		sSQL.append( "WHERE VO.CODEMP=V.CODEMP AND VO.CODFILIAL=VO.CODFILIAL AND " );
-		sSQL.append( "VO.CODVENDA = V.CODVENDA AND VO.TIPOVENDA=V.TIPOVENDA)) AS OBSORC, ITR.DESCPONT, " );
-
-		sSQL.append( "(SELECT V1.NOMEVEND FROM VDVENDEDOR V1, VDVENDACOMIS VC WHERE " );
-		sSQL.append( "V1.CODEMP=VC.codempvd AND V1.CODFILIAL = VC.codfilialvd AND V1.codvend=VC.codvend AND " );
-		sSQL.append( "VC.codemp=V.CODEMP AND VC.codfilial=V.codfilial AND VC.codvenda=V.CODVENDA AND VC.tipovenda=V.TIPOVENDA " );
-		sSQL.append( "AND VC.seqvc=1 ) AS NOMEVEND1," );
-
-		sSQL.append( "(SELECT V1.NOMEVEND FROM VDVENDEDOR V1, VDVENDACOMIS VC WHERE " );
-		sSQL.append( "V1.CODEMP=VC.codempvd AND V1.CODFILIAL = VC.codfilialvd AND V1.codvend=VC.codvend AND " );
-		sSQL.append( "VC.codemp=V.CODEMP AND VC.codfilial=V.codfilial AND VC.codvenda=V.CODVENDA AND VC.tipovenda=V.TIPOVENDA " );
-		sSQL.append( "AND VC.seqvc=2 ) AS NOMEVEND2," );
-
-		sSQL.append( "(SELECT V1.NOMEVEND FROM VDVENDEDOR V1, VDVENDACOMIS VC WHERE " );
-		sSQL.append( "V1.CODEMP=VC.codempvd AND V1.CODFILIAL = VC.codfilialvd AND V1.codvend=VC.codvend AND " );
-		sSQL.append( "VC.codemp=V.CODEMP AND VC.codfilial=V.codfilial AND VC.codvenda=V.CODVENDA AND VC.tipovenda=V.TIPOVENDA " );
-		sSQL.append( "AND VC.seqvc=3 ) AS NOMEVEND3," );
-
-		sSQL.append( "(SELECT V1.NOMEVEND FROM VDVENDEDOR V1, VDVENDACOMIS VC WHERE " );
-		sSQL.append( "V1.CODEMP=VC.codempvd AND V1.CODFILIAL = VC.codfilialvd AND V1.codvend=VC.codvend AND " );
-		sSQL.append( "VC.codemp=V.CODEMP AND VC.codfilial=V.codfilial AND VC.codvenda=V.CODVENDA AND VC.tipovenda=V.TIPOVENDA " );
-		sSQL.append( "AND VC.seqvc=4 ) AS NOMEVEND4, " );
-
-		sSQL.append( "ITR.OBSITREC OBS, TCO.VARIACAOCARTCOB, COALESCE(ITR.SEQNOSSONUMERO,0) SEQNOSSONUMERO, F.UFFILIAL, " );
-		sSQL.append( "MU.NOMEMUNIC CIDCLI ");
-		
-		sSQL.append( "FROM FNRECEBER R, SGPREFERE1 P, FNMOEDA M, FNBANCO B, " );
-		sSQL.append( "FNMODBOLETO MB, FNITMODBOLETO IM, VDITVENDA IV, LFNATOPER N,  FNITRECEBER ITR, " );
-		sSQL.append( "SGFILIAL F, FNCONTA CT, VDVENDEDOR VD, VDVENDA V, FNCARTCOB TCO, VDCLIENTE C " );
-		sSQL.append( "LEFT OUTER JOIN SGMUNICIPIO MU ON MU.CODPAIS=C.CODPAIS AND MU.SIGLAUF=C.SIGLAUF AND MU.CODMUNIC=C.CODMUNIC ");
-
-		sSQL.append( "WHERE ITR.CODREC=R.CODREC AND ITR.CODEMP=R.CODEMP AND ITR.CODFILIAL=R.CODFILIAL AND " );
-		sSQL.append( "V.CODVENDA=R.CODVENDA AND V.CODEMP=R.CODEMPVA AND V.CODFILIAL=R.CODFILIALVA AND " );
-		sSQL.append( "F.CODEMP=R.CODEMP AND F.CODFILIAL=R.CODFILIAL AND " );
-		sSQL.append( "C.CODCLI=V.CODCLI AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND " );
-		sSQL.append( "P.CODEMP=R.CODEMP AND P.CODFILIAL=R.CODFILIAL AND " );
-		sSQL.append( "M.CODEMP=P.CODEMPMO AND M.CODFILIAL=P.CODFILIALMO AND M.CODMOEDA=P.CODMOEDA AND " );
-		sSQL.append( "B.CODEMP=ITR.CODEMPBO AND B.CODFILIAL=ITR.CODFILIALBO AND B.CODBANCO=ITR.CODBANCO AND " );
-		sSQL.append( "IM.CODEMP=MB.CODEMP AND IM.CODFILIAL=MB.CODFILIAL AND IM.CODMODBOL=MB.CODMODBOL AND " );
-		sSQL.append( "IM.CODEMPBO=ITR.CODEMPBO AND IM.CODFILIALBO=ITR.CODFILIALBO AND IM.CODBANCO=ITR.CODBANCO AND " );
-		sSQL.append( "IM.CODEMPCB=ITR.CODEMPCB AND IM.CODFILIALCB=ITR.CODFILIALCB AND IM.CODCARTCOB=ITR.CODCARTCOB AND " );
-		sSQL.append( "IV.CODEMP=V.CODEMP AND IV.CODFILIAL=V.CODFILIAL AND IV.TIPOVENDA=V.TIPOVENDA AND " );
-		sSQL.append( "IV.CODVENDA=V.CODVENDA AND IV.CODITVENDA=( SELECT MIN(CODITVENDA) FROM VDITVENDA IV2 " );
-		sSQL.append( "WHERE IV2.CODEMP=IV.CODEMP AND IV2.CODFILIAL=IV.CODFILIAL AND IV2.TIPOVENDA=IV.TIPOVENDA AND " );
-		sSQL.append( "IV2.CODVENDA=IV.CODVENDA AND IV2.CODNAT IS NOT NULL ) AND " );
-		sSQL.append( "N.CODEMP=IV.CODEMPNT AND N.CODFILIAL=IV.CODFILIALNT AND N.CODNAT=IV.CODNAT AND  " );
-		sSQL.append( "ITR.STATUSITREC IN ('R1','RL', 'RR') " );
-		sSQL.append( "AND VD.CODEMP=V.CODEMPVD AND VD.CODFILIAL=V.CODFILIALVD AND VD.CODVEND=V.CODVEND AND " );
-		sSQL.append( "CT.CODEMP=IM.CODEMPCT AND CT.CODFILIAL=IM.CODFILIALCT AND CT.NUMCONTA=IM.NUMCONTA AND " );
-		sSQL.append( "TCO.CODEMP=ITR.CODEMPCB AND TCO.CODFILIAL=ITR.CODFILIALCB AND TCO.CODCARTCOB=ITR.CODCARTCOB and tco.codempbo = b.codemp and tco.codfilialbo=b.codfilial and tco.codbanco=b.codbanco AND ");
-
-		sSQL.append( sWhere );
-		sSQL.append( sWhereGrid );
-		sSQL.append( " order by v.codvenda" );
+		sql.append( " select v.codvenda,v.obsvenda,(select count(*) ");
+		sql.append( " from fnitreceber itr2 where itr2.codrec=r.codrec and itr2.codemp=r.codemp and itr2.codfilial=r.codfilial) parcs ");
+		sql.append( " , itr.dtvencitrec,itr.nparcitrec,itr.vlrapagitrec,itr.vlrparcitrec,itr.vlrdescitrec, itr.doclancaitrec ");
+		sql.append( " , (itr.vlrjurositrec+itr.vlrmultaitrec) vlrmulta , r.docrec, r.datarec, r.vlrrec ");
+		sql.append( " , coalesce(bc.codbanco, b.codbanco) codbanco ");
+		sql.append( " , coalesce(bc.dvbanco,b.dvbanco) dvbanco ");
+		sql.append( " , coalesce(bc.imgbolbanco, b.imgbolbanco) logobanco01 ");
+		sql.append( " , case when bc.codbanco is null then coalesce(b.imgbolbanco2,b.imgbolbanco) else coalesce(bc.imgbolbanco2,bc.imgbolbanco) end logobanco02 ");
+		sql.append( " , coalesce(bc.imgbolbanco, b.imgbolbanco) logobanco03, coalesce(bc.imgbolbanco, b.imgbolbanco) logobanco04 ");
+		sql.append( " , im.codcartcob , mb.espdocmodbol espdoc, mb.aceitemodbol aceite, mb.mdecob , mb.preimpmodbol, mb.classmodbol, mb.txamodbol, v.dtemitvenda ");
+		sql.append( " , v.docvenda , c.codcli,c.razcli,c.nomecli,c.cpfcli,c.cnpjcli,c.rgcli,c.insccli , c.endcli,c.numcli,c.complcli,c.cepcli,c.baircli,c.cidcli,c.ufcli ");
+		sql.append( " , c.endcob,c.numcob,c.complcob,c.cepcob,c.baircob,c.cidcob,c.ufcob , c.fonecli,c.dddcli,r.codrec, p.codmoeda, c.pessoacli, itr.reciboitrec ");
+		sql.append( " , (itr.dtvencitrec-cast('07.10.1997' as date)) fatvenc, m.codfbnmoeda , m.singmoeda,m.plurmoeda,m.decsmoeda,m.decpmoeda , f.razfilial ");
+		sql.append( " ,  f.endfilial, f.numfilial, f.bairfilial, f.cidfilial, f.cepfilial, f.fonefilial, f.faxfilial , f.cnpjfilial, f.inscfilial, f.wwwfilial ");
+		sql.append( " , f.emailfilial, f.unidfranqueada, f.complfilial, f.siglauf , iv.codnat, n.descnat, f.razfilial, ct.agenciaconta, im.numconta ");
+		sql.append( " , mb.desclpmodbol, mb.instpagmodbol, im.convcob, im.dvconvcob , r.vlrapagrec, vd.nomevend ");
+		sql.append( " , (select first 1 vo.codorc from vdvendaorc vo where vo.codemp=v.codemp and vo.codfilial=vo.codfilial and vo.codvenda = v.codvenda and vo.tipovenda=v.tipovenda) as codorc ");
+		sql.append( " , (select ac.nomeconv from atconveniado ac,vdorcamento va where va.codemp=v.codemp and va.codfilial=v.codfilial ");
+		sql.append( " and va.codorc =(select first 1 vo.codorc from vdvendaorc vo where vo.codemp=v.codemp and vo.codfilial=vo.codfilial ");
+		sql.append( " and vo.codvenda = v.codvenda and vo.tipovenda=v.tipovenda) and ac.codemp=va.codempcv and ac.codfilial=va.codfilialcv ");
+		sql.append( " and ac.codconv=va.codconv) as nomeconv , (select va.obsorc from vdorcamento va where va.codemp=v.codemp and va.codfilial=v.codfilial ");
+		sql.append( " and va.codorc =(select first 1 vo.codorc from vdvendaorc vo where vo.codemp=v.codemp and vo.codfilial=vo.codfilial and vo.codvenda=v.codvenda and vo.tipovenda=v.tipovenda)) as obsorc ");
+		sql.append( " , itr.descpont , (select v1.nomevend from vdvendedor v1, vdvendacomis vc where v1.codemp=vc.codempvd and v1.codfilial = vc.codfilialvd and v1.codvend=vc.codvend ");
+		sql.append( " and vc.codemp=v.codemp and vc.codfilial=v.codfilial and vc.codvenda=v.codvenda and vc.tipovenda=v.tipovenda and vc.seqvc=1 ) as nomevend1 ");
+		sql.append( " , (select v1.nomevend from vdvendedor v1, vdvendacomis vc where v1.codemp=vc.codempvd and v1.codfilial = vc.codfilialvd and v1.codvend=vc.codvend ");
+		sql.append( " and vc.codemp=v.codemp and vc.codfilial=v.codfilial and vc.codvenda=v.codvenda and vc.tipovenda=v.tipovenda and vc.seqvc=2 ) as nomevend2 ");
+		sql.append( " , (select v1.nomevend from vdvendedor v1, vdvendacomis vc where v1.codemp=vc.codempvd and v1.codfilial = vc.codfilialvd and v1.codvend=vc.codvend ");
+		sql.append( " and vc.codemp=v.codemp and vc.codfilial=v.codfilial and vc.codvenda=v.codvenda and vc.tipovenda=v.tipovenda and vc.seqvc=3 ) as nomevend3 ");
+		sql.append( " , (select v1.nomevend from vdvendedor v1, vdvendacomis vc where v1.codemp=vc.codempvd and v1.codfilial = vc.codfilialvd and v1.codvend=vc.codvend ");
+		sql.append( " and vc.codemp=v.codemp and vc.codfilial=v.codfilial and vc.codvenda=v.codvenda and vc.tipovenda=v.tipovenda and vc.seqvc=4 ) as nomevend4 ");
+		sql.append( " , itr.obsitrec obs, tco.variacaocartcob, coalesce(itr.seqnossonumero,0) seqnossonumero, f.uffilial , mu.nomemunic cidcli ");
+		sql.append( " from  vdvenda v ");
+		sql.append( " inner join vdcliente c on ");
+		sql.append( " c.codcli=v.codcli and c.codemp=v.codempcl and c.codfilial=v.codfilialcl ");
+		sql.append( " inner join fnreceber r on ");
+		sql.append( " r.codempva=v.codemp and r.codfilialva=v.codfilial and r.tipovenda=v.tipovenda and r.codvenda=v.codvenda ");
+		sql.append( " inner join sgfilial f on ");
+		sql.append( " f.codemp=r.codemp and f.codfilial=r.codfilial ");
+		sql.append( " inner join sgprefere1 p on ");
+		sql.append( " p.codemp=r.codemp and p.codfilial=r.codfilial ");
+		sql.append( " inner join fnitreceber itr on ");
+		sql.append( " itr.codemp=r.codemp and itr.codfilial=r.codfilial and itr.codrec=r.codrec and ");
+		sql.append( " itr.statusitrec in ('R1','RL', 'RR') ");
+		sql.append( " inner join fnbanco b on ");
+		sql.append( " b.codemp=itr.codempbo and b.codfilial=itr.codfilialbo and b.codbanco=itr.codbanco ");
+		sql.append( " inner join fnmoeda m on ");
+		sql.append( " m.codemp=p.codempmo and m.codfilial=p.codfilialmo and m.codmoeda=p.codmoeda ");
+		sql.append( " inner join fnmodboleto mb on ");
+		sql.append( " mb.codemp=? and mb.codfilial=? and mb.codmodbol=? ");
+		sql.append( " inner join fnitmodboleto im on ");
+		sql.append( " im.codemp=mb.codemp and im.codfilial=mb.codfilial and im.codmodbol=mb.codmodbol ");
+		sql.append( " and im.codempbo=itr.codempbo and im.codfilialbo=itr.codfilialbo and im.codbanco=itr.codbanco ");
+		sql.append( " and im.codempcb=itr.codempcb and im.codfilialcb=itr.codfilialcb and im.codcartcob=itr.codcartcob ");
+		sql.append( " inner join vditvenda iv on ");
+		sql.append( " iv.codemp=v.codemp and iv.codfilial=v.codfilial and iv.tipovenda=v.tipovenda and iv.codvenda=v.codvenda ");
+		sql.append( " inner join lfnatoper n on ");
+		sql.append( " n.codemp=iv.codempnt and n.codfilial=iv.codfilialnt and n.codnat=iv.codnat ");
+		sql.append( " inner join fnconta ct on ");
+		sql.append( " ct.codemp=im.codempct and ct.codfilial=im.codfilialct and ct.numconta=im.numconta ");
+		sql.append( " inner join vdvendedor vd on ");
+		sql.append( " vd.codemp=v.codempvd and vd.codfilial=v.codfilialvd and vd.codvend=v.codvend ");
+		sql.append( " inner join fncartcob tco on ");
+		sql.append( " tco.codemp=itr.codempcb and tco.codfilial=itr.codfilialcb and tco.codcartcob=itr.codcartcob ");
+		sql.append( " and tco.codempbo=b.codemp and tco.codfilialbo=b.codfilial and tco.codbanco=b.codbanco ");
+		sql.append( " left outer join sgmunicipio mu on mu.codpais=c.codpais and mu.siglauf=c.siglauf and mu.codmunic=c.codmunic ");
+		sql.append( " left outer join fnbanco bc on bc.codemp=b.codempbp and bc.codfilial=b.codfilialbp  and bc.codbanco=b.codbancobp ");
+		sql.append( " where iv.coditvenda=( select min(coditvenda) from vditvenda iv2 where iv2.codemp=iv.codemp and iv2.codfilial=iv.codfilial ");
+		sql.append( " and iv2.tipovenda=iv.tipovenda and iv2.codvenda=iv.codvenda and iv2.codnat is not null ) and ");
+		sql.append( where );
+		sql.append( whereGrid );
+		sql.append( " order by v.codvenda" );
 
 		try {
 
-			String strDebug = sSQL.toString();
+			String strDebug = sql.toString();
 
 			System.out.println( "QUERY PARA DEBUG:" + strDebug );
 
-			ps = con.prepareStatement( sSQL.toString() );
+			ps = con.prepareStatement( sql.toString() );
 
 			ps.setInt( param++, Aplicativo.iCodEmp );
 
@@ -1327,7 +1305,7 @@ public class FRBoleto extends FRelatorio implements CarregaListener {
 				strDebug = strDebug.replaceFirst( "\\?", nparc + "" );
 			}
 
-			if ( codTipoMov != 0 ) {
+			if ( codtipomov != 0 ) {
 
 				ps.setInt( param++, Aplicativo.iCodEmp );
 
@@ -1337,9 +1315,9 @@ public class FRBoleto extends FRelatorio implements CarregaListener {
 
 				strDebug = strDebug.replaceFirst( "\\?", ListaCampos.getMasterFilial( "VDVENDA" ) + "" );
 
-				ps.setInt( param++, codTipoMov );
+				ps.setInt( param++, codtipomov );
 
-				strDebug = strDebug.replaceFirst( "\\?", codTipoMov + "" );
+				strDebug = strDebug.replaceFirst( "\\?", codtipomov + "" );
 
 			}
 
@@ -1452,7 +1430,7 @@ public class FRBoleto extends FRelatorio implements CarregaListener {
 		final int codtipocob = txtCodTpCob.getVlrInteger().intValue();
 		final int codTipoMov = txtCodTipoMov.getVlrInteger().intValue();
 		String sBoletos = getBoletos();
-		String sWhere = " AND V.CODVENDA IN ( " + sBoletos + " )";
+		String where = " and v.codvenda in ( " + sBoletos + " )";
 
 		if ( txtCodModBol.getVlrString().equals( "" ) ) {
 			Funcoes.mensagemInforma( this, "Modelo de boleto não selecionado!" );
@@ -1467,7 +1445,7 @@ public class FRBoleto extends FRelatorio implements CarregaListener {
 
 		try {
 			lcModBol.carregaDados();
-			ResultSet rs = execQuery( sWhere );
+			ResultSet rs = execQuery( where );
 
 			String classe = getClassModelo( txtPreImpModBol.getVlrString(), txtClassModBol.getVlrString() );
 
