@@ -55,6 +55,10 @@ public class FBanco extends FDados implements ActionListener, KeyListener {
 
 	private JTextFieldPad txtNomeBanco = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
 
+	private JTextFieldPad txtCodBancoBP = new JTextFieldPad( JTextFieldPad.TP_STRING, 3, 0 );
+
+	private JTextFieldFK txtNomeBancoBP = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+
 	private JTextFieldPad txtCodModBol = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldPad txtSiteBanco = new JTextFieldPad( JTextFieldPad.TP_STRING, 80, 0 );
@@ -72,6 +76,8 @@ public class FBanco extends FDados implements ActionListener, KeyListener {
 	private PainelImagem imgBolBanco2 = new PainelImagem( 65000 );
 
 	private ListaCampos lcModBol = new ListaCampos( this, "MB" );
+	
+	private ListaCampos lcBanco = new ListaCampos( this, "BP" );
 
 	private String sURLBanco = null;
 
@@ -80,6 +86,29 @@ public class FBanco extends FDados implements ActionListener, KeyListener {
 		super();
 		setTitulo( "Cadastro de Banco" );
 		setAtribos( 50, 50, 460, 440 );
+
+		
+		/*		txtCodTran.setNomeCampo( "CodTran" );
+
+		lcTran.add( new GuardaCampo( txtCodTran, "CodTran", "Cód.tran.", ListaCampos.DB_PK, false ) );
+		lcTran.add( new GuardaCampo( txtDescTran, "NomeTran", "Descrição da transporatadora", ListaCampos.DB_SI, false ) );
+		txtDescTran.setListaCampos( lcTran );
+		txtCodTran.setTabelaExterna( lcTran, FTransp.class.getCanonicalName() );
+		txtCodTran.setFK( true );
+		lcTran.montaSql( false, "TRANSP", "VD" );
+		lcTran.setQueryCommit( false );
+		lcTran.setReadOnly( true );
+*/
+		
+		lcBanco.add( new GuardaCampo( txtCodBancoBP, "CodBanco", "Cód.banco", ListaCampos.DB_PK, txtDescModBol, false ) );
+		lcBanco.add( new GuardaCampo( txtNomeBancoBP, "NomeBanco", "Nome do banco cooperado", ListaCampos.DB_SI, null, false ) );
+		txtNomeBancoBP.setListaCampos( lcBanco );
+		txtCodBancoBP.setTabelaExterna( lcBanco, null );
+		txtCodBancoBP.setFK( true );
+		lcBanco.montaSql( false, "BANCO", "FN" );
+		lcBanco.setQueryCommit( false );
+		lcBanco.setReadOnly( true );
+		
 
 		lcModBol.add( new GuardaCampo( txtCodModBol, "CodModBol", "Cód.mod.bol.", ListaCampos.DB_PK, txtDescModBol, false ) );
 		lcModBol.add( new GuardaCampo( txtDescModBol, "DescModBol", "Descriçao do modelo de boleto", ListaCampos.DB_SI, null, false ) );
@@ -90,16 +119,18 @@ public class FBanco extends FDados implements ActionListener, KeyListener {
 
 		adicCampo( txtCodBanco, 7, 20, 70, 20, "CodBanco", "Cód.banco", ListaCampos.DB_PK, true );
 		adicCampo( txtNomeBanco, 80, 20, 280, 20, "NomeBanco", "Nome do banco", ListaCampos.DB_SI, true );
-//		adicCampo( txtCodModBol, 7, 60, 70, 20, "CodModBol", "Cód.mod.", ListaCampos.DB_FK, txtDescModBol, false );
-//		adicDescFK( txtDescModBol, 80, 60, 230, 20, "DescModBol", "Descrição do modelo de boleto" );
 		adicCampo( txtDigito, 363, 20, 50, 20, "DvBanco", "Dígito", ListaCampos.DB_SI, true );
-		adicCampo( txtSiteBanco, 7, 60, 380, 20, "SiteBanco", "Site ", ListaCampos.DB_SI, false );
-		adic( btFirefox, 390, 59, 20, 20 );
-		adicDB( imgBolBanco, 7, 100, 200, 30, "ImgBolBanco", "Primeira logo para boleto ", false );
-		adicDB( imgBolBanco2, 210, 100, 200, 30, "ImgBolBanco2", "Segunda logo boleto ", false );
-		adicDB( txaLayoutCheqBanco, 7, 150, 403, 200, "LayoutCheqBanco", "Layout de imp. de cheques: [LIN=?|COL=?|TAM=?|INI=?|COMPL=?|CAMPO=?|TEXTO=?]", false );
+		adicCampo( txtCodBancoBP, 7, 60, 70, 20, "CodBancoBP", "Cód.coop.", ListaCampos.DB_FK, txtNomeBancoBP, false );
+		adicDescFK( txtNomeBancoBP, 80, 60, 333, 20, "NomeBanco", "Nome do banco cooperado" );
+
+		adicCampo( txtSiteBanco, 7, 100, 380, 20, "SiteBanco", "Site ", ListaCampos.DB_SI, false );
+		adic( btFirefox, 390, 99, 20, 20 );
+		adicDB( imgBolBanco, 7, 140, 200, 30, "ImgBolBanco", "Primeira logo para boleto ", false );
+		adicDB( imgBolBanco2, 210, 140, 200, 30, "ImgBolBanco2", "Segunda logo boleto ", false );
+		adicDB( txaLayoutCheqBanco, 7, 190, 403, 160, "LayoutCheqBanco", "Layout de imp. de cheques: [LIN=?|COL=?|TAM=?|INI=?|COMPL=?|CAMPO=?|TEXTO=?]", false );
 
 		setListaCampos( false, "BANCO", "FN" );
+		txtCodBancoBP.setNomeCampo( "CodBanco" );
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
 		btFirefox.addActionListener( this );
@@ -194,5 +225,6 @@ public class FBanco extends FDados implements ActionListener, KeyListener {
 
 		super.setConexao( cn );
 		lcModBol.setConexao( cn );
+		lcBanco.setConexao( cn );
 	}
 }
