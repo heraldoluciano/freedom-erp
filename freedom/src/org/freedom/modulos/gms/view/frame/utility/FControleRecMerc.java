@@ -549,7 +549,7 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 				
 					recmerc = new DAORecMerc( null, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQRECMERC" )
 							, rs.getInt( DETALHAMENTO.TICKET.toString().trim() ), con 
-							, ListaCampos.getMasterFilial( "LFSEQSERIE" ) );
+							, ListaCampos.getMasterFilial( "LFSEQSERIE" ), false );
 					
 					HashMap<String, Object> p1 = recmerc.getPrimeirapesagem();
 	
@@ -585,6 +585,9 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 
 			}
 
+			rs.close();
+			ps.close();
+			con.commit();
 			if ( tabDet.getRowCount() > 0 ) {
 				tabDet.setLinhaSel( 0 );
 			}
@@ -861,7 +864,7 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 				codcompra = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.CODCOMPRA.ordinal() );
 
 				recmerc = new DAORecMerc( this, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQRECMERC" )
-						, ticket, con, ListaCampos.getMasterFilial( "LFSEQSERIE" )  );
+						, ticket, con, ListaCampos.getMasterFilial( "LFSEQSERIE" ), true  );
 				String statustxt = recmerc.getStatus(); 
 				setStatus(statustxt, row);
 				if ( statustxt.equals( DAORecMerc.STATUS_RECEBIMENTO_FINALIZADO.getValue() ) || statustxt.equals( DAORecMerc.STATUS_PEDIDO_COMPRA_EMITIDO.getValue() ) || statustxt.equals( DAORecMerc.STATUS_NOTA_ENTRADA_EMITIDA.getValue() ) ) {

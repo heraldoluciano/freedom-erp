@@ -201,7 +201,7 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 		this.codop = codop;
 	}
 
-	public DAORecMerc( Component orig, Integer codemp, Integer codfilial, Integer ticket, DbConnection con, Integer codfilialss ) {
+	public DAORecMerc( Component orig, Integer codemp, Integer codfilial, Integer ticket, DbConnection con, Integer codfilialss, boolean commit ) {
 
 		super( con );
 		setCodemp( codemp );
@@ -210,7 +210,7 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 		setOrig( orig );
 
 		if ( ticket != null ) {
-			CarregaRecMerc(codfilialss);
+			CarregaRecMerc(codfilialss, commit);
 			buscaPesagens();
 		}
 
@@ -847,7 +847,7 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 	}
 
-	public void CarregaRecMerc(Integer codfilialss) {
+	public void CarregaRecMerc(Integer codfilialss, boolean commit) {
 
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
@@ -914,7 +914,11 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 				setCalctrib( rs.getString( "calctrib" ) );
 			}
 
-			 getConn().commit();
+			rs.close();
+			ps.close();
+			if (commit) {
+				getConn().commit();
+			}
 
 		} catch ( Exception e ) {
 			Funcoes.mensagemErro( orig, "Erro ao buscar informações do recebimento de mercadorias!", true, getConn(), e );

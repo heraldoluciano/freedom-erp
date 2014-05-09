@@ -1286,7 +1286,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 
 	private void geraOP() {
 		DAORecMerc recmerc = new DAORecMerc( this, Aplicativo.iCodEmp , ListaCampos.getMasterFilial( "EQRECMERC" )
-				, txtTicket.getVlrInteger(), con, ListaCampos.getMasterFilial( "LFSEQSERIE" )  );
+				, txtTicket.getVlrInteger(), con, ListaCampos.getMasterFilial( "LFSEQSERIE" ), true  );
 
 		Integer codop = recmerc.geraOP( txtCodItRecMerc.getVlrInteger(), txtCodItOS.getVlrInteger(), txtCodProdItOS.getVlrInteger(),
 				txtRefProdItOS.getVlrString(), txtQtdItOSItOS.getVlrBigDecimal(), txtNroDiasValid.getVlrInteger(), 
