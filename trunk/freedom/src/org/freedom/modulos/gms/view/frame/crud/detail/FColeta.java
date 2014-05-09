@@ -860,7 +860,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 				daorecmerc.setCodcli( txtCodCli.getVlrInteger() );
 				//daorecmerc.setCodtipomov( getCodtipomovcn() );
 				daorecmerc.setTicket( txtTicket.getVlrInteger() );
-				daorecmerc.CarregaRecMerc(ListaCampos.getMasterFilial( "LFSEQSERIE" ));
+				daorecmerc.CarregaRecMerc(ListaCampos.getMasterFilial( "LFSEQSERIE" ), true);
 				daorecmerc.setCodfor( codfor );
 				if(Funcoes.mensagemConfirma( this, "Confirmar geração da compra ?" ) == JOptionPane.YES_OPTION	){
 					codcompra = daorecmerc.geraCompra(true, txtDocRecMerc.getVlrString(), txtDtEnt.getVlrDate()
@@ -1011,7 +1011,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 	
 		daocoleta = new DAOColeta( cn );
 		daorecmerc = new DAORecMerc( this, Aplicativo.iCodEmp , ListaCampos.getMasterFilial( "EQRECMERC" ), null
-				, con, ListaCampos.getMasterFilial( "LFSEQSERIE" ) );
+				, con, ListaCampos.getMasterFilial( "LFSEQSERIE" ), true );
 
 		try{
 			daocli = new DAOCliente( cn );

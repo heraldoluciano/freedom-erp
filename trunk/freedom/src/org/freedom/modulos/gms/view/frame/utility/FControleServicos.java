@@ -983,7 +983,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 				ticket = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.TICKET.ordinal() );
 
 				recmerc = new DAORecMerc( this, Aplicativo.iCodEmp , ListaCampos.getMasterFilial( "EQRECMERC" ), ticket
-						, con, ListaCampos.getMasterFilial( "LFSEQSERIE" )  );
+						, con, ListaCampos.getMasterFilial( "LFSEQSERIE" ) , true );
 
 				if ( tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.STATUSTXT.ordinal() ).equals( StatusOS.OS_ANALISE.getValue() ) ) {
 
@@ -1096,7 +1096,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 
 
 			daorecmerc = new DAORecMerc( corig, Aplicativo.iCodEmp , ListaCampos.getMasterFilial( "EQRECMERC" )
-					, ticket, Aplicativo.getInstace().getConexao(), ListaCampos.getMasterFilial( "LFSEQSERIE" )  );
+					, ticket, Aplicativo.getInstace().getConexao(), ListaCampos.getMasterFilial( "LFSEQSERIE" ), true  );
 
 			if ( statustxt.equals( StatusOS.OS_ANALISE.getValue() ) ||
 					statustxt.equals( StatusOS.OS_ENCAMINHADO.getValue() ) ||
@@ -1188,7 +1188,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 			if ( "".equals( codrmagrid ) || null == codrmagrid ) {
 
 				recmerc = new DAORecMerc( corig, Aplicativo.iCodEmp , ListaCampos.getMasterFilial( "EQRECMERC" )
-						, ticket, Aplicativo.getInstace().getConexao(), ListaCampos.getMasterFilial( "LFSEQSERIE" ) );
+						, ticket, Aplicativo.getInstace().getConexao(), ListaCampos.getMasterFilial( "LFSEQSERIE" ), true );
 
 				if ( statustxt.equals( StatusOS.OS_APROVADA.getValue() ) || 
 						statustxt.equals( StatusOS.OS_ANALISE.getValue() ) ||
@@ -1249,7 +1249,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 					ticket = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.TICKET.ordinal() );
 
 					recmerc = new DAORecMerc( this, Aplicativo.iCodEmp , ListaCampos.getMasterFilial( "EQRECMERC" ), ticket
-							, con , ListaCampos.getMasterFilial( "LFSEQSERIE" ) );
+							, con , ListaCampos.getMasterFilial( "LFSEQSERIE" ), true );
 
 					String statustxt = (String) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.STATUSTXT.ordinal() ); 
 
