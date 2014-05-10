@@ -1,6 +1,6 @@
 package org.freedom.persist.entity;
 
-// Generated 14/04/2014 10:17:08 by Hibernate Tools 4.0.0
+// Generated 10/05/2014 10:27:15 by Hibernate Tools 4.0.0
 
 import java.util.Date;
 import java.util.HashSet;
@@ -60,10 +60,13 @@ public class Rhempregado implements java.io.Serializable {
 	private String idusualt;
 	private Set pebatidas = new HashSet(0);
 	private Set rhpontos = new HashSet(0);
+	private Set fnsublancas = new HashSet(0);
 	private Set atatendentes = new HashSet(0);
 	private Set rhempregadobenefs = new HashSet(0);
+	private Set fnitrecebers = new HashSet(0);
 	private Set rhempregados = new HashSet(0);
 	private Set pefaltas = new HashSet(0);
+	private Set fnitpagars = new HashSet(0);
 	private Set rhempregadosals = new HashSet(0);
 
 	public Rhempregado() {
@@ -103,9 +106,9 @@ public class Rhempregado implements java.io.Serializable {
 			String complendempr, String ufempr, Date dtdemissaoempr,
 			String dddempr, String fone2empr, String celempr, String emailempr,
 			Date dtins, Date hins, String idusuins, Date dtalt, Date halt,
-			String idusualt, Set pebatidas, Set rhpontos, Set atatendentes,
-			Set rhempregadobenefs, Set rhempregados, Set pefaltas,
-			Set rhempregadosals) {
+			String idusualt, Set pebatidas, Set rhpontos, Set fnsublancas,
+			Set atatendentes, Set rhempregadobenefs, Set fnitrecebers,
+			Set rhempregados, Set pefaltas, Set fnitpagars, Set rhempregadosals) {
 		this.id = id;
 		this.rhdepto = rhdepto;
 		this.rhempregado = rhempregado;
@@ -155,10 +158,13 @@ public class Rhempregado implements java.io.Serializable {
 		this.idusualt = idusualt;
 		this.pebatidas = pebatidas;
 		this.rhpontos = rhpontos;
+		this.fnsublancas = fnsublancas;
 		this.atatendentes = atatendentes;
 		this.rhempregadobenefs = rhempregadobenefs;
+		this.fnitrecebers = fnitrecebers;
 		this.rhempregados = rhempregados;
 		this.pefaltas = pefaltas;
+		this.fnitpagars = fnitpagars;
 		this.rhempregadosals = rhempregadosals;
 	}
 
@@ -554,6 +560,14 @@ public class Rhempregado implements java.io.Serializable {
 		this.rhpontos = rhpontos;
 	}
 
+	public Set getFnsublancas() {
+		return this.fnsublancas;
+	}
+
+	public void setFnsublancas(Set fnsublancas) {
+		this.fnsublancas = fnsublancas;
+	}
+
 	public Set getAtatendentes() {
 		return this.atatendentes;
 	}
@@ -570,6 +584,14 @@ public class Rhempregado implements java.io.Serializable {
 		this.rhempregadobenefs = rhempregadobenefs;
 	}
 
+	public Set getFnitrecebers() {
+		return this.fnitrecebers;
+	}
+
+	public void setFnitrecebers(Set fnitrecebers) {
+		this.fnitrecebers = fnitrecebers;
+	}
+
 	public Set getRhempregados() {
 		return this.rhempregados;
 	}
@@ -584,6 +606,14 @@ public class Rhempregado implements java.io.Serializable {
 
 	public void setPefaltas(Set pefaltas) {
 		this.pefaltas = pefaltas;
+	}
+
+	public Set getFnitpagars() {
+		return this.fnitpagars;
+	}
+
+	public void setFnitpagars(Set fnitpagars) {
+		this.fnitpagars = fnitpagars;
 	}
 
 	public Set getRhempregadosals() {

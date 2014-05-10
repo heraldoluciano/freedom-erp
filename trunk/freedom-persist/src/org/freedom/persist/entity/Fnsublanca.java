@@ -1,6 +1,6 @@
 package org.freedom.persist.entity;
 
-// Generated 14/04/2014 10:17:08 by Hibernate Tools 4.0.0
+// Generated 10/05/2014 10:27:15 by Hibernate Tools 4.0.0
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -15,6 +15,7 @@ public class Fnsublanca implements java.io.Serializable {
 	private FnsublancaId id;
 	private Fnitpagar fnitpagar;
 	private Fnitreceber fnitreceber;
+	private Rhempregado rhempregado;
 	private Cpforneced cpforneced;
 	private Vdcliente vdcliente;
 	private Fnplanejamento fnplanejamento;
@@ -62,14 +63,14 @@ public class Fnsublanca implements java.io.Serializable {
 	}
 
 	public Fnsublanca(FnsublancaId id, Fnitpagar fnitpagar,
-			Fnitreceber fnitreceber, Cpforneced cpforneced,
-			Vdcliente vdcliente, Fnplanejamento fnplanejamento,
-			Vditcontrato vditcontrato, Fnlanca fnlanca, Fncc fncc,
-			String statussublanca, Character origsublanca, Date dtcompsublanca,
-			Date dtprevsublanca, char tiposublanca, Date datasublanca,
-			BigDecimal vlrsublanca, Character flag, String histsublanca,
-			char emmanut, Date dtins, Date hins, String idusuins, Date dtalt,
-			Date halt, String idusualt,
+			Fnitreceber fnitreceber, Rhempregado rhempregado,
+			Cpforneced cpforneced, Vdcliente vdcliente,
+			Fnplanejamento fnplanejamento, Vditcontrato vditcontrato,
+			Fnlanca fnlanca, Fncc fncc, String statussublanca,
+			Character origsublanca, Date dtcompsublanca, Date dtprevsublanca,
+			char tiposublanca, Date datasublanca, BigDecimal vlrsublanca,
+			Character flag, String histsublanca, char emmanut, Date dtins,
+			Date hins, String idusuins, Date dtalt, Date halt, String idusualt,
 			Set vdconsignacaosForVdconsigfkfnsublancadev,
 			Set vdvendaconsigsForVdvendaconsigfkfnsublanca,
 			Set vdconsignacaosForVdconsigfkfnsublanca,
@@ -77,6 +78,7 @@ public class Fnsublanca implements java.io.Serializable {
 		this.id = id;
 		this.fnitpagar = fnitpagar;
 		this.fnitreceber = fnitreceber;
+		this.rhempregado = rhempregado;
 		this.cpforneced = cpforneced;
 		this.vdcliente = vdcliente;
 		this.fnplanejamento = fnplanejamento;
@@ -127,6 +129,14 @@ public class Fnsublanca implements java.io.Serializable {
 
 	public void setFnitreceber(Fnitreceber fnitreceber) {
 		this.fnitreceber = fnitreceber;
+	}
+
+	public Rhempregado getRhempregado() {
+		return this.rhempregado;
+	}
+
+	public void setRhempregado(Rhempregado rhempregado) {
+		this.rhempregado = rhempregado;
 	}
 
 	public Cpforneced getCpforneced() {
