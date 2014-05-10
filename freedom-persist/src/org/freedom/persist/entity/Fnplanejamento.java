@@ -1,6 +1,6 @@
 package org.freedom.persist.entity;
 
-// Generated 14/04/2014 10:17:08 by Hibernate Tools 4.0.0
+// Generated 10/05/2014 10:27:15 by Hibernate Tools 4.0.0
 
 import java.util.Date;
 import java.util.HashSet;
@@ -27,6 +27,7 @@ public class Fnplanejamento implements java.io.Serializable {
 	private String codcontdeb;
 	private char esfinplan;
 	private char clasfinplan;
+	private char lanctoxplan;
 	private Date dtins;
 	private Date hins;
 	private String idusuins;
@@ -63,7 +64,8 @@ public class Fnplanejamento implements java.io.Serializable {
 	public Fnplanejamento(FnplanejamentoId id, Sgfilial sgfilial,
 			Fnplanejamento fnplanejamento, String descplan, int nivelplan,
 			char tipoplan, char compsldcxplan, char esfinplan,
-			char clasfinplan, Date dtins, Date hins, String idusuins) {
+			char clasfinplan, char lanctoxplan, Date dtins, Date hins,
+			String idusuins) {
 		this.id = id;
 		this.sgfilial = sgfilial;
 		this.fnplanejamento = fnplanejamento;
@@ -73,6 +75,7 @@ public class Fnplanejamento implements java.io.Serializable {
 		this.compsldcxplan = compsldcxplan;
 		this.esfinplan = esfinplan;
 		this.clasfinplan = clasfinplan;
+		this.lanctoxplan = lanctoxplan;
 		this.dtins = dtins;
 		this.hins = hins;
 		this.idusuins = idusuins;
@@ -83,8 +86,8 @@ public class Fnplanejamento implements java.io.Serializable {
 			String descplan, int nivelplan, Integer codredplan,
 			Integer codempsp, Short codfilialsp, char tipoplan, String finplan,
 			char compsldcxplan, String codcontcred, String codcontdeb,
-			char esfinplan, char clasfinplan, Date dtins, Date hins,
-			String idusuins, Date dtalt, Date halt, String idusualt,
+			char esfinplan, char clasfinplan, char lanctoxplan, Date dtins,
+			Date hins, String idusuins, Date dtalt, Date halt, String idusualt,
 			Set fnsublancas, Set cprateios, Set fnplanejamentos,
 			Set fnitrecebers, Set sgprefere1sForSgprefere1fkplancheque,
 			Set fncontas, Set fnrecebers, Set sgprefere1sForSgprefere1fkplanjr,
@@ -111,6 +114,7 @@ public class Fnplanejamento implements java.io.Serializable {
 		this.codcontdeb = codcontdeb;
 		this.esfinplan = esfinplan;
 		this.clasfinplan = clasfinplan;
+		this.lanctoxplan = lanctoxplan;
 		this.dtins = dtins;
 		this.hins = hins;
 		this.idusuins = idusuins;
@@ -268,6 +272,14 @@ public class Fnplanejamento implements java.io.Serializable {
 
 	public void setClasfinplan(char clasfinplan) {
 		this.clasfinplan = clasfinplan;
+	}
+
+	public char getLanctoxplan() {
+		return this.lanctoxplan;
+	}
+
+	public void setLanctoxplan(char lanctoxplan) {
+		this.lanctoxplan = lanctoxplan;
 	}
 
 	public Date getDtins() {

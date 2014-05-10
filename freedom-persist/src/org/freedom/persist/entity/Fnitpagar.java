@@ -1,6 +1,6 @@
 package org.freedom.persist.entity;
 
-// Generated 14/04/2014 10:17:08 by Hibernate Tools 4.0.0
+// Generated 10/05/2014 10:27:15 by Hibernate Tools 4.0.0
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -14,6 +14,7 @@ public class Fnitpagar implements java.io.Serializable {
 
 	private FnitpagarId id;
 	private Fnconta fnconta;
+	private Rhempregado rhempregado;
 	private Fntipocob fntipocob;
 	private Fnsinal fnsinal;
 	private Fnplanejamento fnplanejamento;
@@ -77,23 +78,24 @@ public class Fnitpagar implements java.io.Serializable {
 		this.hins = hins;
 	}
 
-	public Fnitpagar(FnitpagarId id, Fnconta fnconta, Fntipocob fntipocob,
-			Fnsinal fnsinal, Fnplanejamento fnplanejamento,
-			Vditcontrato vditcontrato, Fnpagar fnpagar, BigDecimal vlritpag,
-			BigDecimal vlrdescitpag, BigDecimal vlrmultaitpag,
-			BigDecimal vlrjurositpag, BigDecimal vlrdevitpag,
-			BigDecimal vlrparcitpag, BigDecimal vlrpagoitpag,
-			BigDecimal vlrapagitpag, BigDecimal vlradicitpag,
-			BigDecimal vlrcancitpag, Date dtitpag, Date dtcompitpag,
-			Date dtvencitpag, Date dtpagoitpag, String statusitpag,
-			String doclancaitpag, String obsitpag, Character flag,
-			Integer codempcc, Short codfilialcc, Short anocc, String codcc,
-			char emmanut, Character multibaixa, Character edititpag,
-			Date dtins, String idusuins, Date dtalt, String idusualt,
-			Date hins, Date halt, Set fnlancas, Set fnsublancas,
-			Set fnmovimentos, Set fnpagcheqs) {
+	public Fnitpagar(FnitpagarId id, Fnconta fnconta, Rhempregado rhempregado,
+			Fntipocob fntipocob, Fnsinal fnsinal,
+			Fnplanejamento fnplanejamento, Vditcontrato vditcontrato,
+			Fnpagar fnpagar, BigDecimal vlritpag, BigDecimal vlrdescitpag,
+			BigDecimal vlrmultaitpag, BigDecimal vlrjurositpag,
+			BigDecimal vlrdevitpag, BigDecimal vlrparcitpag,
+			BigDecimal vlrpagoitpag, BigDecimal vlrapagitpag,
+			BigDecimal vlradicitpag, BigDecimal vlrcancitpag, Date dtitpag,
+			Date dtcompitpag, Date dtvencitpag, Date dtpagoitpag,
+			String statusitpag, String doclancaitpag, String obsitpag,
+			Character flag, Integer codempcc, Short codfilialcc, Short anocc,
+			String codcc, char emmanut, Character multibaixa,
+			Character edititpag, Date dtins, String idusuins, Date dtalt,
+			String idusualt, Date hins, Date halt, Set fnlancas,
+			Set fnsublancas, Set fnmovimentos, Set fnpagcheqs) {
 		this.id = id;
 		this.fnconta = fnconta;
+		this.rhempregado = rhempregado;
 		this.fntipocob = fntipocob;
 		this.fnsinal = fnsinal;
 		this.fnplanejamento = fnplanejamento;
@@ -150,6 +152,14 @@ public class Fnitpagar implements java.io.Serializable {
 
 	public void setFnconta(Fnconta fnconta) {
 		this.fnconta = fnconta;
+	}
+
+	public Rhempregado getRhempregado() {
+		return this.rhempregado;
+	}
+
+	public void setRhempregado(Rhempregado rhempregado) {
+		this.rhempregado = rhempregado;
 	}
 
 	public Fntipocob getFntipocob() {

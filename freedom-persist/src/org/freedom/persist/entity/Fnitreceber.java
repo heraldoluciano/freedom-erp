@@ -1,6 +1,6 @@
 package org.freedom.persist.entity;
 
-// Generated 14/04/2014 10:17:08 by Hibernate Tools 4.0.0
+// Generated 10/05/2014 10:27:15 by Hibernate Tools 4.0.0
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -14,6 +14,7 @@ public class Fnitreceber implements java.io.Serializable {
 
 	private FnitreceberId id;
 	private Fnconta fnconta;
+	private Rhempregado rhempregado;
 	private Fntipocob fntipocob;
 	private Fnsinal fnsinal;
 	private Fnplanejamento fnplanejamento;
@@ -101,10 +102,11 @@ public class Fnitreceber implements java.io.Serializable {
 		this.idusuins = idusuins;
 	}
 
-	public Fnitreceber(FnitreceberId id, Fnconta fnconta, Fntipocob fntipocob,
-			Fnsinal fnsinal, Fnplanejamento fnplanejamento,
-			Fnreceber fnreceber, Vditcontrato vditcontrato, Fnbanco fnbanco,
-			Fncartcob fncartcob, BigDecimal vlritrec, BigDecimal vlrdescitrec,
+	public Fnitreceber(FnitreceberId id, Fnconta fnconta,
+			Rhempregado rhempregado, Fntipocob fntipocob, Fnsinal fnsinal,
+			Fnplanejamento fnplanejamento, Fnreceber fnreceber,
+			Vditcontrato vditcontrato, Fnbanco fnbanco, Fncartcob fncartcob,
+			BigDecimal vlritrec, BigDecimal vlrdescitrec,
 			BigDecimal vlrmultaitrec, BigDecimal vlrjurositrec,
 			BigDecimal vlrdevitrec, BigDecimal vlrparcitrec,
 			BigDecimal vlrpagoitrec, BigDecimal vlrapagitrec,
@@ -123,6 +125,7 @@ public class Fnitreceber implements java.io.Serializable {
 			Set fnsublancas, Fnfbnrec fnfbnrec, Set atatendimentoitrecs) {
 		this.id = id;
 		this.fnconta = fnconta;
+		this.rhempregado = rhempregado;
 		this.fntipocob = fntipocob;
 		this.fnsinal = fnsinal;
 		this.fnplanejamento = fnplanejamento;
@@ -197,6 +200,14 @@ public class Fnitreceber implements java.io.Serializable {
 
 	public void setFnconta(Fnconta fnconta) {
 		this.fnconta = fnconta;
+	}
+
+	public Rhempregado getRhempregado() {
+		return this.rhempregado;
+	}
+
+	public void setRhempregado(Rhempregado rhempregado) {
+		this.rhempregado = rhempregado;
 	}
 
 	public Fntipocob getFntipocob() {

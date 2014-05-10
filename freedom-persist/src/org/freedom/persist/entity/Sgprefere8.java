@@ -1,6 +1,6 @@
 package org.freedom.persist.entity;
 
-// Generated 14/04/2014 10:17:08 by Hibernate Tools 4.0.0
+// Generated 10/05/2014 10:27:15 by Hibernate Tools 4.0.0
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -30,37 +30,39 @@ public class Sgprefere8 implements java.io.Serializable {
 	private char permitdoccoldupl;
 	private String obspadoc;
 	private char permititemrepcp;
+	private BigDecimal percprecocoletacp;
+	private char detitempainelserv;
+	private char contingenciapesagem;
 	private Date dtins;
 	private Date hins;
 	private String idusuins;
 	private Date dtalt;
 	private Date halt;
 	private String idusualt;
-	private BigDecimal percprecocoletacp;
-	private char detitempainelserv;
 
 	public Sgprefere8() {
 	}
 
 	public Sgprefere8(Sgprefere8Id id, char gerachamadoos,
 			char solcphomologfor, char utilrendacot, char permitdoccoldupl,
-			char permititemrepcp, Date dtins, Date hins, String idusuins,
-			Date dtalt, Date halt, String idusualt,
-			BigDecimal percprecocoletacp, char detitempainelserv) {
+			char permititemrepcp, BigDecimal percprecocoletacp,
+			char detitempainelserv, char contingenciapesagem, Date dtins,
+			Date hins, String idusuins, Date dtalt, Date halt, String idusualt) {
 		this.id = id;
 		this.gerachamadoos = gerachamadoos;
 		this.solcphomologfor = solcphomologfor;
 		this.utilrendacot = utilrendacot;
 		this.permitdoccoldupl = permitdoccoldupl;
 		this.permititemrepcp = permititemrepcp;
+		this.percprecocoletacp = percprecocoletacp;
+		this.detitempainelserv = detitempainelserv;
+		this.contingenciapesagem = contingenciapesagem;
 		this.dtins = dtins;
 		this.hins = hins;
 		this.idusuins = idusuins;
 		this.dtalt = dtalt;
 		this.halt = halt;
 		this.idusualt = idusualt;
-		this.percprecocoletacp = percprecocoletacp;
-		this.detitempainelserv = detitempainelserv;
 	}
 
 	public Sgprefere8(Sgprefere8Id id,
@@ -73,9 +75,10 @@ public class Sgprefere8 implements java.io.Serializable {
 			char gerachamadoos, Character usaprecopecaserv, Integer codempse,
 			Short codfilialse, Integer codprodse, Character sincticket,
 			char solcphomologfor, char utilrendacot, char permitdoccoldupl,
-			String obspadoc, char permititemrepcp, Date dtins, Date hins,
-			String idusuins, Date dtalt, Date halt, String idusualt,
-			BigDecimal percprecocoletacp, char detitempainelserv) {
+			String obspadoc, char permititemrepcp,
+			BigDecimal percprecocoletacp, char detitempainelserv,
+			char contingenciapesagem, Date dtins, Date hins, String idusuins,
+			Date dtalt, Date halt, String idusualt) {
 		this.id = id;
 		this.eqtiporecmercBySgpref8fkeqtiporecmercos = eqtiporecmercBySgpref8fkeqtiporecmercos;
 		this.eqtiporecmercBySgpref8fkeqtiporecmerc = eqtiporecmercBySgpref8fkeqtiporecmerc;
@@ -96,14 +99,15 @@ public class Sgprefere8 implements java.io.Serializable {
 		this.permitdoccoldupl = permitdoccoldupl;
 		this.obspadoc = obspadoc;
 		this.permititemrepcp = permititemrepcp;
+		this.percprecocoletacp = percprecocoletacp;
+		this.detitempainelserv = detitempainelserv;
+		this.contingenciapesagem = contingenciapesagem;
 		this.dtins = dtins;
 		this.hins = hins;
 		this.idusuins = idusuins;
 		this.dtalt = dtalt;
 		this.halt = halt;
 		this.idusualt = idusualt;
-		this.percprecocoletacp = percprecocoletacp;
-		this.detitempainelserv = detitempainelserv;
 	}
 
 	public Sgprefere8Id getId() {
@@ -271,6 +275,30 @@ public class Sgprefere8 implements java.io.Serializable {
 		this.permititemrepcp = permititemrepcp;
 	}
 
+	public BigDecimal getPercprecocoletacp() {
+		return this.percprecocoletacp;
+	}
+
+	public void setPercprecocoletacp(BigDecimal percprecocoletacp) {
+		this.percprecocoletacp = percprecocoletacp;
+	}
+
+	public char getDetitempainelserv() {
+		return this.detitempainelserv;
+	}
+
+	public void setDetitempainelserv(char detitempainelserv) {
+		this.detitempainelserv = detitempainelserv;
+	}
+
+	public char getContingenciapesagem() {
+		return this.contingenciapesagem;
+	}
+
+	public void setContingenciapesagem(char contingenciapesagem) {
+		this.contingenciapesagem = contingenciapesagem;
+	}
+
 	public Date getDtins() {
 		return this.dtins;
 	}
@@ -317,22 +345,6 @@ public class Sgprefere8 implements java.io.Serializable {
 
 	public void setIdusualt(String idusualt) {
 		this.idusualt = idusualt;
-	}
-
-	public BigDecimal getPercprecocoletacp() {
-		return this.percprecocoletacp;
-	}
-
-	public void setPercprecocoletacp(BigDecimal percprecocoletacp) {
-		this.percprecocoletacp = percprecocoletacp;
-	}
-
-	public char getDetitempainelserv() {
-		return this.detitempainelserv;
-	}
-
-	public void setDetitempainelserv(char detitempainelserv) {
-		this.detitempainelserv = detitempainelserv;
 	}
 
 }

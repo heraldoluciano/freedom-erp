@@ -1,6 +1,6 @@
 package org.freedom.persist.entity;
 
-// Generated 14/04/2014 10:17:08 by Hibernate Tools 4.0.0
+// Generated 10/05/2014 10:27:15 by Hibernate Tools 4.0.0
 
 import java.util.Date;
 import java.util.HashSet;
@@ -14,6 +14,7 @@ public class Fnbanco implements java.io.Serializable {
 	private FnbancoId id;
 	private Sgfilial sgfilial;
 	private Fnmodboleto fnmodboleto;
+	private Fnbanco fnbanco;
 	private String nomebanco;
 	private char dvbanco;
 	private String sitebanco;
@@ -37,6 +38,7 @@ public class Fnbanco implements java.io.Serializable {
 	private Set cpcompras = new HashSet(0);
 	private Set fncheques = new HashSet(0);
 	private Set fnrecebers = new HashSet(0);
+	private Set fnbancos = new HashSet(0);
 	private Set fnitrecebers = new HashSet(0);
 	private Set vdclientes = new HashSet(0);
 
@@ -55,16 +57,17 @@ public class Fnbanco implements java.io.Serializable {
 	}
 
 	public Fnbanco(FnbancoId id, Sgfilial sgfilial, Fnmodboleto fnmodboleto,
-			String nomebanco, char dvbanco, String sitebanco,
+			Fnbanco fnbanco, String nomebanco, char dvbanco, String sitebanco,
 			byte[] imgbolbanco, byte[] imgbolbanco2, String layoutcheqbanco,
 			Date dtins, Date hins, String idusuins, Date dtalt, Date halt,
 			String idusualt, Set fncartcobs, Set sgitprefere6s, Set fncontas,
 			Set vdclicontases, Set vdvendas, Set cpforneceds, Set fnpagars,
 			Set vdmodcontrs, Set cpcompras, Set fncheques, Set fnrecebers,
-			Set fnitrecebers, Set vdclientes) {
+			Set fnbancos, Set fnitrecebers, Set vdclientes) {
 		this.id = id;
 		this.sgfilial = sgfilial;
 		this.fnmodboleto = fnmodboleto;
+		this.fnbanco = fnbanco;
 		this.nomebanco = nomebanco;
 		this.dvbanco = dvbanco;
 		this.sitebanco = sitebanco;
@@ -88,6 +91,7 @@ public class Fnbanco implements java.io.Serializable {
 		this.cpcompras = cpcompras;
 		this.fncheques = fncheques;
 		this.fnrecebers = fnrecebers;
+		this.fnbancos = fnbancos;
 		this.fnitrecebers = fnitrecebers;
 		this.vdclientes = vdclientes;
 	}
@@ -114,6 +118,14 @@ public class Fnbanco implements java.io.Serializable {
 
 	public void setFnmodboleto(Fnmodboleto fnmodboleto) {
 		this.fnmodboleto = fnmodboleto;
+	}
+
+	public Fnbanco getFnbanco() {
+		return this.fnbanco;
+	}
+
+	public void setFnbanco(Fnbanco fnbanco) {
+		this.fnbanco = fnbanco;
 	}
 
 	public String getNomebanco() {
@@ -298,6 +310,14 @@ public class Fnbanco implements java.io.Serializable {
 
 	public void setFnrecebers(Set fnrecebers) {
 		this.fnrecebers = fnrecebers;
+	}
+
+	public Set getFnbancos() {
+		return this.fnbancos;
+	}
+
+	public void setFnbancos(Set fnbancos) {
+		this.fnbancos = fnbancos;
 	}
 
 	public Set getFnitrecebers() {
