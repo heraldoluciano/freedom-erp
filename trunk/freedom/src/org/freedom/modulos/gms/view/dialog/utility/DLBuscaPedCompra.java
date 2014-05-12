@@ -819,7 +819,11 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 			sql.append( "select tm.codempse, tm.codfilialse, tm.serie ");
 			sql.append( "from eqtipomov tm "); 
 			sql.append( "where tm.codemp=? and tm.codfilial=? and tm.codtipomov=? ");
+			int param = 1;
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
+			ps.setInt( param++, codemp );
+			ps.setInt( param++, codfilialtm );
+			ps.setInt( param++, codtipomov );
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
 				codempse = rs.getInt("codempse");
@@ -835,7 +839,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 			sqlinsert.append(" ?, ?, ?, ?, ?, ?, ?, ?, ? " );
 			sqlinsert.append(", ?, ?, ?, ?, ?, ?, ? " );
 			sqlinsert.append(", cast('today' as date), cast('today' as date), ?, 'S' ) " );
-			int param = 1;
+			param = 1;
 			PreparedStatement psinsert = con.prepareStatement( sqlinsert.toString() );
 			psinsert.setInt( param++, codemp );
 			psinsert.setInt( param++, codfilial );
