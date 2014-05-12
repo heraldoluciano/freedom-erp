@@ -858,6 +858,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 			result = codcompra;
 		} catch (SQLException err) {
 			result = null;
+			throw err;
 		}
 		return result;
 	}
