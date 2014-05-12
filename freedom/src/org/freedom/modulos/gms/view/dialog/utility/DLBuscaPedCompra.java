@@ -99,6 +99,8 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 	private JTextFieldPad txtCodCompra = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 9, 0 );
 
 	private JTextFieldPad txtDocCompra = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 9, 0 );
+	
+	private JTextFieldPad txtTicket = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 9, 0 );
 
 	private JTextFieldPad txtSerie = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
 
@@ -168,7 +170,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 
 
 	public static enum enum_compra {
-		SEL, CODCOMPRA, CODPLANOPAG, CODEMPFR, CODFILIALFR, CODFOR, RAZFOR, NROITENS, NROITENSLIB, VLRLIQCOMPRA, VLRLIB
+		SEL, CODCOMPRA, CODPLANOPAG, CODEMPFR, CODFILIALFR, CODFOR, RAZFOR, TICKET, NROITENS, NROITENSLIB, VLRLIQCOMPRA, VLRLIB
 	}
 
 	public static enum enum_itcompra {
@@ -228,17 +230,20 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 
 //		pinCab.adic( txtStatusCompra, 396, 5, 27, 20 );
 
-		pinCab.adic( new JLabelPad( "Vlr.Prod." ), 426, 5, 77, 20 );
-		pinCab.adic( txtVlrProdCompra, 426, 25, 77, 20 );
-
-		pinCab.adic( new JLabelPad( "Vlr.Liq." ), 506, 5, 77, 20 );
-		pinCab.adic( txtVlrLiqCompra, 506, 25, 77, 20 );
+		pinCab.adic( new JLabelPad( "Ticket" ), 426, 5, 77, 20 );
+		pinCab.adic( txtTicket, 426, 25, 77, 20 );
 		
 		pinCab.adic( new JLabelPad( "Cód.Pg." ), 7, 45, 60, 20 );
 		pinCab.adic( txtCodPlanoPag, 7, 65, 60, 20 );
 
 		pinCab.adic( new JLabelPad( "Descrição do plano de pagamento" ), 70, 45, 353, 20 );
 		pinCab.adic( txtDescPlanoPag, 70, 65, 353, 20 );
+
+		pinCab.adic( new JLabelPad( "Vlr.Prod." ), 426, 45, 77, 20 );
+		pinCab.adic( txtVlrProdCompra, 426, 65, 77, 20 );
+
+		pinCab.adic( new JLabelPad( "Vlr.Liq." ), 506, 45, 77, 20 );
+		pinCab.adic( txtVlrLiqCompra, 506, 65, 77, 20 );
 
 		pinCab.adic( btBuscar, 632, 20, 100, 30 );
 
@@ -343,6 +348,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 		tabcompra.adicColuna( "" );
 		tabcompra.adicColuna( "Cód.For." );
 		tabcompra.adicColuna( "Razão do fornecedor" );
+		tabcompra.adicColuna( "Ticket" );
 		tabcompra.adicColuna( "Nº itens." );
 		tabcompra.adicColuna( "Nº lib." );
 		tabcompra.adicColuna( "Valor total" );
@@ -356,6 +362,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 		
 		tabcompra.setTamColuna( 60, enum_compra.CODFOR.ordinal() );
 		tabcompra.setTamColuna( 210, enum_compra.RAZFOR.ordinal() );
+		tabcompra.setTamColuna( 60, enum_compra.TICKET.ordinal() );
 		tabcompra.setTamColuna( 60, enum_compra.NROITENS.ordinal() );
 		tabcompra.setTamColuna( 60, enum_compra.NROITENSLIB.ordinal() );
 		tabcompra.setTamColuna( 100, enum_compra.VLRLIQCOMPRA.ordinal() );
@@ -815,12 +822,12 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 
 		try {
 
-			if ( txtCodFor.getVlrInteger() > 0 || txtCodCompra.getVlrInteger() > 0 ) {
+			if ( txtCodFor.getVlrInteger() > 0 || txtCodCompra.getVlrInteger() > 0  || txtTicket.getVlrInteger()>0 ) {
 
-				sql.append( "select cp.statuscompra, cp.codcompra, cp.codplanopag, cp.codfor, fr.razfor, " );
-				sql.append( "(select count(*) from cpitcompra ic where ic.codemp=cp.codemp and ic.codfilial=cp.codfilial and ic.codcompra=cp.codcompra) nroitens , " );
-				sql.append( "(select count(*) from cpitcompra ic where ic.codemp=cp.codemp and ic.codfilial=cp.codfilial and ic.codcompra=cp.codcompra) nroitenslib, " );
-				sql.append( "cp.vlrliqcompra, cp.vlrliqcompra vlrlib " );
+				sql.append( "select cp.statuscompra, cp.codcompra, cp.codplanopag, cp.codfor, fr.razfor, cp.ticket " );
+				sql.append( ", (select count(*) from cpitcompra ic where ic.codemp=cp.codemp and ic.codfilial=cp.codfilial and ic.codcompra=cp.codcompra) nroitens  " );
+				sql.append( ", (select count(*) from cpitcompra ic where ic.codemp=cp.codemp and ic.codfilial=cp.codfilial and ic.codcompra=cp.codcompra) nroitenslib " );
+				sql.append( ", cp.vlrliqcompra, cp.vlrliqcompra vlrlib " );
 				sql.append( "from cpcompra cp, cpforneced fr " );
 				sql.append( "where " );
 				sql.append( "fr.codemp=cp.codempfr and fr.codfilial=cp.codfilialfr and fr.codfor=cp.codfor " );
@@ -834,6 +841,9 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 
 				if ( txtCodCompra.getVlrInteger() > 0 ) {
 					sql.append( " and cp.codcompra=? " );
+				}
+				if (txtTicket.getVlrInteger() > 0 ){ 
+					sql.append ( "and cp.ticket=? ");
 				}
 
 				ps = con.prepareStatement( sql.toString() );
@@ -853,6 +863,10 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 					ps.setInt( param++, txtCodCompra.getVlrInteger() );
 				}
 
+				if ( txtTicket.getVlrInteger() > 0 ) {
+					ps.setInt( param++, txtTicket.getVlrInteger() );
+				}
+
 				rs = ps.executeQuery();
 
 				tabcompra.limpa();
@@ -869,7 +883,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 					tabcompra.setValor( rs.getInt( enum_compra.CODPLANOPAG.toString() ), irow, enum_compra.CODPLANOPAG.ordinal() );
 					tabcompra.setValor( rs.getInt( enum_compra.CODFOR.toString() ), irow, enum_compra.CODFOR.ordinal() );
 					tabcompra.setValor( rs.getString( enum_compra.RAZFOR.toString() ), irow, enum_compra.RAZFOR.ordinal() );
-
+					tabcompra.setValor( rs.getInt( enum_compra.TICKET.toString() ), irow, enum_compra.TICKET.ordinal() );
 					tabcompra.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( enum_compra.NROITENS.toString() ) ), irow, enum_compra.NROITENS.ordinal() );
 					tabcompra.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( enum_compra.NROITENSLIB.toString() ) ), irow, enum_compra.NROITENSLIB.ordinal() );
 					tabcompra.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( enum_compra.VLRLIQCOMPRA.toString() ) ), irow, enum_compra.VLRLIQCOMPRA.ordinal() );
