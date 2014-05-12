@@ -852,6 +852,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 			psinsert.setInt( param++, codemp );
 			psinsert.setInt( param++, codfilialtm );
 			psinsert.setInt( param++, codtipomov );
+			psinsert.setInt( param++, doccompra );
 			psinsert.setString( param++, statuscompra );
 			psinsert.executeUpdate();
 			psinsert.close();
