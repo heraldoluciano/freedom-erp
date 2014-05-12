@@ -76,7 +76,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 
 	private JScrollPane spntabcompra = new JScrollPane( tabcompra );
 
-	private JPanelPad pinCab = new JPanelPad( 0, 105 );
+	private JPanelPad pinCab = new JPanelPad( 0, 145 );
 
 	private JPanelPad pnRod = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
@@ -111,6 +111,10 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 	private JTextFieldPad txtCodFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtRazFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
+
+	private JTextFieldPad txtCodTran = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldFK txtRazTran = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
 
 	private JTextFieldFK txtStatusCompra = new JTextFieldFK( JTextFieldPad.TP_STRING, 2, 0 );
 
@@ -149,7 +153,9 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 	private JButtonPad btResetItCompra = new JButtonPad( Icone.novo( "btReset.png" ) );
 
 	private ListaCampos lcFor = new ListaCampos( this, "FR" );
-	
+
+	private ListaCampos lcTransp = new ListaCampos( this );
+
 	private ListaCampos lcPlanoPag = new ListaCampos( this, "PG" );
 
 	private ListaCampos lcCompra = new ListaCampos( this, "CP" );
@@ -239,12 +245,18 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 		pinCab.adic( new JLabelPad( "Descrição do plano de pagamento" ), 70, 45, 353, 20 );
 		pinCab.adic( txtDescPlanoPag, 70, 65, 353, 20 );
 
-		pinCab.adic( new JLabelPad( "Vlr.Prod." ), 426, 45, 77, 20 );
+		pinCab.adic( new JLabelPad( "Vlr.prod." ), 426, 45, 77, 20 );
 		pinCab.adic( txtVlrProdCompra, 426, 65, 77, 20 );
 
-		pinCab.adic( new JLabelPad( "Vlr.Liq." ), 506, 45, 77, 20 );
+		pinCab.adic( new JLabelPad( "Vlr.liq." ), 506, 45, 77, 20 );
 		pinCab.adic( txtVlrLiqCompra, 506, 65, 77, 20 );
 
+		pinCab.adic( new JLabelPad( "Cód.transp." ), 7, 85, 60, 20 );
+		pinCab.adic( txtCodTran, 7, 105, 60, 20 );
+
+		pinCab.adic( new JLabelPad( "Razão social/nome do transportador" ), 70, 85, 300, 20 );
+		pinCab.adic( txtRazTran, 70, 105, 300, 20 );
+		
 		pinCab.adic( btBuscar, 632, 20, 100, 30 );
 
 		pnRod.setPreferredSize( new Dimension( 600, 50 ) );
@@ -469,6 +481,15 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 		txtCodPlanoPag.setFK( true );
 
 
+		// Lista campos do transportador
+		lcTransp.add( new GuardaCampo( txtCodTran, "CodTran", "Cód.tran.", ListaCampos.DB_PK, txtRazFor, false ) );
+		lcTransp.add( new GuardaCampo( txtRazTran, "RazTran", "Razão social/nome do transportador", ListaCampos.DB_SI, false ) );
+		txtCodTran.setTabelaExterna( lcTransp, null );
+		txtCodTran.setNomeCampo( "CodTran" );
+		txtCodTran.setFK( true );
+		lcTransp.setReadOnly( true );
+		lcTransp.montaSql( false, "TRANSP", "VD" );
+
 		
 	}
 
@@ -691,47 +712,16 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 					if ( bPrim ) {
 
 						try {
-
-							int param = 1;
-
-							// Executando procedure para geração do cabeçalho da compra.
-
-							sSQL = "SELECT IRET FROM CPADICCOMPRAPEDSP(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-							ps = con.prepareStatement( sSQL );
-
-							ps.setInt( param++, Aplicativo.iCodEmp );
-							ps.setInt( param++, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
-							ps.setInt( param++, codcompra );
-							ps.setInt( param++, doccompra );
-
-							ps.setInt( param++, Aplicativo.iCodEmp );
-							ps.setInt( param++, ListaCampos.getMasterFilial( "EQTIPOMOV" ) );
-							ps.setInt( param++, codtipomov );
-
-							ps.setInt( param++, Aplicativo.iCodEmp );
-							ps.setInt( param++, ListaCampos.getMasterFilial( "CPFORNECED" ) );
-							ps.setInt( param++, codfor );
-
-							ps.setInt( param++, Aplicativo.iCodEmp );
-							ps.setInt( param++, ListaCampos.getMasterFilial( "FNPLANOPAG" ) );
-							ps.setInt( param++, codplanopag );
-
-							ps.setInt( param++, Aplicativo.iCodEmp );
-							ps.setInt( param++, ListaCampos.getMasterFilial( "LFSERIE" ) );
-							ps.setString( param++, serie );
-
-							rs = ps.executeQuery();
-
-							if ( rs.next() ) {
-								codcompra = rs.getInt( 1 );
-							}
-							// Se houve algum problema na procedure e não inseriu a compra deve anular a variável para não tentar inserir os ítens
-							else {
-								codcompra = null;
-							}
-
-							rs.close();
-							ps.close();
+							/*Integer codemp, Integer codfilial, Integer codcompra
+							 * , Integer codfilialpg, Integer codplanopag
+							 * , Integer codfilialfr, Integer codfor
+							 * , Integer codfilialtm, Integer codtipomov
+							 * , Integer doccompra*/
+							codcompra = adicCompra( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPCOMPRA" ), codcompra
+									, ListaCampos.getMasterFilial( "FNPLANOPAG" ), codplanopag
+									, ListaCampos.getMasterFilial( "CPFORNECED" ), codfor
+									, ListaCampos.getMasterFilial( "EQTIPOMOV" ), codtipomov
+									, doccompra );
 
 						} catch ( SQLException err ) {
 							if ( err.getErrorCode() == 335544665 ) {
@@ -813,6 +803,65 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 		return true;
 	}
 
+	
+	private Integer adicCompra(Integer codemp, Integer codfilial, Integer codcompra, Integer codfilialpg
+			, Integer codplanopag, Integer codfilialfr, Integer codfor, Integer codfilialtm
+			, Integer codtipomov, Integer doccompra ) throws SQLException {
+		Integer result = null;
+		Integer codempse = null;
+		Integer codfilialse = null;
+		String serie = null;
+		String  statuscompra = "P1";
+		StringBuilder sql = new StringBuilder();
+		StringBuilder sqlinsert = new StringBuilder();
+		
+		try {
+			sql.append( "select tm.codempse, tm.codfilialse, tm.serie ");
+			sql.append( "from eqtipomov tm "); 
+			sql.append( "where tm.codemp=? and tm.codfilial=? and tm.codtipomov=? ");
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				codempse = rs.getInt("codempse");
+				codfilialse = rs.getInt("codfilialse");
+				serie = rs.getString( "serie" );
+			}
+			rs.close();
+			ps.close();
+			sqlinsert.append(" insert into cpcompra (  " );
+			sqlinsert.append(" codemp, codfilial, codcompra, codemppg, codfilialpg, codplanopag, codempfr, codfilialfr, codfor, " );
+			sqlinsert.append(" codempse, codfilialse, serie, codemptm, codfilialtm, codtipomov, doccompra, dtentcompra, dtemitcompra, statuscompra, calctrib ) " );
+			sqlinsert.append(" values ( " );
+			sqlinsert.append(" ?, ?, ?, ?, ?, ?, ?, ?, ? " );
+			sqlinsert.append(", ?, ?, ?, ?, ?, ?, ? " );
+			sqlinsert.append(", cast('today' as date), cast('today' as date), ?, 'S' ) " );
+			int param = 1;
+			PreparedStatement psinsert = con.prepareStatement( sqlinsert.toString() );
+			psinsert.setInt( param++, codemp );
+			psinsert.setInt( param++, codfilial );
+			psinsert.setInt( param++, codcompra );
+			psinsert.setInt( param++, codemp );
+			psinsert.setInt( param++, codfilialpg );
+			psinsert.setInt( param++, codplanopag );
+			psinsert.setInt( param++, codemp );
+			psinsert.setInt( param++, codfilialfr );
+			psinsert.setInt( param++, codfor );
+			psinsert.setInt( param++, codempse );
+			psinsert.setInt( param++, codfilialse );
+			psinsert.setString( param++,  serie );
+			psinsert.setInt( param++, codemp );
+			psinsert.setInt( param++, codfilialtm );
+			psinsert.setInt( param++, codtipomov );
+			psinsert.setString( param++, statuscompra );
+			psinsert.executeUpdate();
+			psinsert.close();
+			result = codcompra;
+		} catch (SQLException err) {
+			result = null;
+		}
+		return result;
+	}
+	
 	private void buscaCompra() {
 
 		PreparedStatement ps = null;
@@ -822,7 +871,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 
 		try {
 
-			if ( txtCodFor.getVlrInteger() > 0 || txtCodCompra.getVlrInteger() > 0  || txtTicket.getVlrInteger()>0 ) {
+			if ( txtCodFor.getVlrInteger() > 0 || txtCodCompra.getVlrInteger() > 0  || txtTicket.getVlrInteger()>0 || txtCodTran.getVlrInteger()>0 ) {
 
 				sql.append( "select cp.statuscompra, cp.codcompra, cp.codplanopag, cp.codfor, fr.razfor, cp.ticket " );
 				sql.append( ", (select count(*) from cpitcompra ic where ic.codemp=cp.codemp and ic.codfilial=cp.codfilial and ic.codcompra=cp.codcompra) nroitens  " );
@@ -837,6 +886,10 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 					sql.append( "and cp.codempfr=? and cp.codfilialfr=? and cp.codfor=? " );
 				}
 
+				if ( txtCodTran.getVlrInteger() > 0 && txtCodCompra.getVlrInteger() <= 0 ) {
+					sql.append( "and cp.codemptn=? and cp.codfilialtn=? and cp.codtran=? " );
+				}
+				
 				sql.append( "and cp.codemp=? and cp.codfilial=? " );
 
 				if ( txtCodCompra.getVlrInteger() > 0 ) {
@@ -854,6 +907,11 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 					ps.setInt( param++, lcFor.getCodEmp() );
 					ps.setInt( param++, lcFor.getCodFilial() );
 					ps.setInt( param++, txtCodFor.getVlrInteger() );
+				}
+				if ( txtCodTran.getVlrInteger() > 0 && txtCodCompra.getVlrInteger() <= 0 ) {
+					ps.setInt( param++, lcTransp.getCodEmp() );
+					ps.setInt( param++, lcTransp.getCodFilial() );
+					ps.setInt( param++, txtCodTran.getVlrInteger() );
 				}
 
 				ps.setInt( param++, Aplicativo.iCodEmp );
@@ -897,7 +955,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 				ps.close();
 			}
 			else {
-				Funcoes.mensagemInforma( this, "Selecione um pedido ou um fornecedor para busca!" );
+				Funcoes.mensagemInforma( this, "Preecha um dos campos: pedido, fornecedor, ticket ou transportador !" );
 			}
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao buscar compras!\n" + err.getMessage(), true, con, err );
@@ -1327,6 +1385,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 		lcFor.setConexao( cn );
 		lcCompra.setConexao( cn );		
 		lcPlanoPag.setConexao( cn );
+		lcTransp.setConexao( cn );
 
 		txtCodCompra.setFocusable( true );
 		setFirstFocus( txtCodCompra );
