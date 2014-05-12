@@ -295,12 +295,13 @@ public class Cpitcompra implements java.io.Serializable {
 		this.eqalmox = eqalmox;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+/*	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumns({
 			@JoinColumn(name = "CODLOTE", referencedColumnName = "CODLOTE", insertable = false, updatable = false),
 			@JoinColumn(name = "CODPROD", referencedColumnName = "CODPROD", nullable = false, insertable = false, updatable = false),
 			@JoinColumn(name = "CODFILIALLE", referencedColumnName = "CODFILIAL", insertable = false, updatable = false),
 			@JoinColumn(name = "CODEMPLE", referencedColumnName = "CODEMP", insertable = false, updatable = false) })
+			*/
 	public Eqlote getEqlote() {
 		return this.eqlote;
 	}
@@ -323,12 +324,12 @@ public class Cpitcompra implements java.io.Serializable {
 		this.lfitclfiscal = lfitclfiscal;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+/*	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumns({
 			@JoinColumn(name = "NUMSERIETMP", referencedColumnName = "NUMSERIE", insertable = false, updatable = false),
 			@JoinColumn(name = "CODPROD", referencedColumnName = "CODPROD", nullable = false, insertable = false, updatable = false),
 			@JoinColumn(name = "CODFILIALNS", referencedColumnName = "CODFILIAL", insertable = false, updatable = false),
-			@JoinColumn(name = "CODEMPNS", referencedColumnName = "CODEMP", insertable = false, updatable = false) })
+			@JoinColumn(name = "CODEMPNS", referencedColumnName = "CODEMP", insertable = false, updatable = false) })*/
 	public Eqserie getEqserie() {
 		return this.eqserie;
 	}
