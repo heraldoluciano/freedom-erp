@@ -318,7 +318,7 @@ public class FCLFiscal extends FDetalhe implements MouseListener, ChangeListener
 
 	private JTextFieldFK txtNomeUF = new JTextFieldFK( JTextFieldPad.TP_STRING, 80, 0 );
 
-	private JTextFieldPad txtMargemVlAgr = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 6, 2 );
+	private JTextFieldPad txtMargemVlAgr = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 7, 3 );
 	
 	private JTextFieldPad txtAdicICMSTotNotaPrefere = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 	
