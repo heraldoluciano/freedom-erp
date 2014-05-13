@@ -36,6 +36,7 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.Date;
 import java.util.Vector;
 
@@ -176,7 +177,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 
 
 	public static enum enum_compra {
-		SEL, CODCOMPRA, CODPLANOPAG, CODEMPFR, CODFILIALFR, CODFOR, RAZFOR, TICKET, NROITENS, NROITENSLIB, VLRLIQCOMPRA, VLRLIB
+		SEL, CODCOMPRA, CODPLANOPAG, CODEMPFR, CODFILIALFR, CODFOR, RAZFOR, TICKET, NROITENS, NROITENSLIB, VLRLIQCOMPRA, VLRLIB, CODTRAN, RAZTRAN
 	}
 
 	public static enum enum_itcompra {
@@ -365,6 +366,8 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 		tabcompra.adicColuna( "Nº lib." );
 		tabcompra.adicColuna( "Valor total" );
 		tabcompra.adicColuna( "Valor liberado" );
+		tabcompra.adicColuna( "Cód.transp." );
+		tabcompra.adicColuna( "Razão social/nome do transportador" );
 
 		tabcompra.setTamColuna( 25, enum_compra.SEL.ordinal() );
 		tabcompra.setTamColuna( 60, enum_compra.CODCOMPRA.ordinal() );
@@ -379,6 +382,8 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 		tabcompra.setTamColuna( 60, enum_compra.NROITENSLIB.ordinal() );
 		tabcompra.setTamColuna( 100, enum_compra.VLRLIQCOMPRA.ordinal() );
 		tabcompra.setTamColuna( 100, enum_compra.VLRLIB.ordinal() );
+		tabcompra.setTamColuna( 60, enum_compra.CODTRAN.ordinal() );
+		tabcompra.setTamColuna( 210, enum_compra.RAZTRAN.ordinal() );
 
 		tabcompra.setColunaEditavel( enum_compra.SEL.ordinal(), true );
 		tabcompra.setColunaInvisivel( enum_compra.CODPLANOPAG.ordinal() );
@@ -513,9 +518,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 			sql.append( "ic.coditcompra, ic.codprod, pd.descprod, ic.qtditcompra, ic.precoitcompra, ic.vlrdescitcompra, " );
 			sql.append( "ic.vlrliqitcompra, ic.codcompra, cp.codplanopag, ic.codlote, coalesce(ic.aprovpreco,'N') aprovpreco, " );
 			sql.append( "cp.codempfr, cp.codfilialfr, cp.codfor, ic.codemppd, ic.codfilialpd, ic.codprod, cp.dtentcompra " );
-			
 			sql.append( "from cpcompra cp, cpitcompra ic, eqproduto pd " );
-
 			sql.append( "where ic.codemp=cp.codemp and ic.codfilial=cp.codfilial and ic.codcompra=cp.codcompra " );
 			sql.append( "and pd.codemp=ic.codemppd and pd.codfilial=ic.codfilialpd and pd.codprod=ic.codprod " );
 			sql.append( "and cp.codemp=? and cp.codfilial=? and ic.codcompra=? " );
@@ -560,19 +563,15 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 					tabitcompra.setValor( rs.getInt( enum_itcompra.CODFILIALPD.toString() ), irow, enum_itcompra.CODFILIALPD.ordinal() );
 					tabitcompra.setValor( rs.getInt( enum_itcompra.CODPROD.toString() ), irow, enum_itcompra.CODPROD.ordinal() );
 					tabitcompra.setValor( rs.getString( enum_itcompra.DESCPROD.toString() ), irow, enum_itcompra.DESCPROD.ordinal() );
- 
-					tabitcompra.setValor( Funcoes.strDecimalToStrCurrencyd( Aplicativo.casasDec, rs.getString( enum_itcompra.QTDITCOMPRA.toString() ) != null ? rs.getString( enum_itcompra.QTDITCOMPRA.toString() ) : "0" ), irow, enum_itcompra.QTDITCOMPRA.ordinal() );
+ 					tabitcompra.setValor( Funcoes.strDecimalToStrCurrencyd( Aplicativo.casasDec, rs.getString( enum_itcompra.QTDITCOMPRA.toString() ) != null ? rs.getString( enum_itcompra.QTDITCOMPRA.toString() ) : "0" ), irow, enum_itcompra.QTDITCOMPRA.ordinal() );
 					tabitcompra.setValor( Funcoes.strDecimalToStrCurrencyd( Aplicativo.casasDecPre, rs.getString( enum_itcompra.PRECOITCOMPRA.toString() ) != null ? rs.getString( enum_itcompra.PRECOITCOMPRA.toString() ) : "0" ), irow, enum_itcompra.PRECOITCOMPRA.ordinal() );
 					tabitcompra.setValor( Funcoes.strDecimalToStrCurrencyd( Aplicativo.casasDecFin, rs.getString( enum_itcompra.VLRDESCITCOMPRA.toString() ) != null ? rs.getString( enum_itcompra.VLRDESCITCOMPRA.toString() ) : "0" ), irow, enum_itcompra.VLRDESCITCOMPRA.ordinal() );
 					tabitcompra.setValor( Funcoes.strDecimalToStrCurrencyd( Aplicativo.casasDecFin, rs.getString( enum_itcompra.VLRLIQITCOMPRA.toString() ) != null ? rs.getString( enum_itcompra.VLRLIQITCOMPRA.toString() ) : "0" ), irow, enum_itcompra.VLRLIQITCOMPRA.ordinal() );
-
 					tabitcompra.setValor( "", irow, enum_itcompra.TPAGRUP.ordinal() );
 					tabitcompra.setValor( "", irow, enum_itcompra.AGRUP.ordinal() );
 					tabitcompra.setValor( "0,00", irow, enum_itcompra.VLRAGRUP.ordinal() );
-
 					tabitcompra.setValor( rs.getInt( enum_itcompra.CODCOMPRA.toString() ), irow, enum_itcompra.CODCOMPRA.ordinal() );
 					tabitcompra.setValor( rs.getString( enum_itcompra.CODLOTE.toString() ) == null ? "" : rs.getString( enum_itcompra.CODLOTE.toString() ), irow, enum_itcompra.CODLOTE.ordinal() );
-					
 					tabitcompra.setValor( aprovpreco, irow, enum_itcompra.APROVPRECO.ordinal() );
 					tabitcompra.setValor( rs.getInt( enum_itcompra.CODEMPFR.toString() ), irow, enum_itcompra.CODEMPFR.ordinal() );
 					tabitcompra.setValor( rs.getInt( enum_itcompra.CODFILIALFR.toString() ), irow, enum_itcompra.CODFILIALFR.ordinal() );
@@ -653,6 +652,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 
 		Integer codplanopag = null;
 		Integer codfor = null;
+		Integer codtran = null;
 		Integer doccompra = null;
 		Integer codtipomov = preferegms.getCodtipomovtc();
 		String serie = null;
@@ -670,6 +670,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 
 						codplanopag = (Integer) tabcompra.getValor( i, enum_compra.CODPLANOPAG.ordinal() );
 						codfor = (Integer) tabcompra.getValor( i, enum_compra.CODFOR.ordinal() );
+						codtran = (Integer) tabcompra.getValor( i, enum_compra.CODTRAN.ordinal() );
 
 					}
 
@@ -712,16 +713,12 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 					if ( bPrim ) {
 
 						try {
-							/*Integer codemp, Integer codfilial, Integer codcompra
-							 * , Integer codfilialpg, Integer codplanopag
-							 * , Integer codfilialfr, Integer codfor
-							 * , Integer codfilialtm, Integer codtipomov
-							 * , Integer doccompra*/
 							codcompra = adicCompra( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPCOMPRA" ), codcompra
 									, ListaCampos.getMasterFilial( "FNPLANOPAG" ), codplanopag
 									, ListaCampos.getMasterFilial( "CPFORNECED" ), codfor
 									, ListaCampos.getMasterFilial( "EQTIPOMOV" ), codtipomov
-									, doccompra );
+									, doccompra
+									, ListaCampos.getMasterFilial( "VDTRANSP" ), codtran);
 
 						} catch ( SQLException err ) {
 							if ( err.getErrorCode() == 335544665 ) {
@@ -806,7 +803,7 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 	
 	private Integer adicCompra(Integer codemp, Integer codfilial, Integer codcompra, Integer codfilialpg
 			, Integer codplanopag, Integer codfilialfr, Integer codfor, Integer codfilialtm
-			, Integer codtipomov, Integer doccompra ) throws SQLException {
+			, Integer codtipomov, Integer doccompra, Integer codfilialtn, Integer codtran ) throws SQLException {
 		Integer result = null;
 		Integer codempse = null;
 		Integer codfilialse = null;
@@ -833,12 +830,13 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 			rs.close();
 			ps.close();
 			sqlinsert.append(" insert into cpcompra (  " );
-			sqlinsert.append(" codemp, codfilial, codcompra, codemppg, codfilialpg, codplanopag, codempfr, codfilialfr, codfor, " );
-			sqlinsert.append(" codempse, codfilialse, serie, codemptm, codfilialtm, codtipomov, doccompra, dtentcompra, dtemitcompra, statuscompra, calctrib ) " );
+			sqlinsert.append(" codemp, codfilial, codcompra, codemppg, codfilialpg, codplanopag, codempfr, codfilialfr, codfor " );
+			sqlinsert.append(", codempse, codfilialse, serie, codemptm, codfilialtm, codtipomov, doccompra, dtentcompra, dtemitcompra ");
+			sqlinsert.append(", statuscompra, calctrib, codemptn, codfilialtn, codtran ) " );
 			sqlinsert.append(" values ( " );
 			sqlinsert.append(" ?, ?, ?, ?, ?, ?, ?, ?, ? " );
 			sqlinsert.append(", ?, ?, ?, ?, ?, ?, ? " );
-			sqlinsert.append(", cast('today' as date), cast('today' as date), ?, 'S' ) " );
+			sqlinsert.append(", cast('today' as date), cast('today' as date), ?, 'S', ?, ?, ? ) " );
 			param = 1;
 			PreparedStatement psinsert = con.prepareStatement( sqlinsert.toString() );
 			psinsert.setInt( param++, codemp );
@@ -858,6 +856,15 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 			psinsert.setInt( param++, codtipomov );
 			psinsert.setInt( param++, doccompra );
 			psinsert.setString( param++, statuscompra );
+			if (codtran!=null && codtran.intValue()!=0) {
+				psinsert.setInt( param++, codemp );
+				psinsert.setInt( param++, codfilialtn );
+				psinsert.setInt( param++, codtran);
+			} else {
+				psinsert.setNull( param++, Types.INTEGER );
+				psinsert.setNull( param++, Types.INTEGER );
+				psinsert.setNull( param++, Types.INTEGER);
+			}
 			psinsert.executeUpdate();
 			psinsert.close();
 			result = codcompra;
@@ -882,11 +889,14 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 				sql.append( "select cp.statuscompra, cp.codcompra, cp.codplanopag, cp.codfor, fr.razfor, cp.ticket " );
 				sql.append( ", (select count(*) from cpitcompra ic where ic.codemp=cp.codemp and ic.codfilial=cp.codfilial and ic.codcompra=cp.codcompra) nroitens  " );
 				sql.append( ", (select count(*) from cpitcompra ic where ic.codemp=cp.codemp and ic.codfilial=cp.codfilial and ic.codcompra=cp.codcompra) nroitenslib " );
-				sql.append( ", cp.vlrliqcompra, cp.vlrliqcompra vlrlib " );
-				sql.append( "from cpcompra cp, cpforneced fr " );
-				sql.append( "where " );
+				sql.append( ", cp.vlrliqcompra, cp.vlrliqcompra vlrlib, t.codtran, t.raztran " );
+				sql.append( "from cpcompra cp ");
+				sql.append( "inner join cpforneced fr on " );
 				sql.append( "fr.codemp=cp.codempfr and fr.codfilial=cp.codfilialfr and fr.codfor=cp.codfor " );
-				sql.append( "and cp.statuscompra in ('P1','P2','P3') and cp.impnotacompra='N' " );
+				sql.append( "left outer join vdtransp t on ");
+				sql.append( "t.codemp=cp.codemptn and t.codfilial=cp.codfilialtn and t.codtran=cp.codtran ");
+				sql.append( "where " );
+				sql.append( "cp.statuscompra in ('P1','P2','P3') and cp.impnotacompra='N' " );
 
 				if ( txtCodFor.getVlrInteger() > 0 && txtCodCompra.getVlrInteger() <= 0 ) {
 					sql.append( "and cp.codempfr=? and cp.codfilialfr=? and cp.codfor=? " );
@@ -952,6 +962,8 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 					tabcompra.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( enum_compra.NROITENSLIB.toString() ) ), irow, enum_compra.NROITENSLIB.ordinal() );
 					tabcompra.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( enum_compra.VLRLIQCOMPRA.toString() ) ), irow, enum_compra.VLRLIQCOMPRA.ordinal() );
 					tabcompra.setValor( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( enum_compra.VLRLIB.toString() ) ), irow, enum_compra.VLRLIB.ordinal() );
+					tabcompra.setValor( new Integer(rs.getInt( enum_compra.CODTRAN.toString() )), irow, enum_compra.CODTRAN.ordinal() );
+					tabcompra.setValor( emptyStr(rs.getString( enum_compra.RAZTRAN.toString() )), irow, enum_compra.RAZTRAN.ordinal() );
 
 					irow++;
 
@@ -974,6 +986,13 @@ public class DLBuscaPedCompra extends FDialogo implements ActionListener, RadioG
 
 	}
 
+	private String emptyStr(String str) {
+		String result = "";
+		if (str!=null) {
+			result = str;
+		}
+		return result;
+	}
 	private void limpaNaoSelecionados( JTablePad ltab ) {
 
 		int linhas = ltab.getNumLinhas();
