@@ -1376,36 +1376,18 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		return super.testaLucro( new Object[] { txtCodProd.getVlrInteger(), txtCodAlmoxItOrc.getVlrInteger(), txtPrecoItOrc.getVlrBigDecimal(), }, fatluc );
 	}
 
-	private boolean testaCodLote() {
+	private boolean testaCodlote() {
 
-		boolean bValido = false;
-
+		boolean result = false;
+		
 		try {
-
-			PreparedStatement ps = con.prepareStatement( "SELECT SLDLIQLOTE FROM EQLOTE WHERE CODLOTE=? AND CODPROD=? AND CODEMP=? AND CODFILIAL=?" );
-			ps.setString( 1, txtCodLote.getVlrString().trim() );
-			ps.setInt( 2, txtCodProd.getVlrInteger().intValue() );
-			ps.setInt( 3, Aplicativo.iCodEmp );
-			ps.setInt( 4, ListaCampos.getMasterFilial( "EQLOTE" ) );
-			ResultSet rs = ps.executeQuery();
-			if ( rs.next() ) {
-				if ( rs.getFloat( 1 ) > 0.0f ) {
-					bValido = true;
-				} else {
-					Funcoes.mensagemInforma( this, "LOTE SEM SALDO!" );
-				}
-			}
-			// else { Funcoes.mensagemErro( this, "Cód.lote é requerido." ); }
-
-			rs.close();
-			ps.close();
-			con.commit();
-		} catch ( SQLException err ) {
-			err.printStackTrace();
-			Funcoes.mensagemErro( this, "Erro ao consultar a tabela EQLOTE!\n" + err.getMessage(), true, con, err );
+			result = daoorcamento.testaCodlote(  ListaCampos.getMasterFilial( "EQLOTE" )
+					, txtCodProd.getVlrInteger(), txtCodLote.getVlrString().trim() );
+		} catch ( Exception err ) {
+			Funcoes.mensagemErro( this, err.getMessage());
 		}
 
-		return bValido;
+		return result;
 	}
 
 	private void mostraTelaDescont() {
@@ -1739,7 +1721,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		DLCopiaOrc dl = null;
 
 		try {
-			if ( txtCodOrc.getVlrInteger().intValue() == 0 || lcCampos.getStatus() != ListaCampos.LCS_SELECT ) {
+			Integer codorc = txtCodOrc.getVlrInteger(); 
+			if ( codorc.intValue() == 0 || lcCampos.getStatus() != ListaCampos.LCS_SELECT ) {
 				Funcoes.mensagemInforma( this, "Selecione um orçamento cadastrado antes!" );
 				return;
 			}
@@ -1750,34 +1733,23 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				dl.dispose();
 				return;
 			}
-			int[] iVals = dl.getValores();
-			dl.dispose();
-
-			PreparedStatement ps = con.prepareStatement( "SELECT IRET FROM VDCOPIAORCSP(?,?,?,?,?)" );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, lcCampos.getCodFilial() );
-			ps.setInt( 3, txtCodOrc.getVlrInteger().intValue() );
-			ps.setInt( 4, iVals[ 1 ] );
-			ps.setInt( 5, iVals[ 0 ] );
-			ResultSet rs = ps.executeQuery();
-
-			if ( rs.next() ) {
-				if ( Funcoes.mensagemConfirma( this, "Orçamento '" + rs.getInt( 1 ) + "' criado com sucesso!\n" + "Gostaria de edita-lo agora?" ) == JOptionPane.OK_OPTION ) {
-					txtCodOrc.setVlrInteger( new Integer( rs.getInt( 1 ) ) );
+			int[] vals = dl.getValores();
+			codorc = daoorcamento.copiaOrcamento( codorc, vals );
+			if (codorc!=null) {
+				if ( Funcoes.mensagemConfirma( this, "Orçamento '" + codorc + "' criado com sucesso!\nGostaria de edita-lo agora?" ) == JOptionPane.OK_OPTION ) {
+					txtCodOrc.setVlrInteger( codorc );
 					lcCampos.carregaDados();
 				}
 			}
-
-			rs.close();
-			ps.close();
-			con.commit();
-
-		} catch ( SQLException err ) {
+		} catch ( Exception err ) {
 			Funcoes.mensagemErro( this, "Erro ao copiar o orçamento!\n" + err.getMessage(), true, con, err );
 			err.printStackTrace();
+		} finally {
+			if (dl!=null) {
+				dl.dispose();
+			}
 		}
-
-		dl.dispose();
+		
 	}
 
 	private void replicaOrcamento() {
