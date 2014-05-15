@@ -72,6 +72,7 @@ import org.freedom.modulos.gms.view.frame.crud.detail.FCompra;
 import org.freedom.modulos.gms.view.frame.crud.detail.FOrdemServico;
 import org.freedom.modulos.gms.view.frame.crud.detail.FRecMerc;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FProduto;
+import org.freedom.modulos.std.dao.DAOOrcamento;
 import org.freedom.modulos.std.view.frame.crud.detail.FOrcamento;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 
@@ -217,6 +218,10 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 	private ListaCampos lcCli = new ListaCampos( this );
 
 	private Map<String, Object> bPref = null;
+	
+	private DAOOrcamento daoorcamento = null;
+
+	private static Object[] oPrefs = null;
 	// Enums
 
 	private enum DETALHAMENTO {
@@ -813,7 +818,14 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
-
+		daoorcamento = new DAOOrcamento( cn, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDORCAMENTO" ));
+		try {
+			oPrefs = daoorcamento.getPrefere( ListaCampos.getMasterFilial( "SGPREFERE1" ), ListaCampos.getMasterFilial( "SGESTACAOIMP" ), Aplicativo.iNumEst );
+		} catch (Exception err) {
+			Funcoes.mensagemErro( null, err.getMessage() );
+			dispose();
+			return;
+		}
 		try {
 			bPref = getPrefs();
 		} catch (SQLException e) {
@@ -1116,7 +1128,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 					if(codorcgrid == null) {
 
 						if(parametros != null) {
-							codorc = daorecmerc.geraOrcamento(parametros, null, ListaCampos.getMasterFilial( "VDORCAMENTO" )
+							codorc = daorecmerc.geraOrcamento(oPrefs, parametros, null, ListaCampos.getMasterFilial( "VDORCAMENTO" )
 									, ListaCampos.getMasterFilial( "SGPREFERE1" ), ListaCampos.getMasterFilial( "VDPLANOPAG" )
 									, ListaCampos.getMasterFilial( "VDCLIENTE" ), ListaCampos.getMasterFilial( "VDVENDEDOR" )
 									, ListaCampos.getMasterFilial( "EQTIPOMOV" ) );
@@ -1133,7 +1145,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 						if ( Funcoes.mensagemConfirma( corig, "Já existe o orçamento de nro.: " + codorcgrid + " para este ticket!\n" +
 								"Confirma o reprocessamento de orçamento?" ) == JOptionPane.YES_OPTION ) {
 
-							codorc = daorecmerc.geraOrcamento(parametros, codorcgrid, ListaCampos.getMasterFilial( "VDORCAMENTO" )
+							codorc = daorecmerc.geraOrcamento(oPrefs, parametros, codorcgrid, ListaCampos.getMasterFilial( "VDORCAMENTO" )
 									, ListaCampos.getMasterFilial( "SGPREFERE1" ), ListaCampos.getMasterFilial( "VDPLANOPAG" )
 									, ListaCampos.getMasterFilial( "VDCLIENTE" ), ListaCampos.getMasterFilial( "VDVENDEDOR" )
 									, ListaCampos.getMasterFilial( "EQTIPOMOV" ) );

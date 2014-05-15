@@ -111,6 +111,7 @@ import org.freedom.modulos.std.DLBuscaEstoq;
 import org.freedom.modulos.std.DLCodProd;
 import org.freedom.modulos.std.business.component.Orcamento;
 import org.freedom.modulos.std.business.component.Orcamento.PrefOrc;
+import org.freedom.modulos.std.dao.DAOOrcamento;
 import org.freedom.modulos.std.view.dialog.report.DLROrcamento;
 import org.freedom.modulos.std.view.dialog.utility.DLAltFatLucro;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
@@ -474,6 +475,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 	private DAOEmail daoemail = null;
 
+	private DAOOrcamento daoorcamento = null;
+	
 	private boolean bImprimir = true;
 
 	private String classorcpd = null;
@@ -1239,65 +1242,46 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				txtVlrProdItOrc.getVlrString().trim() };
 	}
 
-	private int getClComiss( int iCodVend ) {
+	private Integer getClcomiss( int codvend ) {
 
-		int iRet = 0;
-
+		Integer result = 0;
+		Integer codemp = Aplicativo.iCodEmp;
+		Integer codfilial = ListaCampos.getMasterFilial( "VDVENDEDOR" );
 		try {
-			PreparedStatement ps = con.prepareStatement( "SELECT CODCLCOMIS FROM VDVENDEDOR WHERE CODEMP=? AND CODFILIAL=? AND CODVEND=?" );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
-			ps.setInt( 3, iCodVend );
-			ResultSet rs = ps.executeQuery();
-			if ( rs.next() ) {
-				iRet = rs.getInt( "CODCLCOMIS" );
-				return iRet;
-			}
-			con.commit();
+			
+			result = daoorcamento.getClcomiss( codfilial, codvend );
+			
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao buscar a class. da comissão." + err.getMessage(), true, con, err );
 			err.printStackTrace();
 		}
 
-		return iRet;
+		return result;
 	}
 
-	private int getCodCli() {
+	private Integer getCodCli() {
 
-		int iRet = 0;
+		Integer result = null;
 
 		try {
-			iRet = Integer.parseInt( oPrefs[ Orcamento.PrefOrc.CODCLI.ordinal() ].toString() );
+			result = (Integer) oPrefs[ Orcamento.PrefOrc.CODCLI.ordinal() ];
 		} catch ( Exception err ) {
-			Funcoes.mensagemErro( this, "Erro ao buscar o código do cliente.\n" + "Provavelmente não foram gravadas corretamente as preferências!\n" + err.getMessage(), true, con, err );
+			Funcoes.mensagemErro( this, "Erro ao buscar o código do cliente.\n"
+						+ "Provavelmente não foram gravadas corretamente as preferências!\n" + err.getMessage(), true, con, err );
 			err.printStackTrace();
 		}
 
-		return iRet;
+		return result;
 	}
 
-	private int getCodTipoCli() {
-
-		int iRet = 0;
-
+	private Integer getCodTipoCli() {
+		Integer result = null;
 		try {
-			PreparedStatement ps = con.prepareStatement( "SELECT CODTIPOCLI FROM VDCLIENTE WHERE CODEMP=? AND CODFILIAL=? AND CODCLI=?" );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
-			ps.setInt( 3, txtCodCli.getVlrInteger().intValue() );
-			ResultSet rs = ps.executeQuery();
-			if ( rs.next() ) {
-				iRet = rs.getInt( "CODTIPOCLI" );
-			}
-			rs.close();
-			ps.close();
-			con.commit();
-		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro ao buscar o código do tipo de cliente.\n" + err.getMessage(), true, con, err );
-			err.printStackTrace();
+			daoorcamento.getCodtipocli( ListaCampos.getMasterFilial( "VDCLIENTE" ), txtCodCli.getVlrInteger() );
+		} catch (Exception err) {
+			Funcoes.mensagemErro( this, err.getMessage() );
 		}
-
-		return iRet;
+		return result;
 	}
 
 	private void getLote() {
@@ -1341,44 +1325,16 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		return iRet;
 	}
 
-	private int getVendedor() {
-
-		String sSQL = null;
-		int iRet = 0;
-
+	private Integer getVendedor() {
+		Integer result = null;
 		try {
-
-			sSQL = "SELECT CODVEND FROM VDCLIENTE WHERE CODEMP=? AND CODFILIAL=? AND CODCLI=?";
-			PreparedStatement ps = con.prepareStatement( sSQL );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
-			ps.setInt( 3, txtCodCli.getVlrInteger().intValue() );
-			ResultSet rs = ps.executeQuery();
-			if ( rs.next() ) {
-				iRet = rs.getInt( "CodVend" );
-				return iRet;
-			}
-
-			sSQL = "SELECT CODVEND FROM ATATENDENTE WHERE IDUSU=? AND CODEMPUS=? AND CODFILIALUS=?";
-			ps = con.prepareStatement( sSQL );
-			ps.setString( 1, Aplicativo.getUsuario().getIdusu() );
-			ps.setInt( 2, Aplicativo.iCodEmp );
-			ps.setInt( 3, Aplicativo.iCodFilialPad );
-			rs = ps.executeQuery();
-
-			if ( rs.next() ) {
-				iRet = rs.getInt( "CodVend" );
-			}
-
-			rs.close();
-			ps.close();
-			con.commit();
-		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro ao buscar o comissionado.\n" + "O usuário '" + Aplicativo.getUsuario().getIdusu() + "' é um comissionado?\n" + err.getMessage(), true, con, err );
-			err.printStackTrace();
+			result = daoorcamento.getVendedor( 
+					ListaCampos.getMasterFilial( "VDCLIENTE" ), txtCodCli.getVlrInteger().intValue()
+					,  ListaCampos.getMasterFilial( "SGUSUARIO" ), Aplicativo.getUsuario().getIdusu() );
+		} catch ( Exception err ) {
+			Funcoes.mensagemErro( this, err.getMessage() );
 		}
-
-		return iRet;
+		return result;
 	}
 
 	private void calcDescIt() {
@@ -1920,13 +1876,13 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 	private synchronized void iniOrc() {
 
-		txtCodCli.setVlrInteger( new Integer( getCodCli() ) );
+		txtCodCli.setVlrInteger( getCodCli() );
 		lcCli.carregaDados();
-		txtCodTpCli.setVlrInteger( new Integer( getCodTipoCli() ) );
+		txtCodTpCli.setVlrInteger( getCodTipoCli() );
 		lcTipoCli.carregaDados();
 		txtCodPlanoPag.setVlrInteger( new Integer( getPlanoPag() ) );
 		lcPlanoPag.carregaDados();
-		txtCodVend.setVlrInteger( new Integer( getVendedor() ) );
+		txtCodVend.setVlrInteger( getVendedor() );
 		lcVend.carregaDados();
 		lcProd.limpaCampos( true );
 		lcProd2.limpaCampos( true );
@@ -2745,7 +2701,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			if ( podeReCalcPreco() ) {
 				calcVlrItem( "VDORCAMENTO", true );
 			}
-			txtCodClComiss.setVlrInteger( new Integer( getClComiss( txtCodVend.getVlrInteger().intValue() ) ) );
+			txtCodClComiss.setVlrInteger( getClcomiss( txtCodVend.getVlrInteger().intValue() ) );
 			txtCodTipoMov.setVlrInteger( (Integer) oPrefs[ Orcamento.PrefOrc.CODTIPOMOV2.ordinal() ] );
 			// lcTipoMov.carregaDados();
 
@@ -2869,6 +2825,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
+		daoorcamento = new DAOOrcamento( cn, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
 		daoemail = new DAOEmail( cn, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "TKEMAIL" ) ); 
 		try {
 			daoatend = new DAOAtendimento( cn, Aplicativo.iCodEmp, ListaCampos.getMasterFilial("ATATENDENTE")  );
@@ -2895,8 +2852,14 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		lcTipoMov.setConexao( cn );
 
 		permusu = getPermissaoUsu();
-		oPrefs = Orcamento.getPrefere(); // Carrega as preferências
-
+		try {
+			oPrefs = daoorcamento.getPrefere(ListaCampos.getMasterFilial( "SGPREFERE1" )
+				, ListaCampos.getMasterFilial( "SGESTACAOIMP" ), Aplicativo.iNumEst); // Carrega as preferências
+		} catch (Exception err) {
+			Funcoes.mensagemErro( null, err.getMessage() );
+			dispose();
+			return;
+		}
 		montaListaCampos();
 		montaOrcamento();
 		montaDetalhe();

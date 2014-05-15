@@ -109,7 +109,7 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 	private Integer codplanopag = null;
 
-	private Object[] oPrefs = null;
+	//private Object[] oPrefs = null;
 
 	private Date dtent = null;
 
@@ -224,11 +224,11 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 	}
 
-	private void geraPrefereOrc() {
+	/*private void geraPrefereOrc() {
 
 		oPrefs = Orcamento.getPrefere();
 	}
-
+*/
 	public static void atualizaStatus( String status, JLabelPad lbstatus ) {
 
 		lbstatus.setForeground( Color.WHITE );
@@ -1245,7 +1245,7 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 	}
 
-	public Integer geraOrcamento( HashMap<Object, Object> parametros, Integer codorc_atu, Integer codfilialoc
+	public Integer geraOrcamento( Object[] oPrefs, HashMap<Object, Object> parametros, Integer codorc_atu, Integer codfilialoc
 			, Integer codfilialp1, Integer codfilialpg, Integer codfilialcl, Integer codfilialvd, Integer codfilialtm ) throws Exception {
 
 		StringBuilder sql = new StringBuilder();
@@ -1272,10 +1272,10 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 			geraCodTipoMovOrc( "S".equals( parametros.get( DLTipoProdServOrc.SERVICOS ) ), codfilialp1 );
 
-			if ( oPrefs == null ) {
+			/*if ( oPrefs == null ) {
 				geraPrefereOrc();
 			}
-
+*/
 			codplanopag = (Integer) parametros.get( "CODPLANOPAG" );
 
 			// codplanopag = buscaPlanoPag();
