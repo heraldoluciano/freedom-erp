@@ -153,6 +153,42 @@ public class DAOOrcamento extends AbstractDAO {
 		return result;
 	}
 
+	public boolean testaCodlote(Integer codfilialle, Integer codprod, String codlote) throws Exception {
+
+		boolean result = false;
+		try {
+			PreparedStatement ps = 
+					getConn().prepareStatement( "select sldliqlote from eqlote where codlote=? and codprod=? and codemp=? and codfilial=?" );
+			int param = 1;
+			ps.setString( param++, codlote );
+			ps.setInt( param++, codprod );
+			ps.setInt( param++, getCodemp() );
+			ps.setInt( param++, codfilialle );
+			ResultSet rs = ps.executeQuery();
+			if ( rs.next() ) {
+				if ( rs.getFloat( 1 ) > 0.0f ) {
+					result = true;
+				} else {
+					throw new Exception("LOTE SEM SALDO!" );
+				}
+			}
+			// else { Funcoes.mensagemErro( this, "Cód.lote é requerido." ); }
+
+			rs.close();
+			ps.close();
+			getConn().commit();
+		} catch ( SQLException err ) {
+			err.printStackTrace();
+			try {
+				getConn().rollback();
+			} catch (SQLException errroll) {
+				errroll.printStackTrace();
+			}
+			throw new Exception("Erro ao consultar a tabela de lotes (EQLOTE)!\n"+err.getMessage());
+		}
+		return result;
+	}
+
 	public Integer getCodtipocli(Integer codfilialcl, Integer codcli) throws Exception {
 		Integer result = null;
 
@@ -232,5 +268,37 @@ public class DAOOrcamento extends AbstractDAO {
 		return result;
 	}
 
+	public Integer copiaOrcamento(Integer codorc, int[] vals) throws Exception {
+
+		Integer result = null;
+
+		try {
+			PreparedStatement ps = getConn().prepareStatement( "select iret from vdcopiaorcsp(?,?,?,?,?)" );
+			int param = 1;
+			ps.setInt( param++, getCodemp() );
+			ps.setInt( param++, getCodfilial() );
+			ps.setInt( param++, codorc );
+			ps.setInt( param++, vals[ 1 ] );
+			ps.setInt( param++, vals[ 0 ] );
+			ResultSet rs = ps.executeQuery();
+			if ( rs.next() ) {
+				result = rs.getInt( "iret" );
+			}
+			rs.close();
+			ps.close();
+			getConn().commit();
+
+		} catch ( SQLException err ) {
+			try {
+				err.printStackTrace();
+				getConn().rollback();
+			} catch (SQLException errroll) {
+				errroll.printStackTrace();
+			}
+			throw new Exception("Erro ao copiar o orçamento!\n" + err.getMessage());
+		}
+
+		return result;
+	}
 
 }
