@@ -40,7 +40,6 @@ import java.awt.event.MouseListener;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
-import java.sql.Blob;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -48,7 +47,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -112,6 +110,7 @@ import org.freedom.modulos.std.DLCodProd;
 import org.freedom.modulos.std.business.component.Orcamento;
 import org.freedom.modulos.std.business.component.Orcamento.OrcVenda;
 import org.freedom.modulos.std.business.component.Orcamento.PrefOrc;
+import org.freedom.modulos.std.business.component.Orcamento.ResultBuscaClassOrc;
 import org.freedom.modulos.std.business.component.Orcamento.ResultClassOrc;
 import org.freedom.modulos.std.dao.DAOOrcamento;
 import org.freedom.modulos.std.view.dialog.report.DLROrcamento;
@@ -481,11 +480,13 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	
 	private boolean bImprimir = true;
 
-	private String classorcpd = null;
+	/*private String classorcpd = null;
 	
 	private String classorclaudosus = null;
 	
 	private String classorcctaluguel = null;
+	*/
+	private String classorc[] = null;
 	
 	//CLASSORCPD, CLASSORCLAUDOSUS, CLASSORCCTALUGUEL
 	
@@ -1948,36 +1949,6 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		}
 	}
 
-	private void buscaClassOrc(){
-		// Carrega layouts de orçamento padrão Jasper
-		classorcpd = "layout/orc/ORC_PD.jasper";
-		StringBuilder sql = new StringBuilder("SELECT CLASSORCPD, CLASSORCLAUDOSUS, CLASSORCCTALUGUEL FROM SGPREFERE1 P ");
-		sql.append( "WHERE P.CODEMP=? AND P.CODFILIAL=?" );
-		try {
-			PreparedStatement ps = con.prepareStatement( sql.toString() );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
-			ResultSet rs = ps.executeQuery();
-			if ( rs.next() ) {
-				if ( (rs.getString("CLASSORCPD")!=null) && (! "".equals( rs.getString( "CLASSORCPD" ).trim() ) ) ) {
-					classorcpd = "layout/orc/" + rs.getString("CLASSORCPD").trim();
-				}
-				if (rs.getString("CLASSORCLAUDOSUS")!=null) {
-					classorclaudosus = "layout/orc/" + rs.getString("CLASSORCLAUDOSUS").trim();
-				} 
-				if (rs.getString("CLASSORCCTALUGUEL")!=null) {
-					classorclaudosus = "layout/orc/" + rs.getString("CLASSORCCTALUGUEL").trim();
-				} 
-			}
-			rs.close();
-			ps.close();
-			con.commit();
-		} catch (SQLException e) {
-			Funcoes.mensagemErro( this, "Erro consultando o preferências !\n"+e.getMessage() );
-			e.printStackTrace();
-		}
-	}
-
 	private void imprimiGraficoPad( TYPE_PRINT bVisualizar, String layoutorc, Date dtorc ) {
 
 		FPrinterJob dlGr = null;
@@ -2008,52 +1979,29 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		}
 	}
 
-	public void imprimeTexto( TYPE_PRINT bVisualizar, String sOrdem ) {
+	public void imprimeTexto( TYPE_PRINT bVisualizar, String ordem ) {
 
-		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String sSQL = null;
 		String linhaFina = StringFunctions.replicate( "-", 135 );
 		Vector<?> vDesc = null;
 		Vector<?> vObs = null;
 		ImprimeOS imp = new ImprimeOS( "", con );
-		int iCodOrc = txtCodOrc.getVlrInteger().intValue();
+		Integer codorc = txtCodOrc.getVlrInteger();
 		int linPag = imp.verifLinPag() - 1;
 
 		try {
-			sSQL = "SELECT O.CODORC, O.CODPLANOPAG, O.CODCLI, O.OBSORC, O.VLRLIQORC, O.PRAZOENTORC, C.RAZCLI," 
-					+ " C.CONTCLI, C.CNPJCLI, C.CPFCLI, C.RGCLI, C.INSCCLI, C.SITECLI, C.EMAILCLI, C.ENDCLI, C.NUMCLI,"
-					+ " C.BAIRCLI, C.CIDCLI, C.UFCLI, C.CEPCLI,C.DDDCLI, C.FONECLI, C.FAXCLI, I.CODITORC, I.CODPROD," 
-					+ " I.QTDITORC, I.PRECOITORC, I.VLRPRODITORC, I.VLRLIQITORC, I.VLRDESCITORC, P.REFPROD, P.DESCPROD, P.CODUNID," 
-					+ " PG.DESCPLANOPAG, I.OBSITORC, VEND.NOMEVEND, VEND.EMAILVEND, VEND.CELVEND, VEND.DDDCELVEND,"
-					+ " (SELECT FN.DESCFUNC FROM RHFUNCAO FN WHERE FN.CODEMP=VEND.CODEMPFU" 
-					+ " AND FN.CODFILIAL=VEND.CODFILIALFU AND FN.CODFUNC=VEND.CODFUNC)" 
-					+ " FROM VDORCAMENTO O, VDITORCAMENTO I, VDCLIENTE C, EQPRODUTO P, FNPLANOPAG PG, VDVENDEDOR VEND"
-					+ " WHERE O.CODEMP=? AND O.CODFILIAL=? AND O.CODORC=?" 
-					+ " AND C.CODEMP=O.CODEMPCL AND C.CODFILIAL=O.CODFILIALCL AND C.CODCLI=O.CODCLI" 
-					+ " AND I.CODEMP=O.CODEMP AND I.CODFILIAL=O.CODFILIAL AND I.CODORC=O.CODORC AND I.TIPOORC=O.TIPOORC"
-					+ " AND P.CODEMP=I.CODEMPPD AND P.CODFILIAL=I.CODFILIALPD AND P.CODPROD=I.CODPROD" 
-					+ " AND PG.CODEMP=O.CODEMPPG AND PG.CODFILIAL=O.CODFILIALPG AND PG.CODPLANOPAG=O.CODPLANOPAG" 
-					+ " AND VEND.CODEMP=O.CODEMPVD AND VEND.CODFILIAL=O.CODFILIALVD AND VEND.CODVEND=O.CODVEND"
-					+ " ORDER BY P." + sOrdem + ",P.DESCPROD";
 
 			imp.montaCab();
 			imp.setTitulo( "ORÇAMENTO" );
 			imp.limpaPags();
-			ps = con.prepareStatement( sSQL );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
-			ps.setInt( 3, iCodOrc );
-			rs = ps.executeQuery();
+			rs = daoorcamento.getResultSetImprimeTexto( ordem, codorc );
 			while ( rs.next() ) {
-
 				vDesc = new Vector<Object>();
 				if ( ( (Boolean) oPrefs[ Orcamento.PrefOrc.DESCCOMPPED.ordinal() ] ).booleanValue() ) {
 					vDesc = Funcoes.quebraLinha( Funcoes.stringToVector( rs.getString( "ObsItOrc" ) == null ? rs.getString( "DescProd" ).trim() : rs.getString( "ObsItOrc" ).trim() ), 50 );
 				} else {
 					vDesc = Funcoes.quebraLinha( Funcoes.stringToVector( rs.getString( "DescProd" ).trim() ), 50 );
 				}
-
 				for ( int i = 0; i < vDesc.size(); i++ ) {
 					if ( imp.pRow() == 0 ) {
 						imp.impCab( 136, false );
@@ -2092,21 +2040,16 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 						imp.say( 105, "|   V.DESC." );
 						imp.say( 119, "|     V.TOTAL" );
 					}
-
 					imp.pulaLinha( 1, imp.comprimido() );
-
 					if ( i == 0 ) {
 						imp.say( 1, rs.getString( "CodItOrc" ).trim() );
-
 						if ( ( (Boolean) oPrefs[ Orcamento.PrefOrc.USAREFPROD.ordinal() ] ).booleanValue() ) {
 							imp.say( 7, rs.getString( "RefProd" ).trim() );
 						} else {
 							imp.say( 7, rs.getString( "CodProd" ).trim() );
 						}
 					}
-
 					imp.say( 20, (String) vDesc.elementAt( i ).toString() );
-
 					if ( i == 0 ) {
 						imp.say( 74, Funcoes.copy( rs.getString( "CodUnid" ).trim(), 2 ) );
 						imp.say( 78, Funcoes.strDecimalToStrCurrency( 12, 2, rs.getString( "QtdItOrc" ) ) );
@@ -2135,9 +2078,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			imp.pulaLinha( 1, imp.comprimido() );
 			imp.say( 62, "OBSERVACÃO" );
 			imp.pulaLinha( 1, imp.comprimido() );
-
 			vObs = Funcoes.quebraLinha( Funcoes.stringToVector( rs.getString( "ObsOrc" ) ), 115 );
-
 			for ( int i = 0; i < vObs.size(); i++ ) {
 				imp.pulaLinha( 1, imp.comprimido() );
 				imp.say( 20, vObs.elementAt( i ).toString() );
@@ -2146,7 +2087,6 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 					imp.eject();
 				}
 			}
-
 			imp.pulaLinha( 1, imp.comprimido() );
 			imp.say( 0, linhaFina );
 			imp.pulaLinha( 1, imp.comprimido() );
@@ -2157,22 +2097,22 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			imp.say( 5, rs.getString( 37 ) );
 			imp.pulaLinha( 1, imp.comprimido() );
 			imp.say( 5, rs.getString( "EmailVend" ) );
-
 			imp.eject();
 			imp.fechaGravacao();
-
+			rs.close();
 			con.commit();
-
 		} catch ( SQLException err ) {
+			try {
+				con.rollback();
+			} catch (SQLException errroll) {
+				errroll.printStackTrace();
+			}
 			Funcoes.mensagemErro( this, "Erro ao consultar a tabela de Venda!" + err.getMessage(), true, con, err );
 		} finally {
 			vDesc = null;
 			vObs = null;
-			ps = null;
 			rs = null;
-			sSQL = null;
 		}
-
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			imp.preview( this );
 		} else {
@@ -2369,18 +2309,18 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		} else if ( evt.getSource() == btImp ) {
 			imprimir( TYPE_PRINT.PRINT);
 		} else if ( evt.getSource() == btOrc ) {
-			imprimiGraficoPad( TYPE_PRINT.VIEW, classorcpd, txtDtOrc.getVlrDate() );
+			imprimiGraficoPad( TYPE_PRINT.VIEW, classorc[ResultBuscaClassOrc.CLASSORCPD.ordinal()], txtDtOrc.getVlrDate() );
 		} else if ( evt.getSource() == btOrcTst ) {
-			if (classorclaudosus==null) {
+			if (classorc[ResultBuscaClassOrc.CLASSORCLAUDOSUS.ordinal()]==null || "".equals(classorc[ResultBuscaClassOrc.CLASSORCLAUDOSUS.ordinal()])) {
 				imprimeLaudoSusJava();
 			} else {
-				imprimiGraficoPad( TYPE_PRINT.VIEW, classorclaudosus, txtDtOrc.getVlrDate() );
+				imprimiGraficoPad( TYPE_PRINT.VIEW, classorc[ResultBuscaClassOrc.CLASSORCLAUDOSUS.ordinal()], txtDtOrc.getVlrDate() );
 			}
 		} else if ( evt.getSource() == btOrcTst2 ) {
-			if (classorcctaluguel==null) {
+			if (classorc[ResultBuscaClassOrc.CLASSORCCTALUGUEL.ordinal()]==null) {
 				imprimeContratoAluguelJava();
 			} else {
-				imprimiGraficoPad( TYPE_PRINT.VIEW, classorcctaluguel, txtDtOrc.getVlrDate() );
+				imprimiGraficoPad( TYPE_PRINT.VIEW, classorc[ResultBuscaClassOrc.CLASSORCCTALUGUEL.ordinal()], txtDtOrc.getVlrDate() );
 			}
 		} else if ( evt.getSource() == btObs ) {
 			mostraObs( "VDORCAMENTO", txtCodOrc.getVlrInteger().intValue() );
@@ -2612,19 +2552,12 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 	public void afterDelete( DeleteEvent devt ) {
 		if ( devt.getListaCampos() == lcDet ) {
-
-
 			lcOrc2.carregaDados();
 			if ( ( "S".equals( permusu.get( "VISUALIZALUCR" ) ) && ( (Boolean) oPrefs[ Orcamento.PrefOrc.VISUALIZALUCR.ordinal() ] ) ) ) {
 				lcPrevTrib.carregaDados(); // Carrega previsionamento de tributos
 				atualizaLucratividade();
 			}
-
 		}
-
-
-
-
 	}
 
 	public boolean cancelaEvento() {
@@ -2721,10 +2654,15 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		} 
 		
 		// Busca classes para impressão de orçamentos
-		buscaClassOrc();
+		try {
+			classorc = daoorcamento.buscaClassOrc(ListaCampos.getMasterFilial( "SGPREFERE1" ));
+		} catch (Exception err) {
+			Funcoes.mensagemErro( null, err.getMessage() );
+		}
 		
 	}
 
+	
 	private void atualizaLucratividade() {
 
 		if ( ( "S".equals( permusu.get( "VISUALIZALUCR" ) ) ) && (Boolean) ( oPrefs[ Orcamento.PrefOrc.VISUALIZALUCR.ordinal() ] ) ) {
@@ -3006,107 +2944,18 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		}
 	}
 
-	public Map<String, Object> getAssinatura(DbConnection con){
-		Blob assinatura = null;
-		StringBuilder sql = new StringBuilder();
-		StringBuilder sqlAssinatura = new StringBuilder();
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		Map<String, Object> result = new HashMap<String, Object>();
-		String nomeAss = null;
-
-		try {
-			if (con == null) {
-				con = Aplicativo.getInstace().getConexao();
-			}
-
-			sqlAssinatura.append("SELECT (CASE WHEN P1.USANOMEVENDORC='S' THEN V.NOMEVEND ELSE E.RAZEMP END) NOMEASS, ");
-			sqlAssinatura.append("(CASE WHEN P1.USAIMGASSORC='S' THEN COALESCE(V.IMGASSVEND,P1.IMGASSORC) END) IMGASS ");
-			sqlAssinatura.append("FROM VDORCAMENTO O, VDVENDEDOR V, SGPREFERE1 P1, SGEMPRESA E WHERE ");
-			sqlAssinatura.append("O.CODEMP=? AND O.CODFILIAL=? AND O.CODORC=? AND ");
-			sqlAssinatura.append("V.CODEMP=O.codempvd AND V.CODFILIAL=O.CODFILIALVD AND V.CODVEND=O.CODVEND AND ");
-			sqlAssinatura.append("E.CODEMP=? AND ");
-			sqlAssinatura.append("P1.CODEMP=? AND P1.CODFILIAL=?");
-
-			ps = con.prepareStatement( sqlAssinatura.toString() );
-			int param = 1;
-			ps.setInt( param++, Aplicativo.iCodEmp );
-			ps.setInt( param++, ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
-			ps.setInt( param++, txtCodOrc.getVlrInteger() );
-			ps.setInt( param++, Aplicativo.iCodEmp );
-			ps.setInt( param++, Aplicativo.iCodEmp );
-			ps.setInt( param++, ListaCampos.getMasterFilial( "SGPREFERE1"));
-
-			rs = ps.executeQuery();
-			if (rs.next()) {
-				result.put( "IMGASS", rs.getBlob( "IMGASS" ) );
-				result.put( "NOMEASS", rs.getString("NOMEASS") );
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}	
-		finally {
-			try {
-				con.commit();
-				rs.close();
-				ps.close();
-			}
-			catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return result;
-	}
-
 	private BigDecimal calcPeso() {
-
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		StringBuffer sql = new StringBuffer();
-
-		BigDecimal bBrut = new BigDecimal( "0" );
-
-		try {
-
-			sql.append( "select sum(i.qtditorc * p.pesoliqprod) as totpesoliq, ");
-			sql.append( "sum(i.qtditorc * p.pesobrutprod) as totpesobrut ");
-			sql.append( "from vditorcamento i, eqproduto p ");
-			sql.append( "where i.codorc=? and i.codemp=? and i.codfilial=? ");
-			sql.append( "and p.codemp=i.codemppd and p.codfilial=i.codfilialpd and p.codprod=i.codprod ");
-
-			if ( txtCodTran.getVlrInteger() == 0 ) { // se não tiver transportadora no tipo de movimento, pega do cliente.
-
-				txtCodTran.setVlrInteger( getCodTran() );
-				lcTran.carregaDados();
-			}
-
-			ps = con.prepareStatement( sql.toString() );
-			ps.setInt( 1, txtCodOrc.getVlrInteger() );
-			ps.setInt( 2, Aplicativo.iCodEmp );
-			ps.setInt( 3, ListaCampos.getMasterFilial( "VDITVENDA" ) );
-
-			rs = ps.executeQuery();
-
-			if ( rs.next() ) {
-				bBrut = new BigDecimal( rs.getString( "TOTPESOBRUT" ) != null ? rs.getString( "TOTPESOBRUT" ) : "0" );
-				bBrut = bBrut.setScale( Aplicativo.casasDec, BigDecimal.ROUND_HALF_UP );
-			}
-
-			rs.close();
-			ps.close();
-
-			con.commit();
-		} catch ( SQLException err ) {
-			err.printStackTrace();
-			Funcoes.mensagemErro( this, "Erro ao calcular o peso!\n" + err.getMessage(), true, con, err );
-		} finally {
-			ps = null;
-			rs = null;
-			sql = null;
+		BigDecimal result = new BigDecimal(0);
+		if ( txtCodTran.getVlrInteger() == 0 ) { // se não tiver transportadora no tipo de movimento, pega do cliente.
+			txtCodTran.setVlrInteger( getCodTran() );
+			lcTran.carregaDados();
 		}
-
-		return bBrut;
+		try {
+			result = daoorcamento.calcPeso(txtCodOrc.getVlrInteger());
+		} catch ( Exception err ) {
+			Funcoes.mensagemErro( this, err.getMessage() );
+		} 
+		return result;
 	}
 
 	private Integer getCodTran() {

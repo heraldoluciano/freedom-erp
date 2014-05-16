@@ -47,5 +47,9 @@ public class Orcamento {
 	public enum ResultClassOrc {
 		CLASSORC, DESCORC
 	}
+	
+	public enum ResultBuscaClassOrc {
+		CLASSORCPD, CLASSORCLAUDOSUS, CLASSORCCTALUGUEL
+	}
 
 }
