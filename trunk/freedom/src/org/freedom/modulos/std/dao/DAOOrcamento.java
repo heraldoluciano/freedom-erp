@@ -10,9 +10,9 @@ import java.util.Vector;
 import org.freedom.infra.dao.AbstractDAO;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
-import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.std.business.component.Orcamento;
 import org.freedom.modulos.std.business.component.Orcamento.OrcVenda;
+import org.freedom.modulos.std.business.component.Orcamento.ResultClassOrc;
 
 public class DAOOrcamento extends AbstractDAO {
 	
@@ -270,7 +270,7 @@ public class DAOOrcamento extends AbstractDAO {
 			} catch (SQLException errroll) {
 				errroll.printStackTrace();
 			}
-			throw new Exception( "Erro ao buscar o comissionado. O usuário '" + Aplicativo.getUsuario().getIdusu() + "' é um comissionado?\n" + err.getMessage() );
+			throw new Exception( "Erro ao buscar o comissionado. O usuário '" + idusu + "' é um comissionado?\n" + err.getMessage() );
 		}
 		return result;
 	}
@@ -517,6 +517,45 @@ public class DAOOrcamento extends AbstractDAO {
 				errroll.printStackTrace();
 			}
 			throw new Exception("Erro carregando permissões de lucratividade!\n" + err.getMessage());
+		}
+		return result;
+	}
+	
+	public String[] getClassorc(Object prefs[], Integer codfilialtc, Integer codtpconv) throws Exception {
+		String[] result = new String[ResultClassOrc.values().length];
+		result[ResultClassOrc.CLASSORC.ordinal()] = "";
+		result[ResultClassOrc.DESCORC.ordinal()] = "";
+		StringBuilder sql = new StringBuilder();
+		sql.append("select classtpconv from attipoconv where codemp=? and codfilial=? and codtpconv=?");
+		try {
+			PreparedStatement ps = getConn().prepareStatement( sql.toString() );
+			int param = 1;
+			ps.setInt( param++, getCodemp() );
+			ps.setInt( param++, codfilialtc );
+			ps.setInt( param++, codtpconv );
+			ResultSet rs = ps.executeQuery();
+			if ( rs.next() ) {
+				if ( rs.getString( "classtpconv" ) != null ) {
+					result[ResultClassOrc.CLASSORC.ordinal()] = rs.getString( "classtpconv" ).trim();
+				}
+			} else {
+				result[ResultClassOrc.CLASSORC.ordinal()] = prefs[ Orcamento.PrefOrc.CLASSORC.ordinal() ].toString();
+				if ( result[ResultClassOrc.CLASSORC.ordinal()] != null ) {
+					result[ResultClassOrc.CLASSORC.ordinal()] = result[ResultClassOrc.CLASSORC.ordinal()].trim(); 
+					result[ResultClassOrc.DESCORC.ordinal()] = prefs[Orcamento.PrefOrc.DESCORC.ordinal() ].toString();
+				}
+			}
+			rs.close();
+			ps.close();
+			getConn().commit();
+		} catch ( SQLException err ) {
+			err.printStackTrace();
+			try {
+				getConn().rollback();
+			} catch (SQLException errroll) {
+				errroll.printStackTrace();
+			}
+			throw new Exception("Erro ao carregar a tabela ATTIPOCONV!\n" + err.getMessage());
 		}
 		return result;
 	}
