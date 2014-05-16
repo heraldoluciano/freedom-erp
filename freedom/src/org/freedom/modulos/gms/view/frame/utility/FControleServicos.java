@@ -219,7 +219,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 
 	private Map<String, Object> bPref = null;
 	
-	private DAOOrcamento daoorcamento = null;
+	private static DAOOrcamento daoorcamento = null;
 
 	private static Object[] oPrefs = null;
 	// Enums
@@ -923,7 +923,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 
 	private static HashMap<Object, Object> getInfoOrc(Integer codcli, Component corig) {
 
-		HashMap<Object, Object> ret = new HashMap<Object, Object>();
+		HashMap<Object, Object> result = new HashMap<Object, Object>();
 
 		try {
 
@@ -934,24 +934,25 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 
 			if ( dl.OK ) {
 
-				ret.put( DLTipoProdServOrc.COMPONENTES, dl.getComponentes() );
-				ret.put( DLTipoProdServOrc.SERVICOS, dl.getServicos() );
-				ret.put( DLTipoProdServOrc.NOVOS, dl.getNovos() );
-				ret.put( "CODPLANOPAG", dl.getPlanoPag() );
+				result.put( DLTipoProdServOrc.COMPONENTES, dl.getComponentes() );
+				result.put( DLTipoProdServOrc.SERVICOS, dl.getServicos() );
+				result.put( DLTipoProdServOrc.NOVOS, dl.getNovos() );
+				result.put( "CODPLANOPAG", dl.getPlanoPag() );
 
 				dl.dispose();
 			}
 			else {
-				ret = null;
 				dl.dispose();
+				result = null;
 			}
 
 		} 
-		catch ( Exception e ) {
-			e.printStackTrace();
+		catch ( Exception err ) {
+			err.printStackTrace();
+			Funcoes.mensagemErro( null, "Erro carregando informações para geração de orçamento!\n" + err.getMessage() );
 		}
 
-		return ret;
+		return result;
 	}
 
 
@@ -1095,27 +1096,30 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 	public static void geraOrcamento(Integer ticket, Integer codorcgrid, String statustxt, Integer codcli, Component corig) {
 
 		StringBuilder sql = new StringBuilder();
-
 		BigDecimal pesoliq = null;
 		BigDecimal peso1 = null;
 		BigDecimal peso2 = null;
 		String unid = null;
 		PreparedStatement ps = null; 
-
 		DAORecMerc daorecmerc = null;
-
 		try {
-
-
+			if (oPrefs==null) {
+				if (daoorcamento==null) {
+					daoorcamento = new DAOOrcamento( Aplicativo.getInstace().getConexao()
+							, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
+				}
+				oPrefs = daoorcamento.getPrefere( ListaCampos.getMasterFilial( "SGPREFERE1" )
+						, ListaCampos.getMasterFilial( "SGESTACAOIMP" ), Aplicativo.iNumEst );
+			}
 			daorecmerc = new DAORecMerc( corig, Aplicativo.iCodEmp , ListaCampos.getMasterFilial( "EQRECMERC" )
 					, ticket, Aplicativo.getInstace().getConexao(), ListaCampos.getMasterFilial( "LFSEQSERIE" ), true  );
-
 			if ( statustxt.equals( StatusOS.OS_ANALISE.getValue() ) ||
 					statustxt.equals( StatusOS.OS_ENCAMINHADO.getValue() ) ||
 					statustxt.equals( StatusOS.OS_ANDAMENTO.getValue() ) ||
 					statustxt.equals( StatusOS.OS_PRONTO.getValue() )
 					){
-				if ( Funcoes.mensagemConfirma( corig, "Confirma a geração de orçamento para o ticket nro.:" + ticket.toString() + " ?" ) == JOptionPane.YES_OPTION ) {
+				if ( Funcoes.mensagemConfirma( corig, "Confirma a geração de orçamento para o ticket nro.:" 
+					+ ticket.toString() + " ?" ) == JOptionPane.YES_OPTION ) {
 
 					HashMap<Object, Object> parametros = getInfoOrc(codcli, corig);
 
