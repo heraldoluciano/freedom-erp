@@ -32,6 +32,10 @@ public class Orcamento {
 		, BLOQEDITORCAPOSAP, CODMODELOR, REPLICAORC, SQLREPLICAORC;
 	}
 
+	public enum OrcVenda {
+		CODVENDA, DOCVENDA, SERIE, CODCLI, RAZCLI, DTEMISSAO, DTSAIDA, CODPAG, DESCPAG, CODITVENDA, QTDITVENDA, PRECOITVENDA, VLRLIQITVENDA, TIPOVENDA;
+	}
+
 	public static Date getVencimento( int diasvencorc ) {
 
 		Date dtRet = null;
