@@ -24,6 +24,7 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Vector;
 
 import org.freedom.infra.model.jdbc.DbConnection;
 
@@ -132,4 +133,12 @@ public abstract class AbstractDAO {
 		}
 	}
 	
+	public void setValue( Object value, Vector<Object> row, int pos ) {
+		if (row!=null) {
+			for (int i=row.size(); i<=pos; i++) {
+				row.addElement(null);
+			}
+			row.setElementAt(value, pos);
+		}
+	}
 }

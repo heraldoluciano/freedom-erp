@@ -110,6 +110,7 @@ import org.freedom.modulos.lvf.business.component.CalcImpostos;
 import org.freedom.modulos.std.DLBuscaEstoq;
 import org.freedom.modulos.std.DLCodProd;
 import org.freedom.modulos.std.business.component.Orcamento;
+import org.freedom.modulos.std.business.component.Orcamento.OrcVenda;
 import org.freedom.modulos.std.business.component.Orcamento.PrefOrc;
 import org.freedom.modulos.std.dao.DAOOrcamento;
 import org.freedom.modulos.std.view.dialog.report.DLROrcamento;
@@ -498,10 +499,6 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	//private Integer codatend_atual = null;
 	
 	DAOAtendimento daoatend = null;
-
-	private enum OrcVenda {
-		CODVENDA, DOCVENDA, SERIE, CODCLI, RAZCLI, DTEMISSAO, DTSAIDA, CODPAG, DESCPAG, CODITVENDA, QTDITVENDA, PRECOITVENDA, VLRLIQITVENDA, TIPOVENDA;
-	}
 
 	public FOrcamento() {
 
@@ -1277,7 +1274,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	private Integer getCodTipoCli() {
 		Integer result = null;
 		try {
-			daoorcamento.getCodtipocli( ListaCampos.getMasterFilial( "VDCLIENTE" ), txtCodCli.getVlrInteger() );
+			result = daoorcamento.getCodtipocli( ListaCampos.getMasterFilial( "VDCLIENTE" ), txtCodCli.getVlrInteger() );
 		} catch (Exception err) {
 			Funcoes.mensagemErro( this, err.getMessage() );
 		}
@@ -1312,17 +1309,16 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		return iRet;
 	}
 
-	private int getPrazo() {
+	private Integer getPrazo() {
 
-		int iRet = 0;
-
+		Integer result = null;
 		try {
-			iRet = Integer.parseInt( oPrefs[ Orcamento.PrefOrc.PRAZO.ordinal() ].toString() );
+			result = Integer.parseInt( oPrefs[ Orcamento.PrefOrc.PRAZO.ordinal() ].toString() );
 		} catch ( Exception err ) {
 			Funcoes.mensagemErro( this, "Erro ao buscar o prazo.\n" + "Provavelmente não foram gravadas corretamente as preferências!\n" + err.getMessage(), true, con, err );
 			err.printStackTrace();
 		}
-		return iRet;
+		return result;
 	}
 
 	private Integer getVendedor() {
@@ -1516,57 +1512,14 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	}
 
 	private void carregaPedidos() {
-
 		tabPedidos.limpa();
-
 		try {
-
-			StringBuilder sql = new StringBuilder();
-			sql.append( "select v.codvenda, v.docvenda, v.serie, v.codcli, c.razcli, v.dtemitvenda, v.dtsaidavenda, v.codplanopag, p.descplanopag," );
-			sql.append( "it.coditvenda, it.qtditvenda, it.precoitvenda, it.vlrliqitvenda, v.tipovenda " );
-			sql.append( "from vdvendaorc vo, vdvenda v, vdcliente c, fnplanopag p, vditvenda it " );
-			sql.append( "where vo.codempor=? and vo.codfilialor=? and vo.codorc=? and " );
-			sql.append( "it.codemp=vo.codemp and it.codfilial=vo.codfilial and " );
-			sql.append( "it.codvenda=vo.codvenda and it.tipovenda=vo.tipovenda and it.coditvenda=vo.coditvenda and " );
-			sql.append( "v.codemp=it.codemp and v.codfilial=it.codfilial and v.codvenda=it.codvenda and v.tipovenda=it.tipovenda and " );
-			sql.append( "c.codemp=v.codempcl and c.codfilial=v.codfilialcl and c.codcli=v.codcli and " );
-			sql.append( "p.codemp=v.codemppg and p.codfilial=v.codfilialpg and p.codplanopag=v.codplanopag " );
-			sql.append( "order by vo.codvenda, vo.coditvenda" );
-
-			//select v.codvenda, v.docvenda, v.serie, v.codcli, c.razcli, v.dtemitvenda, v.dtsaidavenda, v.codplanopag, p.descplanopag,it.coditvenda, it.qtditvenda, it.precoitvenda, it.vlrliqitvenda, v.tipovenda from vdvendaorc vo, vdvenda v, vdcliente c, fnplanopag p, vditvenda it where vo.codempor=? and vo.codfilialor=? and vo.codorc=? and it.codemp=vo.codemp and it.codfilial=vo.codfilial and it.codvenda=vo.codvenda and it.tipovenda=vo.tipovenda and it.coditvenda=vo.coditvenda and v.codemp=it.codemp and v.codfilial=it.codfilial and v.codvenda=it.codvenda and v.tipovenda=it.tipovenda and c.codemp=v.codempcl and c.codfilial=v.codfilialcl and c.codcli=v.codcli and p.codemp=v.codemppg and p.codfilial=v.codfilialpg and p.codplanopag=v.codplanopag 
-
-			PreparedStatement ps = con.prepareStatement( sql.toString() );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, lcCampos.getCodFilial() );
-			ps.setInt( 3, txtCodOrc.getVlrInteger().intValue() );
-
-			ResultSet rs = ps.executeQuery();
-
-			for ( int row = 0; rs.next(); row++ ) {
-
-				tabPedidos.adicLinha();
-				tabPedidos.setValor( rs.getInt( "codvenda" ), row, OrcVenda.CODVENDA.ordinal() );
-				tabPedidos.setValor( rs.getString( "docvenda" ), row, OrcVenda.DOCVENDA.ordinal() );
-				tabPedidos.setValor( rs.getString( "serie" ), row, OrcVenda.SERIE.ordinal() );
-				tabPedidos.setValor( rs.getInt( "codcli" ), row, OrcVenda.CODCLI.ordinal() );
-				tabPedidos.setValor( rs.getString( "razcli" ), row, OrcVenda.RAZCLI.ordinal() );
-				tabPedidos.setValor( Funcoes.sqlDateToDate( rs.getDate( "dtemitvenda" ) ), row, OrcVenda.DTEMISSAO.ordinal() );
-				tabPedidos.setValor( Funcoes.sqlDateToDate( rs.getDate( "dtsaidavenda" ) ), row, OrcVenda.DTSAIDA.ordinal() );
-				tabPedidos.setValor( rs.getInt( "codplanopag" ), row, OrcVenda.CODPAG.ordinal() );
-				tabPedidos.setValor( rs.getString( "descplanopag" ), row, OrcVenda.DESCPAG.ordinal() );
-				tabPedidos.setValor( rs.getInt( "coditvenda" ), row, OrcVenda.CODITVENDA.ordinal() );
-				tabPedidos.setValor( rs.getBigDecimal( "qtditvenda" ), row, OrcVenda.QTDITVENDA.ordinal() );
-				tabPedidos.setValor( rs.getBigDecimal( "precoitvenda" ), row, OrcVenda.PRECOITVENDA.ordinal() );
-				tabPedidos.setValor( rs.getBigDecimal( "vlrliqitvenda" ), row, OrcVenda.VLRLIQITVENDA.ordinal() );
-				tabPedidos.setValor( rs.getString( "tipovenda" ), row, OrcVenda.TIPOVENDA.ordinal() );
+			Vector<Vector<Object>> dataVector = daoorcamento.carregaPedidos( txtCodOrc.getVlrInteger() );
+			for (Vector<Object> row: dataVector) {
+				tabPedidos.adicLinha( row );
 			}
-
-			rs.close();
-			ps.close();
-			con.commit();
-		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro ao consultar pedidos!\n" + err.getMessage(), true, con, err );
-			err.printStackTrace();
+		} catch ( Exception err ) {
+			Funcoes.mensagemErro( this, err.getMessage() );
 		}
 	}
 	
@@ -1852,7 +1805,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		lcCli.carregaDados();
 		txtCodTpCli.setVlrInteger( getCodTipoCli() );
 		lcTipoCli.carregaDados();
-		txtCodPlanoPag.setVlrInteger( new Integer( getPlanoPag() ) );
+		txtCodPlanoPag.setVlrInteger( getPlanoPag() );
 		lcPlanoPag.carregaDados();
 		txtCodVend.setVlrInteger( getVendedor() );
 		lcVend.carregaDados();
@@ -1865,7 +1818,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		txtVlrProdOrc.setVlrString( "" );
 		txtDtOrc.setVlrDate( new Date() );
 		txtDtVencOrc.setVlrDate( Orcamento.getVencimento( (Integer) oPrefs[ Orcamento.PrefOrc.DIASVENCORC.ordinal() ] ) );
-		txtPrazoEntOrc.setVlrInteger( new Integer( getPrazo() ) );
+		txtPrazoEntOrc.setVlrInteger( getPrazo() );
 		tab.limpa();
 		txtCodOrc.requestFocus();
 	}
@@ -2350,56 +2303,12 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	}
 
 	private void carregaComisIt(){
-		if ( !(Boolean) oPrefs[ Orcamento.PrefOrc.COMISSAODESCONTO.ordinal() ] )
-			return;
-
-		StringBuilder sql = new StringBuilder();
-		sql.append( "select first 1 desconto, comissao from vdregcomisdesc " );
-		sql.append( "where codemp = ? and codfilial = ? and desconto ");// = ? " );
-
-		/**
-		 * A ideia inicial era um sql unico com union e unico resultado porém não consegui aplicar um order by
-		 * que trabalha-se da forma a qual seria necessária
-		 */
-
-		PreparedStatement ps = null;
-		ResultSet rs = null;
 		BigDecimal vlrComissao = new BigDecimal(0);
-
 		try {
-
-			StringBuilder sqlExecute = new StringBuilder(sql.toString());
-			sqlExecute.append( " = ? " );
-
-			ps = con.prepareStatement( sqlExecute.toString() );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, Aplicativo.iCodFilial );
-			ps.setDouble( 3, txtPercDescItOrc.getVlrDouble() );
-
-			rs = ps.executeQuery();
-			if( rs.next() ){
-				vlrComissao = rs.getBigDecimal( "comissao" );
-			} else {
-				sqlExecute = new StringBuilder(sql.toString());
-				sqlExecute.append( " < ? " );
-				sqlExecute.append( "order by desconto desc " );
-
-				ps = con.prepareStatement( sqlExecute.toString() );
-				ps.setInt( 1, Aplicativo.iCodEmp );
-				ps.setInt( 2, Aplicativo.iCodFilial );
-				ps.setDouble( 3, txtPercDescItOrc.getVlrDouble() );
-
-				rs = ps.executeQuery();
-				if(rs.next()){
-					vlrComissao =  rs.getBigDecimal( "comissao" );
-				}
-			}
-
-			txtPercComisItOrc.setVlrBigDecimal( vlrComissao );
-			//TODO
+			BigDecimal vlrcomissao = daoorcamento.carregaComisIt( oPrefs, ListaCampos.getMasterFilial( "VDREGCOMISDESC" ), txtPercDescItOrc.getVlrBigDecimal() );
 			calcComisIt();
-		} catch ( SQLException e ) {
-
+		} catch ( Exception err ) {
+			Funcoes.mensagemErro( this, err.getMessage() );
 		}
 	}
 
@@ -2637,8 +2546,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			if ( ( (Boolean) oPrefs[ Orcamento.PrefOrc.RECALCPCORC.ordinal() ] ).booleanValue() ) {
 				setReCalcPreco( true );
 			}
-
-			txtCodTpCli.setVlrInteger( new Integer( getCodTipoCli() ) );
+			txtCodTpCli.setVlrInteger( getCodTipoCli() );
 			lcTipoCli.carregaDados();
 
 			if(lcCampos.getStatus() == ListaCampos.LCS_INSERT) {
@@ -3068,33 +2976,13 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	}
 
 	private HashMap<String, Object> getPermissaoUsu() {
-
-		HashMap<String, Object> ret = new HashMap<String, Object>();
-
+		HashMap<String, Object> result = null;
 		try {
-
-			StringBuilder sql = new StringBuilder();
-			sql.append( "SELECT VISUALIZALUCR FROM SGUSUARIO WHERE CODEMP=? AND CODFILIAL=? AND IDUSU=?" );
-
-			PreparedStatement ps = con.prepareStatement( sql.toString() );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, Aplicativo.iCodFilial );
-			ps.setString( 3, Aplicativo.getUsuario().getIdusu() );
-			ResultSet rs = ps.executeQuery();
-
-			if ( rs.next() ) {
-				ret.put( "VISUALIZALUCR", rs.getString( "VISUALIZALUCR" ) );
-			}
-
-			rs.close();
-			ps.close();
-
-			con.commit();
-
-		} catch ( Exception e ) {
-			e.printStackTrace();
+			result = daoorcamento.getPermissaoUsu( ListaCampos.getMasterFilial( "SGUSUARIO" ), Aplicativo.getUsuario().getIdusu() );
+		} catch ( Exception err ) {
+			Funcoes.mensagemErro( this, err.getMessage() );
 		}
-		return ret;
+		return result;
 	}
 
 	private void setCalcImpostos( boolean buscabase ) {
@@ -3224,7 +3112,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 			if ( txtCodTran.getVlrInteger() == 0 ) { // se não tiver transportadora no tipo de movimento, pega do cliente.
 
-				txtCodTran.setVlrInteger( new Integer( getCodTran() ) );
+				txtCodTran.setVlrInteger( getCodTran() );
 				lcTran.carregaDados();
 			}
 
@@ -3256,57 +3144,14 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		return bBrut;
 	}
 
-	private int getCodTran() {
-
-		int iRetorno = 0;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		String sql = null;
-
+	private Integer getCodTran() {
+		Integer result = null;
 		try {
-
-			sql = "SELECT C.CODTRAN " + "FROM VDCLIENTE C, VDORCAMENTO V " + "WHERE C.CODCLI=V.CODCLI AND C.CODEMP=V.CODEMPCL " + "AND V.CODORC=?  AND V.CODEMP=? AND V.CODFILIAL=?";
-
-			ps = con.prepareStatement( sql );
-			ps.setInt( 1, txtCodOrc.getVlrInteger() );
-			ps.setInt( 2, Aplicativo.iCodEmp );
-			ps.setInt( 3, ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
-
-			rs = ps.executeQuery();
-
-			if ( rs.next() ) {
-				iRetorno = rs.getInt( "CodTran" );
-			}
-
-			if ( iRetorno == 0 ) {
-
-				sql = "SELECT CODTRAN FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=? ";
-
-				ps = con.prepareStatement( sql );
-				ps.setInt( 1, Aplicativo.iCodEmp );
-				ps.setInt( 2, Aplicativo.iCodFilial );
-
-				rs = ps.executeQuery();
-
-				if ( rs.next() ) {
-					iRetorno = rs.getInt( "CodTran" );
-				}
-			}
-
-			rs.close();
-			ps.close();
-
-			con.commit();
-		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro ao buscar o código da Transportadora do cliente!\n" + err.getMessage(), true, con, err );
-			err.printStackTrace();
-		} finally {
-			ps = null;
-			rs = null;
-			sql = null;
+			daoorcamento.getCodTran( txtCodOrc.getVlrInteger(), ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+		} catch (Exception err) {
+			Funcoes.mensagemErro( this, err.getMessage() );
 		}
-
-		return iRetorno;
+		return result;
 	}
 
 	
