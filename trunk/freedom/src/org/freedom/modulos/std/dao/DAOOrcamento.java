@@ -1,17 +1,21 @@
 package org.freedom.modulos.std.dao;
 
 import java.math.BigDecimal;
+import java.sql.Blob;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 import org.freedom.infra.dao.AbstractDAO;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
+import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.modulos.std.business.component.Orcamento;
 import org.freedom.modulos.std.business.component.Orcamento.OrcVenda;
+import org.freedom.modulos.std.business.component.Orcamento.ResultBuscaClassOrc;
 import org.freedom.modulos.std.business.component.Orcamento.ResultClassOrc;
 
 public class DAOOrcamento extends AbstractDAO {
@@ -559,4 +563,161 @@ public class DAOOrcamento extends AbstractDAO {
 		}
 		return result;
 	}
+	
+	public String[] buscaClassOrc(Integer codfilialp1) throws Exception {
+		// Carrega layouts de orçamento padrão Jasper
+		String[] result = new String[ResultBuscaClassOrc.values().length];
+		result[ResultBuscaClassOrc.CLASSORCPD.ordinal()] = "layout/orc/ORC_PD.jasper";
+		result[ResultBuscaClassOrc.CLASSORCLAUDOSUS.ordinal()] = "";
+		result[ResultBuscaClassOrc.CLASSORCCTALUGUEL.ordinal()] = "";
+		StringBuilder sql = new StringBuilder("select classorcpd, classorclaudosus, classorcctaluguel from sgprefere1 p ");
+		sql.append( "where p.codemp=? and p.codfilial=?" );
+		try {
+			PreparedStatement ps = getConn().prepareStatement( sql.toString() );
+			int param = 1;
+			ps.setInt( param++, getCodemp() );
+			ps.setInt( param++, codfilialp1 );
+			ResultSet rs = ps.executeQuery();
+			if ( rs.next() ) {
+				if ( (rs.getString(ResultBuscaClassOrc.CLASSORCPD.name())!=null) 
+						&& (! "".equals( rs.getString( ResultBuscaClassOrc.CLASSORCPD.name() ).trim() ) ) ) {
+					result[ResultBuscaClassOrc.CLASSORCPD.ordinal()] = "layout/orc/" 
+						+ rs.getString(ResultBuscaClassOrc.CLASSORCPD.name()).trim();
+				}
+				if (rs.getString(ResultBuscaClassOrc.CLASSORCLAUDOSUS.name())!=null) {
+					result[ResultBuscaClassOrc.CLASSORCLAUDOSUS.ordinal()] = "layout/orc/" 
+							+ rs.getString(ResultBuscaClassOrc.CLASSORCLAUDOSUS.name()).trim();
+				} 
+				if (rs.getString("CLASSORCCTALUGUEL")!=null) {
+					result[ResultBuscaClassOrc.CLASSORCCTALUGUEL.ordinal()] = "layout/orc/" 
+							+ rs.getString(ResultBuscaClassOrc.CLASSORCCTALUGUEL.name()).trim();
+				} 
+			}
+			rs.close();
+			ps.close();
+			getConn().commit();
+		} catch (SQLException err) {
+			err.printStackTrace();
+			try {
+				getConn().rollback();
+			} catch (SQLException errroll) {
+				errroll.printStackTrace();
+			}
+			throw new Exception( "Erro buscando classes para orçamento!\n"+err.getMessage() );
+		}
+		return result;
+	}
+	
+	public ResultSet getResultSetImprimeTexto(String ordem, Integer codorc) throws SQLException {
+		ResultSet result = null;
+		StringBuilder sql = new StringBuilder();
+		sql.append( "select o.codorc, o.codplanopag, o.codcli, o.obsorc, o.vlrliqorc, o.prazoentorc, c.razcli," ); 
+		sql.append( " c.contcli, c.cnpjcli, c.cpfcli, c.rgcli, c.insccli, c.sitecli, c.emailcli, c.endcli, c.numcli," );
+		sql.append( " c.baircli, c.cidcli, c.ufcli, c.cepcli,c.dddcli, c.fonecli, c.faxcli, i.coditorc, i.codprod,"  );
+		sql.append( " i.qtditorc, i.precoitorc, i.vlrproditorc, i.vlrliqitorc, i.vlrdescitorc, p.refprod, p.descprod, p.codunid," ); 
+		sql.append( " pg.descplanopag, i.obsitorc, vend.nomevend, vend.emailvend, vend.celvend, vend.dddcelvend," );
+		sql.append( " (select fn.descfunc from rhfuncao fn where fn.codemp=vend.codempfu"  );
+		sql.append( " and fn.codfilial=vend.codfilialfu and fn.codfunc=vend.codfunc)"  );
+		sql.append( " from vdorcamento o, vditorcamento i, vdcliente c, eqproduto p, fnplanopag pg, vdvendedor vend" );
+		sql.append( " where o.codemp=? and o.codfilial=? and o.codorc=?"  );
+		sql.append( " and c.codemp=o.codempcl and c.codfilial=o.codfilialcl and c.codcli=o.codcli" ); 
+		sql.append( " and i.codemp=o.codemp and i.codfilial=o.codfilial and i.codorc=o.codorc and i.tipoorc=o.tipoorc" );
+		sql.append( " and p.codemp=i.codemppd and p.codfilial=i.codfilialpd and p.codprod=i.codprod"  );
+		sql.append( " and pg.codemp=o.codemppg and pg.codfilial=o.codfilialpg and pg.codplanopag=o.codplanopag" ); 
+		sql.append( " and vend.codemp=o.codempvd and vend.codfilial=o.codfilialvd and vend.codvend=o.codvend" );
+		sql.append( " order by p." + ordem + ",p.descprod" );
+		PreparedStatement ps = getConn().prepareStatement( sql.toString() );
+		int param = 1;
+		ps.setInt( param++, getCodemp() );
+		ps.setInt( param++, getCodfilial() );
+		ps.setInt( param++, codorc );
+		result = ps.executeQuery();
+		return result;
+	}
+	
+	
+	public Map<String, Object> getAssinatura(Integer codorc, Integer codfilialp1) throws Exception {
+		Blob assinatura = null;
+		StringBuilder sql = new StringBuilder();
+		//StringBuilder sqlAssinatura = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Map<String, Object> result = new HashMap<String, Object>();
+		String nomeAss = null;
+
+		try {
+			/*if (con == null) {
+				con = Aplicativo.getInstace().getConexao();
+			}*/
+
+			sql.append("select (case when p1.usanomevendorc='S' then v.nomevend else e.razemp end) nomeass, ");
+			sql.append("(case when p1.usaimgassorc='S' then coalesce(v.imgassvend,p1.imgassorc) end) imgass ");
+			sql.append("from vdorcamento o, vdvendedor v, sgprefere1 p1, sgempresa e where ");
+			sql.append("o.codemp=? and o.codfilial=? and o.codorc=? and ");
+			sql.append("v.codemp=o.codempvd and v.codfilial=o.codfilialvd and v.codvend=o.codvend and ");
+			sql.append("e.codemp=? and ");
+			sql.append("p1.codemp=? and p1.codfilial=?");
+
+			ps = getConn().prepareStatement( sql.toString() );
+			int param = 1;
+			ps.setInt( param++, getCodemp() );
+			ps.setInt( param++, getCodfilial() );
+			ps.setInt( param++, codorc );
+			ps.setInt( param++, getCodemp() );
+			ps.setInt( param++, getCodemp() );
+			ps.setInt( param++, codfilialp1 );
+
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				result.put( "IMGASS", rs.getBlob( "IMGASS" ) );
+				result.put( "NOMEASS", rs.getString("NOMEASS") );
+			}
+			rs.close();
+		} catch (Exception err) {
+			err.printStackTrace();
+			try {
+				getConn().rollback();
+			} catch (SQLException errroll) {
+				errroll.printStackTrace();
+			}
+			throw new Exception( "Erro carregando imagem de assinatura!\n"+err.getMessage() );
+		}	
+		return result;
+	}
+	
+	public BigDecimal calcPeso(Integer codorc) throws Exception {
+		StringBuffer sql = new StringBuffer();
+		BigDecimal result = new BigDecimal( "0" );
+		try {
+			sql.append( "select sum(i.qtditorc * p.pesoliqprod) as totpesoliq, ");
+			sql.append( "sum(i.qtditorc * p.pesobrutprod) as totpesobrut ");
+			sql.append( "from vditorcamento i, eqproduto p ");
+			sql.append( "where i.codorc=? and i.codemp=? and i.codfilial=? ");
+			sql.append( "and p.codemp=i.codemppd and p.codfilial=i.codfilialpd and p.codprod=i.codprod ");
+			PreparedStatement ps = getConn().prepareStatement( sql.toString() );
+			ps.setInt( 1, codorc );
+			ps.setInt( 2, getCodemp() );
+			ps.setInt( 3, getCodfilial() );
+			ResultSet rs = ps.executeQuery();
+			if ( rs.next() ) {
+				result = new BigDecimal( rs.getString( "totpesobrut" ) != null ? rs.getString( "totpesobrut" ) : "0" );
+				result = result.setScale( Aplicativo.casasDec, BigDecimal.ROUND_HALF_UP );
+			}
+			rs.close();
+			ps.close();
+			getConn().commit();
+		} catch (Exception err) {
+			err.printStackTrace();
+			try {
+				getConn().rollback();
+			} catch (SQLException errroll) {
+				errroll.printStackTrace();
+			}
+			throw new Exception( "Erro ao calcular peso!\n"+err.getMessage() );
+		} finally {
+			sql = null;
+		}
+		return result;
+	}
+
 }
