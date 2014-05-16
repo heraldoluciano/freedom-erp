@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import org.freedom.infra.pojos.Constant;
-import org.freedom.library.functions.Funcoes;
 
 public class Orcamento {
 
@@ -32,28 +31,21 @@ public class Orcamento {
 		, BLOQEDITORCAPOSAP, CODMODELOR, REPLICAORC, SQLREPLICAORC;
 	}
 
+	
 	public enum OrcVenda {
 		CODVENDA, DOCVENDA, SERIE, CODCLI, RAZCLI, DTEMISSAO, DTSAIDA, CODPAG, DESCPAG, CODITVENDA, QTDITVENDA, PRECOITVENDA, VLRLIQITVENDA, TIPOVENDA;
 	}
 
-	public static Date getVencimento( int diasvencorc ) {
-
+	public static Date getVencimento( int diasvencorc ) throws Exception {
 		Date dtRet = null;
-
-		try {
-
-			GregorianCalendar clVenc = new GregorianCalendar();
-			clVenc.add( Calendar.DATE, diasvencorc );
-
-			dtRet = clVenc.getTime();
-
-		} catch ( Exception err ) {
-			Funcoes.mensagemErro( null, "Erro ao buscar a data de vencimento.\n" + err.getMessage(), true, err );
-			err.printStackTrace();
-		}
-
+		GregorianCalendar clVenc = new GregorianCalendar();
+		clVenc.add( Calendar.DATE, diasvencorc );
+		dtRet = clVenc.getTime();
 		return dtRet;
 	}
 
+	public enum ResultClassOrc {
+		CLASSORC, DESCORC
+	}
 
 }

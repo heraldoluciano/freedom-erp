@@ -112,6 +112,7 @@ import org.freedom.modulos.std.DLCodProd;
 import org.freedom.modulos.std.business.component.Orcamento;
 import org.freedom.modulos.std.business.component.Orcamento.OrcVenda;
 import org.freedom.modulos.std.business.component.Orcamento.PrefOrc;
+import org.freedom.modulos.std.business.component.Orcamento.ResultClassOrc;
 import org.freedom.modulos.std.dao.DAOOrcamento;
 import org.freedom.modulos.std.view.dialog.report.DLROrcamento;
 import org.freedom.modulos.std.view.dialog.utility.DLAltFatLucro;
@@ -1817,7 +1818,11 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		txtVlrLiqOrc.setVlrString( "" );
 		txtVlrProdOrc.setVlrString( "" );
 		txtDtOrc.setVlrDate( new Date() );
-		txtDtVencOrc.setVlrDate( Orcamento.getVencimento( (Integer) oPrefs[ Orcamento.PrefOrc.DIASVENCORC.ordinal() ] ) );
+		try {
+			txtDtVencOrc.setVlrDate( Orcamento.getVencimento( (Integer) oPrefs[ Orcamento.PrefOrc.DIASVENCORC.ordinal() ] ) );
+		} catch (Exception err) {
+			Funcoes.mensagemErro( null, "Erro carregando data de vencimento!\n"+err.getMessage() );
+		}
 		txtPrazoEntOrc.setVlrInteger( getPrazo() );
 		tab.limpa();
 		txtCodOrc.requestFocus();
@@ -1873,49 +1878,18 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	}
 
 	public void imprimeGrafico( TYPE_PRINT bVisualizar) {
-
-		String sSql = "SELECT CLASSTPCONV FROM ATTIPOCONV WHERE CODEMP=? AND CODFILIAL=? AND CODTPCONV=?";
-		String sClassOrc = "";
-		String sDescOrc = "";
-
-		LeiauteGR leiOrc = null;
+		LeiauteGR leiorc = null;
 		String[] split;
-
+		String[] classorc = new String[ResultClassOrc.values().length];
+		classorc[ResultClassOrc.CLASSORC.ordinal()] = "";
+		classorc[ResultClassOrc.DESCORC.ordinal()] = "";
 		try {
-
-			PreparedStatement ps = con.prepareStatement( sSql );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "ATTIPOCONV" ) );
-			ps.setInt( 3, txtCodTpConv.getVlrInteger().intValue() );
-
-			ResultSet rs = ps.executeQuery();
-
-			if ( rs.next() ) {
-				if ( rs.getString( "CLASSTPCONV" ) != null ) {
-					sClassOrc = rs.getString( "CLASSTPCONV" ).trim();
-				}
-			} else {
-
-				sClassOrc = oPrefs[ Orcamento.PrefOrc.CLASSORC.ordinal() ].toString();
-				leiOrc = null;
-
-				if ( sClassOrc != null ) {
-					sClassOrc = sClassOrc.trim();
-					sDescOrc = oPrefs[ Orcamento.PrefOrc.DESCORC.ordinal() ].toString();
-				}
-			}
-
-			rs.close();
-			ps.close();
-
-		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro ao carregar a tabela ATTPCONV!\n" + err.getMessage(), true, con, err );
-			err.printStackTrace();
+			classorc = daoorcamento.getClassorc( oPrefs, ListaCampos.getMasterFilial( "ATTIPOCONV" ), txtCodTpConv.getVlrInteger() );
+		} catch ( Exception err ) {
+			Funcoes.mensagemErro( this, err.getMessage() );
 		}
-
 		try {
-			if ( "".equals( sClassOrc.trim() ) || sClassOrc.indexOf( "jasper" ) > -1 ) {
-
+			if ( "".equals( classorc[ResultClassOrc.CLASSORC.ordinal()] ) || classorc[ResultClassOrc.CLASSORC.ordinal()].indexOf( "jasper" ) > -1 ) {
 				HashMap<String, Object> hParam = new HashMap<String, Object>();
 				hParam.put( "CODORC", txtCodOrc.getVlrInteger() );
 				hParam.put( "CODEMP", Aplicativo.iCodEmp );
@@ -1926,55 +1900,46 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				hParam.put( "CODFILIALCL", ListaCampos.getMasterFilial( "VDCLIENTE" ) );
 				hParam.put( "CODCLI", txtCodCli.getVlrInteger());
 				hParam.put( "PESO", calcPeso());
-
-
 				hParam.put( "USUARIO", StringFunctions.properCase( Aplicativo.getUsuario().getIdusu() ) );
-
 				hParam.put( "SUBREPORT_DIR", "org/freedom/layout/orc/" ); 
-
-				if ( "".equals( sClassOrc.trim() ) ) {
-					sClassOrc = "ORC_PD.jasper";
+				if ( "".equals( classorc[ResultClassOrc.CLASSORC.ordinal()] ) ) {
+					classorc[ResultClassOrc.CLASSORC.ordinal()] = "ORC_PD.jasper";
 				} else {
-					String[] vClassOrc = sClassOrc.split( "\\," );
-					String[] vDescOrd = sDescOrc.split( "\\," );
+					String[] vClassOrc = classorc[ResultClassOrc.CLASSORC.ordinal()].split( "\\," );
+					String[] vDescOrd = classorc[ResultClassOrc.DESCORC.ordinal()].split( "\\," );
 					if ( vClassOrc.length > 1 ) { 
 						FSelOrc fS = new FSelOrc();
-						sClassOrc = fS.seleciona( vClassOrc, vDescOrd );
-						if ( sClassOrc == null ) {
+						classorc[ResultClassOrc.CLASSORC.ordinal()] = fS.seleciona( vClassOrc, vDescOrd );
+						if ( classorc[ResultClassOrc.CLASSORC.ordinal()] == null ) {
 							return;
 						}
 					}
 				}
-
 				EmailBean mail = Aplicativo.getEmailBean();
-
 				if (mail==null) {
 					Funcoes.mensagemInforma( this, "Não foram encontradas informações para envio de E-mail !" );
 				} else {
 					mail.setPara( daoemail.getEmailCli( txtCodCli.getVlrInteger(), con ) );			
 				}
-
-				FPrinterJob dlGr = new FPrinterJob( "layout/orc/" + sClassOrc, null, null, this, hParam, con, mail, bImprimir, bImprimir );
-				//FPrinterJob dlGr = new FPrinterJob( sClassOrc, null, null, this, hParam, con, mail );
-
+				FPrinterJob dlGr = new FPrinterJob( "layout/orc/" + classorc[ResultClassOrc.CLASSORC.ordinal()], null, null, this, hParam, con, mail, bImprimir, bImprimir );
 				if ( bVisualizar==TYPE_PRINT.VIEW ) {
 					dlGr.setVisible( true );
 				} else {
 					JasperPrintManager.printReport( dlGr.getRelatorio(), true );
 				}
 			} else {
-				leiOrc = (LeiauteGR) Class.forName( "org.freedom.layout.orc." + sClassOrc ).newInstance();
-				leiOrc.setConexao( con );
+				leiorc = (LeiauteGR) Class.forName( "org.freedom.layout.orc." + classorc[ResultClassOrc.CLASSORC.ordinal()] ).newInstance();
+				leiorc.setConexao( con );
 				vParamOrc.clear();
 				vParamOrc.addElement( txtCodOrc.getText() );
 				vParamOrc.addElement( txtCodCli.getText() );
-				leiOrc.setParam( vParamOrc );
+				leiorc.setParam( vParamOrc );
 
 				if ( bVisualizar==TYPE_PRINT.VIEW ) {
-					dl = new FPrinterJob( leiOrc, this );
+					dl = new FPrinterJob( leiorc, this );
 					dl.setVisible( true );
 				} else {
-					leiOrc.imprimir( true );
+					leiorc.imprimir( true );
 				}
 			}
 		} catch ( Exception err ) {
