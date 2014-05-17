@@ -1236,9 +1236,6 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 
 			}
 
-
-
-
 		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
