@@ -11,6 +11,10 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class Sgprefere1Id implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private short codfilial;
 	private int codemp;
 

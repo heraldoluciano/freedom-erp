@@ -13,8 +13,8 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
+//import javax.persistence.OneToOne;
+//import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -26,13 +26,17 @@ import javax.persistence.TemporalType;
 @Table(name = "SGPREFERE1")
 public class Sgprefere1 implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Sgprefere1Id id;
 	private Vdtabpreco vdtabpreco;
 	private Fnplanejamento fnplanejamentoBySgprefere1fkplandr;
 	private Fnplanejamento fnplanejamentoBySgprefere1fkplancheque;
 	private Eqtipomov eqtipomovBySgprefere1fk8eqtip;
 	private Vdclascli vdclascli;
-	private Sgfilial sgfilial;
+	//private Sgfilial sgfilial;
 	private Eqtipomov eqtipomovBySgprefere1fktipomovim;
 	private Eqtipomov eqtipomovBySgprefere1fk2eqtip;
 	private Vdtipocli vdtipocli;
@@ -340,7 +344,7 @@ public class Sgprefere1 implements java.io.Serializable {
 			BigDecimal fatorsegestoq, char leitransp, char tipoimpdanfe,
 			char replicaorc, char bloqnfevdautoriz, char obrigtipofisc,
 			char matricempfn, Date dtins, Date hins, String idusuins) {
-		this.sgfilial = sgfilial;
+		//this.sgfilial = sgfilial;
 		this.fnmoeda = fnmoeda;
 		this.usarefprod = usarefprod;
 		this.usaorcseq = usaorcseq;
@@ -591,7 +595,7 @@ public class Sgprefere1 implements java.io.Serializable {
 		this.fnplanejamentoBySgprefere1fkplancheque = fnplanejamentoBySgprefere1fkplancheque;
 		this.eqtipomovBySgprefere1fk8eqtip = eqtipomovBySgprefere1fk8eqtip;
 		this.vdclascli = vdclascli;
-		this.sgfilial = sgfilial;
+		//this.sgfilial = sgfilial;
 		this.eqtipomovBySgprefere1fktipomovim = eqtipomovBySgprefere1fktipomovim;
 		this.eqtipomovBySgprefere1fk2eqtip = eqtipomovBySgprefere1fk2eqtip;
 		this.vdtipocli = vdtipocli;
@@ -839,7 +843,7 @@ public class Sgprefere1 implements java.io.Serializable {
 		this.tipoimpdanfe = tipoimpdanfe;
 		this.replicaorc = replicaorc;
 		this.sqlreplicaorc = sqlreplicaorc;
-		this.bloqnfevdautoriz = bloqnfevdautoriz;
+		/*this.bloqnfevdautoriz = bloqnfevdautoriz;
 		this.obrigtipofisc = obrigtipofisc;
 		this.matricempfn = matricempfn;
 		this.dtins = dtins;
@@ -847,7 +851,7 @@ public class Sgprefere1 implements java.io.Serializable {
 		this.idusuins = idusuins;
 		this.dtalt = dtalt;
 		this.halt = halt;
-		this.idusualt = idusualt;
+		this.idusualt = idusualt;*/
 	}
 
 	@EmbeddedId
@@ -930,7 +934,7 @@ public class Sgprefere1 implements java.io.Serializable {
 		this.vdclascli = vdclascli;
 	}
 
-	@OneToOne(fetch = FetchType.LAZY)
+	/*@OneToOne(fetch = FetchType.LAZY)
 	@PrimaryKeyJoinColumn
 	public Sgfilial getSgfilial() {
 		return this.sgfilial;
@@ -939,7 +943,7 @@ public class Sgprefere1 implements java.io.Serializable {
 	public void setSgfilial(Sgfilial sgfilial) {
 		this.sgfilial = sgfilial;
 	}
-
+*/
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumns({
 			@JoinColumn(name = "CODTIPOMOVIM", referencedColumnName = "CODTIPOMOV"),

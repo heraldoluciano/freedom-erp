@@ -4,8 +4,8 @@ package org.freedom.persist.entity;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+//import java.util.HashSet;
+//import java.util.Set;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
@@ -15,8 +15,8 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+//import javax.persistence.OneToMany;
+//import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -28,6 +28,10 @@ import javax.persistence.TemporalType;
 @Table(name = "SGFILIAL")
 public class Sgfilial implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private SgfilialId id;
 	private Cpforneced cpforneced;
 	private Sgunifcod sgunifcod;
@@ -81,7 +85,7 @@ public class Sgfilial implements java.io.Serializable {
 	private Date dtalt;
 	private Date halt;
 	private String idusualt;
-	private Set vdromaneios = new HashSet(0);
+/*	private Set vdromaneios = new HashSet(0);
 	private Set eqseries = new HashSet(0);
 	private Set vdtransps = new HashSet(0);
 	private Set lfcsosns = new HashSet(0);
@@ -137,6 +141,7 @@ public class Sgfilial implements java.io.Serializable {
 	private Set lfmodnotas = new HashSet(0);
 	private Set eqtipomovs = new HashSet(0);
 	private Set eqtiporecmercs = new HashSet(0);
+
 	private Set eqalmoxes = new HashSet(0);
 	private Set sgpapels = new HashSet(0);
 	private Set crfeedbacks = new HashSet(0);
@@ -193,7 +198,7 @@ public class Sgfilial implements java.io.Serializable {
 	private Set lfmoddocfiscs = new HashSet(0);
 	private Set fnpagtocomis = new HashSet(0);
 	private Set necontingencias = new HashSet(0);
-
+*/
 	public Sgfilial() {
 	}
 
@@ -228,7 +233,8 @@ public class Sgfilial implements java.io.Serializable {
 			Character indaprocred, Character codtipocont, Character indregcum,
 			String unidfranqueada, String marcafranqueadora,
 			String wwwfranqueadora, String codreceita, Date dtins, Date hins,
-			String idusuins, Date dtalt, Date halt, String idusualt,
+			String idusuins, Date dtalt, Date halt, String idusualt
+			/*,
 			Set vdromaneios, Set eqseries, Set vdtransps, Set lfcsosns,
 			Set eqitrecmercitoses, Set attipoatends, Set vdtabprecos,
 			Set eqtrocarefprods, Set fnmoedas, Set sggrauinsts,
@@ -260,7 +266,8 @@ public class Sgfilial implements java.io.Serializable {
 			Set vdgruporcs, Set fncotmoedas, Set eqtipoexpedicaos,
 			Set eqitrecmercs, Set eqvargrades, Set atatribuicaos,
 			Set fntipocobs, Set atsetors, Set eqmovprods, Set pptiporecs,
-			Set lfmoddocfiscs, Set fnpagtocomis, Set necontingencias) {
+			Set lfmoddocfiscs, Set fnpagtocomis, Set necontingencias
+			*/) {
 		this.id = id;
 		this.cpforneced = cpforneced;
 		this.sgunifcod = sgunifcod;
@@ -314,7 +321,7 @@ public class Sgfilial implements java.io.Serializable {
 		this.dtalt = dtalt;
 		this.halt = halt;
 		this.idusualt = idusualt;
-		this.vdromaneios = vdromaneios;
+		/*this.vdromaneios = vdromaneios;
 		this.eqseries = eqseries;
 		this.vdtransps = vdtransps;
 		this.lfcsosns = lfcsosns;
@@ -425,7 +432,7 @@ public class Sgfilial implements java.io.Serializable {
 		this.pptiporecs = pptiporecs;
 		this.lfmoddocfiscs = lfmoddocfiscs;
 		this.fnpagtocomis = fnpagtocomis;
-		this.necontingencias = necontingencias;
+		this.necontingencias = necontingencias;*/
 	}
 
 	@EmbeddedId
