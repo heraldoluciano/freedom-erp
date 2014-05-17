@@ -4,8 +4,8 @@ package org.freedom.persist.entity;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+//import java.util.HashSet;
+//import java.util.Set;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
@@ -15,7 +15,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+//import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -27,6 +27,10 @@ import javax.persistence.TemporalType;
 @Table(name = "EQITRECMERC")
 public class Eqitrecmerc implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private EqitrecmercId id;
 	private Eqproduto eqproduto;
 	private Sgfilial sgfilial;
@@ -54,12 +58,12 @@ public class Eqitrecmerc implements java.io.Serializable {
 	private Date dtalt;
 	private Date halt;
 	private String idusualt;
-	private Set eqrecamostragems = new HashSet(0);
+	/*private Set eqrecamostragems = new HashSet(0);
 	private Set eqitrecmercitoses = new HashSet(0);
 	private Set eqmovseries = new HashSet(0);
 	private Set eqitrecmercitcps = new HashSet(0);
 	private Set eqitrecmercseries = new HashSet(0);
-
+*/
 	public Eqitrecmerc() {
 	}
 
@@ -96,8 +100,10 @@ public class Eqitrecmerc implements java.io.Serializable {
 			String servicosolicitrecmerc, String obsitrecmerc,
 			String placaveiculo, String nrofrota, String garagem, char emmanut,
 			Date dtins, Date hins, String idusuins, Date dtalt, Date halt,
-			String idusualt, Set eqrecamostragems, Set eqitrecmercitoses,
-			Set eqmovseries, Set eqitrecmercitcps, Set eqitrecmercseries) {
+			String idusualt
+			/*, Set eqrecamostragems, Set eqitrecmercitoses,
+			Set eqmovseries, Set eqitrecmercitcps, Set eqitrecmercseries*/
+			) {
 		this.id = id;
 		this.eqproduto = eqproduto;
 		this.sgfilial = sgfilial;
@@ -125,11 +131,11 @@ public class Eqitrecmerc implements java.io.Serializable {
 		this.dtalt = dtalt;
 		this.halt = halt;
 		this.idusualt = idusualt;
-		this.eqrecamostragems = eqrecamostragems;
+		/*this.eqrecamostragems = eqrecamostragems;
 		this.eqitrecmercitoses = eqitrecmercitoses;
 		this.eqmovseries = eqmovseries;
 		this.eqitrecmercitcps = eqitrecmercitcps;
-		this.eqitrecmercseries = eqitrecmercseries;
+		this.eqitrecmercseries = eqitrecmercseries;*/
 	}
 
 	@EmbeddedId
@@ -174,7 +180,7 @@ public class Eqitrecmerc implements java.io.Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumns({
 			@JoinColumn(name = "NUMSERIE", referencedColumnName = "NUMSERIE", insertable = false, updatable = false),
-			@JoinColumn(name = "CODPROD", referencedColumnName = "CODPROD", nullable = false, insertable = false, updatable = false),
+			@JoinColumn(name = "CODPROD", referencedColumnName = "CODPROD", insertable = false, updatable = false),
 			@JoinColumn(name = "CODFILIALNS", referencedColumnName = "CODFILIAL", insertable = false, updatable = false),
 			@JoinColumn(name = "CODEMPNS", referencedColumnName = "CODEMP", insertable = false, updatable = false) })
 	public Eqserie getEqserie() {

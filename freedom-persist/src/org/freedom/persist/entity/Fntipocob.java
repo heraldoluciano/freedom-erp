@@ -130,8 +130,8 @@ public class Fntipocob implements java.io.Serializable {
 	@JoinColumns({
 			@JoinColumn(name = "NUMCONTA", referencedColumnName = "NUMCONTA", insertable = false, updatable = false),
 			@JoinColumn(name = "SEQTALAO", referencedColumnName = "SEQTALAO", insertable = false, updatable = false),
-			@JoinColumn(name = "CODFILIAL", referencedColumnName = "CODFILIAL", nullable = false, insertable = false, updatable = false),
-			@JoinColumn(name = "CODEMP", referencedColumnName = "CODEMP", nullable = false, insertable = false, updatable = false) })
+			@JoinColumn(name = "CODFILIAL", referencedColumnName = "CODFILIAL", insertable = false, updatable = false),
+			@JoinColumn(name = "CODEMP", referencedColumnName = "CODEMP", insertable = false, updatable = false) })
 	public Fntalaocheq getFntalaocheq() {
 		return this.fntalaocheq;
 	}

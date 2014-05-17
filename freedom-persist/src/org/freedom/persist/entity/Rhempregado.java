@@ -238,8 +238,8 @@ public class Rhempregado implements java.io.Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumns({
 			@JoinColumn(name = "CODTURNO", referencedColumnName = "CODTURNO"),
-			@JoinColumn(name = "CODFILIALTO", referencedColumnName = "CODFILIAL", nullable = false),
-			@JoinColumn(name = "CODEMPTO", referencedColumnName = "CODEMP", nullable = false) })
+			@JoinColumn(name = "CODFILIALTO", referencedColumnName = "CODFILIAL"),
+			@JoinColumn(name = "CODEMPTO", referencedColumnName = "CODEMP") })
 	public Rhturno getRhturno() {
 		return this.rhturno;
 	}

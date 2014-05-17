@@ -4,8 +4,8 @@ package org.freedom.persist.entity;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+//import java.util.HashSet;
+//import java.util.Set;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
@@ -15,8 +15,8 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+//import javax.persistence.OneToMany;
+//import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -28,6 +28,10 @@ import javax.persistence.TemporalType;
 @Table(name = "CPITCOMPRA")
 public class Cpitcompra implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private CpitcompraId id;
 	private Eqproduto eqproduto;
 	private Cpcompra cpcompra;
@@ -83,7 +87,7 @@ public class Cpitcompra implements java.io.Serializable {
 	private Date dtalt;
 	private Date halt;
 	private String idusualt;
-	private Set ppops = new HashSet(0);
+	/*private Set ppops = new HashSet(0);
 	private Set cpcomprapedsForCpcomprapedfkcpcompraped = new HashSet(0);
 	private Set cpitcompraitcomprasForCpitcompitcfkitcp1 = new HashSet(0);
 	private Set cpdevolucaos = new HashSet(0);
@@ -95,7 +99,8 @@ public class Cpitcompra implements java.io.Serializable {
 	private Set cpcomprapedsForCpcomprapedfkcpcompra = new HashSet(0);
 	private Set eqitrecmercitcps = new HashSet(0);
 	private Set eqmovseries = new HashSet(0);
-
+*/
+	
 	public Cpitcompra() {
 	}
 
@@ -153,13 +158,14 @@ public class Cpitcompra implements java.io.Serializable {
 			BigDecimal vlritoutrasdespitcompra, char calccusto,
 			char adicicmstotnota, BigDecimal vlrtxsiscomexitcompra,
 			Character tiponfitcompra, Date dtins, Date hins, String idusuins,
-			Date dtalt, Date halt, String idusualt, Set ppops,
-			Set cpcomprapedsForCpcomprapedfkcpcompraped,
-			Set cpitcompraitcomprasForCpitcompitcfkitcp1, Set cpdevolucaos,
-			Lfitcompra lfitcompra, Cpcompravenda cpcompravenda,
-			Set cpitcompraitcomprasForCpitcompitcfkitcp2, Set vditvendas,
-			Set eqmovprods, Set cpcomprapedsForCpcomprapedfkcpcompra,
-			Set eqitrecmercitcps, Set eqmovseries) {
+			Date dtalt, Date halt, String idusualt, //Set ppops,
+	//		Set cpcomprapedsForCpcomprapedfkcpcompraped,
+	//		Set cpitcompraitcomprasForCpitcompitcfkitcp1, Set cpdevolucaos,
+			Lfitcompra lfitcompra, Cpcompravenda cpcompravenda //,
+	//		Set cpitcompraitcomprasForCpitcompitcfkitcp2, Set vditvendas,
+	//		Set eqmovprods, Set cpcomprapedsForCpcomprapedfkcpcompra,
+	//		Set eqitrecmercitcps, Set eqmovseries
+			) {
 		this.id = id;
 		this.eqproduto = eqproduto;
 		this.cpcompra = cpcompra;
@@ -215,7 +221,7 @@ public class Cpitcompra implements java.io.Serializable {
 		this.dtalt = dtalt;
 		this.halt = halt;
 		this.idusualt = idusualt;
-		this.ppops = ppops;
+		/*this.ppops = ppops;
 		this.cpcomprapedsForCpcomprapedfkcpcompraped = cpcomprapedsForCpcomprapedfkcpcompraped;
 		this.cpitcompraitcomprasForCpitcompitcfkitcp1 = cpitcompraitcomprasForCpitcompitcfkitcp1;
 		this.cpdevolucaos = cpdevolucaos;
@@ -226,7 +232,7 @@ public class Cpitcompra implements java.io.Serializable {
 		this.eqmovprods = eqmovprods;
 		this.cpcomprapedsForCpcomprapedfkcpcompra = cpcomprapedsForCpcomprapedfkcpcompra;
 		this.eqitrecmercitcps = eqitrecmercitcps;
-		this.eqmovseries = eqmovseries;
+		this.eqmovseries = eqmovseries;*/
 	}
 
 	@EmbeddedId

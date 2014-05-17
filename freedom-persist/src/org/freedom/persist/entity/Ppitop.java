@@ -148,11 +148,11 @@ public class Ppitop implements java.io.Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumns({
-			@JoinColumn(name = "CODOP", referencedColumnName = "CODOP", nullable = false, insertable = false, updatable = false),
-			@JoinColumn(name = "SEQOP", referencedColumnName = "SEQOP", nullable = false, insertable = false, updatable = false),
+			@JoinColumn(name = "CODOP", referencedColumnName = "CODOP", insertable = false, updatable = false),
+			@JoinColumn(name = "SEQOP", referencedColumnName = "SEQOP", insertable = false, updatable = false),
 			@JoinColumn(name = "SEQAC", referencedColumnName = "SEQAC", insertable = false, updatable = false),
-			@JoinColumn(name = "CODFILIAL", referencedColumnName = "CODFILIAL", nullable = false, insertable = false, updatable = false),
-			@JoinColumn(name = "CODEMP", referencedColumnName = "CODEMP", nullable = false, insertable = false, updatable = false) })
+			@JoinColumn(name = "CODFILIAL", referencedColumnName = "CODFILIAL", insertable = false, updatable = false),
+			@JoinColumn(name = "CODEMP", referencedColumnName = "CODEMP", insertable = false, updatable = false) })
 	public Ppopacaocorret getPpopacaocorret() {
 		return this.ppopacaocorret;
 	}
@@ -191,7 +191,7 @@ public class Ppitop implements java.io.Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumns({
 			@JoinColumn(name = "CODLOTE", referencedColumnName = "CODLOTE", insertable = false, updatable = false),
-			@JoinColumn(name = "CODPROD", referencedColumnName = "CODPROD", nullable = false, insertable = false, updatable = false),
+			@JoinColumn(name = "CODPROD", referencedColumnName = "CODPROD", insertable = false, updatable = false),
 			@JoinColumn(name = "CODFILIALLE", referencedColumnName = "CODFILIAL", insertable = false, updatable = false),
 			@JoinColumn(name = "CODEMPLE", referencedColumnName = "CODEMP", insertable = false, updatable = false) })
 	public Eqlote getEqlote() {

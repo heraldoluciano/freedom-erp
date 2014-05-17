@@ -4,8 +4,8 @@ package org.freedom.persist.entity;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+//import java.util.HashSet;
+//import java.util.Set;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
@@ -15,7 +15,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+//import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -27,6 +27,10 @@ import javax.persistence.TemporalType;
 @Table(name = "EQITRECMERCITOS")
 public class Eqitrecmercitos implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private EqitrecmercitosId id;
 	private Sgfilial sgfilial;
 	private Eqserie eqserie;
@@ -46,11 +50,11 @@ public class Eqitrecmercitos implements java.io.Serializable {
 	private Date dtalt;
 	private Date halt;
 	private String idusualt;
-	private Set ppops = new HashSet(0);
+/*	private Set ppops = new HashSet(0);
 	private Set eqitrmas = new HashSet(0);
 	private Set eqitrecmercitositorcs = new HashSet(0);
 	private Set crchamados = new HashSet(0);
-
+*/
 	public Eqitrecmercitos() {
 	}
 
@@ -77,8 +81,10 @@ public class Eqitrecmercitos implements java.io.Serializable {
 			String refprodpd, BigDecimal qtditos, String obsitos,
 			String statusitos, Character gerarma, Character gerachamado,
 			Character geranovo, char emmanut, Date dtins, Date hins,
-			String idusuins, Date dtalt, Date halt, String idusualt, Set ppops,
-			Set eqitrmas, Set eqitrecmercitositorcs, Set crchamados) {
+			String idusuins, Date dtalt, Date halt, String idusualt
+			//, Set ppops,
+			//Set eqitrmas, Set eqitrecmercitositorcs, Set crchamados
+			) {
 		this.id = id;
 		this.sgfilial = sgfilial;
 		this.eqserie = eqserie;
@@ -98,10 +104,10 @@ public class Eqitrecmercitos implements java.io.Serializable {
 		this.dtalt = dtalt;
 		this.halt = halt;
 		this.idusualt = idusualt;
-		this.ppops = ppops;
+/*		this.ppops = ppops;
 		this.eqitrmas = eqitrmas;
 		this.eqitrecmercitositorcs = eqitrecmercitositorcs;
-		this.crchamados = crchamados;
+		this.crchamados = crchamados;*/
 	}
 
 	@EmbeddedId
@@ -134,7 +140,7 @@ public class Eqitrecmercitos implements java.io.Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumns({
 			@JoinColumn(name = "NUMSERIE", referencedColumnName = "NUMSERIE"),
-			@JoinColumn(name = "CODPRODPD", referencedColumnName = "CODPROD", nullable = false),
+			@JoinColumn(name = "CODPRODPD", referencedColumnName = "CODPROD"),
 			@JoinColumn(name = "CODFILIALNS", referencedColumnName = "CODFILIAL"),
 			@JoinColumn(name = "CODEMPNS", referencedColumnName = "CODEMP") })
 	public Eqserie getEqserie() {
