@@ -246,8 +246,8 @@ public class Fnlanca implements java.io.Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumns({
 			@JoinColumn(name = "CODCOMI", referencedColumnName = "CODCOMI", insertable = false, updatable = false),
-			@JoinColumn(name = "CODFILIAL", referencedColumnName = "CODFILIAL", nullable = false, insertable = false, updatable = false),
-			@JoinColumn(name = "CODEMP", referencedColumnName = "CODEMP", nullable = false, insertable = false, updatable = false) })
+			@JoinColumn(name = "CODFILIAL", referencedColumnName = "CODFILIAL", insertable = false, updatable = false),
+			@JoinColumn(name = "CODEMP", referencedColumnName = "CODEMP", insertable = false, updatable = false) })
 	public Vdcomissao getVdcomissao() {
 		return this.vdcomissao;
 	}

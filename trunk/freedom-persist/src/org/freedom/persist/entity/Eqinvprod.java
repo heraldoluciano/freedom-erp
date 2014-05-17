@@ -4,8 +4,8 @@ package org.freedom.persist.entity;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+//import java.util.HashSet;
+//import java.util.Set;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
@@ -15,7 +15,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+//import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -27,6 +27,10 @@ import javax.persistence.TemporalType;
 @Table(name = "EQINVPROD")
 public class Eqinvprod implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private EqinvprodId id;
 	private Eqproduto eqproduto;
 	private Sgfilial sgfilial;
@@ -48,8 +52,8 @@ public class Eqinvprod implements java.io.Serializable {
 	private Date dtalt;
 	private Date halt;
 	private String idusualt;
-	private Set eqmovseries = new HashSet(0);
-	private Set eqmovprods = new HashSet(0);
+//	private Set eqmovseries = new HashSet(0);
+//	private Set eqmovprods = new HashSet(0);
 
 	public Eqinvprod() {
 	}
@@ -78,8 +82,10 @@ public class Eqinvprod implements java.io.Serializable {
 			BigDecimal qtdinvp, BigDecimal precoinvp, String refprod,
 			BigDecimal sldatualinvp, BigDecimal slddiginvp, Character flag,
 			String obsinvp, char emmanut, Date dtins, Date hins,
-			String idusuins, Date dtalt, Date halt, String idusualt,
-			Set eqmovseries, Set eqmovprods) {
+			String idusuins, Date dtalt, Date halt, String idusualt
+			//,
+			//Set eqmovseries, Set eqmovprods
+			) {
 		this.id = id;
 		this.eqproduto = eqproduto;
 		this.sgfilial = sgfilial;
@@ -101,8 +107,8 @@ public class Eqinvprod implements java.io.Serializable {
 		this.dtalt = dtalt;
 		this.halt = halt;
 		this.idusualt = idusualt;
-		this.eqmovseries = eqmovseries;
-		this.eqmovprods = eqmovprods;
+		//this.eqmovseries = eqmovseries;
+		//this.eqmovprods = eqmovprods;
 	}
 
 	@EmbeddedId
@@ -172,7 +178,7 @@ public class Eqinvprod implements java.io.Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumns({
 			@JoinColumn(name = "CODLOTE", referencedColumnName = "CODLOTE", insertable = false, updatable = false),
-			@JoinColumn(name = "CODPROD", referencedColumnName = "CODPROD", nullable = false, insertable = false, updatable = false),
+			@JoinColumn(name = "CODPROD", referencedColumnName = "CODPROD", insertable = false, updatable = false),
 			@JoinColumn(name = "CODFILIALLE", referencedColumnName = "CODFILIAL", insertable = false, updatable = false),
 			@JoinColumn(name = "CODEMPLE", referencedColumnName = "CODEMP", insertable = false, updatable = false) })
 	public Eqlote getEqlote() {
@@ -337,8 +343,8 @@ public class Eqinvprod implements java.io.Serializable {
 		return this.eqmovprods;
 	}
 */
-	public void setEqmovprods(Set eqmovprods) {
+	/*public void setEqmovprods(Set eqmovprods) {
 		this.eqmovprods = eqmovprods;
-	}
+	}*/
 
 }

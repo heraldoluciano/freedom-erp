@@ -22,6 +22,10 @@ import javax.persistence.TemporalType;
 @Table(name = "CPITCOMPRAITCOMPRA")
 public class Cpitcompraitcompra implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6997942494314929274L;
 	private long id;
 	private Cpitcompra cpitcompraByCpitcompitcfkitcp2;
 	private Cpitcompra cpitcompraByCpitcompitcfkitcp1;
@@ -80,8 +84,8 @@ public class Cpitcompraitcompra implements java.io.Serializable {
 	@JoinColumns({
 			@JoinColumn(name = "CODCOMPRACO", referencedColumnName = "CODCOMPRA", nullable = false),
 			@JoinColumn(name = "CODITCOMPRACO", referencedColumnName = "CODITCOMPRA", nullable = false),
-			@JoinColumn(name = "CODFILIALCO", referencedColumnName = "CODFILIAL"),
-			@JoinColumn(name = "CODEMPCO", referencedColumnName = "CODEMP") })
+			@JoinColumn(name = "CODFILIALCO", referencedColumnName = "CODFILIAL", nullable = false),
+			@JoinColumn(name = "CODEMPCO", referencedColumnName = "CODEMP", nullable = false) })
 	public Cpitcompra getCpitcompraByCpitcompitcfkitcp2() {
 		return this.cpitcompraByCpitcompitcfkitcp2;
 	}

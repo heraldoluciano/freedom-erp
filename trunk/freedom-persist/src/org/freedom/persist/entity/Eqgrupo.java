@@ -3,8 +3,8 @@ package org.freedom.persist.entity;
 // Generated 12/05/2014 09:11:34 by Hibernate Tools 4.0.0
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+//import java.util.HashSet;
+//import java.util.Set;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
@@ -14,7 +14,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+//import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -26,6 +26,10 @@ import javax.persistence.TemporalType;
 @Table(name = "EQGRUPO")
 public class Eqgrupo implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -247274474028759721L;
 	private EqgrupoId id;
 	private Sgfilial sgfilial;
 	private Eqgrupo eqgrupo;
@@ -43,11 +47,11 @@ public class Eqgrupo implements java.io.Serializable {
 	private Date dtalt;
 	private Date halt;
 	private String idusualt;
-	private Set eqprodutos = new HashSet(0);
+	/*private Set eqprodutos = new HashSet(0);
 	private Set eqgrupos = new HashSet(0);
 	private Set tkctogrpints = new HashSet(0);
 	private Set sgprefere1s = new HashSet(0);
-
+*/
 	public Eqgrupo() {
 	}
 
@@ -70,8 +74,9 @@ public class Eqgrupo implements java.io.Serializable {
 			String descgrup, Integer nivelgrup, Integer codempsg,
 			Short codfilialsg, String siglagrup, char estneggrup,
 			char estlotneggrup, char web, Date dtins, Date hins,
-			String idusuins, Date dtalt, Date halt, String idusualt,
-			Set eqprodutos, Set eqgrupos, Set tkctogrpints, Set sgprefere1s) {
+			String idusuins, Date dtalt, Date halt, String idusualt
+			//, Set eqprodutos, Set eqgrupos, Set tkctogrpints, Set sgprefere1s
+			) {
 		this.id = id;
 		this.sgfilial = sgfilial;
 		this.eqgrupo = eqgrupo;
@@ -89,10 +94,10 @@ public class Eqgrupo implements java.io.Serializable {
 		this.dtalt = dtalt;
 		this.halt = halt;
 		this.idusualt = idusualt;
-		this.eqprodutos = eqprodutos;
+		/*this.eqprodutos = eqprodutos;
 		this.eqgrupos = eqgrupos;
 		this.tkctogrpints = tkctogrpints;
-		this.sgprefere1s = sgprefere1s;
+		this.sgprefere1s = sgprefere1s;*/
 	}
 
 	@EmbeddedId
@@ -122,7 +127,7 @@ public class Eqgrupo implements java.io.Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumns({
-			@JoinColumn(name = "CODSUBGRUP", referencedColumnName = "CODGRUP", insertable = false, updatable = false),
+			@JoinColumn(name = "CODSUBGRUP", referencedColumnName = "CODGRUP", nullable = false, insertable = false, updatable = false),
 			@JoinColumn(name = "CODFILIAL", referencedColumnName = "CODFILIAL", nullable = false, insertable = false, updatable = false),
 			@JoinColumn(name = "CODEMP", referencedColumnName = "CODEMP", nullable = false, insertable = false, updatable = false) })
 	public Eqgrupo getEqgrupo() {

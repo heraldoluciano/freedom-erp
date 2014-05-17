@@ -23,6 +23,10 @@ import javax.persistence.TemporalType;
 @Table(name = "EQITRECMERCSERIE")
 public class Eqitrecmercserie implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private EqitrecmercserieId id;
 	private Eqserie eqserie;
 	private Eqitrecmerc eqitrecmerc;

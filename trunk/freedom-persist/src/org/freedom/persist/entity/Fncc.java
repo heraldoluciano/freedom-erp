@@ -138,8 +138,8 @@ public class Fncc implements java.io.Serializable {
 	@JoinColumns({
 			@JoinColumn(name = "CODSUBCC", referencedColumnName = "CODCC", insertable = false, updatable = false),
 			@JoinColumn(name = "ANOSCC", referencedColumnName = "ANOCC", insertable = false, updatable = false),
-			@JoinColumn(name = "CODFILIAL", referencedColumnName = "CODFILIAL", nullable = false, insertable = false, updatable = false),
-			@JoinColumn(name = "CODEMP", referencedColumnName = "CODEMP", nullable = false, insertable = false, updatable = false) })
+			@JoinColumn(name = "CODFILIAL", referencedColumnName = "CODFILIAL", insertable = false, updatable = false),
+			@JoinColumn(name = "CODEMP", referencedColumnName = "CODEMP", insertable = false, updatable = false) })
 	public Fncc getFncc() {
 		return this.fncc;
 	}
