@@ -205,9 +205,9 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 
 	private JButtonPad btExec = new JButtonPad( Icone.novo( "btExecuta.png" ) );
 
-	private JButtonPad btTudo = new JButtonPad( Icone.novo( "btTudo.png" ) );
+	private JButtonPad btSelecionar = new JButtonPad( Icone.novo( "btTudo.png" ) );
 
-	private JButtonPad btNada = new JButtonPad( Icone.novo( "btNada.png" ) );
+	private JButtonPad btDesselecionar = new JButtonPad( Icone.novo( "btNada.png" ) );
 
 	private JButtonPad btEditQtd = new JButtonPad( Icone.novo( "btEditar.gif" ) );
 
@@ -282,8 +282,9 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		tabItensVenda.addMouseListener( this );
 		btBuscar.addKeyListener( this );
 		btResetCesta.addActionListener( this );
-		btTudo.addActionListener( this );
-		btNada.addActionListener( this );
+		btSelecionar.addActionListener( this );
+		btDesselecionar.addActionListener( this );
+		btGerar.addActionListener( this );
 		btAddCesta.addActionListener( this );
 		txtCodCli.addFocusListener( this );
 		tabbedDetail.addChangeListener( this );
@@ -323,13 +324,15 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 
 		// **** Preparando barra de ferramentas
 		btResetCesta.setToolTipText( "Apaga todas as cestas da memória" );
-		btTudo.setToolTipText( "Seleciona todas as cestas" );
-		btNada.setToolTipText( "Desseleciona todas as cestas" );
+		btSelecionar.setToolTipText( "Seleciona todas as cestas" );
+		btDesselecionar.setToolTipText( "Desseleciona todas as cestas" );
+		btGerar.setToolTipText( "Gerar orçamento(s)" ); 
 		pinToolBar.add( pinToolBarCesta, BorderLayout.NORTH );
 		pinToolBar.add( pinToolBarVendas, BorderLayout.CENTER );
 		pinToolBarCesta.adic( btResetCesta, 3, 3, 30, 30 );
-		pinToolBarCesta.adic( btTudo, 3, 33, 30, 30 );
-		pinToolBarCesta.adic( btNada, 3, 63, 30, 30 );
+		pinToolBarCesta.adic( btSelecionar, 3, 33, 30, 30 );
+		pinToolBarCesta.adic( btDesselecionar, 3, 63, 30, 30 );
+		pinToolBarCesta.adic( btGerar, 3, 93, 30, 30 );
 		pinToolBarVendas.adic( btAddCesta, 3, 3, 30, 30 );
 		// ToolBarCesta inicializa invisível
 		pinToolBarCesta.setVisible( false );
@@ -723,13 +726,34 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 			addCesta();
 		} else if ( e.getSource() == btResetCesta ) {
 			resetCesta();
-		} else if ( e.getSource() == btTudo ) {
+		} else if ( e.getSource() == btSelecionar ) {
 			selAllCestas(true);
-		} else if ( e.getSource() == btNada ) {
+		} else if ( e.getSource() == btDesselecionar ) {
 			selAllCestas(false);
+		} else if ( e.getSource() == btGerar ) {
+			createOrcamento();
 		}
 	}
 
+	private void createOrcamento() {
+		boolean hasOrcamento = false;
+		for (Cesta cesta: cestaFactory.getCestas()) {
+			if (cesta.getSel()) {
+				hasOrcamento = true;
+				break;
+			}
+		}
+		if ( !hasOrcamento ) {
+			Funcoes.mensagemInforma( this, "Selecione um orçamento para gerar !" );
+			return;
+		} else {
+			if (Funcoes.mensagemConfirma( this, "Confirma geração do(s) orçamento(s)?")!=JOptionPane.YES_OPTION) {
+				return;
+			}
+		}
+		
+	}
+	
 	private void selAllCestas(boolean sel) {
 		for (Cesta cesta: cestaFactory.getCestas() ) {
 			cesta.setSel( sel );
