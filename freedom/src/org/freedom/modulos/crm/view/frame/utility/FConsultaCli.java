@@ -77,6 +77,7 @@ import org.freedom.modulos.crm.dao.DAOConsultaCli.RESULT_RECEBER;
 import org.freedom.modulos.crm.dao.DAOConsultaCli.RESULT_ULTVENDA;
 import org.freedom.modulos.crm.dao.DAOConsultaCli.VENDAS;
 import org.freedom.modulos.crm.view.dialog.utility.DLConfirmItem;
+import org.freedom.modulos.std.dao.DAOOrcamento;
 import org.freedom.modulos.std.orcamento.bean.Cesta;
 import org.freedom.modulos.std.orcamento.bean.Item;
 import org.freedom.modulos.std.orcamento.bussiness.CestaFactory;
@@ -257,7 +258,9 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 	
 	private ImageIcon imgVencimento = null;
 	
-	private Integer codcliatual = null; 
+	private Integer codcliatual = null;
+	
+	private DAOOrcamento daoorcamento = null;
 	
 	public FConsultaCli() {
 
@@ -731,11 +734,11 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		} else if ( e.getSource() == btDesselecionar ) {
 			selAllCestas(false);
 		} else if ( e.getSource() == btGerar ) {
-			createOrcamento();
+			gerarOrcamento();
 		}
 	}
 
-	private void createOrcamento() {
+	private void gerarOrcamento() {
 		boolean hasOrcamento = false;
 		for (Cesta cesta: cestaFactory.getCestas()) {
 			if (cesta.getSel()) {
@@ -751,7 +754,11 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 				return;
 			}
 		}
-		
+		for (Cesta cesta: cestaFactory.getCestas()) {
+			if (cesta.getSel()) {
+				
+			}
+		}
 	}
 	
 	private void selAllCestas(boolean sel) {
@@ -1021,6 +1028,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		daoconsultacli = new DAOConsultaCli( cn, imgVencida, imgAVencer, imgPgEmAtraso
 				, imgPgEmDia, imgCancelado, imgPedido, imgFaturado );
 		cestaFactory = Aplicativo.getInstace().getCestaFactory();
+		daoorcamento = new DAOOrcamento( cn, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
 		
 	}
 
