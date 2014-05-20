@@ -2424,9 +2424,9 @@ CarregaListener, MouseListener {
 	}
 
 	public static int getMasterFilial(String sT) {
-		int iRet = Aplicativo.tbObjetos.getUsoMe(sT) ? Aplicativo.iCodFilialMz
+		int result = Aplicativo.tbObjetos.getUsoMe(sT) ? Aplicativo.iCodFilialMz
 				: Aplicativo.iCodFilial;
-		return iRet;
+		return result;
 	}
 
 	public void setConexao(DbConnection cn) {

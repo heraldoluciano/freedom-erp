@@ -11,6 +11,8 @@ public class Cesta {
 	private Integer codcli;
 	private String razcli;
 	private Date datacesta;
+	private Integer codplanopag;
+	private String descplanopag;
 	private BigDecimal qtdcesta;
 	private BigDecimal vlrdesccesta;
 	private BigDecimal vlrliqcesta;
@@ -19,13 +21,16 @@ public class Cesta {
 	public Cesta() {
 		setItens(new LinkedList<Item>());
 	}
-	public Cesta(Integer codemp, Integer codfilial, Integer codcli, String razcli, Date datacesta) {
+	public Cesta(Integer codemp, Integer codfilial, Integer codcli, String razcli, Date datacesta, Integer codplanopag, String descplanopag) {
 		this();
 		setCodemp(codemp);
 		setCodfilial(codfilial);
 		setCodcli(codcli);
 		setRazcli(razcli);
 		setDatacesta(datacesta);
+		setCodplanopag(codplanopag);
+		setDescplanopag(descplanopag);
+	
 	}
 	public Integer getCodemp() {
 		return codemp;
@@ -50,6 +55,18 @@ public class Cesta {
 	}
 	public void setRazcli(String razcli) {
 		this.razcli = razcli;
+	}
+	public Integer getCodplanopag() {
+		return codplanopag;
+	}
+	public void setCodplanopag(Integer codplanopag) {
+		this.codplanopag = codplanopag;
+	}
+	public String getDescplanopag() {
+		return descplanopag;
+	}
+	public void setDescplanopag(String descplanopag) {
+		this.descplanopag = descplanopag;
 	}
 	public Date getDatacesta() {
 		return datacesta;

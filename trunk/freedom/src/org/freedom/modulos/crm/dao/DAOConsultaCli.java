@@ -60,14 +60,14 @@ public class DAOConsultaCli extends AbstractDAO {
 		STATUSVENDA, STATUSPGTO, ATRASO, CODVENDA, NOTA, DATA, PAGAMENTO, VENDEDOR, VALOR_PRODUTOS, VALOR_DESCONTO, VALOR_ADICIONAL, FRETE, VALOR_LIQUIDO, TIPOVENDA;
 	}
 	public static enum CESTAS {
-		SELECAO, CODCLI, RAZCLI, DATACESTA, QTDCESTA, VLRDESCCESTA, VLRLIQCESTA;
+		SELECAO, CODCLI, RAZCLI, DATACESTA, QTDCESTA, VLRDESCCESTA, VLRLIQCESTA, CODPLANOPAG, DESCPLANOPAG;
 	}
 	public static enum PRODVENDAS {
 		STATUSVENDA, STATUSPGTO, CODVENDA, DOCVENDA, DTEMITVENDA, CODPROD, DESCPROD, QTDITVENDA, PRECOITVENDA, PERCDESCITVENDA
-		, VLRDESCITVENDA, VLRLIQITVENDA, TIPOVENDA;
+		, VLRDESCITVENDA, VLRLIQITVENDA, TIPOVENDA, CODPLANOPAG, DESCPLANOPAG;
 	}
 	public static enum ITENSVENDA {
-		CODITVENDA, CODPROD, DESCPROD, CODLOTE, QTDITVENDA, PRECOITVENDA, VLRDESCITVENDA, VLRFRETEITVENDA, VLRLIQITVENDA, TIPOVENDA;
+		CODITVENDA, CODPROD, DESCPROD, CODLOTE, QTDITVENDA, PRECOITVENDA, VLRDESCITVENDA, VLRFRETEITVENDA, VLRLIQITVENDA, TIPOVENDA, CODPLANOPAG, DESCPLANOPAG;
 	}
 	public static enum ITENSCESTA {
 		SELECAO, CODPROD, DESCPROD, QTDITCESTA, PRECOITCESTA, VLRDESCITCESTA, VLRLIQITCESTA;
@@ -186,9 +186,15 @@ public class DAOConsultaCli extends AbstractDAO {
 			sql.append( ", coalesce(i.qtditvenda,0) qtditvenda, coalesce(i.precoitvenda,0) precoitvenda ");
 			sql.append( ", coalesce(i.vlrdescitvenda,0) vlrdescitvenda, coalesce(i.vlrfreteitvenda,0) vlrfreteitvenda ");
 			sql.append( ", coalesce(i.vlrliqitvenda,0) vlrliqitvenda " );
-			sql.append( "from vditvenda i, eqproduto p " );
-			sql.append( "where i.codemp=? and i.codfilial=? and i.codvenda=? and i.tipovenda=? and " );
-			sql.append( "p.codemp=i.codemppd and p.codfilial=i.codfilialpd and p.codprod=i.codprod " );
+			sql.append( ", pg.codplanopag, pg.descplanopag ");
+			sql.append( "from vditvenda i " );
+			sql.append( "inner join eqproduto p " );
+			sql.append( "on p.codemp=i.codemppd and p.codfilial=i.codfilialpd and p.codprod=i.codprod " );
+			sql.append( "inner join vdvenda v " );
+			sql.append( "on v.codemp=i.codemp and v.codfilial=i.codfilial and v.tipovenda=i.tipovenda and v.codvenda=i.codvenda " );
+			sql.append( "inner join fnplanopag pg " );
+			sql.append( "on pg.codemp=v.codemppg and pg.codfilial=v.codfilialpg and pg.codplanopag=v.codplanopag " );
+			sql.append( "where i.codemp=? and i.codfilial=? and i.codvenda=? and i.tipovenda=? " );
 			if ( codprod.intValue() > 0 ) {
 				sql.append( " and p.codprod=? " );
 			}
@@ -215,6 +221,8 @@ public class DAOConsultaCli extends AbstractDAO {
 				row.addElement( Funcoes.bdToStr( rs.getBigDecimal( "VLRFRETEITVENDA" ) ) );
 				row.addElement( Funcoes.bdToStr( rs.getBigDecimal( "VLRLIQITVENDA" ) ) );
 				row.addElement( tipovenda );
+				row.addElement( rs.getInt( "CODPLANOPAG" ) );
+				row.addElement( rs.getString( "DESCPLANOPAG" ) );
 				result.addElement( row );
 			}
 			rs.close();
@@ -369,13 +377,15 @@ public class DAOConsultaCli extends AbstractDAO {
 		, VLRDESCITVENDA, VLRLIQITVENDA, TIPOVENDA;*/
 			sql.append("select first 1 vd.statusvenda, vd.codvenda, vd.docvenda, vd.dtemitvenda");
 			sql.append(", pd.codprod, pd.descprod, iv.qtditvenda, iv.precoitvenda, iv.percdescitvenda ");
-			sql.append(", iv.vlrdescitvenda, iv.vlrliqitvenda, vd.tipovenda ");
+			sql.append(", iv.vlrdescitvenda, iv.vlrliqitvenda, vd.tipovenda, vd.codplanopag, pg.descplanopag ");
 			sql.append("from vdvenda vd ");
 			sql.append("inner join vditvenda iv ");
 			sql.append("on iv.codemp=vd.codemp and iv.codfilial=vd.codfilial and iv.tipovenda=vd.tipovenda and iv.codvenda=vd.codvenda ");
 			sql.append("and iv.codemppd=? and iv.codfilialpd=? and iv.codprod=? ");
 			sql.append("inner join eqproduto pd ");
 			sql.append("on pd.codemp=iv.codemppd and pd.codfilial=iv.codfilialpd and pd.codprod=iv.codprod ");
+			sql.append("inner join fnplanopag pg ");
+			sql.append("on pg.codemp=vd.codemppg and pg.codfilial=vd.codfilialpg and pg.codplanopag=vd.codplanopag ");
 			sql.append("where vd.codemp=? and vd.codfilial=? and vd.tipovenda='V' and dtemitvenda=? ");
 			sql.append("and substring(vd.statusvenda from 1 for 1) not in ('C','N') ");
 			sql.append("and vd.codempcl=? and vd.codfilialcl=? and vd.codcli=? " );
@@ -420,6 +430,8 @@ public class DAOConsultaCli extends AbstractDAO {
 				row.addElement( Funcoes.bdToStr( rs.getBigDecimal( "VLRDESCITVENDA" ) ) );
 				row.addElement( Funcoes.bdToStr( rs.getBigDecimal( "VLRLIQITVENDA" ) ) );
 				row.addElement( tipovenda );
+				row.addElement( rs.getInt( "CODPLANOPAG" ) );
+				row.addElement( rs.getString( "DESCPLANOPAG" ) );
 			}
 			rs.close();
 			ps.close();

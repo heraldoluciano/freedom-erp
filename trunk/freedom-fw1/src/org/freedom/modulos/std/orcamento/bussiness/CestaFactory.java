@@ -35,10 +35,10 @@ public class CestaFactory {
 		return result;
 	}
 	
-	public Cesta createNewCesta(Integer codemp, Integer codfilial, Integer codcli, String razcli) {
+	public Cesta createNewCesta(Integer codemp, Integer codfilial, Integer codcli, String razcli, Integer codplanopag, String descplanopag) {
 		Cesta result = getCesta(codemp, codfilial, codcli);
 		if (result==null) {
-			result = new Cesta(codemp, codfilial, codcli, razcli, new Date());
+			result = new Cesta(codemp, codfilial, codcli, razcli, new Date(), codplanopag, descplanopag);
 			cestas.add(result);
 		}
 		return result;
