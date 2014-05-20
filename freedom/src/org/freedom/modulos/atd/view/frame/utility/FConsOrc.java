@@ -471,10 +471,11 @@ public class FConsOrc extends FFilho implements ActionListener {
 	private void abreOrc() {
 
 		int iCodOrc = ( (Integer) tab.getValor( tab.getLinhaSel(), 1 ) ).intValue();
-		if ( fPrim.temTela( "VDOrcamento" ) == false ) {
+		if ( fPrim.temTela( "Orcamento" ) == false ) {
 			FOrcamento tela = new FOrcamento();
-			fPrim.criatela( "VDOrcamento", tela, con );
+			fPrim.criatela( "Orcamento", tela, con );
 			tela.exec( iCodOrc );
+			
 		}
 	}
 
