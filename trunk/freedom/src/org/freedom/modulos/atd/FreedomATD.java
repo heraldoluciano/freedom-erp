@@ -95,16 +95,15 @@ public class FreedomATD extends AplicativoPD implements ActionListener {
 		addOpcao( 1200000000, TP_OPCAO_ITEM, "Orçamento", "Orçamento", 'O', 120100000, 1, true, FOrcamento.class );
 		addSeparador( 1200000000 );
 		addOpcao( 1200000000, TP_OPCAO_ITEM, "Pesquisa Orçamentos", "Pesquisa Orcamentos", 'P', 120200000, 1, true, FConsOrc.class );
-		addOpcao( 1200000000, TP_OPCAO_ITEM, "Aprova Orçamentos", "Aprova VDOrcamento", 'A', 120300000, 1, true, FAprovaOrc.class );
+		addOpcao( 1200000000, TP_OPCAO_ITEM, "Aprova Orçamentos", "Aprova Orcamento", 'A', 120300000, 1, true, FAprovaOrc.class );
 		addOpcao( 1200000000, TP_OPCAO_ITEM, "Pesquisa Autorizações", "Pesquisa Autorização", 'e', 120400000, 1, true, FConsAutoriz.class );
 		addOpcao( 1200000000, TP_OPCAO_ITEM, "Termo de Recebimento", "Termo de Recebimento", 'e', 120500000, 1, true, FRTermReceb.class );
 
 		addBotao( "btAtendimento.png", "Atendimento", "Atendimento", 110100000, FAtendimento.class );
-		addBotao( "btOrcamento.png", "Orçamento", "VDOrcamento", 120100000, FOrcamento.class );
+		addBotao( "btOrcamento.png", "Orçamento", "Orcamento", 120100000, FOrcamento.class );
 		addBotao( "btConsOrcamento.png", "Pesquisa Orçamento", "Pesquisa Orcamentos", 120200000, FConsOrc.class );
 		addBotao( "barraConveniados.png", "Conveniados", "Conveniados", 100101040, FConveniado.class );
-		addBotao( "btAprovaOrc.png", "Aprovações de Orçamantos", "Aprova VDOrcamento", 120300000, FAprovaOrc.class );
-
+		addBotao( "btAprovaOrc.png", "Aprovações de Orçamantos", "Aprova Orcamento", 120300000, FAprovaOrc.class );
 		ajustaMenu();
 
 		nomemodulo = "Atendimento";
