@@ -16,10 +16,11 @@
  * <BR>
  *         m
  * 
- *         VDOrcamento padronizado para Modelcraft...
+ *         Orcamento padronizado para Modelcraft...
  */
 
 package org.freedom.layout.orc;
+
 
 import java.awt.Font;
 import java.math.BigDecimal;
