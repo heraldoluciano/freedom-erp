@@ -31,6 +31,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
 
+import org.freedom.infra.dao.AbstractDAO;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JTextAreaPad;
@@ -43,6 +44,8 @@ import org.freedom.modulos.gms.business.component.NumSerie;
 import org.freedom.modulos.gms.view.dialog.utility.DLLote;
 import org.freedom.modulos.gms.view.dialog.utility.DLSerieGrid;
 import org.freedom.modulos.lvf.business.component.CalcImpostos;
+import org.freedom.modulos.std.dao.DAOOrcamento;
+import org.freedom.modulos.std.dao.DAOVenda;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaDescProd;
 import org.freedom.modulos.std.view.dialog.utility.DLDescontItVenda;
 import org.freedom.modulos.std.view.frame.utility.FObsCliVend;
@@ -61,7 +64,11 @@ public abstract class FVD extends FDetalhe {
 	protected int casasDecPre = Aplicativo.casasDecPre;
 	
 	protected CalcImpostos impostos = new CalcImpostos();
+	
+	private DAOOrcamento daoorcamento = null;
 
+	private DAOVenda daovenda = null;
+	
 	/**
 	 * indica se pode recalcular os itens. ajuda a evitar updates desnecessarios ou erroneos.
 	 */
@@ -205,44 +212,27 @@ public abstract class FVD extends FDetalhe {
 	 *            campo da chave primaria
 	 * @return int com o código real.
 	 */
-	public Integer testaCodPK( String sTabela ) {
+	public Integer writePK( String tablename ) {
 
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		Integer retorno = new Integer( 0 );
-
+		Integer result = new Integer( 0 );
+		AbstractDAO dao = null;
+		String prefix = null;
 		try {
-			ps = con.prepareStatement( "SELECT ISEQ FROM SPGERANUM(?,?,?)" );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-
-			if ( sTabela.equals( "VDVENDA" ) ) {
-				ps.setInt( 2, ListaCampos.getMasterFilial( "VDVENDA" ) );
-				ps.setString( 3, "VD" );
+			if (tablename!=null && tablename.equalsIgnoreCase( "VDORCAMENTO" ) && getDaoorcamento()!=null ) {
+				dao = getDaoorcamento();
+				prefix = "OC";
+			} else if (tablename!=null && tablename.equalsIgnoreCase( "VDVENDA" ) && getDaovenda()!=null) {
+				dao = getDaovenda();
+				prefix = "VD";
 			}
-			else if ( sTabela.equals( "VDORCAMENTO" ) ) {
-				ps.setInt( 2, ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
-				ps.setString( 3, "OC" );
+			if (dao!=null && prefix!=null) {
+				result = dao.writePK( prefix );
 			}
 
-			rs = ps.executeQuery();
-			rs.next();
-
-			retorno = new Integer( rs.getString( 1 ) );
-
-			rs.close();
-			ps.close();
-
-			con.commit();
-
-		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro ao confirmar número do pedido!\n" + err.getMessage(), true, con, err );
-			err.printStackTrace();
-		} finally {
-			ps = null;
-			rs = null;
+		} catch ( Exception err ) {
+			Funcoes.mensagemErro( this, err.getMessage() );
 		}
-
-		return retorno;
+		return result;
 
 	}
 
@@ -970,6 +960,30 @@ public abstract class FVD extends FDetalhe {
 
 		return ret;
 
+	}
+
+	
+	public DAOOrcamento getDaoorcamento() {
+	
+		return daoorcamento;
+	}
+
+	
+	public void setDaoorcamento( DAOOrcamento daoorcamento ) {
+	
+		this.daoorcamento = daoorcamento;
+	}
+
+	
+	public DAOVenda getDaovenda() {
+	
+		return daovenda;
+	}
+
+	
+	public void setDaovenda( DAOVenda daovenda ) {
+	
+		this.daovenda = daovenda;
 	}
 
 }

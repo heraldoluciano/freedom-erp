@@ -115,7 +115,9 @@ import org.freedom.modulos.nfe.database.jdbc.NFEConnectionFactory;
 import org.freedom.modulos.std.DLBuscaCompra;
 import org.freedom.modulos.std.DLBuscaEstoq;
 import org.freedom.modulos.std.DLCodProd;
+import org.freedom.modulos.std.business.component.Venda.POS_PREFS;
 import org.freedom.modulos.std.dao.DAOBuscaOrc;
+import org.freedom.modulos.std.dao.DAOVenda;
 import org.freedom.modulos.std.inter.InterVenda;
 import org.freedom.modulos.std.view.dialog.report.DLRPedido;
 import org.freedom.modulos.std.view.dialog.utility.DLAltComisVend;
@@ -551,15 +553,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 	private boolean bCtrl = false;
 
-	private String sOrdNota = "";
-
 	private int iCodCliAnt = 0;
 
 	private int codregrcomis = 0;
-
-	private String classped = "";
-
-	private String localServ = "";
 
 	private HashMap<String, Object> permusu = null;
 
@@ -609,14 +605,6 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	
     private DAOBuscaOrc daobuscaorc = null;
 
-	private enum POS_PREFS {
-		USAREFPROD, USAPEDSEQ, USALIQREL, TIPOPRECOCUSTO, USACLASCOMIS, TRAVATMNFVD, NATVENDA, BLOQVENDA, VENDAMATPRIM, DESCCOMPPED, TAMDESCPROD
-		, OBSCLIVEND, IPIVENDA, CONTESTOQ, DIASPEDT, RECALCCPVENDA, USALAYOUTPED, ICMSVENDA, USAPRECOZERO, MULTICOMIS, CONS_CRED_ITEM, CONS_CRED_FECHA
-		, TIPOCLASPED, VENDAIMOBILIZADO, VISUALIZALUCR, INFCPDEVOLUCAO, INFVDREMESSA, TIPOCUSTO, BUSCACODPRODGEN, CODPLANOPAGSV, CODTIPOMOVDS, COMISSAODESCONTO
-		, VENDAMATCONSUM, OBSITVENDAPED, BLOQSEQIVD, VDPRODQQCLAS, CONSISTENDENTVD, BLOQDESCCOMPVD, BLOQPRECOVD, BLOQCOMISSVD, BLOQPEDVD, SOLDTSAIDA
-		, PROCEMINFE, AMBIENTENFE, CNPJFILIAL, SIGLAUF, TIPOEMISSAONFE, BLOQNFEVDAUTORIZ
-	}
-
 	private enum ECOL_ITENS{
 		CODITVENDA, CODPROD, DESCPROD
 	}
@@ -631,20 +619,14 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	// Função criada para montar a tela conforme a preferência do usuário:
 	// com ou sem Referência de PK;
 	private void montaTela() {
-
 		nav.setNavigation( true );
-
-		oPrefs = prefs(); // Carrega as preferências
-
 		if ( (Boolean) oPrefs[ POS_PREFS.MULTICOMIS.ordinal() ] ) {
 			numComissionados = getNumComissionados();
 		}
-
 		if ( (Boolean) oPrefs[ POS_PREFS.COMISSAODESCONTO.ordinal() ] ) {
 			txtVlrComisItVenda.setAtivo( false );
 			txtPercComItVenda.setAtivo( false );
 		}
-
 		Vector<String> vLabsLocalServ = new Vector<String>();
 		Vector<String> vValsLocalServ = new Vector<String>();
 		vLabsLocalServ.addElement("Prestador");
@@ -2953,7 +2935,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			imp.verifLinPag( sTipo );
 			imp.setTitulo( "Nota Fiscal" );
 
-			dl = new DLRPedido( sOrdNota, "coditvenda", false );
+			dl = new DLRPedido( (String) oPrefs[POS_PREFS.ORDNOTA.ordinal()], "coditvenda", false );
 			dl.setVisible( true );
 
 			if ( dl.OK == false ) {
@@ -3165,7 +3147,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				filtro = "LOCAL DE ENTREGA";
 			}
 			else {
-				dl = new DLRPedido( sOrdNota, "i.coditvenda", false );
+				dl = new DLRPedido( (String) oPrefs[POS_PREFS.ORDNOTA.ordinal()], "i.coditvenda", false );
 				dl.setConexao( con );
 				dl.setTipo( "G" );
 				dl.setVisible( true );
@@ -3275,7 +3257,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 					}
 					else {
 
-						if ( classped.equals( "QA" ) ) {
+						if ( oPrefs[POS_PREFS.CLASPED.ordinal()].equals( "QA" ) ) {
 							hParam.put( "CODEMP", Aplicativo.iCodEmp );
 							hParam.put( "CODFILIAL", Aplicativo.iCodFilial );
 							hParam.put( "CODVENDA", txtCodVenda.getVlrInteger() );
@@ -3599,107 +3581,6 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		}
 	}
 
-	private Object[] prefs() {
-
-		Object[] retorno = new Object[ POS_PREFS.values().length ];
-		StringBuffer sSQL = new StringBuffer();
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		try {
-			sSQL.append( "SELECT P1.USAREFPROD, P1.USAPEDSEQ, P1.USALIQREL, P1.TIPOPRECOCUSTO, P1.ORDNOTA, P1.USAPRECOZERO " );
-			sSQL.append( ", P1.USACLASCOMIS, P1.TRAVATMNFVD, P1.NATVENDA, P1.IPIVENDA, P1.BLOQVENDA, P1.VENDAMATPRIM, P1.DESCCOMPPED " );
-			sSQL.append( ", P1.TAMDESCPROD, P1.OBSCLIVEND, P1.CONTESTOQ, P1.DIASPEDT, P1.RECALCPCVENDA, P1.USALAYOUTPED " );
-			sSQL.append( ", P1.ICMSVENDA, P1.MULTICOMIS, P1.TIPOPREFCRED, P1.TIPOCLASSPED, P1.VENDAPATRIM, P1.VISUALIZALUCR " );
-			sSQL.append( ", P1.INFCPDEVOLUCAO, P1.INFVDREMESSA, P1.TIPOCUSTOLUC, P1.BUSCACODPRODGEN, P1.CODPLANOPAGSV " );
-			sSQL.append( ", P1.COMISSAODESCONTO, P8.CODTIPOMOVDS, P1.VENDACONSUM, P1.OBSITVENDAPED, P1.BLOQSEQIVD, P1.LOCALSERV ");
-			sSQL.append( ", P1.VDPRODQQCLAS, P1.CONSISTENDENTVD, P1.BLOQDESCCOMPVD, P1.BLOQPRECOVD, P1.BLOQCOMISSVD ");
-			sSQL.append( ", P1.BLOQPEDVD, P1.SOLDTSAIDA, COALESCE(P1.PROCEMINFE,'3') PROCEMINFE, COALESCE(P1.AMBIENTENFE,'2') AMBIENTENFE " );
-			sSQL.append( ", F.CNPJFILIAL, F.SIGLAUF, coalesce(P1.TIPOEMISSAONFE,'1') TIPOEMISSAONFE, coalesce(P1.BLOQNFEVDAUTORIZ,'S') BLOQNFEVDAUTORIZ " );
-
-			sSQL.append( "FROM SGPREFERE1 P1 ");
-			sSQL.append( "INNER JOIN SGFILIAL F ");
-			sSQL.append( "ON F.CODEMP=P1.CODEMP AND F.CODFILIAL=P1.CODFILIAL ");
-			sSQL.append( "LEFT OUTER JOIN SGPREFERE8 P8 ON " );
-			sSQL.append( "P1.CODEMP=P8.CODEMP AND P1.CODFILIAL=P8.CODFILIAL " );
-
-			sSQL.append( "WHERE P1.CODEMP=? AND P1.CODFILIAL=? " );
-
-			ps = con.prepareStatement( sSQL.toString() );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
-			rs = ps.executeQuery();
-
-			if ( rs.next() ) {
-				retorno[ POS_PREFS.USAREFPROD.ordinal() ] = "S".equals( rs.getString( "USAREFPROD" ) );
-				retorno[ POS_PREFS.USAPEDSEQ.ordinal() ] = "S".equals( rs.getString( "USAPEDSEQ" ) );
-				if ( rs.getString( "UsaLiqRel" ) == null ) {
-					Funcoes.mensagemInforma( this, "Preencha opção de desconto em preferências!" );
-				}
-				else {
-					retorno[ POS_PREFS.USALIQREL.ordinal() ] = "S".equals( rs.getString( "UsaLiqRel" ) );
-					sOrdNota = rs.getString( "OrdNota" );
-					retorno[ POS_PREFS.TIPOPRECOCUSTO.ordinal() ] = "S".equals( rs.getString( "TipoPrecoCusto" ) );
-					retorno[ POS_PREFS.USACLASCOMIS.ordinal() ] = "S".equals( rs.getString( "UsaClasComis" ) );
-				}
-				retorno[ POS_PREFS.TRAVATMNFVD.ordinal() ] = "S".equals( rs.getString( "TravaTmNfVd" ) );
-				retorno[ POS_PREFS.NATVENDA.ordinal() ] = "S".equals( rs.getString( "NatVenda" ) );
-				retorno[ POS_PREFS.BLOQVENDA.ordinal() ] = "S".equals( rs.getString( "BloqVenda" ) );
-
-				retorno[ POS_PREFS.VENDAMATPRIM.ordinal() ] = "S".equals( rs.getString( "VendaMatPrim" ) );
-
-				retorno[ POS_PREFS.DESCCOMPPED.ordinal() ] = "S".equals( rs.getString( "DescCompPed" ) );
-				retorno[ POS_PREFS.TAMDESCPROD.ordinal() ] = "S".equals( rs.getString( "TAMDESCPROD" ) );
-				retorno[ POS_PREFS.OBSCLIVEND.ordinal() ] = "S".equals( rs.getString( "OBSCLIVEND" ) );
-				retorno[ POS_PREFS.IPIVENDA.ordinal() ] = "S".equals( rs.getString( "IPIVenda" ) );
-				retorno[ POS_PREFS.CONTESTOQ.ordinal() ] = "S".equals( rs.getString( "CONTESTOQ" ) );
-				retorno[ POS_PREFS.DIASPEDT.ordinal() ] = "S".equals( rs.getString( "DIASPEDT" ) );
-				retorno[ POS_PREFS.RECALCCPVENDA.ordinal() ] = "S".equals( rs.getString( "RECALCPCVENDA" ) );
-				retorno[ POS_PREFS.USALAYOUTPED.ordinal() ] = "S".equals( rs.getString( "USALAYOUTPED" ) );
-				retorno[ POS_PREFS.ICMSVENDA.ordinal() ] = "S".equals( rs.getString( "ICMSVENDA" ) );
-				retorno[ POS_PREFS.USAPRECOZERO.ordinal() ] = "S".equals( rs.getString( "USAPRECOZERO" ) );
-				retorno[ POS_PREFS.MULTICOMIS.ordinal() ] = "S".equals( rs.getString( "MULTICOMIS" ) );
-				retorno[ POS_PREFS.CONS_CRED_FECHA.ordinal() ] = ( "FV".equals( rs.getString( "TIPOPREFCRED" ) ) || "AB".equals( rs.getString( "TIPOPREFCRED" ) ) );
-				retorno[ POS_PREFS.CONS_CRED_ITEM.ordinal() ] = ( "II".equals( rs.getString( "TIPOPREFCRED" ) ) || "AB".equals( rs.getString( "TIPOPREFCRED" ) ) );
-				classped = rs.getString( "TIPOCLASSPED" );				
-				retorno[ POS_PREFS.VENDAIMOBILIZADO.ordinal() ] = "S".equals( rs.getString( "VENDAPATRIM" ) );
-				retorno[ POS_PREFS.VISUALIZALUCR.ordinal() ] = "S".equals( rs.getString( "VISUALIZALUCR" ) );
-				retorno[ POS_PREFS.INFCPDEVOLUCAO.ordinal() ] = "S".equals( rs.getString( "INFCPDEVOLUCAO" ) );
-				retorno[ POS_PREFS.INFVDREMESSA.ordinal() ] = "S".equals( rs.getString( "INFVDREMESSA" ) );
-				retorno[ POS_PREFS.TIPOCUSTO.ordinal() ] = rs.getString( "TIPOCUSTOLUC" );
-				retorno[ POS_PREFS.BUSCACODPRODGEN.ordinal() ] = "S".equals( rs.getString( "BUSCACODPRODGEN" ) );
-				retorno[ POS_PREFS.CODPLANOPAGSV.ordinal() ] = rs.getInt( "CODPLANOPAGSV" );
-				retorno[ POS_PREFS.CODTIPOMOVDS.ordinal() ] = rs.getInt( "CODTIPOMOVDS" );
-				retorno[ POS_PREFS.COMISSAODESCONTO.ordinal() ] = "S".equals( rs.getString( "COMISSAODESCONTO" ) );
-				retorno[ POS_PREFS.VENDAMATCONSUM.ordinal()] = "S".equals( rs.getString( "VENDACONSUM" ) );
-				retorno[ POS_PREFS.OBSITVENDAPED.ordinal()] = "S".equals( rs.getString(POS_PREFS.OBSITVENDAPED.toString() ) );
-				retorno[ POS_PREFS.BLOQSEQIVD.ordinal()] = "S".equals( rs.getString( "BLOQSEQIVD" ) );
-				retorno[ POS_PREFS.VDPRODQQCLAS.ordinal()] = "S".equals( rs.getString( POS_PREFS.VDPRODQQCLAS.toString() ) );
-				retorno[ POS_PREFS.CONSISTENDENTVD.ordinal()] = "S".equals( rs.getString( POS_PREFS.CONSISTENDENTVD.toString() ) );
-				retorno[ POS_PREFS.BLOQDESCCOMPVD.ordinal()] = "S".equals( rs.getString( POS_PREFS.BLOQDESCCOMPVD.toString() ) );
-				retorno[ POS_PREFS.BLOQPRECOVD.ordinal()] = "S".equals( rs.getString( POS_PREFS.BLOQPRECOVD.toString() ) );
-				retorno[ POS_PREFS.BLOQCOMISSVD.ordinal()] = "S".equals( rs.getString( POS_PREFS.BLOQCOMISSVD.toString() ) );
-				retorno[ POS_PREFS.BLOQPEDVD.ordinal()] = "S".equals( rs.getString( POS_PREFS.BLOQPEDVD.toString() ) );
-				retorno[ POS_PREFS.SOLDTSAIDA.ordinal()] = "S".equals( rs.getString( POS_PREFS.SOLDTSAIDA.toString() ) );
-				retorno[ POS_PREFS.PROCEMINFE.ordinal()] = rs.getString( POS_PREFS.PROCEMINFE.toString() ); 
-				retorno[ POS_PREFS.AMBIENTENFE.ordinal()] = rs.getString( POS_PREFS.AMBIENTENFE.toString() ); 
-				retorno[ POS_PREFS.CNPJFILIAL.ordinal()] = rs.getString( POS_PREFS.CNPJFILIAL.toString() );
-				retorno[ POS_PREFS.SIGLAUF.ordinal()] = rs.getString( POS_PREFS.SIGLAUF.toString() );
-				retorno[ POS_PREFS.TIPOEMISSAONFE.ordinal()] = rs.getString( POS_PREFS.TIPOEMISSAONFE.toString() );
-				retorno[ POS_PREFS.BLOQNFEVDAUTORIZ.ordinal()] = rs.getString( POS_PREFS.BLOQNFEVDAUTORIZ.toString() );
-				localServ = rs.getString( "LOCALSERV" );
-			}
-			rs.close();
-			ps.close();
-			con.commit();
-		} catch ( SQLException err ) {
-			err.printStackTrace();
-			Funcoes.mensagemErro( this, "Erro ao carregar a tabela PREFERE1!\n" + err.getMessage(), true, con, err );
-		} finally {
-			rs = null;
-			ps = null;
-		}
-		return retorno;
-	}
 
 	public void exec( int codvenda ) {
 
@@ -3826,28 +3707,21 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	}
 
 	public void afterInsert( InsertEvent ievt ) {
-
 		if ( ievt.getListaCampos() == lcCampos ) {
-
 			bloqCamposNfe();
-			
 			habilitaMultiComis();
-
 			if ( (Boolean) oPrefs[ POS_PREFS.USAPEDSEQ.ordinal() ] ) {
-				txtCodVenda.setVlrInteger( testaCodPK( "VDVENDA" ) );
+				txtCodVenda.setVlrInteger( writePK( "VDVENDA" ) );
 			}
 			if ( (Boolean) oPrefs[ POS_PREFS.TRAVATMNFVD.ordinal() ] ) {
 				txtFiscalTipoMov1.setText( "N" );
 				txtFiscalTipoMov2.setText( "N" );
 			}
-
-			rgLocalServico.setVlrString( localServ );
-
+			rgLocalServico.setVlrString( (String) oPrefs[POS_PREFS.LOCALSERV.ordinal()] );
 			if ( !(Boolean) oPrefs[ POS_PREFS.SOLDTSAIDA.ordinal() ] ) {
 				txtDtSaidaVenda.setVlrDate( new Date() );
 			}
 			txtDtEmitVenda.setVlrDate( new Date() );
-
 			fatLucro = new BigDecimal(1);
 			habilitaBotoes( true );
 			// Define o subtipo padrão de venda como NF = Nota fiscal
@@ -5200,8 +5074,15 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	}
 
 	public void setConexao( DbConnection cn ) {
-
 		super.setConexao( cn );
+		setDaovenda( new DAOVenda( cn , Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDVENDA" ) ) );
+		try {
+			oPrefs = getDaovenda().getPrefs( ListaCampos.getMasterFilial( "SGPREFERE1" ) ); // Carrega as preferências
+		} catch (Exception err) {
+			Funcoes.mensagemErro( null, err.getMessage() );
+			dispose();
+			return;
+		}
 		permusu = getPermissaoUsu();
 		montaTela();
 		lcTratTrib.setConexao( cn );
@@ -5232,9 +5113,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				, (String) oPrefs[POS_PREFS.CNPJFILIAL.ordinal()]
 				, (String) oPrefs[POS_PREFS.SIGLAUF.ordinal()] 
 				, new Integer((String) oPrefs[POS_PREFS.TIPOEMISSAONFE.ordinal()])));
-
 		daobuscaorc = new DAOBuscaOrc( cn );
-		
 	}
 
 	private void associarContrato() {
