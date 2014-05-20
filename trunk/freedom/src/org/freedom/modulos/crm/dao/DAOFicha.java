@@ -417,14 +417,13 @@ public class DAOFicha extends AbstractDAO {
 		ps.setInt( Orcamento.INSERT_ORC.CODFILIALTN.ordinal() , orc.getCodfilialtn() );
 		ps.setInt( Orcamento.INSERT_ORC.CODTRAN.ordinal() , orc.getCodtran() );
 		ps.setString(Orcamento.INSERT_ORC.STATUSORC.ordinal() , orc.getStatusorc() );
-	//	ps.setBigDecimal( VDOrcamento.INSERT_ORC.VLRPRODORC.ordinal() , orc.getVlrprodorc() );
+	//	ps.setBigDecimal( Orcamento.INSERT_ORC.VLRPRODORC.ordinal() , orc.getVlrprodorc() );
 		
 		ps.executeUpdate();
 		ps.close();
 		
 	}
-	
-	
+		
 	public void insert_item_orc( Integer codorc,  Integer codempfi, Integer codfilialfi, Integer seqfichaaval) throws SQLException {
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps2 = null;
@@ -516,12 +515,12 @@ public class DAOFicha extends AbstractDAO {
 		return codorc;
 	}
 	/*
-	public ArrayList<VDOrcamento> loadOrcamento(Integer codemp, Integer codfilial, Integer seqfichaaval) throws SQLException {
+	public ArrayList<Orcamento> loadOrcamento(Integer codemp, Integer codfilial, Integer seqfichaaval) throws SQLException {
 		PreparedStatement ps = null;
 		ResultSet rs =null;
-		VDOrcamento result = null;
+		Orcamento result = null;
 		StringBuilder sql = new StringBuilder();
-		ArrayList<VDOrcamento> itens_orc = new ArrayList<VDOrcamento>();
+		ArrayList<Orcamento> itens_orc = new ArrayList<Orcamento>();
 		
 		sql.append(" select o.codorc, o.codempcl, o.codfilialcl, o.codcli, c.razcli, o.dtorc, ")
 		   .append( "o.dtvencorc, o.codemppg, o.codfilialpg, o.codplanopag, p.descplanopag, ")
@@ -543,7 +542,7 @@ public class DAOFicha extends AbstractDAO {
 		rs = ps.executeQuery();
 		
 		while(rs.next()){
-			result = new VDOrcamento();
+			result = new Orcamento();
 			result.setCodemp( codemp );
 			result.setCodfilial( codfilial );
 			result.setCodorc( rs.getInt( "codorc" ) );
