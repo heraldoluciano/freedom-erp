@@ -299,13 +299,14 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 
 	private void abreOrc( int iCodOrc ) {
 
-		if ( !fPrim.temTela( "VDOrcamento" ) ) {
+		if ( !fPrim.temTela( "Orcamento" ) ) {
 			FOrcamento tela = new FOrcamento();
-			fPrim.criatela( "VDOrcamento", tela, con );
+			fPrim.criatela( "Orcamento", tela, con );
 			tela.exec( iCodOrc );
 		}
 	}
 
+	
 	private void novoAtend() {
 
 		if ( txtCodConv.getVlrInteger().intValue() == 0 ) {
