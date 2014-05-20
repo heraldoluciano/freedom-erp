@@ -1416,7 +1416,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		tabOrcamentos.adicColuna( "Cod.Vend" );
 		tabOrcamentos.adicColuna( "Cod.Cli" );
 		tabOrcamentos.adicColuna( "Razão social do cliente" );
-		tabOrcamentos.adicColuna( "Orcamento" );
+		tabOrcamentos.adicColuna( "VDOrcamento" );
 		tabOrcamentos.adicColuna( "Aprovado" );
 		tabOrcamentos.adicColuna( "Validade" );
 		tabOrcamentos.adicColuna( "Cód.pag." );
@@ -2538,7 +2538,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			// Se o tipo de emissão for diferente de 1, então ambiente está setado para contingência.
 			boolean contingencia = !"1".equals(oPrefs[ POS_PREFS.TIPOEMISSAONFE.ordinal()]); 
 			DLBuscaOrc tela = new DLBuscaOrc( this, "V", "Venda", contingencia );
-			Aplicativo.telaPrincipal.criatela( "Orcamento", tela, con );
+			Aplicativo.telaPrincipal.criatela( "VDOrcamento", tela, con );
 		}
 	}
 

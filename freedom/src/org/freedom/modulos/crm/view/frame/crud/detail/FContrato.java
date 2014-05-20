@@ -477,7 +477,7 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 
 		if ( !Aplicativo.telaPrincipal.temTela( "Busca orçamento" ) ) {
 			DLBuscaOrc tela = new DLBuscaOrc( this, "", "Contrato", false );
-			Aplicativo.telaPrincipal.criatela( "Orcamento", tela, con );
+			Aplicativo.telaPrincipal.criatela( "VDOrcamento", tela, con );
 		}
 	}
 	

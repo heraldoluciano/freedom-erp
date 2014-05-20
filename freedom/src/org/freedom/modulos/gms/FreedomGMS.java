@@ -412,9 +412,9 @@ public class FreedomGMS extends AplicativoPD {
 		addBotao( "btEstoque.png", "Consulta estoque", "Consulta", 400300000, FConsEstoque.class );
 		addBotao( "btProduto.png", "Cadastro de produtos", "Produtos", 100103090, FProduto.class );
 		addBotao( "btSimilar.png", "Cadastro de similaridades", "Similaridade", 100103080, FSimilar.class );
-		addBotao( "btOrcamento.png", "Orçamento", "Orcamento", 300600000, FOrcamento.class );
+		addBotao( "btOrcamento.png", "Orçamento", "VDOrcamento", 300600000, FOrcamento.class );
 		addBotao( "btConsOrcamento.png", "Pesquisa Orçamentos", "Pesquisa Orcamentos", 300700000, FPesquisaOrc.class );
-		addBotao( "btAprovaOrc.png", "Aprovações de Orçamentos", "Aprova Orcamento", 300500000, FAprovCancOrc.class );
+		addBotao( "btAprovaOrc.png", "Aprovações de Orçamentos", "Aprova VDOrcamento", 300500000, FAprovCancOrc.class );
 
 		addBotao( "btAtendimentos.png", "Gestão de relacionamento com clientes", "Gestão de relacionamento com clientes", 700500000, FCRM.class );
 		addBotao( "btChamado.png", "Chamados", "Chamados", 700600000, FChamado.class );
