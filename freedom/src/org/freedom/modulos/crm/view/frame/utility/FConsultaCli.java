@@ -77,6 +77,7 @@ import org.freedom.modulos.crm.dao.DAOConsultaCli.RESULT_RECEBER;
 import org.freedom.modulos.crm.dao.DAOConsultaCli.RESULT_ULTVENDA;
 import org.freedom.modulos.crm.dao.DAOConsultaCli.VENDAS;
 import org.freedom.modulos.crm.view.dialog.utility.DLConfirmItem;
+import org.freedom.modulos.std.business.object.VDOrcamento;
 import org.freedom.modulos.std.dao.DAOOrcamento;
 import org.freedom.modulos.std.orcamento.bean.Cesta;
 import org.freedom.modulos.std.orcamento.bean.Item;
@@ -261,6 +262,8 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 	private Integer codcliatual = null;
 	
 	private DAOOrcamento daoorcamento = null;
+
+	private Object[] preforc = null;
 	
 	public FConsultaCli() {
 
@@ -514,6 +517,8 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		tabItensVenda.adicColuna( "V.frete" );
 		tabItensVenda.adicColuna( "V.líq." );
 		tabItensVenda.adicColuna( "TipoVenda" );
+		tabItensVenda.adicColuna( "Cód.p.pag." );
+		tabItensVenda.adicColuna( "Descrição do plano de pagto." );
 		tabItensVenda.setTamColuna( 30, ITENSVENDA.CODITVENDA.ordinal() );
 		tabItensVenda.setTamColuna( 50, ITENSVENDA.CODPROD.ordinal() );
 		tabItensVenda.setTamColuna( 250, ITENSVENDA.DESCPROD.ordinal() );
@@ -524,6 +529,9 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		tabItensVenda.setTamColuna( 80, ITENSVENDA.VLRFRETEITVENDA.ordinal() );
 		tabItensVenda.setTamColuna( 90, ITENSVENDA.VLRLIQITVENDA.ordinal() );
 		tabItensVenda.setColunaInvisivel( ITENSVENDA.TIPOVENDA.ordinal() );
+		tabItensVenda.setTamColuna( 50, ITENSVENDA.CODPLANOPAG.ordinal() );
+		tabItensVenda.setTamColuna( 250, ITENSVENDA.DESCPLANOPAG.ordinal() );
+
 		panelTabItensVenda.add( new JScrollPane( tabItensVenda ) );
 		// Gride de produtos vendidos 
 		tabProdVendas.adicColuna( "S.V." );
@@ -539,6 +547,8 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		tabProdVendas.adicColuna( "V.desc." );
 		tabProdVendas.adicColuna( "V.líquido" );
 		tabProdVendas.adicColuna( "Tipo Venda" );
+		tabProdVendas.adicColuna( "Cód.p.pag." );
+		tabProdVendas.adicColuna( "Descrição do plano de pagto." );
 		tabProdVendas.setTamColuna( 30, PRODVENDAS.STATUSPGTO.ordinal() );
 		tabProdVendas.setTamColuna( 30, PRODVENDAS.STATUSVENDA.ordinal() );
 		tabProdVendas.setTamColuna( 55, PRODVENDAS.CODVENDA.ordinal() );
@@ -552,6 +562,8 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		tabProdVendas.setTamColuna( 80, PRODVENDAS.VLRDESCITVENDA.ordinal() );
 		tabProdVendas.setTamColuna( 90, PRODVENDAS.VLRLIQITVENDA.ordinal() );
 		tabProdVendas.setColunaInvisivel( PRODVENDAS.TIPOVENDA.ordinal() );
+		tabProdVendas.setTamColuna( 55, PRODVENDAS.CODPLANOPAG.ordinal() );
+		tabProdVendas.setTamColuna( 250, PRODVENDAS.DESCPLANOPAG.ordinal() );
 		panelTabProdVendas.add( new JScrollPane( tabProdVendas ) );
 		// Gride de cestas
 		tabCestas.adicColuna( "Sel." );
@@ -561,6 +573,8 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		tabCestas.adicColuna( "Quantidade" );
 		tabCestas.adicColuna( "V.desconto" );
 		tabCestas.adicColuna( "V.líquido" );
+		tabCestas.adicColuna( "Cód.p.pg." );
+		tabCestas.adicColuna( "Descrição do plano de pagto." );
 		tabCestas.setTamColuna( 30, CESTAS.SELECAO.ordinal() );
 		tabCestas.setTamColuna( 90, CESTAS.CODCLI.ordinal() );
 		tabCestas.setTamColuna( 250, CESTAS.RAZCLI.ordinal() );
@@ -568,6 +582,8 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		tabCestas.setTamColuna( 100, CESTAS.QTDCESTA.ordinal() );
 		tabCestas.setTamColuna( 100, CESTAS.VLRDESCCESTA.ordinal() );
 		tabCestas.setTamColuna( 100, CESTAS.VLRLIQCESTA.ordinal() );
+		tabCestas.setTamColuna( 90, CESTAS.CODPLANOPAG.ordinal() );
+		tabCestas.setTamColuna( 250, CESTAS.DESCPLANOPAG.ordinal() );
 		tabCestas.setColunaEditavel( CESTAS.SELECAO.ordinal(), true );
 		panelTabCestas.add( new JScrollPane( tabCestas ) );
 		// Gride de itens da cesta
@@ -756,9 +772,27 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		}
 		for (Cesta cesta: cestaFactory.getCestas()) {
 			if (cesta.getSel()) {
-				
+				insertOrcamento(cesta);
 			}
 		}
+	}
+	
+	private void insertOrcamento(Cesta cesta) {
+		Integer codemp = Aplicativo.iCodEmp;
+		VDOrcamento orcamento = new VDOrcamento();
+		orcamento.setCodempcl( codemp );
+		orcamento.setCodfilialcl( (short) ListaCampos.getMasterFilial( "VDCLIENTE" ) );
+		orcamento.setCodcli( cesta.getCodcli() );
+		orcamento.setCodemppg( codemp );
+		orcamento.setCodfilialpg( ListaCampos.getMasterFilial( "FNPLANOPAG" ) );
+		orcamento.setCodplanopag( cesta.getCodplanopag() );
+		try {
+			daoorcamento.insertOrcamento( orcamento, preforc );
+		} catch (Exception err) {
+			Funcoes.mensagemErro( this, err.getMessage());
+			return;
+		}
+		
 	}
 	
 	private void selAllCestas(boolean sel) {
@@ -788,7 +822,6 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		}
 		if ( selectedRow == -1 ) {
 			Funcoes.mensagemInforma( this, "Selecione um item para inclusão na lista !" );
-			
 			//tabItensVenda.requestFocus();
 			return;
 		}
@@ -800,6 +833,8 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		Integer codfilialpd = ListaCampos.getMasterFilial( "EQPRODUTO" );
 		Integer codprod;
 		String descprod;
+		Integer codplanopag;
+		String descplanopag;
 		BigDecimal qtditvenda;
 		BigDecimal precoitvenda;
 		BigDecimal percdescitvenda;
@@ -813,6 +848,8 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 			percdescitvenda = ((StringDireita) tabProdVendas.getValor( selectedRow, PRODVENDAS.PERCDESCITVENDA.ordinal() )).getBigDecimal();
 			vlrdescitvenda = ((StringDireita) tabProdVendas.getValor( selectedRow, PRODVENDAS.VLRDESCITVENDA.ordinal() )).getBigDecimal();
 			vlrliqitvenda = ((StringDireita) tabProdVendas.getValor( selectedRow, PRODVENDAS.VLRLIQITVENDA.ordinal() )).getBigDecimal();
+			codplanopag = (Integer) tabProdVendas.getValor( selectedRow, PRODVENDAS.CODPLANOPAG.ordinal() );
+			descplanopag = (String) tabProdVendas.getValor( selectedRow, PRODVENDAS.DESCPLANOPAG.ordinal() );
 		} else {
 			codprod = (Integer) tabItensVenda.getValor( selectedRow, ITENSVENDA.CODPROD.ordinal() );
 			descprod = (String) tabItensVenda.getValor( selectedRow, ITENSVENDA.DESCPROD.ordinal() );
@@ -821,6 +858,8 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 			percdescitvenda = new BigDecimal(0);
 			vlrdescitvenda = ((StringDireita) tabItensVenda.getValor( selectedRow, ITENSVENDA.VLRDESCITVENDA.ordinal() )).getBigDecimal();
 			vlrliqitvenda = ((StringDireita) tabItensVenda.getValor( selectedRow, ITENSVENDA.VLRLIQITVENDA.ordinal() )).getBigDecimal();
+			codplanopag = (Integer) tabItensVenda.getValor( selectedRow, ITENSVENDA.CODPLANOPAG.ordinal() );
+			descplanopag = (String) tabItensVenda.getValor( selectedRow, ITENSVENDA.DESCPLANOPAG.ordinal() );
 		}
 		//Item
 		Item item = new Item(codemppd, codfilialpd, codprod, descprod);
@@ -836,7 +875,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 			item = dlconfirm.getResult();
 			dlconfirm.dispose();
 			if (item!=null) {
-				Cesta cesta = cestaFactory.createNewCesta(codempcl, codfilialcl, codcli, razcli);
+				Cesta cesta = cestaFactory.createNewCesta(codempcl, codfilialcl, codcli, razcli, codplanopag, descplanopag);
 				if (cesta!=null) {
 					cesta.addItem( item );
 				}
@@ -871,6 +910,9 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 					tabCestas.setValor( cesta.getQtdcesta(), row, CESTAS.QTDCESTA.ordinal() );
 					tabCestas.setValor( cesta.getVlrdesccesta(), row, CESTAS.VLRDESCCESTA.ordinal() );
 					tabCestas.setValor( cesta.getVlrliqcesta(), row, CESTAS.VLRLIQCESTA.ordinal() );
+					tabCestas.setValor( cesta.getCodplanopag(), row, CESTAS.CODPLANOPAG.ordinal() );
+					tabCestas.setValor( cesta.getDescplanopag(), row, CESTAS.DESCPLANOPAG.ordinal() );
+					
 					row ++;
 				}
 			}
@@ -1029,6 +1071,13 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 				, imgPgEmDia, imgCancelado, imgPedido, imgFaturado );
 		cestaFactory = Aplicativo.getInstace().getCestaFactory();
 		daoorcamento = new DAOOrcamento( cn, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
+		try {
+			preforc = daoorcamento.getPrefere( ListaCampos.getMasterFilial( "SGPREFERE1" ),  ListaCampos.getMasterFilial( "SGESTACAOIMP" ), Aplicativo.iNumEst );
+		} catch (Exception err) {
+			Funcoes.mensagemErro( null, err.getMessage() );
+			dispose();
+			return;
+		}
 		
 	}
 

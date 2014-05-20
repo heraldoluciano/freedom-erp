@@ -17,6 +17,7 @@ import org.freedom.modulos.std.business.component.Orcamento;
 import org.freedom.modulos.std.business.component.Orcamento.OrcVenda;
 import org.freedom.modulos.std.business.component.Orcamento.ResultBuscaClassOrc;
 import org.freedom.modulos.std.business.component.Orcamento.ResultClassOrc;
+import org.freedom.modulos.std.business.object.VDOrcamento;
 
 public class DAOOrcamento extends AbstractDAO {
 	
@@ -721,7 +722,7 @@ public class DAOOrcamento extends AbstractDAO {
 	}
 	
 	
-	public boolean insertOrcamento(org.freedom.modulos.std.business.object.Orcamento orcamento, Object[] prefs) throws Exception {
+	public boolean insertOrcamento(VDOrcamento orcamento, Object[] prefs) throws Exception {
 		boolean result = false;
 		if (orcamento.getCodorc()==null) {
 			Integer codorc = null;
