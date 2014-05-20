@@ -622,10 +622,11 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 
 		if ( !Aplicativo.telaPrincipal.temTela( "Busca orçamento" ) ) {
 			DLBuscaOrc tela = new DLBuscaOrc( this, "E", "Venda", false );
-			Aplicativo.telaPrincipal.criatela( "VDOrcamento", tela, con );
+			Aplicativo.telaPrincipal.criatela( "Orcamento", tela, con );
 		}
 	}
 
+	
 	private void abreGaveta() {
 
 		if ( mostraTelaPass() ) {
