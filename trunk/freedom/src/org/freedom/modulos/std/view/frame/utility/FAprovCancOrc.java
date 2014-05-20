@@ -327,7 +327,7 @@ public class FAprovCancOrc extends FFilho implements ActionListener, TabelaEditL
 			txtCodOrc.requestFocus();
 		}
 		else if ( txtStatusOrc.getVlrString().trim().equals( "CA" ) ) {
-			Funcoes.mensagemInforma( null, "Orcamento ja foi cancelado!!" );
+			Funcoes.mensagemInforma( null, "VDOrcamento ja foi cancelado!!" );
 		}
 
 		else if ( "* OA OC OL".indexOf( txtStatusOrc.getVlrString().trim() ) != -1 ) {
@@ -373,7 +373,7 @@ public class FAprovCancOrc extends FFilho implements ActionListener, TabelaEditL
 
 		}
 		else {
-			Funcoes.mensagemInforma( this, "Orcamento não pode ser cancelado, status atual:" + txtStatusOrc.getVlrString() );
+			Funcoes.mensagemInforma( this, "VDOrcamento não pode ser cancelado, status atual:" + txtStatusOrc.getVlrString() );
 		}
 
 		return bRet;

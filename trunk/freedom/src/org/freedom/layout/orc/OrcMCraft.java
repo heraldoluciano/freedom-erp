@@ -16,7 +16,7 @@
  * <BR>
  *         m
  * 
- *         Orcamento padronizado para Modelcraft...
+ *         VDOrcamento padronizado para Modelcraft...
  */
 
 package org.freedom.layout.orc;

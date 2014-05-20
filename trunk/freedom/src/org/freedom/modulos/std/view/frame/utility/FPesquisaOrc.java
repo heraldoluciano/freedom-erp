@@ -912,10 +912,10 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 	private void abreOrc() {
 
 		int iCodOrc = ( (Integer) tab.getValor( tab.getLinhaSel(), 1 ) ).intValue();
-		if ( fPrim.temTela( "Orcamento" ) == false ) {
+		if ( fPrim.temTela( "VDOrcamento" ) == false ) {
 			FOrcamento tela = new FOrcamento();
 			tela.setTelaPrim( fPrim );
-			fPrim.criatela( "Orcamento", tela, con );
+			fPrim.criatela( "VDOrcamento", tela, con );
 			tela.exec( iCodOrc );
 		}
 	}
@@ -999,7 +999,7 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 				Integer codorc = (Integer) tab.getValor( tab.getSelectedRow(), 1 );
 				
 				tela.CarregaOrcamento( codorc );
-				Aplicativo.telaPrincipal.criatela( "Orcamento", tela, con );
+				Aplicativo.telaPrincipal.criatela( "VDOrcamento", tela, con );
 			}
 		}
 		catch (Exception e) {

@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 
-public class Orcamento {
+public class VDOrcamento {
 	// ------------------------------------------------------------
 	private Integer codemp;
 	private Short codfilial;

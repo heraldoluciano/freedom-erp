@@ -226,7 +226,7 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 	/*private void geraPrefereOrc() {
 
-		oPrefs = Orcamento.getPrefere();
+		oPrefs = VDOrcamento.getPrefere();
 	}
 */
 	public static void atualizaStatus( String status, JLabelPad lbstatus ) {

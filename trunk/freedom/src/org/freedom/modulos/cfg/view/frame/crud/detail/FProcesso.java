@@ -115,9 +115,9 @@ public class FProcesso extends FDetalhe implements ActionListener {
 
 	private void abreTrat() {
 
-		if ( fPrim.temTela( "Orcamento" ) == false ) {
+		if ( fPrim.temTela( "VDOrcamento" ) == false ) {
 			FTratRet tela = new FTratRet( txtCodProc.getVlrInteger().intValue(), txtCodItem.getVlrInteger().intValue() );
-			fPrim.criatela( "Orcamento", tela, con );
+			fPrim.criatela( "VDOrcamento", tela, con );
 			tela.setConexao( con );
 		}
 	}
