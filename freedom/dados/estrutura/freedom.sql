@@ -26690,12 +26690,11 @@ begin
 
     if (CLOTEPROD = 'S' and SCODLOTE is null) then
     begin
-        select first 1 l.codlote from eqlote l
-        where l.codprod=:ICODPROD and l.codfilial=:ICODFILIALPD and l.codemp=:ICODEMP and
-        l.venctolote = ( select min(venctolote) from eqlote ls where ls.codprod=l.codprod and ls.codfilial=l.codfilial and ls.codemp=L.codemp and
-                         ls.sldliqlote>=:IQTDITVENDA ) and
-        l.sldliqlote>=:IQTDITVENDA
-        into SCODLOTE;
+    	select first 1 l.codlote from eqlote l
+        where l.codprod=:icodprod and l.codfilial=:icodfilialpd and l.codemp=:icodemp 
+        and l.venctolote>cast('now' as date) and l.sldliqlote>=:iqtditvenda
+        order by l.venctolote
+        into :scodlote;
 
         ICODFILIALLE = ICODFILIALPD;
     end
