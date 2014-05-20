@@ -642,13 +642,14 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 	private void abreOrc() {
 
 		int iCodOrc = Integer.parseInt( String.valueOf( tab.getValor( tab.getLinhaSel(), 0 ) ) );
-		if ( fPrim.temTela( "VDOrcamento" ) == false ) {
+		if ( fPrim.temTela( "Orcamento" ) == false ) {
 			FOrcamento tela = new FOrcamento();
-			fPrim.criatela( "VDOrcamento", tela, con );
+			fPrim.criatela( "Orcamento", tela, con );
 			tela.exec( iCodOrc );
 		}
 	}
 
+	
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btBusca ) {
