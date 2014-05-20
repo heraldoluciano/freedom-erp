@@ -720,7 +720,8 @@ public class DAOOrcamento extends AbstractDAO {
 		return result;
 	}
 	
-	public boolean insertOrcamento(org.freedom.modulos.std.business.object.VDOrcamento orcamento, Object[] prefs) throws Exception {
+	
+	public boolean insertOrcamento(org.freedom.modulos.std.business.object.Orcamento orcamento, Object[] prefs) throws Exception {
 		boolean result = false;
 		if (orcamento.getCodorc()==null) {
 			Integer codorc = null;
