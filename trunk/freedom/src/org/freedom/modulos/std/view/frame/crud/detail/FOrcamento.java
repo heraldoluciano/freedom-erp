@@ -754,7 +754,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		lcProd2.setReadOnly( true );
 		txtRefProd.setTabelaExterna( lcProd2, FProduto.class.getCanonicalName() );
 
-		// ListaCampos de Totais (É acionada pelo listaCampos de VDOrcamento)
+		// ListaCampos de Totais (É acionada pelo listaCampos de Orcamento)
 		lcOrc2.add( new GuardaCampo( txtCodOrc, "CodOrc", "Cód.Orç.", ListaCampos.DB_PK, false ) );
 		lcOrc2.add( new GuardaCampo( txtPercDescOrc, "PercDescOrc", "% desc.", ListaCampos.DB_SI, false ) );
 		lcOrc2.add( new GuardaCampo( txtVlrDescOrc, "VlrDescOrc", "Vlr.desc.", ListaCampos.DB_SI, false ) );
@@ -791,6 +791,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 	}
 
+	
 	private void montaOrcamento() {
 
 		Vector<String> lbFatItOrc = new Vector<String>();
@@ -1127,7 +1128,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		adicCampoInvisivel( txtVlrProdItOrc, "VlrProdItOrc", "Valor bruto", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtStrDescItOrc, "StrDescItOrc", "Descontos", ListaCampos.DB_SI, false );
 
-		// if ( "S".equals(oPrefs[VDOrcamento.PrefOrc.CONTRIBIPI.ordinal()].toString()) ) {
+		// if ( "S".equals(oPrefs[Orcamento.PrefOrc.CONTRIBIPI.ordinal()].toString()) ) {
 		adic( new JLabelPad( "Vlr. IPI" ), 7, 40, 99, 20 );
 		adic( txtVlrIPIItOrc, 7, 60, 99, 20 );
 		// }
