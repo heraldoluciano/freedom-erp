@@ -20,10 +20,14 @@
 
 package org.freedom.infra.dao;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Vector;
 
 import org.freedom.infra.model.jdbc.DbConnection;
@@ -101,6 +105,35 @@ public abstract class AbstractDAO {
 		return result;
 	}
 
+	public Integer writePK(String prefix) throws Exception {
+		Integer result = null;
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append("select iseq from spgeranum(?,?,?)");
+			PreparedStatement ps = getConn().prepareStatement(sql.toString());
+			int param = 1;
+			ps.setInt(param++, getCodemp());
+			ps.setInt(param++, getCodfilial());
+			ps.setString(param++, prefix);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				result = rs.getInt("iseq");
+			}
+			rs.close();
+			ps.close();
+			getConn().commit();
+		} catch (SQLException err) {
+			err.printStackTrace();
+			try {
+				getConn().rollback();
+			} catch (SQLException errroll) {
+				errroll.printStackTrace();
+			}
+			throw new Exception("Erro gravando chave primária\n"+err.getMessage());
+		}
+		return result;
+	}
+	
 	public Integer gerarSeqId(String tabela, boolean execCommit)
 			throws SQLException {
 		PreparedStatement ps = null;
@@ -140,5 +173,48 @@ public abstract class AbstractDAO {
 			}
 			row.setElementAt(value, pos);
 		}
+	}
+	
+	public Map<String, Object> getMapFields(Object bean) {
+		Map<String, Object> result = new LinkedHashMap<String, Object>();
+		if (bean!=null) {
+			Method methods[] = bean.getClass().getDeclaredMethods();
+			for (Method method: methods ) {
+				if (method.getName().startsWith("get")) {
+					try {
+						Object[] args = new Object[0];
+						Object value = method.invoke(bean, args);
+						if (value!=null) {
+							String field = method.getName().substring(3).toLowerCase();
+							result.put(field, value);
+						}
+					} catch (IllegalAccessException e) {
+						e.printStackTrace();
+					} catch (IllegalArgumentException e) {
+						e.printStackTrace();
+					} catch (InvocationTargetException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+			
+		}
+		return result;
+	}
+	
+	public StringBuilder getQueryInsert(String tablename, Map<String, Object> mapFields) {
+		StringBuilder result = new StringBuilder();
+		result.append( "insert into " );
+		result.append( tablename );
+		result.append( " ( " );
+		Object[] fields = mapFields.keySet().toArray();
+		for (int i=0; i< fields.length; i++) {
+			if (i>0) {
+				result.append(", ");
+			} 
+			result.append(fields[i]);
+		}
+		result.append( " ) " );
+		return result;
 	}
 }

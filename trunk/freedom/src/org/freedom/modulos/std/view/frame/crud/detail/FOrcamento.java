@@ -476,7 +476,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 	private DAOEmail daoemail = null;
 
-	private DAOOrcamento daoorcamento = null;
+	//private DAOOrcamento daoorcamento = null;
 	
 	private boolean bImprimir = true;
 
@@ -1248,7 +1248,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		Integer codfilial = ListaCampos.getMasterFilial( "VDVENDEDOR" );
 		try {
 			
-			result = daoorcamento.getClcomiss( codfilial, codvend );
+			result = getDaoorcamento().getClcomiss( codfilial, codvend );
 			
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao buscar a class. da comissão." + err.getMessage(), true, con, err );
@@ -1276,7 +1276,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	private Integer getCodTipoCli() {
 		Integer result = null;
 		try {
-			result = daoorcamento.getCodtipocli( ListaCampos.getMasterFilial( "VDCLIENTE" ), txtCodCli.getVlrInteger() );
+			result = getDaoorcamento().getCodtipocli( ListaCampos.getMasterFilial( "VDCLIENTE" ), txtCodCli.getVlrInteger() );
 		} catch (Exception err) {
 			Funcoes.mensagemErro( this, err.getMessage() );
 		}
@@ -1326,7 +1326,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	private Integer getVendedor() {
 		Integer result = null;
 		try {
-			result = daoorcamento.getVendedor( 
+			result = getDaoorcamento().getVendedor( 
 					ListaCampos.getMasterFilial( "VDCLIENTE" ), txtCodCli.getVlrInteger().intValue()
 					,  ListaCampos.getMasterFilial( "SGUSUARIO" ), Aplicativo.getUsuario().getIdusu() );
 		} catch ( Exception err ) {
@@ -1379,7 +1379,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		boolean result = false;
 		
 		try {
-			result = daoorcamento.testaCodlote(  ListaCampos.getMasterFilial( "EQLOTE" )
+			result = getDaoorcamento().testaCodlote(  ListaCampos.getMasterFilial( "EQLOTE" )
 					, txtCodProd.getVlrInteger(), txtCodLote.getVlrString().trim() );
 		} catch ( Exception err ) {
 			Funcoes.mensagemErro( this, err.getMessage());
@@ -1516,7 +1516,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	private void carregaPedidos() {
 		tabPedidos.limpa();
 		try {
-			Vector<Vector<Object>> dataVector = daoorcamento.carregaPedidos( txtCodOrc.getVlrInteger() );
+			Vector<Vector<Object>> dataVector = getDaoorcamento().carregaPedidos( txtCodOrc.getVlrInteger() );
 			for (Vector<Object> row: dataVector) {
 				tabPedidos.adicLinha( row );
 			}
@@ -1689,7 +1689,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				return;
 			}
 			int[] vals = dl.getValores();
-			codorc = daoorcamento.copiaOrcamento( codorc, vals );
+			codorc = getDaoorcamento().copiaOrcamento( codorc, vals );
 			if (codorc!=null) {
 				if ( Funcoes.mensagemConfirma( this, "Orçamento '" + codorc + "' criado com sucesso!\nGostaria de edita-lo agora?" ) == JOptionPane.OK_OPTION ) {
 					txtCodOrc.setVlrInteger( codorc );
@@ -1885,7 +1885,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		classorc[ResultClassOrc.CLASSORC.ordinal()] = "";
 		classorc[ResultClassOrc.DESCORC.ordinal()] = "";
 		try {
-			classorc = daoorcamento.getClassorc( oPrefs, ListaCampos.getMasterFilial( "ATTIPOCONV" ), txtCodTpConv.getVlrInteger() );
+			classorc = getDaoorcamento().getClassorc( oPrefs, ListaCampos.getMasterFilial( "ATTIPOCONV" ), txtCodTpConv.getVlrInteger() );
 		} catch ( Exception err ) {
 			Funcoes.mensagemErro( this, err.getMessage() );
 		}
@@ -1994,7 +1994,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			imp.montaCab();
 			imp.setTitulo( "ORÇAMENTO" );
 			imp.limpaPags();
-			rs = daoorcamento.getResultSetImprimeTexto( ordem, codorc );
+			rs = getDaoorcamento().getResultSetImprimeTexto( ordem, codorc );
 			while ( rs.next() ) {
 				vDesc = new Vector<Object>();
 				if ( ( (Boolean) oPrefs[ Orcamento.PrefOrc.DESCCOMPPED.ordinal() ] ).booleanValue() ) {
@@ -2210,7 +2210,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	private void carregaComisIt(){
 		BigDecimal vlrComissao = new BigDecimal(0);
 		try {
-			BigDecimal vlrcomissao = daoorcamento.carregaComisIt( oPrefs, ListaCampos.getMasterFilial( "VDREGCOMISDESC" ), txtPercDescItOrc.getVlrBigDecimal() );
+			BigDecimal vlrcomissao = getDaoorcamento().carregaComisIt( oPrefs, ListaCampos.getMasterFilial( "VDREGCOMISDESC" ), txtPercDescItOrc.getVlrBigDecimal() );
 			calcComisIt();
 		} catch ( Exception err ) {
 			Funcoes.mensagemErro( this, err.getMessage() );
@@ -2479,7 +2479,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 
 			if ( lcCampos.getStatus() == ListaCampos.LCS_INSERT ) {
 				if ( ( (Boolean) oPrefs[ Orcamento.PrefOrc.USAORCSEQ.ordinal() ] ).booleanValue() ) {
-					txtCodOrc.setVlrInteger( testaCodPK( "VDORCAMENTO" ) );
+					txtCodOrc.setVlrInteger( writePK( "VDORCAMENTO" ) );
 				}
 				txtStatusOrc.setVlrString( "*" );
 			}
@@ -2603,7 +2603,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
-		daoorcamento = new DAOOrcamento( cn, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
+		setDaoorcamento( new DAOOrcamento( cn, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDORCAMENTO" ) ) );
 		daoemail = new DAOEmail( cn, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "TKEMAIL" ) ); 
 		try {
 			daoatend = new DAOAtendimento( cn, Aplicativo.iCodEmp, ListaCampos.getMasterFilial("ATATENDENTE")  );
@@ -2628,10 +2628,9 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		lcAtend.setConexao( cn );
 		lcTran.setConexao( cn );
 		lcTipoMov.setConexao( cn );
-
 		permusu = getPermissaoUsu();
 		try {
-			oPrefs = daoorcamento.getPrefere(ListaCampos.getMasterFilial( "SGPREFERE1" )
+			oPrefs = getDaoorcamento().getPrefere(ListaCampos.getMasterFilial( "SGPREFERE1" )
 				, ListaCampos.getMasterFilial( "SGESTACAOIMP" ), Aplicativo.iNumEst); // Carrega as preferências
 		} catch (Exception err) {
 			Funcoes.mensagemErro( null, err.getMessage() );
@@ -2655,7 +2654,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		
 		// Busca classes para impressão de orçamentos
 		try {
-			classorc = daoorcamento.buscaClassOrc(ListaCampos.getMasterFilial( "SGPREFERE1" ));
+			classorc = getDaoorcamento().buscaClassOrc(ListaCampos.getMasterFilial( "SGPREFERE1" ));
 		} catch (Exception err) {
 			Funcoes.mensagemErro( null, err.getMessage() );
 		}
@@ -2881,7 +2880,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	private HashMap<String, Object> getPermissaoUsu() {
 		HashMap<String, Object> result = null;
 		try {
-			result = daoorcamento.getPermissaoUsu( ListaCampos.getMasterFilial( "SGUSUARIO" ), Aplicativo.getUsuario().getIdusu() );
+			result = getDaoorcamento().getPermissaoUsu( ListaCampos.getMasterFilial( "SGUSUARIO" ), Aplicativo.getUsuario().getIdusu() );
 		} catch ( Exception err ) {
 			Funcoes.mensagemErro( this, err.getMessage() );
 		}
@@ -2951,7 +2950,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			lcTran.carregaDados();
 		}
 		try {
-			result = daoorcamento.calcPeso(txtCodOrc.getVlrInteger());
+			result = getDaoorcamento().calcPeso(txtCodOrc.getVlrInteger());
 		} catch ( Exception err ) {
 			Funcoes.mensagemErro( this, err.getMessage() );
 		} 
@@ -2961,7 +2960,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	private Integer getCodTran() {
 		Integer result = null;
 		try {
-			daoorcamento.getCodTran( txtCodOrc.getVlrInteger(), ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+			getDaoorcamento().getCodTran( txtCodOrc.getVlrInteger(), ListaCampos.getMasterFilial( "SGPREFERE1" ) );
 		} catch (Exception err) {
 			Funcoes.mensagemErro( this, err.getMessage() );
 		}

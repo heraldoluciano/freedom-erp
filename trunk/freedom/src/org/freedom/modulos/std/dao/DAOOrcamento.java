@@ -719,5 +719,60 @@ public class DAOOrcamento extends AbstractDAO {
 		}
 		return result;
 	}
+	
+	public boolean insertOrcamento(org.freedom.modulos.std.business.object.Orcamento orcamento, Object[] prefs) throws Exception {
+		boolean result = false;
+		if (orcamento.getCodorc()==null) {
+			Integer codorc = null;
+			try {
+				if ( ((Boolean) prefs[ Orcamento.PrefOrc.USAORCSEQ.ordinal() ] ).booleanValue() ) {
+					codorc = writePK( "OC" );
+				} else {
+					codorc = getMaxCodorc();
+					if (codorc!=null) {
+						codorc = new Integer(codorc.intValue()+1);
+					}
+				}
+				orcamento.setCodorc( codorc );
+				orcamento.setCodemp( getCodemp() );
+				orcamento.setCodfilial( getCodfilial().shortValue() );
+			} catch (Exception err) {
+				throw err;
+			}
+		}
+		if (orcamento.getCodorc()!=null) {
+			Map<String, Object> mapFields = getMapFields( orcamento );
+			StringBuilder sql = getQueryInsert("vdorcamento", mapFields);
+		}
+		return result;
+	}
 
+	public Integer getMaxCodorc() throws Exception {
+		Integer result = null;
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append("select max(codorc) codorc from vdorcamento where codemp=? and codfilial=?");
+			int param = 1;
+			PreparedStatement ps = getConn().prepareStatement( sql.toString() );
+			ps.setInt( param++, getCodemp() );
+			ps.setInt( param++, getCodfilial() );
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				result = rs.getInt( "codorc" );
+			}
+			rs.close();
+			ps.close();
+			getConn().commit();
+		} catch (SQLException err) {
+			err.printStackTrace();
+			try {
+				getConn().rollback();
+			} catch (SQLException errroll) {
+				errroll.printStackTrace();
+			}
+			throw new Exception(err.getMessage());
+		}
+		return result;
+	}
+	
 }

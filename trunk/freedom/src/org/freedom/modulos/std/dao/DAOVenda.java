@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import org.freedom.infra.dao.AbstractDAO;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
+import org.freedom.modulos.std.business.component.Venda.POS_PREFS;
 import org.freedom.modulos.std.business.object.CabecalhoVenda;
 import org.freedom.modulos.std.business.object.ItemVenda;
 import org.freedom.modulos.std.business.object.UpdateVenda;
@@ -21,6 +22,12 @@ public class DAOVenda extends AbstractDAO {
 
 		super( cn );
 
+	}
+
+	public DAOVenda( DbConnection cn, Integer codemp, Integer codfilial) {
+		this( cn );
+		setCodemp( codemp );
+		setCodfilial( codfilial );
 	}
 	
 	public CabecalhoVenda getCabecalhoVenda (Integer codemp, Integer codfilial, Integer codvenda) throws Exception {
@@ -386,4 +393,106 @@ public class DAOVenda extends AbstractDAO {
 		return id;
 	}
 	
+	public Object[] getPrefs(Integer codfilialpf1) throws Exception {
+
+		Object[] result = new Object[ POS_PREFS.values().length ];
+		StringBuffer sql = new StringBuffer();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			sql.append( "select p1.usarefprod, p1.usapedseq, p1.usaliqrel, p1.tipoprecocusto, p1.ordnota, p1.usaprecozero " );
+			sql.append( ", p1.usaclascomis, p1.travatmnfvd, p1.natvenda, p1.ipivenda, p1.bloqvenda, p1.vendamatprim, p1.desccompped " );
+			sql.append( ", p1.tamdescprod, p1.obsclivend, p1.contestoq, p1.diaspedt, p1.recalcpcvenda, p1.usalayoutped " );
+			sql.append( ", p1.icmsvenda, p1.multicomis, p1.tipoprefcred, p1.tipoclassped, p1.vendapatrim, p1.visualizalucr " );
+			sql.append( ", p1.infcpdevolucao, p1.infvdremessa, p1.tipocustoluc, p1.buscacodprodgen, p1.codplanopagsv " );
+			sql.append( ", p1.comissaodesconto, p8.codtipomovds, p1.vendaconsum, p1.obsitvendaped, p1.bloqseqivd, p1.localserv ");
+			sql.append( ", p1.vdprodqqclas, p1.consistendentvd, p1.bloqdesccompvd, p1.bloqprecovd, p1.bloqcomissvd ");
+			sql.append( ", p1.bloqpedvd, p1.soldtsaida, coalesce(p1.proceminfe,'3') proceminfe, coalesce(p1.ambientenfe,'2') ambientenfe " );
+			sql.append( ", f.cnpjfilial, f.siglauf, coalesce(p1.tipoemissaonfe,'1') tipoemissaonfe, coalesce(p1.bloqnfevdautoriz,'S') bloqnfevdautoriz " );
+			sql.append( "from sgprefere1 p1 ");
+			sql.append( "inner join sgfilial f ");
+			sql.append( "on f.codemp=p1.codemp and f.codfilial=p1.codfilial ");
+			sql.append( "left outer join sgprefere8 p8 on " );
+			sql.append( "p1.codemp=p8.codemp and p1.codfilial=p8.codfilial " );
+			sql.append( "where p1.codemp=? and p1.codfilial=? " );
+			ps = getConn().prepareStatement( sql.toString() );
+			int param = 1;
+			ps.setInt( param++, getCodemp() );
+			ps.setInt( param++, codfilialpf1 );
+			rs = ps.executeQuery();
+			if ( rs.next() ) {
+				result[ POS_PREFS.USAREFPROD.ordinal() ] = "S".equals( rs.getString( "USAREFPROD" ) );
+				result[ POS_PREFS.USAPEDSEQ.ordinal() ] = "S".equals( rs.getString( "USAPEDSEQ" ) );
+				if ( rs.getString( "UsaLiqRel" ) == null ) {
+					throw new Exception( "Preencha opção de desconto em preferências!" );
+				}
+				else {
+					result[ POS_PREFS.USALIQREL.ordinal() ] = "S".equals( rs.getString( "UsaLiqRel" ) );
+					result[ POS_PREFS.ORDNOTA.ordinal() ] = rs.getString( "OrdNota" );
+					result[ POS_PREFS.TIPOPRECOCUSTO.ordinal() ] = "S".equals( rs.getString( "TipoPrecoCusto" ) );
+					result[ POS_PREFS.USACLASCOMIS.ordinal() ] = "S".equals( rs.getString( "UsaClasComis" ) );
+				}
+				result[ POS_PREFS.TRAVATMNFVD.ordinal() ] = "S".equals( rs.getString( "TravaTmNfVd" ) );
+				result[ POS_PREFS.NATVENDA.ordinal() ] = "S".equals( rs.getString( "NatVenda" ) );
+				result[ POS_PREFS.BLOQVENDA.ordinal() ] = "S".equals( rs.getString( "BloqVenda" ) );
+				result[ POS_PREFS.VENDAMATPRIM.ordinal() ] = "S".equals( rs.getString( "VendaMatPrim" ) );
+				result[ POS_PREFS.DESCCOMPPED.ordinal() ] = "S".equals( rs.getString( "DescCompPed" ) );
+				result[ POS_PREFS.TAMDESCPROD.ordinal() ] = "S".equals( rs.getString( "TAMDESCPROD" ) );
+				result[ POS_PREFS.OBSCLIVEND.ordinal() ] = "S".equals( rs.getString( "OBSCLIVEND" ) );
+				result[ POS_PREFS.IPIVENDA.ordinal() ] = "S".equals( rs.getString( "IPIVenda" ) );
+				result[ POS_PREFS.CONTESTOQ.ordinal() ] = "S".equals( rs.getString( "CONTESTOQ" ) );
+				result[ POS_PREFS.DIASPEDT.ordinal() ] = "S".equals( rs.getString( "DIASPEDT" ) );
+				result[ POS_PREFS.RECALCCPVENDA.ordinal() ] = "S".equals( rs.getString( "RECALCPCVENDA" ) );
+				result[ POS_PREFS.USALAYOUTPED.ordinal() ] = "S".equals( rs.getString( "USALAYOUTPED" ) );
+				result[ POS_PREFS.ICMSVENDA.ordinal() ] = "S".equals( rs.getString( "ICMSVENDA" ) );
+				result[ POS_PREFS.USAPRECOZERO.ordinal() ] = "S".equals( rs.getString( "USAPRECOZERO" ) );
+				result[ POS_PREFS.MULTICOMIS.ordinal() ] = "S".equals( rs.getString( "MULTICOMIS" ) );
+				result[ POS_PREFS.CONS_CRED_FECHA.ordinal() ] = ( "FV".equals( rs.getString( "TIPOPREFCRED" ) ) || "AB".equals( rs.getString( "TIPOPREFCRED" ) ) );
+				result[ POS_PREFS.CONS_CRED_ITEM.ordinal() ] = ( "II".equals( rs.getString( "TIPOPREFCRED" ) ) || "AB".equals( rs.getString( "TIPOPREFCRED" ) ) );
+				result[ POS_PREFS.CLASPED.ordinal() ] = rs.getString( "TIPOCLASSPED" );				
+				result[ POS_PREFS.VENDAIMOBILIZADO.ordinal() ] = "S".equals( rs.getString( "VENDAPATRIM" ) );
+				result[ POS_PREFS.VISUALIZALUCR.ordinal() ] = "S".equals( rs.getString( "VISUALIZALUCR" ) );
+				result[ POS_PREFS.INFCPDEVOLUCAO.ordinal() ] = "S".equals( rs.getString( "INFCPDEVOLUCAO" ) );
+				result[ POS_PREFS.INFVDREMESSA.ordinal() ] = "S".equals( rs.getString( "INFVDREMESSA" ) );
+				result[ POS_PREFS.TIPOCUSTO.ordinal() ] = rs.getString( "TIPOCUSTOLUC" );
+				result[ POS_PREFS.BUSCACODPRODGEN.ordinal() ] = "S".equals( rs.getString( "BUSCACODPRODGEN" ) );
+				result[ POS_PREFS.CODPLANOPAGSV.ordinal() ] = rs.getInt( "CODPLANOPAGSV" );
+				result[ POS_PREFS.CODTIPOMOVDS.ordinal() ] = rs.getInt( "CODTIPOMOVDS" );
+				result[ POS_PREFS.COMISSAODESCONTO.ordinal() ] = "S".equals( rs.getString( "COMISSAODESCONTO" ) );
+				result[ POS_PREFS.VENDAMATCONSUM.ordinal()] = "S".equals( rs.getString( "VENDACONSUM" ) );
+				result[ POS_PREFS.OBSITVENDAPED.ordinal()] = "S".equals( rs.getString(POS_PREFS.OBSITVENDAPED.toString() ) );
+				result[ POS_PREFS.BLOQSEQIVD.ordinal()] = "S".equals( rs.getString( "BLOQSEQIVD" ) );
+				result[ POS_PREFS.VDPRODQQCLAS.ordinal()] = "S".equals( rs.getString( POS_PREFS.VDPRODQQCLAS.toString() ) );
+				result[ POS_PREFS.CONSISTENDENTVD.ordinal()] = "S".equals( rs.getString( POS_PREFS.CONSISTENDENTVD.toString() ) );
+				result[ POS_PREFS.BLOQDESCCOMPVD.ordinal()] = "S".equals( rs.getString( POS_PREFS.BLOQDESCCOMPVD.toString() ) );
+				result[ POS_PREFS.BLOQPRECOVD.ordinal()] = "S".equals( rs.getString( POS_PREFS.BLOQPRECOVD.toString() ) );
+				result[ POS_PREFS.BLOQCOMISSVD.ordinal()] = "S".equals( rs.getString( POS_PREFS.BLOQCOMISSVD.toString() ) );
+				result[ POS_PREFS.BLOQPEDVD.ordinal()] = "S".equals( rs.getString( POS_PREFS.BLOQPEDVD.toString() ) );
+				result[ POS_PREFS.SOLDTSAIDA.ordinal()] = "S".equals( rs.getString( POS_PREFS.SOLDTSAIDA.toString() ) );
+				result[ POS_PREFS.PROCEMINFE.ordinal()] = rs.getString( POS_PREFS.PROCEMINFE.toString() ); 
+				result[ POS_PREFS.AMBIENTENFE.ordinal()] = rs.getString( POS_PREFS.AMBIENTENFE.toString() ); 
+				result[ POS_PREFS.CNPJFILIAL.ordinal()] = rs.getString( POS_PREFS.CNPJFILIAL.toString() );
+				result[ POS_PREFS.SIGLAUF.ordinal()] = rs.getString( POS_PREFS.SIGLAUF.toString() );
+				result[ POS_PREFS.TIPOEMISSAONFE.ordinal()] = rs.getString( POS_PREFS.TIPOEMISSAONFE.toString() );
+				result[ POS_PREFS.BLOQNFEVDAUTORIZ.ordinal()] = rs.getString( POS_PREFS.BLOQNFEVDAUTORIZ.toString() );
+				result[ POS_PREFS.LOCALSERV.ordinal() ] = rs.getString( "LOCALSERV" );
+			}
+			rs.close();
+			ps.close();
+			getConn().commit();
+		} catch ( SQLException err ) {
+			err.printStackTrace();
+			try {
+				getConn().rollback();
+			} catch (SQLException errroll) {
+				errroll.printStackTrace();
+			}
+			throw new Exception( "Erro ao carregar a tabela preferências!\n" + err.getMessage() );
+		} finally {
+			rs = null;
+			ps = null;
+		}
+		return result;
+	}
+
 }
