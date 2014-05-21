@@ -77,6 +77,7 @@ import org.freedom.modulos.crm.dao.DAOConsultaCli.RESULT_RECEBER;
 import org.freedom.modulos.crm.dao.DAOConsultaCli.RESULT_ULTVENDA;
 import org.freedom.modulos.crm.dao.DAOConsultaCli.VENDAS;
 import org.freedom.modulos.crm.view.dialog.utility.DLConfirmItem;
+import org.freedom.modulos.std.business.component.Orcamento;
 import org.freedom.modulos.std.business.object.VDItOrcamento;
 import org.freedom.modulos.std.business.object.VDOrcamento;
 import org.freedom.modulos.std.dao.DAOOrcamento;
@@ -832,6 +833,12 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		orcamento.setVlrfreteorc( BigDecimal.ZERO );
 		orcamento.setVlrliqorc( BigDecimal.ZERO );
 		orcamento.setVlrprodorc( BigDecimal.ZERO );
+		try {
+			orcamento.setPrazoentorc( (short) Orcamento.getPrazo( preforc ) ); 
+			orcamento.setDtvencorc( Orcamento.getVencimento( (Integer) preforc[ Orcamento.PrefOrc.DIASVENCORC.ordinal() ] ) );
+		} catch (Exception err) {
+			Funcoes.mensagemErro(this, "Ocorreu um problema ao definir o prazo de entrega e vencimento da proposta!\n"+err.getMessage());
+		}
 		//orcamento.setDtpreventorc( )
 		try {
 			if ( daoorcamento.insertOrcamento( orcamento, preforc ) ) {

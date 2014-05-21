@@ -44,6 +44,10 @@ public class Orcamento {
 		return dtRet;
 	}
 
+	public static int getPrazo(Object[] prefs) throws Exception {
+		return Integer.parseInt( prefs[ Orcamento.PrefOrc.PRAZO.ordinal() ].toString() );
+	}
+	
 	public enum ResultClassOrc {
 		CLASSORC, DESCORC
 	}
