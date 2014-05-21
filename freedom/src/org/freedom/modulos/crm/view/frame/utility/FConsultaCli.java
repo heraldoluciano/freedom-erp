@@ -1101,7 +1101,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 					if (codorc!=null && codorc.intValue()!=0) {
 						FOrcamento orcamento = null;
 						if ( Aplicativo.telaPrincipal.temTela( FOrcamento.class.getName() ) ) {
-							orcamento = (FOrcamento) Aplicativo.telaPrincipal.getTela( FVenda.class.getName() );
+							orcamento = (FOrcamento) Aplicativo.telaPrincipal.getTela( FOrcamento.class.getName() );
 						}
 						else {
 							orcamento = new FOrcamento();
