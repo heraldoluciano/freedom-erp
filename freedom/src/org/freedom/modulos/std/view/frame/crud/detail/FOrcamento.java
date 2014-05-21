@@ -1313,10 +1313,9 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	}
 
 	private Integer getPrazo() {
-
 		Integer result = null;
 		try {
-			result = Integer.parseInt( oPrefs[ Orcamento.PrefOrc.PRAZO.ordinal() ].toString() );
+			result = Orcamento.getPrazo(oPrefs);
 		} catch ( Exception err ) {
 			Funcoes.mensagemErro( this, "Erro ao buscar o prazo.\n" + "Provavelmente não foram gravadas corretamente as preferências!\n" + err.getMessage(), true, con, err );
 			err.printStackTrace();

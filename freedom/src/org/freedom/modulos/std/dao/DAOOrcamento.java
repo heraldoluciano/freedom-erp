@@ -51,7 +51,6 @@ public class DAOOrcamento extends AbstractDAO {
 		return result;
 	}
 	
-	
 	public Object[] getPrefere(Integer codfilialp1, Integer codfilialei, Integer numest) throws Exception {
 
 		Object[] result = new Object[ Orcamento.PrefOrc.values().length ];
