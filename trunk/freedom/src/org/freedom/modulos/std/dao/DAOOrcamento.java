@@ -17,6 +17,7 @@ import org.freedom.modulos.std.business.component.Orcamento;
 import org.freedom.modulos.std.business.component.Orcamento.OrcVenda;
 import org.freedom.modulos.std.business.component.Orcamento.ResultBuscaClassOrc;
 import org.freedom.modulos.std.business.component.Orcamento.ResultClassOrc;
+import org.freedom.modulos.std.business.object.VDItOrcamento;
 import org.freedom.modulos.std.business.object.VDOrcamento;
 
 public class DAOOrcamento extends AbstractDAO {
@@ -751,6 +752,7 @@ public class DAOOrcamento extends AbstractDAO {
 				ps.executeUpdate();
 				ps.close();
 				getConn().commit();
+				result = true;
 			} catch (SQLException errsql) {
 				errsql.printStackTrace();
 				try {
@@ -759,6 +761,38 @@ public class DAOOrcamento extends AbstractDAO {
 					errroll.printStackTrace();
 				}
 				throw new Exception("Erro executando insert na tabela vdorcamento!\n"+errsql.getMessage());
+			}
+		}
+		return result;
+	}
+
+	public boolean insertItOrcamento(VDItOrcamento itorcamento) throws Exception {
+		boolean result = false;
+		if (itorcamento.getCodorc()!=null) {
+			Integer coditorc = getMaxCoditorc(itorcamento.getCodorc());
+			if (coditorc!=null) {
+				coditorc = new Integer(coditorc.intValue()+1);
+				itorcamento.setCoditorc( coditorc );
+			}
+			if (itorcamento.getCoditorc()!=null) {
+				Map<String, Object> mapFields = getMapFields( itorcamento );
+				StringBuilder sql = getQueryInsert( "vditorcamento", mapFields );
+				try {
+					PreparedStatement ps = getConn().prepareStatement( sql.toString() );
+					setParamsInsert( ps, mapFields );
+					ps.executeUpdate();
+					ps.close();
+					getConn().commit();
+					result = true;
+				} catch (SQLException errsql) {
+					errsql.printStackTrace();
+					try {
+						getConn().rollback();
+					} catch (SQLException errroll) {
+						errroll.printStackTrace();
+					}
+					throw new Exception("Erro executando insert na tabela vditorcamento!\n"+errsql.getMessage());
+				}
 			}
 		}
 		return result;
@@ -791,5 +825,35 @@ public class DAOOrcamento extends AbstractDAO {
 		}
 		return result;
 	}
-	
+
+	public Integer getMaxCoditorc(Integer codorc) throws Exception {
+		Integer result = null;
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append("select max(coditorc) coditorc from vditorcamento ");
+			sql.append("where codemp=? and codfilial=? and codorc=?");
+			int param = 1;
+			PreparedStatement ps = getConn().prepareStatement( sql.toString() );
+			ps.setInt( param++, getCodemp() );
+			ps.setInt( param++, getCodfilial() );
+			ps.setInt( param++, codorc );
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				result = rs.getInt( "coditorc" );
+			}
+			rs.close();
+			ps.close();
+			getConn().commit();
+		} catch (SQLException err) {
+			err.printStackTrace();
+			try {
+				getConn().rollback();
+			} catch (SQLException errroll) {
+				errroll.printStackTrace();
+			}
+			throw new Exception(err.getMessage());
+		}
+		return result;
+	}
+
 }

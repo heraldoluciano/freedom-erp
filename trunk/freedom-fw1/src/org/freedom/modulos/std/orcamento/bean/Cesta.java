@@ -13,15 +13,19 @@ public class Cesta {
 	private Date datacesta;
 	private Integer codplanopag;
 	private String descplanopag;
+	private Integer codvend;
+	private String nomevend;
 	private BigDecimal qtdcesta;
 	private BigDecimal vlrdesccesta;
 	private BigDecimal vlrliqcesta;
+	private Integer codorc = new Integer(0);
 	public Boolean sel = new Boolean(false);
 	private List<Item> itens;
 	public Cesta() {
 		setItens(new LinkedList<Item>());
 	}
-	public Cesta(Integer codemp, Integer codfilial, Integer codcli, String razcli, Date datacesta, Integer codplanopag, String descplanopag) {
+	public Cesta(Integer codemp, Integer codfilial, Integer codcli, String razcli, Date datacesta
+			, Integer codplanopag, String descplanopag, Integer codvend, String nomevend) {
 		this();
 		setCodemp(codemp);
 		setCodfilial(codfilial);
@@ -30,6 +34,8 @@ public class Cesta {
 		setDatacesta(datacesta);
 		setCodplanopag(codplanopag);
 		setDescplanopag(descplanopag);
+		setCodvend(codvend);
+		setNomevend(nomevend);
 	
 	}
 	public Integer getCodemp() {
@@ -68,6 +74,18 @@ public class Cesta {
 	public void setDescplanopag(String descplanopag) {
 		this.descplanopag = descplanopag;
 	}
+	public Integer getCodvend() {
+		return codvend;
+	}
+	public void setCodvend(Integer codvend) {
+		this.codvend = codvend;
+	}
+	public String getNomevend() {
+		return nomevend;
+	}
+	public void setNomevend(String nomevend) {
+		this.nomevend = nomevend;
+	}
 	public Date getDatacesta() {
 		return datacesta;
 	}
@@ -100,6 +118,12 @@ public class Cesta {
 	}
 	public void setVlrliqcesta(BigDecimal vlrliqcesta) {
 		this.vlrliqcesta = vlrliqcesta;
+	}
+	public Integer getCodorc() {
+		return codorc;
+	}
+	public void setCodorc(Integer codorc) {
+		this.codorc = codorc;
 	}
 	public List<Item> getItens() {
 		if (itens==null) {
