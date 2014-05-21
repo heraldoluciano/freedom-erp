@@ -820,6 +820,13 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		orcamento.setCodempvd( codemp );
 		orcamento.setCodfilialvd( (short) ListaCampos.getMasterFilial( "VDVENDEDOR" ) );
 		orcamento.setCodvend( cesta.getCodvend() );
+		orcamento.setVlradicorc( BigDecimal.ZERO );
+		orcamento.setVlrcomisorc( BigDecimal.ZERO );
+		orcamento.setVlrdescitorc( BigDecimal.ZERO );
+		orcamento.setVlrdescorc( BigDecimal.ZERO );
+		orcamento.setVlrfreteorc( BigDecimal.ZERO );
+		orcamento.setVlrliqorc( BigDecimal.ZERO );
+		orcamento.setVlrprodorc( BigDecimal.ZERO );
 		//orcamento.setDtpreventorc( )
 		try {
 			if ( daoorcamento.insertOrcamento( orcamento, preforc ) ) {
