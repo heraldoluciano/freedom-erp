@@ -1841,6 +1841,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	}
 
 	public void exec( int iCodOrc ) {
+		lcCampos.setState( ListaCampos.LCS_SELECT );
 		txtCodOrc.setVlrString( String.valueOf( iCodOrc ) );
 		lcCampos.carregaDados();
 	}
