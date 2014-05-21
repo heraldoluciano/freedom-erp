@@ -519,6 +519,8 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		tabItensVenda.adicColuna( "TipoVenda" );
 		tabItensVenda.adicColuna( "Cód.p.pag." );
 		tabItensVenda.adicColuna( "Descrição do plano de pagto." );
+		tabItensVenda.adicColuna( "Cód.comis." );
+		tabItensVenda.adicColuna( "Nome do comissionado" );
 		tabItensVenda.setTamColuna( 30, ITENSVENDA.CODITVENDA.ordinal() );
 		tabItensVenda.setTamColuna( 50, ITENSVENDA.CODPROD.ordinal() );
 		tabItensVenda.setTamColuna( 250, ITENSVENDA.DESCPROD.ordinal() );
@@ -531,6 +533,8 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		tabItensVenda.setColunaInvisivel( ITENSVENDA.TIPOVENDA.ordinal() );
 		tabItensVenda.setTamColuna( 50, ITENSVENDA.CODPLANOPAG.ordinal() );
 		tabItensVenda.setTamColuna( 250, ITENSVENDA.DESCPLANOPAG.ordinal() );
+		tabItensVenda.setTamColuna( 50, ITENSVENDA.CODVEND.ordinal() );
+		tabItensVenda.setTamColuna( 250, ITENSVENDA.NOMEVEND.ordinal() );
 
 		panelTabItensVenda.add( new JScrollPane( tabItensVenda ) );
 		// Gride de produtos vendidos 
@@ -549,6 +553,8 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		tabProdVendas.adicColuna( "Tipo Venda" );
 		tabProdVendas.adicColuna( "Cód.p.pag." );
 		tabProdVendas.adicColuna( "Descrição do plano de pagto." );
+		tabProdVendas.adicColuna( "Cód.comis." );
+		tabProdVendas.adicColuna( "Nome do comissionado" );
 		tabProdVendas.setTamColuna( 30, PRODVENDAS.STATUSPGTO.ordinal() );
 		tabProdVendas.setTamColuna( 30, PRODVENDAS.STATUSVENDA.ordinal() );
 		tabProdVendas.setTamColuna( 55, PRODVENDAS.CODVENDA.ordinal() );
@@ -564,9 +570,12 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		tabProdVendas.setColunaInvisivel( PRODVENDAS.TIPOVENDA.ordinal() );
 		tabProdVendas.setTamColuna( 55, PRODVENDAS.CODPLANOPAG.ordinal() );
 		tabProdVendas.setTamColuna( 250, PRODVENDAS.DESCPLANOPAG.ordinal() );
+		tabProdVendas.setTamColuna( 55, PRODVENDAS.CODVEND.ordinal() );
+		tabProdVendas.setTamColuna( 250, PRODVENDAS.NOMEVEND.ordinal() );
 		panelTabProdVendas.add( new JScrollPane( tabProdVendas ) );
 		// Gride de cestas
 		tabCestas.adicColuna( "Sel." );
+		tabCestas.adicColuna( "Cód.orç." );
 		tabCestas.adicColuna( "Cód.cli." );
 		tabCestas.adicColuna( "Razão social" );
 		tabCestas.adicColuna( "Data" );
@@ -575,7 +584,10 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		tabCestas.adicColuna( "V.líquido" );
 		tabCestas.adicColuna( "Cód.p.pg." );
 		tabCestas.adicColuna( "Descrição do plano de pagto." );
+		tabCestas.adicColuna( "Cód.comis." );
+		tabCestas.adicColuna( "Nome do comissionado" );
 		tabCestas.setTamColuna( 30, CESTAS.SELECAO.ordinal() );
+		tabCestas.setTamColuna( 60, CESTAS.CODORC.ordinal() );
 		tabCestas.setTamColuna( 90, CESTAS.CODCLI.ordinal() );
 		tabCestas.setTamColuna( 250, CESTAS.RAZCLI.ordinal() );
 		tabCestas.setTamColuna( 90, CESTAS.DATACESTA.ordinal() );
@@ -584,6 +596,8 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		tabCestas.setTamColuna( 100, CESTAS.VLRLIQCESTA.ordinal() );
 		tabCestas.setTamColuna( 90, CESTAS.CODPLANOPAG.ordinal() );
 		tabCestas.setTamColuna( 250, CESTAS.DESCPLANOPAG.ordinal() );
+		tabCestas.setTamColuna( 90, CESTAS.CODVEND.ordinal() );
+		tabCestas.setTamColuna( 250, CESTAS.NOMEVEND.ordinal() );
 		tabCestas.setColunaEditavel( CESTAS.SELECAO.ordinal(), true );
 		panelTabCestas.add( new JScrollPane( tabCestas ) );
 		// Gride de itens da cesta
@@ -771,13 +785,24 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 			}
 		}
 		for (Cesta cesta: cestaFactory.getCestas()) {
-			if (cesta.getSel()) {
-				insertOrcamento(cesta);
+			if (cesta.getSel() && ( cesta.getCodorc()==null || cesta.getCodorc().intValue()==0) ) {
+				Integer codorc = insertOrcamento(cesta);
+				if (codorc!=null) {
+					cesta.setCodorc( codorc );
+					cesta.setSel( false );
+					for (Item item: cesta.getItens()) {
+						if (item.getSel()) {
+							
+						}
+					}
+				}
 			}
 		}
+		loadTabCestas();
 	}
 	
-	private void insertOrcamento(Cesta cesta) {
+	private Integer insertOrcamento(Cesta cesta) {
+		Integer result = null;
 		Integer codemp = Aplicativo.iCodEmp;
 		VDOrcamento orcamento = new VDOrcamento();
 		orcamento.setCodempcl( codemp );
@@ -786,13 +811,20 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		orcamento.setCodemppg( codemp );
 		orcamento.setCodfilialpg( ListaCampos.getMasterFilial( "FNPLANOPAG" ) );
 		orcamento.setCodplanopag( cesta.getCodplanopag() );
+		orcamento.setDtorc( new Date() );
+		orcamento.setCodempvd( codemp );
+		orcamento.setCodfilialvd( (short) ListaCampos.getMasterFilial( "VDVENDEDOR" ) );
+		orcamento.setCodvend( cesta.getCodvend() );
+		//orcamento.setDtpreventorc( )
 		try {
-			daoorcamento.insertOrcamento( orcamento, preforc );
+			if ( daoorcamento.insertOrcamento( orcamento, preforc ) ) {
+				result = orcamento.getCodorc();
+			}
 		} catch (Exception err) {
 			Funcoes.mensagemErro( this, err.getMessage());
-			return;
+			return result;
 		}
-		
+		return result;
 	}
 	
 	private void selAllCestas(boolean sel) {
@@ -835,6 +867,8 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		String descprod;
 		Integer codplanopag;
 		String descplanopag;
+		Integer codvend;
+		String nomevend;
 		BigDecimal qtditvenda;
 		BigDecimal precoitvenda;
 		BigDecimal percdescitvenda;
@@ -850,6 +884,8 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 			vlrliqitvenda = ((StringDireita) tabProdVendas.getValor( selectedRow, PRODVENDAS.VLRLIQITVENDA.ordinal() )).getBigDecimal();
 			codplanopag = (Integer) tabProdVendas.getValor( selectedRow, PRODVENDAS.CODPLANOPAG.ordinal() );
 			descplanopag = (String) tabProdVendas.getValor( selectedRow, PRODVENDAS.DESCPLANOPAG.ordinal() );
+			codvend = (Integer) tabProdVendas.getValor( selectedRow, PRODVENDAS.CODVEND.ordinal() );
+			nomevend = (String) tabProdVendas.getValor( selectedRow, PRODVENDAS.NOMEVEND.ordinal() );
 		} else {
 			codprod = (Integer) tabItensVenda.getValor( selectedRow, ITENSVENDA.CODPROD.ordinal() );
 			descprod = (String) tabItensVenda.getValor( selectedRow, ITENSVENDA.DESCPROD.ordinal() );
@@ -860,6 +896,8 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 			vlrliqitvenda = ((StringDireita) tabItensVenda.getValor( selectedRow, ITENSVENDA.VLRLIQITVENDA.ordinal() )).getBigDecimal();
 			codplanopag = (Integer) tabItensVenda.getValor( selectedRow, ITENSVENDA.CODPLANOPAG.ordinal() );
 			descplanopag = (String) tabItensVenda.getValor( selectedRow, ITENSVENDA.DESCPLANOPAG.ordinal() );
+			codvend = (Integer) tabItensVenda.getValor( selectedRow, ITENSVENDA.CODVEND.ordinal() );
+			nomevend = (String) tabItensVenda.getValor( selectedRow, ITENSVENDA.NOMEVEND.ordinal() );
 		}
 		//Item
 		Item item = new Item(codemppd, codfilialpd, codprod, descprod);
@@ -904,6 +942,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 				for (Cesta cesta: cestas) {
 					tabCestas.adicLinha();
 					tabCestas.setValor( cesta.getSel(), row, CESTAS.SELECAO.ordinal() );
+					tabCestas.setValor( cesta.getCodorc(), row, CESTAS.CODORC.ordinal() );
 					tabCestas.setValor( cesta.getCodcli(), row, CESTAS.CODCLI.ordinal() );
 					tabCestas.setValor( cesta.getRazcli(), row, CESTAS.RAZCLI.ordinal() );
 					tabCestas.setValor( cesta.getDatacesta(), row, CESTAS.DATACESTA.ordinal() );
@@ -912,7 +951,8 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 					tabCestas.setValor( cesta.getVlrliqcesta(), row, CESTAS.VLRLIQCESTA.ordinal() );
 					tabCestas.setValor( cesta.getCodplanopag(), row, CESTAS.CODPLANOPAG.ordinal() );
 					tabCestas.setValor( cesta.getDescplanopag(), row, CESTAS.DESCPLANOPAG.ordinal() );
-					
+					tabCestas.setValor( cesta.getCodvend(), row, CESTAS.CODVEND.ordinal() );
+					tabCestas.setValor( cesta.getNomevend(), row, CESTAS.NOMEVEND.ordinal() );
 					row ++;
 				}
 			}

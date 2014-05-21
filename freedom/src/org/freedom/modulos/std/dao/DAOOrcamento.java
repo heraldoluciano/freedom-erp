@@ -744,7 +744,22 @@ public class DAOOrcamento extends AbstractDAO {
 		}
 		if (orcamento.getCodorc()!=null) {
 			Map<String, Object> mapFields = getMapFields( orcamento );
-			StringBuilder sql = getQueryInsert("vdorcamento", mapFields);
+			StringBuilder sql = getQueryInsert( "vdorcamento", mapFields );
+			try {
+				PreparedStatement ps = getConn().prepareStatement( sql.toString() );
+				setParamsInsert( ps, mapFields );
+				ps.executeUpdate();
+				ps.close();
+				getConn().commit();
+			} catch (SQLException errsql) {
+				errsql.printStackTrace();
+				try {
+					getConn().rollback();
+				} catch (SQLException errroll) {
+					errroll.printStackTrace();
+				}
+				throw new Exception("Erro executando insert na tabela vdorcamento!\n"+errsql.getMessage());
+			}
 		}
 		return result;
 	}
