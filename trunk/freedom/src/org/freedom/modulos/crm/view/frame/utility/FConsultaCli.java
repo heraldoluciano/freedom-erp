@@ -786,10 +786,12 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 				return;
 			}
 		}
+		boolean ok = false;
 		for (Cesta cesta: cestaFactory.getCestas()) {
 			if (cesta.getSel() && ( cesta.getCodorc()==null || cesta.getCodorc().intValue()==0) ) {
 				Integer codorc = insertOrcamento(cesta);
 				if (codorc!=null) {
+					ok = true;
 					cesta.setCodorc( codorc );
 					cesta.setSel( false );
 					for (Item item: cesta.getItens()) {
@@ -804,6 +806,9 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 			}
 		}
 		loadTabCestas();
+		if (ok) {
+			Funcoes.mensagemInforma( this, "Orçamento(s) gerado(s) com sucesso !\nDuplo clique na grade de cestas para edição!" );
+		}
 	}
 	
 	private Integer insertOrcamento(Cesta cesta) {
