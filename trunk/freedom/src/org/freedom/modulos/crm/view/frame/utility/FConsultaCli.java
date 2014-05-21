@@ -844,8 +844,16 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		itorcamento.setCodprod( item.getCodprod() );
 		itorcamento.setPrecoitorc( item.getPreco() );
 		itorcamento.setQtditorc( item.getQtd() );
+		if (item.getPercdesc()==null) {
+			item.setPercdesc( BigDecimal.ZERO );
+		}
 		itorcamento.setPercdescitorc( item.getPercdesc() );
+		if (item.getVlrdesc()==null) {
+			item.setVlrdesc( BigDecimal.ZERO );
+		}
 		itorcamento.setVlrdescitorc( item.getVlrdesc() );
+		itorcamento.setVlrproditorc( item.getQtd().multiply( item.getPreco() ) );
+		itorcamento.setVlrliqitorc( itorcamento.getVlrproditorc().subtract( item.getVlrdesc() ) );
 		try {
 			if ( daoorcamento.insertItOrcamento( itorcamento ) ) {
 				result = itorcamento.getCoditorc();
