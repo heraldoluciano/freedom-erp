@@ -77,11 +77,13 @@ import org.freedom.modulos.crm.dao.DAOConsultaCli.RESULT_RECEBER;
 import org.freedom.modulos.crm.dao.DAOConsultaCli.RESULT_ULTVENDA;
 import org.freedom.modulos.crm.dao.DAOConsultaCli.VENDAS;
 import org.freedom.modulos.crm.view.dialog.utility.DLConfirmItem;
+import org.freedom.modulos.std.business.object.VDItOrcamento;
 import org.freedom.modulos.std.business.object.VDOrcamento;
 import org.freedom.modulos.std.dao.DAOOrcamento;
 import org.freedom.modulos.std.orcamento.bean.Cesta;
 import org.freedom.modulos.std.orcamento.bean.Item;
 import org.freedom.modulos.std.orcamento.bussiness.CestaFactory;
+import org.freedom.modulos.std.view.frame.crud.detail.FOrcamento;
 import org.freedom.modulos.std.view.frame.crud.detail.FVenda;
 public class FConsultaCli extends FFilho implements ActionListener, TabelaSelListener, MouseListener
 			, KeyListener, CarregaListener, FocusListener, ChangeListener , TabelaEditListener {
@@ -792,7 +794,10 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 					cesta.setSel( false );
 					for (Item item: cesta.getItens()) {
 						if (item.getSel()) {
-							
+							Integer coditorc = insertItOrcamento( codorc, item );
+							if (coditorc!=null) {
+								item.setSel( false );
+							}
 						}
 					}
 				}
@@ -826,7 +831,32 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		}
 		return result;
 	}
-	
+
+	private Integer insertItOrcamento(Integer codorc, Item item) {
+		Integer result = null;
+		Integer codemp = Aplicativo.iCodEmp;
+		VDItOrcamento itorcamento = new VDItOrcamento();
+		itorcamento.setCodemp( codemp );
+		itorcamento.setCodfilial( (short) ListaCampos.getMasterFilial( "VDITORCAMENTO" ) );
+		itorcamento.setCodorc( codorc );
+		itorcamento.setCodemppd( codemp );
+		itorcamento.setCodfilialpd( (short) ListaCampos.getMasterFilial( "EQPRODUTO" ) );
+		itorcamento.setCodprod( item.getCodprod() );
+		itorcamento.setPrecoitorc( item.getPreco() );
+		itorcamento.setQtditorc( item.getQtd() );
+		itorcamento.setPercdescitorc( item.getPercdesc() );
+		itorcamento.setVlrdescitorc( item.getVlrdesc() );
+		try {
+			if ( daoorcamento.insertItOrcamento( itorcamento ) ) {
+				result = itorcamento.getCoditorc();
+			}
+		} catch (Exception err) {
+			Funcoes.mensagemErro( this, err.getMessage());
+			return result;
+		}
+		return result;
+	}
+
 	private void selAllCestas(boolean sel) {
 		for (Cesta cesta: cestaFactory.getCestas() ) {
 			cesta.setSel( sel );
@@ -913,7 +943,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 			item = dlconfirm.getResult();
 			dlconfirm.dispose();
 			if (item!=null) {
-				Cesta cesta = cestaFactory.createNewCesta(codempcl, codfilialcl, codcli, razcli, codplanopag, descplanopag);
+				Cesta cesta = cestaFactory.createNewCesta(codempcl, codfilialcl, codcli, razcli, codplanopag, descplanopag, codvend, nomevend);
 				if (cesta!=null) {
 					cesta.addItem( item );
 				}
@@ -1037,14 +1067,23 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 						, (Integer) tabItensVenda.getValor( tabItensVenda.getLinhaSel(), ITENSVENDA.CODITVENDA.ordinal() )
 						, (String) tabItensVenda.getValor( tabItensVenda.getLinhaSel(), ITENSVENDA.TIPOVENDA
 						.ordinal() ) );
-			} /* else if ( e.getSource() == tabCestas ) {
+			}  else if ( e.getSource() == tabCestas ) {
 				int selectedRow = tabCestas.getLinhaSel();
 				if (selectedRow>-1) {
-					Boolean sel = (Boolean) tabCestas.getValor( selectedRow, CESTAS.SELECAO.ordinal() );
-					sel = new Boolean(!sel.booleanValue());
-					
+					Integer codorc = (Integer) tabCestas.getValor( selectedRow, CESTAS.CODORC.ordinal() );
+					if (codorc!=null && codorc.intValue()!=0) {
+						FOrcamento orcamento = null;
+						if ( Aplicativo.telaPrincipal.temTela( FOrcamento.class.getName() ) ) {
+							orcamento = (FOrcamento) Aplicativo.telaPrincipal.getTela( FVenda.class.getName() );
+						}
+						else {
+							orcamento = new FOrcamento();
+							Aplicativo.telaPrincipal.criatela( "Orçamento", orcamento, con );
+						}
+						orcamento.exec( codorc );
+					}
 				}
-			}*/
+			}
 		}
 	}
 

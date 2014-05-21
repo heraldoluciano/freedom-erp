@@ -26,6 +26,7 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
@@ -214,7 +215,42 @@ public abstract class AbstractDAO {
 			} 
 			result.append(fields[i]);
 		}
+		result.append( " ) values ( " );
+		for (int i=0; i< fields.length; i++) {
+			if (i>0) {
+				result.append(", ");
+			} 
+			result.append("?");
+		}
 		result.append( " ) " );
 		return result;
 	}
+	
+	public void setParamsInsert(PreparedStatement ps, Map<String, Object> mapFields) throws SQLException {
+		Object[] fields = mapFields.keySet().toArray();
+		for (int i=1; i<=fields.length; i++) {
+			Object value = mapFields.get(fields[i-1]);
+			setParam(ps, i, value);
+		}
+	}
+	
+	public void setParam(PreparedStatement ps, int position, Object value) throws SQLException {
+		if (value instanceof Short) {
+			ps.setInt(position, (Short) value);
+		} else if (value instanceof Integer) {
+			ps.setInt(position, (Integer) value);
+		} else if (value instanceof String) {
+			ps.setString(position, (String) value);
+		} else if (value instanceof BigDecimal) {
+			ps.setBigDecimal(position, (BigDecimal) value);
+		} else if (value instanceof Date) {
+			ps.setDate(position, dateToSqlDate((Date) value));
+		}  
+	}
+	
+	public static java.sql.Date dateToSqlDate(Date date) {
+		java.sql.Date result = new java.sql.Date(date.getTime());
+		return result;
+	}
+
 }
