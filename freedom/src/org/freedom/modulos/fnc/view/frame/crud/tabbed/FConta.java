@@ -74,6 +74,10 @@ public class FConta extends FTabDados implements CheckBoxListener, RadioGroupLis
 
 	private JTextFieldPad txtNumConta = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
 
+	private JTextFieldPad txtAgenciaContaBol = new JTextFieldPad( JTextFieldPad.TP_STRING, 6, 0 );
+
+	private JTextFieldPad txtNumContaBol = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
+
 	private JTextFieldPad txtDescConta = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
 	private JTextFieldPad txtNumContaCV = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
@@ -321,6 +325,10 @@ public class FConta extends FTabDados implements CheckBoxListener, RadioGroupLis
 
 		adicDB( cbAtivaConta, 190, 185, 50, 20, "ativaconta", "Ativa", true );
 		adicDB( chbRestritoTipoMov, 250, 185, 240, 20, "TUSUCONTA", "Permissão", true );
+		
+		adicCampo(txtAgenciaContaBol, 190, 235, 55, 20, "AgenciaContaBol","Agência", ListaCampos.DB_SI, false );
+	
+		adicCampo(txtNumContaBol, 247, 235, 140, 20, "NumContaBol","Nro. da conta p/boleto", ListaCampos.DB_SI, false );
 
 		/******************
 		 * ABA CONTABIL *
