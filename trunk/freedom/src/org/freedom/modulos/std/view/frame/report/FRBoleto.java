@@ -1151,7 +1151,8 @@ public class FRBoleto extends FRelatorio implements CarregaListener {
 		sql.append( " , c.endcob,c.numcob,c.complcob,c.cepcob,c.baircob,c.cidcob,c.ufcob , c.fonecli,c.dddcli,r.codrec, p.codmoeda, c.pessoacli, itr.reciboitrec ");
 		sql.append( " , (itr.dtvencitrec-cast('07.10.1997' as date)) fatvenc, m.codfbnmoeda , m.singmoeda,m.plurmoeda,m.decsmoeda,m.decpmoeda , f.razfilial ");
 		sql.append( " ,  f.endfilial, f.numfilial, f.bairfilial, f.cidfilial, f.cepfilial, f.fonefilial, f.faxfilial , f.cnpjfilial, f.inscfilial, f.wwwfilial ");
-		sql.append( " , f.emailfilial, f.unidfranqueada, f.complfilial, f.siglauf , iv.codnat, n.descnat, f.razfilial, ct.agenciaconta, im.numconta ");
+		sql.append( " , f.emailfilial, f.unidfranqueada, f.complfilial, f.siglauf , iv.codnat, n.descnat, f.razfilial");
+		sql.append( " , coalesce(ct.agenciacontabol,ct.agenciaconta) agenciaconta, coalesce(ct.numcontabol,ct.numconta) numconta ");
 		sql.append( " , mb.desclpmodbol, mb.instpagmodbol, im.convcob, im.dvconvcob , r.vlrapagrec, vd.nomevend ");
 		sql.append( " , (select first 1 vo.codorc from vdvendaorc vo where vo.codemp=v.codemp and vo.codfilial=vo.codfilial and vo.codvenda = v.codvenda and vo.tipovenda=v.tipovenda) as codorc ");
 		sql.append( " , (select ac.nomeconv from atconveniado ac,vdorcamento va where va.codemp=v.codemp and va.codfilial=v.codfilial ");

@@ -137,7 +137,8 @@ public class DLImpBoletoRec extends FDialogo {
 		sql.append( ", c.cidcli,c.ufcli, coalesce(c.endcob, c.endcli) endcob,c.numcob,c.complcob,c.cepcob,c.baircob,c.cidcob,c.ufcob, p.codmoeda " );
 		sql.append( ", c.pessoacli, (itr.dtvencitrec-cast('07.10.1997' as date)) fatvenc, m.codfbnmoeda " );
 		sql.append( ", m.singmoeda, m.plurmoeda, m.decsmoeda, m.decpmoeda " );
-		sql.append( ", ct.agenciaconta, ct.postoconta, im.numconta, mb.desclpmodbol, mb.instpagmodbol, im.convcob, itr.descpont, c.insccli, itr.obsitrec obs, tco.variacaocartcob ");
+		sql.append( ", coalesce(ct.agenciacontabol, ct.agenciaconta) agenciaconta, ct.postoconta, coalesce(ct.numcontabol, ct.numconta) numconta ");
+		sql.append( ", mb.desclpmodbol, mb.instpagmodbol, im.convcob, itr.descpont, c.insccli, itr.obsitrec obs, tco.variacaocartcob ");
 		sql.append( ", r.codrec, r.datarec, itr.seqnossonumero, r.vlrrec, mb.txamodbol, itr.doclancaitrec " );
 		// implementação para permitir a impressão de boleto pré-impresso.
 		sql.append( ",'' codorc, '' nomeconv, '' obsorc, r.docrec docvenda, 0 reciboitrec ");
