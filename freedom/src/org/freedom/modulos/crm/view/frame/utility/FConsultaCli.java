@@ -785,6 +785,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 
 	private void gerarOrcamento() {
 		boolean hasOrcamento = false;
+		Short codfilialax = (short) ListaCampos.getMasterFilial( "EQALMOX" );
 		for (Cesta cesta: cestaFactory.getCestas()) {
 			if (cesta.getSel()) {
 				hasOrcamento = true;
@@ -809,7 +810,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 					cesta.setSel( false );
 					for (Item item: cesta.getItens()) {
 						if (item.getSel()) {
-							Integer coditorc = insertItOrcamento( codorc, item );
+							Integer coditorc = insertItOrcamento( codorc, item, codfilialax );
 							if (coditorc!=null) {
 								item.setSel( false );
 							}
@@ -828,6 +829,8 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		Integer result = null;
 		Integer codemp = Aplicativo.iCodEmp;
 		VDOrcamento orcamento = new VDOrcamento();
+		orcamento.setTipoorc( "O" );
+		orcamento.setStatusorc( "*" );
 		orcamento.setCodempcl( codemp );
 		orcamento.setCodfilialcl( (short) ListaCampos.getMasterFilial( "VDCLIENTE" ) );
 		orcamento.setCodcli( cesta.getCodcli() );
@@ -863,7 +866,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		return result;
 	}
 
-	private Integer insertItOrcamento(Integer codorc, Item item) {
+	private Integer insertItOrcamento(Integer codorc, Item item, Short codfilialax) {
 		Integer result = null;
 		Integer codemp = Aplicativo.iCodEmp;
 		VDItOrcamento itorcamento = new VDItOrcamento();
@@ -885,6 +888,9 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		itorcamento.setVlrdescitorc( item.getVlrdesc() );
 		itorcamento.setVlrproditorc( item.getQtd().multiply( item.getPreco() ) );
 		itorcamento.setVlrliqitorc( itorcamento.getVlrproditorc().subtract( item.getVlrdesc() ) );
+		itorcamento.setCodempax( codemp );
+		itorcamento.setCodfilialax( codfilialax );
+		itorcamento.setCodalmox( item.getCodalmox() );
 		try {
 			if ( daoorcamento.insertItOrcamento( itorcamento ) ) {
 				result = itorcamento.getCoditorc();
@@ -975,7 +981,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 			descalmox = (String) tabItensVenda.getValor( selectedRow, ITENSVENDA.DESCALMOX.ordinal() );
 		}
 		//Item
-		Item item = new Item(codemppd, codfilialpd, codprod, descprod);
+		Item item = new Item(codemppd, codfilialpd, codprod, descprod, codalmox, descalmox);
 		item.setQtd( qtditvenda );
 		item.setPreco( precoitvenda );
 		item.setPercdesc( percdescitvenda );

@@ -163,19 +163,19 @@ public class Cesta {
 			setVlrliqcesta(getVlrliqcesta().add(item.getVlrliq()));
 		}
 	}
-	public Item createNewItem(Integer codemp, Integer codfilial, Integer codprod, String descprod) {
+	public Item createNewItem(Integer codemp, Integer codfilial, Integer codprod, String descprod, Integer codalmox, String descalmox) {
 		Item result = getItem(codemp, codfilial, codprod);
 		if (result==null) {
-			result = new Item(codemp, codfilial, codprod, descprod);
+			result = new Item(codemp, codfilial, codprod, descprod, codalmox, descalmox);
 			itens.add(result);
 		}
 		return result;
 	}
-	public Item addItem(Integer codemp, Integer codfilial, Integer codprod, String descprod
+	public Item addItem(Integer codemp, Integer codfilial, Integer codprod, String descprod, Integer codalmox, String descalmox
 			, BigDecimal qtd, BigDecimal preco, BigDecimal percdesc, BigDecimal vlrdesc, BigDecimal vlrliq) {
 		Item result = getItem(codprod, codfilial, codprod);
 		if (result == null || result.getPreco()==null || result.getPreco().equals(BigDecimal.ZERO)) {
-			result = createNewItem(codemp, codfilial, codprod, descprod);
+			result = createNewItem(codemp, codfilial, codprod, descprod, codalmox, descalmox);
 			result.setQtd(qtd);
 			result.setPreco(preco);
 			result.setPercdesc(percdesc);

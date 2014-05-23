@@ -22,11 +22,13 @@ public class Item {
 		setVlrdesc(BigDecimal.ZERO);
 		setVlrliq(BigDecimal.ZERO);
 	}
-	public Item(Integer codemp, Integer codfilial, Integer codprod, String descprod) {
+	public Item(Integer codemp, Integer codfilial, Integer codprod, String descprod, Integer codalmox, String descalmox) {
 		setCodemp(codemp);
 		setCodfilial(codfilial);
 		setCodprod(codprod);
 		setDescprod(descprod);
+		setCodalmox(codalmox);
+		setDescalmox(descalmox);
 	}
 	public Integer getCodemp() {
 		return codemp;
