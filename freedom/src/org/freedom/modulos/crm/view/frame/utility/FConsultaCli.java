@@ -524,6 +524,8 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		tabItensVenda.adicColuna( "Descrição do plano de pagto." );
 		tabItensVenda.adicColuna( "Cód.comis." );
 		tabItensVenda.adicColuna( "Nome do comissionado" );
+		tabItensVenda.adicColuna( "Cód.almox." );
+		tabItensVenda.adicColuna( "Descrição do almoxarifado" );
 		tabItensVenda.setTamColuna( 30, ITENSVENDA.CODITVENDA.ordinal() );
 		tabItensVenda.setTamColuna( 50, ITENSVENDA.CODPROD.ordinal() );
 		tabItensVenda.setTamColuna( 250, ITENSVENDA.DESCPROD.ordinal() );
@@ -538,6 +540,8 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		tabItensVenda.setTamColuna( 250, ITENSVENDA.DESCPLANOPAG.ordinal() );
 		tabItensVenda.setTamColuna( 50, ITENSVENDA.CODVEND.ordinal() );
 		tabItensVenda.setTamColuna( 250, ITENSVENDA.NOMEVEND.ordinal() );
+		tabItensVenda.setTamColuna( 50, ITENSVENDA.CODALMOX.ordinal() );
+		tabItensVenda.setTamColuna( 250, ITENSVENDA.DESCALMOX.ordinal() );
 
 		panelTabItensVenda.add( new JScrollPane( tabItensVenda ) );
 		// Gride de produtos vendidos 
@@ -558,6 +562,8 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		tabProdVendas.adicColuna( "Descrição do plano de pagto." );
 		tabProdVendas.adicColuna( "Cód.comis." );
 		tabProdVendas.adicColuna( "Nome do comissionado" );
+		tabProdVendas.adicColuna( "Cód.almox." );
+		tabProdVendas.adicColuna( "Descrição do almoxarifado" );
 		tabProdVendas.setTamColuna( 30, PRODVENDAS.STATUSPGTO.ordinal() );
 		tabProdVendas.setTamColuna( 30, PRODVENDAS.STATUSVENDA.ordinal() );
 		tabProdVendas.setTamColuna( 55, PRODVENDAS.CODVENDA.ordinal() );
@@ -575,6 +581,8 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		tabProdVendas.setTamColuna( 250, PRODVENDAS.DESCPLANOPAG.ordinal() );
 		tabProdVendas.setTamColuna( 55, PRODVENDAS.CODVEND.ordinal() );
 		tabProdVendas.setTamColuna( 250, PRODVENDAS.NOMEVEND.ordinal() );
+		tabProdVendas.setTamColuna( 55, PRODVENDAS.CODALMOX.ordinal() );
+		tabProdVendas.setTamColuna( 250, PRODVENDAS.DESCALMOX.ordinal() );
 		panelTabProdVendas.add( new JScrollPane( tabProdVendas ) );
 		// Gride de cestas
 		tabCestas.adicColuna( "Sel." );
@@ -611,6 +619,8 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		tabItensCesta.adicColuna( "Preço" );
 		tabItensCesta.adicColuna( "V.Desconto" );
 		tabItensCesta.adicColuna( "V.líquido" );
+		tabItensCesta.adicColuna( "Cód.almox." );
+		tabItensCesta.adicColuna( "Descrição do almoxarifado" );
 		tabItensCesta.setTamColuna( 30, ITENSCESTA.SELECAO.ordinal() );
 		tabItensCesta.setTamColuna( 90, ITENSCESTA.CODPROD.ordinal() );
 		tabItensCesta.setTamColuna( 300, ITENSCESTA.DESCPROD.ordinal() );
@@ -618,6 +628,8 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		tabItensCesta.setTamColuna( 90, ITENSCESTA.PRECOITCESTA.ordinal() );
 		tabItensCesta.setTamColuna( 90, ITENSCESTA.VLRDESCITCESTA.ordinal() );
 		tabItensCesta.setTamColuna( 90, ITENSCESTA.VLRLIQITCESTA.ordinal() );
+		tabItensCesta.setTamColuna( 60, ITENSCESTA.CODALMOX.ordinal() );
+		tabItensCesta.setTamColuna( 250, ITENSCESTA.DESCALMOX.ordinal() );
 		panelTabItensCesta.add( new JScrollPane( tabItensCesta ) );		
 		tabItensCesta.setColunaEditavel( ITENSCESTA.SELECAO.ordinal(), true );
 		// ***** Rodapé
@@ -926,6 +938,8 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		String descplanopag;
 		Integer codvend;
 		String nomevend;
+		Integer codalmox;
+		String descalmox;
 		BigDecimal qtditvenda;
 		BigDecimal precoitvenda;
 		BigDecimal percdescitvenda;
@@ -943,6 +957,8 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 			descplanopag = (String) tabProdVendas.getValor( selectedRow, PRODVENDAS.DESCPLANOPAG.ordinal() );
 			codvend = (Integer) tabProdVendas.getValor( selectedRow, PRODVENDAS.CODVEND.ordinal() );
 			nomevend = (String) tabProdVendas.getValor( selectedRow, PRODVENDAS.NOMEVEND.ordinal() );
+			codalmox = (Integer) tabProdVendas.getValor( selectedRow, PRODVENDAS.CODALMOX.ordinal() );
+			descalmox = (String) tabProdVendas.getValor( selectedRow, PRODVENDAS.DESCALMOX.ordinal() );
 		} else {
 			codprod = (Integer) tabItensVenda.getValor( selectedRow, ITENSVENDA.CODPROD.ordinal() );
 			descprod = (String) tabItensVenda.getValor( selectedRow, ITENSVENDA.DESCPROD.ordinal() );
@@ -955,6 +971,8 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 			descplanopag = (String) tabItensVenda.getValor( selectedRow, ITENSVENDA.DESCPLANOPAG.ordinal() );
 			codvend = (Integer) tabItensVenda.getValor( selectedRow, ITENSVENDA.CODVEND.ordinal() );
 			nomevend = (String) tabItensVenda.getValor( selectedRow, ITENSVENDA.NOMEVEND.ordinal() );
+			codalmox = (Integer) tabItensVenda.getValor( selectedRow, ITENSVENDA.CODALMOX.ordinal() );
+			descalmox = (String) tabItensVenda.getValor( selectedRow, ITENSVENDA.DESCALMOX.ordinal() );
 		}
 		//Item
 		Item item = new Item(codemppd, codfilialpd, codprod, descprod);
@@ -963,6 +981,8 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		item.setPercdesc( percdescitvenda );
 		item.setVlrdesc( vlrdescitvenda );
 		item.setVlrliq( vlrliqitvenda );
+		item.setCodalmox( codalmox );
+		item.setDescalmox( descalmox );
 		DLConfirmItem dlconfirm = new DLConfirmItem(this);
 		dlconfirm.setValues( item );
 		dlconfirm.setVisible( true );
