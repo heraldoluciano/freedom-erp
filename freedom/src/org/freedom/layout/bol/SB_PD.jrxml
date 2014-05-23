@@ -128,7 +128,7 @@ $F{CNPJCLI}.substring(8,12) + "-" + $F{CNPJCLI}.substring(12) : "" )]]></variabl
 		<variableExpression><![CDATA[$F{AGENCIACONTA}+ " / " +$F{NUMCONTA}]]></variableExpression>
 	</variable>
 	<variable name="VCONVENIO" class="java.lang.String" resetType="Page">
-		<variableExpression><![CDATA[((org.freedom.library.business.component.Banco) $V{BOLETO} ).geraConvenio($F{CONVCOB})]]></variableExpression>
+		<variableExpression><![CDATA[$F{CONVCOB}]]></variableExpression>
 	</variable>
 	<variable name="NOSSONUMERO" class="java.lang.String" resetType="Page">
 		<variableExpression><![CDATA[((org.freedom.library.business.component.Banco) $V{BOLETO} ).geraNossoNumero($P{TPNOSSONUMERO}, $F{MDECOB}, $V{VCONVENIO}, new Long($F{DOCREC}.longValue()), new Long($F{SEQNOSSONUMERO}.longValue()), new Long($F{CODREC}.longValue()), new Long($F{NPARCITREC}.longValue()), null, true, true )]]></variableExpression>
