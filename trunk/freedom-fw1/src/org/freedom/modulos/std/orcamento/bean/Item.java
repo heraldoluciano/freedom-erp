@@ -12,6 +12,8 @@ public class Item {
 	private BigDecimal percdesc;
 	private BigDecimal vlrdesc;
 	private BigDecimal vlrliq;
+	private Integer codalmox;
+	private String descalmox;
 	private Boolean sel = new Boolean(false);
 	public Item() {
 		setQtd(BigDecimal.ZERO);
@@ -94,5 +96,17 @@ public class Item {
 	}
 	public void setSel(Boolean sel) {
 		this.sel = sel;
+	}
+	public Integer getCodalmox() {
+		return codalmox;
+	}
+	public void setCodalmox(Integer codalmox) {
+		this.codalmox = codalmox;
+	}
+	public String getDescalmox() {
+		return descalmox;
+	}
+	public void setDescalmox(String descalmox) {
+		this.descalmox = descalmox;
 	}
 }

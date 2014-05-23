@@ -187,7 +187,7 @@ public class DAOConsultaCli extends AbstractDAO {
 			sql.append( ", coalesce(i.qtditvenda,0) qtditvenda, coalesce(i.precoitvenda,0) precoitvenda ");
 			sql.append( ", coalesce(i.vlrdescitvenda,0) vlrdescitvenda, coalesce(i.vlrfreteitvenda,0) vlrfreteitvenda ");
 			sql.append( ", coalesce(i.vlrliqitvenda,0) vlrliqitvenda " );
-			sql.append( ", pg.codplanopag, pg.descplanopag, vo.codvend, vo.nomevend ");
+			sql.append( ", pg.codplanopag, pg.descplanopag, vo.codvend, vo.nomevend, ax.codalmox, ax.descalmox ");
 			sql.append( "from vditvenda i " );
 			sql.append( "inner join eqproduto p " );
 			sql.append( "on p.codemp=i.codemppd and p.codfilial=i.codfilialpd and p.codprod=i.codprod " );
@@ -197,6 +197,9 @@ public class DAOConsultaCli extends AbstractDAO {
 			sql.append( "on pg.codemp=v.codemppg and pg.codfilial=v.codfilialpg and pg.codplanopag=v.codplanopag " );
 			sql.append( "inner join vdvendedor vo " );
 			sql.append( "on vo.codemp=v.codempvd and vo.codfilial=v.codfilialvd and vo.codvend=v.codvend " );
+			sql.append( "inner join eqalmox ax " );
+			sql.append( "on ax.codemp=p.codempax and ax.codfilial=p.codfilialax and ax.codalmox=p.codalmox " );
+		
 			sql.append( "where i.codemp=? and i.codfilial=? and i.codvenda=? and i.tipovenda=? " );
 			if ( codprod.intValue() > 0 ) {
 				sql.append( " and p.codprod=? " );
@@ -228,6 +231,8 @@ public class DAOConsultaCli extends AbstractDAO {
 				row.addElement( rs.getString( "DESCPLANOPAG" ) );
 				row.addElement( rs.getInt( "CODVEND" ) );
 				row.addElement( rs.getString( "NOMEVEND" ) );
+				row.addElement( rs.getInt( "CODALMOX" ) );
+				row.addElement( rs.getString( "DESCALMOX" ) );
 				result.addElement( row );
 			}
 			rs.close();
