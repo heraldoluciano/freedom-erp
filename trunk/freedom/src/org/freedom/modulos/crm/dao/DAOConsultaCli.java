@@ -388,7 +388,7 @@ public class DAOConsultaCli extends AbstractDAO {
 			sql.append("select first 1 vd.statusvenda, vd.codvenda, vd.docvenda, vd.dtemitvenda");
 			sql.append(", pd.codprod, pd.descprod, iv.qtditvenda, iv.precoitvenda, iv.percdescitvenda ");
 			sql.append(", iv.vlrdescitvenda, iv.vlrliqitvenda, vd.tipovenda, vd.codplanopag, pg.descplanopag ");
-			sql.append(", vo.codvend, vo.nomevend ");
+			sql.append(", vo.codvend, vo.nomevend, ax.codalmox, ax.descalmox ");
 			sql.append("from vdvenda vd ");
 			sql.append("inner join vditvenda iv ");
 			sql.append("on iv.codemp=vd.codemp and iv.codfilial=vd.codfilial and iv.tipovenda=vd.tipovenda and iv.codvenda=vd.codvenda ");
@@ -399,6 +399,8 @@ public class DAOConsultaCli extends AbstractDAO {
 			sql.append("on pg.codemp=vd.codemppg and pg.codfilial=vd.codfilialpg and pg.codplanopag=vd.codplanopag ");
 			sql.append("inner join vdvendedor vo ");
 			sql.append("on vo.codemp=vd.codempvd and vo.codfilial=vd.codfilialvd and vo.codvend=vd.codvend ");
+			sql.append("inner join eqalmox ax ");
+			sql.append("on ax.codemp=pd.codempax and ax.codfilial=pd.codfilialax and ax.codalmox=pd.codalmox ");
 			sql.append("where vd.codemp=? and vd.codfilial=? and vd.tipovenda='V' and dtemitvenda=? ");
 			sql.append("and substring(vd.statusvenda from 1 for 1) not in ('C','N') ");
 			sql.append("and vd.codempcl=? and vd.codfilialcl=? and vd.codcli=? " );
@@ -447,6 +449,8 @@ public class DAOConsultaCli extends AbstractDAO {
 				row.addElement( rs.getString( "DESCPLANOPAG" ) );
 				row.addElement( rs.getInt( "CODVEND" ) );
 				row.addElement( rs.getString( "NOMEVEND" ) );
+				row.addElement( rs.getInt( "CODALMOX" ) );
+				row.addElement( rs.getString( "DESCALMOX" ) );
 			}
 			rs.close();
 			ps.close();

@@ -55,10 +55,6 @@ public class DLConfirmItem extends FFDialogo implements FocusListener {
 
 	private Item result = null;
 
-	private Integer codemp;
-	
-	private Integer codfilial;
-	
 	private static enum FIELDS_CONFIRM {CODPROD, DESCPROD, QTD, PRECO, PERCDESC, VLRDESC, VLRLIQ}
 
 	private BigDecimal percdesc_old = null;
@@ -91,8 +87,7 @@ public class DLConfirmItem extends FFDialogo implements FocusListener {
 	}
 	
 	public void setValues(Item item) {
-		setCodemp( item.getCodemp() );
-		setCodfilial( item.getCodfilial() );
+		result = item;
 		txtCodprod.setVlrInteger( item.getCodprod() );
 		txtDescprod.setVlrString( item.getDescprod() );
 		txtQtd.setVlrBigDecimal( item.getQtd() );
@@ -105,7 +100,8 @@ public class DLConfirmItem extends FFDialogo implements FocusListener {
 	
 	public void actionPerformed( ActionEvent evt ) {
 		if (evt.getSource()==btOK) {
-            result = new Item(getCodemp(), getCodfilial(), txtCodprod.getVlrInteger(), txtDescprod.getVlrString());
+            //result.
+            //= new Item(result.getCodemp(), result.getCodfilial(), txtCodprod.getVlrInteger(), txtDescprod.getVlrString(), );
             result.setQtd( txtQtd.getVlrBigDecimal() );
             result.setPreco( txtPreco.getVlrBigDecimal() );
             result.setPercdesc( txtPercDesc.getVlrBigDecimal() );
@@ -127,30 +123,6 @@ public class DLConfirmItem extends FFDialogo implements FocusListener {
 	public void setResult( Item result ) {
 	
 		this.result = result;
-	}
-
-	
-	public Integer getCodemp() {
-	
-		return codemp;
-	}
-
-	
-	public void setCodemp( Integer codemp ) {
-	
-		this.codemp = codemp;
-	}
-
-	
-	public Integer getCodfilial() {
-	
-		return codfilial;
-	}
-
-	
-	public void setCodfilial( Integer codfilial ) {
-	
-		this.codfilial = codfilial;
 	}
 
 	public void focusGained( FocusEvent e ) {
