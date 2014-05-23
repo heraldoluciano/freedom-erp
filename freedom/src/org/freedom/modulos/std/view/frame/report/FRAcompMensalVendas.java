@@ -213,7 +213,7 @@ public class FRAcompMensalVendas extends FRelatorio implements FocusListener {
 		sql.append( " pp.codemp=v.codemppg and pp.codfilial=v.codfilialpg and pp.codplanopag=v.codplanopag ");
 		sql.append( " where c.codemp=? and c.codfilial=?" );
 		sql.append( " and v.dtemitvenda between ? and ?" );
-		sql.append( " and substring(v.statusvenda from 1 for 1) not in 'C','N' " );
+		sql.append( " and substring(v.statusvenda from 1 for 1) not in ('C','N') " );
 		if ( "S".equalsIgnoreCase( faturado ) ) {
 			sql.append( " and tm.fiscaltipomov='S' " );
 			filtros.append( ", faturados" );
