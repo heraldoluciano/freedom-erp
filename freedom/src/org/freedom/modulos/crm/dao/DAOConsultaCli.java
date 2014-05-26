@@ -557,6 +557,9 @@ public class DAOConsultaCli extends AbstractDAO {
 				else{
 					result = imgPgEmDia;
 				}
+			} 
+			else {
+				result = imgAVencer;
 			}
 		}
 
