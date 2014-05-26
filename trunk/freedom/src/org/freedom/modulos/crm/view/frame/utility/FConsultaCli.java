@@ -1079,6 +1079,8 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 					tabItensCesta.setValor( item.getPreco(), row, ITENSCESTA.PRECOITCESTA.ordinal() );
 					tabItensCesta.setValor( item.getVlrdesc(), row, ITENSCESTA.VLRDESCITCESTA.ordinal() );
 					tabItensCesta.setValor( item.getVlrliq(), row, ITENSCESTA.VLRLIQITCESTA.ordinal() );
+					tabItensCesta.setValor( item.getCodalmox(), row, ITENSCESTA.CODALMOX.ordinal() );
+					tabItensCesta.setValor( item.getDescalmox(), row, ITENSCESTA.DESCALMOX.ordinal() );
 					row ++;
 				}
 			}
