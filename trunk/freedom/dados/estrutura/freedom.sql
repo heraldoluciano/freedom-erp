@@ -18230,144 +18230,112 @@ BEGIN
    SUSPEND;
 END ^
 
-ALTER PROCEDURE EQCUSTOPRODSP (ICODEMP INTEGER,
-SCODFILIAL SMALLINT,
-ICODPROD INTEGER,
-DTESTOQ DATE,
-CTIPOCUSTO CHAR(1),
-ICODEMPAX INTEGER,
-SCODFILIALAX SMALLINT,
-ICODALMOX INTEGER,
-CCOMSALDO CHAR(10))
-RETURNS (SLDPROD NUMERIC(15, 5),
-CUSTOUNIT NUMERIC(15, 5),
-CUSTOTOT NUMERIC(15, 5))
-AS 
-
+CREATE OR ALTER PROCEDURE EQCUSTOPRODSP (
+    icodemp integer,
+    scodfilial smallint,
+    icodprod integer,
+    dtestoq date,
+    ctipocusto char(1),
+    icodempax integer,
+    scodfilialax smallint,
+    icodalmox integer,
+    ccomsaldo char(10))
+returns (
+    sldprod numeric(15,5),
+    custounit numeric(15,5),
+    custotot numeric(15,5))
+as
 declare variable precobase numeric(15,5);
 declare variable custompm numeric(15,5);
 begin
-  /* Retorna o custo unitário do produto */
-  IF (CTIPOCUSTO IS NULL) then
-     CTIPOCUSTO = 'P';
-
-     -- Se o almoxarifado não for selecionado, deve buscar o saldo geral
-    if(:icodalmox is null) then
-    begin
-   --      execute procedure sgdebugsp 'eqcustoprosp','inicio do custo por almoxarifado';
-
-        SELECT P.PRECOBASEPROD,
-            (SELECT FIRST 1 M.SLDMOVPROD
-             FROM EQMOVPROD M
-             WHERE M.CODEMPPD=P.CODEMP AND
-               M.CODFILIAL=P.CODFILIAL AND
-               M.CODPROD=P.CODPROD AND
-               M.DTMOVPROD<=:DTESTOQ
-             ORDER BY P.CODPROD, M.DTMOVPROD DESC , M.CODMOVPROD DESC
-             ) ,
-            (SELECT FIRST 1 M.CUSTOMPMMOVPROD
-             FROM EQMOVPROD M
-             WHERE M.CODEMPPD=P.CODEMP AND
-               M.CODFILIAL=P.CODFILIAL AND
-               M.CODPROD=P.CODPROD AND
-               M.DTMOVPROD<=:DTESTOQ
-             ORDER BY P.CODPROD, M.DTMOVPROD DESC , M.CODMOVPROD DESC
-            )
-            FROM EQPRODUTO P
-            WHERE P.CODEMP = :ICODEMP AND P.CODFILIAL = :SCODFILIAL AND P.CODPROD=:ICODPROD
-            INTO :PRECOBASE, :SLDPROD, :CUSTOMPM;
-  --       execute procedure sgdebugsp 'eqcustoprosp','após custo mpm';
-
+   /* Retorna o custo unitário do produto */
+   if (ctipocusto is null) then
+      ctipocusto = 'P';
+   select p.precobaseprod from eqproduto p
+   where p.codemp = :icodemp and p.codfilial = :scodfilial and p.codprod=:icodprod
+   into :precobase;
+   -- Se o almoxarifado não for selecionado, deve buscar o saldo geral
+   if(:icodalmox is null) then
+   begin
+      -- execute procedure sgdebugsp 'eqcustoprosp','inicio do custo por almoxarifado';
+      -- execute procedure sgdebugsp 'custo', 'Iniciou consulta movprod almoxarifado nulo';
+      select first 1 m.sldmovprod, m.custompmmovprod
+      from eqmovprod m
+      where m.codemppd=:icodemp and m.codfilial=:scodfilial and m.codprod=:icodprod and m.dtmovprod<=:dtestoq
+      order by m.codprod desc, m.dtmovprod desc, m.codmovprod desc
+      into :sldprod, :custompm;
+      -- execute procedure sgdebugsp 'custo', 'Finalizou consulta movprod almoxarifado nulo';
+      -- execute procedure sgdebugsp 'eqcustoprosp','após custo mpm';
     end
     else
     begin
-
-   --     execute procedure sgdebugsp 'eqcustoprosp','inicio do custo geral';
-
-        SELECT P.PRECOBASEPROD,
-            (SELECT FIRST 1 M.SLDMOVPRODAX
-             FROM EQMOVPROD M
-             WHERE M.CODEMPPD=P.CODEMP AND M.CODFILIAL=P.CODFILIAL AND M.CODPROD=P.CODPROD AND M.DTMOVPROD<=:DTESTOQ
-                and ( (:icodalmox is null) or ( m.codempax=:icodempax and m.codfilial=:scodfilialax and m.codalmox=:icodalmox) )
-             ORDER BY P.CODPROD, M.DTMOVPROD DESC , M.CODMOVPROD DESC
-         ) ,
-         (SELECT FIRST 1 M.CUSTOMPMMOVPROD
-         FROM EQMOVPROD M
-         WHERE M.CODEMPPD=P.CODEMP AND
-               M.CODFILIAL=P.CODFILIAL AND
-               M.CODPROD=P.CODPROD AND
-               M.DTMOVPROD<=:DTESTOQ
-               and ( (:icodalmox is null) or ( m.codempax=:icodempax and m.codfilial=:scodfilialax and m.codalmox=:icodalmox) )
-         ORDER BY P.CODPROD, M.DTMOVPROD DESC , M.CODMOVPROD DESC
-         )
-       FROM EQPRODUTO P
-       WHERE P.CODEMP = :ICODEMP AND P.CODFILIAL = :SCODFILIAL AND
-          P.CODPROD=:ICODPROD
-       INTO :PRECOBASE, :SLDPROD, :CUSTOMPM;
-
-  --     execute procedure sgdebugsp 'eqcustoprosp','após o custo geral';
-
+       -- execute procedure sgdebugsp 'eqcustoprosp','inicio do custo geral';
+       -- execute procedure sgdebugsp 'custo', 'Iniciou consulta movprod almoxarifado '||:icodalmox;
+        select first 1 m.sldmovprodax, m.custompmmovprod
+        from eqmovprod m
+        where m.codemppd=:icodemp and m.codfilial=:scodfilial and m.codprod=:icodprod and m.dtmovprod<=:dtestoq
+        and m.codempax=:icodempax and m.codfilial=:scodfilialax and m.codalmox=:icodalmox
+        order by m.codprod desc, m.dtmovprod desc, m.codmovprod desc
+        into :sldprod, :custompm;
+        execute procedure sgdebugsp 'custo', 'Finalizou consulta movprod almoxarifado '||:icodalmox;
+        -- execute procedure sgdebugsp 'eqcustoprosp','após o custo geral';
     end
-
-
-  CUSTOUNIT = 0;
-  CUSTOTOT = 0;
-  IF (SLDPROD IS NULL) THEN
-        SLDPROD = 0;
-  IF ( (SLDPROD!=0) OR (CCOMSALDO!='S') ) THEN
-  BEGIN
-      -- Custo PEPS
-      IF (CTIPOCUSTO='P') THEN
-      BEGIN
-
-         SELECT NCUSTOPEPS FROM EQCALCPEPSSP(:ICODEMP,:SCODFILIAL,:ICODPROD,
-            :SLDPROD,:DTESTOQ, :ICODEMPAX, :SCODFILIALAX, :ICODALMOX)
-            INTO :CUSTOUNIT;
-         IF (CUSTOUNIT!=0) THEN
-            CUSTOTOT = CUSTOUNIT*SLDPROD;
-    --     execute procedure sgdebugsp 'eqcustoprosp','após custo PEPS';
-
-      END
-      -- Custo MPM
-      ELSE IF (CTIPOCUSTO='M') THEN
-      BEGIN
-         CUSTOUNIT = CUSTOMPM;
-         IF (CUSTOUNIT IS NULL) THEN
-            CUSTOUNIT = 0;
-          CUSTOTOT = CUSTOUNIT*SLDPROD;
-    --     execute procedure sgdebugsp 'eqcustoprosp','após custo MPM';
-
-      END
-      -- Preço Base
-      ELSE IF (CTIPOCUSTO='B') THEN
-      BEGIN
-         CUSTOUNIT = PRECOBASE;
-         IF (CUSTOUNIT IS NULL) THEN
-            CUSTOUNIT = 0;
-          CUSTOTOT = CUSTOUNIT*SLDPROD;
-      --    execute procedure sgdebugsp 'eqcustoprosp','após precobase';
-
-      END
-      -- Preço da Ultima Compra
-      else if (CTIPOCUSTO='U') then
-      begin
-        select first 1 ic.custoitcompra from cpitcompra ic, cpcompra cp
+    custounit = 0;
+    custotot = 0;
+    if (sldprod is null) then
+        sldprod = 0;
+    if ( (sldprod!=0) or (ccomsaldo!='S') ) THEN
+    begin
+       -- custo peps
+       if (ctipocusto='P') then
+       begin
+          --execute procedure sgdebugsp 'custo', 'iniciou calcpeps';
+          select ncustopeps from eqcalcpepssp(:icodemp,:scodfilial,:icodprod,
+          :sldprod,:dtestoq, :icodempax, :scodfilialax, :icodalmox)
+          into :custounit;
+          -- execute procedure sgdebugsp 'custo', 'finalizou calcpeps';
+         if (custounit!=0) then
+             custotot = custounit*sldprod;
+             --  execute procedure sgdebugsp 'eqcustoprosp','após custo peps';
+       end
+       -- custo mpm
+       else if (ctipocusto='M') then
+       begin
+          custounit = custompm;
+          if (custounit is null) then
+             custounit = 0;
+          custotot = custounit*sldprod;
+          -- execute procedure sgdebugsp 'eqcustoprosp','após custo mpm';
+       end
+       -- preço base
+       else if (ctipocusto='B') then
+       begin
+          custounit = precobase;
+          if (custounit is null) then
+             custounit = 0;
+           custotot = custounit*sldprod;
+           --    execute procedure sgdebugsp 'eqcustoprosp','após precobase';
+       end
+       -- preço da ultima compra
+       else if (ctipocusto='U') then
+       begin
+          -- execute procedure sgdebugsp 'custo', 'iniciou custo da ultima compra';
+          select first 1 ic.custoitcompra from cpitcompra ic, cpcompra cp
             where cp.codemp=:icodemp and cp.codfilial=:scodfilial and cp.dtentcompra<=:dtestoq
             and ic.codemp=cp.codemp and ic.codfilial=cp.codfilial and ic.codcompra=cp.codcompra
             and ic.codemppd=:icodemp and ic.codfilialpd=:scodfilial and ic.codprod=:icodprod
             and ( (:icodalmox is null) or ( ic.codempax=:icodempax and ic.codfilial=:scodfilialax and ic.codalmox=:icodalmox) )
             order by cp.dtentcompra desc
-            into :CUSTOUNIT;
-
-            if (CUSTOUNIT IS NULL) THEN
-                CUSTOUNIT = :CUSTOMPM;
+            into :custounit;
+          -- execute procedure sgdebugsp 'custo', 'finalizou custo da ultima compra';
+          if (custounit is null) then
+              custounit = :custompm;
          -- execute procedure sgdebugsp 'eqcustoprosp','após última compra';
+       end
+   end
+   suspend;
+end^
 
-      end
-
-  END
-  SUSPEND;
-end ^
 
 ALTER PROCEDURE EQGERARMAOSSP (CODEMPRM INTEGER,
 CODFILIALRM INTEGER,
