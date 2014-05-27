@@ -12,6 +12,7 @@ import org.freedom.library.business.component.BancodoBrasil;
 import org.freedom.library.business.component.Bradesco;
 import org.freedom.library.business.component.CaixaEconomica;
 import org.freedom.library.business.component.Itau;
+import org.freedom.library.business.component.Sicoob;
 import org.freedom.library.business.component.Sicredi;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.frame.Aplicativo;
@@ -101,6 +102,9 @@ public class FbnUtil {
 		else if ( Banco.CAIXA_ECONOMICA.equals( codbanco ) ) {
 			return new CaixaEconomica( codbanco );
 		}
+		else if ( Banco.SICOOB.equals( codbanco ) ) {
+				return new Sicoob();
+			}
 
 		return null;
 	}

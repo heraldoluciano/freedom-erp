@@ -7,7 +7,7 @@ public abstract class Banco {
 
 	public final static String BANCO_DO_BRASIL = "001";
 
-	public final static String BANCO_SICOOB = "756";
+	public final static String SICOOB = "756";
 	
 	public final static String CAIXA_ECONOMICA = "104";
 

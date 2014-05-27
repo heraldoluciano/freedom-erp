@@ -422,25 +422,22 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 
 			StringBuilder sql = new StringBuilder();
 
-			sql.append( "SELECT I.CODCONV, P.NOMEEMP, P.NOMEEMPCNAB, I.VERLAYOUT, I.IDENTSERV, I.CONTACOMPR, " );
-			sql.append( "I.IDENTAMBCLI, I.IDENTAMBBCO, I.NROSEQ, " );
-			sql.append( "I.NUMCONTA, C.AGENCIACONTA, C.POSTOCONTA, E.CNPJFILIAL, " );
-			sql.append( "FORCADTIT, TIPODOC, IDENTEMITBOL , IDENTDISTBOL, ESPECTIT, CODJUROS, VLRPERCJUROS, " );
-			sql.append( "CODDESC, VLRPERCDESC, CODPROT, DIASPROT, CODBAIXADEV, DIASBAIXADEV, I.MDECOB, I.CONVCOB, " );
-			sql.append( " (CASE WHEN I.ACEITE='S' THEN 'A' ELSE 'N' END) ACEITE, I.PADRAOCNAB, P1.TPNOSSONUMERO, P1.IMPDOCBOL, " );
-			
-			sql.append( "I.CAMINHOREMESSA, I.CAMINHORETORNO, I.BACKUPREMESSA, I.BACKUPRETORNO, I.CODINSTR, I.CODOUTINSTR, ");
-			sql.append( "coalesce(I.VLRPERCMULTA,0) VLRPERCMULTA " );
-			
-			sql.append( "FROM SGPREFERE1 P1, SGPREFERE6 P, SGFILIAL E, " );
-			sql.append( "SGITPREFERE6 I LEFT OUTER JOIN FNCONTA C ON " );
-			sql.append( "C.CODEMP=I.CODEMPCA AND C.CODFILIAL=I.CODFILIALCA AND C.NUMCONTA=I.NUMCONTA " );
-			
-			sql.append( "WHERE I.CODEMP=? AND I.CODFILIAL=? " );
-			sql.append( "AND I.CODEMPBO=? AND I.CODFILIALBO=? AND I.CODBANCO=? AND I.TIPOFEBRABAN=? " );
-			sql.append( "AND P.CODEMP=I.CODEMP AND P.CODFILIAL=I.CODFILIAL " );
-			sql.append( "AND E.CODEMP=I.CODEMP AND E.CODFILIAL=I.CODFILIAL " );
-			sql.append( "AND P1.CODEMP=E.CODEMP AND P1.CODFILIAL=? " );
+			sql.append( "select i.codconv, p.nomeemp, p.nomeempcnab, i.verlayout, i.identserv, i.contacompr, " );
+			sql.append( "i.identambcli, i.identambbco, i.nroseq, " );
+			sql.append( "i.numconta, c.agenciaconta, c.postoconta, e.cnpjfilial, " );
+			sql.append( "forcadtit, tipodoc, identemitbol , identdistbol, espectit, codjuros, vlrpercjuros, " );
+			sql.append( "coddesc, vlrpercdesc, codprot, diasprot, codbaixadev, diasbaixadev, i.mdecob, i.convcob, " );
+			sql.append( " (case when i.aceite='S' then 'A' else 'N' end) aceite, i.padraocnab, p1.tpnossonumero, p1.impdocbol, " );
+			sql.append( "i.caminhoremessa, i.caminhoretorno, i.backupremessa, i.backupretorno, i.codinstr, i.codoutinstr, ");
+			sql.append( "coalesce(i.vlrpercmulta,0) vlrpercmulta " );
+			sql.append( "from sgprefere1 p1, sgprefere6 p, sgfilial e, " );
+			sql.append( "sgitprefere6 i left outer join fnconta c on " );
+			sql.append( "c.codemp=i.codempca and c.codfilial=i.codfilialca and c.numconta=i.numconta " );
+			sql.append( "where i.codemp=? and i.codfilial=? " );
+			sql.append( "and i.codempbo=? and i.codfilialbo=? and i.codbanco=? and i.tipofebraban=? " );
+			sql.append( "and p.codemp=i.codemp and p.codfilial=i.codfilial " );
+			sql.append( "and e.codemp=i.codemp and e.codfilial=i.codfilial " );
+			sql.append( "and p1.codemp=e.codemp and p1.codfilial=? " );
 
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
@@ -900,7 +897,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 					sqlup.append( "UPDATE FNFBNCLI SET AGENCIACLI=?, IDENTCLI=?, STIPOFEBRABAN=?, TIPOREMCLI=? " );
 					sqlup.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODCLI=? " );
 					sqlup.append( "AND CODEMPPF=? AND CODFILIALPF=? AND CODEMPBO=? AND CODFILIALBO=? AND CODBANCO=? AND TIPOFEBRABAN=?" );
-
+					ps.close();
 					ps = con.prepareStatement( sqlup.toString() );
 					ps.setString( 1, agenciaCli );
 					ps.setString( 2, identCli );
@@ -916,6 +913,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 					ps.setString( 12, codBanco );
 					ps.setString( 13, tipoFebraban );
 					ps.executeUpdate();
+					ps.close();
 				}
 			} else {
 
@@ -924,7 +922,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 				sqlin.append( "CODCLI, CODEMPPF, CODFILIALPF, CODEMPBO, CODFILIALBO, CODBANCO, " );
 				sqlin.append( "TIPOFEBRABAN, STIPOFEBRABAN, TIPOREMCLI) " );
 				sqlin.append( "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)" );
-
+				ps.close();
 				ps = con.prepareStatement( sqlin.toString() );
 				ps.setString( 1, agenciaCli );
 				ps.setString( 2, identCli );
@@ -939,13 +937,11 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 				ps.setString( 11, tipoFebraban );
 				ps.setString( 12, stipoFebraban );
 				ps.setString( 13, tipoRemCli );
-
 				ps.executeUpdate();
+				ps.close();
 			}
 			con.commit();
-
 			retorno = true;
-
 		} catch ( SQLException e ) {
 			Funcoes.mensagemErro( this, "Erro atualizando cliente!\n" + e.getMessage() );
 			e.printStackTrace();
@@ -973,7 +969,6 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 			ResultSet rs = ps.executeQuery();
 
 			if ( rs.next() ) {
-
 				if ( 	   !codBanco.equals( rs.getString( "CODBANCO" ) ) 
 						|| !tipoFebraban.equals( rs.getString( "TIPOFEBRABAN" ) ) 
 						|| !stipoFebraban.equals( rs.getString( "STIPOFEBRABAN" ) ) 
@@ -986,29 +981,27 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 					StringBuilder sqlup = new StringBuilder();
 					sqlup.append( "UPDATE FNFBNREC SET CODBANCO=?, TIPOFEBRABAN=?, STIPOFEBRABAN=?, SITREMESSA=?, NOMEARQUIVO=? " );
 					sqlup.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODREC=? AND NPARCITREC=?" );
-
 					ps = con.prepareStatement( sqlup.toString() );
-					ps.setString( 1, codBanco );
-					ps.setString( 2, tipoFebraban );
-					ps.setString( 3, stipoFebraban );
-					ps.setString( 4, sitRemessa );
-					ps.setString( 5, filename );
-					
-					ps.setInt( 6, Aplicativo.iCodEmp );
-					ps.setInt( 7, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
-					ps.setInt( 8, codRec );
-					ps.setInt( 9, nParcitrec );
-					
+					int param = 1;
+					ps.setString( param++, codBanco );
+					ps.setString( param++, tipoFebraban );
+					ps.setString( param++, stipoFebraban );
+					ps.setString( param++, sitRemessa );
+					ps.setString( param++, filename );
+					ps.setInt( param++, Aplicativo.iCodEmp );
+					ps.setInt( param++, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
+					ps.setInt( param++, codRec );
+					ps.setInt( param++, nParcitrec );
 					ps.executeUpdate();
+					ps.close();
 				}
 			} else {
-
 				StringBuilder sqlin = new StringBuilder();
 				sqlin.append( "INSERT INTO FNFBNREC (CODEMP, CODFILIAL, CODREC, NPARCITREC, " );
 				sqlin.append( "CODEMPPF, CODFILIALPF, CODEMPBO, CODFILIALBO, CODBANCO, " );
 				sqlin.append( "TIPOFEBRABAN, STIPOFEBRABAN, SITREMESSA, NOMEARQUIVO ) " );
 				sqlin.append( "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )" );
-
+				ps.close();
 				ps = con.prepareStatement( sqlin.toString() );
 				ps.setInt( 1, Aplicativo.iCodEmp );
 				ps.setInt( 2, ListaCampos.getMasterFilial( "FNFBNREC" ) );
@@ -1024,23 +1017,20 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 				ps.setString( 12, sitRemessa );
 				ps.setString( 13, filename );
 				ps.executeUpdate();
+				ps.close();
 			}
-
+			rs.close();
 			con.commit();
-
 			retorno = true;
-
 		} catch ( SQLException e ) {
 			Funcoes.mensagemErro( this, "Erro atualizando situação do contas a receber!\n" + e.getMessage() );
 		}
-
 		return retorno;
 	}
 	
 	protected boolean updatePrefere() {
 
 		boolean retorno = true;
-
 		try {
 			StringBuilder sql = new StringBuilder();
 			sql.append( "UPDATE SGITPREFERE6 I SET NROSEQ=? " );
