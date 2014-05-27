@@ -18250,7 +18250,7 @@ begin
         and m.codempax=:icodempax and m.codfilial=:scodfilialax and m.codalmox=:icodalmox
         order by m.codprod desc, m.dtmovprod desc, m.codmovprod desc
         into :sldprod, :custompm;
-        execute procedure sgdebugsp 'custo', 'Finalizou consulta movprod almoxarifado '||:icodalmox;
+        --execute procedure sgdebugsp 'custo', 'Finalizou consulta movprod almoxarifado '||:icodalmox;
         -- execute procedure sgdebugsp 'eqcustoprosp','após o custo geral';
     end
     custounit = 0;
@@ -24923,20 +24923,6 @@ end ^
 ALTER PROCEDURE SGDEBUGSP (ROTINA VARCHAR(60),
 TEXTO VARCHAR(1000))
 AS 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
 begin
   /* Procedure Text */
   INSERT INTO SGDEBUG (ROTINA, TEXTO)
@@ -24950,20 +24936,6 @@ ICODEST INTEGER,
 SNROIMP SMALLINT,
 CPADIMP CHAR(1))
 AS 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
 begin
   /* Procedure que ajusta impressora padrão */
   IF ( (CPADIMP IS NOT NULL) AND (CPADIMP='S') ) THEN
@@ -24973,20 +24945,6 @@ begin
 end ^
 
 ALTER PROCEDURE SGFIMCONSP AS 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
 DECLARE VARIABLE ICONECTADO INTEGER;
 begin
   /* Procedure Text */
