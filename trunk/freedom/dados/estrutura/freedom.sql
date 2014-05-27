@@ -18084,97 +18084,70 @@ BEGIN
   END */
 END ^
 
-ALTER PROCEDURE EQCALCPEPSSP (ICODEMP INTEGER,
-SCODFILIAL SMALLINT,
-ICODPROD INTEGER,
-NSLDPROD NUMERIC(15, 5),
-DTESTOQ DATE,
-ICODEMPAX INTEGER,
-SCODFILIALAX SMALLINT,
-ICODALMOX INTEGER)
-RETURNS (NCUSTOPEPS NUMERIC(15, 5))
-AS 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
-declare variable dttemp date;
+CREATE OR ALTER PROCEDURE EQCALCPEPSSP (
+    icodemp integer,
+    scodfilial smallint,
+    icodprod integer,
+    nsldprod numeric(15,5),
+    dtestoq date,
+    icodempax integer,
+    scodfilialax smallint,
+    icodalmox integer)
+returns (
+    ncustopeps numeric(15,5))
+as
 declare variable ncusto numeric(15,5);
 declare variable nqtd numeric(15,5);
 declare variable nresto numeric(15,5);
 declare variable ncustotot numeric(15,5);
 declare variable nsldtmp numeric(15,5);
 begin
-  /* Procedure que retorna o cálculo do custo peps */
-  NCUSTO = 0;
-  NCUSTOTOT = 0;
-  NRESTO = 0;
-  NCUSTOPEPS = 0;
-  IF ( (NSLDPROD IS NOT NULL) AND (NSLDPROD != 0) ) THEN
-  BEGIN
-      NSLDTMP = NSLDPROD;
-      FOR SELECT MP.DTMOVPROD, coalesce(MP.QTDMOVPROD,0),coalesce(MP.PRECOMOVPROD,0)
-        FROM EQMOVPROD MP, EQTIPOMOV TM
-         WHERE MP.CODEMPPD=:ICODEMP AND MP.CODFILIALPD=:SCODFILIAL AND MP.CODPROD=:ICODPROD AND
-           MP.CODEMPTM=TM.CODEMP AND MP.CODFILIALTM=TM.CODFILIAL AND MP.CODTIPOMOV=TM.CODTIPOMOV AND
-           MP.TIPOMOVPROD IN ('E','I') AND TM.TIPOMOV IN ('IV','CP','PC') AND
-           MP.DTMOVPROD<=:DTESTOQ  AND
-           ( (:ICODALMOX IS NULL) OR
-             (MP.CODEMPAX=:ICODEMPAX AND MP.CODFILIALAX=:SCODFILIALAX AND
-             MP.CODALMOX=:ICODALMOX)
+  /* procedure que retorna o cálculo do custo peps */
+  ncusto = 0;
+  ncustotot = 0;
+  nresto = 0;
+  ncustopeps = 0;
+  if ( (nsldprod is not null) and (nsldprod != 0) ) then
+  begin
+      nsldtmp = nsldprod;
+      for select coalesce(mp.qtdmovprod,0),coalesce(mp.precomovprod,0)
+        from eqmovprod mp, eqtipomov tm
+         where mp.codemppd=:icodemp and mp.codfilialpd=:scodfilial and mp.codprod=:icodprod and
+           mp.codemptm=tm.codemp and mp.codfilialtm=tm.codfilial and mp.codtipomov=tm.codtipomov and
+           mp.tipomovprod in ('E','I') and tm.tipomov in ('IV','CP','PC') and
+           mp.dtmovprod<=:dtestoq  and
+           ( (:icodalmox is null) or
+             (mp.codempax=:icodempax and mp.codfilialax=:scodfilialax and
+             mp.codalmox=:icodalmox)
            )
-         ORDER BY MP.DTMOVPROD DESC, MP.CODMOVPROD DESC
-         INTO :DTTEMP,:NQTD,:NCUSTO DO
-      BEGIN
-         NRESTO = NSLDTMP - NQTD;
-         IF (NRESTO<=0) THEN
-         BEGIN
-           NCUSTOTOT = NCUSTOTOT + (NCUSTO * (NQTD+NRESTO) );
-           BREAK;
-         END
-         ELSE
-         BEGIN
-           NCUSTOTOT = NCUSTOTOT + (NCUSTO * NQTD);
-           NSLDTMP = NSLDTMP - NQTD;
-         END
-      END
+         order by mp.codprod desc, mp.dtmovprod desc, mp.codmovprod desc
+         into :nqtd,:ncusto do
+      begin
+         nresto = nsldtmp - nqtd;
+         if (nresto<=0) then
+         begin
+           ncustotot = ncustotot + (ncusto * (nqtd+nresto) );
+           break;
+         end
+         else
+         begin
+           ncustotot = ncustotot + (ncusto * nqtd);
+           nsldtmp = nsldtmp - nqtd;
+         end
+      end
       if( (:nsldprod is not null and :nsldprod>0) and (:ncustotot is not null and :ncustotot>0) ) then
-          NCUSTOPEPS = NCUSTOTOT / NSLDPROD;
+          ncustopeps = ncustotot / nsldprod;
       else
           ncustopeps = 0;
-  END
+  end
   suspend;
-end ^
+end^
 
 ALTER PROCEDURE EQCOPIAPROD (ICODPROD INTEGER,
 ICODEMP INTEGER,
 ICODFILIAL INTEGER)
 RETURNS (ICOD INTEGER)
 AS 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
 declare variable inovocod integer;
 BEGIN
   SELECT MAX(CODPROD)+1 FROM EQPRODUTO
