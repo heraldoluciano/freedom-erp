@@ -3,6 +3,7 @@ package org.freedom.modulos.fnc.business.component.cnab;
 import java.util.Date;
 
 import org.freedom.infra.functions.StringFunctions;
+import org.freedom.library.business.component.Banco;
 import org.freedom.library.business.exceptions.ExceptionCnab;
 import org.freedom.modulos.fnc.library.business.compoent.FbnUtil.ETipo;
 
@@ -277,7 +278,7 @@ public class Reg1 extends Reg {
 	/**
 	 * Indica o tipo de registro.<br>
 	 */
-	private void setRegistroHeader( final int registroHeader ) {
+	public void setRegistroHeader( final int registroHeader ) {
 
 		this.registroHeader = registroHeader;
 	}
@@ -362,31 +363,53 @@ public class Reg1 extends Reg {
 
 		try {
 			if ( padraocnab.equals( CNAB_240 ) ) {
-				line.append( format( getCodBanco(), ETipo.$9, 3, 0 ) );
-				line.append( format( getLoteServico(), ETipo.$9, 4, 0 ) );
-				line.append( getRegistroHeader() );
-				line.append( format( getTipoOperacao(), ETipo.X, 1, 0 ) );
-				line.append( getTipoServico() );
-				line.append( format( getFormaLancamento(), ETipo.$9, 2, 0 ) );
-				line.append( getVersaoLayout() );
-				line.append( ' ' );
-				line.append( format( getTipoInscEmp(), ETipo.$9, 1, 0 ) );
-				line.append( format( getCpfCnpjEmp(), ETipo.$9, 15, 0 ) );
-				line.append( format( getCodConvBanco(), ETipo.X, 20, 0 ) );
-				line.append( format( getAgencia(), ETipo.$9, 5, 0 ) );
-				line.append( format( getDigAgencia(), ETipo.X, 1, 0 ) );
-				line.append( format( getConta(), ETipo.$9, 12, 0 ) );
-				line.append( format( getDigConta(), ETipo.X, 1, 0 ) );
-				line.append( format( getDigAgConta(), ETipo.X, 1, 0 ) );
-				line.append( format( getRazEmp(), ETipo.X, 30, 0 ) );
-				line.append( format( getMsg1(), ETipo.X, 40, 0 ) );
-				line.append( format( getMsg2(), ETipo.X, 40, 0 ) );
-				line.append( format( getNrRemRet(), ETipo.$9, 8, 0 ) );
-				line.append( CnabUtil.dateToString( getDataRemRet(), null ) );
-				line.append( CnabUtil.dateToString( getDataCred(), null ) );
-				line.append( StringFunctions.replicate( " ", 33 ) );
-				line.append( (char) 13 );
-				line.append( (char) 10 );
+				if (Banco.SICOOB.equals( getCodBanco() )) {
+					line.append( format( getCodBanco(), ETipo.$9, 3, 0 ) ); // 756
+					line.append( "0000" ); // 4 Zeros
+					line.append( getRegistroHeader() ); // Registro Header de Lote - Igual 1
+					line.append( format( getTipoOperacao(), ETipo.X, 1, 0 ) ); // Tipo de operação R - remessa
+					line.append( "0000000" ); // 7 Zeros
+					line.append( "  " ); // 2 Brancos
+					line.append( format( getAgencia(), ETipo.$9, 4, 0 ) ); // Número cooperativa/agencia 4
+					line.append( format( getCodConvBanco(), ETipo.X, 7, 0 ) ); // Código de cobrança 7 // Convênio
+					line.append( format( getConta(), ETipo.$9, 10, 0 ) ); // Conta corrente
+					line.append( format( getDigConta(), ETipo.X, 1, 0 ) ); // Dígito da conta corrente (Total 11)
+					line.append( format( " ", ETipo.X, 30, 0)); // 30 Brancos
+					line.append( format( getRazEmp(), ETipo.X, 30, 0 ) ); // 30 Razão social da empresa
+					line.append( format( " ", ETipo.X, 80, 0)); // 80 Brancos
+					line.append( format( getNrRemRet(), ETipo.$9, 8, 0 ) ); // 8 Número sequencial da remessa
+					line.append( CnabUtil.dateToString( getDataRemRet(), null ) ); // 8 data da remessa
+					line.append( format( "0", ETipo.$9, 11, 0)); // 11 Zeros
+					line.append( format( " ", ETipo.X, 33, 0)); // 80 Brancos
+					line.append( (char) 13 );
+					line.append( (char) 10 );
+				} else {
+					line.append( format( getCodBanco(), ETipo.$9, 3, 0 ) );
+					line.append( format( getLoteServico(), ETipo.$9, 4, 0 ) );
+					line.append( getRegistroHeader() );
+					line.append( format( getTipoOperacao(), ETipo.X, 1, 0 ) );
+					line.append( getTipoServico() );
+					line.append( format( getFormaLancamento(), ETipo.$9, 2, 0 ) );
+					line.append( getVersaoLayout() );
+					line.append( ' ' );
+					line.append( format( getTipoInscEmp(), ETipo.$9, 1, 0 ) );
+					line.append( format( getCpfCnpjEmp(), ETipo.$9, 15, 0 ) );
+					line.append( format( getCodConvBanco(), ETipo.X, 20, 0 ) );
+					line.append( format( getAgencia(), ETipo.$9, 5, 0 ) );
+					line.append( format( getDigAgencia(), ETipo.X, 1, 0 ) );
+					line.append( format( getConta(), ETipo.$9, 12, 0 ) );
+					line.append( format( getDigConta(), ETipo.X, 1, 0 ) );
+					line.append( format( getDigAgConta(), ETipo.X, 1, 0 ) );
+					line.append( format( getRazEmp(), ETipo.X, 30, 0 ) );
+					line.append( format( getMsg1(), ETipo.X, 40, 0 ) );
+					line.append( format( getMsg2(), ETipo.X, 40, 0 ) );
+					line.append( format( getNrRemRet(), ETipo.$9, 8, 0 ) );
+					line.append( CnabUtil.dateToString( getDataRemRet(), null ) );
+					line.append( CnabUtil.dateToString( getDataCred(), null ) );
+					line.append( StringFunctions.replicate( " ", 33 ) );
+					line.append( (char) 13 );
+					line.append( (char) 10 );
+				}
 			}
 
 		} catch ( Exception e ) {
