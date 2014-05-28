@@ -98,9 +98,9 @@ public class FRemCnab extends FRemFBN {
 		try {
 
 			StringBuilder sql = new StringBuilder();
-			sql.append( "SELECT C.RAZCLI, C.ENDCLI, C.NUMCLI, C.BAIRCLI, C.CEPCLI, C.CIDCLI, C.UFCLI, C.CNPJCLI, C.CPFCLI " );
-			sql.append( "FROM VDCLIENTE C " );
-			sql.append( "WHERE C.CODEMP=? AND C.CODFILIAL=? AND C.CODCLI=?  " );
+			sql.append( "select c.razcli, c.endcli, c.numcli, c.baircli, c.cepcli, c.cidcli, c.ufcli, c.cnpjcli, c.cpfcli " );
+			sql.append( "from vdcliente c " );
+			sql.append( "where c.codemp=? and c.codfilial=? and c.codcli=?  " );
 
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
@@ -112,7 +112,11 @@ public class FRemCnab extends FRemFBN {
 			if ( rs.next() ) {
 
 				for ( int i = 0; i < args.length - 1; i++ ) {
-					args[ i ] = rs.getString( i + 1 );
+					if (rs.getString( i + 1 )==null) {
+						args[ i ] = "";
+					} else {
+						args[ i ] = rs.getString( i + 1 );
+					}
 				}
 
 				args[ DadosCliente.CNPJCPF.ordinal() ] = args[ DadosCliente.CNPJ.ordinal() ] != null ? "2" : "1";
@@ -373,6 +377,9 @@ public class FRemCnab extends FRemFBN {
 
 			String logradouro = dadosCliente[ DadosCliente.ENDCLI.ordinal() ].trim();
 			String numero = dadosCliente[ DadosCliente.NUMCLI.ordinal() ];
+			if (numero==null) {
+				numero = "";
+			}
 			String bairro = dadosCliente[ DadosCliente.BAIRCLI.ordinal() ];
 			reg.setBairCli( bairro );
 
