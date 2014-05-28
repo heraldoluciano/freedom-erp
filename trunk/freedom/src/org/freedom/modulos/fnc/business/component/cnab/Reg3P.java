@@ -3,6 +3,7 @@ package org.freedom.modulos.fnc.business.component.cnab;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import org.freedom.library.business.component.Banco;
 import org.freedom.library.business.exceptions.ExceptionCnab;
 import org.freedom.modulos.fnc.library.business.compoent.FbnUtil.ETipo;
 
@@ -590,42 +591,99 @@ public class Reg3P extends Reg3 {
 		StringBuilder line = new StringBuilder();
 
 		try {
-			line.append( super.getLineReg3( padraocnab ) );
-			line.append( format( getAgencia(), ETipo.$9, 5, 0 ) );
-			line.append( format( getDigAgencia(), ETipo.X, 1, 0 ) );
-			line.append( format( getConta(), ETipo.$9, 12, 0 ) );
-			line.append( format( getDigConta(), ETipo.X, 1, 0 ) );
-			line.append( format( getDigAgConta(), ETipo.X, 1, 0 ) );
-			line.append( format( getIdentTitulo(), ETipo.X, 20, 0 ) );
-			line.append( format( getCodCarteira(), ETipo.$9, 1, 0 ) );
-			line.append( format( getFormaCadTitulo(), ETipo.$9, 1, 0 ) );
-			line.append( format( getTipoDoc(), ETipo.$9, 1, 0 ) );
-			line.append( format( getIdentEmitBol(), ETipo.$9, 1, 0 ) );
-			line.append( format( getIdentDist(), ETipo.$9, 1, 0 ) );
-			line.append( format( getDocCobranca(), ETipo.X, 15, 0 ) );
-			line.append( CnabUtil.dateToString( getDtVencTitulo(), null ) );
-			line.append( format( getVlrTitulo(), ETipo.$9, 15, 2 ) );
-			line.append( format( getAgenciaCob(), ETipo.$9, 5, 0 ) );
-			line.append( format( getDigAgenciaCob(), ETipo.$9, 1, 0 ) );
-			line.append( format( getEspecieTit(), ETipo.$9, 2, 0 ) );
-			line.append( format( getAceite(), ETipo.X, 1, 0 ) );
-			line.append( CnabUtil.dateToString( getDtEmitTit(), null ) );
-			line.append( format( getCodJuros(), ETipo.$9, 1, 0 ) );
-			line.append( CnabUtil.dateToString( getDtJuros(), null ) );
-			line.append( format( getVlrJurosTaxa(), ETipo.$9, 15, 2 ) );
-			line.append( format( getCodDesc(), ETipo.$9, 1, 0 ) );
-			line.append( CnabUtil.dateToString( getDtDesc(), null ) );
-			line.append( format( getVlrpercConced(), ETipo.$9, 15, 2 ) );
-			line.append( format( getVlrIOF(), ETipo.$9, 15, 2 ) );
-			line.append( format( getVlrAbatimento(), ETipo.$9, 15, 2 ) );
-			line.append( format( getIdentTitEmp(), ETipo.X, 25, 0 ) );
-			line.append( format( getCodProtesto(), ETipo.$9, 1, 0 ) );
-			line.append( format( getDiasProtesto(), ETipo.$9, 2, 0 ) );
-			line.append( format( getCodBaixaDev(), ETipo.$9, 1, 0 ) );
-			line.append( format( getDiasBaixaDevol(), ETipo.$9, 3, 0 ) );
-			line.append( format( getCodMoeda(), ETipo.$9, 2, 0 ) );
-			line.append( format( getContrOperCred(), ETipo.$9, 10, 0 ) );
-			line.append( " " );
+			if (Banco.SICOOB.equals( getCodBanco() )) {
+				line.append( format("0", ETipo.$9, 7, 0) ); // 7 Zeros
+				line.append( "3" ); // 1 Igual a 3
+				line.append( format( getSeqLote(), ETipo.$9, 5, 0 ) ); // 5  Número de sequência do registro no lote, iniciando sempre em 1
+				line.append( "P" ); // 1 Cód. segmento do reg. detalhe - igual a P
+				line.append( " " ); // 1 Brancos
+				String codinstrucao = Banco.getCodinstrucaoSicoob(getCodMovimento());
+				line.append( codinstrucao ); // 2 codigo da instrucao
+				line.append( format(" ", ETipo.X, 23, 0 ) ); // 23 Brancos
+				line.append( format( getIdentTitulo(), ETipo.X, 17, 0 ) ); // 17 Nosso número
+				line.append( format( getCodCarteira(), ETipo.$9, 1, 0) ); // 1 carteira = 9
+										// Tipo de documento  			   // 02 - DM - duplicata mercantil
+				line.append( format( getEspecieTit(), ETipo.$9, 2, 0 ) ) ; //   04 - DS - duplicata de serviço
+																		   //   07 - LC - letra de câmbio
+											                               //   12 - NP - nota promissória
+																		   //   17 - RC - Recibo
+																		   // 	 19 - ND - Nota de débito
+																		   //	 20 - NS - Nota de serviço
+																		   //   99 - Outros
+				line.append( getIdentEmitBol()); // 1 Identificação da emissão do bloqueto 1-Banco / 2-beneficiário
+				line.append( CnabUtil.dateToString( getDtVencTitulo(), "DDMMAAAA" ) ); // 8 Vencimento do título
+				line.append( format( getVlrTitulo(), ETipo.$9, 15, 2 ) ); // 15 Valor nominal do título
+				line.append( format("0", ETipo.$9, 6, 0) ); // 6 Zeros
+				line.append( format( getAceite(), ETipo.X, 1, 0 ) ); // 1 Aceite
+				line.append( "  " ); // 2 Brancos
+				line.append( CnabUtil.dateToString( getDtEmitTit(), "DDMMAAAA" ) ); // 8 Emissão do título
+				String tipojuros = null;
+				if (getCodJuros()==1) { // Valor por dia
+					tipojuros = "2";
+				} else if (getCodJuros()==2) { // Taxa mensal
+					tipojuros = "3"; 
+				} else { // 3 Isento
+					tipojuros = "1"; // Isento
+				}
+				line.append( tipojuros ); // 1 Tipo de juros 1-Isento/2-Valor/3-Porcentagem
+				line.append( format( getVlrJurosTaxa(), ETipo.$9, 15, 2 ) ); // 15 Valor juros/taxa, conforme item anterior
+				line.append( format("0", ETipo.$9, 9, 0) ); // 9 Zeros
+				line.append( CnabUtil.dateToString( getDtDesc(), "DDMMAAAA" ) ); // 8 Data limite para desconto
+				line.append( format( getVlrpercConced(), ETipo.$9, 15, 2 ) ); // 15 Valor de desconto a ser concedido
+				line.append( format(" ", ETipo.X, 15, 0) ); // 15 Brancos / Filler
+				line.append( format( getVlrAbatimento(), ETipo.$9, 15, 2 ) ); // 15 Valor do abatimento se houver
+				line.append( format( getIdentTitEmp(), ETipo.X, 25, 0 ) ); // 25 Uso da empresa beneficiário 
+																			// (Este valor deve ser único para cada título. 
+																			//Não pode ser repetido em novas remessas)
+				String tipoprotesto = "1";
+				if (getCodProtesto()==3) {
+					tipoprotesto = "0";
+				}
+				line.append( format( getCodProtesto(), ETipo.$9, 1, 0 ) ); // 1 Protesto automático 0 - Não / 1 - SIM
+				line.append( format( getDiasProtesto(), ETipo.$9, 2, 0 ) ); // 2 Número de dias para protesto
+				line.append( format("0", ETipo.$9, 4, 0) ); // 4 Zeros
+				line.append( format( getCodMoeda(), ETipo.$9, 2, 0 ) ); // 2 Código da moeda - 09 = Real
+				line.append( format( getContrOperCred(), ETipo.$9, 10, 0 ) ); // N. do contr. da operacao d cred 
+				                                                              // Caso o título seja vinculado a um contrato de desconto de títulos
+				line.append( format("0", ETipo.$9, 1, 0) ); // 1 Zeros
+			} else {
+				line.append( super.getLineReg3( padraocnab ) );
+				line.append( format( getAgencia(), ETipo.$9, 5, 0 ) );
+				line.append( format( getDigAgencia(), ETipo.X, 1, 0 ) );
+				line.append( format( getConta(), ETipo.$9, 12, 0 ) );
+				line.append( format( getDigConta(), ETipo.X, 1, 0 ) );
+				line.append( format( getDigAgConta(), ETipo.X, 1, 0 ) );
+				line.append( format( getIdentTitulo(), ETipo.X, 20, 0 ) );
+				line.append( format( getCodCarteira(), ETipo.$9, 1, 0 ) );
+				line.append( format( getFormaCadTitulo(), ETipo.$9, 1, 0 ) );
+				line.append( format( getTipoDoc(), ETipo.$9, 1, 0 ) );
+				line.append( format( getIdentEmitBol(), ETipo.$9, 1, 0 ) );
+				line.append( format( getIdentDist(), ETipo.$9, 1, 0 ) );
+				line.append( format( getDocCobranca(), ETipo.X, 15, 0 ) );
+				line.append( CnabUtil.dateToString( getDtVencTitulo(), null ) );
+				line.append( format( getVlrTitulo(), ETipo.$9, 15, 2 ) );
+				line.append( format( getAgenciaCob(), ETipo.$9, 5, 0 ) );
+				line.append( format( getDigAgenciaCob(), ETipo.$9, 1, 0 ) );
+				line.append( format( getEspecieTit(), ETipo.$9, 2, 0 ) );
+				line.append( format( getAceite(), ETipo.X, 1, 0 ) );
+				line.append( CnabUtil.dateToString( getDtEmitTit(), null ) );
+				line.append( format( getCodJuros(), ETipo.$9, 1, 0 ) );
+				line.append( CnabUtil.dateToString( getDtJuros(), null ) );
+				line.append( format( getVlrJurosTaxa(), ETipo.$9, 15, 2 ) );
+				line.append( format( getCodDesc(), ETipo.$9, 1, 0 ) );
+				line.append( CnabUtil.dateToString( getDtDesc(), null ) );
+				line.append( format( getVlrpercConced(), ETipo.$9, 15, 2 ) );
+				line.append( format( getVlrIOF(), ETipo.$9, 15, 2 ) );
+				line.append( format( getVlrAbatimento(), ETipo.$9, 15, 2 ) );
+				line.append( format( getIdentTitEmp(), ETipo.X, 25, 0 ) );
+				line.append( format( getCodProtesto(), ETipo.$9, 1, 0 ) );
+				line.append( format( getDiasProtesto(), ETipo.$9, 2, 0 ) );
+				line.append( format( getCodBaixaDev(), ETipo.$9, 1, 0 ) );
+				line.append( format( getDiasBaixaDevol(), ETipo.$9, 3, 0 ) );
+				line.append( format( getCodMoeda(), ETipo.$9, 2, 0 ) );
+				line.append( format( getContrOperCred(), ETipo.$9, 10, 0 ) );
+				line.append( " " );
+			}
 			line.append( (char) 13 );
 			line.append( (char) 10 );
 		} catch ( Exception e ) {

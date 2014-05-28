@@ -1,6 +1,7 @@
 package org.freedom.modulos.fnc.business.component.cnab;
 
 import org.freedom.infra.functions.StringFunctions;
+import org.freedom.library.business.component.Banco;
 import org.freedom.library.business.exceptions.ExceptionCnab;
 import org.freedom.modulos.fnc.library.business.compoent.FbnUtil.ETipo;
 
@@ -217,28 +218,48 @@ public class Reg3Q extends Reg3 {
 
 		try {
 
-			line.append( super.getLineReg3( padraocnab ) );
-			line.append( format( getTipoInscCli(), ETipo.$9, 1, 0 ) );
-			line.append( format( getCpfCnpjCli(), ETipo.$9, 15, 0 ) );
-			line.append( format( getRazCli(), ETipo.X, 40, 0 ) );
-			line.append( format( getEndCli(), ETipo.X, 40, 0 ) );
-			line.append( format( getBairCli(), ETipo.X, 15, 0 ) );
-			line.append( format( getCepCli(), ETipo.$9, 8, 0 ) );
-			line.append( format( getCidCli(), ETipo.X, 15, 0 ) );
-			line.append( format( getUfCli(), ETipo.X, 2, 0 ) );
-			line.append( format( getTipoInscAva(), ETipo.$9, 1, 0 ) );
-			line.append( format( getCpfCnpjAva(), ETipo.$9, 15, 0 ) );
-			line.append( format( getRazAva(), ETipo.X, 40, 0 ) );
-			line.append( format( getCodCompensacao(), ETipo.$9, 3, 0 ) );
-			line.append( format( getNossoNumero(), ETipo.X, 20, 0 ) );
-			line.append( StringFunctions.replicate( " ", 8 ) );
+			if (Banco.SICOOB.equals(getCodBanco())) {
+				line.append( format( "0", ETipo.$9, 7, 0 ) ); // 7 Zeros
+				line.append( getRegistroDetalhe() ); // 1 Registro detalhe = 3
+				line.append( format( getSeqLote(), ETipo.$9, 5, 0 ) ); // 5 Número sequencial do lote
+				line.append( getSegmento() ); // 1 Cod. seguimento do reg. detalhe = Q
+				line.append( " " ); // 1 Brancos
+				String codinstrucao = Banco.getCodinstrucaoSicoob(getCodMovimento());
+				line.append( codinstrucao ); // 2 codigo da instrucao
+				line.append( format( getTipoInscCli(), ETipo.$9, 2, 0 ) ); //  2 Tipo da inscrição do pagador 01 - CPF / 02 - CNPJ
+				line.append( format( getCpfCnpjCli(), ETipo.$9, 14, 0 ) ); // 14 Número de inscrição do pagador
+				line.append( format( getRazCli(), ETipo.X, 40, 0 ) ); // 40 Nome ou razão social do pagador
+				line.append( format( getEndCli(), ETipo.X, 40, 0 ) ); // 40 Endereço do pagador
+				line.append( format( getBairCli(), ETipo.X, 15, 0 ) ); // 15 Bairro do pagador
+				line.append( format( getCepCli(), ETipo.$9, 8, 0 ) ); // 8 Cep do pagador
+				line.append( format( getCidCli(), ETipo.X, 15, 0 ) ); // 15 Cidade do pagador
+				line.append( format( getUfCli(), ETipo.X, 2, 0 ) ); // 2 Estado do pagador
+				line.append( format( getTipoInscAva(), ETipo.$9, 2, 0 ) ); // 2 Tipo de inscrição do sacador
+				line.append( format( getCpfCnpjAva(), ETipo.$9, 14, 0 ) ); // 14 Número de inscrição do sacador ou avalaista
+				line.append( format( getRazAva(), ETipo.X, 40, 0 ) ); // 40 Nome ou razão social do sacador avalista
+				line.append( StringFunctions.replicate( " ", 31 ) ); // 31 Bracos / Filler
+			} else {
+				line.append( super.getLineReg3( padraocnab ) );
+				line.append( format( getTipoInscCli(), ETipo.$9, 1, 0 ) );
+				line.append( format( getCpfCnpjCli(), ETipo.$9, 15, 0 ) );
+				line.append( format( getRazCli(), ETipo.X, 40, 0 ) );
+				line.append( format( getEndCli(), ETipo.X, 40, 0 ) );
+				line.append( format( getBairCli(), ETipo.X, 15, 0 ) );
+				line.append( format( getCepCli(), ETipo.$9, 8, 0 ) );
+				line.append( format( getCidCli(), ETipo.X, 15, 0 ) );
+				line.append( format( getUfCli(), ETipo.X, 2, 0 ) );
+				line.append( format( getTipoInscAva(), ETipo.$9, 1, 0 ) );
+				line.append( format( getCpfCnpjAva(), ETipo.$9, 15, 0 ) );
+				line.append( format( getRazAva(), ETipo.X, 40, 0 ) );
+				line.append( format( getCodCompensacao(), ETipo.$9, 3, 0 ) );
+				line.append( format( getNossoNumero(), ETipo.X, 20, 0 ) );
+				line.append( StringFunctions.replicate( " ", 8 ) );
+			}
 			line.append( (char) 13 );
 			line.append( (char) 10 );
-
 		} catch ( Exception e ) {
 			throw new ExceptionCnab( "CNAB registro 3 segmento Q.\nErro ao escrever registro.\n" + e.getMessage() );
 		}
-
 		return line.toString();
 	}
 
