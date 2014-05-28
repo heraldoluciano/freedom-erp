@@ -282,4 +282,13 @@ public abstract class Banco {
 		return null;
 	}
 
+	public static String getCodinstrucaoSicoob(int codmovimento) {
+		String result = "01"; // Inclusão 
+		// getCodMovimento = 1 Inclusão e 2 exclusão 
+		if (codmovimento!=1) {
+			result = "10";
+		}
+		return result;
+	}
+
 }
