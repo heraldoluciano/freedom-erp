@@ -103,9 +103,8 @@ public class FbnUtil {
 			return new CaixaEconomica( codbanco );
 		}
 		else if ( Banco.SICOOB.equals( codbanco ) ) {
-				return new Sicoob();
-			}
-
+			return new Sicoob();
+		}
 		return null;
 	}
 	
@@ -226,15 +225,9 @@ public class FbnUtil {
 				reg.setNrRemRet( nroseq );
 				reg.setDataRemRet( Calendar.getInstance().getTime() );
 				reg.setDataCred( null );
-				
-				
-
-
-
 				// Processando informações
 
-				if ( ( Banco.BANCO_DO_BRASIL.equals( codbanco ) ) && (codconv.length()>=7) ) { 
-
+				if ( ( Banco.BANCO_DO_BRASIL.equals( codbanco ) ||  Banco.SICOOB.equals( codbanco )) && (codconv.length()>=7) ) { 
 					reg.setIdentTitulo(
 							StringFunctions.strZero( 
 									banco.geraNossoNumero( tpnossonumero, mdecob, reg.getCodConvBanco(),
@@ -245,7 +238,6 @@ public class FbnUtil {
 					);
 				}			
 				else {
-
 					reg.setIdentTitulo( 
 							StringFunctions.strZero( banco.geraNossoNumero( tpnossonumero, mdecob, reg.getCodConvBanco(),
 									Long.parseLong( docrec ), Long.parseLong( seqnossonumero.toString() ) ,
@@ -253,9 +245,7 @@ public class FbnUtil {
 									,dtemit , true ), 11 
 							) 
 					);
-
 				}
-
 				if ( ( Banco.BANCO_DO_BRASIL.equals( codbanco ) ) && (codconv.length()<7) ) {
 					reg.setDigNossoNumero( banco.digVerif(reg.getIdentTitulo(), 11, true));
 				} 
@@ -264,13 +254,8 @@ public class FbnUtil {
 						reg.setDigNossoNumero( banco.getModulo11( reg.getCodCarteira() + reg.getIdentTitulo(), 7 ) );
 					}
 				}
-
 				ret = reg.getIdentTitulo();
-
 			}
-
-
-
 		}
 		catch (Exception e) {
 			e.printStackTrace();

@@ -378,11 +378,9 @@ public class Reg1 extends Reg {
 					line.append( format( getRazEmp(), ETipo.X, 30, 0 ) ); // 30 Razão social da empresa
 					line.append( format( " ", ETipo.X, 80, 0)); // 80 Brancos
 					line.append( format( getNrRemRet(), ETipo.$9, 8, 0 ) ); // 8 Número sequencial da remessa
-					line.append( CnabUtil.dateToString( getDataRemRet(), null ) ); // 8 data da remessa
+					line.append( CnabUtil.dateToString( getDataRemRet(), "DDMMAAAA" ) ); // 8 data da remessa
 					line.append( format( "0", ETipo.$9, 11, 0)); // 11 Zeros
 					line.append( format( " ", ETipo.X, 33, 0)); // 80 Brancos
-					line.append( (char) 13 );
-					line.append( (char) 10 );
 				} else {
 					line.append( format( getCodBanco(), ETipo.$9, 3, 0 ) );
 					line.append( format( getLoteServico(), ETipo.$9, 4, 0 ) );
@@ -407,9 +405,9 @@ public class Reg1 extends Reg {
 					line.append( CnabUtil.dateToString( getDataRemRet(), null ) );
 					line.append( CnabUtil.dateToString( getDataCred(), null ) );
 					line.append( StringFunctions.replicate( " ", 33 ) );
-					line.append( (char) 13 );
-					line.append( (char) 10 );
 				}
+				line.append( (char) 13 );
+				line.append( (char) 10 );
 			}
 
 		} catch ( Exception e ) {
