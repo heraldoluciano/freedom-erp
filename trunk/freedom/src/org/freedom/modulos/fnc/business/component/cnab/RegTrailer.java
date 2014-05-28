@@ -1,5 +1,7 @@
 package org.freedom.modulos.fnc.business.component.cnab;
 
+import java.math.BigDecimal;
+
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.library.business.component.Banco;
 import org.freedom.library.business.exceptions.ExceptionCnab;
@@ -23,6 +25,8 @@ public class RegTrailer extends Reg {
 	private int qtdConsilacoes;
 
 	private int seqregistro;
+	
+	private BigDecimal vlrtotaltitulos;
 
 	public RegTrailer() {
 
@@ -90,6 +94,18 @@ public class RegTrailer extends Reg {
 		this.qtdRegistros = qtdRegistros;
 	}
 
+	
+	public BigDecimal getVlrtotaltitulos() {
+	
+		return vlrtotaltitulos;
+	}
+
+	
+	public void setVlrtotaltitulos( BigDecimal vlrtotaltitulos ) {
+	
+		this.vlrtotaltitulos = vlrtotaltitulos;
+	}
+
 	public String getRegistroTrailer() {
 
 		return registroTrailer;
@@ -120,14 +136,24 @@ public class RegTrailer extends Reg {
 		try {
 			if ( padraocnab.equals( CNAB_240 ) ) {
 
-				line.append( format( getCodBanco(), ETipo.$9, 3, 0 ) );
-				line.append( format( getLoteServico(), ETipo.$9, 4, 0 ) );
-				line.append( format( getRegistroTrailer(), ETipo.$9, 1, 0 ) );
-				line.append( StringFunctions.replicate( " ", 9 ) );
-				line.append( format( getQtdLotes(), ETipo.$9, 6, 0 ) );
-				line.append( format( getQtdRegistros(), ETipo.$9, 6, 0 ) );
-				line.append( format( getQtdConsilacoes(), ETipo.$9, 6, 0 ) );
-				line.append( StringFunctions.replicate( " ", 205 ) );
+				if (Banco.SICOOB.equals( getCodBanco()) ) {
+					line.append( format( "0", ETipo.$9, 7, 0 ) ); // 7 Zeros
+					line.append( "5" ); // 1 Registro trailer = 5
+					line.append( StringFunctions.replicate( " ", 9 ) ); // 9 Brancos
+					line.append( format( getQtdRegistros(), ETipo.$9, 6, 0 ) ); // 6 Quantidade total de registros
+					line.append( format( getVlrtotaltitulos(), ETipo.$9, 17, 2 ) ); // 17 Valor total dos títulos do lote
+					line.append( format( "0", ETipo.$9, 6, 0 ) ); // 6 Zeros
+					line.append( StringFunctions.replicate( " ", 194 ) ); // 194 Brancos
+				} else {
+					line.append( format( getCodBanco(), ETipo.$9, 3, 0 ) );
+					line.append( format( getLoteServico(), ETipo.$9, 4, 0 ) );
+					line.append( format( getRegistroTrailer(), ETipo.$9, 1, 0 ) );
+					line.append( StringFunctions.replicate( " ", 9 ) );
+					line.append( format( getQtdLotes(), ETipo.$9, 6, 0 ) );
+					line.append( format( getQtdRegistros(), ETipo.$9, 6, 0 ) );
+					line.append( format( getQtdConsilacoes(), ETipo.$9, 6, 0 ) );
+					line.append( StringFunctions.replicate( " ", 205 ) );
+				}
 			}
 			else if ( padraocnab.equals( CNAB_400 ) ) {
 				line.append( StringFunctions.replicate( "9", 1 ) ); // Posição 001 a 001 - Identificação do registro
