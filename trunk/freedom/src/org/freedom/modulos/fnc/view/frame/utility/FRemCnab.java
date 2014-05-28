@@ -210,11 +210,12 @@ public class FRemCnab extends FRemFBN {
 	private Reg1 getReg1( final StuffRec rec ) throws ExceptionCnab {
 
 		Reg1 reg = new Reg1();
-
-		reg.setCodBanco( txtCodBanco.getVlrString() );
+		String codbanco = txtCodBanco.getVlrString();
+		reg.setCodBanco( codbanco );
 		reg.setLoteServico( loteServico );
 		reg.setTipoOperacao( "R" );
 		reg.setFormaLancamento( "00" );
+		reg.setRegistroHeader( 1 );
 		reg.setTipoInscEmp( 2 );
 		reg.setCpfCnpjEmp( (String) prefs.get( EPrefs.CNPFEMP ) );
 		reg.setCodConvBanco( (String) prefs.get( EPrefs.CODCONV ) );
@@ -638,10 +639,49 @@ public class FRemCnab extends FRemFBN {
 		return reg;
 	}
 
+	private String getFilename(String codbanco) {
+		String filename = null;
+		Calendar clhoje = new GregorianCalendar();
+		clhoje = Calendar.getInstance();
+		String dia = StringFunctions.strZero( clhoje.get( Calendar.DAY_OF_MONTH ) + "", 2 );
+		String mes = StringFunctions.strZero( ( clhoje.get( Calendar.MONTH ) + 1 ) + "", 2 );
+		String ano = StringFunctions.strZero( ( clhoje.get( Calendar.YEAR ) ) + "", 4 );
+		String seq = prefs.get( EPrefs.NROSEQ ) + "";
+
+		if ( Banco.BRADESCO.equals( codbanco ) ) {
+			filename = "CB" + dia + mes + seq + ".REM";
+		} else if ( Banco.SICRED.equals( codbanco ) ) {
+			// 19221
+			String mesEditado = null;
+			if ( "12".equals( mes ) ) {
+				mesEditado = "D";
+			}
+			else if ( "11".equals( mes ) ) {
+				mesEditado = "N";
+			}
+			else if ( "10".equals( mes ) ) {
+				mesEditado = "O";
+			}
+			else {
+				mesEditado = mes.substring( 1, 2 );
+			}
+			filename = (String) prefs.get( EPrefs.NUMCONTA ) + mesEditado + dia + ".CRM";
+		} else if ( Banco.SICOOB.equals( codbanco ) ) {
+			if (seq.length()==1) {
+				seq = "0"+seq;
+			}
+			filename = "CBR" + ano + mes + dia + seq + ".REM";
+		}
+		else {
+			filename = "remessa" + prefs.get( EPrefs.NROSEQ ) + ".txt";
+		}
+		return filename;
+	}
+	
 	protected boolean execExporta( String convCob ) {
 
 		boolean retorno = false;
-		String sFileName = null;
+		String filename = null;
 		BufferedWriter bw = null;
 		HashSet<StuffCli> hsCli = new HashSet<StuffCli>();
 		HashSet<StuffRec> hsRec = new HashSet<StuffRec>();
@@ -653,40 +693,7 @@ public class FRemCnab extends FRemFBN {
 		retorno = setPrefs( convCob );
 
 		if ( retorno ) {
-
-			if ( Banco.BRADESCO.equals( txtCodBanco.getVlrString() ) ) {
-				Calendar clhoje = new GregorianCalendar();
-				clhoje = Calendar.getInstance();
-				String dia = StringFunctions.strZero( clhoje.get( Calendar.DAY_OF_MONTH ) + "", 2 );
-				String mes = StringFunctions.strZero( ( clhoje.get( Calendar.MONTH ) + 1 ) + "", 2 );
-				String seq = prefs.get( EPrefs.NROSEQ ) + "";
-				sFileName = "CB" + dia + mes + seq + ".REM";
-			}
-			else if ( Banco.SICRED.equals( txtCodBanco.getVlrString() ) ) {
-				// 19221
-				Calendar clhoje = new GregorianCalendar();
-				clhoje = Calendar.getInstance();
-				String dia = StringFunctions.strZero( clhoje.get( Calendar.DAY_OF_MONTH ) + "", 2 );
-				String mes = StringFunctions.strZero( ( clhoje.get( Calendar.MONTH ) + 1 ) + "", 2 );
-				String mesEditado = null;
-				if ( "12".equals( mes ) ) {
-					mesEditado = "D";
-				}
-				else if ( "11".equals( mes ) ) {
-					mesEditado = "N";
-				}
-				else if ( "10".equals( mes ) ) {
-					mesEditado = "O";
-				}
-				else {
-					mesEditado = mes.substring( 1, 2 );
-				}
-				String seq = StringFunctions.strZero( prefs.get( EPrefs.NROSEQ ) + "", 2 );
-				sFileName = (String) prefs.get( EPrefs.NUMCONTA ) + mesEditado + dia + ".CRM";
-			}
-			else {
-				sFileName = "remessa" + prefs.get( EPrefs.NROSEQ ) + ".txt";
-			}
+			filename = getFilename(txtCodBanco.getVlrString());
 		}
 		else {
 			return retorno;
@@ -729,17 +736,17 @@ public class FRemCnab extends FRemFBN {
 
 		}
 
-		fileDialogCnab.setFile( sFileName );
+		fileDialogCnab.setFile( filename );
 		fileDialogCnab.setVisible( true );
 
-		sFileName = fileDialogCnab.getDirectory() + fileDialogCnab.getFile();
+		filename = fileDialogCnab.getDirectory() + fileDialogCnab.getFile();
 
 		if ( fileDialogCnab.getFile() == null ) {
 			lbStatus.setText( "" );
 			return retorno;
 		}
 
-		if ( consisteExporta( hsCli, hsRec, false, sFileName ) ) {
+		if ( consisteExporta( hsCli, hsRec, false, filename ) ) {
 
 			retorno = setPrefs( "" );
 
@@ -749,7 +756,7 @@ public class FRemCnab extends FRemFBN {
 
 				try {
 
-					File fileCnab = new File( sFileName );
+					File fileCnab = new File( filename );
 					fileCnab.createNewFile();
 
 					FileWriter fw = new FileWriter( fileCnab );
@@ -763,7 +770,7 @@ public class FRemCnab extends FRemFBN {
 
 				} catch ( IOException ioError ) {
 
-					Funcoes.mensagemErro( this, "Erro Criando o arquivo!\n " + sFileName + "\n" + ioError.getMessage() );
+					Funcoes.mensagemErro( this, "Erro Criando o arquivo!\n " + filename + "\n" + ioError.getMessage() );
 
 					ioError.printStackTrace();
 
@@ -777,13 +784,13 @@ public class FRemCnab extends FRemFBN {
 
 				prefs.put( EPrefs.NROSEQ, ( (Integer) prefs.get( EPrefs.NROSEQ ) ).intValue() + 1 );
 				updatePrefere();
-				atualizaSitremessaExp( hsCli, hsRec, sFileName );
+				atualizaSitremessaExp( hsCli, hsRec, filename );
 			}
 
 		}
 
 		if ( Funcoes.mensagemConfirma( this, "Deseja imprimir relação de títulos exportados?" ) == JOptionPane.YES_OPTION ) {
-			imprimir( TYPE_PRINT.VIEW, true, sFileName );
+			imprimir( TYPE_PRINT.VIEW, true, filename );
 		}
 
 		return retorno;
