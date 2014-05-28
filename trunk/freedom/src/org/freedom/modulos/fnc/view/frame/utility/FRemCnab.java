@@ -871,14 +871,12 @@ public class FRemCnab extends FRemFBN {
 
 			ArrayList<Reg> registros = new ArrayList<Reg>();
 
-			registros.add( getRegHeader() );
-
-			seqregistro++;
-
 			if ( padraocnab.equals( Reg.CNAB_240 ) ) {
 				registros.add( getReg1( null ) );
+			} else {
+				registros.add( getRegHeader() );
 			}
-
+			seqregistro++;
 			for ( StuffRec rec : hsRec ) {
 				if ( padraocnab.equals( Reg.CNAB_240 ) ) {
 					registros.add( getReg3P( rec ) );
@@ -888,23 +886,17 @@ public class FRemCnab extends FRemFBN {
 					registros.add( getRegT400( rec, seqregistro ) );
 					seqregistro++;
 				}
-
 				regs++;
 			}
-
 			if ( padraocnab.equals( Reg.CNAB_240 ) ) {
 				registros.add( getReg5() );
 			}
-
 			registros.add( getRegTrailer( seqregistro ) );
-
 			for ( Reg reg : registros ) {
 				bw.write( reg.getLine( padraocnab ) );
 			}
-
 			bw.flush();
 			bw.close();
-
 			System.out.println( "[ " + regs + " ] registros gravados." );
 
 		} catch ( ExceptionCnab e ) {
