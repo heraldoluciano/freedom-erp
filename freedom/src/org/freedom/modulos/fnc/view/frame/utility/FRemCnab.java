@@ -632,17 +632,17 @@ public class FRemCnab extends FRemFBN {
 		return reg;
 	}
 
-	private RegTrailer getRegTrailer( int seqregistro ) throws ExceptionCnab {
+	private RegTrailer getRegTrailer( int seqregistro, String codbanco, BigDecimal vlrtotaltitulos ) throws ExceptionCnab {
 
 		RegTrailer reg = new RegTrailer();
 
-		reg.setCodBanco( txtCodBanco.getVlrString() );
+		reg.setCodBanco( codbanco );
 		reg.setQtdLotes( loteServico );
 		reg.setQtdRegistros( seqLoteServico + 2 );
 		reg.setConta( (String) prefs.get( EPrefs.NUMCONTA ) );
 		reg.setQtdConsilacoes( 0 );
 		reg.setSeqregistro( seqregistro );
-
+		reg.setVlrtotaltitulos( vlrtotaltitulos );
 		return reg;
 	}
 
@@ -689,6 +689,7 @@ public class FRemCnab extends FRemFBN {
 
 		boolean retorno = false;
 		String filename = null;
+		String codbanco = txtCodBanco.getVlrString();
 		BufferedWriter bw = null;
 		HashSet<StuffCli> hsCli = new HashSet<StuffCli>();
 		HashSet<StuffRec> hsRec = new HashSet<StuffRec>();
@@ -700,7 +701,7 @@ public class FRemCnab extends FRemFBN {
 		retorno = setPrefs( convCob );
 
 		if ( retorno ) {
-			filename = getFilename(txtCodBanco.getVlrString());
+			filename = getFilename(codbanco);
 		}
 		else {
 			return retorno;
@@ -773,7 +774,7 @@ public class FRemCnab extends FRemFBN {
 
 					String padraocnab = prefs.get( EPrefs.PADRAOCNAB ).toString().trim();
 
-					retorno = gravaRemessa( bw, hsCli, hsRec, padraocnab );
+					retorno = gravaRemessa( bw, hsCli, hsRec, padraocnab, codbanco );
 
 				} catch ( IOException ioError ) {
 
@@ -864,7 +865,7 @@ public class FRemCnab extends FRemFBN {
 		}
 	}
 
-	private boolean gravaRemessa( final BufferedWriter bw, final HashSet<StuffCli> hsCli, final HashSet<StuffRec> hsRec, String padraocnab ) {
+	private boolean gravaRemessa( final BufferedWriter bw, final HashSet<StuffCli> hsCli, final HashSet<StuffRec> hsRec, String padraocnab, String codbanco ) {
 
 		boolean retorno = false;
 
@@ -877,28 +878,31 @@ public class FRemCnab extends FRemFBN {
 			int regs = 0;
 
 			ArrayList<Reg> registros = new ArrayList<Reg>();
+			BigDecimal vlrtotaltitulos = new BigDecimal(0);
 
 			if ( padraocnab.equals( Reg.CNAB_240 ) ) {
 				registros.add( getReg1( null ) );
 			} else {
 				registros.add( getRegHeader() );
+				seqregistro++;
 			}
-			seqregistro++;
 			for ( StuffRec rec : hsRec ) {
 				if ( padraocnab.equals( Reg.CNAB_240 ) ) {
-					registros.add( getReg3P( rec ) );
+					Reg3P reg3p = getReg3P( rec );
+					vlrtotaltitulos = vlrtotaltitulos.add( reg3p.getVlrTitulo() );
+					registros.add(reg3p );
 					registros.add( getReg3Q( rec ) );
-				}
-				if ( padraocnab.equals( Reg.CNAB_400 ) ) {
+					seqregistro+=2;
+				} else if ( padraocnab.equals( Reg.CNAB_400 ) ) {
 					registros.add( getRegT400( rec, seqregistro ) );
 					seqregistro++;
 				}
 				regs++;
 			}
-			if ( padraocnab.equals( Reg.CNAB_240 ) ) {
+			if ( padraocnab.equals( Reg.CNAB_240 ) && !Banco.SICOOB.equals( codbanco ) ) {
 				registros.add( getReg5() );
 			}
-			registros.add( getRegTrailer( seqregistro ) );
+			registros.add( getRegTrailer( seqregistro, codbanco, vlrtotaltitulos ) );
 			for ( Reg reg : registros ) {
 				bw.write( reg.getLine( padraocnab ) );
 			}
