@@ -611,6 +611,9 @@ public class Reg3P extends Reg3 {
 																		   //	 20 - NS - Nota de serviço
 																		   //   99 - Outros
 				line.append( getIdentEmitBol()); // 1 Identificação da emissão do bloqueto 1-Banco / 2-beneficiário
+				line.append( " " ); // 1 Branco
+				line.append( format(getIdentTitEmp(), ETipo.X, 15, 0) ); // 15 Numero do documento de cobrança 
+																		//- Número utilizado pelo Beneficiário para identificar o título
 				line.append( CnabUtil.dateToString( getDtVencTitulo(), "DDMMAAAA" ) ); // 8 Vencimento do título
 				line.append( format( getVlrTitulo(), ETipo.$9, 15, 2 ) ); // 15 Valor nominal do título
 				line.append( format("0", ETipo.$9, 6, 0) ); // 6 Zeros
@@ -646,6 +649,8 @@ public class Reg3P extends Reg3 {
 				line.append( format( getContrOperCred(), ETipo.$9, 10, 0 ) ); // N. do contr. da operacao d cred 
 				                                                              // Caso o título seja vinculado a um contrato de desconto de títulos
 				line.append( format("0", ETipo.$9, 1, 0) ); // 1 Zeros
+				System.out.println("Reg3P: "+line.toString().length());
+
 			} else {
 				line.append( super.getLineReg3( padraocnab ) );
 				line.append( format( getAgencia(), ETipo.$9, 5, 0 ) );
