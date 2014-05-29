@@ -238,6 +238,7 @@ public class Reg3Q extends Reg3 {
 				line.append( format( getCpfCnpjAva(), ETipo.$9, 14, 0 ) ); // 14 Número de inscrição do sacador ou avalaista
 				line.append( format( getRazAva(), ETipo.X, 40, 0 ) ); // 40 Nome ou razão social do sacador avalista
 				line.append( StringFunctions.replicate( " ", 31 ) ); // 31 Bracos / Filler
+				System.out.println("Reg3Q: "+line.toString().length());
 			} else {
 				line.append( super.getLineReg3( padraocnab ) );
 				line.append( format( getTipoInscCli(), ETipo.$9, 1, 0 ) );

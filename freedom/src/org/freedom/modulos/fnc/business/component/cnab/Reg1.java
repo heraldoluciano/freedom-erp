@@ -381,6 +381,7 @@ public class Reg1 extends Reg {
 					line.append( CnabUtil.dateToString( getDataRemRet(), "DDMMAAAA" ) ); // 8 data da remessa
 					line.append( format( "0", ETipo.$9, 11, 0)); // 11 Zeros
 					line.append( format( " ", ETipo.X, 33, 0)); // 80 Brancos
+					System.out.println(line.toString().length());
 				} else {
 					line.append( format( getCodBanco(), ETipo.$9, 3, 0 ) );
 					line.append( format( getLoteServico(), ETipo.$9, 4, 0 ) );
