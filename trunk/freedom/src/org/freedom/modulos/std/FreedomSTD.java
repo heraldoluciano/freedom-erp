@@ -169,6 +169,7 @@ import org.freedom.modulos.std.view.frame.report.FRCodficProd;
 import org.freedom.modulos.std.view.frame.report.FRComissoes;
 import org.freedom.modulos.std.view.frame.report.FRCompras;
 import org.freedom.modulos.std.view.frame.report.FRComprasFor;
+import org.freedom.modulos.std.view.frame.report.FRComprasForProd;
 import org.freedom.modulos.std.view.frame.report.FRComprasMedia;
 import org.freedom.modulos.std.view.frame.report.FRConfEstoq;
 import org.freedom.modulos.std.view.frame.report.FRContaEstoque;
@@ -392,6 +393,7 @@ public class FreedomSTD extends AplicativoPD {
 		addSeparador( 200400000 );
 		addOpcao( 200400000, TP_OPCAO_ITEM, "Ordens de compra pendentes", "Ordens de compra pendentes", 's', 200407000, 2, true, FROCEntregaPrevista.class );
 		addOpcao( 200400000, TP_OPCAO_ITEM, "Média de compras por item", "Média de compras por item", 'i', 200408000, 2, true, FRComprasMedia.class );
+		addOpcao( 200400000, TP_OPCAO_ITEM, "Últimas Compras por forn./produto", "Últimas compras por fornecedor/produto", 'd', 200409000, 2, true, FRComprasForProd.class );
 
 		addOpcao( -1, TP_OPCAO_MENU, "Saída", "", 'S', 300000000, 0, false, null );
 		addOpcao( 300000000, TP_OPCAO_ITEM, "Venda", "Venda", 'V', 300100000, 1, true, FVenda.class );
