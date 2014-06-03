@@ -3,7 +3,7 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.6105100000000014"/>
-	<property name="ireport.x" value="660"/>
+	<property name="ireport.x" value="54"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -27,14 +27,14 @@
 	<parameter name="FILTROS" class="java.lang.String" isForPrompting="false">
 		<parameterDescription><![CDATA[Filtros utilizados no relatório]]></parameterDescription>
 	</parameter>
-	<parameter name="CODEMP" class="java.lang.Integer">
-		<defaultValueExpression><![CDATA[new Integer(35)]]></defaultValueExpression>
+	<parameter name="CODEMP" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Integer(7)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODFILIAL" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select razfor_ret razfor, codfor_ret codfor , descprod_ret descprod , codprod_ret codprod, dtemitcompra_ret dtemitcompra , doccompra_ret doccompra, serie_ret serie, precocompra_ret precocompra, refprod_ret refprod, qtdprod_ret qtditcompra from cpretultcpforprod (7,NULL,'04.05.2014','30.05.2014',NULL,NULL,NULL,NULL)]]>
+		<![CDATA[select razfor_ret razfor, codfor_ret codfor , descprod_ret descprod , codprod_ret codprod, dtemitcompra_ret dtemitcompra , doccompra_ret doccompra, serie_ret serie, precocompra_ret precocompra, refprod_ret refprod, qtdprod_ret qtditcompra from cpretultcpforprod (7,NULL, 7, '04.05.2014','30.05.2014',NULL,NULL,NULL)]]>
 	</queryString>
 	<field name="RAZFOR" class="java.lang.String"/>
 	<field name="CODFOR" class="java.lang.Integer"/>
