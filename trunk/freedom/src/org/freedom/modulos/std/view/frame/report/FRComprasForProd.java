@@ -175,7 +175,7 @@ public class FRComprasForProd extends FRelatorio {
 			else {
 				sql.append( ", coalesce(obsitcompra_ret,descprod_ret) as descprod ");
 			}
-			sql.append( ", codprod_ret codprod, dtemitcompra_ret dtemitcompra " );
+			sql.append( ", codprod_ret codprod, dtentcompra_ret dtentcompra " );
 			sql.append( ", doccompra_ret doccompra, serie_ret serie");
 			sql.append( ", precocompra_ret precocompra, refprod_ret refprod, qtdprod_ret qtditcompra " );
 			sql.append( "from cpretultcpforprod (?,?,?,?,?,?,?,?) " );
