@@ -34,13 +34,13 @@
 		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select razfor_ret razfor, codfor_ret codfor , descprod_ret descprod , codprod_ret codprod, dtemitcompra_ret dtemitcompra , doccompra_ret doccompra, serie_ret serie, precocompra_ret precocompra, refprod_ret refprod, qtdprod_ret qtditcompra from cpretultcpforprod (7,NULL, 7, '04.05.2014','30.05.2014',NULL,NULL,NULL)]]>
+		<![CDATA[select razfor_ret razfor, codfor_ret codfor , descprod_ret descprod , codprod_ret codprod, dtentcompra_ret dtentcompra , doccompra_ret doccompra, serie_ret serie, precocompra_ret precocompra, refprod_ret refprod, qtdprod_ret qtditcompra from cpretultcpforprod (7,NULL, 7, '04.05.2014','30.05.2014',NULL,NULL,NULL)]]>
 	</queryString>
 	<field name="RAZFOR" class="java.lang.String"/>
 	<field name="CODFOR" class="java.lang.Long"/>
 	<field name="DESCPROD" class="java.lang.String"/>
 	<field name="CODPROD" class="java.lang.Long"/>
-	<field name="DTEMITCOMPRA" class="java.sql.Date"/>
+	<field name="DTENTCOMPRA" class="java.sql.Date"/>
 	<field name="DOCCOMPRA" class="java.lang.Long"/>
 	<field name="SERIE" class="java.lang.String"/>
 	<field name="PRECOCOMPRA" class="java.math.BigDecimal"/>
@@ -320,7 +320,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
-				<textFieldExpression class="java.util.Date"><![CDATA[$F{DTEMITCOMPRA}]]></textFieldExpression>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{DTENTCOMPRA}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
 				<reportElement key="textField-6" x="491" y="1" width="44" height="13"/>
