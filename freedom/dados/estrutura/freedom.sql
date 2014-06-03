@@ -28173,13 +28173,13 @@ CREATE OR ALTER PROCEDURE CPRETULTCPFORPROD (
 returns (
     razfor_ret char(60),
     codfor_ret integer,
-    descprod_ret char(50),
+    descprod_ret char(100),
     codprod_ret integer,
     dtemitcompra_ret date,
     doccompra_ret integer,
     serie_ret char(4),
     precocompra_ret numeric(15,4),
-    obsitcompra_ret varchar(500),
+    obsitcompra_ret varchar(10000),
     refprod_ret varchar(20),
     qtdprod_ret numeric(15,5))
 as
@@ -28226,7 +28226,7 @@ CODFILIALTIPOCL SMALLINT,
 CODTIPOCLI INTEGER)
 RETURNS (RAZCLI_RET CHAR(60),
 CODCLI_RET INTEGER,
-DESCPROD_RET CHAR(50),
+DESCPROD_RET CHAR(100),
 CODPROD_RET INTEGER,
 DTEMITVENDA_RET DATE,
 DOCVENDA_RET INTEGER,
