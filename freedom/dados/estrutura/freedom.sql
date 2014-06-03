@@ -15990,6 +15990,27 @@ TIPOVENDA CHAR(1),
 CODVENDA INTEGER)
 AS 
 BEGIN SUSPEND; END ^
+CREATE PROCEDURE CPRETULTCPFORPROD (CODEMP INTEGER,
+CODFOR INTEGER,
+CODFILIALCP SMALLINT,
+DTINI DATE,
+DTFIM DATE,
+CODEMPTIPOFR INTEGER,
+CODFILIALTIPOFR SMALLINT,
+CODTIPOFOR INTEGER)
+RETURNS (RAZFOR_RET CHAR(60),
+CODFOR_RET INTEGER,
+DESCPROD_RET CHAR(50),
+CODPROD_RET INTEGER,
+DTEMITCOMPRA_RET DATE,
+DOCCOMPRA_RET INTEGER,
+SERIE_RET CHAR(4),
+PRECOCOMPRA_RET NUMERIC(15, 4),
+OBSITCOMPRA_RET VARCHAR(500),
+REFPROD_RET VARCHAR(20),
+QTDPROD_RET NUMERIC(15, 5))
+AS 
+BEGIN SUSPEND; END ^
 CREATE PROCEDURE VDRETULTVDCLIPROD (ICODEMP INTEGER,
 ICODCLI INTEGER,
 ICODFILIALVD SMALLINT,
@@ -28139,6 +28160,60 @@ begin
       where codemp=:codemp and codfilial=:codfilial and tipovenda=:tipovenda and 
          codvenda=:codvenda and emmanut='S';
 end ^
+
+CREATE OR ALTER PROCEDURE CPRETULTCPFORPROD (
+    codemp integer,
+    codfor integer,
+    codfilialcp smallint,
+    dtini date,
+    dtfim date,
+    codemptipofr integer,
+    codfilialtipofr smallint,
+    codtipofor integer)
+returns (
+    razfor_ret char(60),
+    codfor_ret integer,
+    descprod_ret char(50),
+    codprod_ret integer,
+    dtemitcompra_ret date,
+    doccompra_ret integer,
+    serie_ret char(4),
+    precocompra_ret numeric(15,4),
+    obsitcompra_ret varchar(500),
+    refprod_ret varchar(20),
+    qtdprod_ret numeric(15,5))
+as
+declare variable codfilial smallint;
+declare variable codprod integer;
+begin
+    select icodfilial from sgretfilial(:codemp,'VDVENDA') into :codfilial;
+    for select c.codfor, ic.codprod
+        from cpcompra c, cpforneced fr, cpitcompra ic
+        where
+            ic.codemp=c.codemp and ic.codfilial=c.codfilial
+            and ic.codcompra=c.codcompra
+            and c.codemp=:codemp and c.codfilial=:codfilial
+            and (c.codfor=:codfor or :codfor is null)
+            and c.dtemitcompra between :dtini and :dtfim
+            and fr.codemp=c.codempfr and fr.codfilial=c.codfilialfr and fr.codfor=c.codfor
+            and (fr.codtipofor=:codtipofor or :codtipofor is null)
+        group by c.codfor,ic.codprod into :codfor,:codprod
+    do
+    begin
+        select first 1 f.razfor, f.codfor, p.descprod, ic.codprod, c.dtemitcompra, c.doccompra, c.serie,
+            (ic.vlrliqitcompra/(case when ic.qtditcompra=0 then 1 else ic.qtditcompra end)) precocompra, p.desccompprod, p.refprod, ic.qtditcompra
+        from cpforneced f, cpcompra c, cpitcompra ic, eqproduto p
+        where
+            f.codemp=c.codempfr and f.codfilial=c.codfilialfr and f.codfor=c.codfor
+            and ic.codemp=c.codemp and ic.codfilial=c.codfilial and ic.codcompra=c.codcompra
+            and p.codemp=ic.codemppd and p.codfilial=ic.codfilialpd and p.codprod=ic.codprod
+            and c.dtemitcompra between :dtini and :dtfim and f.codfor=:codfor and p.codprod=:codprod
+            order by c.dtemitcompra desc
+            into :razfor_ret, :codfor_ret, :descprod_ret, :codprod_ret, :dtemitcompra_ret, :doccompra_ret, :serie_ret,
+                 :precocompra_ret, :obsitcompra_ret, :refprod_ret, :qtdprod_ret;
+            suspend;
+    end
+end^
 
 ALTER PROCEDURE VDRETULTVDCLIPROD (ICODEMP INTEGER,
 ICODCLI INTEGER,
@@ -42861,6 +42936,12 @@ GRANT EXECUTE ON PROCEDURE VDITVENDASERIESP TO ROLE ADM;
 GRANT EXECUTE ON PROCEDURE VDITVENDASERIESP TO PROCEDURE VDITVENDASERIESP;
 GRANT EXECUTE ON PROCEDURE VDREORGVENDASP TO ROLE ADM;
 GRANT EXECUTE ON PROCEDURE VDUPVENDAORCSP TO ROLE ADM;
+GRANT EXECUTE ON PROCEDURE SGRETFILIAL TO PROCEDURE CPRETULTCPFORPROD;
+GRANT SELECT ON CPCOMPRA TO PROCEDURE CPRETULTCPFORPROD;
+GRANT SELECT ON CPFORNECED TO PROCEDURE CPRETULTCPFORPROD;
+GRANT SELECT ON CPITCOMPRA TO PROCEDURE CPRETULTCPFORPROD;
+GRANT SELECT ON EQPRODUTO TO PROCEDURE CPRETULTCPFORPROD;
+GRANT EXECUTE ON PROCEDURE CPRETULTCPFORPROD TO ROLE ADM;
 
 /* Comments for database objects. */
 COMMENT ON TABLE        ATATENDENTE IS 'Atendentes.';

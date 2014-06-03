@@ -62,10 +62,6 @@ public class FRComprasForProd extends FRelatorio {
 
 	private JTextFieldFK txtRazFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 60, 0 );
 
-	private JTextFieldPad txtCodComiss = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
-
-	private JTextFieldFK txtNomeComiss = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
-
 	private JTextFieldPad txtCodTipoFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtDescTipoFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
@@ -80,11 +76,9 @@ public class FRComprasForProd extends FRelatorio {
 
 	private ListaCampos lcFor = new ListaCampos( this, "CL" );
 
-	private ListaCampos lcComiss = new ListaCampos( this, "VD" );
-
 	private ListaCampos lcTipoFor = new ListaCampos( this );
 	
-	private JCheckBoxPad cbObsItVenda = new JCheckBoxPad( "Imprimir Obs./ítens", "S", "N" );
+	private JCheckBoxPad cbObsItCompra = new JCheckBoxPad( "Imprimir Obs./ítens", "S", "N" );
 	
 
 	
@@ -92,7 +86,7 @@ public class FRComprasForProd extends FRelatorio {
 
 		super( false );
 		setTitulo( "Últimas compras por fornecedor/produto" );
-		setAtribos( 50, 50, 355, 380 );
+		setAtribos( 50, 50, 355, 350 );
 
 		montaRadioGrupo();
 		montaListaCampos();
@@ -120,14 +114,6 @@ public class FRComprasForProd extends FRelatorio {
 		txtCodFor.setFK( true );
 		lcFor.setReadOnly( true );
 		lcFor.montaSql( false, "FORNECEDOR", "CP" );
-
-		lcComiss.add( new GuardaCampo( txtCodComiss, "CodVend", "Cód.comiss.", ListaCampos.DB_PK, false ) );
-		lcComiss.add( new GuardaCampo( txtNomeComiss, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, false ) );
-		txtCodComiss.setTabelaExterna( lcComiss, null );
-		txtCodComiss.setNomeCampo( "CodVend" );
-		txtCodComiss.setFK( true );
-		lcComiss.setReadOnly( true );
-		lcComiss.montaSql( false, "VENDEDOR", "VD" );
 
 		lcTipoFor.add( new GuardaCampo( txtCodTipoFor, "CodTipoFor", "Cód.tp.forn.", ListaCampos.DB_PK, false ) );
 		lcTipoFor.add( new GuardaCampo( txtDescTipoFor, "DescTipoFor", "Descrição do tipo de fornecedor", ListaCampos.DB_SI, false ) );
@@ -159,12 +145,8 @@ public class FRComprasForProd extends FRelatorio {
 		adic( txtCodFor, 7, 130, 90, 20 );
 		adic( new JLabelPad( "Razão social do fornecedor" ), 100, 110, 227, 20 );
 		adic( txtRazFor, 100, 130, 227, 20 );
-		adic( new JLabelPad( "Cód.Comiss." ), 7, 150, 90, 20 );
-		adic( txtCodComiss, 7, 170, 90, 20 );
-		adic( new JLabelPad( "Nome do comissionado" ), 100, 150, 227, 20 );
-		adic( txtNomeComiss, 100, 170, 227, 20 );
-		adic( rgTipoDeRelatorio, 7, 250, 320, 30 );
-		adic( cbObsItVenda,  	7,	290, 	200, 	20 );
+		adic( rgTipoDeRelatorio, 7, 170, 320, 30 );
+		adic( cbObsItCompra,  	7,	210, 	200, 	20 );
 		Calendar cPeriodo = Calendar.getInstance();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
 		cPeriodo.set( Calendar.DAY_OF_MONTH, cPeriodo.get( Calendar.DAY_OF_MONTH ) - 30 );
@@ -177,7 +159,6 @@ public class FRComprasForProd extends FRelatorio {
 			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
 			return;
 		}
-
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		StringBuffer sql = new StringBuffer();
@@ -187,17 +168,17 @@ public class FRComprasForProd extends FRelatorio {
 		cab.append( " Até : " );
 		cab.append( Funcoes.dateToStrDate( txtDatafim.getVlrDate() ) );
 		try {
-			sql.append( "select razcli_ret razcli, codcli_ret codcli ");
-			if( "N".equals( cbObsItVenda.getVlrString() )) {
+			sql.append( "select razfor_ret razfor, codfor_ret codfor ");
+			if( "N".equals( cbObsItCompra.getVlrString() )) {
 				sql.append( ", descprod_ret descprod ");
 			}
 			else {
-				sql.append( ", coalesce(obsitvenda_ret,descprod_ret) as descprod ");
+				sql.append( ", coalesce(obsitcompra_ret,descprod_ret) as descprod ");
 			}
-			sql.append( ", codprod_ret codprod, dtemitvenda_ret dtemitvenda " );
-			sql.append( ", docvenda_ret docvenda, serie_ret serie");
-			sql.append( ", precovenda_ret precovenda, refprod_ret refprod, qtdprod_ret qtditvenda " );
-			sql.append( "from vdretultvdcliprod (?,?,?,?,?,?,?,?,?) " );
+			sql.append( ", codprod_ret codprod, dtemitcompra_ret dtemitcompra " );
+			sql.append( ", doccompra_ret doccompra, serie_ret serie");
+			sql.append( ", precocompra_ret precocompra, refprod_ret refprod, qtdprod_ret qtditcompra " );
+			sql.append( "from cpretultcpforprod (?,?,?,?,?,?,?,?) " );
 			ps = con.prepareStatement( sql.toString() );
 			int param = 1;
 			ps.setInt( param++, Aplicativo.iCodEmp );
@@ -207,17 +188,8 @@ public class FRComprasForProd extends FRelatorio {
 			else {
 				ps.setNull( param++, Types.INTEGER );
 			}
-			ps.setInt( param++, ListaCampos.getMasterFilial( "VDVENDEDOR" ) );
-			if ( txtNomeComiss.getVlrString().trim().length() > 0 ) {
-				ps.setInt( param++, txtCodComiss.getVlrInteger() );
-			}
-			else {
-				ps.setNull( param++, Types.INTEGER );
-			}
-
 			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) );
 			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) );
-
 			if ( txtDescTipoFor.getVlrString().trim().length() > 0 ) {
 				ps.setInt( param++, lcTipoFor.getCodEmp() );
 				ps.setInt( param++, lcTipoFor.getCodFilial() );
@@ -262,7 +234,6 @@ public class FRComprasForProd extends FRelatorio {
 
 		super.setConexao( cn );
 		lcFor.setConexao( cn );
-		lcComiss.setConexao( cn );
 		lcTipoFor.setConexao( cn );
 
 	}
