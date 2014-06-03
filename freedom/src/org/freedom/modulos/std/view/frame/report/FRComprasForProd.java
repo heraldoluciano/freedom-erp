@@ -113,7 +113,7 @@ public class FRComprasForProd extends FRelatorio {
 		txtCodFor.setNomeCampo( "CodFor" );
 		txtCodFor.setFK( true );
 		lcFor.setReadOnly( true );
-		lcFor.montaSql( false, "FORNECEDOR", "CP" );
+		lcFor.montaSql( false, "FORNECED", "CP" );
 
 		lcTipoFor.add( new GuardaCampo( txtCodTipoFor, "CodTipoFor", "Cód.tp.forn.", ListaCampos.DB_PK, false ) );
 		lcTipoFor.add( new GuardaCampo( txtDescTipoFor, "DescTipoFor", "Descrição do tipo de fornecedor", ListaCampos.DB_SI, false ) );
@@ -121,7 +121,7 @@ public class FRComprasForProd extends FRelatorio {
 		txtCodTipoFor.setNomeCampo( "CodTipoFor" );
 		txtCodTipoFor.setFK( true );
 		lcTipoFor.setReadOnly( true );
-		lcTipoFor.montaSql( false, "TIPOCLI", "VD" );
+		lcTipoFor.montaSql( false, "TIPOFOR", "CP" );
 
 	}
 
@@ -203,7 +203,7 @@ public class FRComprasForProd extends FRelatorio {
 			}
 			rs = ps.executeQuery();
 			imprimiGrafico( bVisualizar, rs, sql.toString() );
-			//con.commit();
+			con.commit();
 		} catch ( Exception err ) {
 			err.printStackTrace();
 			Funcoes.mensagemInforma( this, "Erro ao buscar dados da venda!\n" + err.getMessage() );
