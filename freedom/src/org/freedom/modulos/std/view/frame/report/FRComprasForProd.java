@@ -188,6 +188,7 @@ public class FRComprasForProd extends FRelatorio {
 			else {
 				ps.setNull( param++, Types.INTEGER );
 			}
+			ps.setInt(param++, lcFor.getCodFilial() );
 			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) );
 			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) );
 			if ( txtDescTipoFor.getVlrString().trim().length() > 0 ) {
@@ -202,22 +203,22 @@ public class FRComprasForProd extends FRelatorio {
 			}
 			rs = ps.executeQuery();
 			imprimiGrafico( bVisualizar, rs, sql.toString() );
-			con.commit();
+			//con.commit();
 		} catch ( Exception err ) {
 			err.printStackTrace();
 			Funcoes.mensagemInforma( this, "Erro ao buscar dados da venda!\n" + err.getMessage() );
 		}
 	}
 
-	private void imprimiGrafico( final TYPE_PRINT bVisualizar, final ResultSet rs, final String sCab ) {
+	private void imprimiGrafico( final TYPE_PRINT bVisualizar, final ResultSet rs, final String cab ) {
 
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "CPCOMPRA" ) );
 		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
-		hParam.put( "FILTROS", sCab );
-		dlGr = new FPrinterJob( rgTipoDeRelatorio.getVlrString(), "Últimas compras por fornecedor/produto", sCab, rs, hParam, this );
+		hParam.put( "FILTROS", cab );
+		dlGr = new FPrinterJob( rgTipoDeRelatorio.getVlrString(), "Últimas compras por fornecedor/produto", cab, rs, hParam, this );
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.setVisible( true );
 		}
