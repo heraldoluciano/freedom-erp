@@ -28176,6 +28176,7 @@ returns (
     descprod_ret char(100),
     codprod_ret integer,
     dtemitcompra_ret date,
+    dtentcompra_ret date,
     doccompra_ret integer,
     serie_ret char(4),
     precocompra_ret numeric(15,4),
@@ -28194,13 +28195,13 @@ begin
             and ic.codcompra=c.codcompra
             and c.codemp=:codemp and c.codfilial=:codfilial
             and (c.codfor=:codfor or :codfor is null)
-            and c.dtemitcompra between :dtini and :dtfim
+            and c.dtentcompra between :dtini and :dtfim
             and fr.codemp=c.codempfr and fr.codfilial=c.codfilialfr and fr.codfor=c.codfor
             and (fr.codtipofor=:codtipofor or :codtipofor is null)
         group by c.codfor,ic.codprod into :codfor,:codprod
     do
     begin
-        select first 1 f.razfor, f.codfor, p.descprod, ic.codprod, c.dtemitcompra, c.doccompra, c.serie,
+        select first 1 f.razfor, f.codfor, p.descprod, ic.codprod, c.dtemitcompra, c.dtentcompra, c.doccompra, c.serie,
             (ic.vlrliqitcompra/(case when ic.qtditcompra=0 then 1 else ic.qtditcompra end)) precocompra, p.desccompprod, p.refprod, ic.qtditcompra
         from cpforneced f, cpcompra c, cpitcompra ic, eqproduto p
         where
@@ -28209,8 +28210,9 @@ begin
             and p.codemp=ic.codemppd and p.codfilial=ic.codfilialpd and p.codprod=ic.codprod
             and c.dtemitcompra between :dtini and :dtfim and f.codfor=:codfor and p.codprod=:codprod
             order by c.dtemitcompra desc
-            into :razfor_ret, :codfor_ret, :descprod_ret, :codprod_ret, :dtemitcompra_ret, :doccompra_ret, :serie_ret,
-                 :precocompra_ret, :obsitcompra_ret, :refprod_ret, :qtdprod_ret;
+            into :razfor_ret, :codfor_ret, :descprod_ret, :codprod_ret, :dtemitcompra_ret, :dtentcompra_ret
+                 , :doccompra_ret, :serie_ret
+                 , :precocompra_ret, :obsitcompra_ret, :refprod_ret, :qtdprod_ret;
             suspend;
     end
 end^
