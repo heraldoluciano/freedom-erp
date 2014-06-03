@@ -202,7 +202,7 @@ public class FRComprasForProd extends FRelatorio {
 				ps.setNull( param++, Types.INTEGER );
 			}
 			rs = ps.executeQuery();
-			imprimiGrafico( bVisualizar, rs, sql.toString() );
+			imprimiGrafico( bVisualizar, rs, cab.toString() );
 			con.commit();
 		} catch ( Exception err ) {
 			err.printStackTrace();
