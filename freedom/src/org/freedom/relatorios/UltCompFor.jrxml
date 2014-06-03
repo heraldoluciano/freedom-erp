@@ -27,14 +27,14 @@
 	<parameter name="FILTROS" class="java.lang.String" isForPrompting="false">
 		<parameterDescription><![CDATA[Filtros utilizados no relatório]]></parameterDescription>
 	</parameter>
-	<parameter name="CODEMP" class="java.lang.Integer">
-		<defaultValueExpression><![CDATA[new Integer(35)]]></defaultValueExpression>
+	<parameter name="CODEMP" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Integer(07)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODFILIAL" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select razfor_ret razfor, codfor_ret codfor , descprod_ret descprod , codprod_ret codprod, dtemitcompra_ret dtemitcompra , doccompra_ret doccompra, serie_ret serie, precocompra_ret precocompra, refprod_ret refprod, qtdprod_ret qtditcompra from cpretultcpforprod (7,NULL,'04.05.2014','30.05.2014',NULL,NULL,NULL,NULL)]]>
+		<![CDATA[select razfor_ret razfor, codfor_ret codfor , descprod_ret descprod , codprod_ret codprod, dtemitcompra_ret dtemitcompra , doccompra_ret doccompra, serie_ret serie, precocompra_ret precocompra, refprod_ret refprod, qtdprod_ret qtditcompra from cpretultcpforprod (7,NULL, 7, '04.05.2014','30.05.2014',NULL,NULL,NULL)]]>
 	</queryString>
 	<field name="RAZFOR" class="java.lang.String"/>
 	<field name="CODFOR" class="java.lang.Long"/>
@@ -43,7 +43,7 @@
 	<field name="DTEMITCOMPRA" class="java.sql.Date"/>
 	<field name="DOCCOMPRA" class="java.lang.Long"/>
 	<field name="SERIE" class="java.lang.String"/>
-	<field name="PRECOVENDA" class="java.math.BigDecimal"/>
+	<field name="PRECOCOMPRA" class="java.math.BigDecimal"/>
 	<variable name="PRINTFOR" class="java.lang.Integer" resetType="Group" resetGroup="FORNECEDOR" incrementType="Column" calculation="Sum">
 		<variableExpression><![CDATA[new Integer(String.valueOf($V{PRINTFOR}.intValue()+1))]]></variableExpression>
 		<initialValueExpression><![CDATA[new Integer("0")]]></initialValueExpression>
@@ -307,7 +307,7 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{PRECOVENDA}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{PRECOCOMPRA}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="false">
 				<reportElement key="textField-5" x="430" y="1" width="54" height="13"/>
