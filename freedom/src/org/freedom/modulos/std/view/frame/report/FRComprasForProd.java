@@ -203,9 +203,9 @@ public class FRComprasForProd extends FRelatorio {
 			rs = ps.executeQuery();
 			imprimiGrafico( bVisualizar, rs, sql.toString() );
 			con.commit();
-		} catch ( Exception e ) {
-			e.printStackTrace();
-			Funcoes.mensagemInforma( this, "Erro ao buscar dados da venda!" );
+		} catch ( Exception err ) {
+			err.printStackTrace();
+			Funcoes.mensagemInforma( this, "Erro ao buscar dados da venda!\n" + err.getMessage() );
 		}
 	}
 
