@@ -65,8 +65,6 @@ public class FRComprasForProd extends FRelatorio {
 	private JTextFieldPad txtCodTipoFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtDescTipoFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
-
-
 	
 	private Vector<String> vLabsRel = new Vector<String>();
 
@@ -79,8 +77,6 @@ public class FRComprasForProd extends FRelatorio {
 	private ListaCampos lcTipoFor = new ListaCampos( this );
 	
 	private JCheckBoxPad cbObsItCompra = new JCheckBoxPad( "Imprimir Obs./ítens", "S", "N" );
-	
-
 	
 	public FRComprasForProd() {
 
@@ -151,6 +147,7 @@ public class FRComprasForProd extends FRelatorio {
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
 		cPeriodo.set( Calendar.DAY_OF_MONTH, cPeriodo.get( Calendar.DAY_OF_MONTH ) - 30 );
 		txtDataini.setVlrDate( cPeriodo.getTime() );
+		btExportXLS.setEnabled( true );
 	}
 
 	public void imprimir( TYPE_PRINT bVisualizar ) {
@@ -202,7 +199,13 @@ public class FRComprasForProd extends FRelatorio {
 				ps.setNull( param++, Types.INTEGER );
 			}
 			rs = ps.executeQuery();
-			imprimiGrafico( bVisualizar, rs, cab.toString() );
+			if (bVisualizar==TYPE_PRINT.EXPORT) {
+				if (btExportXLS.execute( rs, getTitle() ) ) {
+					Funcoes.mensagemInforma( this, "Relatório exportado com sucesso!" );
+				}
+			} else {
+				imprimiGrafico( bVisualizar, rs, cab.toString() );
+			}
 			con.commit();
 		} catch ( Exception err ) {
 			err.printStackTrace();
