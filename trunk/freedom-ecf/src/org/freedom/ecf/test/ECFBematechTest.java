@@ -96,9 +96,8 @@ public class ECFBematechTest extends TestCase {
 
 		ECFBematech ecf = new ECFBematech( "COM1" );
 		System.out.print( "programaCaracterParaAutenticacao > " );
-		// int [] sesc = {143,137,137,249,0,255,137,137,137,0,143,137,137,249,0,255,129,129 };
-		int[] sesc = { 1, 2, 4, 8, 16, 32, 64, 128, 64, 32, 16, 8, 4, 2, 1, 129, 129, 129 };
-		assertTrue( trataresultFuncao( ecf.programaCaracterParaAutenticacao( sesc ) ) );
+		int[] stp = { 1, 2, 4, 8, 16, 32, 64, 128, 64, 32, 16, 8, 4, 2, 1, 129, 129, 129 };
+		assertTrue( trataresultFuncao( ecf.programaCaracterParaAutenticacao( stp ) ) );
 		testComandosDeCupomFiscal();
 		System.out.print( "autenticacaoDeDocumento > " );
 		assertTrue( trataresultFuncao( ecf.autenticacaoDeDocumento() ) );

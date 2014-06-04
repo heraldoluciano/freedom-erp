@@ -270,10 +270,10 @@ public class TesteTef extends JFrame implements ControllerTefListener, ActionLis
 					}
 				}
 				else if ( e.getSource() == ler_cartao ) {
-					tef.readCard( "  Sesc  Parana  " + " passe o cartão " );
+					tef.readCard( "  Setpoint  " + " passe o cartão " );
 				}
 				else if ( e.getSource() == confirma_pinpad ) {
-					if ( tef.readYesNoCard( "  Sesc  Parana  " + "   Confirma ?   " ) ) {
+					if ( tef.readYesNoCard( "  Setpoint  " + "   Confirma ?   " ) ) {
 						operador.setText( "Confirmado !" );
 						cliente.setText( "Confirmado !" );
 					}
