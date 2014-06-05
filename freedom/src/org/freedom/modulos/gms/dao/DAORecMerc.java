@@ -1586,55 +1586,38 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 	}
 
-	public Vector<Integer> geraRmasPorOS() {
-
+	public Vector<Integer> geraRmasPorOS() throws Exception {
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;
 		Vector<Integer> ret = new Vector<Integer>();
 		ResultSet rs = null;
-
 		try {
-
 			sql.append( "select codrma from eqgerarmaossp(?,?,?,?) group by 1" );
-
 			Vector<HashMap<String, Object>> itens = carregaItRecMerc();
-
 			ps = getConn().prepareStatement( sql.toString() );
-
-			ps.setInt( 1, getCodemp() );
-			ps.setInt( 2, getCodfilial() );
-			ps.setInt( 3, getTicket() );
-			ps.setNull( 4, Types.INTEGER );
-
+			int param = 1;
+			ps.setInt( param++, getCodemp() );
+			ps.setInt( param++, getCodfilial() );
+			ps.setInt( param++, getTicket() );
+			ps.setNull( param++, Types.INTEGER );
 			rs = ps.executeQuery();
-
-			int i = 0;
-			int numrmas = 0;
-
 			while ( rs.next() ) {
-
 				ret.add( rs.getInt( "CODRMA" ) );
-				numrmas++;
-
 			}
-
 			ps.close();
-
-			if ( numrmas > 0 ) {
-				Funcoes.mensagemInforma( orig, "RMA " + Funcoes.vectorToString( ret, "," ) + " gerada com sucesso!!!" );
-			}
-			else {
-				Funcoes.mensagemInforma( orig, "Nenhuma RMA foi gerada!!!" );
-			}
-
-		} catch ( Exception e ) {
-			Funcoes.mensagemErro( null, "Erro ao gerar rma!\n" + e.getMessage(), true, getConn(), e );
+			rs.close();
+			getConn().commit();
+		} catch ( SQLException err ) {
 			setCodcompra( null );
-			e.printStackTrace();
+			err.printStackTrace();
+			try {
+				getConn().rollback();
+			} catch (SQLException errroll) {
+				errroll.printStackTrace();
+			}
+			throw new Exception("Erro ao gerar rma!\n"+err.getMessage());
 		}
-
 		return ret;
-
 	}
 
 	public Vector<Integer> geraRmasPorItemx() {

@@ -742,7 +742,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 				}
 				else {
 					ordemservico = new FOrdemServico( false );
-					Aplicativo.telaPrincipal.criatela( "Recepção de mercadorias", ordemservico, con );
+					Aplicativo.telaPrincipal.criatela( "Ordem de Serviço", ordemservico, con );
 				}
 
 				int ticket = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.TICKET.ordinal() );
@@ -1215,18 +1215,15 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 						){
 
 					if ( Funcoes.mensagemConfirma( corig, "Confirma a geração de RMA para o ticket nro.:" + ticket.toString() + " ?" ) == JOptionPane.YES_OPTION ) {
-
 						//						Vector<Integer> rmas = recmerc.geraRmasPorItem( );
 						Vector<Integer> rmas = recmerc.geraRmasPorOS() ;
-
-
 						if ( rmas != null && rmas.size() > 0 ) {
-
-							System.out.println("RMA(s) " + Funcoes.vectorToString( rmas, "," ) + " gerada(s) com sucesso...");
-
+							//System.out.println("RMA(s) " + Funcoes.vectorToString( rmas, "," ) + " gerada(s) com sucesso...");
+							Funcoes.mensagemInforma( corig, "RMA " + Funcoes.vectorToString( rmas, "," ) + " gerada com sucesso!!!" );
+						} else {
+							Funcoes.mensagemInforma( corig, "Nenhuma RMA foi gerada!!!" );
 						}
 					}
-
 				}
 				else {
 					Funcoes.mensagemInforma( corig, "A Ordem de serviço selecionada encontra-se em um status inválido para geração de RMA!\n" 
@@ -1236,8 +1233,9 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 
 			}
 
-		} catch ( Exception e ) {
-			e.printStackTrace();
+		} catch ( Exception err ) {
+			err.printStackTrace();
+			Funcoes.mensagemErro( corig, err.getMessage() );
 		}
 
 	}
