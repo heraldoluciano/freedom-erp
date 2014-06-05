@@ -185,7 +185,7 @@ public class FRemCnab extends FRemFBN {
 
 		reg.setCodBanco( txtCodBanco.getVlrString() );
 		reg.setTipoInscEmp( 2 );
-		reg.setCpfCnpjEmp( (String) prefs.get( EPrefs.CNPFEMP ) );
+		reg.setCpfCnpjEmp( (String) prefs.get( EPrefs.CNPJEMP ) );
 		reg.setCodConvBanco( (String) prefs.get( EPrefs.CODCONV ) );
 		reg.setAgencia( (String) prefs.get( EPrefs.AGENCIA ) );
 		reg.setDigAgencia( (String) prefs.get( EPrefs.DIGAGENCIA ) );
@@ -221,7 +221,7 @@ public class FRemCnab extends FRemFBN {
 		reg.setFormaLancamento( "00" );
 		reg.setRegistroHeader( 1 );
 		reg.setTipoInscEmp( 2 );
-		reg.setCpfCnpjEmp( (String) prefs.get( EPrefs.CNPFEMP ) );
+		reg.setCpfCnpjEmp( (String) prefs.get( EPrefs.CNPJEMP ) );
 		reg.setCodConvBanco( (String) prefs.get( EPrefs.CODCONV ) );
 		reg.setAgencia( (String) prefs.get( EPrefs.AGENCIA ) );
 		reg.setDigAgencia( (String) prefs.get( EPrefs.DIGAGENCIA ) );
@@ -253,7 +253,7 @@ public class FRemCnab extends FRemFBN {
 			reg.setTipoOperacao( "R" );
 			reg.setFormaLancamento( "00" );
 			reg.setTipoInscEmp( 2 );
-			reg.setCpfCnpjEmp( (String) prefs.get( EPrefs.CNPFEMP ) );
+			reg.setCpfCnpjEmp( (String) prefs.get( EPrefs.CNPJEMP ) );
 			reg.setCodConvBanco( (String) prefs.get( EPrefs.CODCONV ) );
 			reg.setAgencia( (String) prefs.get( EPrefs.AGENCIA ) );
 			reg.setDigAgencia( (String) prefs.get( EPrefs.DIGAGENCIA ) );
@@ -515,9 +515,18 @@ public class FRemCnab extends FRemFBN {
 		reg.setCidCli( dadosCliente[ DadosCliente.CIDCLI.ordinal() ] );
 		reg.setUfCli( dadosCliente[ DadosCliente.UFCLI.ordinal() ] );
 
-		reg.setTipoInscAva( 0 );
-		reg.setCpfCnpjAva( null );
-		reg.setRazAva( null );
+		int tipoinscava = 0; 
+		String cnpjemp = (String) prefs.get( EPrefs.CNPJEMP );
+		if (Banco.SICOOB.equals( reg.getCodBanco() )) {
+			if (cnpjemp!=null && cnpjemp.trim().length()<=11) {
+				tipoinscava = 1; // Tipo de inscrição 01 CPF
+			} else {
+				tipoinscava = 2; // Tipo de inscrição 02 CNPJ
+			}
+		}
+		reg.setTipoInscAva( tipoinscava );
+		reg.setCpfCnpjAva( cnpjemp );
+		reg.setRazAva( (String) prefs.get( EPrefs.NOMEEMPCNAB ) );
 		// reg.setCodCompensacao( 0 );
 		// reg.setNossoNumero( null );
 

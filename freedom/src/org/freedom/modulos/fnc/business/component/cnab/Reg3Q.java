@@ -228,17 +228,17 @@ public class Reg3Q extends Reg3 {
 				line.append( codinstrucao ); // 2 codigo da instrucao
 				line.append( format( getTipoInscCli(), ETipo.$9, 2, 0 ) ); //  2 Tipo da inscrição do pagador 01 - CPF / 02 - CNPJ
 				line.append( format( getCpfCnpjCli(), ETipo.$9, 14, 0 ) ); // 14 Número de inscrição do pagador
-				line.append( format( getRazCli(), ETipo.X, 40, 0 ) ); // 40 Nome ou razão social do pagador
-				line.append( format( getEndCli(), ETipo.X, 40, 0 ) ); // 40 Endereço do pagador
-				line.append( format( getBairCli(), ETipo.X, 15, 0 ) ); // 15 Bairro do pagador
+				line.append( format( getRazCli(), ETipo.X, 40, 0, true, true ) ); // 40 Nome ou razão social do pagador
+				line.append( format( getEndCli(), ETipo.X, 40, 0, true, true ) ); // 40 Endereço do pagador
+				line.append( format( getBairCli(), ETipo.X, 15, 0, true, true ) ); // 15 Bairro do pagador
 				line.append( format( getCepCli(), ETipo.$9, 8, 0 ) ); // 8 Cep do pagador
-				line.append( format( getCidCli(), ETipo.X, 15, 0 ) ); // 15 Cidade do pagador
+				line.append( format( getCidCli(), ETipo.X, 15, 0, true, true ) ); // 15 Cidade do pagador
 				line.append( format( getUfCli(), ETipo.X, 2, 0 ) ); // 2 Estado do pagador
 				line.append( format( getTipoInscAva(), ETipo.$9, 2, 0 ) ); // 2 Tipo de inscrição do sacador
 				line.append( format( getCpfCnpjAva(), ETipo.$9, 14, 0 ) ); // 14 Número de inscrição do sacador ou avalaista
-				line.append( format( getRazAva(), ETipo.X, 40, 0 ) ); // 40 Nome ou razão social do sacador avalista
+				line.append( format( getRazAva(), ETipo.X, 40, 0, true, true ) ); // 40 Nome ou razão social do sacador avalista
 				line.append( StringFunctions.replicate( " ", 31 ) ); // 31 Bracos / Filler
-				System.out.println("Reg3Q: "+line.toString().length());
+				//System.out.println("Reg3Q: "+line.toString().length());
 			} else {
 				line.append( super.getLineReg3( padraocnab ) );
 				line.append( format( getTipoInscCli(), ETipo.$9, 1, 0 ) );
