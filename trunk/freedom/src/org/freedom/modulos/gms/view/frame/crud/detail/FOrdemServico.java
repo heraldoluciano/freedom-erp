@@ -2007,24 +2007,17 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 	}
 
 	private void trocaProdutoTodos() {
-
-		for(int i=0; tab.getNumLinhas() >i ; i++ ) {
-
-			if(cbStatus.getVlrString()==DAORecMerc.STATUS_PENDENTE.getValue()) {
-
+		if(cbStatus.getVlrString()==DAORecMerc.STATUS_PENDENTE.getValue()) {
+			for(int i=0; tab.getNumLinhas() >i ; i++ ) {
 				txtCodItRecMerc.setVlrInteger( (Integer) tab.getValor( i, 0 ) );
 				lcDet.carregaDados();
-
 				trocaProduto();
 			}
-			else {
-				Funcoes.mensagemInforma( this, "Essa função só poderá ser executada em O.S Pendente."  );
-			}
-
 		}
-
+		else {
+			Funcoes.mensagemInforma( this, "Essa função só poderá ser executada em O.S Pendente."  );
+		}
 		lcCampos.carregaDados();
-
 	}
 
 	private void trocaProduto() {
@@ -2032,96 +2025,57 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		try {
 				
 			DLItensEstruturaProd dl = new DLItensEstruturaProd(null);
-
 			dl.setCodemp( Aplicativo.iCodEmp );
 			dl.setCodemppd( Aplicativo.iCodEmp );
-
 			dl.setCodfilial( ListaCampos.getMasterFilial( "EQPRODUTO" ) );			
 			dl.setCodfilialpd( ListaCampos.getMasterFilial( "EQPRODUTO" ) );
-
 			dl.setCodprod( txtCodProd.getVlrInteger() );
 			dl.carregaItens(true);
-
 			dl.setVisible( false );
-
 			boolean achou = false;
-
 			Integer codprod = null;
 			String refprod = null;
 			BigDecimal qtditest = null;
-
 			if ( dl.OK ) {
-
 				Vector<HashMap<String,Object>> valores = dl.getValores();
 				HashMap<String,Object> item = new HashMap<String, Object>();
-
-
-
 				for(int i=0; i< valores.size(); i++) {
-
 					item = valores.elementAt( i );
-
 					codprod = (Integer) item.get( DLItensEstruturaProd.ITENS.CODPRODPD.name() );
 					qtditest = (BigDecimal) item.get( DLItensEstruturaProd.ITENS.QTDITEST.name() );
-
 					lcItRecMercItOS.insert( true );
-
 					txtCodProdItOS.setVlrInteger( codprod );
-
 					lcProdItOS.carregaDados();
-
 					txtQtdItOSItOS.setVlrBigDecimal( qtditest.multiply( txtQtdItOS.getVlrBigDecimal() ) );
-
 					lcItRecMercItOS.post();
-
 					achou = true;
-
 				}
 			}
-
 			dl.dispose();
-
 			//Se não achou nenhum serviço na estrutura do produto , deve inserir um serviço padrão.
 			if( !achou ) {
-
 				codprod = (Integer) prefere.get( "codprodse" ) ;
 				//				refprod = (String) item.get( DLItensEstruturaProd.ITENS.REFPRODPD.name() );
 				qtditest = txtQtdItOS.getVlrBigDecimal() ;
-
 				lcItRecMercItOS.insert( true );
-
 				txtCodProdItOS.setVlrInteger( codprod );
-
 				lcProdItOS.carregaDados();
-
 				txtQtdItOSItOS.setVlrBigDecimal( qtditest );
-
 				lcItRecMercItOS.post();
-
 			}
 
 			// Adicionando cópia do produto principal
-
 			lcItRecMercItOS.insert( true );
-
 			txtCodProdItOS.setVlrInteger( txtCodProd.getVlrInteger() );
 			txtRefProdItOS.setVlrString( txtRefProd.getVlrString() );
-
 			if(comRef()) {
-
 				lcProdItOS2.carregaDados();
-
 			}
 			else {
-
 				lcProdItOS.carregaDados();
-
 			}
-
 			txtQtdItOSItOS.setVlrBigDecimal( txtQtdItOS.getVlrBigDecimal() );
-
 			lcItRecMercItOS.post();
-			
 			lcCampos.carregaDados();
 
 		}
