@@ -496,7 +496,7 @@ public abstract class FRemFBN extends FFilho implements ActionListener, MouseLis
 				}
 
 				prefs.put( EPrefs.DIGAGCONTA, null );
-				prefs.put( EPrefs.CNPFEMP, rs.getString( "CNPJFILIAL" ) );
+				prefs.put( EPrefs.CNPJEMP, rs.getString( "CNPJFILIAL" ) );
 
 				prefs.put( EPrefs.FORCADTIT, rs.getInt( EPrefs.FORCADTIT.toString() ) );
 				prefs.put( EPrefs.TIPODOC, rs.getInt( EPrefs.TIPODOC.toString() ) );
