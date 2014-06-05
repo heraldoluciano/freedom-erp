@@ -647,7 +647,12 @@ public class FRemCnab extends FRemFBN {
 
 		reg.setCodBanco( codbanco );
 		reg.setQtdLotes( loteServico );
-		reg.setQtdRegistros( seqLoteServico + 2 );
+		if (Banco.SICOOB.equals( codbanco )) {
+			seqLoteServico ++;
+		} else {
+			seqLoteServico +=2;
+		}
+		reg.setQtdRegistros( seqLoteServico );
 		reg.setConta( (String) prefs.get( EPrefs.NUMCONTA ) );
 		reg.setQtdConsilacoes( 0 );
 		reg.setSeqregistro( seqregistro );
@@ -879,13 +884,10 @@ public class FRemCnab extends FRemFBN {
 		boolean retorno = false;
 
 		try {
-
 			loteServico++;
 			seqLoteServico = 1;
 			seqregistro = 1;
-
 			int regs = 0;
-
 			ArrayList<Reg> registros = new ArrayList<Reg>();
 			BigDecimal vlrtotaltitulos = new BigDecimal(0);
 
