@@ -331,7 +331,7 @@ public class FRVendasFisico extends FRelatorio {
 
 			// sSQL.append( "(SELECT NCUSTOMPM FROM EQPRODUTOSP01(P.CODEMP,P.CODFILIAL,P.CODPROD,P.CODEMPAX,P.CODFILIALAX,P.CODALMOX)) AS CUSTOMPMPROD ");
 
-			sSQL.append( "coalesce((SELECT NCUSTOMPM FROM EQPRODUTOSP01(p.codemp,p.codfilial,p.codprod,null,null,null)),0) AS CUSTOMPMPROD " );
+			sSQL.append( "coalesce((SELECT NCUSTOMPM FROM EQPRODUTOSP01(p.codemp,p.codfilial,p.codprod,null,null,null,v.dtemitvenda)),0) AS CUSTOMPMPROD " );
 
 			sSQL.append( ",IT.CODITVENDA," );
 			 
@@ -497,7 +497,7 @@ public class FRVendasFisico extends FRelatorio {
 			
 			sSQL.append( rgTipoCusto.getVlrString() );
 			
- 			sSQL.append(" from eqprodutosp01(pd2.codemp, pd2.codfilial, pd2.codprod,null,null,null)),0)) custompmprod, ");
+ 			sSQL.append(" from eqprodutosp01(pd2.codemp, pd2.codfilial, pd2.codprod,null,null,null, cast('now' as date))),0)) custompmprod, ");
 			sSQL.append( "iv.coditvenda, ");
 			sSQL.append( "coalesce(sum(iv.qtditvenda),0) qtditvenda, ");
 			sSQL.append( "coalesce(sum(iv.vlrdescitvenda),0) vlrdescitvenda, ");

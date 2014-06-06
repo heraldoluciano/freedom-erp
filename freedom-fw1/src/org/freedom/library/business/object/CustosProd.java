@@ -1,6 +1,7 @@
 package org.freedom.library.business.object;
 
 import java.math.BigDecimal;
+
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
@@ -9,6 +10,7 @@ import org.freedom.library.swing.frame.Aplicativo;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 
 public class CustosProd {
 
@@ -60,18 +62,20 @@ public class CustosProd {
 		this.custoPEPSProd = custoPEPSProd;
 	}
 
-	public CustosProd(Integer codalmox, Integer codprod, DbConnection con) {
+	public CustosProd(Integer codalmox, Integer codprod, Date dtpesq, DbConnection con) {
 		try {
 
-			sSQL = "SELECT NCUSTOPEPS, NCUSTOMPM, NCUSTOMPMAX, NCUSTOPEPSAX FROM EQPRODUTOSP01(?,?,?,?,?,?)";
+			sSQL = "SELECT NCUSTOPEPS, NCUSTOMPM, NCUSTOMPMAX, NCUSTOPEPSAX FROM EQPRODUTOSP01(?,?,?,?,?,?,?)";
 
 			ps = con.prepareStatement(sSQL);
-			ps.setInt(1, Aplicativo.iCodEmp);
-			ps.setInt(2, ListaCampos.getMasterFilial("EQPRODUTO"));
-			ps.setInt(3, codprod.intValue());
-			ps.setInt(4, Aplicativo.iCodEmp);
-			ps.setInt(5, ListaCampos.getMasterFilial("EQALMOX"));
-			ps.setInt(6, codalmox.intValue());
+			int param = 1;
+			ps.setInt(param++, Aplicativo.iCodEmp);
+			ps.setInt(param++, ListaCampos.getMasterFilial("EQPRODUTO"));
+			ps.setInt(param++, codprod.intValue());
+			ps.setInt(param++, Aplicativo.iCodEmp);
+			ps.setInt(param++, ListaCampos.getMasterFilial("EQALMOX"));
+			ps.setInt(param++, codalmox.intValue());
+			ps.setDate(param++, Funcoes.dateToSQLDate(dtpesq));
 			rs = ps.executeQuery();
 
 			if (rs.next()) {

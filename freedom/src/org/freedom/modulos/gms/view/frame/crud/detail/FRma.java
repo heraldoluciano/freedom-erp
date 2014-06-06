@@ -886,7 +886,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 		}
 
 		if ( ( ( cevt.getListaCampos() == lcProd ) || ( cevt.getListaCampos() == lcProd2 ) ) && ( ( lcDet.getStatus() == ListaCampos.LCS_EDIT ) || ( ( lcDet.getStatus() == ListaCampos.LCS_INSERT ) ) ) ) {
-			CustosProd custo = new CustosProd( txtCodAlmox.getVlrInteger(), txtCodProd.getVlrInteger(), con );
+			CustosProd custo = new CustosProd( txtCodAlmox.getVlrInteger(), txtCodProd.getVlrInteger(), new Date(), con );
 			txtPrecoItRma.setVlrBigDecimal( custo.getCustoMPMProd() );
 		}
 

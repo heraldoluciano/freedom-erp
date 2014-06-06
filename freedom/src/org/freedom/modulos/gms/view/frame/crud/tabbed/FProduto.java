@@ -34,6 +34,7 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -2285,7 +2286,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 				}
 
 				buscaEstoque();
-				CustosProd custos = new CustosProd( txtCodAlmox.getVlrInteger(), txtCodProd.getVlrInteger(), con );
+				CustosProd custos = new CustosProd( txtCodAlmox.getVlrInteger(), txtCodProd.getVlrInteger(), new Date(), con );
 				buscaUltimaEntrada();
 				
 				txtCustoPEPSProd.setVlrBigDecimal( custos.getCustoPEPSProd() );

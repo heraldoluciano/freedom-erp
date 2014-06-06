@@ -14609,7 +14609,8 @@ SCODFILIAL SMALLINT,
 ICODPROD INTEGER,
 ICODEMPAX INTEGER,
 SCODFILIALAX SMALLINT,
-ICODALMOX INTEGER)
+ICODALMOX INTEGER,
+DTPESQ DATE)
 RETURNS (NSALDO NUMERIC(15, 5),
 NSALDOAX NUMERIC(15, 5),
 NCUSTOMPM NUMERIC(15, 5),
@@ -18445,7 +18446,7 @@ begin
     -- Loop nos itens de Ordem de Serviço.
 
     for select os.coditrecmerc, os.coditos, os.codemppd, os.codfilialpd, os.refprodpd, os.codprodpd, os.qtditos,
-    (select ncustompm from eqprodutosp01(os.codemppd, os.codfilialpd, os.codprodpd,null,null,null)) custompmit
+    (select ncustompm from eqprodutosp01(os.codemppd, os.codfilialpd, os.codprodpd,null,null,null, cast('now' as date))) custompmit
     from eqitrecmercitos os
     where os.codemp=:codemprm and os.codfilial=:codfilialrm and os.ticket=:ticket
 --    and ( (os.coditrecmerc=:coditrecmerc) or (:coditrecmerc is null) )
@@ -18593,7 +18594,7 @@ begin
         );
 
         for select it.seqitop,it.codfilialpd,it.codprod,it.refprod,it.qtditop-coalesce(it.qtdcopiaitop,0),it.codfilialle,it.codlote,
-            (select ncustompm from eqprodutosp01(it.codemppd,it.codfilialpd,it.codprod,null,null,null)),
+            (select ncustompm from eqprodutosp01(it.codemppd,it.codfilialpd,it.codprod,null,null,null, cast('now' as date))),
             (SELECT CODFILIALAX FROM EQPRODUTO WHERE CODEMP=it.codemppd and codfilial=it.codfilialpd and codprod=it.codprod),
             (SELECT CODALMOX FROM EQPRODUTO WHERE CODEMP=it.codemppd and codfilial=it.codfilialpd and codprod=it.codprod)
             from ppitop it, eqproduto pd
@@ -19805,7 +19806,8 @@ SCODFILIAL SMALLINT,
 ICODPROD INTEGER,
 ICODEMPAX INTEGER,
 SCODFILIALAX SMALLINT,
-ICODALMOX INTEGER)
+ICODALMOX INTEGER,
+DTPESQ DATE)
 RETURNS (NSALDO NUMERIC(15, 5),
 NSALDOAX NUMERIC(15, 5),
 NCUSTOMPM NUMERIC(15, 5),
@@ -19815,52 +19817,44 @@ NCUSTOPEPSAX NUMERIC(15, 5),
 NCUSTOINFO NUMERIC(15, 5),
 NCUSTOUC NUMERIC(15, 5))
 AS 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
 declare variable ddtmovprod date;
 declare variable ddtmovprodax date;
 begin
 
+	if (:dtpesq is null) then
+	begin
+	   dtpesq = cast('now' as date);
+	end
     /* Procedure que retorna saldos e custos para a tela de cadastro de produtos */
-    SELECT FIRST 1 MP.DTMOVPROD, MP.SLDMOVPROD , MP.CUSTOMPMMOVPROD
-    FROM EQMOVPROD MP
-    WHERE MP.CODEMPPD=:ICODEMP AND MP.CODFILIALPD=:SCODFILIAL AND MP.CODPROD=:ICODPROD
-    ORDER BY MP.DTMOVPROD DESC, MP.CODMOVPROD DESC
-    INTO :DDTMOVPROD, :NSALDO, :NCUSTOMPM;
+    select first 1 mp.dtmovprod, mp.sldmovprod , mp.custompmmovprod
+    from eqmovprod mp
+    where mp.codemppd=:icodemp and mp.codfilialpd=:scodfilial and mp.codprod=:icodprod
+    and mp.dtmovprod<=dtpesq
+    order by mp.dtmovprod desc, mp.codmovprod desc
+    into :ddtmovprod, :nsaldo, :ncustompm;
 
-    SELECT FIRST 1 MP.DTMOVPROD, MP.SLDMOVPRODAX, MP.CUSTOMPMMOVPRODAX
-    FROM EQMOVPROD MP
-    WHERE MP.CODEMPPD=:ICODEMP AND MP.CODFILIALPD=:SCODFILIAL AND MP.CODPROD=:ICODPROD
-    ORDER BY MP.DTMOVPROD DESC, MP.CODMOVPROD DESC
-    INTO :DDTMOVPRODAX, :NSALDOAX, :NCUSTOMPMAX;
+    select first 1 mp.dtmovprod, mp.sldmovprodax, mp.custompmmovprodax
+    from eqmovprod mp
+    where mp.codemppd=:icodemp and mp.codfilialpd=:scodfilial and mp.codprod=:icodprod
+    and mp.dtmovprod<=dtpesq
+    order by mp.dtmovprod desc, mp.codmovprod desc
+    into :ddtmovprodax, :nsaldoax, :ncustompmax;
 
-    SELECT P.NCUSTOPEPS  FROM EQCALCPEPSSP(:ICODEMP, :SCODFILIAL,
-    :ICODPROD, :NSALDO, :DDTMOVPROD, null, null, null ) P
-    INTO :NCUSTOPEPS;
+    select p.ncustopeps  from eqcalcpepssp(:icodemp, :scodfilial,
+    :icodprod, :nsaldo, :ddtmovprod, null, null, null ) p
+    into :ncustopeps;
 
-    SELECT P.NCUSTOPEPS  FROM EQCALCPEPSSP(:ICODEMP, :SCODFILIAL,
-    :ICODPROD, :NSALDO, :DDTMOVPRODAX, :ICODEMPAX, :SCODFILIALAX,
-    :ICODALMOX ) P
-    INTO :NCUSTOPEPSAX;
+    select p.ncustopeps  from eqcalcpepssp(:icodemp, :scodfilial,
+    :icodprod, :nsaldo, :ddtmovprodax, :icodempax, :scodfilialax,
+    :icodalmox ) p
+    into :ncustopepsax;
 
     select p.custoinfoprod from eqproduto p
     where p.codemp=:icodemp and p.codfilial=:scodfilial and p.codprod=:icodprod
     into :ncustoinfo;
 
     select custounit from eqcustoprodsp(:icodemp, :scodfilial, :icodprod,
-    cast('today' as date),'U',:icodempax, :scodfilialax, :icodalmox, 'N' )
+    :dtpesq,'U',:icodempax, :scodfilialax, :icodalmox, 'N' )
     into :ncustouc;
 
     if(:ncustompm is null) then
@@ -19882,20 +19876,6 @@ CODFILIAL SMALLINT,
 CODPROD INTEGER)
 RETURNS (REFPROD VARCHAR(20))
 AS 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
 begin
   /* Procedure Text */
   SELECT REFPROD FROM EQPRODUTO WHERE CODPROD=:CODPROD AND
@@ -31766,7 +31746,8 @@ begin
                    new.dtaexpitrma=cast('today' as date);
 
                    -- Atualizando custo do produto no momento da expedição.
-                   select ncustompmax from eqprodutosp01(new.codemppd,new.codfilialpd,new.codprod,new.codempax,new.codfilialax,new.codalmox)
+                   select ncustompmax from eqprodutosp01(new.codemppd,new.codfilialpd,new.codprod,new.codempax
+                   ,new.codfilialax,new.codalmox, new.dtaexpitrma)
                    into new.precoitrma;
 
                end
@@ -32664,7 +32645,9 @@ begin
     end
     if(new.sitrma='EF')  then
     begin
-      update eqitrma it set sititrma = 'EF',precoitrma=(select ncustompm from eqprodutosp01(it.codemppd,it.codfilialpd,it.codprod,null,null,null)) where codemp=new.codemp and codfilial=new.codfilial and codrma=new.codrma and sititrma!='EF';
+      update eqitrma it set sititrma = 'EF',precoitrma=
+      (select ncustompm from eqprodutosp01(it.codemppd,it.codfilialpd,it.codprod,null,null,null,cast('today' as date)))
+       where codemp=new.codemp and codfilial=new.codfilial and codrma=new.codrma and sititrma!='EF';
     end
     if(new.sitexprma='ET')  then
     begin
@@ -32672,7 +32655,8 @@ begin
     end
     if(new.codtipomov!=old.codtipomov) then
     begin
-        update eqitrma it set precoitrma=(select ncustompm from eqprodutosp01(it.codemppd,it.codfilialpd,it.codprod,null,null,null))
+        update eqitrma it set precoitrma=
+            (select ncustompm from eqprodutosp01(it.codemppd,it.codfilialpd,it.codprod,null,null,null, cast('today' as date)))
             where codemp=new.codemp and codfilial=new.codfilial and codrma=new.codrma;
     end
 
@@ -36279,7 +36263,7 @@ begin
                else
                begin
                    select cast(cast(sum( cast((select cast(ncustompm as decimal(15,5)) 
-                   from eqprodutosp01(it.codemppd,it.codfilialpd,it.codprod,null,null,null)) as decimal(15,5)) * it.qtditop ) 
+                   from eqprodutosp01(it.codemppd,it.codfilialpd,it.codprod,null,null,null, new.dtfabrop)) as decimal(15,5)) * it.qtditop ) 
                    as decimal(15,5)) / new.qtdfinalprodop as decimal(15,5))
                        from ppitop it, eqproduto pd
                        where it.codemp=new.codemp and it.codfilial=it.codfilial
@@ -36345,7 +36329,7 @@ begin
                 begin
     
                     -- Buscando custo do produto acabado
-                    select cast(sum((select ncustompm from eqprodutosp01(it.codemppd,it.codfilialpd,it.codprod,null,null,null)) * it.qtditop ) / new.qtdfinalprodop as decimal(15,5))
+                    select cast(sum((select ncustompm from eqprodutosp01(it.codemppd,it.codfilialpd,it.codprod,null,null,null, new.dtfabrop)) * it.qtditop ) / new.qtdfinalprodop as decimal(15,5))
     
                     from ppitop it, eqproduto pd
                     where it.codemp=new.codemp and it.codfilial=it.codfilial
@@ -36475,7 +36459,7 @@ begin
     begin
 
         -- Buscando custo do produto acabado
-        select sum((select ncustompm from eqprodutosp01(it.codemppd,it.codfilialpd,it.codprod,null,null,null)) * it.qtditop ) / op.qtdprevprodop
+        select sum((select ncustompm from eqprodutosp01(it.codemppd,it.codfilialpd,it.codprod,null,null,null,op.dtfabrop)) * it.qtditop ) / op.qtdprevprodop
         from ppitop it, eqproduto pd, ppop op
         where it.codemp=new.codemp and it.codfilial=it.codfilial
         and it.codop=new.codop and it.seqop=new.seqop
@@ -36746,7 +36730,7 @@ begin
     into :codempax, :codfilialax, :codalmox;
 
     -- Buscando custo do produto;
-    select ncustompm from eqprodutosp01(new.codemppd,new.codfilialpd,new.codprod,null,null,null)
+    select ncustompm from eqprodutosp01(new.codemppd,new.codfilialpd,new.codprod,null,null,null,cast('today' as date))
     into :preco;
 
     -- Buscando data de finalização da fase
@@ -36803,7 +36787,7 @@ begin
             into :codempax, :codfilialax, :codalmox;
 
             -- Buscando custo do produto;
-            select ncustompm from eqprodutosp01(new.codemppd,new.codfilialpd,new.codprod,null,null,null)
+            select ncustompm from eqprodutosp01(new.codemppd,new.codfilialpd,new.codprod,null,null,null, cast('today' as date))
             into :preco;
 
             execute procedure eqmovprodiudsp('U',new.codemppd, new.codfilialpd, new.codprod,
@@ -36832,7 +36816,7 @@ begin
     into :codempax, :codfilialax, :codalmox;
 
     -- Buscando custo do produto;
-    select ncustompm from eqprodutosp01(old.codemppd,old.codfilialpd,old.codprod,null,null,null)
+    select ncustompm from eqprodutosp01(old.codemppd,old.codfilialpd,old.codprod,null,null,null, cast('today' as date))
     into :preco;
 
     -- Buscando data de finalização da fase

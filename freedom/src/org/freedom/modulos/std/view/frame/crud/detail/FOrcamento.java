@@ -1371,7 +1371,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 	}
 
 	private boolean testaLucro() {
-		return super.testaLucro( new Object[] { txtCodProd.getVlrInteger(), txtCodAlmoxItOrc.getVlrInteger(), txtPrecoItOrc.getVlrBigDecimal(), }, fatluc );
+		return super.testaLucro( new Object[] { txtCodProd.getVlrInteger(), txtCodAlmoxItOrc.getVlrInteger(), txtPrecoItOrc.getVlrBigDecimal(), }, fatluc, new Date() );
 	}
 
 	private boolean testaCodlote() {
