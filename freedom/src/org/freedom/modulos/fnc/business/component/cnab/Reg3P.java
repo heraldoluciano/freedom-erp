@@ -642,7 +642,7 @@ public class Reg3P extends Reg3 {
 				if (getCodProtesto()==3) {
 					tipoprotesto = "0";
 				}
-				line.append( format( getCodProtesto(), ETipo.$9, 1, 0 ) ); // 1 Protesto automático 0 - Não / 1 - SIM
+				line.append( format( tipoprotesto, ETipo.$9, 1, 0 ) ); // 1 Protesto automático 0 - Não / 1 - SIM
 				line.append( format( getDiasProtesto(), ETipo.$9, 2, 0 ) ); // 2 Número de dias para protesto
 				line.append( format("0", ETipo.$9, 4, 0) ); // 4 Zeros
 				line.append( format( getCodMoeda(), ETipo.$9, 2, 0 ) ); // 2 Código da moeda - 09 = Real
