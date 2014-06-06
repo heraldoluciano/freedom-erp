@@ -19829,14 +19829,14 @@ begin
     select first 1 mp.dtmovprod, mp.sldmovprod , mp.custompmmovprod
     from eqmovprod mp
     where mp.codemppd=:icodemp and mp.codfilialpd=:scodfilial and mp.codprod=:icodprod
-    and mp.dtmovprod<=dtpesq
+    and mp.dtmovprod<=:dtpesq
     order by mp.dtmovprod desc, mp.codmovprod desc
     into :ddtmovprod, :nsaldo, :ncustompm;
 
     select first 1 mp.dtmovprod, mp.sldmovprodax, mp.custompmmovprodax
     from eqmovprod mp
     where mp.codemppd=:icodemp and mp.codfilialpd=:scodfilial and mp.codprod=:icodprod
-    and mp.dtmovprod<=dtpesq
+    and mp.dtmovprod<=:dtpesq
     order by mp.dtmovprod desc, mp.codmovprod desc
     into :ddtmovprodax, :nsaldoax, :ncustompmax;
 
