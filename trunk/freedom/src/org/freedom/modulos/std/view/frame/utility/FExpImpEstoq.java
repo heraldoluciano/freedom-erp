@@ -492,15 +492,16 @@ public class FExpImpEstoq extends FFilho implements ActionListener, RadioGroupLi
 		BigDecimal custo = new BigDecimal( "0.00" );
 
 		StringBuilder sql = new StringBuilder();
-		sql.append( "SELECT NCUSTOMPMAX FROM EQPRODUTOSP01(?,?,?,?,?,?)" );
+		sql.append( "SELECT NCUSTOMPMAX FROM EQPRODUTOSP01(?,?,?,?,?,?, cast('now' as date))" );
 
 		PreparedStatement ps = con.prepareStatement( sql.toString() );
-		ps.setInt( 1, Aplicativo.iCodEmp );
-		ps.setInt( 2, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
-		ps.setInt( 3, codprod );
-		ps.setInt( 4, Aplicativo.iCodEmp );
-		ps.setInt( 5, ListaCampos.getMasterFilial( "EQALMOX" ) );
-		ps.setInt( 6, getAlmoxarifado( codprod ) );
+		int param = 1;
+		ps.setInt( param++, Aplicativo.iCodEmp );
+		ps.setInt( param++, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
+		ps.setInt( param++, codprod );
+		ps.setInt( param++, Aplicativo.iCodEmp );
+		ps.setInt( param++, ListaCampos.getMasterFilial( "EQALMOX" ) );
+		ps.setInt( param++, getAlmoxarifado( codprod ) );
 
 		ResultSet rs = ps.executeQuery();
 
@@ -685,15 +686,16 @@ public class FExpImpEstoq extends FFilho implements ActionListener, RadioGroupLi
 		BigDecimal saldoAtual = new BigDecimal( "0.00" );
 
 		StringBuilder sql = new StringBuilder();
-		sql.append( "SELECT NSALDOAX FROM EQPRODUTOSP01(?,?,?,?,?,?)" );
+		sql.append( "SELECT NSALDOAX FROM EQPRODUTOSP01(?,?,?,?,?,?, cast('now' as date))" );
 
 		PreparedStatement ps = con.prepareStatement( sql.toString() );
-		ps.setInt( 1, Aplicativo.iCodEmp );
-		ps.setInt( 2, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
-		ps.setInt( 3, codprod );
-		ps.setInt( 4, Aplicativo.iCodEmp );
-		ps.setInt( 5, ListaCampos.getMasterFilial( "EQALMOX" ) );
-		ps.setInt( 6, getAlmoxarifado( codprod ) );
+		int param = 1;
+		ps.setInt( param++, Aplicativo.iCodEmp );
+		ps.setInt( param++, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
+		ps.setInt( param++, codprod );
+		ps.setInt( param++, Aplicativo.iCodEmp );
+		ps.setInt( param++, ListaCampos.getMasterFilial( "EQALMOX" ) );
+		ps.setInt( param++, getAlmoxarifado( codprod ) );
 
 		ResultSet rs = ps.executeQuery();
 

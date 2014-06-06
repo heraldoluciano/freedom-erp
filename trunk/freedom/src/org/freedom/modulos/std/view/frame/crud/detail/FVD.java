@@ -29,6 +29,7 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.Vector;
 
 import org.freedom.infra.dao.AbstractDAO;
@@ -309,7 +310,7 @@ public abstract class FVD extends FDetalhe {
 	 *            parametros
 	 * @return se a lucro verdadeiro, se não falso.
 	 */
-	protected boolean testaLucro( Object[] args, BigDecimal fator ) {
+	protected boolean testaLucro( Object[] args, BigDecimal fator, Date dtpesq ) {
 
 		boolean bRet = false;
 		
@@ -352,7 +353,7 @@ public abstract class FVD extends FDetalhe {
 				}
 			}
 
-			sSQL = "SELECT COUNT(*) CONTADOR FROM SGPREFERE1 PF, EQPRODUTO P, EQPRODUTOSP01(?,?,?,?,?,?) C " + 
+			sSQL = "SELECT COUNT(*) CONTADOR FROM SGPREFERE1 PF, EQPRODUTO P, EQPRODUTOSP01(?,?,?,?,?,?,?) C " + 
 			   "WHERE PF.CODEMP=? AND PF.CODFILIAL=? AND " + "P.CODEMP=? AND P.CODFILIAL=? AND P.CODPROD=? AND " +
 			   "(((C." + sCampoCusto + "/100)*(100+PF.PERCPRECOCUSTO)) <= ( "+
 			      ((BigDecimal) args[ 2 ])+" * "+fator+" ) "
@@ -362,22 +363,25 @@ public abstract class FVD extends FDetalhe {
 					+ "OR PERCPRECOCUSTO IS NULL OR P.TIPOPROD='S')";
 
 			ps = con.prepareStatement( sSQL );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
+			int param = 1;
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
 			
-			ps.setInt( 3, ( (Integer) args[ 0 ] ).intValue() );
-			ps.setInt( 4, Aplicativo.iCodEmp );
+			ps.setInt( param++, ( (Integer) args[ 0 ] ).intValue() );
+			ps.setInt( param++, Aplicativo.iCodEmp );
 			
-			ps.setInt( 5, ListaCampos.getMasterFilial( "EQALMOX" ) ); 
-			ps.setInt( 6, ( (Integer) args[ 1 ] ).intValue() );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "EQALMOX" ) ); 
+			ps.setInt( param++, ( (Integer) args[ 1 ] ).intValue() );
 			
-			ps.setInt( 7, Aplicativo.iCodEmp );
-			ps.setInt( 8, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
+			ps.setDate( param++, Funcoes.dateToSQLDate( dtpesq ) );
 			
-			ps.setInt( 9, Aplicativo.iCodEmp );
-			ps.setInt( 10, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
 			
-			ps.setInt( 11, ( (Integer) args[ 0 ] ).intValue() );
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
+			
+			ps.setInt( param++, ( (Integer) args[ 0 ] ).intValue() );
 			
 //			ps.setBigDecimal( 12, (BigDecimal) args[ 2 ] );
 //			ps.setBigDecimal( 13, fator );

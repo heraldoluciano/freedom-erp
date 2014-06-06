@@ -2021,16 +2021,18 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 	 * Aplicativo.iCodFilialMz ); rs = ps.executeQuery(); if ( rs.next() ) { txtPercICMSItCompra.setVlrBigDecimal( new BigDecimal( rs.getString( 1 ) ) ); } calcImpostos( true ); } catch ( SQLException err ) { Funcoes.mensagemErro( this, "Erro ao buscar percentual de ICMS!\n" + err.getMessage(),
 	 * true, con, err ); } }
 	 */
-	private void getCustoProd() {
+	private void getCustoProd(Date dtpesq) {
 
 		try {
-			PreparedStatement ps = con.prepareStatement( "SELECT NCUSTOPEPS, NCUSTOMPM FROM EQPRODUTOSP01(?,?,?,?,?,?)" );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
-			ps.setInt( 3, txtCodProd.getVlrInteger().intValue() );
-			ps.setInt( 4, Aplicativo.iCodEmp );
-			ps.setInt( 5, ListaCampos.getMasterFilial( "EQALMOX" ) );
-			ps.setInt( 6, txtCodAlmoxProd.getVlrInteger().intValue() );
+			PreparedStatement ps = con.prepareStatement( "SELECT NCUSTOPEPS, NCUSTOMPM FROM EQPRODUTOSP01(?,?,?,?,?,?,?)" );
+			int param = 1;
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
+			ps.setInt( param++, txtCodProd.getVlrInteger().intValue() );
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "EQALMOX" ) );
+			ps.setInt( param++, txtCodAlmoxProd.getVlrInteger().intValue() );
+			ps.setDate( param++, Funcoes.dateToSQLDate( dtpesq ) );
 
 			ResultSet rs = ps.executeQuery();
 
@@ -3509,7 +3511,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		}
 		else if ( cevt.getListaCampos() == lcAlmoxProd && lcDet.getStatus() == ListaCampos.LCS_INSERT ) {
 			if ( habilitaCusto ) {
-				getCustoProd();
+				getCustoProd(txtDtEntCompra.getVlrDate());
 			}
 		}
 		/*

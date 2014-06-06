@@ -435,7 +435,7 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
 						+ "( case when coalesce(O.SITOP,'')='CA' then 0 else coalesce(oe.qtdent,O.QTDFINALPRODOP) end) QTDPROC, " 
 						+ "( SELECT " 
 						+ "cast(cast(sum( cast((select cast(ncustompm as decimal(15,5)) "
-						+ "from eqprodutosp01(it.codemppd,it.codfilialpd,it.codprod,null,null,null)) as decimal(15,5)) * it.qtditop ) "
+						+ "from eqprodutosp01(it.codemppd,it.codfilialpd,it.codprod,null,null,null, coalesce(oe.dtent,O.DTFABROP))) as decimal(15,5)) * it.qtditop ) "
 						+ "as decimal(15,5)) / o.qtdfinalprodop as decimal(15,5)) "
 						+" FROM PPITOP IT, EQPRODUTO PD "
 						+ "WHERE IT.CODEMP=O.CODEMP AND IT.CODFILIAL=O.CODFILIAL AND " 
