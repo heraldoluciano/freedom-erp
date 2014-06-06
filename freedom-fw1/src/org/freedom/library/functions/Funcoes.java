@@ -48,10 +48,12 @@ import java.sql.SQLException;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 import java.util.Vector;
 import java.util.regex.Pattern;
@@ -82,6 +84,13 @@ import org.freedom.library.swing.dialog.FFDialogo;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FSuporte;
 import org.freedom.library.type.StringDireita;
+
+import com.lowagie.text.Document;
+import com.lowagie.text.pdf.PRAcroForm;
+import com.lowagie.text.pdf.PdfCopy;
+import com.lowagie.text.pdf.PdfImportedPage;
+import com.lowagie.text.pdf.PdfReader;
+import com.lowagie.text.pdf.SimpleBookmark;
 
 import br.gov.sp.fazenda.dsge.brazilutils.uf.UF;
 import br.gov.sp.fazenda.dsge.brazilutils.uf.ie.InscricaoEstadual;
@@ -3697,4 +3706,70 @@ public class Funcoes {
 
 	}
 
+    public static void concatPdf(File[] sources, File target) throws Exception {
+        try {
+           int pageOffset = 0;
+           ArrayList<SimpleBookmark> master = new ArrayList<SimpleBookmark>();
+           int f = 0;
+           String outFile = target.getAbsolutePath();
+           Document document = null;
+           PdfCopy writer = null;
+           for (File source: sources) {
+             PdfReader reader = new PdfReader(source.getAbsolutePath());
+             reader.consolidateNamedDestinations();
+             int n = reader.getNumberOfPages();
+             @SuppressWarnings("unchecked")
+             List<SimpleBookmark> bookmarks = SimpleBookmark.getBookmark(reader);
+             if (bookmarks != null) {
+               if (pageOffset != 0) {
+                 SimpleBookmark.shiftPageNumbers(bookmarks, pageOffset,
+                    null);
+               }
+               master.addAll(bookmarks);
+              }
+              pageOffset += n;
+
+              if (f == 0) {
+                document = new Document(reader.getPageSizeWithRotation(1));
+                writer = new PdfCopy(document,
+                    new FileOutputStream(outFile));
+                document.open();
+              }
+              PdfImportedPage page;
+              for (int i = 0; i < n;) {
+                ++i;
+                page = writer.getImportedPage(reader, i);
+                writer.addPage(page);
+              }
+              PRAcroForm form = reader.getAcroForm();
+              if (form != null) {
+                writer.copyAcroForm(reader);
+              }
+              f++;
+           }
+           if (!master.isEmpty()) {
+             writer.setOutlines(master);
+           }
+           document.close();
+        } 
+        catch (Exception e) {
+          e.printStackTrace();
+        }
+    }
+    
+	public static boolean executePDF(String pathpdfreader, String filename) throws Exception {
+		boolean result = false;
+		String[] command = { pathpdfreader, filename };
+		try {
+			Runtime.getRuntime().exec(command);
+			result = true;
+		}
+		catch (IOException ioerr) {
+			ioerr.printStackTrace();
+			result = false;
+			throw new Exception("Erro executando a leitura do arquivo !\n"+ioerr.getMessage());
+		}
+		return result;
+	}
+	
 }
