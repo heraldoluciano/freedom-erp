@@ -330,8 +330,9 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
 				prod = "";
 				if ( cbTudo.getVlrString().equals( "S" ) )
 					prod = "[" + codprod + "] ";
-				if ( ! ( txtDataini.getVlrString().equals( "" ) ) ) {
+				if ( ( txtDataini.getVlrString().equals( "" ) ) ) {
 					zeraestoq = true;
+				} else {
 					where.append(" and dtmovprod >= '");
 					where.append(Funcoes.dateToStrDB( txtDataini.getVlrDate() ) );
 					where.append("'");
