@@ -363,7 +363,7 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
 				if ( zeraestoq ) {
 					state( prod + "Limpando saldos..." );
 					sql.delete( 0, sql.length() );
-					sql.append( "update eqproduto set sldprod=0, sldresprod=0, sldconsprod=0, sldliqprod=0 " );
+					sql.append( "update eqproduto set sldprod=0, sldresprod=0, sldconsigprod=0, sldliqprod=0 " );
 					sql.append( "where codemp=? and codprod=?" );
 					ps = con.prepareStatement( sql.toString() );
 					param = 1;
@@ -372,7 +372,7 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
 					ps.executeUpdate();
 					ps.close();
 					sql.delete( 0, sql.length() );
-					sql.append( "update eqlote set sldlote=0, sldreslote=0, sldconslote=0, sldliqlote=0 " );
+					sql.append( "update eqlote set sldlote=0, sldreslote=0, sldconsiglote=0, sldliqlote=0 " );
 					sql.append( "where codemp=? and codprod=?" );
 					ps = con.prepareStatement( sql.toString() );
 					param = 1;
