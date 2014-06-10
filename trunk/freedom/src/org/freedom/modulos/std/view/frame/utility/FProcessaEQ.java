@@ -87,14 +87,10 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
 		NONE, CODEMPIV, CODPRODIV, CODEMPCP, CODPRODCP, CODEMPOP, CODPRODOP, CODEMPOPSP, CODPRODOPSP, CODEMPRM, CODPRODRM, CODEMPVD, CODPRODVD
 	}
 
-	
-	
-	
-	
 	  /*ciud char(1),
 	    icodemppd integer,
 	    scodfilialpd smallint,
-	    icodprod integer,
+	    codprod integer,
 	    icodemple integer,
 	    scodfilialle smallint,
 	    ccodlote varchar(20),
@@ -306,67 +302,68 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
 		txtCodProd.setBuscaAdic( new DLBuscaProd( con, "CODPROD", lcProd.getWhereAdic() ) );
 	}
 
-	private boolean processar( int iCodProd ) {
+	private boolean processar( int codprod ) {
 
-		String sSQL = null;
-		String sSQLCompra = null;
-		String sSQLInventario = null;
-		String sSQLVenda = null;
-		String sSQLRMA = null;
-		String sSQLOP = null;
-		String sSQLOP_SP = null;
-		String sWhere = null;
-		String sProd = null;
-		String sWhereCompra = null;
-		String sWhereInventario = null;
-		String sWhereVenda = null;
-		String sWhereRMA = null;
-		String sWhereOP = null;
-		String sWhereOP_SP = null;
+		StringBuilder sql = new StringBuilder();
+		StringBuilder sqlcompra = new StringBuilder();
+		StringBuilder sqlinventario = new StringBuilder();
+		StringBuilder sqlvenda = new StringBuilder();
+		StringBuilder sqlrma = new StringBuilder();
+		StringBuilder sqlop = new StringBuilder();
+		StringBuilder sqlop_sp = new StringBuilder();
+		StringBuilder where = new StringBuilder();
+		String prod = null;
+		StringBuilder wherecompra = new StringBuilder();
+		StringBuilder whereinventario = new StringBuilder();
+		StringBuilder wherevenda = new StringBuilder();
+		StringBuilder whererma = new StringBuilder();
+		StringBuilder whereop = new StringBuilder();
+		StringBuilder whereop_sp = new StringBuilder();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		boolean bOK = false;
 
 		try {
 			try {
-				sWhere = "";
-				sProd = "";
+				prod = "";
 				if ( cbTudo.getVlrString().equals( "S" ) )
-					sProd = "[" + iCodProd + "] ";
+					prod = "[" + codprod + "] ";
 				if ( ! ( txtDataini.getVlrString().equals( "" ) ) ) {
-					sWhere = " AND DTMOVPROD >= '" + Funcoes.dateToStrDB( txtDataini.getVlrDate() ) + "'";
+					where.append(" and dtmovprod >= '");
+					where.append(Funcoes.dateToStrDB( txtDataini.getVlrDate() ) );
+					where.append("'");
 				}
 
-				sSQL = "DELETE FROM EQMOVPROD WHERE " + 
-				   "CODEMP=? AND CODPROD=?" + sWhere;
-				state( sProd + "Limpando movimentações desatualizadas..." );
-				ps = con.prepareStatement( sSQL );
-				ps.setInt( 1, Aplicativo.iCodEmp );
-			//	ps.setInt( 2, iFilialMov );
-				ps.setInt( 2, iCodProd );
+				sql.append( "delete from eqmovprod where " );
+				sql.append( "codemp=? and codprod=?" );
+				sql.append( where );
+				state( prod + "Limpando movimentações desatualizadas..." );
+				ps = con.prepareStatement( sql.toString() );
+				int param = 1;
+				ps.setInt( param++, Aplicativo.iCodEmp );
+				ps.setInt( param++, codprod );
 				ps.executeUpdate();
 				ps.close();
-				//             	 
-				// Funcoes.mensagemInforma( this, "Teste" );
-				/* state(sProd+"Limpando inventários desatualizados..."); */
 				if ( ( txtDataini.getVlrString().equals( "" ) ) ) {
-					sSQL = "UPDATE EQPRODUTO SET SLDPROD=0 WHERE " + 
-					  "CODEMP=? AND CODPROD=?";
-					ps = con.prepareStatement( sSQL );
-					ps.setInt( 1, Aplicativo.iCodEmp );
-					//ps.setInt( 2, iFilialMov );
-					ps.setInt( 2, iCodProd );
+					sql.delete( 0, sql.length() );
+					sql.append( "update eqproduto set sldprod=0 where " );
+					sql.append( "codemp=? and codprod=?" );
+					ps = con.prepareStatement( sql.toString() );
+					param = 1;
+					ps.setInt( param++, Aplicativo.iCodEmp );
+					ps.setInt( param++, codprod );
 					ps.executeUpdate();
 					ps.close();
-					state( sProd + "Limpando saldos..." );
-					sSQL = "UPDATE EQSALDOPROD SET SLDPROD=0 WHERE CODEMP=? AND CODPROD=?";
-					ps = con.prepareStatement( sSQL );
-					ps.setInt( 1, Aplicativo.iCodEmp );
-				//	ps.setInt( 2, iFilialMov );
-					ps.setInt( 2, iCodProd );
+					state( prod + "Limpando saldos..." );
+					sql.delete( 0, sql.length() );
+					sql.append( "update eqsaldoprod set sldprod=0 where codemp=? and codprod=?" );
+					ps = con.prepareStatement( sql.toString() );
+					param = 1;
+					ps.setInt( param++, Aplicativo.iCodEmp );
+					ps.setInt( param++, codprod );
 					ps.executeUpdate();
 					ps.close();
-					state( sProd + "Limpando saldos..." );
+					state( prod + "Limpando saldos..." );
 				}
 
 				// con.commit();
@@ -378,171 +375,190 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
 			if ( bOK ) {
 				bOK = false;
 				if ( !txtDataini.getVlrString().equals( "" ) ) {
-					sWhereCompra = " AND C.DTENTCOMPRA >= '" + Funcoes.dateToStrDB( txtDataini.getVlrDate() ) + "'";
-					sWhereInventario = " AND I.DATAINVP >= '" + Funcoes.dateToStrDB( txtDataini.getVlrDate() ) + "'";
-					sWhereVenda = " AND V.DTEMITVENDA >= '" + Funcoes.dateToStrDB( txtDataini.getVlrDate() ) + "'";
-					sWhereRMA = " AND RMA.DTAEXPRMA >= '" + Funcoes.dateToStrDB( txtDataini.getVlrDate() ) + "'";
-					sWhereOP = " AND O.DTFABROP >= '" + Funcoes.dateToStrDB( txtDataini.getVlrDate() ) + "'";
-					sWhereOP_SP = " AND O.DTSUBPROD >= '" + Funcoes.dateToStrDB( txtDataini.getVlrDate() ) + "'";
+					wherecompra.append( " and c.dtentcompra >= '").append( Funcoes.dateToStrDB( txtDataini.getVlrDate() ) ).append( "'" );
+					whereinventario.append(" and i.datainvp >= '").append( Funcoes.dateToStrDB( txtDataini.getVlrDate() ) ).append( "'" );
+					wherevenda.append(" and v.dtemitvenda >= '").append( Funcoes.dateToStrDB( txtDataini.getVlrDate() ) ).append( "'" );
+					whererma.append(" and rma.dtaexprma >= '" ).append( Funcoes.dateToStrDB( txtDataini.getVlrDate() ) ).append("'" );
+					whereop.append(" and o.dtfabrop >= '" ).append( Funcoes.dateToStrDB( txtDataini.getVlrDate() ) ).append( "'" );
+					whereop_sp.append(" and o.dtsubprod >= '" ).append(Funcoes.dateToStrDB( txtDataini.getVlrDate() ) ).append("'");
 				}
 				else {
-					sWhereCompra = "";
-					sWhereInventario = "";
-					sWhereVenda = "";
-					sWhereRMA = "";
-					sWhereOP = "";
-					sWhereOP_SP = "";
+					wherecompra.delete( 0, wherecompra.length() );
+					whereinventario.delete( 0, whereinventario.length() );
+					wherevenda.delete( 0, wherevenda.length() );
+					whererma.delete( 0, whererma.length() );
+					whereop.delete( 0, whereop.length() );
+					whereop_sp.delete( 0, whereop_sp.length() );
 				}
 
-				sSQLInventario = "SELECT 'A' TIPOPROC, I.CODEMPPD, I.CODFILIALPD, I.CODPROD," 
-						+ "I.CODEMPLE, I.CODFILIALLE, I.CODLOTE," 
-						+ "I.CODEMPTM, I.CODFILIALTM, I.CODTIPOMOV," 
-						+ "I.CODEMP, I.CODFILIAL, CAST(NULL AS CHAR(1)) TIPOVENDA, " 
-						+ "I.CODINVPROD CODMASTER, I.CODINVPROD CODITEM, "
-						+ "CAST(NULL AS INTEGER) CODEMPNT, CAST(NULL AS SMALLINT) CODFILIALNT ,CAST(NULL AS CHAR(4)) CODNAT," 
-						+ "I.DATAINVP DTPROC, I.CODINVPROD DOCPROC,'N' FLAG," 
-						+ "I.QTDINVP QTDPROC, I.PRECOINVP CUSTOPROC, " 
-						+ "I.CODEMPAX, I.CODFILIALAX, I.CODALMOX, CAST(NULL AS SMALLINT) as seqent, CAST(NULL AS SMALLINT) as seqsubprod  "
-						+ ", 'S' ESTOQTIPOMOVPD, 'N' TIPONF "
-						+ "FROM EQINVPROD I "
-						+ "WHERE I.CODEMP=? AND I.CODPROD = ?" + sWhereInventario;
+				sqlinventario.delete( 0, sqlinventario.length() );
+				sqlinventario.append( "select 'A' tipoproc, i.codemppd, i.codfilialpd, i.codprod," ) 
+						.append( "i.codemple, i.codfilialle, i.codlote," ) 
+						.append( "i.codemptm, i.codfilialtm, i.codtipomov," ) 
+						.append( "i.codemp, i.codfilial, cast(null as char(1)) tipovenda, " ) 
+						.append( "i.codinvprod codmaster, i.codinvprod coditem, " )
+						.append( "cast(null as integer) codempnt, cast(null as smallint) codfilialnt ,cast(null as char(4)) codnat," ) 
+						.append( "i.datainvp dtproc, i.codinvprod docproc,'n' flag," ) 
+						.append( "i.qtdinvp qtdproc, i.precoinvp custoproc, " ) 
+						.append( "i.codempax, i.codfilialax, i.codalmox, cast(null as smallint) as seqent, cast(null as smallint) as seqsubprod  " )
+						.append(", 'S' estoqtipomovpd, 'n' tiponf " )
+						.append("from eqinvprod i " )
+						.append( "where i.codemp=? and i.codprod = ?")
+						.append( whereinventario );
 
-				sSQLCompra = "SELECT 'C' TIPOPROC, IC.CODEMPPD, IC.CODFILIALPD, IC.CODPROD," 
-						+ "IC.CODEMPLE, IC.CODFILIALLE, IC.CODLOTE," 
-						+ "C.CODEMPTM, C.CODFILIALTM, C.CODTIPOMOV," 
-						+ "C.CODEMP, C.CODFILIAL, CAST(NULL AS CHAR(1)) TIPOVENDA, " 
-						+ "C.CODCOMPRA CODMASTER, IC.CODITCOMPRA CODITEM,"
-						+ "IC.CODEMPNT, IC.CODFILIALNT, IC.CODNAT, " 
-						+ "C.DTENTCOMPRA DTPROC, C.DOCCOMPRA DOCPROC, C.FLAG," 
-						+ "IC.QTDITCOMPRA QTDPROC, IC.CUSTOITCOMPRA CUSTOPROC, " 
-						+ "IC.CODEMPAX, IC.CODFILIALAX, IC.CODALMOX, CAST(NULL AS SMALLINT) as seqent, CAST(NULL AS SMALLINT) as seqsubprod "
-						+ ", 'S' ESTOQTIPOMOVPD, IC.TIPONFITCOMPRA TIPONF "
-						+ "FROM CPCOMPRA C,CPITCOMPRA IC "
-						+ "WHERE IC.CODCOMPRA=C.CODCOMPRA AND " 
-						+ "IC.CODEMP=C.CODEMP AND IC.CODFILIAL=C.CODFILIAL AND IC.QTDITCOMPRA > 0 AND " 
-						+ "C.CODEMP=? AND IC.CODPROD = ?" + sWhereCompra;
+				sqlcompra.delete( 0, sqlcompra.length() );
+				sqlcompra.append( "select 'C' tipoproc, ic.codemppd, ic.codfilialpd, ic.codprod," )
+						.append( "ic.codemple, ic.codfilialle, ic.codlote,"  )
+						.append( "c.codemptm, c.codfilialtm, c.codtipomov,"  )
+						.append( "c.codemp, c.codfilial, cast(null as char(1)) tipovenda, " ) 
+						.append( "c.codcompra codmaster, ic.coditcompra coditem," )
+						.append( "ic.codempnt, ic.codfilialnt, ic.codnat, "  )
+						.append( "c.dtentcompra dtproc, c.doccompra docproc, c.flag," ) 
+						.append( "ic.qtditcompra qtdproc, ic.custoitcompra custoproc, " ) 
+						.append( "ic.codempax, ic.codfilialax, ic.codalmox, cast(null as smallint) as seqent, cast(null as smallint) as seqsubprod " )
+						.append( ", 'S' estoqtipomovpd, ic.tiponfitcompra tiponf " )
+						.append( "from cpcompra c,cpitcompra ic " )
+						.append( "where ic.codcompra=c.codcompra and " ) 
+						.append( "ic.codemp=c.codemp and ic.codfilial=c.codfilial and ic.qtditcompra > 0 and " ) 
+						.append( "c.codemp=? and ic.codprod = ?" ) 
+						.append( wherecompra  );
 
+				sqlop.delete( 0, sqlop.length() );
+				sqlop.append( "select 'O' tipoproc, o.codemppd, o.codfilialpd, o.codprod," ) 
+						.append( "o.codemple, o.codfilialle, o.codlote," )
+						.append( "o.codemptm, o.codfilialtm, o.codtipomov," ) 
+						.append( "o.codemp, o.codfilial, cast(null as char(1)) tipovenda ," ) 
+						.append( "o.codop codmaster, cast(o.seqop as integer) coditem," )
+						.append( "cast(null as integer) codempnt, cast(null as smallint) codfilialnt, " ) 
+						.append( "cast(null as char(4)) codnat, "  )
+						.append( "coalesce(oe.dtent,o.dtfabrop) dtproc, " ) 
+						.append( "o.codop docproc, 'n' flag, " )
+						.append( "( case when coalesce(o.sitop,'')='ca' then 0 else coalesce(oe.qtdent,o.qtdfinalprodop) end) qtdproc, " ) 
+						.append( "( select " )
+						.append( "cast(cast(sum( cast((select cast(ncustompm as decimal(15,5)) " )
+						.append( "from eqprodutosp01(it.codemppd,it.codfilialpd,it.codprod,null,null,null, coalesce(oe.dtent,o.dtfabrop))) as decimal(15,5)) * it.qtditop ) " )
+						.append( "as decimal(15,5)) / o.qtdfinalprodop as decimal(15,5)) " )
+						.append( " from ppitop it, eqproduto pd " )
+						.append( "where it.codemp=o.codemp and it.codfilial=o.codfilial and " ) 
+						.append( "it.codop=o.codop and it.seqop=o.seqop and " )
+						.append( "pd.codemp=it.codemppd and pd.codfilial=it.codfilialpd and " ) 
+						.append( "pd.codprod=it.codprod) custoproc, " )
+						.append( "o.codempax, o.codfilialax, o.codalmox, oe.seqent, cast(null as smallint) as seqsubprod " )
+						.append( ", 'S' estoqtipomovpd, 'N' tiponf " )
+						.append( "from ppop o " )
+						.append( " left outer join ppopentrada oe on oe.codemp=o.codemp and oe.codfilial=o.codfilial and oe.codop=o.codop and oe.seqop=o.seqop " ) 
+						.append( "where o.qtdfinalprodop > 0 and " )
+						.append( "o.codemp=? and o.codprod = ? " )
+						.append( whereop );
 				
-				sSQLOP = "SELECT 'O' TIPOPROC, O.CODEMPPD, O.CODFILIALPD, O.CODPROD," 
-						+ "O.CODEMPLE, O.CODFILIALLE, O.CODLOTE," 
-						+ "O.CODEMPTM, O.CODFILIALTM, O.CODTIPOMOV," 
-						+ "O.CODEMP, O.CODFILIAL, CAST(NULL AS CHAR(1)) TIPOVENDA ," 
-						+ "O.CODOP CODMASTER, CAST(O.SEQOP AS INTEGER) CODITEM,"
-						+ "CAST(NULL AS INTEGER) CODEMPNT, CAST(NULL AS SMALLINT) CODFILIALNT, " 
-						+ "CAST(NULL AS CHAR(4)) CODNAT, " 
-						+ "coalesce(oe.dtent,O.DTFABROP) DTPROC, " 
-						+ "O.CODOP DOCPROC, 'N' FLAG, " 
-						+ "( case when coalesce(O.SITOP,'')='CA' then 0 else coalesce(oe.qtdent,O.QTDFINALPRODOP) end) QTDPROC, " 
-						+ "( SELECT " 
-						+ "cast(cast(sum( cast((select cast(ncustompm as decimal(15,5)) "
-						+ "from eqprodutosp01(it.codemppd,it.codfilialpd,it.codprod,null,null,null, coalesce(oe.dtent,O.DTFABROP))) as decimal(15,5)) * it.qtditop ) "
-						+ "as decimal(15,5)) / o.qtdfinalprodop as decimal(15,5)) "
-						+" FROM PPITOP IT, EQPRODUTO PD "
-						+ "WHERE IT.CODEMP=O.CODEMP AND IT.CODFILIAL=O.CODFILIAL AND " 
-						+ "IT.CODOP=O.CODOP AND IT.SEQOP=O.SEQOP AND " 
-						+ "PD.CODEMP=IT.CODEMPPD AND PD.CODFILIAL=IT.CODFILIALPD AND " 
-						+ "PD.CODPROD=IT.CODPROD) CUSTOPROC, " 
-						+ "O.CODEMPAX, O.CODFILIALAX, O.CODALMOX, oe.seqent, CAST(NULL AS SMALLINT) as seqsubprod "
-						+ ", 'S' ESTOQTIPOMOVPD, 'N' TIPONF "
-						+ "FROM PPOP O "
-						+ " left outer join ppopentrada oe on oe.codemp=o.codemp and oe.codfilial=o.codfilial and oe.codop=o.codop and oe.seqop=o.seqop " 
-						+ "WHERE O.QTDFINALPRODOP > 0 AND " 
-						+ "O.CODEMP=? AND O.CODPROD = ? " 
-						+ sWhereOP;
-				
-				sSQLOP_SP = "SELECT 'S' TIPOPROC, O.CODEMPPD, O.CODFILIALPD, O.CODPROD," 
-					+ "O.CODEMPLE, O.CODFILIALLE, O.CODLOTE," 
-					+ "O.CODEMPTM, O.CODFILIALTM, O.CODTIPOMOV," 
-					+ "O.CODEMP, O.CODFILIAL, CAST(NULL AS CHAR(1)) TIPOVENDA ," 
-					+ "O.CODOP CODMASTER, CAST(O.SEQOP AS INTEGER) CODITEM,"
-					+ "CAST(NULL AS INTEGER) CODEMPNT, CAST(NULL AS SMALLINT) CODFILIALNT, " 
-					+ "CAST(NULL AS CHAR(4)) CODNAT, " 
-					+ "coalesce(o.dtsubprod,Op.DTFABROP) DTPROC, " 
-					+ "O.CODOP DOCPROC, 'N' FLAG, " 
-					+ "O.QTDITSP QTDPROC, " 
-					+ "( SELECT PD.CUSTOMPMPROD FROM EQPRODUTO PD "
-					+ "WHERE PD.CODEMP=O.CODEMPPD AND PD.CODFILIAL=O.CODFILIALPD AND " 
-					+ "PD.CODPROD=O.CODPROD) CUSTOPROC, " 
-					+ "OP.CODEMPAX, OP.CODFILIALAX, OP.CODALMOX, CAST(NULL AS SMALLINT) as seqent, O.SEQSUBPROD "
-					+ ", 'S' ESTOQTIPOMOVPD, 'N' TIPONF "
-					+ "FROM PPOPSUBPROD O, PPOP OP "
-					+ "WHERE O.QTDITSP > 0 AND "
-					+ "O.CODEMP=OP.CODEMP and O.CODFILIAL=OP.CODFILIAL and O.CODOP=OP.CODOP and O.SEQOP=OP.SEQOP AND "
-					+ "O.CODEMP=? AND O.CODPROD = ?"
-					
-					+ sWhereOP_SP;
+				sqlop_sp.delete( 0, sqlop_sp.length() );
+				sqlop_sp.append( "select 'S' tipoproc, o.codemppd, o.codfilialpd, o.codprod," ) 
+					.append( "o.codemple, o.codfilialle, o.codlote," )
+					.append( "o.codemptm, o.codfilialtm, o.codtipomov," ) 
+					.append( "o.codemp, o.codfilial, cast(null as char(1)) tipovenda ," ) 
+					.append( "o.codop codmaster, cast(o.seqop as integer) coditem," )
+					.append( "cast(null as integer) codempnt, cast(null as smallint) codfilialnt, " ) 
+					.append( "cast(null as char(4)) codnat, " )
+					.append( "coalesce(o.dtsubprod,op.dtfabrop) dtproc, " ) 
+					.append( "o.codop docproc, 'N' flag, " )
+					.append( "o.qtditsp qtdproc, " )
+					.append( "( select pd.custompmprod from eqproduto pd " )
+					.append( "where pd.codemp=o.codemppd and pd.codfilial=o.codfilialpd and " ) 
+					.append( "pd.codprod=o.codprod) custoproc, " )
+					.append( "op.codempax, op.codfilialax, op.codalmox, cast(null as smallint) as seqent, o.seqsubprod " )
+					.append( ", 'S' estoqtipomovpd, 'n' tiponf " )
+					.append( "from ppopsubprod o, ppop op " )
+					.append( "where o.qtditsp > 0 and " )
+					.append( "o.codemp=op.codemp and o.codfilial=op.codfilial and o.codop=op.codop and o.seqop=op.seqop and " )
+					.append( "o.codemp=? and o.codprod = ?" )
+					.append( whereop_sp );
 						
-				sSQLRMA = "SELECT 'R' TIPOPROC, IT.CODEMPPD, IT.CODFILIALPD, IT.CODPROD, " 
-					+ "IT.CODEMPLE, IT.CODFILIALLE, IT.CODLOTE, " 
-					+ "RMA.CODEMPTM, RMA.CODFILIALTM, RMA.CODTIPOMOV, " 
-					+ "RMA.CODEMP, RMA.CODFILIAL, CAST(NULL AS CHAR(1)) TIPOVENDA, "
-					+ "IT.CODRMA CODMASTER, CAST(IT.CODITRMA AS INTEGER) CODITEM, " 
-					+ "CAST(NULL AS INTEGER) CODEMPNT, CAST(NULL AS SMALLINT) CODFILIALNT, " 
-					+ "CAST(NULL AS CHAR(4)) CODNAT, " 
-					+ "COALESCE(IT.DTAEXPITRMA,RMA.DTAREQRMA) DTPROC, " 
-					+ "RMA.CODRMA DOCPROC, 'N' FLAG, "
-					+ "IT.QTDEXPITRMA QTDPROC, IT.PRECOITRMA CUSTOPROC," 
-					+ "IT.CODEMPAX, IT.CODFILIALAX, IT.CODALMOX, CAST(NULL AS SMALLINT) as seqent, CAST(NULL AS SMALLINT) as seqsubprod   "
-					+ ", 'S' ESTOQTIPOMOVPD, 'N' TIPONF "
-					+ "FROM EQRMA RMA ,EQITRMA IT " 
-					+ "WHERE IT.CODRMA=RMA.CODRMA AND " 
-					+ "IT.CODEMP=RMA.CODEMP AND IT.CODFILIAL=RMA.CODFILIAL AND " 
-					+ "IT.QTDITRMA > 0 AND "
-					+ "RMA.CODEMP=? AND IT.CODPROD = ?" + sWhereRMA;
+				sqlrma.delete( 0, sqlrma.length() );
+				sqlrma.append( "select 'R' tipoproc, it.codemppd, it.codfilialpd, it.codprod, " ) 
+					.append( "it.codemple, it.codfilialle, it.codlote, "  )
+					.append( "rma.codemptm, rma.codfilialtm, rma.codtipomov, " ) 
+					.append( "rma.codemp, rma.codfilial, cast(null as char(1)) tipovenda, " )
+					.append( "it.codrma codmaster, cast(it.coditrma as integer) coditem, " ) 
+					.append( "cast(null as integer) codempnt, cast(null as smallint) codfilialnt, " ) 
+					.append( "cast(null as char(4)) codnat, " )
+					.append( "coalesce(it.dtaexpitrma,rma.dtareqrma) dtproc, " ) 
+					.append( "rma.codrma docproc, 'N' flag, " )
+					.append( "it.qtdexpitrma qtdproc, it.precoitrma custoproc," )  
+					.append( "it.codempax, it.codfilialax, it.codalmox, cast(null as smallint) as seqent, cast(null as smallint) as seqsubprod   " )
+					.append( ", 'S' estoqtipomovpd, 'N' tiponf " )
+					.append( "from eqrma rma ,eqitrma it " )
+					.append( "where it.codrma=rma.codrma and " ) 
+					.append( "it.codemp=rma.codemp and it.codfilial=rma.codfilial and " ) 
+					.append( "it.qtditrma > 0 and " )
+					.append( "rma.codemp=? and it.codprod = ?" )
+					.append( whererma );
 
-				sSQLVenda = "SELECT 'V' TIPOPROC, IV.CODEMPPD, IV.CODFILIALPD, IV.CODPROD," 
-						+ "IV.CODEMPLE, IV.CODFILIALLE, IV.CODLOTE," 
-						+ "V.CODEMPTM, V.CODFILIALTM, V.CODTIPOMOV," 
-						+ "V.CODEMP, V.CODFILIAL, V.TIPOVENDA, " 
-						+ "V.CODVENDA CODMASTER, IV.CODITVENDA CODITEM, "
-						+ "IV.CODEMPNT, IV.CODFILIALNT, IV.CODNAT, " 
-						+ "V.DTEMITVENDA DTPROC, V.DOCVENDA DOCPROC, V.FLAG, " 
-						+ "IV.QTDITVENDA QTDPROC, IV.VLRLIQITVENDA CUSTOPROC, " 
-						+ "IV.CODEMPAX, IV.CODFILIALAX, IV.CODALMOX, CAST(NULL AS SMALLINT) as seqent, CAST(NULL AS SMALLINT) as seqsubprod   "
-						+ ", CASE WHEN V.SUBTIPOVENDA='NC' THEN 'N' ELSE 'S' END ESTOQTIPOMOVPD, 'N' TIPONF "
-						+ "FROM VDVENDA V ,VDITVENDA IV "
-						+ "WHERE IV.CODVENDA=V.CODVENDA AND IV.TIPOVENDA = V.TIPOVENDA AND " 
-						+ "IV.CODEMP=V.CODEMP AND IV.CODFILIAL=V.CODFILIAL AND " 
-						+ "IV.QTDITVENDA > 0 AND " 
-						+ "V.CODEMP=? AND IV.CODPROD = ?" + sWhereVenda;
+				sqlvenda.delete( 0, sqlvenda.length() );
+				sqlvenda.append( "select 'V' tipoproc, iv.codemppd, iv.codfilialpd, iv.codprod," ) 
+						.append( "iv.codemple, iv.codfilialle, iv.codlote," )
+						.append( "v.codemptm, v.codfilialtm, v.codtipomov," ) 
+						.append( "v.codemp, v.codfilial, v.tipovenda, " ) 
+						.append( "v.codvenda codmaster, iv.coditvenda coditem, " )
+						.append( "iv.codempnt, iv.codfilialnt, iv.codnat, " ) 
+						.append( "v.dtemitvenda dtproc, v.docvenda docproc, v.flag, " ) 
+						.append( "iv.qtditvenda qtdproc, iv.vlrliqitvenda custoproc, " ) 
+						.append( "iv.codempax, iv.codfilialax, iv.codalmox, cast(null as smallint) as seqent, cast(null as smallint) as seqsubprod " )
+						.append( ", case when v.subtipovenda='NC' then 'N' else 'S' end estoqtipomovpd, 'N' tiponf " )
+						.append( "from vdvenda v ,vditvenda iv " )
+						.append( "where iv.codvenda=v.codvenda and iv.tipovenda = v.tipovenda and " ) 
+						.append( "iv.codemp=v.codemp and iv.codfilial=v.codfilial and " ) 
+						.append( "iv.qtditvenda > 0 and " ) 
+						.append( "v.codemp=? and iv.codprod = ?" ) 
+						.append( wherevenda );
 
 				try {
-					state( sProd + "Iniciando reconstrução..." );
-					sSQL = sSQLInventario + " UNION ALL " + sSQLCompra + " UNION ALL " + sSQLOP + " UNION ALL " + sSQLOP_SP + " UNION ALL " + sSQLRMA + " UNION ALL " + sSQLVenda 
-										  + " ORDER BY 19,1,20";// 1 POR QUE C-Compra,I-Inventario,V-Venda,R-RMA
+					state( prod + "Iniciando reconstrução..." );
+					sql.delete( 0, sql.length() );
+					sql.append(  sqlinventario )
+					.append(" union all ")
+					.append( sqlcompra )
+					.append(" union all " )
+					.append( sqlop  )
+					.append( " union all " )
+					.append( sqlop_sp )
+					.append(" union all " )
+					.append( sqlrma )
+					.append(" union all " )
+					.append( sqlvenda )
+					.append( " order by 19,1,20" );// 1 por que c-compra,i-inventario,v-venda,r-rma
 					
-					System.out.println(sSQL);
+					System.out.println(sql.toString());
 					
-					ps = con.prepareStatement( sSQL );
+					ps = con.prepareStatement( sql.toString() );
 					
 					ps.setInt( paramCons.CODEMPIV.ordinal(), Aplicativo.iCodEmp );
-					ps.setInt( paramCons.CODPRODIV.ordinal(), iCodProd );
+					ps.setInt( paramCons.CODPRODIV.ordinal(), codprod );
 
 					ps.setInt( paramCons.CODEMPCP.ordinal(), Aplicativo.iCodEmp );
-					ps.setInt( paramCons.CODPRODCP.ordinal(), iCodProd );
+					ps.setInt( paramCons.CODPRODCP.ordinal(), codprod );
 
 					ps.setInt( paramCons.CODEMPOP.ordinal(), Aplicativo.iCodEmp );
-					ps.setInt( paramCons.CODPRODOP.ordinal(), iCodProd );
+					ps.setInt( paramCons.CODPRODOP.ordinal(), codprod );
 
 					ps.setInt( paramCons.CODEMPOPSP.ordinal(), Aplicativo.iCodEmp );
-					ps.setInt( paramCons.CODPRODOPSP.ordinal(), iCodProd );
+					ps.setInt( paramCons.CODPRODOPSP.ordinal(), codprod );
 					
 					ps.setInt( paramCons.CODEMPRM.ordinal(), Aplicativo.iCodEmp );
-					ps.setInt( paramCons.CODPRODRM.ordinal(), iCodProd );
+					ps.setInt( paramCons.CODPRODRM.ordinal(), codprod );
 					
 					ps.setInt( paramCons.CODEMPVD.ordinal(), Aplicativo.iCodEmp );
-					ps.setInt( paramCons.CODPRODVD.ordinal(), iCodProd );
+					ps.setInt( paramCons.CODPRODVD.ordinal(), codprod );
 					
 					rs = ps.executeQuery();
 					bOK = true;
 					
 					while ( rs.next() && bOK ) {
-						bOK = insereMov( rs, sProd );
+						bOK = insereMov( rs, prod );
 					}
 					
 					rs.close();
 					ps.close();
-					state( sProd + "Aguardando gravação final..." );
+					state( prod + "Aguardando gravação final..." );
 					
 				} 
 				catch ( SQLException err ) {
@@ -554,10 +570,10 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
 			try {
 				if ( bOK ) {
 					con.commit();
-					state( sProd + "Registros processados com sucesso!" );
+					state( prod + "Registros processados com sucesso!" );
 				}
 				else {
-					state( sProd + "Registros antigos restaurados!" );
+					state( prod + "Registros antigos restaurados!" );
 					con.rollback();
 				}
 			} catch ( SQLException err ) {
@@ -566,17 +582,17 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
 			}
 
 		} finally {
-			sSQL = null;
-			sSQLCompra = null;
-			sSQLInventario = null;
-			sSQLVenda = null;
-			sSQLRMA = null;
-			sWhere = null;
-			sProd = null;
-			sWhereCompra = null;
-			sWhereInventario = null;
-			sWhereVenda = null;
-			sWhereRMA = null;
+			sql = null;
+			sqlcompra = null;
+			sqlinventario = null;
+			sqlvenda = null;
+			sqlrma = null;
+			where = null;
+			prod = null;
+			wherecompra = null;
+			whereinventario = null;
+			wherevenda = null;
+			whererma = null;
 			rs = null;
 			ps = null;
 			bRunProcesso = false;
@@ -588,7 +604,7 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
 	private boolean insereMov( ResultSet rs, String sProd ) {
 
 		/*
-		 * Parâmetros da procedure de reconstrução da tabela EQMOVPROD CIUD CHAR(1), ICODEMPPD INTEGER, SCODFILIALPD SMALLINT, ICODPROD INTEGER, ICODEMPLE INTEGER, SCODFILIALLE SMALLINT, CCODLOTE CHAR(13), ICODEMPTM INTEGER, SCODFILIALTM SMALLINT, ICODTIPOMOV INTEGER, 11 ICODEMPIV INTEGER,
+		 * Parâmetros da procedure de reconstrução da tabela EQMOVPROD CIUD CHAR(1), ICODEMPPD INTEGER, SCODFILIALPD SMALLINT, codprod INTEGER, ICODEMPLE INTEGER, SCODFILIALLE SMALLINT, CCODLOTE CHAR(13), ICODEMPTM INTEGER, SCODFILIALTM SMALLINT, ICODTIPOMOV INTEGER, 11 ICODEMPIV INTEGER,
 		 * SCODFILIALIV SMALLINT, ICODINVPROD INTEGER, 14 ICODEMPCP INTEGER, SCODFILIALCP SMALLINT, ICODCOMPRA INTEGER, SCODITCOMPRA SMALLINT, 18 ICODEMPVD INTEGER, SCODFILIALVD SMALLINT, CTIPOVENDA CHAR(1), ICODVENDA INTEGER, SCODITVENDA SMALLINT, 23 ICODEMPRM INTEGER, SCODFILIALRM SMALLINT,
 		 * ICODRMA INTEGER, SCODITRMA SMALLINT, 27 ICODEMPNT INTEGER, SCODFILIALNT SMALLINT, CCODNAT CHAR(4), 30 DDTMOVPROD DATE, IDOCMOVPROD INTEGER, CFLAG CHAR(1), NQTDMOVPROD NUMERIC(15,3), NPRECOMOVPROD NUMERIC(15,3))
 		 */
