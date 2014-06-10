@@ -62,6 +62,8 @@ public class FEmpresa extends FDetalhe {
 
 	private JPanelPad pinMatriz = new JPanelPad();
 
+	private JPanelPad pinPrefeitura = new JPanelPad();
+
 	private JTextFieldPad txtCodEmp = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
 	private JTextFieldPad txtRazEmp = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
@@ -218,7 +220,7 @@ public class FEmpresa extends FDetalhe {
 	
 	private JTextFieldFK txtNomeFor = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 	
-	
+	private PainelImagem imLogoPrefeitura = new PainelImagem( 65000 );
 
 	public FEmpresa() {
 
@@ -417,7 +419,7 @@ public class FEmpresa extends FDetalhe {
 
 		adicCampo( txtCodEmp, 7, 20, 60, 20, "CodEmp", "Cód.Emp", ListaCampos.DB_PK, true );
 		adicCampo( txtRazEmp, 70, 20, 260, 20, "RazEmp", "Razão social da empresa", ListaCampos.DB_SI, true );
-		adicDB( imFotoEmp, 340, 20, 150, 100, "FotoEmp", "Foto:(64Kb 18x12)", true );
+		adicDB( imFotoEmp, 340, 20, 150, 100, "FotoEmp", "Logo: (64Kb 18x12)", true );
 		adicCampo( txtNomeEmp, 7, 60, 323, 20, "NomeEmp", "Nome fantasia", ListaCampos.DB_SI, false );
 		adicCampo( txtNomeContEmp, 7, 100, 323, 20, "NomeContEmp", "Contato", ListaCampos.DB_SI, false );
 		adicCampo( txtCodEANEmp, 7, 140, 95, 20, "CodEANEmp", "Cod. EAN", ListaCampos.DB_SI, false );
@@ -545,7 +547,12 @@ public class FEmpresa extends FDetalhe {
 		adicCampo( txtUnidFranqueada, 7, 20, 200, 20, "UnidFranqueada", "Unidade/Fraqueada", ListaCampos.DB_SI, false );
 		adicCampo( txtWWWFranqueadora, 7, 60, 200, 20, "WWWFranqueadora", "Página da Web", ListaCampos.DB_SI, false );
 		adicCampo( txtMarcaFranqueadora, 7, 100, 200, 20, "MarcaFranqueadora", "Marca", ListaCampos.DB_SI, false );
-		
+
+		tpnGeral.addTab( "Prefeitura", pinPrefeitura );
+		setPainel( pinPrefeitura );
+
+		adicDB( imLogoPrefeitura, 7, 20, 150, 100, "LogoPrefeitura", "Logo: (64Kb 18x12)", false );
+
 		setListaCampos( true, "FILIAL", "SG" );
 		lcDet.setOrdem( "RazFilial" );
 		
