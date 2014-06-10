@@ -322,6 +322,8 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		boolean bOK = false;
+		boolean zeraestoq = false;
+		int param = 1;
 
 		try {
 			try {
@@ -329,45 +331,73 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
 				if ( cbTudo.getVlrString().equals( "S" ) )
 					prod = "[" + codprod + "] ";
 				if ( ! ( txtDataini.getVlrString().equals( "" ) ) ) {
+					zeraestoq = true;
 					where.append(" and dtmovprod >= '");
 					where.append(Funcoes.dateToStrDB( txtDataini.getVlrDate() ) );
 					where.append("'");
 				}
-
-				sql.append( "delete from eqmovprod where " );
-				sql.append( "codemp=? and codprod=?" );
-				sql.append( where );
 				state( prod + "Limpando movimentações desatualizadas..." );
+				if (zeraestoq) {
+					sql.delete( 0, sql.length() );
+					sql.append( "update eqmovprod set emmanut='S' " );
+					sql.append( "where codemp=? and codprod=?" );
+					ps = con.prepareStatement( sql.toString() );
+					param = 1;
+					ps.setInt( param++, Aplicativo.iCodEmp );
+					ps.setInt( param++, codprod );
+					ps.executeUpdate();
+					ps.close();
+				}
+				sql.delete( 0, sql.length() );
+				sql.append( "delete from eqmovprod " );
+				sql.append( "where codemp=? and codprod=?" );
+				sql.append( where );
 				ps = con.prepareStatement( sql.toString() );
-				int param = 1;
+				param = 1;
 				ps.setInt( param++, Aplicativo.iCodEmp );
 				ps.setInt( param++, codprod );
 				ps.executeUpdate();
 				ps.close();
-				if ( ( txtDataini.getVlrString().equals( "" ) ) ) {
-					sql.delete( 0, sql.length() );
-					sql.append( "update eqproduto set sldprod=0 where " );
-					sql.append( "codemp=? and codprod=?" );
-					ps = con.prepareStatement( sql.toString() );
-					param = 1;
-					ps.setInt( param++, Aplicativo.iCodEmp );
-					ps.setInt( param++, codprod );
-					ps.executeUpdate();
-					ps.close();
-					state( prod + "Limpando saldos..." );
-					sql.delete( 0, sql.length() );
-					sql.append( "update eqsaldoprod set sldprod=0 where codemp=? and codprod=?" );
-					ps = con.prepareStatement( sql.toString() );
-					param = 1;
-					ps.setInt( param++, Aplicativo.iCodEmp );
-					ps.setInt( param++, codprod );
-					ps.executeUpdate();
-					ps.close();
-					state( prod + "Limpando saldos..." );
-				}
 
-				// con.commit();
-				// Funcoes.mensagemInforma( this, "Teste" );
+				if ( zeraestoq ) {
+					state( prod + "Limpando saldos..." );
+					sql.delete( 0, sql.length() );
+					sql.append( "update eqproduto set sldprod=0, sldresprod=0, sldconsprod=0, sldliqprod=0 " );
+					sql.append( "where codemp=? and codprod=?" );
+					ps = con.prepareStatement( sql.toString() );
+					param = 1;
+					ps.setInt( param++, Aplicativo.iCodEmp );
+					ps.setInt( param++, codprod );
+					ps.executeUpdate();
+					ps.close();
+					sql.delete( 0, sql.length() );
+					sql.append( "update eqlote set sldlote=0, sldreslote=0, sldconslote=0, sldliqlote=0 " );
+					sql.append( "where codemp=? and codprod=?" );
+					ps = con.prepareStatement( sql.toString() );
+					param = 1;
+					ps.setInt( param++, Aplicativo.iCodEmp );
+					ps.setInt( param++, codprod );
+					ps.executeUpdate();
+					ps.close();
+					sql.delete( 0, sql.length() );
+					sql.append( "delete from eqsaldoprod " );
+					sql.append( "where codemp=? and codprod=?" );
+					ps = con.prepareStatement( sql.toString() );
+					param = 1;
+					ps.setInt( param++, Aplicativo.iCodEmp );
+					ps.setInt( param++, codprod );
+					ps.executeUpdate();
+					ps.close();
+					sql.delete( 0, sql.length() );
+					sql.append( "delete from eqsaldolote " );
+					sql.append( "where codemp=? and codprod=?" );
+					ps = con.prepareStatement( sql.toString() );
+					param = 1;
+					ps.setInt( param++, Aplicativo.iCodEmp );
+					ps.setInt( param++, codprod );
+					ps.executeUpdate();
+					ps.close();
+				}
 				bOK = true;
 			} catch ( SQLException err ) {
 				Funcoes.mensagemErro( null, "Erro ao limpar estoques!\n" + err.getMessage(), true, con, err );
