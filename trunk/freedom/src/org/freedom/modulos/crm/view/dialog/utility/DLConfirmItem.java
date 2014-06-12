@@ -57,6 +57,10 @@ public class DLConfirmItem extends FFDialogo implements FocusListener {
 
 	private static enum FIELDS_CONFIRM {CODPROD, DESCPROD, QTD, PRECO, PERCDESC, VLRDESC, VLRLIQ}
 
+	private BigDecimal qtd_old = null;
+	
+	private BigDecimal preco_old = null;
+	
 	private BigDecimal percdesc_old = null;
 	
 	private BigDecimal vlrdesc_old = null;
@@ -126,7 +130,11 @@ public class DLConfirmItem extends FFDialogo implements FocusListener {
 	}
 
 	public void focusGained( FocusEvent e ) {
-		if (e.getSource()==txtPercDesc) {
+		if (e.getSource()==txtQtd) {
+			qtd_old = txtQtd.getVlrBigDecimal();
+		} else if (e.getSource()==txtPreco) {
+			preco_old = txtPreco.getVlrBigDecimal();
+		} else if (e.getSource()==txtPercDesc) {
 			percdesc_old = txtPercDesc.getVlrBigDecimal();
 		} else if (e.getSource()==txtVlrDesc) {
 			vlrdesc_old = txtVlrDesc.getVlrBigDecimal();
@@ -156,13 +164,23 @@ public class DLConfirmItem extends FFDialogo implements FocusListener {
 		BigDecimal percdesc = txtPercDesc.getVlrBigDecimal();
 		BigDecimal vlrdesc = txtVlrDesc.getVlrBigDecimal();
 		BigDecimal vlrliq = txtVlrLiq.getVlrBigDecimal();
-		if (field==FIELDS_CONFIRM.PERCDESC && !percdesc.equals( percdesc_old ))  {
-			vlrdesc = qtd.multiply( preco ).multiply( percdesc ).divide( new BigDecimal(100f) );
+		if ( (field==FIELDS_CONFIRM.QTD && !qtd.equals( qtd_old )) 
+			|| (field==FIELDS_CONFIRM.PRECO && !qtd.equals( preco_old ))
+			|| (field==FIELDS_CONFIRM.PERCDESC && !percdesc.equals( percdesc_old )))  {
+			vlrdesc = qtd.multiply( preco ).multiply( percdesc ).divide( new BigDecimal(100f), 5, BigDecimal.ROUND_HALF_UP );
 			txtVlrDesc.setVlrBigDecimal( vlrdesc );
 		}
 		if (field==FIELDS_CONFIRM.VLRDESC && !vlrdesc.equals( vlrdesc_old ))  {
-			percdesc = BigDecimal.ZERO;
-			txtPercDesc.setVlrBigDecimal( percdesc );
+			try {
+				BigDecimal total =  qtd.multiply(preco);
+				percdesc = vlrdesc.multiply( new BigDecimal(100f) );
+				percdesc = percdesc.divide( total, 5, BigDecimal.ROUND_HALF_UP );
+				//percdesc = BigDecimal.ZERO;
+				txtPercDesc.setVlrBigDecimal( percdesc );
+			} catch (Exception err) {
+				err.printStackTrace();
+				System.out.println(err.getMessage());
+			}
 		}
 		
 		if (field!=FIELDS_CONFIRM.VLRLIQ ) {
