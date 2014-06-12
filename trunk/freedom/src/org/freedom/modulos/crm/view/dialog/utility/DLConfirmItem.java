@@ -167,14 +167,14 @@ public class DLConfirmItem extends FFDialogo implements FocusListener {
 		if ( (field==FIELDS_CONFIRM.QTD && !qtd.equals( qtd_old )) 
 			|| (field==FIELDS_CONFIRM.PRECO && !qtd.equals( preco_old ))
 			|| (field==FIELDS_CONFIRM.PERCDESC && !percdesc.equals( percdesc_old )))  {
-			vlrdesc = qtd.multiply( preco ).multiply( percdesc ).divide( new BigDecimal(100f), 5, BigDecimal.ROUND_HALF_UP );
+			vlrdesc = qtd.multiply( preco ).multiply( percdesc ).divide( new BigDecimal(100f), Aplicativo.casasDecFin , BigDecimal.ROUND_HALF_UP );
 			txtVlrDesc.setVlrBigDecimal( vlrdesc );
 		}
 		if (field==FIELDS_CONFIRM.VLRDESC && !vlrdesc.equals( vlrdesc_old ))  {
 			try {
 				BigDecimal total =  qtd.multiply(preco);
 				percdesc = vlrdesc.multiply( new BigDecimal(100f) );
-				percdesc = percdesc.divide( total, 5, BigDecimal.ROUND_HALF_UP );
+				percdesc = percdesc.divide( total, Aplicativo.casasDecFin , BigDecimal.ROUND_HALF_UP );
 				//percdesc = BigDecimal.ZERO;
 				txtPercDesc.setVlrBigDecimal( percdesc );
 			} catch (Exception err) {
