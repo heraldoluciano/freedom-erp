@@ -207,6 +207,8 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 	private JButtonPad btResetCesta = new JButtonPad( Icone.novo( "btExcluir.png" ) );
 
 	private JButtonPad btAddCesta = new JButtonPad( Icone.novo( "btAdic2.gif" ) );
+	
+	private JButtonPad btVenda = new JButtonPad( Icone.novo( "btSaida.png" ) );
 
 	private JButtonPad btExec = new JButtonPad( Icone.novo( "btExecuta.png" ) );
 
@@ -295,6 +297,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		btDesselecionar.addActionListener( this );
 		btGerar.addActionListener( this );
 		btAddCesta.addActionListener( this );
+		btVenda.addActionListener( this );
 		txtCodCli.addFocusListener( this );
 		tabbedDetail.addChangeListener( this );
 		Calendar periodo = Calendar.getInstance();
@@ -343,6 +346,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		pinToolBarCesta.adic( btDesselecionar, 3, 63, 30, 30 );
 		pinToolBarCesta.adic( btGerar, 3, 93, 30, 30 );
 		pinToolBarVendas.adic( btAddCesta, 3, 3, 30, 30 );
+		pinToolBarVendas.adic( btVenda, 3, 33, 30, 30 );
 		// ToolBarCesta inicializa invisível
 		pinToolBarCesta.setVisible( false );
 		// *********
@@ -780,6 +784,12 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 			selAllCestas(false);
 		} else if ( e.getSource() == btGerar ) {
 			gerarOrcamento();
+		} else if ( e.getSource() == btVenda) {
+			if (tabVendas.getLinhaSel()>-1 && tabItensVenda.getLinhaSel()>-1) {
+				loadVenda((String) tabVendas.getValor( tabVendas.getLinhaSel(), VENDAS.TIPOVENDA.ordinal() )
+					, (Integer) tabVendas.getValor( tabVendas.getLinhaSel(), VENDAS.CODVENDA.ordinal() )
+					, (Integer) tabItensVenda.getValor( tabItensVenda.getLinhaSel(), ITENSVENDA.CODITVENDA.ordinal() ) );
+			}
 		}
 	}
 
@@ -1095,33 +1105,31 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		}
 	}
 
+	private void loadVenda(String tipovenda, Integer codvenda, Integer coditvenda) {
+		FVenda venda = null;
+		if ( Aplicativo.telaPrincipal.temTela( FVenda.class.getName() ) ) {
+			venda = (FVenda) Aplicativo.telaPrincipal.getTela( FVenda.class.getName() );
+		}
+		else {
+			venda = new FVenda();
+			Aplicativo.telaPrincipal.criatela( "Venda", venda, con );
+		}
+		if (coditvenda==null) {
+			venda.exec( codvenda, tipovenda );
+		} else {
+			venda.exec( codvenda, coditvenda, tipovenda);
+		}
+
+	}
 	public void mouseClicked( MouseEvent e ) {
 
 		if ( e.getClickCount() == 2 ) {
 			if ( e.getSource() == tabVendas && tabVendas.getLinhaSel() > -1 ) {
-				FVenda venda = null;
-				if ( Aplicativo.telaPrincipal.temTela( FVenda.class.getName() ) ) {
-					venda = (FVenda) Aplicativo.telaPrincipal.getTela( FVenda.class.getName() );
-				}
-				else {
-					venda = new FVenda();
-					Aplicativo.telaPrincipal.criatela( "Venda", venda, con );
-				}
-				venda.exec( (Integer) tabVendas.getValor( tabVendas.getLinhaSel(), VENDAS.CODVENDA.ordinal() )
-						, (String) tabVendas.getValor( tabVendas.getLinhaSel(), VENDAS.TIPOVENDA.ordinal() ) );
+				loadVenda((String) tabVendas.getValor( tabVendas.getLinhaSel(), VENDAS.TIPOVENDA.ordinal() )
+						, (Integer) tabVendas.getValor( tabVendas.getLinhaSel(), VENDAS.CODVENDA.ordinal() )
+						, null);
 			} else if ( e.getSource() == tabItensVenda && tabItensVenda.getLinhaSel() > -1 ) {
-				FVenda venda = null;
-				if ( Aplicativo.telaPrincipal.temTela( FVenda.class.getName() ) ) {
-					venda = (FVenda) Aplicativo.telaPrincipal.getTela( FVenda.class.getName() );
-				}
-				else {
-					venda = new FVenda();
-					Aplicativo.telaPrincipal.criatela( "Venda", venda, con );
-				}
-				venda.exec( (Integer) tabVendas.getValor( tabVendas.getLinhaSel(), VENDAS.CODVENDA.ordinal() )
-						, (Integer) tabItensVenda.getValor( tabItensVenda.getLinhaSel(), ITENSVENDA.CODITVENDA.ordinal() )
-						, (String) tabItensVenda.getValor( tabItensVenda.getLinhaSel(), ITENSVENDA.TIPOVENDA
-						.ordinal() ) );
+				btAddCesta.doClick();
 			}  else if ( e.getSource() == tabCestas ) {
 				int selectedRow = tabCestas.getLinhaSel();
 				if (selectedRow>-1) {
