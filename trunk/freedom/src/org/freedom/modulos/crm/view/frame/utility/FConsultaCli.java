@@ -288,6 +288,7 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		tabCestas.addTabelaSelListener( this );
 		tabCestas.addTabelaEditListener( this );
 		tabCestas.addMouseListener( this );
+		tabItensCesta.addTabelaEditListener( this );
 		tabProdVendas.addTabelaSelListener( this );
 		tabProdVendas.addMouseListener( this );
 		tabItensVenda.addMouseListener( this );
@@ -1273,6 +1274,19 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 				} */
 				loadTabItensCesta();
 			}
+		}  else if (evt.getTabela()==tabItensCesta && !loadingCestas && !loadingItensCesta) {
+			int editedRow = tabItensCesta.getLinhaEditada();
+			int editedCol = tabItensCesta.getColunaEditada();
+			int selectedRow = tabCestas.getLinhaSel();
+			if (selectedRow==-1) {
+				selectedRow=0;
+			}
+			if (editedRow>-1 && editedCol==ITENSCESTA.SELECAO.ordinal() && selectedRow!=-1) {
+				boolean sel = (Boolean) tabItensCesta.getValor( editedRow, ITENSCESTA.SELECAO.ordinal() );
+				Item item = cestaFactory.getCestas().get( selectedRow ).getItens().get( editedRow );
+				item.setSel( sel );
+			}
 		}
+
 	}
 }

@@ -157,6 +157,9 @@ public class Cesta {
 		sumarize();
 	}
 	public void sumarize() {
+		setQtdcesta(BigDecimal.ZERO);
+		setVlrdesccesta(BigDecimal.ZERO);
+		setVlrliqcesta(BigDecimal.ZERO);
 		for (Item item: getItens()) {
 			setQtdcesta(getQtdcesta().add(item.getQtd()));
 			setVlrdesccesta(getVlrdesccesta().add(item.getVlrdesc()));
