@@ -1131,6 +1131,8 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 						, null);
 			} else if ( e.getSource() == tabItensVenda && tabItensVenda.getLinhaSel() > -1 ) {
 				btAddCesta.doClick();
+			} else if ( e.getSource() == tabProdVendas && tabProdVendas.getLinhaSel() > -1 ) {
+				btAddCesta.doClick();
 			}  else if ( e.getSource() == tabCestas ) {
 				int selectedRow = tabCestas.getLinhaSel();
 				if (selectedRow>-1) {
