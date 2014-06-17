@@ -113,7 +113,7 @@ public class FRVendasVend extends FRelatorio {
 		Vector<String> vVals3 = new Vector<String>();
 
 		vLabs3.addElement( "Financeiro" );
-		vLabs3.addElement( "Não Finaceiro" );
+		vLabs3.addElement( "Não Financeiro" );
 		vLabs3.addElement( "Ambos" );
 		vVals3.addElement( "S" );
 		vVals3.addElement( "N" );

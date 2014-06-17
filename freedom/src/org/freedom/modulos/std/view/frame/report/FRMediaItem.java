@@ -197,7 +197,7 @@ public class FRMediaItem extends FRelatorio implements FocusListener {
 		rgFaturados.setVlrString( "S" );
 
 		vLabsFin.addElement( "Financeiro" );
-		vLabsFin.addElement( "Não Finaceiro" );
+		vLabsFin.addElement( "Não Financeiro" );
 		vLabsFin.addElement( "Ambos" );
 		vValsFin.addElement( "S" );
 		vValsFin.addElement( "N" );
