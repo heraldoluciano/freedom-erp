@@ -136,7 +136,7 @@ public class FRVendasDet extends FRelatorio {
 		Vector<String> vVals2 = new Vector<String>();
 
 		vLabs2.addElement( "Financeiro" );
-		vLabs2.addElement( "Não Finaceiro" );
+		vLabs2.addElement( "Não Financeiro" );
 		vLabs2.addElement( "Ambos" );
 		vVals2.addElement( "S" );
 		vVals2.addElement( "N" );

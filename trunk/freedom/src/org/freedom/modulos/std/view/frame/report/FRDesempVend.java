@@ -126,7 +126,7 @@ public class FRDesempVend extends FRelatorio {
 		rgFaturados.setVlrString( "S" );
 
 		vLabsFinan.addElement( "Financeiro" );
-		vLabsFinan.addElement( "Não Finaceiro" );
+		vLabsFinan.addElement( "Não Financeiro" );
 		vLabsFinan.addElement( "Ambos" );
 		vValsFinan.addElement( "S" );
 		vValsFinan.addElement( "N" );
