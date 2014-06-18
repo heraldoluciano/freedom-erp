@@ -262,7 +262,11 @@ public class NFEConnectionFactory implements NFEListener {
 	public void setMotivoCancNfe(String motivoCancNfe) {
 		getObjNFEFactory().setMotivoCancNfe( motivoCancNfe );
 	}
-	
+
+	public void setCorrecaoNfe(String correcaoNfe) {
+		getObjNFEFactory().setCorrecaoNfe( correcaoNfe );
+	}
+
 	public void setChaveNfe(String chaveNfe) {
 		getObjNFEFactory().setChaveNfe( chaveNfe );
 	}
