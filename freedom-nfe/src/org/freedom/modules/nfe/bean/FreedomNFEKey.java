@@ -41,6 +41,8 @@ public class FreedomNFEKey extends AbstractNFEKey {
 	public static final String DIRNFE = "DIRNFE";
 	
 	public static final String MODELO = "MODELO";
+	
+	public static final String CHAVENFE = "CHAVENFE";
 
 	public FreedomNFEKey(Integer codemp, Integer codfilial, String tipovenda, Integer codvenda, Integer modelo, String serie, Integer docvenda, String dirNFE) {
 
