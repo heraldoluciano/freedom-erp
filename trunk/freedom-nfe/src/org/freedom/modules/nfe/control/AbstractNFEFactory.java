@@ -55,7 +55,7 @@ public abstract class AbstractNFEFactory {
 	
 	public static final Constant TP_NF_IN = new Constant("Entrada", new Integer(0));
 
-	public static final Constant TP_NF_OUT = new Constant("Saida", new Integer(1));
+	public static final Constant TP_NF_OUT = new Constant("Saída", new Integer(1));
 
 	public static final Constant TP_NF_BOTH = new Constant("Ambos", new Integer(3));
 	
@@ -110,7 +110,7 @@ public abstract class AbstractNFEFactory {
 	
 	private Integer tipoEmissao;
 	
-	public enum TYPE_PROC {NFE, CANCELAMENTO};
+	public enum TYPE_PROC {NFE, CANCELAMENTO, CCE};
 	/*ASSINADA;1
 AUTORIZADA;10772
 CANCELADA;130
@@ -124,7 +124,9 @@ REJEITADA;2*/
 	private TYPE_PROC type_proc = null;
 	
 	private String motivoCancNfe = null;
-	
+
+	private String correcaoNfe = null;
+
 	private String cnpjFilial = null;
 	
 	public enum SYSTEM {
@@ -349,6 +351,14 @@ REJEITADA;2*/
 
 	public void setMotivoCancNfe(String motivoCancNfe) {
 		this.motivoCancNfe = motivoCancNfe;
+	}
+
+	public String getCorrecaoNfe() {
+		return correcaoNfe;
+	}
+
+	public void setCorrecaoNfe(String correcaoNfe) {
+		this.correcaoNfe = correcaoNfe;
 	}
 
 	public String getCnpjFilial() {
