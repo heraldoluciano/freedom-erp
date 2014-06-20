@@ -2214,7 +2214,7 @@ public class Funcoes {
 		int iSegundo = cal.get(Calendar.SECOND);
 		return StringFunctions.strZero(String.valueOf(iHora), 2) + ":"
 				+ StringFunctions.strZero(String.valueOf(iMinuto), 2) + ":"
-				+ iSegundo;
+				+ StringFunctions.strZero(String.valueOf(iSegundo),2);
 	}
 
 	public static String strDateToStrDB(String sVal) {
