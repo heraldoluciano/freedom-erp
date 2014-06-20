@@ -305,7 +305,8 @@ public class FRetCnab extends FRetFBN {
 
 		boolean retorno = true;
 		int row = 0;
-
+		String codbanco = txtCodBanco.getVlrString();
+		
 		if ( registros != null ) {
 
 			lbStatus.setText( "     Carregando tabela ..." );
@@ -331,16 +332,12 @@ public class FRetCnab extends FRetFBN {
 				Historico hist = null;
 
 				for ( Reg reg : registros ) {
-
 					if ( reg instanceof RegHeader ) {
-
 						header = (RegHeader) reg;
 					}
 					else if ( reg instanceof Reg3T ) {
-
 						reg3T = (Reg3T) reg;
 						int[] chaveRec = getChaveReceber( reg3T );
-
 						// Verifica se o banco é caixa e se a carteira é 1 (14 sem registro) deve buscar titulo pelo docrec do contrario pelo codrec
 						if ( Banco.CAIXA_ECONOMICA.equals( reg3T.getCodBanco() ) && "1".equals( reg3T.getCarteira() + "" ) ) {
 							rec = findReceber( chaveRec[ 0 ], chaveRec[ 1 ], true );
@@ -348,31 +345,20 @@ public class FRetCnab extends FRetFBN {
 						else {
 							rec = findReceber( chaveRec[ 0 ], chaveRec[ 1 ], false );
 						}
-
 					}
 					else if ( reg instanceof Reg3U ) {
-
 						if ( rec != null ) {
-
 							Reg3U reg3U = (Reg3U) reg;
-
 							if( codhisthc > 0 ) {
-
 								hist = new Historico( codhisthc, con );
-
 								hist.setData( reg3U.getDataEfetvCred() );
 								hist.setDocumento( rec.getDocrec() );
 								hist.setPortador( rec.getRazcliente() );
 								hist.setValor( reg3U.getVlrPago() );
-
 								shistorico = hist.getHistoricodecodificado();
-
 							}
-
 							tab.adicLinha();
-
 							// Deve ser corrigido para atualizar a imagem de acordo com o tipo de retorno
-
 							if ( reg3U.getDataEfetvCred() != null ) {
 								tab.setValor( imgConfBaixa, row, EColTab.STATUS.ordinal() );
 								tab.setValor( new Boolean( reg3U.getVlrLiqCred().floatValue() > 0.00 ), row, EColTab.SEL.ordinal() );
@@ -382,7 +368,19 @@ public class FRetCnab extends FRetFBN {
 								tab.setValor( imgRejBaixa, row, EColTab.STATUS.ordinal() );
 								tab.setValor( new Boolean( Boolean.FALSE ), row, EColTab.SEL.ordinal() );
 							}
-
+							String tiporet = "";
+							String mensret = "";
+							if (reg3T!=null) {
+								String[] detRetorno = getDetRetorno( codbanco, reg3T.getCodRejeicoes(), FPrefereFBB.TP_CNAB );
+								mensret = detRetorno[ 0 ];
+								tiporet = detRetorno[ 1 ];
+								if ( "RE".equals( tiporet ) ) {
+									// 	Atualiza o status da remessa para rejeitado ("02");
+									updateStatusRetorno( rec.getCodrec(), rec.getNrparcrec(), codbanco, FPrefereFBB.TP_CNAB, FPrefereFBB.TP_CNAB, reg3T.getCodRejeicoes() );
+								}
+							}
+							ImageIcon imgret = retImgStatus(tiporet, rec);
+							tab.setValor( imgret, row, EColTab.STATUS.ordinal() );
 							tab.setValor( rec.getRazcliente(), row, EColTab.RAZCLI.ordinal() ); // Razão social do cliente
 							tab.setValor( rec.getCodcliente(), row, EColTab.CODCLI.ordinal() ); // Cód.cli.
 							tab.setValor( rec.getCodrec(), row, EColTab.CODREC.ordinal() ); // Cód.rec.
@@ -398,14 +396,12 @@ public class FRetCnab extends FRetFBN {
 							tab.setValor( rec.getPlanejamento(), row, EColTab.CODPLAN.ordinal() ); // Planejamento
 							tab.setValor( reg3U.getVlrDesc(), row, EColTab.VLRDESC.ordinal() ); // VLRDESC
 							tab.setValor( Funcoes.bdToStr( reg3U.getVlrJurosMulta() ), row, EColTab.VLRJUROS.ordinal() ); // VLRJUROS
-
 							tab.setValor( shistorico, row, EColTab.OBS.ordinal() ); // HISTÓRICO
-
 							tab.setValor( FPrefereFBB.TP_CNAB, row, EColTab.TIPOFEBRABAN.ordinal() );
 							tab.setValor( reg3T.getCodRejeicoes(), row, EColTab.CODRET.ordinal() ); // código retorno
-							// tab.setValor( detRetorno[0], row, EColTab.MENSSAGEM.ordinal() ); // Menssagem de erro
+							tab.setValor( mensret, row, EColTab.MENSSAGEM.ordinal() ); // Menssagem de erro
 							tab.setValor( rec.getStatus(), row, EColTab.STATUSITREC.ordinal() ); // Status do item de receber
-
+							tab.setValor( tiporet, row, EColTab.STRSTATUS.ordinal());
 							row++;
 							rec = null;
 						}
@@ -442,34 +438,13 @@ public class FRetCnab extends FRetFBN {
 							String[] detRetorno = getDetRetorno( txtCodBanco.getVlrString(), regT400.getCodRejeicoes(), FPrefereFBB.TP_CNAB );
 							String mensret = detRetorno[ 0 ];
 							String tiporet = detRetorno[ 1 ];
-							ImageIcon imgret = imgIndefinido;
-
 							if ( "RE".equals( tiporet ) ) {
-								imgret = imgRejEntrada;
 								// Atualiza o status da remessa para rejeitado ("02");
 								updateStatusRetorno( rec.getCodrec(), rec.getNrparcrec(), txtCodBanco.getVlrString(), FPrefereFBB.TP_CNAB, FPrefereFBB.TP_CNAB, regT400.getCodRejeicoes() );
 							}
-							else if ( "CE".equals( tiporet ) ) {
-								imgret = imgConfEntrada;
-							}
-							else if ( "AD".equals( tiporet ) ) {
-								imgret = imgAdvert;
-							}
-							else if ( "CB".equals( tiporet ) ) {
-								imgret = imgConfBaixa;
-							}
-							else if ( "RB".equals( tiporet ) ) {
-								imgret = imgRejBaixa;
-							}
-
-							if("RP".equals( rec.getStatus() )) {
-								imgret = imgBaixado;
-							}
-
+							ImageIcon imgret = retImgStatus(tiporet, rec);
 							tab.setValor( imgret, row, EColTab.STATUS.ordinal() );
-
 							tab.setValor( new Boolean( regT400.getVlrPago().floatValue() > 0.00 && rec.getValorApagar().floatValue() > 0.00  && "CB".equals(tiporet) ), row, EColTab.SEL.ordinal() );
-
 							tab.setValor( rec.getRazcliente(), row, EColTab.RAZCLI.ordinal() ); // Razão social do cliente
 							tab.setValor( rec.getCodcliente(), row, EColTab.CODCLI.ordinal() ); // Cód.cli.
 							tab.setValor( rec.getCodrec(), row, EColTab.CODREC.ordinal() ); // Cód.rec.
@@ -535,6 +510,33 @@ public class FRetCnab extends FRetFBN {
 		}
 
 		return retorno;
+	}
+
+	private ImageIcon retImgStatus(String tiporet, Receber rec) {
+		ImageIcon imgret = imgIndefinido;
+	
+		if ( "RE".equals( tiporet ) ) {
+			imgret = imgRejEntrada;
+			// Atualiza o status da remessa para rejeitado ("02");
+		}
+		else if ( "CE".equals( tiporet ) ) {
+			imgret = imgConfEntrada;
+		}
+		else if ( "AD".equals( tiporet ) ) {
+			imgret = imgAdvert;
+		}
+		else if ( "CB".equals( tiporet ) ) {
+			imgret = imgConfBaixa;
+		}
+		else if ( "RB".equals( tiporet ) ) {
+			imgret = imgRejBaixa;
+		}
+	
+		if("RP".equals( rec.getStatus() )) {
+			imgret = imgBaixado;
+		}
+		
+		return imgret;
 	}
 
 	private Receber findReceber( int codrec, int iparc, boolean doc ) {
