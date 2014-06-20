@@ -140,7 +140,9 @@ public abstract class Reg3 extends Reg {
 			}
 			else {
 
-				setCodBanco( line.substring( 0, 3 ) );
+				if (getCodBanco()==null) {
+					setCodBanco( line.substring( 0, 3 ) );
+				}
 				setLoteServico( line.substring( 3, 7 ).trim().length() > 0 ? Integer.parseInt( line.substring( 3, 7 ).trim() ) : 0 );
 				setRegistroDetalhe( line.substring( 7, 8 ).trim().length() > 0 ? Integer.parseInt( line.substring( 7, 8 ).trim() ) : 0 );
 				setSeqLote( line.substring( 8, 13 ).trim().length() > 0 ? Integer.parseInt( line.substring( 8, 13 ).trim() ) : 0 );

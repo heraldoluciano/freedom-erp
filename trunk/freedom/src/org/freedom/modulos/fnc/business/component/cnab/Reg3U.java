@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import org.freedom.infra.functions.StringFunctions;
+import org.freedom.library.business.component.Banco;
 import org.freedom.library.business.exceptions.ExceptionCnab;
 import org.freedom.modulos.fnc.library.business.compoent.FbnUtil.ETipo;
 
@@ -52,6 +53,14 @@ public class Reg3U extends Reg3 {
 		parseLine( line );
 	}
 
+	public Reg3U( final String line, final String codbanco ) throws ExceptionCnab {
+
+		this();
+		setCodBanco( codbanco );
+		parseLine( line );
+	}
+
+	
 	public String getCodBancoCompens() {
 
 		return codBancoCompens;
@@ -226,7 +235,6 @@ public class Reg3U extends Reg3 {
 		StringBuilder line = new StringBuilder();
 
 		try {
-
 			line.append( super.getLineReg3( padraocnab ) );
 			line.append( format( getVlrJurosMulta(), ETipo.$9, 15, 2 ) );
 			line.append( format( getVlrDesc(), ETipo.$9, 15, 2 ) );
@@ -271,22 +279,41 @@ public class Reg3U extends Reg3 {
 			else {
 
 				super.parseLineReg3( line );
-				setVlrJurosMulta( CnabUtil.strToBigDecimal( line.substring( 17, 32 ) ) );
-				setVlrDesc( CnabUtil.strToBigDecimal( line.substring( 32, 47 ) ) );
-				setVlrAbatCancel( CnabUtil.strToBigDecimal( line.substring( 47, 62 ) ) );
-				setVlrIOF( CnabUtil.strToBigDecimal( line.substring( 62, 77 ) ) );
-				setVlrPago( CnabUtil.strToBigDecimal( line.substring( 77, 92 ) ) );
-				setVlrLiqCred( CnabUtil.strToBigDecimal( line.substring( 92, 107 ) ) );
-				setVlrOutrasDesp( CnabUtil.strToBigDecimal( line.substring( 107, 122 ) ) );
-				setVlrOutrosCred( CnabUtil.strToBigDecimal( line.substring( 122, 137 ) ) );
-				setDataOcorr( CnabUtil.stringDDMMAAAAToDate( line.substring( 137, 145 ).trim() ) );
-				setDataEfetvCred( CnabUtil.stringDDMMAAAAToDate( line.substring( 145, 153 ).trim() ) );
-				setCodOcorrSac( line.substring( 153, 157 ) );
-				setDataOcorrSac( CnabUtil.stringDDMMAAAAToDate( line.substring( 157, 165 ).trim() ) );
-				setVlrOcorrSac( CnabUtil.strToBigDecimal( line.substring( 165, 180 ) ) );
-				setCompOcorrSac( line.substring( 180, 210 ) );
-				setCodBancoCompens( line.substring( 210, 213 ) );
-				setNossoNrCompens( line.substring( 213, 233 ) );
+				if (Banco.SICOOB.equals( getCodBanco() )) {
+					setCodOcorrSac( line.substring( 15, 17 ) );
+					setVlrJurosMulta( CnabUtil.strToBigDecimal( line.substring( 17, 32 ) ) );
+					setVlrDesc( CnabUtil.strToBigDecimal( line.substring( 32, 47 ) ) );
+					setVlrAbatCancel( CnabUtil.strToBigDecimal( line.substring( 47, 62 ) ) );
+					//setVlrIOF( CnabUtil.strToBigDecimal( line.substring( 62, 77 ) ) );
+					setVlrPago( CnabUtil.strToBigDecimal( line.substring( 62, 77 ) ) );
+					setVlrLiqCred( CnabUtil.strToBigDecimal( line.substring( 62, 77 ) ) );
+					setVlrOutrasDesp( CnabUtil.strToBigDecimal( line.substring( 107, 122 ) ) );
+					setVlrOutrosCred( CnabUtil.strToBigDecimal( line.substring( 122, 137 ) ) );
+					setDataOcorr( CnabUtil.stringDDMMAAAAToDate( line.substring( 137, 145 ).trim() ) );
+					setDataEfetvCred( CnabUtil.stringDDMMAAAAToDate( line.substring( 145, 153 ).trim() ) );
+					//setDataOcorrSac( CnabUtil.stringDDMMAAAAToDate( line.substring( 157, 165 ).trim() ) );
+					//setVlrOcorrSac( CnabUtil.strToBigDecimal( line.substring( 165, 180 ) ) );
+					//setCompOcorrSac( line.substring( 180, 210 ) );
+					//setCodBancoCompens( line.substring( 210, 213 ) );
+					//setNossoNrCompens( line.substring( 213, 233 ) );
+				} else {
+					setVlrJurosMulta( CnabUtil.strToBigDecimal( line.substring( 17, 32 ) ) );
+					setVlrDesc( CnabUtil.strToBigDecimal( line.substring( 32, 47 ) ) );
+					setVlrAbatCancel( CnabUtil.strToBigDecimal( line.substring( 47, 62 ) ) );
+					setVlrIOF( CnabUtil.strToBigDecimal( line.substring( 62, 77 ) ) );
+					setVlrPago( CnabUtil.strToBigDecimal( line.substring( 77, 92 ) ) );
+					setVlrLiqCred( CnabUtil.strToBigDecimal( line.substring( 92, 107 ) ) );
+					setVlrOutrasDesp( CnabUtil.strToBigDecimal( line.substring( 107, 122 ) ) );
+					setVlrOutrosCred( CnabUtil.strToBigDecimal( line.substring( 122, 137 ) ) );
+					setDataOcorr( CnabUtil.stringDDMMAAAAToDate( line.substring( 137, 145 ).trim() ) );
+					setDataEfetvCred( CnabUtil.stringDDMMAAAAToDate( line.substring( 145, 153 ).trim() ) );
+					setCodOcorrSac( line.substring( 153, 157 ) );
+					setDataOcorrSac( CnabUtil.stringDDMMAAAAToDate( line.substring( 157, 165 ).trim() ) );
+					setVlrOcorrSac( CnabUtil.strToBigDecimal( line.substring( 165, 180 ) ) );
+					setCompOcorrSac( line.substring( 180, 210 ) );
+					setCodBancoCompens( line.substring( 210, 213 ) );
+					setNossoNrCompens( line.substring( 213, 233 ) );
+				}
 			}
 		} catch ( Exception e ) {
 			e.printStackTrace();
