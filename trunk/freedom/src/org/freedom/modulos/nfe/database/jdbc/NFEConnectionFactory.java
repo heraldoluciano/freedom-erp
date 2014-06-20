@@ -10,6 +10,7 @@ package org.freedom.modulos.nfe.database.jdbc;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.Properties;
 
 import org.freedom.infra.functions.SystemFunctions;
@@ -265,6 +266,10 @@ public class NFEConnectionFactory implements NFEListener {
 
 	public void setCorrecaoNfe(String correcaoNfe) {
 		getObjNFEFactory().setCorrecaoNfe( correcaoNfe );
+	}
+
+	public void setData_evento(Date data_evento) {
+		getObjNFEFactory().setData_evento( data_evento );;
 	}
 
 	public void setChaveNfe(String chaveNfe) {

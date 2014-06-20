@@ -16,6 +16,7 @@
 package org.freedom.modules.nfe.control;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.freedom.infra.model.jdbc.DbConnection;
@@ -126,6 +127,8 @@ REJEITADA;2*/
 	private String motivoCancNfe = null;
 
 	private String correcaoNfe = null;
+	
+	private Date data_evento = null;
 
 	private String cnpjFilial = null;
 	
@@ -359,6 +362,14 @@ REJEITADA;2*/
 
 	public void setCorrecaoNfe(String correcaoNfe) {
 		this.correcaoNfe = correcaoNfe;
+	}
+
+	public Date getData_evento() {
+		return data_evento;
+	}
+
+	public void setData_evento(Date data_evento) {
+		this.data_evento = data_evento;
 	}
 
 	public String getCnpjFilial() {
