@@ -189,6 +189,7 @@ public class FRetCnab extends FRetFBN {
 		String line = null;
 		BufferedReader in = new BufferedReader( fileReaderCnab );
 		RegHeader regHeader = null;
+		String codbanco = txtCodBanco.getVlrString().trim();
 		try {
 
 			while ( ( ( line = in.readLine() ) != null) && ( ! "".equals( line.trim() )) ) {
@@ -206,7 +207,7 @@ public class FRetCnab extends FRetFBN {
 							Reg1 reg1 = new Reg1( line );
 							list.add( reg1 );
 
-							if ( reg1 == null || !reg1.getCodBanco().trim().equals( txtCodBanco.getVlrString().trim() ) ) {
+							if ( reg1 == null || !reg1.getCodBanco().trim().equals( codbanco ) ) {
 								Funcoes.mensagemErro( this, "Arquivo de retorno não refere-se ao banco selecionado!" );
 								return false;
 							}
@@ -230,10 +231,10 @@ public class FRetCnab extends FRetFBN {
 									list.add( new Reg3S( line ) );
 									break;
 								case 'T' :
-									list.add( new Reg3T( line ) );
+									list.add( new Reg3T( line, codbanco ) );
 									break;
 								case 'U' :
-									list.add( new Reg3U( line ) );
+									list.add( new Reg3U( line, codbanco ) );
 									break;
 								default :
 									break;

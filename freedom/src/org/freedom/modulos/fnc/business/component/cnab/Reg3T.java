@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import org.freedom.infra.functions.StringFunctions;
+import org.freedom.library.business.component.Banco;
 import org.freedom.library.business.exceptions.ExceptionCnab;
 import org.freedom.modulos.fnc.library.business.compoent.FbnUtil.ETipo;
 
@@ -64,6 +65,12 @@ public class Reg3T extends Reg3 {
 		parseLine( line );
 	}
 
+	public Reg3T( final String line, final String codbanco ) throws ExceptionCnab {
+		this();
+		setCodBanco( codbanco );
+		parseLine( line );
+	}
+	
 	public String getAgencia() {
 
 		return agencia;
@@ -358,27 +365,50 @@ public class Reg3T extends Reg3 {
 			else {
 
 				super.parseLineReg3( line );
-				setAgencia( line.substring( 17, 22 ) );
-				setDigAgencia( line.substring( 22, 23 ) );
-				setConta( line.substring( 23, 35 ) );
-				setDigConta( line.substring( 35, 36 ) );
-				setDigAgConta( line.substring( 36, 37 ) );
-				setIdentTitBanco( line.substring( 37, 57 ) );
-				setCarteira( line.substring( 57, 58 ).trim().length() > 0 ? Integer.parseInt( line.substring( 57, 58 ).trim() ) : 0 );
-				setDocCob( line.substring( 58, 73 ) );
-				setDataVencTit( CnabUtil.stringDDMMAAAAToDate( line.substring( 73, 81 ).trim() ) );
-				setVlrTitulo( CnabUtil.strToBigDecimal( line.substring( 81, 96 ) ) );
-				setCodBancoCob( line.substring( 96, 99 ) );
-				setAgenciaCob( line.substring( 99, 104 ) );
-				setDigAgenciaCob( line.substring( 104, 105 ) );
-				setIdentTitEmp( line.substring( 105, 130 ) );
-				setCodMoeda( line.substring( 130, 132 ).trim().length() > 0 ? Integer.parseInt( line.substring( 130, 132 ).trim() ) : 0 );
-				setTipoInscCli( line.substring( 132, 133 ).trim().length() > 0 ? Integer.parseInt( line.substring( 132, 133 ).trim() ) : 0 );
-				setCpfCnpjCli( line.substring( 133, 148 ) );
-				setRazCli( line.substring( 148, 188 ) );
-				setContratoCred( line.substring( 188, 198 ) );
-				setVlrTarifa( CnabUtil.strToBigDecimal( line.substring( 198, 213 ) ) );
-				setCodRejeicoes( line.substring( 213, 223 ) );
+				if (Banco.SICOOB.equals( getCodBanco() )) {
+					setCodRejeicoes( line.substring( 15, 17 ) );
+					setIdentTitBanco( line.substring( 37, 57 ) );
+					String carteira = line.substring( 57, 59 ).trim();
+					if (carteira!="") {
+						try {
+							setCarteira( Integer.parseInt( carteira ) );
+						} catch (Exception err) {
+							err.printStackTrace();
+						}
+					}
+					setIdentTitEmp( line.substring( 59, 74 ) );
+					setDataVencTit( CnabUtil.stringDDMMAAAAToDate( line.substring( 74, 82 ).trim() ) );
+					setVlrTitulo( CnabUtil.strToBigDecimal( line.substring( 82, 97 ) ) );
+					setCodBancoCob( line.substring( 97, 100 ) );
+					setAgenciaCob( line.substring( 100, 106 ) );
+					setTipoInscCli( line.substring( 133, 135 ).trim().length() > 0 ? Integer.parseInt( line.substring( 133, 135 ).trim() ) : 0 );
+					setCpfCnpjCli( line.substring( 135, 149 ) );
+					setRazCli( line.substring( 149, 189 ) );
+					setVlrTarifa( CnabUtil.strToBigDecimal( line.substring( 199, 214 ) ) );
+				} else {
+					setAgencia( line.substring( 17, 22 ) );
+					setDigAgencia( line.substring( 22, 23 ) );
+					setConta( line.substring( 23, 35 ) );
+					setDigConta( line.substring( 35, 36 ) );
+					setDigAgConta( line.substring( 36, 37 ) );
+					setIdentTitBanco( line.substring( 37, 57 ) );
+					setCarteira( line.substring( 57, 58 ).trim().length() > 0 ? Integer.parseInt( line.substring( 57, 58 ).trim() ) : 0 );
+					setDocCob( line.substring( 58, 73 ) );
+					setDataVencTit( CnabUtil.stringDDMMAAAAToDate( line.substring( 73, 81 ).trim() ) );
+					setVlrTitulo( CnabUtil.strToBigDecimal( line.substring( 81, 96 ) ) );
+					setCodBancoCob( line.substring( 96, 99 ) );
+					setAgenciaCob( line.substring( 99, 104 ) );
+					setDigAgenciaCob( line.substring( 104, 105 ) );
+					setIdentTitEmp( line.substring( 105, 130 ) );
+					setCodMoeda( line.substring( 130, 132 ).trim().length() > 0 ? Integer.parseInt( line.substring( 130, 132 ).trim() ) : 0 );
+					setTipoInscCli( line.substring( 132, 133 ).trim().length() > 0 ? Integer.parseInt( line.substring( 132, 133 ).trim() ) : 0 );
+					setCpfCnpjCli( line.substring( 133, 148 ) );
+					setRazCli( line.substring( 148, 188 ) );
+					setContratoCred( line.substring( 188, 198 ) );
+					setVlrTarifa( CnabUtil.strToBigDecimal( line.substring( 198, 213 ) ) );
+					setCodRejeicoes( line.substring( 213, 223 ) );
+
+				}
 			}
 		} catch ( Exception e ) {
 			e.printStackTrace();
