@@ -2185,6 +2185,9 @@ public class Funcoes {
 	}
 
 	public static String dateToStrDataHora(Date dVal) {
+		if (dVal==null) {
+			return "";
+		} 
 		GregorianCalendar cal = new GregorianCalendar();
 		cal.setTime(dVal);
 		int iAno = cal.get(Calendar.YEAR);
