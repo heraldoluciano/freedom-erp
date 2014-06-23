@@ -30,6 +30,7 @@ import java.awt.event.ActionListener;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -290,6 +291,7 @@ public class FCancCompra extends FFilho implements ActionListener {
 					}
 					FreedomNFEKey key = new FreedomNFEKey( codemp, codfilial, codcompra, modelo, serie, doccompra, dirNFE );
 					nfecf.setMotivoCancNfe(justificativa);
+					nfecf.setData_evento( new Date() );
 					nfecf.setChaveNfe( chavenfe );
 					nfecf.setKey(key);
 					nfecf.post();
