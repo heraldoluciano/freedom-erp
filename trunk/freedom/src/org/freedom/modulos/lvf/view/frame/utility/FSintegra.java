@@ -1673,7 +1673,7 @@ public class FSintegra extends FFilho implements ActionListener {
 					sqlinventario.append( "where p.saldo > 0 " );
 					sqlinventario.append( "and pd.codemp=? and pd.codfilial=? and pd.codprod=p.codprod and pd.ativoprod='S' " );
 					sqlinventario.append( "and cf.codfisc=pd.codfisc and cf.codemp=pd.codempfc and cf.codfilial=pd.codfilialfc " );
-					sqlinventario.append( "and cf.geralfisc='S' " );
+					sqlinventario.append( "and cf.geralfisc='S' and cf.ativoitfisc='S' " );
 					// filtro para não incluir produtos do patrimônio. 
 					sqlinventario.append( "and pd.tipoprod<>'O' " );
 				}	
