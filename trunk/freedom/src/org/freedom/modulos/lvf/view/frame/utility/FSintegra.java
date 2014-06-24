@@ -1524,7 +1524,7 @@ public class FSintegra extends FFilho implements ActionListener {
 				sql.append( "left outer join lfitclfiscal cf on cf.codfisc=pd.codfisc and cf.codemp=pd.codempfc and cf.codfilial=pd.codfilialfc " );
 				sql.append( "where p.saldo > 0 " );
 				sql.append( "and f.codemp=? and f.codfilial=? " );
-				sql.append( "and pd.codemp=? and pd.codfilial=? and pd.codprod=p.codprod and pd.ativoprod='S' and pd.tipoprod<>'O' and cf.geralfisc='S' " ); 
+				sql.append( "and pd.codemp=? and pd.codfilial=? and pd.codprod=p.codprod and pd.ativoprod='S' and pd.tipoprod<>'O' and cf.geralfisc='S' and cf.ativoitfisc='S' " ); 
 			
 				// filtro para não incluir produtos do patrimônio. 
 				sql.append( "and pd.tipoprod<>'O' " ); 
