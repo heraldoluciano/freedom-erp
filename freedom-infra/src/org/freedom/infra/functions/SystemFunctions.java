@@ -212,21 +212,26 @@ public class SystemFunctions {
 		return ret;
 	}
 
+	public static String getTxtFile(String url) {
+		return getTxtFile(null, url);
+	}
+	
 	public static String getTxtFile(String dir, String url) {
-
 		String ret = "";
 		int size = 0;
 		char c = ( char ) 0;
-
 		try {
 			System.out.println("carregando arquivo: " + url.toString());
-			File fArq = new File(dir + url);
+			String filename = null;
+			if (dir!=null) {
+				filename = dir + url;
+			} else {
+				filename = url;
+			}
+			File fArq = new File(filename);
 			FileReader frArq = new FileReader(fArq);
-
 			try {
-
 				size = ( int ) fArq.length();
-
 				for (int i = 0; i < size; i++) {
 					c = ( char ) frArq.read();
 					ret += c;
@@ -358,46 +363,31 @@ public class SystemFunctions {
 	}
 	
 	public static Vector<File> unzip(String dir, File zip) {
-
 		Vector<File> ret = new Vector<File>();
 		final int BUFFER = 2048;
-
 		try {
-
 			BufferedOutputStream dest = null;
 			BufferedInputStream is = null;
-
 			ZipEntry entry;
 			ZipFile zipfile = new ZipFile(zip);
 			Enumeration<?> e = zipfile.entries();
-
 			while (e.hasMoreElements()) {
-
 				entry = ( ZipEntry ) e.nextElement();
 				System.out.println("Extracting: " + entry);
-
 				is = new BufferedInputStream(zipfile.getInputStream(entry));
-
 				int count;
-
 				byte data[] = new byte[BUFFER];
-
 				FileOutputStream fos = new FileOutputStream(dir+entry.getName());
 				dest = new BufferedOutputStream(fos, BUFFER);
-
 				while (( count = is.read(data, 0, BUFFER) ) != -1) {
 					dest.write(data, 0, count);
 				}
-
-				ret.add(new File(entry.getName()));
-
+				ret.add(new File(dir+entry.getName()));
 				dest.flush();
 				dest.close();
 				is.close();
-
 			}
 			zipfile.close();
-
 		}
 		catch (Exception e) {
 			e.printStackTrace();

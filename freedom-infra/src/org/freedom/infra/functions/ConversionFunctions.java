@@ -32,13 +32,14 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.sql.Blob;
 import java.sql.Time;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
@@ -69,7 +70,20 @@ public final class ConversionFunctions {
 		return StringFunctions.strZero(String.valueOf(iHora), 2) + ":" + StringFunctions.strZero(String.valueOf(iMinuto), 2) + ":" + iSegundo;
 	}
 
-	public static File blobToFile(String FileName, Blob blob) {
+	public static File byteToFile(String filename, byte[] buffer) throws Exception {
+		File file = null;
+		file = new File(filename);
+		FileOutputStream outStream = new FileOutputStream(file);
+		// Queimando o arquivo no disco
+		if (buffer.length>0) {
+			outStream.write(buffer, 0, buffer.length);
+			outStream.flush();
+		}
+		outStream.close();
+		return file;
+	}
+	
+	public static File blobToFile(String filename, Blob blob) {
 
 		File file = null;
 		InputStream input = null;
@@ -77,7 +91,7 @@ public final class ConversionFunctions {
 		try {
 
 			input = blob.getBinaryStream();
-			file = new File(FileName);
+			file = new File(filename);
 			FileOutputStream outStream = new FileOutputStream(file);
 
 			int length = -1;
@@ -246,11 +260,8 @@ public final class ConversionFunctions {
 
 	public static String XMLDocumentToString(Document doc) {
 		String ret = null;
-
 		try {
-
 			// Pegando o XML e transformando em String.
-
 			// set up a transformer
 			TransformerFactory transfac = TransformerFactory.newInstance();
 			Transformer trans = transfac.newTransformer();
@@ -268,9 +279,15 @@ public final class ConversionFunctions {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-
 		return ret;
 
+	}
+
+	public static Document fileToDocument(File xmlfile) throws Exception {
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+		Document result = dBuilder.parse(xmlfile);
+		return result;
 	}
 	
 	public static String bigDecimalToStr(BigDecimal vlr) {
