@@ -27,7 +27,9 @@
 
 package org.freedom.infra.functions;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -287,6 +289,53 @@ public final class ConversionFunctions {
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 		Document result = dBuilder.parse(xmlfile);
+		return result;
+	}
+	
+	public static String getContentXML(final String xml, String key) {
+		String result = null;
+		if (key!=null && xml!=null) {
+			String xmlresult = new String(xml);
+			String startkey = "<"+key;
+			String endkey = "</"+key+">";
+			int pos=0;
+			int posend=xmlresult.indexOf(startkey);
+			if (posend!=-1) {
+				pos=xmlresult.indexOf(">", posend);
+				if (pos!=-1) {
+					xmlresult = xmlresult.substring(pos+1);
+					posend=xmlresult.indexOf(endkey);
+					if (posend>-1) {
+						pos = 0;
+						result = xmlresult.substring(pos, posend);
+					}
+				}
+			}
+		}
+		return result;
+	}
+	
+	public static String fileXMLToString(File file) throws Exception {
+		String result = null;
+		if (file!=null) {
+			FileInputStream fis = new FileInputStream(file);
+			BufferedInputStream bis = new BufferedInputStream(fis);
+			byte[] buffer = new byte[(int) file.length()];
+			bis.read(buffer);
+			bis.close();
+			fis.close();
+			result = new String(buffer);
+		}
+		return result;
+	}
+	
+	public static StringBuilder fileXMLToStringBuilder(File file) throws Exception {
+		StringBuilder result = null;
+		String xml = fileXMLToString(file);
+		if (xml!=null) {
+			result = new StringBuilder();
+			result.append(xml);
+		}
 		return result;
 	}
 	
