@@ -315,7 +315,7 @@ public final class ConversionFunctions {
 		return result;
 	}
 	
-	public static String fileXMLToString(File file) throws Exception {
+	public static String fileXMLToString(File file, String charset) throws Exception {
 		String result = null;
 		if (file!=null) {
 			FileInputStream fis = new FileInputStream(file);
@@ -324,14 +324,14 @@ public final class ConversionFunctions {
 			bis.read(buffer);
 			bis.close();
 			fis.close();
-			result = new String(buffer);
+			result = new String(buffer, charset);
 		}
 		return result;
 	}
 	
-	public static StringBuilder fileXMLToStringBuilder(File file) throws Exception {
+	public static StringBuilder fileXMLToStringBuilder(File file, String charset) throws Exception {
 		StringBuilder result = null;
-		String xml = fileXMLToString(file);
+		String xml = fileXMLToString(file, charset);
 		if (xml!=null) {
 			result = new StringBuilder();
 			result.append(xml);
