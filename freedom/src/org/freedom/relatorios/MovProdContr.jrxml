@@ -2,45 +2,28 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="MovProdContr" pageWidth="595" pageHeight="842" columnWidth="536" leftMargin="30" rightMargin="29" topMargin="20" bottomMargin="20">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="3.0"/>
+	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="412"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["C:/opt/eclipse/workspace/freedom/src/org/freedom/relatorios/"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["/home/robson/workspace/freedom/src/org/freedom/relatorios/"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="FILTROS" class="java.lang.String" isForPrompting="false"/>
-	<parameter name="DATAINI" class="java.util.Date"/>
-	<parameter name="DATAFIM" class="java.util.Date"/>
-	<parameter name="CODEMP" class="java.lang.Integer"/>
-	<parameter name="CODFILIAL" class="java.lang.Integer"/>
-	<parameter name="CODPROD" class="java.lang.Integer"/>
-	<parameter name="DATAANT" class="java.util.Date"/>
+	<parameter name="DATAINI" class="java.util.Date" isForPrompting="false"/>
+	<parameter name="DATAFIM" class="java.util.Date" isForPrompting="false"/>
+	<parameter name="CODEMP" class="java.lang.Integer" isForPrompting="false"/>
+	<parameter name="CODFILIAL" class="java.lang.Integer" isForPrompting="false"/>
+	<parameter name="CODPROD" class="java.lang.Integer" isForPrompting="false"/>
+	<parameter name="DATAANT" class="java.util.Date" isForPrompting="false"/>
 	<parameter name="AGRUPAR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["N"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CONEXAO" class="java.lang.Object" isForPrompting="false"/>
 	<queryString>
-		<![CDATA[select PD.codprod, PD.descprod, PD.vlrdensidade, PD.vlrconcent, UN.descunid
-,CF.codncm
-, (select sldprod from eqcustoprodsp(PD.CODEMP,PD.CODFILIAL,PD.codprod,
-   $P{DATAANT},'P',PD.codempax,PD.codfilialax,PD.codalmox,'S') ) as saldoant,
-(SELECT sum(EQ.qtdmovprod) FROM eqmovprod EQ, eqtipomov tm
-WHERE EQ.codprod=$P{CODPROD} AND EQ.dtmovprod BETWEEN $P{DATAINI} AND $P{DATAFIM}
-and tm.codemp=eq.codemptm and tm.codfilial=eq.codfilialtm and tm.codtipomov=eq.codtipomov
-and tm.tipomov='RM') as utilizacao ,
-(SELECT sum(EQ.qtdmovprod) FROM eqmovprod EQ, eqtipomov tm
-WHERE EQ.codprod=$P{CODPROD} AND EQ.dtmovprod BETWEEN $P{DATAINI} AND $P{DATAFIM}
-and tm.codemp=eq.codemptm and tm.codfilial=eq.codfilialtm and tm.codtipomov=eq.codtipomov
-and tm.tipomov='CP') as compras,
-(select sldprod from eqcustoprodsp(PD.CODEMP,PD.CODFILIAL,PD.codprod,
-   $P{DATAFIM},'P',PD.codempax,PD.codfilialax,PD.codalmox,'S') ) as saldoatual
-FROM eqproduto PD, equnidade UN, lfclfiscal CF
-WHERE UN.codunid=PD.codunid
-AND PD.CODEMP=$P{CODEMP} AND PD.CODFILIAL=$P{CODFILIAL} AND PD.codprod=$P{CODPROD}
-AND CF.codemp=PD.codempfc AND CF.codfilial=PD.codfilialfc AND CF.codfisc=PD.codfisc]]>
+		<![CDATA[select PD.codprod, PD.descprod, PD.vlrdensidade, PD.vlrconcent, UN.descunid  ,CF.codncm  , (select sldprod from eqcustoprodsp(PD.CODEMP,PD.CODFILIAL,PD.codprod,  '30.05.2014','P',PD.codempax,PD.codfilialax,PD.codalmox,'S') ) as saldoant,  (SELECT sum(EQ.qtdmovprod) FROM eqmovprod EQ, eqtipomov tm  WHERE eq.codprod=pd.codprod and eq.codemppd=pd.codemp and eq.codfilialpd=pd.codfilial  AND eq.dtmovprod BETWEEN '01.06.2014' AND '30.06.2014'  and tm.codemp=eq.codemptm and tm.codfilial=eq.codfilialtm and tm.codtipomov=eq.codtipomov  and tm.tipomov='RM') as utilizacao ,  (SELECT sum(EQ.qtdmovprod) FROM eqmovprod EQ, eqtipomov tm  WHERE EQ.codprod=pd.codprod and eq.codemppd=pd.codemp and eq.codfilialpd=pd.codfilial  AND EQ.dtmovprod BETWEEN '01.06.2014' AND '30.06.2014'  and tm.codemp=eq.codemptm and tm.codfilial=eq.codfilialtm and tm.codtipomov=eq.codtipomov  and tm.tipomov='CP') as compras,  (select sldprod from eqcustoprodsp(PD.CODEMP,PD.CODFILIAL,PD.codprod, '30.05.2014','P',PD.codempax,PD.codfilialax,PD.codalmox,'S') ) as saldoatual  FROM eqproduto PD, equnidade UN, lfclfiscal CF  WHERE UN.codunid=PD.codunid  AND PD.CODEMP=7 AND PD.CODFILIAL=1 AND PD.codprod=2  AND CF.codemp=PD.codempfc AND CF.codfilial=PD.codfilialfc AND CF.codfisc=PD.codfisc]]>
 	</queryString>
 	<field name="CODPROD" class="java.lang.Integer"/>
 	<field name="DESCPROD" class="java.lang.String"/>
