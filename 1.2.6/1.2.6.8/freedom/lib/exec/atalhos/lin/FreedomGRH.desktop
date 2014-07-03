@@ -1,0 +1,12 @@
+[Desktop Entry]
+
+Version=1.2.4.7
+Encoding=UTF-8
+Name=FreedomGRH
+Comment= FreedomGRH - Gestão de Recursos Humanos
+Exec=/opt/freedom/bin/freedomgrh.sh
+Icon=/opt/freedom/ico/freedomgrh_128.png
+Terminal=false
+Type=Application
+Categories=Application;Office;Finance;
+
