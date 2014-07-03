@@ -1,0 +1,82 @@
+Freedom-ERP Versão 1.2
+1999-2013 / Setpoint Informática Ltda (R).
+Licença GPL 2.0
+
+
+*** Requisitos do sistema ***
+
+	Esta versão do Freedom-ERP requer um dos seguintes sistemas
+	operacionais instalados: GNU/Linux, MS-Windows, MacOS-X ou SUN-Solaris.
+	Também requer a instalação prévia dos seguintes softwares: 
+	Máquina virtual Java da Sun versão 1.6 ou superior e o gerenciador
+	de banco de dados Firebird versão 1.5.x.
+
+*** Instalação Firebid
+
+	O Firebird deve ser instalado na pasta \opt\firebird (Windows) ou /opt/firebird (Linux).
+	Caso seu pacote de instalação do Firebird Linux utilize outro diretório padrão,
+	deverá ser criado um link simbólico, exemplo para Linux Ubuntu:
+	---------------------------------------------
+	Após a instalação do Firebird 1.5, 
+	entre na console e execute os comandos...
+	---------------------------------------------
+	  # sudo su - <ENTER>                         
+	  # cd /opt <ENTER>                           
+	  # ln -sf /usr/lib/firebird/1.5 firebird <ENTER>
+	---------------------------------------------  
+	Obs: # é o sinal de prompt do Shell Linux e 
+	<ENTER> para pressionar a tecla ENTER.
+	
+*** Usuário e senha de administração
+    
+    Usuário padrão = sysdba
+    Senha padrão = masterkey
+    Obs: A senha de administração é criada no momento da instalação do Firebird, 
+    portanto depende do instalador do Firebird.
+    Geralmente no Firebird para Windows a senha é a padrão, 
+    porém no Linux pode ser gerada aleatoriamente.
+
+*** Inslação Freedom-ERP no Windows
+
+    Após fazer o download da última versão no site oficial,
+    execute o arquivo: freedomERP-<versão>-windows-installer.exe
+
+*** Instalação Freedom-ERP no GNU/Linux (todas as distros)
+
+    Após fazer o download da última versão no site oficial,
+    descompacte o arquivo com a extensão freedom-full-<versão>.zip no diretório raiz, 
+    utilizando o super usuário, exemplo para o Linux Ubuntu:
+    ---------------------------------------------
+	Entre na console e execute os comandos...
+	---------------------------------------------
+	  # sudo su - <ENTER>                         
+	  # cd / <ENTER>                           
+	  # unzip freedom-full-<versão>.zip <ENTER>
+	  # /opt/freedom/bin/install_db.sh <ENTER>
+	  # cd /opt/firebird/UDF <ENTER>
+	  # ./udfinstall.sh <ENTER>
+	---------------------------------------------  
+	Crie atalhos na sua área de trabalho para os arquivos com a extensão sh, 
+	que se encontram na pasta /opt/freedom/bin/.
+	
+	Obs: # é o sinal de prompt do Shell Linux e 
+	<ENTER> para pressionar a tecla ENTER.
+	
+	---------------------------------------------  
+	
+	Debian/Ubuntu e derivados:
+	
+	Após fazer o download da última versão no site oficial, acesse
+	o diretório onde o arquivo foi baixado e execute: 
+	sudo dpkg -i freedomERP-all-<versão>.deb
+	
+	Digite a senha de super usuário quando solicitado.
+    
+
+*** Documentação
+	
+	Um resumo das opções pode ser obtido digitando F1 após	a execução
+	do sistema.  
+	Para maiores informações acesse http://www.freedom.org.br .
+
+###
