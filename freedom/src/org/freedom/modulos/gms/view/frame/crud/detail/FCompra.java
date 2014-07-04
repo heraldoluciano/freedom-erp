@@ -251,6 +251,8 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 
 	private JTextFieldPad txtVlrDescItCompra = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecPre );
 
+	private JTextFieldPad txtVlrDescItCompraCp = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 15, casasDecPre );
+
 	private JTextFieldPad txtPercComItCompra = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 6, 2 );
 
 	private JTextFieldPad txtCalcTrib = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
@@ -1047,7 +1049,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		lcCompra2.add( new GuardaCampo( txtVlrIPICompra, "VlrIPICompra", "IPI", ListaCampos.DB_SI, false ) );
 		lcCompra2.add( new GuardaCampo( txtVlrFreteCompra, "VlrFreteCompra", "Frete", ListaCampos.DB_SI, false ) );
 		lcCompra2.add( new GuardaCampo( txtVlrDescCompra, "VlrDescCompra", "Desconto", ListaCampos.DB_SI, false ) );
-		lcCompra2.add( new GuardaCampo( txtVlrDescItCompra, "VlrDescItCompra", "Desconto dos itens", ListaCampos.DB_SI, false ) );
+		lcCompra2.add( new GuardaCampo( txtVlrDescItCompraCp, "VlrDescItCompra", "Desconto dos itens", ListaCampos.DB_SI, false ) );
 		lcCompra2.add( new GuardaCampo( txtVlrLiqCompra, "VlrLiqCompra", "Geral", ListaCampos.DB_SI, false ) );
 		lcCompra2.add( new GuardaCampo( txtVlrBrutCompra, "VlrProdCompra", "Geral", ListaCampos.DB_SI, false ) );
 		lcCompra2.add( new GuardaCampo( txtVlrICMSSTCompra, "VlrICMSSTCompra", "ICMS ST", ListaCampos.DB_SI, false ) );
