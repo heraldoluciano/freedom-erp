@@ -75,7 +75,7 @@ public class Tkcontato implements java.io.Serializable {
 	private Date dtalt;
 	private Date halt;
 	private String idusualt;
-/*	private Set crfichaavals = new HashSet(0);
+	/*private Set crfichaavals = new HashSet(0);
 	private Set tkhistoricos = new HashSet(0);
 	private Set tkcontclis = new HashSet(0);
 	private Set tksitcamps = new HashSet(0);
@@ -118,7 +118,8 @@ public class Tkcontato implements java.io.Serializable {
 			String contcto, String cargocontcto, String obscto, char removcto,
 			Integer numempcto, String celcto, char replicado, Date dtrepl,
 			Date hrepl, Date dtins, Date hins, String idusuins, Date dtalt,
-			Date halt, String idusualt/*, Set crfichaavals, Set tkhistoricos,
+			Date halt, String idusualt
+			/*, Set crfichaavals, Set tkhistoricos,
 			Set tkcontclis, Set tksitcamps, Set tkcontpessoas,
 			Set tkctogrpints, Set tkctoativs, Set tkcampanhactos*/) {
 		this.id = id;
