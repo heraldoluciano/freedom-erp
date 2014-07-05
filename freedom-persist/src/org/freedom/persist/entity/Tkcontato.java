@@ -3,8 +3,8 @@ package org.freedom.persist.entity;
 // Generated 12/05/2014 09:11:34 by Hibernate Tools 4.0.0
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+//import java.util.HashSet;
+//import java.util.Set;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
@@ -14,7 +14,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+//import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -26,6 +26,10 @@ import javax.persistence.TemporalType;
 @Table(name = "TKCONTATO")
 public class Tkcontato implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private TkcontatoId id;
 	private Tktipocont tktipocont;
 	private Tksetorcto tksetorcto;
@@ -71,7 +75,7 @@ public class Tkcontato implements java.io.Serializable {
 	private Date dtalt;
 	private Date halt;
 	private String idusualt;
-	private Set crfichaavals = new HashSet(0);
+/*	private Set crfichaavals = new HashSet(0);
 	private Set tkhistoricos = new HashSet(0);
 	private Set tkcontclis = new HashSet(0);
 	private Set tksitcamps = new HashSet(0);
@@ -79,7 +83,7 @@ public class Tkcontato implements java.io.Serializable {
 	private Set tkctogrpints = new HashSet(0);
 	private Set tkctoativs = new HashSet(0);
 	private Set tkcampanhactos = new HashSet(0);
-
+*/
 	public Tkcontato() {
 	}
 
@@ -114,9 +118,9 @@ public class Tkcontato implements java.io.Serializable {
 			String contcto, String cargocontcto, String obscto, char removcto,
 			Integer numempcto, String celcto, char replicado, Date dtrepl,
 			Date hrepl, Date dtins, Date hins, String idusuins, Date dtalt,
-			Date halt, String idusualt, Set crfichaavals, Set tkhistoricos,
+			Date halt, String idusualt/*, Set crfichaavals, Set tkhistoricos,
 			Set tkcontclis, Set tksitcamps, Set tkcontpessoas,
-			Set tkctogrpints, Set tkctoativs, Set tkcampanhactos) {
+			Set tkctogrpints, Set tkctoativs, Set tkcampanhactos*/) {
 		this.id = id;
 		this.tktipocont = tktipocont;
 		this.tksetorcto = tksetorcto;
@@ -162,14 +166,14 @@ public class Tkcontato implements java.io.Serializable {
 		this.dtalt = dtalt;
 		this.halt = halt;
 		this.idusualt = idusualt;
-		this.crfichaavals = crfichaavals;
+		/*this.crfichaavals = crfichaavals;
 		this.tkhistoricos = tkhistoricos;
 		this.tkcontclis = tkcontclis;
 		this.tksitcamps = tksitcamps;
 		this.tkcontpessoas = tkcontpessoas;
 		this.tkctogrpints = tkctogrpints;
 		this.tkctoativs = tkctoativs;
-		this.tkcampanhactos = tkcampanhactos;
+		this.tkcampanhactos = tkcampanhactos;*/
 	}
 
 	@EmbeddedId
