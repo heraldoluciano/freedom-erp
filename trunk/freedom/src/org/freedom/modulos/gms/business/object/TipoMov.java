@@ -35,6 +35,8 @@ public class TipoMov implements java.io.Serializable {
 	public static final Constant TM_NOTA_FISCAL_COMPLEMENTAR_COMPRA = new Constant( "Nota fiscal complementar", "CO" );
 
 	public static final Constant TM_NOTA_FISCAL_IMPORTACAO = new Constant( "Nota fiscal de importação", "DI" );
+	
+	public static final Constant TM_RESSARCIMENTO_ST = new Constant( "Ressarcimento de ST","RS" );
 
 	// Tipo de movimento de saída
 
@@ -97,6 +99,7 @@ public class TipoMov implements java.io.Serializable {
 			ret.add( TM_CONHECIMENTO_FRETE_COMPRA.getName() );
 			ret.add( TM_NOTA_FISCAL_COMPLEMENTAR_COMPRA.getName() );
 			ret.add( TM_NOTA_FISCAL_IMPORTACAO.getName() );
+			ret.add( TM_RESSARCIMENTO_ST.getName() );
 
 		}
 		else if ( SAIDA.getValue().equals( tipo ) ) {
@@ -165,6 +168,7 @@ public class TipoMov implements java.io.Serializable {
 			ret.add( TM_CONHECIMENTO_FRETE_COMPRA.getValue() );
 			ret.add( TM_NOTA_FISCAL_COMPLEMENTAR_COMPRA.getValue() );
 			ret.add( TM_NOTA_FISCAL_IMPORTACAO.getValue() );
+			ret.add( TM_RESSARCIMENTO_ST.getValue() );
 
 		}
 		else if ( SAIDA.getValue().equals( tipo ) ) {
@@ -207,6 +211,7 @@ public class TipoMov implements java.io.Serializable {
 		ret.put( TM_CONHECIMENTO_FRETE_COMPRA.getValue().toString(), TM_CONHECIMENTO_FRETE_COMPRA );
 		ret.put( TM_NOTA_FISCAL_COMPLEMENTAR_COMPRA.getValue().toString(), TM_NOTA_FISCAL_COMPLEMENTAR_COMPRA );
 		ret.put( TM_NOTA_FISCAL_IMPORTACAO.getValue().toString(), TM_NOTA_FISCAL_IMPORTACAO );
+		ret.put( TM_RESSARCIMENTO_ST.getValue().toString(), TM_RESSARCIMENTO_ST );
 		ret.put( TM_ORCAMENTO_VENDA.getValue().toString(), TM_ORCAMENTO_VENDA );
 		ret.put( TM_PEDIDO_VENDA.getValue().toString(), TM_PEDIDO_VENDA );
 		ret.put( TM_VENDA.getValue().toString(), TM_VENDA );
