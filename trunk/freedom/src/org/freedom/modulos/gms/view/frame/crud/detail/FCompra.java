@@ -2834,14 +2834,18 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		lcCampos.carregaDados();
 		if ( sValores != null ) {
 			if ( sValores[ 4 ].equals( "S" ) ) {
-				if ( txtTipoMov.getVlrString().equals( TipoMov.TM_PEDIDO_COMPRA.getValue() ) || txtTipoMov.getVlrString().equals( TipoMov.TM_COMPRA.getValue() ) || txtTipoMov.getVlrString().equals( TipoMov.TM_DEVOLUCAO_VENDA.getValue() )
-						|| txtTipoMov.getVlrString().equals( TipoMov.TM_DEVOLUCAO_CONSIGNACAO.getValue() ) || txtTipoMov.getVlrString().equals( TipoMov.TM_DEVOLUCAO_REMESSA.getValue() ) ) {
+				if ( txtTipoMov.getVlrString().equals( TipoMov.TM_PEDIDO_COMPRA.getValue() )
+						|| txtTipoMov.getVlrString().equals( TipoMov.TM_COMPRA.getValue() ) 
+						|| txtTipoMov.getVlrString().equals( TipoMov.TM_DEVOLUCAO_VENDA.getValue() )
+						|| txtTipoMov.getVlrString().equals( TipoMov.TM_DEVOLUCAO_CONSIGNACAO.getValue() ) 
+						|| txtTipoMov.getVlrString().equals( TipoMov.TM_DEVOLUCAO_REMESSA.getValue() )
+						|| txtTipoMov.getVlrString().equals( TipoMov.TM_RESSARCIMENTO_ST.getValue() ) ) {
 
 					emiteNotaFiscal( "NF" );
 				} else if ( "CP,CO,DI".indexOf( txtTipoMov.getVlrString() ) > -1 && "S".equals( cbSeqNfTipoMov.getVlrString() ) ) {
 					emiteNotaFiscal( "NF" );
 				} else {
-					Funcoes.mensagemErro( this, "O tipo de movimento utilizado não permite impressão de nota!\n" + "Verifique o cadastro do tipo de movimento." );
+					Funcoes.mensagemErro( this, "O tipo de movimento utilizado não permite emissão de Nota/NFe !\n" + "Verifique o cadastro do tipo de movimento." );
 					return;
 				}
 			}
