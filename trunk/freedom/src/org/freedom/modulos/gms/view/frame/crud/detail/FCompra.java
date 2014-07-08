@@ -120,6 +120,7 @@ import org.freedom.modulos.std.DLCodProd;
 import org.freedom.modulos.std.view.dialog.report.DLRPedido;
 import org.freedom.modulos.std.view.dialog.report.DLRetRemessa;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaDescProd;
+import org.freedom.modulos.std.view.dialog.utility.DLBuscaListaVendas;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
 import org.freedom.modulos.std.view.dialog.utility.DLFechaCompra;
 import org.freedom.modulos.std.view.dialog.utility.DLGuiaTraf;
@@ -614,6 +615,8 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 	private JButtonPad btBuscaCompra = new JButtonPad( "Pedido", Icone.novo( "btEntrada.png" ) );
 
 	private JButtonPad btBuscaImportacao = new JButtonPad( "Importação", Icone.novo( "btImportacao.png" ) );
+
+	private JButtonPad btRessarcimento = new JButtonPad( "Ressarcimento", Icone.novo( "btContaReceber.png" ) );
 
 	private JButtonPad btBuscaCpComplementar = new JButtonPad( "Complementar", Icone.novo( "btExecuta.png" ) );
 
@@ -1171,16 +1174,19 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		btBuscaCpComplementar.setPreferredSize( new Dimension( 130, 0 ) );
 		btBuscaCompra.setPreferredSize( new Dimension( 118, 0 ) );
 		btBuscaImportacao.setPreferredSize( new Dimension( 118, 0 ) );
+		btRessarcimento.setPreferredSize( new Dimension( 118, 0 ) );
 
 		btBuscaRemessa.setFont( SwingParams.getFontpadmed() );
 		btBuscaCpComplementar.setFont( SwingParams.getFontpadmed() );
 		btBuscaCompra.setFont( SwingParams.getFontpadmed() );
 		btBuscaImportacao.setFont( SwingParams.getFontpadmed() );
+		btRessarcimento.setFont( SwingParams.getFontpadmed() );
 
 		pnAdicionalCab.add( btBuscaRemessa );
 		pnAdicionalCab.add( btBuscaCompra );
 		pnAdicionalCab.add( btBuscaImportacao );
 		pnAdicionalCab.add( btBuscaCpComplementar );
+		pnAdicionalCab.add( btRessarcimento );
 
 
 		lbStatus.setForeground( Color.WHITE );
@@ -1393,6 +1399,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		btBuscaCompra.addActionListener( this );
 		btBuscaImportacao.addActionListener( this );
 		btBuscaCpComplementar.addActionListener( this );
+		btRessarcimento.addActionListener( this );
 		nav.btCancelar.addActionListener( this );
 		// Focus Listeners
 
@@ -2067,17 +2074,18 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		StringBuffer sql = new StringBuffer();
 		try {
 
-			sql.append( "SELECT P1.USAREFPROD,P1.ORDNOTA,P1.BLOQCOMPRA,P1.BUSCAVLRULTCOMPRA,P1.CUSTOCOMPRA, " );
-			sql.append( "P1.TABTRANSPCP, P1.TABSOLCP,P1.TABIMPORTCP, P1.CLASSCP, P1.LABELOBS01CP, P1.LABELOBS02CP, " );
-			sql.append( "P1.LABELOBS03CP, P1.LABELOBS04CP, P5.HABCONVCP, P1.USABUSCAGENPRODCP, COALESCE(P1.BLOQPRECOAPROV, 'N') BLOQPRECOAPROV, " );
-			sql.append( "P1.CODTIPOMOVIM, P1.BLOQSEQICP, P1.UTILORDCPINT, P1.TOTCPSFRETE, P1.UTILIZATBCALCCA, P1.CCNFECP, P1.HABCOMPRACOMPL ");
-			sql.append( ", P1.NPERMITDTMAIOR, P1.PROCEMINFE, P1.AMBIENTENFE, F.CNPJFILIAL, F.SIGLAUF, coalesce(P1.TIPOEMISSAONFE,'1') TIPOEMISSAONFE " );
-			sql.append( "FROM SGPREFERE1 P1 " );
-			sql.append( "INNER JOIN SGFILIAL F ON ");
-			sql.append( "F.CODEMP=P1.CODEMP AND F.CODFILIAL=P1.CODFILIAL ");
-			sql.append( "LEFT OUTER JOIN SGPREFERE5 P5 ON ");
-			sql.append( "P1.CODEMP=P5.CODEMP AND P1.CODFILIAL=P5.CODFILIAL " );
-			sql.append( "WHERE P1.CODEMP=? AND P1.CODFILIAL=?" );
+			sql.append( "select p1.usarefprod,p1.ordnota,p1.bloqcompra,p1.buscavlrultcompra,p1.custocompra, " );
+			sql.append( "p1.tabtranspcp, p1.tabsolcp,p1.tabimportcp, p1.classcp, p1.labelobs01cp, p1.labelobs02cp, " );
+			sql.append( "p1.labelobs03cp, p1.labelobs04cp, p5.habconvcp, p1.usabuscagenprodcp, coalesce(p1.bloqprecoaprov, 'N') bloqprecoaprov, " );
+			sql.append( "p1.codtipomovim, p1.bloqseqicp, p1.utilordcpint, p1.totcpsfrete, p1.utilizatbcalcca, p1.ccnfecp, p1.habcompracompl ");
+			sql.append( ", p1.npermitdtmaior, p1.proceminfe, p1.ambientenfe, f.cnpjfilial, f.siglauf, coalesce(p1.tipoemissaonfe,'1') tipoemissaonfe " );
+			sql.append( ", p1.codtipomovrs ");
+			sql.append( "from sgprefere1 p1 " );
+			sql.append( "inner join sgfilial f on ");
+			sql.append( "f.codemp=p1.codemp and f.codfilial=p1.codfilial ");
+			sql.append( "left outer join sgprefere5 p5 on ");
+			sql.append( "p1.codemp=p5.codemp and p1.codfilial=p5.codfilial " );
+			sql.append( "where p1.codemp=? and p1.codfilial=?" );
 
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
@@ -2894,10 +2902,21 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		else if ( evt.getSource() == btBuscaCpComplementar ) {
 			abreBuscaCpComplementar();
 		}
+		else if ( evt.getSource() == btRessarcimento ) {
+			ressarcimento();
+		}
 		else if ( evt.getSource() == nav.btCancelar){
 			desabilitaBotoes( false );
 		}
 		super.actionPerformed( evt );
+	}
+
+	private void ressarcimento() {
+
+		if ( !Aplicativo.telaPrincipal.temTela( "Ressarcimento" ) ) {
+			DLBuscaListaVendas tela = new DLBuscaListaVendas( null );
+			Aplicativo.telaPrincipal.criatela( "Ressarcimento", tela, con );
+		}
 	}
 
 	private void abreBuscaCompra() {
@@ -3630,6 +3649,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		btBuscaCpComplementar.setEnabled( flag );
 		btBuscaImportacao.setEnabled( flag );
 		btBuscaCompra.setEnabled( flag );
+		btRessarcimento.setEnabled( flag );
 	}
 
 	private void geraItensImportacao() {
