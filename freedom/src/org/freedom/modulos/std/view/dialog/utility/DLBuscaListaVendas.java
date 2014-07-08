@@ -76,7 +76,7 @@ public class DLBuscaListaVendas extends FFDialogo implements CarregaListener {
 	private ListaCampos lcVenda = new ListaCampos( this );
 
 	private enum ITENS {
-		SEL, CODVENDA, ITEM, CODPROD, DESCPROD, QUANTIDADE, PRECO, CODCLI, RAZCLI, CODPLANOPAG, DESCPLANOPAG;
+		SEL, CODVENDA, ITEM, CODPROD, DESCPROD, CODLOTE, QUANTIDADE, PRECO, CODCLI, RAZCLI, CODPLANOPAG, DESCPLANOPAG;
 	}
 
 	public final String tipoMovimento;
@@ -144,6 +144,7 @@ public class DLBuscaListaVendas extends FFDialogo implements CarregaListener {
 		tabItens.adicColuna( "Item" );
 		tabItens.adicColuna( "Código" );
 		tabItens.adicColuna( "Descrição do produto" );
+		tabItens.adicColuna( "Cód.lote" );
 		tabItens.adicColuna( "Quantidade" );
 		tabItens.adicColuna( "Preço" );
 		tabItens.adicColuna( "Cód.cli." );
@@ -156,6 +157,7 @@ public class DLBuscaListaVendas extends FFDialogo implements CarregaListener {
 		tabItens.setTamColuna( 60, ITENS.ITEM.ordinal() );
 		tabItens.setTamColuna( 80, ITENS.CODPROD.ordinal() );
 		tabItens.setTamColuna( 230, ITENS.DESCPROD.ordinal() );
+		tabItens.setTamColuna( 100, ITENS.CODLOTE.ordinal() );
 		tabItens.setTamColuna( 80, ITENS.QUANTIDADE.ordinal() );
 		tabItens.setTamColuna( 80, ITENS.PRECO.ordinal() );
 		tabItens.setTamColuna( 80, ITENS.CODCLI.ordinal() );
@@ -191,7 +193,7 @@ public class DLBuscaListaVendas extends FFDialogo implements CarregaListener {
 		try {
 
 			StringBuilder selectVendas = new StringBuilder();
-			selectVendas.append( "SELECT I.CODVENDA, I.CODITVENDA, I.CODPROD, P.DESCPROD, I.QTDITVENDA, I.PRECOITVENDA, " );
+			selectVendas.append( "SELECT I.CODVENDA, I.CODITVENDA, I.CODPROD, P.DESCPROD, coalesce(I.CODLOTE,'') CODLOTE, I.QTDITVENDA, I.PRECOITVENDA, " );
 			selectVendas.append( "V.CODCLI, C.RAZCLI, V.CODPLANOPAG, PG.DESCPLANOPAG " );
 			selectVendas.append( "FROM VDITVENDA I, VDVENDA V, EQPRODUTO P, VDCLIENTE C, FNPLANOPAG PG " );
 			selectVendas.append( "WHERE I.CODEMP=V.CODEMP AND I.CODFILIAL=V.CODFILIAL AND I.CODVENDA=V.CODVENDA AND I.TIPOVENDA=V.TIPOVENDA AND " );
@@ -220,6 +222,7 @@ public class DLBuscaListaVendas extends FFDialogo implements CarregaListener {
 				tabItens.setValor( rs.getInt( "CODITVENDA" ), row, ITENS.ITEM.ordinal() );
 				tabItens.setValor( rs.getInt( "CODPROD" ), row, ITENS.CODPROD.ordinal() );
 				tabItens.setValor( rs.getString( "DESCPROD" ), row, ITENS.DESCPROD.ordinal() );
+				tabItens.setValor( rs.getString( "CODLOTE" ), row, ITENS.CODLOTE.ordinal() );
 				tabItens.setValor( Funcoes.bdToStr( rs.getBigDecimal( "QTDITVENDA" ) ), row, ITENS.QUANTIDADE.ordinal() );
 				tabItens.setValor( Funcoes.bdToStr( rs.getBigDecimal( "PRECOITVENDA" ) ), row, ITENS.PRECO.ordinal() );
 				tabItens.setValor( rs.getInt( "CODCLI" ), row, ITENS.CODCLI.ordinal() );
@@ -252,6 +255,7 @@ public class DLBuscaListaVendas extends FFDialogo implements CarregaListener {
 				gridBuscaRemessa.setItemVenda( (Integer) tabItens.getValor( row, ITENS.ITEM.ordinal() ) );
 				gridBuscaRemessa.setCodigoProduto( (Integer) tabItens.getValor( row, ITENS.CODPROD.ordinal() ) );
 				gridBuscaRemessa.setDescricaoProduto( (String) tabItens.getValor( row, ITENS.DESCPROD.ordinal() ) );
+				gridBuscaRemessa.setCodlote( (String) tabItens.getValor( row, ITENS.CODLOTE.ordinal() ) );
 				gridBuscaRemessa.setQuantidade( ConversionFunctions.stringToBigDecimal( tabItens.getValor( row, ITENS.QUANTIDADE.ordinal() ) ) );
 				gridBuscaRemessa.setPreco( ConversionFunctions.stringToBigDecimal( tabItens.getValor( row, ITENS.PRECO.ordinal() ) ) );
 				gridBuscaRemessa.setCliente( (Integer) tabItens.getValor( row, ITENS.CODCLI.ordinal() ) );
@@ -304,6 +308,8 @@ public class DLBuscaListaVendas extends FFDialogo implements CarregaListener {
 
 		private Integer codigoProduto;
 
+		private String codlote;
+		
 		private String descricaoProduto;
 
 		private BigDecimal quantidade;
@@ -350,6 +356,18 @@ public class DLBuscaListaVendas extends FFDialogo implements CarregaListener {
 		public void setCodigoProduto( Integer codigoProduto ) {
 
 			this.codigoProduto = codigoProduto;
+		}
+
+		
+		public String getCodlote() {
+		
+			return codlote;
+		}
+
+		
+		public void setCodlote( String codlote ) {
+		
+			this.codlote = codlote;
 		}
 
 		public String getDescricaoProduto() {

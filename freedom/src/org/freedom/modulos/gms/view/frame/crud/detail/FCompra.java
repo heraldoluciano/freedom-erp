@@ -121,6 +121,7 @@ import org.freedom.modulos.std.view.dialog.report.DLRPedido;
 import org.freedom.modulos.std.view.dialog.report.DLRetRemessa;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaDescProd;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaListaVendas;
+import org.freedom.modulos.std.view.dialog.utility.DLBuscaListaVendas.GridBuscaRemessa;
 import org.freedom.modulos.std.view.dialog.utility.DLBuscaProd;
 import org.freedom.modulos.std.view.dialog.utility.DLFechaCompra;
 import org.freedom.modulos.std.view.dialog.utility.DLGuiaTraf;
@@ -591,6 +592,10 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 	private String utilizatbcalcca = "";
 
 	private String consistChaveNFE = "";
+	
+	private Integer codtipomovrs = null;
+	
+	private Integer codplanopagrs = null;
 
 	private JTextAreaPad txaObs01 = new JTextAreaPad();
 
@@ -2079,12 +2084,14 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 			sql.append( "p1.labelobs03cp, p1.labelobs04cp, p5.habconvcp, p1.usabuscagenprodcp, coalesce(p1.bloqprecoaprov, 'N') bloqprecoaprov, " );
 			sql.append( "p1.codtipomovim, p1.bloqseqicp, p1.utilordcpint, p1.totcpsfrete, p1.utilizatbcalcca, p1.ccnfecp, p1.habcompracompl ");
 			sql.append( ", p1.npermitdtmaior, p1.proceminfe, p1.ambientenfe, f.cnpjfilial, f.siglauf, coalesce(p1.tipoemissaonfe,'1') tipoemissaonfe " );
-			sql.append( ", p1.codtipomovrs ");
+			sql.append( ", p1.codtipomovrs, tm.codplanopag codplanopagrs ");
 			sql.append( "from sgprefere1 p1 " );
 			sql.append( "inner join sgfilial f on ");
 			sql.append( "f.codemp=p1.codemp and f.codfilial=p1.codfilial ");
 			sql.append( "left outer join sgprefere5 p5 on ");
 			sql.append( "p1.codemp=p5.codemp and p1.codfilial=p5.codfilial " );
+			sql.append( "left outer join eqtipomov tm on ");
+			sql.append( "tm.codemp=p1.codemprs and tm.codfilial=p1.codfilialrs and tm.codtipomov=p1.codtipomovrs ");
 			sql.append( "where p1.codemp=? and p1.codfilial=?" );
 
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
@@ -2095,35 +2102,41 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 
 			if ( rs.next() ) {
 
-				comref = rs.getString( "USAREFPROD" ).trim().equals( "S" );
-				buscagenericaprod = rs.getString( "USABUSCAGENPRODCP" ).trim().equals( "S" );
-				podeBloq = rs.getString( "BLOQCOMPRA" ).trim().equals( "S" );
-				buscaVlrUltCompra = rs.getString( "BUSCAVLRULTCOMPRA" ).trim().equals( "S" );
-				sOrdNota = rs.getString( "ORDNOTA" );
-				habilitaCusto = rs.getString( "CUSTOCOMPRA" ).trim().equals( "S" );
-				abaTransp = rs.getString( "TABTRANSPCP" );
-				abaSolCompra = rs.getString( "TABSOLCP" );
-				abaImport = rs.getString( "TABIMPORTCP" );
-				classcp = rs.getString( "CLASSCP" );
-				labelobs01cp = rs.getString( "LABELOBS01CP" );
-				labelobs02cp = rs.getString( "LABELOBS02CP" );
-				labelobs03cp = rs.getString( "LABELOBS03CP" );
-				labelobs04cp = rs.getString( "LABELOBS04CP" );
-				habconvcp = rs.getString( "HABCONVCP" ) == null ? false : rs.getString( "HABCONVCP" ).equals( "S" );
-				bloqprecoaprov = rs.getString( "BLOQPRECOAPROV" ).equals( "S" );
+				comref = rs.getString( "usarefprod" ).trim().equals( "S" );
+				buscagenericaprod = rs.getString( "usabuscagenprodcp" ).trim().equals( "S" );
+				podeBloq = rs.getString( "bloqcompra" ).trim().equals( "S" );
+				buscaVlrUltCompra = rs.getString( "buscavlrultcompra" ).trim().equals( "S" );
+				sOrdNota = rs.getString( "ordnota" );
+				habilitaCusto = rs.getString( "custocompra" ).trim().equals( "S" );
+				abaTransp = rs.getString( "tabtranspcp" );
+				abaSolCompra = rs.getString( "tabsolcp" );
+				abaImport = rs.getString( "tabimportcp" );
+				classcp = rs.getString( "classcp" );
+				labelobs01cp = rs.getString( "labelobs01cp" );
+				labelobs02cp = rs.getString( "labelobs02cp" );
+				labelobs03cp = rs.getString( "labelobs03cp" );
+				labelobs04cp = rs.getString( "labelobs04cp" );
+				habconvcp = rs.getString( "habconvcp" ) == null ? false : rs.getString( "habconvcp" ).equals( "S" );
+				bloqprecoaprov = rs.getString( "bloqprecoaprov" ).equals( "S" );
 				codtipomovim = rs.getInt( "codtipomovim" );
-				bloqseqicp = rs.getString("BLOQSEQICP");
-				utilordcpint = rs.getString("UTILORDCPINT");
-				totcpsfrete = rs.getString( "TOTCPSFRETE" );
-				utilizatbcalcca = rs.getString( "UTILIZATBCALCCA" );
-				consistChaveNFE = rs.getString( "CCNFECP" );
-				habcompracompl = rs.getString( "HABCOMPRACOMPL" ) == null ? false : rs.getString( "HABCOMPRACOMPL" ).equals( "S" );
-				npermitdtmaior = rs.getString( "NPERMITDTMAIOR" ) == null ? false : rs.getString( "NPERMITDTMAIOR" ).equals( "S" );
-				proceminfe = rs.getString( "PROCEMINFE" ) == null ? "3" : rs.getString("PROCEMINFE");
-				ambientenfe = rs.getString( "AMBIENTENFE" ) == null ? AbstractNFEFactory.KIND_ENV_HOMOLOG : rs.getString("AMBIENTENFE");
-				cnpjfilial = rs.getString("CNPJFILIAL");
-				siglauffilial = rs.getString( "SIGLAUF" );
-				tipoemissao = new Integer(rs.getString( "TIPOEMISSAONFE" ));
+				bloqseqicp = rs.getString("bloqseqicp");
+				utilordcpint = rs.getString("utilordcpint");
+				totcpsfrete = rs.getString( "totcpsfrete" );
+				utilizatbcalcca = rs.getString( "utilizatbcalcca" );
+				consistChaveNFE = rs.getString( "ccnfecp" );
+				habcompracompl = rs.getString( "habcompracompl" ) == null ? false : rs.getString( "habcompracompl" ).equals( "S" );
+				npermitdtmaior = rs.getString( "npermitdtmaior" ) == null ? false : rs.getString( "npermitdtmaior" ).equals( "S" );
+				proceminfe = rs.getString( "proceminfe" ) == null ? "3" : rs.getString("proceminfe");
+				ambientenfe = rs.getString( "ambientenfe" ) == null ? AbstractNFEFactory.KIND_ENV_HOMOLOG : rs.getString("ambientenfe");
+				cnpjfilial = rs.getString("cnpjfilial");
+				siglauffilial = rs.getString( "siglauf" );
+				tipoemissao = new Integer(rs.getString( "tipoemissaonfe" ));
+				if (rs.getString( "codtipomovrs" )!=null) {
+					codtipomovrs = new Integer(rs.getInt( "codtipomovrs" ));
+				}
+				if (rs.getString( "codplanopagrs" )!=null) {
+					codplanopagrs = new Integer(rs.getInt( "codplanopagrs" ));
+				}
 				// Se o tipo de emissão for diferente de 1-Normal, então está em contingência.
 				contingencia = tipoemissao!=1;
 			}
@@ -2911,11 +2924,93 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		super.actionPerformed( evt );
 	}
 
+	private Integer getCodfor(Integer codemp, Integer codfilial, Integer codcli) throws Exception {
+		Integer result = null;
+		StringBuilder sql = new StringBuilder();
+		try {
+			sql.append( "select codfor from vdclientefor cf " );
+			sql.append( "where cf.codemp=? and cf.codfilial=? and cf.codcli=? ");
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
+			int param = 1;
+			ps.setInt( param++, codemp );
+			ps.setInt( param++, codfilial);
+			ps.setInt( param++, codcli );
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				if (rs.getString("codfor")!=null) {
+					result = new Integer(rs.getInt( "codfor" ));
+				}
+			}
+			rs.close();
+			ps.close();
+			con.commit();
+			
+		} catch (SQLException err) {
+			String mensagemerr = err.getMessage();
+			err.printStackTrace();
+			try {
+				con.rollback();
+			} catch (SQLException errroll) {
+				errroll.printStackTrace();
+			}
+			throw new Exception("Erro buscanco fornecedor !\n"+mensagemerr);
+		}
+		return result;
+	}
 	private void ressarcimento() {
 
-		if ( !Aplicativo.telaPrincipal.temTela( "Ressarcimento" ) ) {
+		if (codtipomovrs==null) {
+			Funcoes.mensagemInforma( this, "Tipo de movimento de ressarcimento não foi definido no preferências !" );
+			return;
+		} else if (codplanopagrs==null) {
+			Funcoes.mensagemInforma( this, "Plano de pagamento não foi definido no tipo de movimento de ressarcimento !" );
+			return;
+		} else {
 			DLBuscaListaVendas tela = new DLBuscaListaVendas( null );
-			Aplicativo.telaPrincipal.criatela( "Ressarcimento", tela, con );
+			try {
+				tela.setVisible( true );
+				if (tela.OK) {
+					List<GridBuscaRemessa> list = tela.getGridBuscaRemessa();
+					int item = 0;
+					for (GridBuscaRemessa row: list) {
+						if (item==0) {
+							Integer codcli = row.getCliente();
+							Integer codfor = getCodfor(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDCLIENTE" ), codcli);
+							if (codfor==null) {
+								Funcoes.mensagemInforma( this, "Não existe fornecedor vinculado ao cliente de código "+codcli+" !" );
+								break;
+							}
+							txtCodTipoMov.setVlrInteger( codtipomovrs );
+							lcTipoMov.carregaDados();
+							txtCodFor.setVlrInteger( codfor );
+							lcFor.carregaDados();
+							txtCodPlanoPag.setVlrInteger( codplanopagrs );
+							lcPlanoPag.carregaDados();
+							lcCampos.post();
+						}
+						item ++;
+						lcDet.insert( true );
+						txtCodProd.setVlrInteger( row.getCodigoProduto() );
+						if (comref) {
+							lcProd2.carregaDados();
+						} else {
+							lcProd.carregaDados();
+						}
+						txtQtdItCompra.setVlrBigDecimal( new BigDecimal(1) );
+						txtPrecoItCompra.setVlrBigDecimal( BigDecimal.ZERO );
+						txtCodLote.setVlrString( row.getCodlote() );
+						lcLote.carregaDados();
+						lcDet.post();
+					}
+				}
+			} catch (Exception err) {
+				Funcoes.mensagemErro( this, err.getMessage() );
+			}
+			finally {
+				if (tela!=null) {
+					tela.dispose();
+				}
+			}
 		}
 	}
 
