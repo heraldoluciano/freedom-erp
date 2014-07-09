@@ -76,7 +76,7 @@ public class DLBuscaListaVendas extends FFDialogo implements CarregaListener {
 	private ListaCampos lcVenda = new ListaCampos( this );
 
 	private enum ITENS {
-		SEL, CODVENDA, ITEM, CODPROD, DESCPROD, CODLOTE, QUANTIDADE, PRECO, CODCLI, RAZCLI, CODPLANOPAG, DESCPLANOPAG;
+		SEL, CODVENDA, ITEM, CODPROD, DESCPROD, CODLOTE, QUANTIDADE, PRECO, CODCLI, RAZCLI, CODPLANOPAG, DESCPLANOPAG, CHAVENFE, REFPROD;
 	}
 
 	public final String tipoMovimento;
@@ -151,6 +151,8 @@ public class DLBuscaListaVendas extends FFDialogo implements CarregaListener {
 		tabItens.adicColuna( "Razão social do cliente" );
 		tabItens.adicColuna( "Cód.pl.pag." );
 		tabItens.adicColuna( "Descrição do plano de pagamento" );
+		tabItens.adicColuna( "Chave NFE" );
+		tabItens.adicColuna( "Referência" );
 
 		tabItens.setTamColuna( 20, ITENS.SEL.ordinal() );
 		tabItens.setTamColuna( 80, ITENS.CODVENDA.ordinal() );
@@ -164,6 +166,8 @@ public class DLBuscaListaVendas extends FFDialogo implements CarregaListener {
 		tabItens.setTamColuna( 230, ITENS.RAZCLI.ordinal() );
 		tabItens.setTamColuna( 80, ITENS.CODPLANOPAG.ordinal() );
 		tabItens.setTamColuna( 230, ITENS.DESCPLANOPAG.ordinal() );
+		tabItens.setTamColuna( 230, ITENS.CHAVENFE.ordinal() );
+		tabItens.setTamColuna( 60, ITENS.REFPROD.ordinal() );
 
 		tabItens.setColunaEditavel( ITENS.SEL.ordinal(), true );
 
@@ -193,8 +197,10 @@ public class DLBuscaListaVendas extends FFDialogo implements CarregaListener {
 		try {
 
 			StringBuilder selectVendas = new StringBuilder();
-			selectVendas.append( "SELECT I.CODVENDA, I.CODITVENDA, I.CODPROD, P.DESCPROD, coalesce(I.CODLOTE,'') CODLOTE, I.QTDITVENDA, I.PRECOITVENDA, " );
-			selectVendas.append( "V.CODCLI, C.RAZCLI, V.CODPLANOPAG, PG.DESCPLANOPAG " );
+			selectVendas.append( "SELECT I.CODVENDA, I.CODITVENDA, I.CODPROD, P.DESCPROD, coalesce(I.CODLOTE,'') CODLOTE");
+			selectVendas.append( ", I.QTDITVENDA, I.PRECOITVENDA " );
+			selectVendas.append( ", V.CODCLI, C.RAZCLI, V.CODPLANOPAG, PG.DESCPLANOPAG, coalesce(V.CHAVENFEVENDA,'') CHAVENFE " );
+			selectVendas.append( ", P.REFPROD ");
 			selectVendas.append( "FROM VDITVENDA I, VDVENDA V, EQPRODUTO P, VDCLIENTE C, FNPLANOPAG PG " );
 			selectVendas.append( "WHERE I.CODEMP=V.CODEMP AND I.CODFILIAL=V.CODFILIAL AND I.CODVENDA=V.CODVENDA AND I.TIPOVENDA=V.TIPOVENDA AND " );
 			selectVendas.append( "V.CODEMP=? AND V.CODFILIAL=? AND V.CODVENDA=? AND V.TIPOVENDA=? AND " );
@@ -229,10 +235,14 @@ public class DLBuscaListaVendas extends FFDialogo implements CarregaListener {
 				tabItens.setValor( rs.getString( "RAZCLI" ), row, ITENS.RAZCLI.ordinal() );
 				tabItens.setValor( rs.getInt( "CODPLANOPAG" ), row, ITENS.CODPLANOPAG.ordinal() );
 				tabItens.setValor( rs.getString( "DESCPLANOPAG" ), row, ITENS.DESCPLANOPAG.ordinal() );
+				tabItens.setValor( rs.getString( "CHAVENFE" ), row, ITENS.CHAVENFE.ordinal() );
+				tabItens.setValor( rs.getString( "REFPROD" ), row, ITENS.REFPROD.ordinal() );
 
 				row++;
 			}
 
+			rs.close();
+			ps.close();
 			con.commit();
 
 		} catch ( SQLException e ) {
@@ -260,6 +270,8 @@ public class DLBuscaListaVendas extends FFDialogo implements CarregaListener {
 				gridBuscaRemessa.setPreco( ConversionFunctions.stringToBigDecimal( tabItens.getValor( row, ITENS.PRECO.ordinal() ) ) );
 				gridBuscaRemessa.setCliente( (Integer) tabItens.getValor( row, ITENS.CODCLI.ordinal() ) );
 				gridBuscaRemessa.setPlanoPagamento( (Integer) tabItens.getValor( row, ITENS.CODPLANOPAG.ordinal() ) );
+				gridBuscaRemessa.setChaveNFE( (String) tabItens.getValor( row, ITENS.CHAVENFE.ordinal() ) );
+				gridBuscaRemessa.setRefprod( (String) tabItens.getValor( row, ITENS.REFPROD.ordinal() ) );
 
 				list.add( gridBuscaRemessa );
 			}
@@ -323,6 +335,10 @@ public class DLBuscaListaVendas extends FFDialogo implements CarregaListener {
 		private Integer planoPagamento;
 
 		private String descricaoPlanoPagamento;
+		
+		private String chaveNFE;
+		
+		private String refprod;
 
 		public GridBuscaRemessa() {
 
@@ -438,6 +454,30 @@ public class DLBuscaListaVendas extends FFDialogo implements CarregaListener {
 		public void setDescricaoPlanoPagamento( String descricaoPlanoPagamento ) {
 
 			this.descricaoPlanoPagamento = descricaoPlanoPagamento;
+		}
+
+		
+		public String getChaveNFE() {
+		
+			return chaveNFE;
+		}
+
+		
+		public void setChaveNFE( String chaveNFE ) {
+		
+			this.chaveNFE = chaveNFE;
+		}
+
+		
+		public String getRefprod() {
+		
+			return refprod;
+		}
+
+		
+		public void setRefprod( String refprod ) {
+		
+			this.refprod = refprod;
 		}
 	}
 }
