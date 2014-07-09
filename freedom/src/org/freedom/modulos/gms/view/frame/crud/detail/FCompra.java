@@ -629,7 +629,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 
 	private boolean novo = false;
 
-	private JPanelPad pnAdicionalCab = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 4 ) );
+	private JPanelPad pnAdicionalCab = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 6 ) );
 
 	private NFEConnectionFactory nfecf = null;
 
@@ -1175,11 +1175,17 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 
 		desabilitaBotoes( false );
 
-		btBuscaRemessa.setPreferredSize( new Dimension( 118, 0 ) );
-		btBuscaCpComplementar.setPreferredSize( new Dimension( 130, 0 ) );
-		btBuscaCompra.setPreferredSize( new Dimension( 118, 0 ) );
-		btBuscaImportacao.setPreferredSize( new Dimension( 118, 0 ) );
-		btRessarcimento.setPreferredSize( new Dimension( 118, 0 ) );
+		btBuscaRemessa.setPreferredSize( new Dimension( 40, 0 ) );
+		btBuscaCpComplementar.setPreferredSize( new Dimension( 40, 0 ) );
+		btBuscaCompra.setPreferredSize( new Dimension( 40, 0 ) );
+		btBuscaImportacao.setPreferredSize( new Dimension( 40, 0 ) );
+		btRessarcimento.setPreferredSize( new Dimension( 40, 0 ) );
+
+		btBuscaRemessa.setToolTipText( "Seleciona nota fiscal para geração de remessa" );
+		btBuscaCpComplementar.setToolTipText( "Busca nota fiscal para geração de complementar" );
+		btBuscaCompra.setToolTipText( "Seleciona pedido de compra" );
+		btBuscaImportacao.setToolTipText( "Seleciona nota fiscal de importação" );
+		btRessarcimento.setToolTipText( "Carrega venda para ressarcimento de ICMS" );
 
 		btBuscaRemessa.setFont( SwingParams.getFontpadmed() );
 		btBuscaCpComplementar.setFont( SwingParams.getFontpadmed() );
@@ -1187,6 +1193,12 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		btBuscaImportacao.setFont( SwingParams.getFontpadmed() );
 		btRessarcimento.setFont( SwingParams.getFontpadmed() );
 
+		JPanelPad navEast = new JPanelPad();
+		navEast.setPreferredSize( new Dimension( 116, 30 ) );
+		navEast.adic( lbStatus, 3, 3, 116, 20 );
+		navEast.tiraBorda();
+		pnAdicionalCab.add( navEast );
+		
 		pnAdicionalCab.add( btBuscaRemessa );
 		pnAdicionalCab.add( btBuscaCompra );
 		pnAdicionalCab.add( btBuscaImportacao );
@@ -1201,11 +1213,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		lbStatus.setOpaque( true );
 		lbStatus.setText( "NÃO SALVO" );
 
-		JPanelPad navEast = new JPanelPad();
-		navEast.setPreferredSize( new Dimension( 116, 30 ) );
-		navEast.adic( lbStatus, 3, 3, 116, 20 );
-		navEast.tiraBorda();
-		pnAdicionalCab.add( navEast );
+
 		// pnAdicionalCab.add( lbStatus );
 	
 		pnMaster.remove( 2 ); // Remove o JPanelPad predefinido da class FDados
@@ -2928,7 +2936,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		Integer result = null;
 		StringBuilder sql = new StringBuilder();
 		try {
-			sql.append( "select codfor from vdclientefor cf " );
+			sql.append( "select codfor from eqclifor cf " );
 			sql.append( "where cf.codemp=? and cf.codfilial=? and cf.codcli=? ");
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			int param = 1;
@@ -2967,6 +2975,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 			return;
 		} else {
 			DLBuscaListaVendas tela = new DLBuscaListaVendas( null );
+			tela.setConexao( con );
 			try {
 				tela.setVisible( true );
 				if (tela.OK) {
@@ -2980,6 +2989,10 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 								Funcoes.mensagemInforma( this, "Não existe fornecedor vinculado ao cliente de código "+codcli+" !" );
 								break;
 							}
+							if ("".equals(row.getChaveNFE())) {
+								Funcoes.mensagemInforma( this, "Pedido de venda não possui chave autorização !" );
+								break;
+							}
 							txtCodTipoMov.setVlrInteger( codtipomovrs );
 							lcTipoMov.carregaDados();
 							txtCodFor.setVlrInteger( codfor );
@@ -2989,18 +3002,8 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 							lcCampos.post();
 						}
 						item ++;
-						lcDet.insert( true );
-						txtCodProd.setVlrInteger( row.getCodigoProduto() );
-						if (comref) {
-							lcProd2.carregaDados();
-						} else {
-							lcProd.carregaDados();
-						}
-						txtQtdItCompra.setVlrBigDecimal( new BigDecimal(1) );
-						txtPrecoItCompra.setVlrBigDecimal( BigDecimal.ZERO );
-						txtCodLote.setVlrString( row.getCodlote() );
-						lcLote.carregaDados();
-						lcDet.post();
+						insertItem(  row.getCodigoProduto(), row.getRefprod(), new BigDecimal(1), row.getCodlote(), 
+								"V", row.getCodigoVenda(), row.getItemVenda(),  BigDecimal.ZERO );
 					}
 				}
 			} catch (Exception err) {
@@ -4711,7 +4714,8 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 
 	}
 
-	public void insertItem( Integer codprod, String refprod, BigDecimal qtd ) {
+	public void insertItem( Integer codprod, String refprod, BigDecimal qtd, String codlote
+			, String tipovenda, Integer codvenda, Integer coditvenda, BigDecimal precoitcompra ) {
 
 		lcDet.insert( true );
 		txtCodProd.requestFocus();
@@ -4720,23 +4724,74 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		txtRefProd.setVlrString( refprod );
 		txtQtdItCompra.requestFocus();
 		txtQtdItCompra.setVlrBigDecimal( qtd );
+		txtVlrProdItCompra.setVlrBigDecimal( BigDecimal.ZERO );
+		txtPercDescItCompra.setVlrBigDecimal( BigDecimal.ZERO );
+		txtVlrDescCompra.setVlrBigDecimal( BigDecimal.ZERO );
 		txtPrecoItCompra.requestFocus();
-
 		if ( comref ) {
 			lcProd2.carregaDados();
 		}
 		else {
 			lcProd.carregaDados();
 		}
-
-		txtPrecoItCompra.setVlrBigDecimal( txtPrecoBaseProd.getVlrBigDecimal() );
-
+		if (codlote!=null) {
+			txtCodLote.setVlrString( codlote );
+		}
+		if (precoitcompra==null) {
+			txtPrecoItCompra.setVlrBigDecimal( txtPrecoBaseProd.getVlrBigDecimal() );
+		} else {
+			txtPrecoItCompra.setVlrBigDecimal(precoitcompra);
+		}
 		getCFOP();
 		getTratTrib();
-
 		lcDet.post();
+		if (codvenda!=null) {
+			try {
+				vinculaCompraVenda(Aplicativo.iCodEmp, lcCampos.getCodFilial(), txtCodCompra.getVlrInteger(), txtCodItCompra.getVlrInteger(), 
+					ListaCampos.getMasterFilial( "VDVENDA" ), tipovenda, codvenda, coditvenda);
+			} catch (Exception err) {
+				Funcoes.mensagemErro( this, err.getMessage() );
+			}
+		}
 	}
 
+	private void vinculaCompraVenda(Integer codemp, Integer codfilialcp, Integer codcompra, Integer coditcompra
+			, Integer codfilialvd, String tipovenda, Integer codvenda, Integer coditvenda) throws Exception {
+		StringBuilder sql = new StringBuilder();
+		sql.append( "insert into cpcompravenda ");
+		sql.append( " (codemp, codfilial, codcompra, coditcompra");
+		sql.append( ", codempvd, codfilialvd, tipovenda, codvenda, coditvenda");
+		sql.append(" , qtddev) ");
+		sql.append(" values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" );
+		try {
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
+			int param = 1;
+			ps.setInt( param++, codemp );
+			ps.setInt( param++, codfilialcp );
+			ps.setInt( param++, codcompra );
+			ps.setInt( param++, coditcompra );
+			ps.setInt( param++, codemp );
+			ps.setInt( param++, codfilialvd );
+			ps.setString( param++, tipovenda );
+			ps.setInt( param++, codvenda );
+			ps.setInt( param++, coditvenda );
+			ps.setBigDecimal( param++, BigDecimal.ZERO );
+			ps.execute();
+			ps.close();
+			con.commit();
+			
+		} catch (SQLException err) {
+			String mensagemerro = err.getMessage();
+			err.printStackTrace();
+			try {
+				con.rollback();
+			} catch (SQLException errroll) {
+				errroll.printStackTrace();
+			}
+			throw new Exception("Erro vinculando compra x venda !\n"+mensagemerro);
+		}
+	}
+	
 	public String  getBloqQtdProd(Integer codemp, Integer codfilial, Integer codprod, Integer seqest){
 		StringBuilder sql = new StringBuilder();
 		PreparedStatement ps = null;

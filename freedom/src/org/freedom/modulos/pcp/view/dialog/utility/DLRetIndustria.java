@@ -568,7 +568,7 @@ public class DLRetIndustria extends FFDialogo implements MouseListener, ActionLi
 				Integer seqitop = (Integer) tabRetorno.getValor( i, enumTabRemessa.SEQITOP.ordinal() );
 				
 				if(codcompra < 1 && selecionado) {
-					fcompra.insertItem(codprod, refprod, qtd);
+					fcompra.insertItem(codprod, refprod, qtd, null, null, null, null, null);
 					
 					atualizaItOP( pcodcompra, seqitop );
 					
