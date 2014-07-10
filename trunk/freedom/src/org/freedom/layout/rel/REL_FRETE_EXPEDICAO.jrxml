@@ -19,20 +19,33 @@
 	<parameter name="VLRINSSPAGO" class="java.math.BigDecimal"/>
 	<parameter name="VLRTOTPAGO" class="java.math.BigDecimal"/>
 	<queryString>
-		<![CDATA[select tr.codtran, rm.codtran, tr.nometran, rm.placaveiculo, rm.dtent, rm.codbairro, br.nomebairro, rm.ticket, br.vlrfrete preco, fr.pesoliquido, fr.vlrfrete,
-0.00 as pago, 0.00 as emPagamento , 0.00 vlrretinss, 0.00 vlrretirrf
-from eqrecmerc rm
-left outer join vdtransp tr on tr.codemp=rm.codemptn and tr.codfilial=rm.codfilialtn and tr.codtran=rm.codtran
-left outer join sgbairro br on br.codpais=rm.codpais and br.siglauf=rm.siglauf and br.codmunic=rm.codmunic and br.codbairro=rm.codbairro
-right outer join lffrete fr on fr.codemprm=rm.codemp and fr.codfilialrm=rm.codfilial and fr.ticket=rm.ticket
-where rm.codemp=70 and rm.codfilial=1 and rm.dtent between '2010-01-01' and '2010-12-01']]>
+		<![CDATA[select fr.codtran, tr.nometran, tr.placatran placaveiculo
+, fr.dtemitfrete dtent,cl.cidcli localentrega, docfrete ticket,fr.vlrfrete /  fr.pesoliquido * 1000 preco
+, fr.pesoliquido, fr.vlrfrete, 0.00 vlrretinss, 0.00 vlrretirrf
+, (select p.vlrpagopag from FNPAGAR p where p.codemp=fr.codemppa and p.codfilial=fr.codfilialpa
+ and p.codpag=fr.codpag and (select sum(ip1.nparcpag)
+ from fnitpagar ip1
+  where ip1.codemp=p.codemp and ip1.codfilial=p.codfilial and ip1.codpag=p.codpag) = (select sum(ip1.nparcpag) from fnitpagar ip1 where ip1.codemp=p.codemp
+  and ip1.codfilial=p.codfilial and ip1.codpag=p.codpag and ip1.statusitpag='PP')) as pago
+  , (select p.vlrpagopag from FNPAGAR p where p.codemp=fr.codemppa and p.codfilial=fr.codfilialpa
+  and p.codpag=fr.codpag) as emPagamento from lffrete fr
+  left outer join vdtransp tr on tr.codemp=fr.codemptn
+  and tr.codfilial=fr.codfilialtn and tr.codtran=fr.codtran
+  left outer join vdcliente cl on cl.codempuc=fr.codempde
+  and cl.codfilialuc=fr.codfilialde and cl.codunifcod=fr.coddestinat
+  left outer join sgmunicipio mn on mn.codpais=cl.codpais and mn.siglauf=cl.siglauf
+  and mn.codmunic=cl.codmunic
+  where  fr.codemp=4 and fr.codfilial=1 and fr.dtemitfrete between '01.06.2014' and '30.06.2014'
+   and fr.ticket is null and fr.codemptn=4 and fr.codfilialtn=1 and fr.codtran=11
+     order by fr.dtemitfrete
+]]>
 	</queryString>
 	<field name="CODTRAN" class="java.lang.Integer"/>
 	<field name="NOMETRAN" class="java.lang.String"/>
 	<field name="PLACAVEICULO" class="java.lang.String"/>
 	<field name="DTENT" class="java.sql.Date"/>
 	<field name="LOCALENTREGA" class="java.lang.String"/>
-	<field name="TICKET" class="java.lang.Integer"/>
+	<field name="TICKET" class="java.lang.String"/>
 	<field name="PRECO" class="java.math.BigDecimal"/>
 	<field name="PESOLIQUIDO" class="java.math.BigDecimal"/>
 	<field name="VLRFRETE" class="java.math.BigDecimal"/>
@@ -651,7 +664,7 @@ $P{VLRINSS}.subtract($P{VLRINSSPAGO})]]></variableExpression>
 				<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="CP1252" isPdfEmbedded="false"/>
 				</textElement>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{TICKET}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{TICKET}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
 				<reportElement key="textField" x="353" y="2" width="46" height="11" forecolor="#000000" backcolor="#FFFFFF"/>
