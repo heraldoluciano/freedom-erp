@@ -76,7 +76,7 @@ public class DLBuscaListaVendas extends FFDialogo implements CarregaListener {
 	private ListaCampos lcVenda = new ListaCampos( this );
 
 	private enum ITENS {
-		SEL, CODVENDA, ITEM, CODPROD, DESCPROD, CODLOTE, QUANTIDADE, PRECO, CODCLI, RAZCLI, CODPLANOPAG, DESCPLANOPAG, CHAVENFE, REFPROD;
+		SEL, CODVENDA, DOCVENDA, ITEM, CODPROD, DESCPROD, CODLOTE, QUANTIDADE, PRECO, CODCLI, RAZCLI, CODPLANOPAG, DESCPLANOPAG, CHAVENFE, REFPROD;
 	}
 
 	public final String tipoMovimento;
@@ -140,7 +140,8 @@ public class DLBuscaListaVendas extends FFDialogo implements CarregaListener {
 		panelGrid.setBorder( BorderFactory.createEtchedBorder() );
 
 		tabItens.adicColuna( "" );
-		tabItens.adicColuna( "Venda" );
+		tabItens.adicColuna( "Pedido" );
+		tabItens.adicColuna( "Documento" );
 		tabItens.adicColuna( "Item" );
 		tabItens.adicColuna( "Código" );
 		tabItens.adicColuna( "Descrição do produto" );
@@ -156,6 +157,7 @@ public class DLBuscaListaVendas extends FFDialogo implements CarregaListener {
 
 		tabItens.setTamColuna( 20, ITENS.SEL.ordinal() );
 		tabItens.setTamColuna( 80, ITENS.CODVENDA.ordinal() );
+		tabItens.setTamColuna( 80, ITENS.DOCVENDA.ordinal() );
 		tabItens.setTamColuna( 60, ITENS.ITEM.ordinal() );
 		tabItens.setTamColuna( 80, ITENS.CODPROD.ordinal() );
 		tabItens.setTamColuna( 230, ITENS.DESCPROD.ordinal() );
@@ -197,7 +199,7 @@ public class DLBuscaListaVendas extends FFDialogo implements CarregaListener {
 		try {
 
 			StringBuilder selectVendas = new StringBuilder();
-			selectVendas.append( "SELECT I.CODVENDA, I.CODITVENDA, I.CODPROD, P.DESCPROD, coalesce(I.CODLOTE,'') CODLOTE");
+			selectVendas.append( "SELECT I.CODVENDA, V.DOCVENDA, I.CODITVENDA, I.CODPROD, P.DESCPROD, coalesce(I.CODLOTE,'') CODLOTE");
 			selectVendas.append( ", I.QTDITVENDA, I.PRECOITVENDA " );
 			selectVendas.append( ", V.CODCLI, C.RAZCLI, V.CODPLANOPAG, PG.DESCPLANOPAG, coalesce(V.CHAVENFEVENDA,'') CHAVENFE " );
 			selectVendas.append( ", P.REFPROD ");
@@ -225,6 +227,7 @@ public class DLBuscaListaVendas extends FFDialogo implements CarregaListener {
 				tabItens.adicLinha();
 				tabItens.setValor( new Boolean( true ), row, ITENS.SEL.ordinal() );
 				tabItens.setValor( rs.getInt( "CODVENDA" ), row, ITENS.CODVENDA.ordinal() );
+				tabItens.setValor( rs.getInt( "DOCVENDA" ), row, ITENS.DOCVENDA.ordinal() );
 				tabItens.setValor( rs.getInt( "CODITVENDA" ), row, ITENS.ITEM.ordinal() );
 				tabItens.setValor( rs.getInt( "CODPROD" ), row, ITENS.CODPROD.ordinal() );
 				tabItens.setValor( rs.getString( "DESCPROD" ), row, ITENS.DESCPROD.ordinal() );
@@ -262,6 +265,7 @@ public class DLBuscaListaVendas extends FFDialogo implements CarregaListener {
 				GridBuscaRemessa gridBuscaRemessa = new GridBuscaRemessa();
 
 				gridBuscaRemessa.setCodigoVenda( (Integer) tabItens.getValor( row, ITENS.CODVENDA.ordinal() ) );
+				gridBuscaRemessa.setDocvenda( (Integer) tabItens.getValor( row, ITENS.DOCVENDA.ordinal() ) );
 				gridBuscaRemessa.setItemVenda( (Integer) tabItens.getValor( row, ITENS.ITEM.ordinal() ) );
 				gridBuscaRemessa.setCodigoProduto( (Integer) tabItens.getValor( row, ITENS.CODPROD.ordinal() ) );
 				gridBuscaRemessa.setDescricaoProduto( (String) tabItens.getValor( row, ITENS.DESCPROD.ordinal() ) );
@@ -317,6 +321,8 @@ public class DLBuscaListaVendas extends FFDialogo implements CarregaListener {
 		private Integer codigoVenda;
 
 		private Integer itemVenda;
+		
+		private Integer docvenda;
 
 		private Integer codigoProduto;
 
@@ -478,6 +484,18 @@ public class DLBuscaListaVendas extends FFDialogo implements CarregaListener {
 		public void setRefprod( String refprod ) {
 		
 			this.refprod = refprod;
+		}
+
+		
+		public Integer getDocvenda() {
+		
+			return docvenda;
+		}
+
+		
+		public void setDocvenda( Integer docvenda ) {
+		
+			this.docvenda = docvenda;
 		}
 	}
 }
