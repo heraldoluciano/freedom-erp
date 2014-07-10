@@ -1175,11 +1175,14 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 
 		desabilitaBotoes( false );
 
-		btBuscaRemessa.setPreferredSize( new Dimension( 40, 0 ) );
-		btBuscaCpComplementar.setPreferredSize( new Dimension( 40, 0 ) );
-		btBuscaCompra.setPreferredSize( new Dimension( 40, 0 ) );
-		btBuscaImportacao.setPreferredSize( new Dimension( 40, 0 ) );
-		btRessarcimento.setPreferredSize( new Dimension( 40, 0 ) );
+		/*btBuscaRemessa.setPreferredSize( new Dimension( 30, 0 ) );
+		btBuscaCpComplementar.setPreferredSize( new Dimension( 30, 0 ) );
+		btBuscaCompra.setPreferredSize( new Dimension( 30, 0 ) );
+		btBuscaImportacao.setPreferredSize( new Dimension( 30, 0 ) );
+		btRessarcimento.setPreferredSize( new Dimension( 30, 0 ) );
+		btRessarcimento.setPreferredSize(  new Dimension( 30, 0 ) );
+		lbStatus.setPreferredSize( new Dimension(30,0) );
+		*/
 
 		btBuscaRemessa.setToolTipText( "Seleciona nota fiscal para geração de remessa" );
 		btBuscaCpComplementar.setToolTipText( "Busca nota fiscal para geração de complementar" );
@@ -1194,17 +1197,17 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		btRessarcimento.setFont( SwingParams.getFontpadmed() );
 
 		JPanelPad navEast = new JPanelPad();
-		navEast.setPreferredSize( new Dimension( 116, 30 ) );
-		navEast.adic( lbStatus, 3, 3, 116, 20 );
-		navEast.tiraBorda();
-		pnAdicionalCab.add( navEast );
-		
+		//navEast.setPreferredSize( new Dimension( 116, 30 ) );
+		//navEast.adic( lbStatus, 3, 3, 116, 20 );
+		//navEast.tiraBorda();
+		//pnAdicionalCab.add( navEast );
+		pnAdicionalCab.setPreferredSize( new Dimension(480,30) );
 		pnAdicionalCab.add( btBuscaRemessa );
 		pnAdicionalCab.add( btBuscaCompra );
 		pnAdicionalCab.add( btBuscaImportacao );
 		pnAdicionalCab.add( btBuscaCpComplementar );
 		pnAdicionalCab.add( btRessarcimento );
-
+		pnAdicionalCab.add( lbStatus );
 
 		lbStatus.setForeground( Color.WHITE );
 		lbStatus.setBackground( Color.BLACK );
