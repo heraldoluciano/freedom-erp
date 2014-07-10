@@ -487,7 +487,11 @@ public class FInventario extends FDados implements CarregaListener, InsertListen
 		// ele estaja vazio.
 		txtQtdInvP.setVlrBigDecimal( bSNovo.subtract( bSAtual ) );
 		if ( bLote ) {
-			if ( !testaCodLote() ) {
+			if (!  Funcoes.dataDDMMAAAA(txtDataInvP.getVlrDate()).equals( Funcoes.dataDDMMAAAA( new Date()) )) {
+				Funcoes.mensagemInforma( this, "Produto com lote não permite inventário com data diferente da atual!" );
+				pevt.cancela();
+				return;
+			} else if ( !testaCodLote() ) {
 				pevt.cancela();
 			}
 		}
