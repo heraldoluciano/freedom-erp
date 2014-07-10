@@ -1170,8 +1170,8 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 
 		pnNavCab.add( pnAdicionalCab, BorderLayout.EAST );
 
-		btBuscaRemessa.setVisible( false );
-		btBuscaCpComplementar.setVisible( habcompracompl );
+		btBuscaRemessa.setEnabled( false );
+		btBuscaCpComplementar.setEnabled( habcompracompl );
 
 		desabilitaBotoes( false );
 
@@ -3604,7 +3604,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 				txtDocCompra.setAtivo( true );
 			}
 
-			btBuscaRemessa.setVisible( "DR".equals( txtTipoMov.getVlrString() ) );
+			btBuscaRemessa.setEnabled( "DR".equals( txtTipoMov.getVlrString() ) );
 
 
 			if ( TipoMov.TM_NOTA_FISCAL_IMPORTACAO.getValue().equals( txtTipoMov.getVlrString() ) ) {
@@ -3622,7 +3622,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 				//				lbDescDI.setVisible( true );
 				txtVlrII.setEditable( true );
 
-				btBuscaImportacao.setVisible( true );
+				btBuscaImportacao.setEnabled( true );
 
 			}
 			else {
