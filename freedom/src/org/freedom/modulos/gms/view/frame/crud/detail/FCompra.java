@@ -205,7 +205,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 
 	private JButtonPad btObs = new JButtonPad( Icone.novo( "btObs1.png" ) );
 
-	private JButtonPad btBuscaRemessa = new JButtonPad( "Remessa", Icone.novo( "btExecuta.png" ) );
+	private JButtonPad btBuscaRemessa = new JButtonPad( /*"Remessa",*/ Icone.novo( "btExecuta.png" ) );
 
 	private JTextFieldPad txtCodCompra = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
