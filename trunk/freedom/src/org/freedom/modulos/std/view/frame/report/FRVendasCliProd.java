@@ -93,13 +93,13 @@ public class FRVendasCliProd extends FRelatorio {
 	
 	private JCheckBoxPad cbObsItVenda = new JCheckBoxPad( "Imprimir Obs./ítens", "S", "N" );
 	
-
+	private JCheckBoxPad cbAgrupcli = new JCheckBoxPad( "Utilizar grupo de clientes", "S", "N" );
 	
 	public FRVendasCliProd() {
 
 		super( false );
 		setTitulo( "Ultimas Vendas de Cliente/Produto" );
-		setAtribos( 50, 50, 355, 380 );
+		setAtribos( 50, 50, 355, 390 );
 
 		montaRadioGrupo();
 		montaListaCampos();
@@ -181,93 +181,86 @@ public class FRVendasCliProd extends FRelatorio {
 		adic( new JLabelPad( "Razão social do cliente" ), 100, 110, 227, 20 );
 		adic( txtRazCli, 100, 130, 227, 20 );
 
-		adic( new JLabelPad( "Cód.Comiss." ), 7, 150, 90, 20 );
-		adic( txtCodComiss, 7, 170, 90, 20 );
+		adic( cbAgrupcli, 7, 150, 200, 20);
+		adic( new JLabelPad( "Cód.Comiss." ), 7, 170, 90, 20 );
+		adic( txtCodComiss, 7, 190, 90, 20 );
+		adic( new JLabelPad( "Nome do comissionado" ), 100, 170, 227, 20 );
+		adic( txtNomeComiss, 100, 190, 227, 20 );
 
-		adic( new JLabelPad( "Nome do comissionado" ), 100, 150, 227, 20 );
-		adic( txtNomeComiss, 100, 170, 227, 20 );
-
-		adic( rgTipo, 7, 210, 320, 30 );
+		adic( rgTipo, 7, 215, 320, 30 );
 		
-		adic( rgTipoDeRelatorio, 7, 250, 320, 30 );
+		adic( rgTipoDeRelatorio, 7, 255, 320, 30 );
 		
-		adic( cbObsItVenda,  	7,	290, 	200, 	20 );
+		adic( cbObsItVenda,  	7,	295, 	200, 	20 );
 		
 		Calendar cPeriodo = Calendar.getInstance();
 		txtDatafim.setVlrDate( cPeriodo.getTime() );
 		cPeriodo.set( Calendar.DAY_OF_MONTH, cPeriodo.get( Calendar.DAY_OF_MONTH ) - 30 );
 		txtDataini.setVlrDate( cPeriodo.getTime() );
+		cbAgrupcli.setVlrString( "N" );
 	}
 
 	public void imprimir( TYPE_PRINT bVisualizar ) {
-
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
 			return;
 		}
-
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		StringBuffer sSQL = new StringBuffer();
-		StringBuffer sCab = new StringBuffer();
-		StringBuffer sWhereCli = new StringBuffer();
-		StringBuffer sWhereComiss = new StringBuffer();
-
-		sCab.append( "Período de : " + Funcoes.dateToStrDate( txtDataini.getVlrDate() ) + " Até : " + Funcoes.dateToStrDate( txtDatafim.getVlrDate() ) );
-
+		StringBuffer sql = new StringBuffer();
+		StringBuffer cab = new StringBuffer();
+		cab.append( "Período de : " + Funcoes.dateToStrDate( txtDataini.getVlrDate() ) + " Até : " + Funcoes.dateToStrDate( txtDatafim.getVlrDate() ) );
+		if ("S".equals(cbAgrupcli.getVlrString())) {
+			cab.append(" - Clientes de mesmo grupo");
+		}
 		try {
-
-			sSQL.append( "select razcli_ret razcli, codcli_ret codcli, ");
-			
+			sql.append( "select razcli_ret razcli, codcli_ret codcli, ");
 			if( "N".equals( cbObsItVenda.getVlrString() )) {
-				sSQL.append( "descprod_ret descprod, ");
+				sql.append( "descprod_ret descprod, ");
 			}
 			else {
-				sSQL.append( "coalesce(obsitvenda_ret,descprod_ret) as descprod, ");
+				sql.append( "coalesce(obsitvenda_ret,descprod_ret) as descprod, ");
 			}
-			
-			sSQL.append( "codprod_ret codprod, " );
-			sSQL.append( "dtemitvenda_ret dtemitvenda, docvenda_ret docvenda, serie_ret serie, precovenda_ret precovenda, refprod_ret refprod, qtdprod_ret qtditvenda " );
-			sSQL.append( "from vdretultvdcliprod (?,?,?,?,?,?,?,?,?) " );
+			sql.append( "codprod_ret codprod, " );
+			sql.append( "dtemitvenda_ret dtemitvenda, docvenda_ret docvenda, serie_ret serie");
+			sql.append(", precovenda_ret precovenda, refprod_ret refprod, qtdprod_ret qtditvenda " );
+			sql.append( "from vdretultvdcliprod (?,?,?,?,?,?,?,?,?,?) " );
 
-			ps = con.prepareStatement( sSQL.toString() );
+			ps = con.prepareStatement( sql.toString() );
 
-			ps.setInt( 1, Aplicativo.iCodEmp );
+			int param = 1;
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, lcCli.getCodFilial() );
 
 			if ( txtRazCli.getVlrString().trim().length() > 0 ) {
-				ps.setInt( 2, txtCodCli.getVlrInteger() );
+				ps.setInt( param++, txtCodCli.getVlrInteger() );
 			}
 			else {
-				ps.setNull( 2, Types.INTEGER );
+				ps.setNull( param++, Types.INTEGER );
 			}
 
-			ps.setInt( 3, ListaCampos.getMasterFilial( "VDVENDEDOR" ) );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "VDVENDEDOR" ) );
 
 			if ( txtNomeComiss.getVlrString().trim().length() > 0 ) {
-				ps.setInt( 4, txtCodComiss.getVlrInteger() );
+				ps.setInt( param++, txtCodComiss.getVlrInteger() );
 			}
 			else {
-				ps.setNull( 4, Types.INTEGER );
+				ps.setNull( param++, Types.INTEGER );
 			}
-
-			ps.setDate( 5, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) );
-			ps.setDate( 6, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) );
-
+			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDataini.getVlrString() ) );
+			ps.setDate( param++, Funcoes.strDateToSqlDate( txtDatafim.getVlrString() ) );
+			ps.setInt( param++, lcTipoCli.getCodFilial() );
 			if ( txtDescTipoCli.getVlrString().trim().length() > 0 ) {
-				ps.setInt( 7, lcTipoCli.getCodEmp() );
-				ps.setInt( 8, lcTipoCli.getCodFilial() );
-				ps.setInt( 9, txtCodTipoCli.getVlrInteger() );
+				ps.setInt( param++, txtCodTipoCli.getVlrInteger() );
 			}
 			else {
-				ps.setNull( 7, Types.INTEGER );
-				ps.setNull( 8, Types.INTEGER );
-				ps.setNull( 9, Types.INTEGER );
+				ps.setNull( param++, Types.INTEGER );
 			}
-
+			ps.setString( param++, cbAgrupcli.getVlrString() );
 			rs = ps.executeQuery();
 
 			if ( "G".equals( rgTipo.getVlrString() ) ) {
-				imprimiGrafico( bVisualizar, rs, sCab.toString() );
+				imprimiGrafico( bVisualizar, rs, cab.toString() );
 			}
 			else {
 				imprimiTexto( bVisualizar, rs );

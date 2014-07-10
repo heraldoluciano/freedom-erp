@@ -16018,27 +16018,30 @@ REFPROD_RET VARCHAR(20),
 QTDPROD_RET NUMERIC(15, 5))
 AS 
 BEGIN SUSPEND; END ^
-CREATE PROCEDURE VDRETULTVDCLIPROD (ICODEMP INTEGER,
-ICODCLI INTEGER,
-ICODFILIALVD SMALLINT,
-ICODVEND INTEGER,
-DTINI DATE,
-DTFIM DATE,
-CODEMPTIPOCL INTEGER,
-CODFILIALTIPOCL SMALLINT,
-CODTIPOCLI INTEGER)
-RETURNS (RAZCLI_RET CHAR(60),
-CODCLI_RET INTEGER,
-DESCPROD_RET CHAR(50),
-CODPROD_RET INTEGER,
-DTEMITVENDA_RET DATE,
-DOCVENDA_RET INTEGER,
-SERIE_RET CHAR(4),
-PRECOVENDA_RET NUMERIC(15, 4),
-OBSITVENDA_RET VARCHAR(500),
-REFPROD_RET VARCHAR(20),
-QTDPROD_RET NUMERIC(15, 5))
-AS 
+CREATE OR ALTER PROCEDURE VDRETULTVDCLIPROD (
+    codemp integer,
+    codfilialcl integer,
+    codcli integer,
+    codfilialvd smallint,
+    codvend integer,
+    dtini date,
+    dtfim date,
+    codfilialtipocl smallint,
+    codtipocli integer,
+    agrupcli char(1))
+returns (
+    razcli_ret char(60),
+    codcli_ret integer,
+    descprod_ret char(100),
+    codprod_ret integer,
+    dtemitvenda_ret date,
+    docvenda_ret integer,
+    serie_ret char(4),
+    precovenda_ret numeric(15,4),
+    obsitvenda_ret varchar(500),
+    refprod_ret varchar(20),
+    qtdprod_ret numeric(15,5))
+as
 BEGIN SUSPEND; END ^
 CREATE PROCEDURE VDUPVENDAORCSP (ICODEMP INTEGER,
 ICODFILIAL INTEGER,
@@ -28203,64 +28206,76 @@ begin
     end
 end^
 
-ALTER PROCEDURE VDRETULTVDCLIPROD (ICODEMP INTEGER,
-ICODCLI INTEGER,
-ICODFILIALVD SMALLINT,
-ICODVEND INTEGER,
-DTINI DATE,
-DTFIM DATE,
-CODEMPTIPOCL INTEGER,
-CODFILIALTIPOCL SMALLINT,
-CODTIPOCLI INTEGER)
-RETURNS (RAZCLI_RET CHAR(60),
-CODCLI_RET INTEGER,
-DESCPROD_RET CHAR(100),
-CODPROD_RET INTEGER,
-DTEMITVENDA_RET DATE,
-DOCVENDA_RET INTEGER,
-SERIE_RET CHAR(4),
-PRECOVENDA_RET NUMERIC(15, 4),
-OBSITVENDA_RET VARCHAR(500),
-REFPROD_RET VARCHAR(20),
-QTDPROD_RET NUMERIC(15, 5))
-AS 
-
-declare variable icodfilial smallint;
-declare variable icodprod integer;
+CREATE OR ALTER PROCEDURE VDRETULTVDCLIPROD (
+    codemp integer,
+    codfilialcl integer,
+    codcli integer,
+    codfilialvd smallint,
+    codvend integer,
+    dtini date,
+    dtfim date,
+    codfilialtipocl smallint,
+    codtipocli integer,
+    agrupcli char(1))
+returns (
+    razcli_ret char(60),
+    codcli_ret integer,
+    descprod_ret char(100),
+    codprod_ret integer,
+    dtemitvenda_ret date,
+    docvenda_ret integer,
+    serie_ret char(4),
+    precovenda_ret numeric(15,4),
+    obsitvenda_ret varchar(500),
+    refprod_ret varchar(20),
+    qtdprod_ret numeric(15,5))
+as
+declare variable codfilial smallint;
+declare variable codpesq integer;
+declare variable codprod integer;
 begin
-
-    select icodfilial from sgretfilial(:ICODEMP,'VDVENDA') into :ICODFILIAL;
-
+    select icodfilial from sgretfilial(:codemp,'VDVENDA') into :codfilial;
+    codpesq=:codcli;
+    if ( (:agrupcli='S') and (:codpesq is not null)) then
+    begin
+       select codpesq from vdcliente
+       where codemp=:codemp and codfilial=:codfilialcl and codcli=:codcli
+       into :codpesq;
+    end
     for select v.codcli,iv.codprod
         from vdvenda v, vdcliente cl, vditvenda iv
         where
             iv.codemp=v.codemp and iv.codfilial=v.codfilial
-            and iv.tipovenda=v.TIPOVENDA and iv.codvenda=v.codvenda
-            and v.codemp=:ICODEMP and v.codfilial=:ICODFILIAL
-            and (v.codcli=:ICODCLI or :ICODCLI is null)
-            and (v.codvend=:ICODVEND or :ICODVEND is null )
-            and v.dtemitvenda between :DTINI and :DTFIM
-            and cl.codemp=v.codempcl and cl.codfilial=v.codfilialcl and cl.codcli=v.codcli
+            and iv.tipovenda=v.tipovenda and iv.codvenda=v.codvenda
+            and v.codemp=:codemp and v.codfilial=:codfilial
+--            and (v.codcli=:codcli or :codcli is null)
+            and (v.codvend=:codvend or :codvend is null )
+            and v.dtemitvenda between :dtini and :dtfim
+            and v.codempcl=cl.codemp and v.codfilialcl=cl.codfilial and v.codcli=cl.codcli
+            and cl.codempti=:codemp and cl.codfilialti=:codfilialtipocl
             and (cl.codtipocli=:codtipocli or :codtipocli is null)
-        group by v.codcli,iv.codprod into :ICODCLI,:ICODPROD
+            and cl.codemp=:codemp and cl.codfilial=:codfilialcl
+            and ( :codpesq is null or (case when :agrupcli='S' then cl.codpesq else cl.codcli end)=:codpesq )
+        group by v.codcli,iv.codprod into :codcli,:codprod
     do
     begin
         select first 1 c.razcli, c.codcli, p.descprod, iv.codprod, v.dtemitvenda, v.docvenda, v.serie,
-            (iv.vlrliqitvenda/(case when iv.qtditvenda=0 then 1 else iv.qtditvenda end)) precovenda, p.desccompprod, p.refprod, iv.qtditvenda
+            (iv.vlrliqitvenda/(case when iv.qtditvenda=0 then 1 else iv.qtditvenda end)) precovenda
+            , p.desccompprod, p.refprod, iv.qtditvenda
         from vdcliente c, vdvenda v, vditvenda iv, eqproduto p
         where
             c.codemp=v.codempcl and c.codfilial=v.codfilialcl and c.codcli=v.codcli
             and c.codemp=v.codempcl and c.codfilial=v.codfilialcl and iv.codemp=v.codemp
             and iv.codfilial=v.codfilial and iv.tipovenda=v.tipovenda and iv.codvenda=v.codvenda
             and p.codemp=iv.codemppd and p.codfilial=iv.codfilialpd and p.codprod=iv.codprod
-            and v.codempvd=:ICODEMP and v.codfilialvd=:ICODFILIALVD and (v.codvend=:ICODVEND or :ICODVEND is null )
-            and v.dtemitvenda between :DTINI and :DTFIM and c.codcli=:ICODCLI and p.codprod=:ICODPROD
+            and v.codempvd=:codemp and v.codfilialvd=:codfilialvd and (v.codvend=:codvend or :codvend is null )
+            and v.dtemitvenda between :dtini and :dtfim and c.codcli=:codcli and p.codprod=:codprod
             order by v.dtemitvenda desc
-            into :RAZCLI_RET, :CODCLI_RET, :DESCPROD_RET, :CODPROD_RET, :DTEMITVENDA_RET, :DOCVENDA_RET, :SERIE_RET,
-                 :PRECOVENDA_RET, :OBSITVENDA_RET, :REFPROD_RET, :QTDPROD_RET;
+            into :razcli_ret, :codcli_ret, :descprod_ret, :codprod_ret, :dtemitvenda_ret, :docvenda_ret, :serie_ret,
+                 :precovenda_ret, :obsitvenda_ret, :refprod_ret, :qtdprod_ret;
             suspend;
     end
-end ^
+end^
 
 ALTER PROCEDURE VDUPVENDAORCSP (ICODEMP INTEGER,
 ICODFILIAL INTEGER,
