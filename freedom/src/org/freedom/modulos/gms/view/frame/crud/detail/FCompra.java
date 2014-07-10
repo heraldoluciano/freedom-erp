@@ -1650,25 +1650,40 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		txtVlrLiqItCompra.setVlrBigDecimal( new BigDecimal( deVlrProd ) );
 	}
 
-	public void mostraObs( String sTabela, int iCod ) {
+	private void updateObs(Integer codemp, Integer codfilial, Integer codcompra, String obs) throws Exception {
+		StringBuilder sqlupdate = new StringBuilder("update cpcompra set observacao=? where codemp=? and codfilial=? and codcompra=?");
+		int param = 1;
+		try {
+			PreparedStatement ps = con.prepareStatement( sqlupdate.toString() );
+			ps.setString( param++, obs  );
+			ps.setInt( param++, codemp );
+			ps.setInt( param++, codfilial );
+			ps.setInt( param++, codcompra );
+			ps.executeUpdate();
+			ps.close();
+			con.commit();
+		} catch (SQLException err) {
+			String mensagemerr = err.getMessage();
+			try {
+				con.rollback();
+			} catch (SQLException errroll) {
+				errroll.printStackTrace();
+			}
+			throw new Exception("Erro atualizando observações da compra !\n"+mensagemerr);
+		}
 
+	}
+	public void mostraObs( String sTabela, int iCod ) {
 		FObservacao obs = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String sSQLselect = null;
-		String sSQLupdate = null;
-
+		StringBuilder sqlselect = new StringBuilder();
 		try {
-
 			try {
-
 				if ( sTabela.equals( "CPCOMPRA" ) ) {
-
-					sSQLselect = "SELECT OBSERVACAO FROM CPCOMPRA WHERE CODEMP=? AND CODFILIAL=? AND CODCOMPRA=?";
-					sSQLupdate = "UPDATE CPCOMPRA SET OBSERVACAO=? WHERE CODEMP=? AND CODFILIAL=? AND CODCOMPRA=?";
+					sqlselect.append("select observacao from cpcompra where codemp=? and codfilial=? and codcompra=?");
 				}
-
-				ps = con.prepareStatement( sSQLselect );
+				ps = con.prepareStatement( sqlselect.toString() );
 				ps.setInt( 1, Aplicativo.iCodEmp );
 				ps.setInt( 2, ListaCampos.getMasterFilial( sTabela ) );
 				ps.setInt( 3, iCod );
@@ -1680,47 +1695,33 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 				else {
 					obs = new FObservacao( "" );
 				}
-
 				rs.close();
 				ps.close();
-
 				con.commit();
-
 			} catch ( SQLException err ) {
-				Funcoes.mensagemErro( this, "Erro ao carregar a observação!\n" + err.getMessage(), true, con, err );
+				String mensagemerr = err.getMessage();
+				try {
+					con.rollback();
+				} catch (SQLException errroll) {
+					errroll.printStackTrace();
+				}
+				Funcoes.mensagemErro( this, "Erro ao carregar a observação!\n" + mensagemerr);
 			}
 			if ( obs != null ) {
-
 				obs.setVisible( true );
-
 				if ( obs.OK ) {
-
 					try {
-						ps = con.prepareStatement( sSQLupdate );
-						ps.setString( 1, obs.getTexto() );
-						ps.setInt( 2, Aplicativo.iCodEmp );
-						ps.setInt( 3, ListaCampos.getMasterFilial( sTabela ) );
-						ps.setInt( 4, iCod );
-						ps.executeUpdate();
-
-						ps.close();
-
-						con.commit();
-
-					} catch ( SQLException err ) {
-						Funcoes.mensagemErro( this, "Erro ao inserir observação no orçamento!\n" + err.getMessage(), true, con, err );
+						updateObs(Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "CPCOMPRA" ), txtCodCompra.getVlrInteger(), obs.getTexto() );
+					} catch ( Exception err ) {
+						Funcoes.mensagemErro( this, err.getMessage(), true, con, err );
 					}
 				}
-
 				obs.dispose();
-
 			}
-
 		} finally {
 			ps = null;
 			rs = null;
-			sSQLselect = null;
-			sSQLupdate = null;
+			sqlselect = null;
 		}
 
 	}
@@ -2993,6 +2994,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 								Funcoes.mensagemInforma( this, "Pedido de venda não possui chave autorização !" );
 								break;
 							}
+							
 							txtCodTipoMov.setVlrInteger( codtipomovrs );
 							lcTipoMov.carregaDados();
 							txtCodFor.setVlrInteger( codfor );
@@ -3000,6 +3002,13 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 							txtCodPlanoPag.setVlrInteger( codplanopagrs );
 							lcPlanoPag.carregaDados();
 							lcCampos.post();
+							StringBuilder obs = new StringBuilder();
+							obs.append( "Nota referenciada " );
+							obs.append(row.getDocvenda());
+							obs.append(", chave de acesso ");
+							obs.append( row.getChaveNFE() );
+							obs.append(" .");
+							updateObs( Aplicativo.iCodEmp, lcCampos.getCodFilial(), txtCodCompra.getVlrInteger(), obs.toString() );
 						}
 						item ++;
 						insertItem(  row.getCodigoProduto(), row.getRefprod(), new BigDecimal(1), row.getCodlote(), 
