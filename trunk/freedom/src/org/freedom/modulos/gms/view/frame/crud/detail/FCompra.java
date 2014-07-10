@@ -617,13 +617,13 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 
 	private JScrollPane spnInfCompl = new JScrollPane( txaInfCompl );
 
-	private JButtonPad btBuscaCompra = new JButtonPad( "Pedido", Icone.novo( "btEntrada.png" ) );
+	private JButtonPad btBuscaCompra = new JButtonPad( /*"Pedido",*/ Icone.novo( "btEntrada.png" ) );
 
-	private JButtonPad btBuscaImportacao = new JButtonPad( "Importação", Icone.novo( "btImportacao.png" ) );
+	private JButtonPad btBuscaImportacao = new JButtonPad( /*"Importação",*/ Icone.novo( "btImportacao.png" ) );
 
-	private JButtonPad btRessarcimento = new JButtonPad( "Ressarcimento", Icone.novo( "btContaReceber.png" ) );
+	private JButtonPad btRessarcimento = new JButtonPad( /*"Ressarcimento",*/ Icone.novo( "btContaReceber.png" ) );
 
-	private JButtonPad btBuscaCpComplementar = new JButtonPad( "Complementar", Icone.novo( "btExecuta.png" ) );
+	private JButtonPad btBuscaCpComplementar = new JButtonPad( /*"Complementar",*/ Icone.novo( "btExecuta.png" ) );
 
 	private JLabelPad lbChaveNfe = null;
 
