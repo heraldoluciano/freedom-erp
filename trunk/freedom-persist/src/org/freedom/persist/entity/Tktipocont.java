@@ -14,7 +14,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+//import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -26,6 +26,10 @@ import javax.persistence.TemporalType;
 @Table(name = "TKTIPOCONT")
 public class Tktipocont implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private TktipocontId id;
 	private Sgfilial sgfilial;
 	private String desctipocont;
