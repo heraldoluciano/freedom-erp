@@ -776,22 +776,41 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener, Carreg
 
 		imp.setTitulo( "Relatório de Solicitação de Compras" );
 
-		String sSQL = "SELECT  (SELECT COUNT(IT.CODITSOL) FROM CPITSOLICITACAO IT " + " WHERE IT.CODEMP=R.CODEMP AND IT.CODFILIAL = R.CODFILIAL AND IT.CODSOL=R.CODSOL)," + "R.CODSOL,R.DTINS,R.SITSOL,R.IDUSU,R.MOTIVOSOL,R.IDUSUAPROV,R.DTAAPROVSOL,R.MOTIVOCANCSOL,"
-				+ "I.CODPROD, I.QTDITSOL, I.QTDAPROVITSOL, I.SITITSOL," + "I.SITITSOL,I.SITAPROVITSOL,I.CODITSOL," + "P.REFPROD,P.DESCPROD, P.CODUNID," + "A.CODALMOX, A.DESCALMOX, CC.CODCC, CC.ANOCC, CC.DESCCC," + "(SELECT U.CODCC FROM SGUSUARIO U WHERE U.IDUSU=R.IDUSUAPROV),"
-				+ "(SELECT C.DESCCC FROM FNCC C, SGUSUARIO U " + "WHERE C.CODEMP=U.CODEMPCC AND C.CODFILIAL=U.CODEMPCC AND C.ANOCC=U.ANOCC " + " AND C.CODCC=U.CODCC AND U.IDUSU=R.IDUSUAPROV)," + " I.MOTIVOCANCITSOL, I.CODPROD"
-				+ " FROM CPSOLICITACAO R, CPITSOLICITACAO I, EQALMOX A, FNCC CC, EQPRODUTO P" + " WHERE R.CODEMP=? AND R.CODFILIAL=? AND R.CODSOL=?" + " AND I.CODEMP=R.CODEMP AND I.CODFILIAL=R.CODFILIAL AND I.CODSOL=R.CODSOL"
-				+ " AND P.CODEMP=I.CODEMPPD AND P.CODFILIAL=I.CODFILIALPD AND P.CODPROD=I.CODPROD" + " AND I.CODEMP=R.CODEMP AND I.CODFILIAL=R.CODFILIAL " + " AND CC.CODEMP=R.CODEMPCC AND CC.CODFILIAL=R.CODFILIALCC AND CC.CODCC=R.CODCC"
-				+ " AND A.CODEMP=I.CODEMPAM AND A.CODFILIAL=I.CODFILIALAM AND A.CODALMOX=I.CODALMOX " + " ORDER BY R.CODSOL," + ordem + ";";
+		String sSQL = "select  (select count(it.coditsol) from cpitsolicitacao it " 
+		      + " where it.codemp=r.codemp and it.codfilial = r.codfilial and it.codsol=r.codsol)," 
+				+ "r.codsol,r.dtins,r.sitsol,r.idusu,r.motivosol,r.idusuaprov,r.dtaaprovsol,r.motivocancsol,"
+				+ "i.codprod, i.qtditsol, i.qtdaprovitsol, i.sititsol," 
+				+ "i.sititsol,i.sitaprovitsol,i.coditsol,"
+		        + "p.refprod,p.descprod, p.codunid,"
+				+ "a.codalmox, a.descalmox, cc.codcc, cc.anocc, cc.desccc,"
+				+ "(select u.codcc from sgusuario u where u.idusu=r.idusuaprov and u.codemp=? and u.codfilial=?),"
+				+ "(select c.desccc from fncc c, sgusuario u " 
+				+ "where u.codemp=? and u.codfilial=? and c.codemp=u.codempcc and c.codfilial=u.codempcc and c.anocc=u.anocc " 
+				+ " and c.codcc=u.codcc and u.idusu=r.idusuaprov)," 
+				+ " i.motivocancitsol, i.codprod"
+				+ " from cpsolicitacao r, cpitsolicitacao i, eqalmox a, fncc cc, eqproduto p"
+				+ " where r.codemp=? and r.codfilial=? and r.codsol=?" 
+				+ " and i.codemp=r.codemp and i.codfilial=r.codfilial and i.codsol=r.codsol"
+				+ " and p.codemp=i.codemppd and p.codfilial=i.codfilialpd and p.codprod=i.codprod" 
+				+ " and i.codemp=r.codemp and i.codfilial=r.codfilial "
+				+ " and cc.codemp=r.codempcc and cc.codfilial=r.codfilialcc and cc.codcc=r.codcc"
+				+ " and a.codemp=i.codempam and a.codfilial=i.codfilialam and a.codalmox=i.codalmox "
+				+ " order by r.codsol," 
+				+ ordem + ";";
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
 			ps = con.prepareStatement( sSQL );
-
-			ps.setInt( 1, lcCampos.getCodEmp() );
-			ps.setInt( 2, lcCampos.getCodFilial() );
-			ps.setInt( 3, txtCodSolicitacao.getVlrInteger().intValue() );
+			int param = 1;
+			ps.setInt( param++, lcUsu.getCodEmp() );
+			ps.setInt( param++, lcUsu.getCodFilial() );
+			ps.setInt( param++, lcUsu.getCodEmp() );
+			ps.setInt( param++, lcUsu.getCodFilial() );
+			ps.setInt( param++, lcCampos.getCodEmp() );
+			ps.setInt( param++, lcCampos.getCodFilial() );
+			ps.setInt( param++, txtCodSolicitacao.getVlrInteger().intValue() );
 
 			rs = ps.executeQuery();
 
