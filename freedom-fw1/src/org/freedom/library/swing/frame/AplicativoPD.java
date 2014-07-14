@@ -44,6 +44,8 @@ import javax.swing.JMenuItem;
 
 import org.freedom.bmps.Icone;
 import org.freedom.bmps.Imagem;
+import org.freedom.infra.beans.Sgestacao;
+import org.freedom.infra.beans.Sgproxyweb;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.business.object.EmailBean;
 import org.freedom.library.business.object.Empresa;
@@ -62,7 +64,6 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 	}
 
 	public AplicativoPD(String sIcone, String sSplash, int iCodSis, String sDescSis, int iCodModu, String sDescModu, String sDirImagem, final FPrincipal telaP, Class<? extends Login> cLogin) {
-
 		if (sDirImagem != null) {
 			Imagem.dirImages = sDirImagem;
 			Icone.dirImages = sDirImagem;
@@ -73,29 +74,21 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 		Locale.setDefault(new Locale("pt", "BR"));
 		vOpcoes = new Vector<JMenuItem>();
 		vBotoes = new Vector<JButtonPad>();
-
 		telaPrincipal = telaP;
 		this.iCodSis = iCodSis;
 		this.iCodModu = iCodModu;
 		this.sDescSis = sDescSis;
 		this.sDescModu = sDescModu;
 		this.cLoginExec = cLogin;
-
 		telaP.addWindowStateListener( new WindowStateListener() {
-			
 			@Override
 			public void windowStateChanged(WindowEvent e) {
 				System.out.println("redimensionou!");
 				telaP.reposicionaImagens();
-				
 			}
 		});
-		
-		
-		
 		imgIcone = Icone.novo(sIcone);
 		telaPrincipal.setIconImage(imgIcone.getImage());
-
 		setSplashName(sSplash);
 		iniConexao();
 		carregaCasasDec();
@@ -103,8 +96,11 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 		createEmailBean();
 		getMultiAlmox();
 		buscaInfoUsuAtual();
-		setaInfoTela();
-		
+		try {
+			setInfoTela();
+		} catch (Exception err) {
+			Funcoes.mensagemErro(null, err.getMessage());
+		}
 		
 	}
 
@@ -121,16 +117,22 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 			iXPanel = 0;
 	}
 
-	public void setaInfoTela() {
+	public void setInfoTela() throws Exception {
 
+		int codest = getCodest();
 		telaPrincipal.setIdent(sDescSis.trim() + " - " + sDescModu.trim());
 		telaPrincipal.setConexao(con); // Variável de conexão da Classe
-
+		try {
+	        loadSgestacao();
+		} catch (Exception err) {
+			Funcoes.mensagemErro(null, err.getMessage());
+		}
 		telaPrincipal.statusBar.setUsuario(getUsuario().getIdusu());// Variavel de usuario da
 		telaPrincipal.statusBar.setCodFilial(iCodFilial);
 		telaPrincipal.statusBar.setNomeFilial(sNomeFilial);
-		telaPrincipal.statusBar.setNumEst(getCodest());
-		telaPrincipal.statusBar.setDescEst(getDescEst());
+		telaPrincipal.statusBar.setNumEst(codest);
+		telaPrincipal.statusBar.setDescEst(getSgestacao().getDescest());
+		
 
 		setaSysdba();
 		infoProxy();
@@ -259,40 +261,107 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 		return iRet;
 	}
 
-	public boolean getModoDemo() {
-
-		StringBuilder sql = new StringBuilder();
-		sql.append("select mododemoest from sgestacao where codest=? and codemp=? and codfilial=?");
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		boolean bModo = true;
-		try {
-			ps = con.prepareStatement(sql.toString());
-			int param = 1;
-			ps.setInt(param++, getCodest());
-			ps.setInt(param++, iCodEmp);
-			ps.setInt(param++, ListaCampos.getMasterFilial("SGESTACAO"));
-			
-			rs = ps.executeQuery();
-			if (!rs.next())
-				Funcoes.mensagemErro(null, "Estação de trabalho não cadastrado!");
-			else {
-				if (rs.getString("mododemoest").equals("S"))
-					bModo = true;
-				else
-					bModo = false;
+	private void loadSgestacao() throws Exception {
+		if (getSgestacao()==null) {
+			Sgestacao sgestacao = new Sgestacao();
+			try {
+				StringBuilder sql = new StringBuilder("select et.codemp, et.codfilial, et.codest, et.descest, et.mododemoest");
+				sql.append(", et.nfeest, et.ativaest, et.tamfontetxt, et.fontetxt, et.pathcacerts, et.codemppx");
+				sql.append(", et.codfilialpx, et.codproxy, et.hostest, et.ipest, et.macaddressest, et.desclocalest");
+				sql.append(", et.nomecontest, et.ramalest, et.emailest, et.pathpdfreader, et.printpdf, et.dtins, et.hins, et.idusuins");
+				sql.append(", et.dtalt, et.halt, et.idusualt ");
+				sql.append(", px.codemp codemppx, px.codfilial codfilialpx, px.codproxy, px.descproxy, px.hostproxy, px.portaproxy, px.autproxy");
+				sql.append(", px.usuproxy, px.senhaproxy, px.dtins dtinspx, px.hins hinspx, px.idusuins idusuinspx");
+				sql.append(", px.dtalt dtaltpx, px.halt haltpx, px.idusualt idusualtpx");
+				sql.append(" from sgestacao et ");
+				sql.append("left outer join sgproxyweb px on ");
+				sql.append("px.codemp=et.codemppx and px.codfilial=et.codfilialpx and px.codproxy=et.codproxy ");
+				sql.append("where et.codemp=? and et.codfilial=? and et.codest=? ");
+				PreparedStatement ps = con.prepareStatement(sql.toString());
+				int param = 1;
+				ps.setInt(param++, iCodEmp);
+				ps.setInt(param++, ListaCampos.getMasterFilial("SGESTACAO"));
+				ps.setInt(param++, getCodest());
+				ResultSet rs = ps.executeQuery();
+				if (rs.next()) {
+					sgestacao.setCodemp( rs.getInt( "codemp" ));
+					sgestacao.setCodfilial( rs.getShort( "codfilial" ));
+					sgestacao.setCodest( rs.getShort( "codest" ));
+					if ( rs.getString( "descest" )==null) {
+						sgestacao.setDescest( "Estação de trabalho não cadastrado!");
+					} else {
+						sgestacao.setDescest( rs.getString( "descest" ));
+					}
+					sgestacao.setMododemoest( rs.getString( "mododemoest" ));
+					sgestacao.setNfeest( rs.getString( "nfeest" ));
+					sgestacao.setAtivaest( rs.getString( "ativaest" ));
+					sgestacao.setTamfontetxt( rs.getShort( "tamfontetxt" ));
+					sgestacao.setFontetxt( rs.getString( "fontetxt" ));
+					sgestacao.setPathcacerts( rs.getString( "pathcacerts" ));
+					sgestacao.setCodemppx( rs.getInt( "codemppx" ));
+					sgestacao.setCodfilialpx( rs.getShort( "codfilialpx" ));
+					sgestacao.setCodproxy( rs.getInt( "codproxy" ));
+					sgestacao.setHostest( rs.getString( "hostest" ));
+					sgestacao.setIpest( rs.getString( "ipest" ));
+					sgestacao.setMacaddressest( rs.getString( "macaddressest" ));
+					sgestacao.setDesclocalest( rs.getString( "desclocalest" ));
+					sgestacao.setNomecontest( rs.getString( "nomecontest" ));
+					sgestacao.setRamalest( rs.getString( "ramalest" ));
+					sgestacao.setEmailest( rs.getString( "emailest" ));
+					sgestacao.setPathpdfreader( rs.getString( "pathpdfreader" ));
+					sgestacao.setPrintpdf( rs.getString( "printpdf" ));
+					sgestacao.setDtins( rs.getDate( "dtins" ));
+					sgestacao.setHins( rs.getTime( "hins" ));
+					sgestacao.setIdusuins( rs.getString( "idusuins" ));
+					sgestacao.setDtalt( rs.getDate( "dtalt" ));
+					sgestacao.setHalt( rs.getTime( "halt" ));
+					sgestacao.setIdusualt( rs.getString( "idusualt" ));
+					Sgproxyweb sgproxyweb = new Sgproxyweb();
+					sgproxyweb.setCodemp( rs.getInt( "codemppx" ));
+					sgproxyweb.setCodfilial( rs.getShort( "codfilialpx" ));
+					sgproxyweb.setCodproxy( rs.getInt( "codproxy" ));
+					sgproxyweb.setDescproxy( rs.getString( "descproxy" ));
+					sgproxyweb.setHostproxy( rs.getString( "hostproxy" ));
+					sgproxyweb.setPortaproxy( rs.getInt( "portaproxy" ));
+					sgproxyweb.setAutproxy( rs.getString( "autproxy" ));
+					sgproxyweb.setUsuproxy( rs.getString( "usuproxy" ));
+					sgproxyweb.setSenhaproxy( rs.getString( "senhaproxy" ));
+					sgproxyweb.setDtins( rs.getDate( "dtinspx" ));
+					sgproxyweb.setHins( rs.getTime( "hinspx" ));
+					sgproxyweb.setIdusuins( rs.getString( "idusuinspx" ));
+					sgproxyweb.setDtalt( rs.getDate( "dtaltpx" ));
+					sgproxyweb.setHalt( rs.getTime( "haltpx" ));
+					sgproxyweb.setIdusualt( rs.getString( "idusualtpx" ));
+					sgestacao.setSgproxyweb(sgproxyweb);
+				}
+				rs.close();
+				ps.close();
+				con.commit();
+				
+				
+			} catch (SQLException err) {
+				String mensagemErr = err.getMessage();
+				err.printStackTrace();
+				try {
+					con.rollback();
+				} catch (SQLException errroll) {
+					errroll.printStackTrace();
+				}
+				throw new Exception("Erro carregando estação de trabalho!\n"+mensagemErr);
 			}
-			rs.close();
-			ps.close();
-			con.commit();
+			setSgestacao(sgestacao);
 		}
-		catch (SQLException err) {
-			Funcoes.mensagemErro(null, err.getMessage(), true, con, err);
-			return true;
-		}
-		return bModo;
 	}
-
+	
+	public boolean getModoDemo() throws Exception {
+		boolean result = false;
+		loadSgestacao();
+		if ("S".equals(getSgestacao().getMododemoest())) {
+			result = true;
+		}
+		return result;
+	}
+	
 	protected void buscaInfoUsuAtual() {
 		
 		StringBuilder sql = new StringBuilder();
@@ -398,13 +467,15 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 	public boolean verifAcesso(int iCodSisP, int iCodModuP, int iCodMenuP) {
 
 		boolean bRet = false;
-		if (getUsuario().getIdusu().toUpperCase().equals("SYSDBA"))
+		if (getUsuario().getIdusu().equalsIgnoreCase("SYSDBA"))
 			return true;
 		try {
 
 			String sTmp = "";
-			String sSQL = "SELECT TPACESSOMU FROM SGACESSOMU WHERE CODEMP = ? " + "AND CODFILIAL = ? " + "AND IDUSU = ? " + "AND CODSIS = ? " + "AND CODMODU = ? " + "AND CODMENU = ?";
-			PreparedStatement ps = con.prepareStatement(sSQL);
+			StringBuilder sql = new StringBuilder();
+			sql.append( "select tpacessomu from sgacessomu ");
+			sql.append( "where codemp = ? and codfilial = ? and idusu = ? and codsis = ? and codmodu = ? and codmenu = ?");
+			PreparedStatement ps = con.prepareStatement(sql.toString());
 			ps.setInt(1, Aplicativo.iCodEmp);
 			ps.setInt(2, Aplicativo.iCodFilial);
 			ps.setString(3, getUsuario().getIdusu());
@@ -412,9 +483,8 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 			ps.setInt(5, iCodModuP);
 			ps.setInt(6, iCodMenuP);
 			ResultSet rs = ps.executeQuery();
-
 			if (rs.next()) {
-				sTmp = rs.getString("TPACESSOMU");
+				sTmp = rs.getString("tpacessomu");
 				if (sTmp == null)
 					return bRet;
 				if (sTmp.toCharArray()[0] > 'A')
@@ -429,72 +499,28 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 		return bRet;
 	}
 
-	public String getDescEst() {
-		StringBuilder sql = new StringBuilder();
-		sql.append( "select descest from sgestacao where codest=? and codemp=? and codfilial=?" );
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		String sDesc = "";
+	public void infoProxy() {
 		try {
-			ps = con.prepareStatement(sql.toString());
-			int param = 1;
-			ps.setInt(param++, getCodest());
-			ps.setInt(param++, iCodEmp);
-			ps.setInt(param++, ListaCampos.getMasterFilial("SGESTACAO"));
-			rs = ps.executeQuery();
-			if (!rs.next())
-				sDesc = "ESTAÇÃO DE TRABALHO NÃO CADASTRADA";
-			else
-				sDesc = rs.getString("descest");
-			rs.close();
-			ps.close();
-			con.commit();
+			loadSgestacao();
+		} catch (Exception err) {
+			Funcoes.mensagemErro(null, err.getMessage());
 		}
-		catch (SQLException err) {
-			Funcoes.mensagemErro(null, err.getMessage(), true, con, err);
-			return "NÃO FOI POSSÍVEL REGISTRAR A ESTAÇÃO DE TRABALHO! ! !";
+		Sgestacao sgestacao = getSgestacao();
+		this.isAutproxy( "S".equals(sgestacao.getSgproxyweb().getAutproxy()) );
+		if (sgestacao.getSgproxyweb().getHostproxy()!=null) {
+			this.setHttpproxy(sgestacao.getSgproxyweb().getHostproxy());
+		} 
+		if (sgestacao.getSgproxyweb().getPortaproxy()!=null) {
+			this.setPortaproxy(String.valueOf(sgestacao.getSgproxyweb().getPortaproxy()));
 		}
-		return sDesc;
+		if (sgestacao.getSgproxyweb().getUsuproxy()!=null) {
+			this.setUsuarioproxy(sgestacao.getSgproxyweb().getUsuproxy());
+		} 
+		if (sgestacao.getSgproxyweb().getSenhaproxy()!=null) {
+			this.setSenhaproxy(sgestacao.getSgproxyweb().getSenhaproxy());
+		}
 	}
 	
-	public void infoProxy() {
-		
-		StringBuilder sql = new StringBuilder("select px.hostproxy, px.portaproxy, px.usuproxy, px.senhaproxy, px.autproxy ");
-		sql.append( "from sgestacao es ");
-		sql.append( "inner join sgproxyweb px on px.codemp=es.codemppx and px.codfilial=es.codfilialpx and px.codproxy=es.codproxy ");
-		sql.append( "where es.codest=? and es.codemp=? and es.codfilial=? ");
-				
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		
-		try {
-			
-			ps = con.prepareStatement(sql.toString());
-			
-			ps.setInt(1, getCodest());
-			ps.setInt(2, iCodEmp);
-			ps.setInt(3, ListaCampos.getMasterFilial("SGESTACAO"));
-			
-			rs = ps.executeQuery();
-			
-			if (rs.next()) {
-							
-				this.isAutproxy( rs.getString("autproxy").equals("S") );
-				this.setHttpproxy(rs.getString("hostproxy"));
-				this.setPortaproxy(rs.getString("portaproxy"));
-				this.setUsuarioproxy(rs.getString("usuproxy"));
-				this.setSenhaproxy(rs.getString("senhaproxy"));			
-				
-			}
-			
-			con.commit();
-		}
-		catch (SQLException err) {
-			Funcoes.mensagemErro(null, err.getMessage(), true, con, err);		
-		}
-		
-	}
-
 	public void validaPrefere() {
 
 		if (iCodModu == 11 /* Modulo de representações volta */) {
@@ -785,16 +811,13 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 
 	@Override
 	public void updateEmailBean(EmailBean email) {
-
 		try {
-
 			StringBuilder sql = new StringBuilder();
-			sql.append("UPDATE SGPREFERE3 P3 ");
-			sql.append("SET P3.SMTPMAIL=?, P3.SMTPAUTMAIL=?, ");
-			sql.append("P3.USERMAIL=?, P3.PASSMAIL=?, ");
-			sql.append("P3.SMTPSSLMAIL=?, P3.PORTAMAIL=?, P3.ENDMAIL=? ");
-			sql.append("WHERE P3.CODEMP=? AND P3.CODFILIAL=?");
-
+			sql.append("update sgprefere3 p3 ");
+			sql.append("set p3.smtpmail=?, p3.smtpautmail=?, ");
+			sql.append("p3.usermail=?, p3.passmail=?, ");
+			sql.append("p3.smtpsslmail=?, p3.portamail=?, p3.endmail=? ");
+			sql.append("where p3.codemp=? and p3.codfilial=?");
 			PreparedStatement ps = con.prepareStatement(sql.toString());
 			ps.setString(1, email.getHost());
 			ps.setString(2, email.getAutentica());
@@ -807,11 +830,8 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 			ps.setInt(9, ListaCampos.getMasterFilial("SGPREFERE3"));
 			ps.executeUpdate();
 			ps.close();
-
 			con.commit();
-
 			setEmailBean(email);
-
 		}
 		catch (SQLException e) {
 			Funcoes.mensagemErro(null, "Não foi gravar as alterações de configuração de email!\n" + e.getMessage());

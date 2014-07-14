@@ -53,6 +53,7 @@ import javax.swing.JMenuItem;
 import javax.swing.UIManager;
 
 import org.freedom.bmps.Icone;
+import org.freedom.infra.beans.Sgestacao;
 import org.freedom.infra.beans.Usuario;
 import org.freedom.infra.functions.SystemFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
@@ -231,6 +232,8 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	private CestaFactory cestaFactory;
 
 	private int codest = 0;
+	
+	private Sgestacao sgestacao = null;
 	
 	public Boolean isAutproxy() {
 		return autproxy;
@@ -522,7 +525,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 	public abstract void setaSysdba();
 
-	public abstract void setaInfoTela();
+	public abstract void setInfoTela() throws Exception;
 
 	public JMenuItem getOpcao(int iOpcao) {
 
@@ -1049,9 +1052,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 	}
 
-	public abstract boolean getModoDemo();
-
-	public abstract String getDescEst();
+	public abstract boolean getModoDemo() throws Exception;
 
 	public abstract void validaPrefere();
 
@@ -1271,5 +1272,13 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 	public void setCodest(int codest) {
 		this.codest = codest;
+	}
+
+	public Sgestacao getSgestacao() {
+		return sgestacao;
+	}
+
+	public void setSgestacao(Sgestacao sgestacao) {
+		this.sgestacao = sgestacao;
 	}
 }
