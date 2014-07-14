@@ -206,6 +206,8 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 	private JComboBoxPad cbStopBitsBal = new JComboBoxPad( vLabStopBitsBal, vValStopBitsBal, JComboBoxPad.TP_INTEGER, 1, 0 );
 	
 	private JComboBoxPad cbTipoProcRecMerc = null;
+	
+	private JCheckBoxPad cbPrintPdf = new JCheckBoxPad( "Impressão externa utilizando leitor de PDF", "S", "N" );
 
 	private Vector<String> vValsTipoProc = new Vector<String>();
 
@@ -457,6 +459,7 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 		adicCampo( txtTamFonteTxt, 280, 60, 65, 20, "TamFonteTxt", "Tamanho", ListaCampos.DB_SI, false );
 		adicDB( cbNfeEst, 350, 60, 150, 20, "NfeEst", "NFE", true );
 		adicCampo( txtPathCacerts, 7, 100, 350, 20, "PathCacerts", "Caminho para arquivo de armazenamento de certificados", ListaCampos.DB_SI, false);
+		adicDB( cbPrintPdf, 7, 140, 350, 20, "printpdf", "", true);
 		adic(btDirCacerts, 360, 100, 20, 20);
 		adicCampo( txtCodProxy, 7, 140, 80, 20, "CodProxy", "Cód.proxy", ListaCampos.DB_FK,txtDescProxy, false );
 		adicDescFK( txtDescProxy, 90, 140, 250, 20, "DescProxy", "Descrição do proxy" );
@@ -472,6 +475,7 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 		adicCampo( txtEmailEst, 210, 60, 197, 20, "EmailEst", "E-mail da pessoa de contato", ListaCampos.DB_SI, false );
 		setPainel(pinCabApp);
 		adicCampo( txtPathPDFReader, 7, 20, 350, 20, "PathPDFReader", "Aplicativo leitor de PDF", ListaCampos.DB_SI, false);
+		
 		adic(btDirPDFReader, 360, 20, 20, 20);
 		setListaCampos( true, "ESTACAO", "SG" );
 		lcCampos.setQueryInsert( false );
@@ -671,6 +675,7 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 
 		if (ievt.getListaCampos()==lcCampos) {
 			cbAtivaEst.setVlrString( "S" );
+			cbPrintPdf.setVlrString( "N" );
 		}
 	}
 }
