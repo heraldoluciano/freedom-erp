@@ -1214,10 +1214,11 @@ public class FConsultaCli extends FFilho implements ActionListener, TabelaSelLis
 		// Carregar a cesta de compras
 		daoconsultacli = new DAOConsultaCli( cn, imgVencida, imgAVencer, imgPgEmAtraso
 				, imgPgEmDia, imgCancelado, imgPedido, imgFaturado );
-		cestaFactory = Aplicativo.getInstace().getCestaFactory();
+		cestaFactory = Aplicativo.getInstance().getCestaFactory();
 		daoorcamento = new DAOOrcamento( cn, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
 		try {
-			preforc = daoorcamento.getPrefere( ListaCampos.getMasterFilial( "SGPREFERE1" ),  ListaCampos.getMasterFilial( "SGESTACAOIMP" ), Aplicativo.iNumEst );
+			preforc = daoorcamento.getPrefere( ListaCampos.getMasterFilial( "SGPREFERE1" )
+					,  ListaCampos.getMasterFilial( "SGESTACAOIMP" ), Aplicativo.getInstance().getCodest() );
 		} catch (Exception err) {
 			Funcoes.mensagemErro( null, err.getMessage() );
 			dispose();

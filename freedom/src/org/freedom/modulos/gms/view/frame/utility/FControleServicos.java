@@ -820,7 +820,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 		super.setConexao( cn );
 		daoorcamento = new DAOOrcamento( cn, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDORCAMENTO" ));
 		try {
-			oPrefs = daoorcamento.getPrefere( ListaCampos.getMasterFilial( "SGPREFERE1" ), ListaCampos.getMasterFilial( "SGESTACAOIMP" ), Aplicativo.iNumEst );
+			oPrefs = daoorcamento.getPrefere( ListaCampos.getMasterFilial( "SGPREFERE1" ), ListaCampos.getMasterFilial( "SGESTACAOIMP" ), Aplicativo.getInstance().getCodest() );
 		} catch (Exception err) {
 			Funcoes.mensagemErro( null, err.getMessage() );
 			dispose();
@@ -970,7 +970,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 
 		if ( Aplicativo.telaPrincipal.temTela( "Orçamento" ) == false ) {
 			FOrcamento tela = new FOrcamento();
-			Aplicativo.telaPrincipal.criatela( "Orçamento", tela, Aplicativo.getInstace().getConexao() );
+			Aplicativo.telaPrincipal.criatela( "Orçamento", tela, Aplicativo.getInstance().getConexao() );
 			tela.exec( codorc );
 		}
 
@@ -1066,7 +1066,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 		Integer ret = null;
 
 		try {
-			con = Aplicativo.getInstace().getConexao();
+			con = Aplicativo.getInstance().getConexao();
 
 			sql.append( "select first 1 io.codorc from eqitrecmercitositorc io where io.codemp=? and io.codfilial=? and io.ticket=?" );
 
@@ -1105,14 +1105,14 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 		try {
 			if (oPrefs==null) {
 				if (daoorcamento==null) {
-					daoorcamento = new DAOOrcamento( Aplicativo.getInstace().getConexao()
+					daoorcamento = new DAOOrcamento( Aplicativo.getInstance().getConexao()
 							, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
 				}
 				oPrefs = daoorcamento.getPrefere( ListaCampos.getMasterFilial( "SGPREFERE1" )
-						, ListaCampos.getMasterFilial( "SGESTACAOIMP" ), Aplicativo.iNumEst );
+						, ListaCampos.getMasterFilial( "SGESTACAOIMP" ), Aplicativo.getInstance().getCodest() );
 			}
 			daorecmerc = new DAORecMerc( corig, Aplicativo.iCodEmp , ListaCampos.getMasterFilial( "EQRECMERC" )
-					, ticket, Aplicativo.getInstace().getConexao(), ListaCampos.getMasterFilial( "LFSEQSERIE" ), true  );
+					, ticket, Aplicativo.getInstance().getConexao(), ListaCampos.getMasterFilial( "LFSEQSERIE" ), true  );
 			if ( statustxt.equals( StatusOS.OS_ANALISE.getValue() ) ||
 					statustxt.equals( StatusOS.OS_ENCAMINHADO.getValue() ) ||
 					statustxt.equals( StatusOS.OS_ANDAMENTO.getValue() ) ||
@@ -1204,7 +1204,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 			if ( "".equals( codrmagrid ) || null == codrmagrid ) {
 
 				recmerc = new DAORecMerc( corig, Aplicativo.iCodEmp , ListaCampos.getMasterFilial( "EQRECMERC" )
-						, ticket, Aplicativo.getInstace().getConexao(), ListaCampos.getMasterFilial( "LFSEQSERIE" ), true );
+						, ticket, Aplicativo.getInstance().getConexao(), ListaCampos.getMasterFilial( "LFSEQSERIE" ), true );
 
 				if ( statustxt.equals( StatusOS.OS_APROVADA.getValue() ) || 
 						statustxt.equals( StatusOS.OS_ANALISE.getValue() ) ||

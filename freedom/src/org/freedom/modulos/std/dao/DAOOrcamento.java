@@ -648,7 +648,7 @@ public class DAOOrcamento extends AbstractDAO {
 
 		try {
 			/*if (con == null) {
-				con = Aplicativo.getInstace().getConexao();
+				con = Aplicativo.getInstance().getConexao();
 			}*/
 
 			sql.append("select (case when p1.usanomevendorc='S' then v.nomevend else e.razemp end) nomeass, ");

@@ -738,7 +738,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 			txtRefProd.setBuscaAdic( new DLBuscaProd( con, "REFPROD", lcProd2.getWhereAdic() ) );
 
 			if ( buscaGen() ) {
-				txtRefProd.setBuscaGenProd( new DLCodProd( Aplicativo.getInstace().getConexao(), null, null ) );
+				txtRefProd.setBuscaGenProd( new DLCodProd( Aplicativo.getInstance().getConexao(), null, null ) );
 			}
 
 			adicCampoInvisivel( txtCodProd, "CodProd", "Cód.Pd.", ListaCampos.DB_FK, txtDescProd, false );
@@ -832,7 +832,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 			txtRefProdItOS.setBuscaAdic( new DLBuscaProd( con, "REFPROD", lcProd2.getWhereAdic() ) );
 
 			if ( buscaGen() ) {
-				txtRefProdItOS.setBuscaGenProd( new DLCodProd( Aplicativo.getInstace().getConexao(), null, null ) );
+				txtRefProdItOS.setBuscaGenProd( new DLCodProd( Aplicativo.getInstance().getConexao(), null, null ) );
 			}
 
 			adicCampoInvisivel( txtCodProdItOS, "CodProdpd", "Código", ListaCampos.DB_SI, false );
@@ -901,7 +901,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 			sql.append( "on pf8.codemp=pf1.codemp and pf8.codfilial=pf1.codfilial " );
 			sql.append( "where pf1.codemp=? and pf1.codfilial=? " );
 
-			ps = Aplicativo.getInstace().getConexao().prepareStatement( sql.toString() );
+			ps = Aplicativo.getInstance().getConexao().prepareStatement( sql.toString() );
 
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
@@ -916,7 +916,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 
 			}
 
-			Aplicativo.getInstace().getConexao().commit();
+			Aplicativo.getInstance().getConexao().commit();
 
 		} catch ( Exception e ) {
 			e.printStackTrace();

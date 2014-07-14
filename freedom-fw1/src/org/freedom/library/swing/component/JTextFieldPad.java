@@ -1257,7 +1257,7 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 						e.printStackTrace();
 					}						
 						
-					Aplicativo.getInstace().abreTela( titulo, telaexterna);
+					Aplicativo.getInstance().abreTela( titulo, telaexterna);
 					
 
 				}

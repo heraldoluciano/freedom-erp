@@ -129,7 +129,7 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 		telaPrincipal.statusBar.setUsuario(getUsuario().getIdusu());// Variavel de usuario da
 		telaPrincipal.statusBar.setCodFilial(iCodFilial);
 		telaPrincipal.statusBar.setNomeFilial(sNomeFilial);
-		telaPrincipal.statusBar.setNumEst(iNumEst);
+		telaPrincipal.statusBar.setNumEst(getCodest());
 		telaPrincipal.statusBar.setDescEst(getDescEst());
 
 		setaSysdba();
@@ -180,7 +180,7 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 		}
 
 		try {
-			iNumEst = Integer.parseInt(getParameter("numterm"));
+			setCodest(Integer.parseInt(getParameter("numterm")));
 		}
 		catch (Exception err) {
 			Funcoes.mensagemErro(null, "Não foi possível carregar o parâmetro 'numterm'\n" + err.getMessage(), true, con, err);
@@ -261,21 +261,29 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 
 	public boolean getModoDemo() {
 
-		String sSQL = "SELECT MODODEMOEST FROM SGESTACAO WHERE CODEST=" + iNumEst + "AND CODEMP=" + iCodEmp + " AND CODFILIAL=" + ListaCampos.getMasterFilial("SGESTACAO");
+		StringBuilder sql = new StringBuilder();
+		sql.append("select mododemoest from sgestacao where codest=? and codemp=? and codfilial=?");
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		boolean bModo = true;
 		try {
-			ps = con.prepareStatement(sSQL);
+			ps = con.prepareStatement(sql.toString());
+			int param = 1;
+			ps.setInt(param++, getCodest());
+			ps.setInt(param++, iCodEmp);
+			ps.setInt(param++, ListaCampos.getMasterFilial("SGESTACAO"));
+			
 			rs = ps.executeQuery();
 			if (!rs.next())
 				Funcoes.mensagemErro(null, "Estação de trabalho não cadastrado!");
 			else {
-				if (rs.getString("ModoDemoEst").equals("S"))
+				if (rs.getString("mododemoest").equals("S"))
 					bModo = true;
 				else
 					bModo = false;
 			}
+			rs.close();
+			ps.close();
 			con.commit();
 		}
 		catch (SQLException err) {
@@ -422,18 +430,24 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 	}
 
 	public String getDescEst() {
-
-		String sSQL = "SELECT DESCEST FROM SGESTACAO WHERE CODEST=" + iNumEst + " AND CODEMP=" + iCodEmp + " AND CODFILIAL=" + ListaCampos.getMasterFilial("SGESTACAO");
+		StringBuilder sql = new StringBuilder();
+		sql.append( "select descest from sgestacao where codest=? and codemp=? and codfilial=?" );
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		String sDesc = "";
 		try {
-			ps = con.prepareStatement(sSQL);
+			ps = con.prepareStatement(sql.toString());
+			int param = 1;
+			ps.setInt(param++, getCodest());
+			ps.setInt(param++, iCodEmp);
+			ps.setInt(param++, ListaCampos.getMasterFilial("SGESTACAO"));
 			rs = ps.executeQuery();
 			if (!rs.next())
 				sDesc = "ESTAÇÃO DE TRABALHO NÃO CADASTRADA";
 			else
-				sDesc = rs.getString("DescEst");
+				sDesc = rs.getString("descest");
+			rs.close();
+			ps.close();
 			con.commit();
 		}
 		catch (SQLException err) {
@@ -457,7 +471,7 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 			
 			ps = con.prepareStatement(sql.toString());
 			
-			ps.setInt(1, iNumEst);
+			ps.setInt(1, getCodest());
 			ps.setInt(2, iCodEmp);
 			ps.setInt(3, ListaCampos.getMasterFilial("SGESTACAO"));
 			

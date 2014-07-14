@@ -2838,7 +2838,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 			if ( "T".equals( tipopedido ) ) {
 				ps.setInt( 2, ListaCampos.getMasterFilial( "SGPAPEL" ) );
-				ps.setInt( 3, Aplicativo.iNumEst );
+				ps.setInt( 3, Aplicativo.getInstance().getCodest() );
 			}
 			else {
 				ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
@@ -3066,7 +3066,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		
 		try {
 			if (con == null) {
-				con = Aplicativo.getInstace().getConexao();
+				con = Aplicativo.getInstance().getConexao();
 			}
 			
 			sqlAssinatura.append("SELECT (CASE WHEN P1.USANOMEVENDORC='S' THEN V.NOMEVEND ELSE E.RAZEMP END) NOMEASS, ");
@@ -4119,7 +4119,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 
 				if ( txtTipoMov.getVlrString().equals( TipoMov.TM_VENDA_SERVICO.getValue() ) ) {
-					setNfecf( new NFEConnectionFactory( con, Aplicativo.getInstace().getConexaoNFE()
+					setNfecf( new NFEConnectionFactory( con, Aplicativo.getInstance().getConexaoNFE()
 							, AbstractNFEFactory.TP_NF_OUT, true
 							, (String) oPrefs[POS_PREFS.PROCEMINFE.ordinal()] 
 							, (String) oPrefs[POS_PREFS.AMBIENTENFE.ordinal()]
@@ -4129,7 +4129,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 							, new Integer((String) oPrefs[POS_PREFS.TIPOEMISSAONFE.ordinal()])));
 
 				}else {
-					setNfecf( new NFEConnectionFactory( con, Aplicativo.getInstace().getConexaoNFE()
+					setNfecf( new NFEConnectionFactory( con, Aplicativo.getInstance().getConexaoNFE()
 							, AbstractNFEFactory.TP_NF_OUT, false
 							, (String) oPrefs[POS_PREFS.PROCEMINFE.ordinal()]
 							, (String) oPrefs[POS_PREFS.AMBIENTENFE.ordinal()]
@@ -5104,7 +5104,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcColeta.setConexao( cn );
 		lcItRemessa.setConexao( cn );
 		lcNumSerie.setConexao( cn );
-		setNfecf( new NFEConnectionFactory( con, Aplicativo.getInstace().getConexaoNFE()
+		setNfecf( new NFEConnectionFactory( con, Aplicativo.getInstance().getConexaoNFE()
 				, AbstractNFEFactory.TP_NF_OUT, false
 				, (String) oPrefs[POS_PREFS.PROCEMINFE.ordinal()]
 				, (String) oPrefs[POS_PREFS.AMBIENTENFE.ordinal()]

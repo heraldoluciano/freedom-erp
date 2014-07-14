@@ -346,7 +346,7 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 			sql.append( "inss.teto >= ? " );
 			sql.append( "order by inss.teto " );
 
-			ps = Aplicativo.getInstace().getConexao().prepareStatement( sql.toString() );
+			ps = Aplicativo.getInstance().getConexao().prepareStatement( sql.toString() );
 			ps.setBigDecimal( 1, valororiginal );
 
 			rs = ps.executeQuery();
@@ -402,7 +402,7 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 			sql.append( "ir.teto >= ? " );
 			sql.append( "order by ir.teto " );
 
-			ps = Aplicativo.getInstace().getConexao().prepareStatement( sql.toString() );
+			ps = Aplicativo.getInstance().getConexao().prepareStatement( sql.toString() );
 
 			BigDecimal baseirrf_final = valorbaseirrf;
 
@@ -544,7 +544,7 @@ public class DLNovoPag extends FFDialogo implements PostListener, MouseListener,
 		BigDecimal ret = new BigDecimal( 0 );
 
 		try {
-			PreparedStatement ps = Aplicativo.getInstace().getConexao().prepareStatement( "SELECT FIRST 1 REDUCAODEPENDENTE FROM RHTABELAIRRF" );
+			PreparedStatement ps = Aplicativo.getInstance().getConexao().prepareStatement( "SELECT FIRST 1 REDUCAODEPENDENTE FROM RHTABELAIRRF" );
 
 			ResultSet rs = ps.executeQuery();
 

@@ -135,8 +135,6 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 	public static int iCodFilialPad = 0;
 
-	public static int iNumEst = 0;
-
 	public static String strBanco = "";
 
 	public static String strBancoNFE = "";
@@ -231,6 +229,8 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	private static Usuario usuario;
 	
 	private CestaFactory cestaFactory;
+
+	private int codest = 0;
 	
 	public Boolean isAutproxy() {
 		return autproxy;
@@ -339,7 +339,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		return mantenedor;
 	}
 
-	public static Aplicativo getInstace() {
+	public static Aplicativo getInstance() {
 		return instance;
 	}
 
@@ -1019,7 +1019,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 		if (getUsuario() == null) {
 			Login lgBanco = (Login) criaLogin();
-			lgBanco.execLogin(strBanco, strDriver, sSplashImg, iNumEst);
+			lgBanco.execLogin(strBanco, strDriver, sSplashImg, getCodest());
 			if (!lgBanco.OK)
 				System.exit(0);
 			setUsuario(lgBanco.getUsuario());
@@ -1263,5 +1263,13 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 	public void setCestaFactory(CestaFactory cestaFactory) {
 		this.cestaFactory = cestaFactory;
+	}
+
+	public int getCodest() {
+		return codest;
+	}
+
+	public void setCodest(int codest) {
+		this.codest = codest;
 	}
 }

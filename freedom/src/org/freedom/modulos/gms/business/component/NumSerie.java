@@ -68,7 +68,7 @@ public class NumSerie {
 
 			try {
 
-				ps = Aplicativo.getInstace().con.prepareStatement( sSQL );
+				ps = Aplicativo.getInstance().con.prepareStatement( sSQL );
 				ps.setString( 1, numserie );
 				ps.setInt( 2, codprod );
 				ps.setInt( 3, Aplicativo.iCodEmp );
@@ -86,7 +86,7 @@ public class NumSerie {
 				ps.close();
 
 			} catch ( SQLException err ) {
-				Funcoes.mensagemErro( null, "Erro ao consultar a tabela EQSERIE!\n" + err.getMessage(), true, Aplicativo.getInstace().con, err );
+				Funcoes.mensagemErro( null, "Erro ao consultar a tabela EQSERIE!\n" + err.getMessage(), true, Aplicativo.getInstance().con, err );
 			}
 			if ( !bValido ) {
 
@@ -140,7 +140,7 @@ public class NumSerie {
 		dl.setCodprod( getCodprod() );
 		dl.setDescprod( getDescprod() );
 
-		dl.setConexao( Aplicativo.getInstace().getConexao() );
+		dl.setConexao( Aplicativo.getInstance().getConexao() );
 		dl.setVisible( true );
 		HashMap<String, Integer> retorno = null;
 

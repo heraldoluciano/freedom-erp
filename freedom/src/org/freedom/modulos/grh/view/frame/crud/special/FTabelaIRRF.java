@@ -142,7 +142,7 @@ public class FTabelaIRRF extends FDados implements ActionListener, PostListener,
 			
 			sql.append( "SELECT CODTABIRRF, TETO, ALIQUOTA, DEDUCAO, REDUCAODEPENDENTE FROM RHTABELAIRRF ORDER BY CODTABIRRF" );
 			
-			ps = Aplicativo.getInstace().con.prepareStatement( sql.toString() );
+			ps = Aplicativo.getInstance().con.prepareStatement( sql.toString() );
 			
 			rs = ps.executeQuery();
 			

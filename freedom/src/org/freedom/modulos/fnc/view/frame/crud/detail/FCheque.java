@@ -452,7 +452,7 @@ public class FCheque extends FDetalhe implements CarregaListener, InsertListener
 	private synchronized void imprimir( TYPE_PRINT visualizar ) {
 		PreparedStatement ps = null;
 
-		ImprimeOS imp = new ImprimeOS( "", Aplicativo.getInstace().getConexao(), "CH", true );
+		ImprimeOS imp = new ImprimeOS( "", Aplicativo.getInstance().getConexao(), "CH", true );
 
 		imp.setImpEject( false );
 		Vector<Object> item = null;

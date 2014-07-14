@@ -763,7 +763,7 @@ public class FRBoleto extends FRelatorio implements CarregaListener {
 			sRet = sb.toString();
 
 		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( null, "Erro na consulta ao modelo de boleto!\n" + err.getMessage(), true, Aplicativo.getInstace().getConexao(), err );
+			Funcoes.mensagemErro( null, "Erro na consulta ao modelo de boleto!\n" + err.getMessage(), true, Aplicativo.getInstance().getConexao(), err );
 			err.printStackTrace();
 		}
 
@@ -781,7 +781,7 @@ public class FRBoleto extends FRelatorio implements CarregaListener {
 			sql.append( "where m.codmoeda=p.codmoeda and m.codemp=p.codempmo and m.codfilial=p.codfilialmo " );
 			sql.append( "and p.codemp=? and p.codfilial=?" );
 
-			PreparedStatement ps = Aplicativo.getInstace().getConexao().prepareStatement( sql.toString() );
+			PreparedStatement ps = Aplicativo.getInstance().getConexao().prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, Aplicativo.iCodFilial );
 			ResultSet rs = ps.executeQuery();
@@ -796,11 +796,11 @@ public class FRBoleto extends FRelatorio implements CarregaListener {
 			rs.close();
 			ps.close();
 
-			Aplicativo.getInstace().getConexao().commit();
+			Aplicativo.getInstance().getConexao().commit();
 			
 		} 
 		catch ( SQLException err ) {
-			Funcoes.mensagemErro( null, "Erro ao buscar a moeda padrão!\n" + err.getMessage(), true, Aplicativo.getInstace().getConexao(), err );
+			Funcoes.mensagemErro( null, "Erro ao buscar a moeda padrão!\n" + err.getMessage(), true, Aplicativo.getInstance().getConexao(), err );
 			err.printStackTrace();
 		}
 
@@ -838,7 +838,7 @@ public class FRBoleto extends FRelatorio implements CarregaListener {
 			sql.append( "i.codempbo=? and i.codfilialbo=? and i.codbanco=? and ");
 			sql.append( "i.codempcb=? and i.codfilialcb=? and i.codcartcob=?" );
 			
-			PreparedStatement ps = Aplicativo.getInstace().getConexao().prepareStatement( sql.toString() );
+			PreparedStatement ps = Aplicativo.getInstance().getConexao().prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, Aplicativo.iCodFilial );
 			ps.setInt( 3, codModBol );

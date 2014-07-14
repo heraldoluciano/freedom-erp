@@ -17,7 +17,7 @@ public class Atendimento {
 
 			sql.append( "SELECT CODATEND FROM ATATENDENTE WHERE CODEMPUS=? AND CODFILIALUS=? AND IDUSU=? " );
 
-			ps = Aplicativo.getInstace().con.prepareStatement( sql.toString() );
+			ps = Aplicativo.getInstance().con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, Aplicativo.iCodFilial );
 			ps.setString( 3, Aplicativo.getUsuario().getIdusu() );

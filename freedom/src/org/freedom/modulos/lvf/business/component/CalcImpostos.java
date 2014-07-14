@@ -321,7 +321,7 @@ public class CalcImpostos {
 
 			sql.append( "select coalesce(percicms,0) aliqfisc from lfbuscaicmssp( ?, ?, ?, ? )" );
 
-			ps = Aplicativo.getInstace().getConexao().prepareStatement( sql.toString() );
+			ps = Aplicativo.getInstance().getConexao().prepareStatement( sql.toString() );
 
 			ps.setString( 1, getCodnat() );
 			ps.setString( 2, getUftransacao() );
@@ -360,7 +360,7 @@ public class CalcImpostos {
 
 		try {
 
-			ps = Aplicativo.getInstace().getConexao().prepareStatement( sql.toString() );
+			ps = Aplicativo.getInstance().getConexao().prepareStatement( sql.toString() );
 
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
@@ -426,7 +426,7 @@ public class CalcImpostos {
 			rs.close();
 			ps.close();
 
-			Aplicativo.getInstace().getConexao().commit();
+			Aplicativo.getInstance().getConexao().commit();
 
 		} catch ( SQLException err ) {
 			err.printStackTrace();

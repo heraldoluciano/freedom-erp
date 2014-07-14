@@ -224,7 +224,7 @@ public final class WebServiceCep {
 		
 		try {
 			
-			if( Aplicativo.getInstace().getHttpproxy() != null  && Aplicativo.getInstace().isAutproxy()) { 
+			if( Aplicativo.getInstance().getHttpproxy() != null  && Aplicativo.getInstance().isAutproxy()) { 
 			
 			 URLConnection con = url.openConnection();
 		        
@@ -232,7 +232,7 @@ public final class WebServiceCep {
 		        con.setRequestProperty(
 		        	"Proxy-Authorization", 
 		        	"Basic " + new sun.misc.BASE64Encoder().encode(
-		        		(Aplicativo.getInstace().getUsuarioproxy() + ":" + SimpleCrypt.decrypt( Aplicativo.getInstace().getSenhaproxy() )).getBytes()
+		        		(Aplicativo.getInstance().getUsuarioproxy() + ":" + SimpleCrypt.decrypt( Aplicativo.getInstance().getSenhaproxy() )).getBytes()
 		        	)
 		        );
 		        BufferedReader in = new BufferedReader (

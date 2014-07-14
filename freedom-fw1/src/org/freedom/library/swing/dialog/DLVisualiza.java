@@ -225,7 +225,7 @@ public class DLVisualiza extends FFDialogo implements ActionListener, CaretListe
 		try {
 
 			if (con == null) {
-				con = Aplicativo.getInstace().getConexao();
+				con = Aplicativo.getInstance().getConexao();
 			}
 
 			sql.append("select coalesce(fontetxt,'Courier New'),coalesce(tamfontetxt,12) ");
@@ -236,7 +236,7 @@ public class DLVisualiza extends FFDialogo implements ActionListener, CaretListe
 			PreparedStatement ps = con.prepareStatement(sql.toString());
 			ps.setInt(1, Aplicativo.iCodEmp);
 			ps.setInt(2, ListaCampos.getMasterFilial("SGESTACAO"));
-			ps.setInt(3, Aplicativo.iNumEst);
+			ps.setInt(3, Aplicativo.getInstance().getCodest());
 
 			ResultSet rs = ps.executeQuery();
 

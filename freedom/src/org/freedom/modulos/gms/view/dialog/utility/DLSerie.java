@@ -91,8 +91,8 @@ public class DLSerie extends FFDialogo {
 
 		super( orig );
 
-		setConexao( Aplicativo.getInstace().con );
-		lcNumSerie.setConexao( ( Aplicativo.getInstace().con ) );
+		setConexao( Aplicativo.getInstance().con );
+		lcNumSerie.setConexao( ( Aplicativo.getInstance().con ) );
 
 		setTitulo( "Série" );
 		setAtribos( 380, 300 );

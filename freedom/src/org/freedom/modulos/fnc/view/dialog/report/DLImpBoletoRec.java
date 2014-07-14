@@ -288,7 +288,7 @@ public class DLImpBoletoRec extends FDialogo {
 			sql.append( "SELECT COALESCE(P.TPNOSSONUMERO,'D') TPNOSSONUMERO, COALESCE(P.IMPDOCBOL,'N') IMPDOCBOL FROM SGPREFERE1 P " );
 			sql.append( "WHERE P.CODEMP=? AND P.CODFILIAL=?" );
 
-			PreparedStatement ps = Aplicativo.getInstace().getConexao().prepareStatement( sql.toString() );
+			PreparedStatement ps = Aplicativo.getInstance().getConexao().prepareStatement( sql.toString() );
 			
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, Aplicativo.iCodFilial );

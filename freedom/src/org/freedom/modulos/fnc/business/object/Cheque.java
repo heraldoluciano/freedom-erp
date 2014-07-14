@@ -128,7 +128,7 @@ public class Cheque {
 			sql.append( "from fncheque " );
 			sql.append( "where codemp=? and codfilial=? and seqcheq=?" );
 
-			ps = Aplicativo.getInstace().con.prepareStatement( sql.toString() );
+			ps = Aplicativo.getInstance().con.prepareStatement( sql.toString() );
 			cal = new GregorianCalendar();
 
 			ps.setInt( 1, Aplicativo.iCodEmp );
@@ -166,7 +166,7 @@ public class Cheque {
 
 			rs.close();
 			ps.close();
-			// Aplicativo.getInstace().con.commit();
+			// Aplicativo.getInstance().con.commit();
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( null, "Erro ao buscar informações do cheque!\n" + err.getMessage(), true, null, err );
 			err.printStackTrace();
@@ -727,7 +727,7 @@ public class Cheque {
 		String result = null;
 		sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODBANCO=? " );
 
-		DbConnection con = Aplicativo.getInstace().getConexao();
+		DbConnection con = Aplicativo.getInstance().getConexao();
 
 		try {
 			ps = con.prepareStatement( sql.toString() );
@@ -762,7 +762,7 @@ public class Cheque {
 		sql.append( "F.CODEMP=? AND F.CODFILIAL=? AND " );
 		sql.append( "MC.CODPAIS=F.CODPAIS AND MC.SIGLAUF=F.SIGLAUF AND MC.CODMUNIC=F.CODMUNIC" );
 
-		DbConnection con = Aplicativo.getInstace().getConexao();
+		DbConnection con = Aplicativo.getInstance().getConexao();
 
 		try {
 			ps = con.prepareStatement( sql.toString() );

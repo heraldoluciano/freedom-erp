@@ -241,7 +241,7 @@ public class TipoMov implements java.io.Serializable {
 			StringBuilder sql = new StringBuilder();
 			sql.append( "select p.codtipomov9 from SGPREFERE1 p where p.codemp=? and p.codfilial=?" );
 
-			PreparedStatement ps = Aplicativo.getInstace().getConexao().prepareStatement( sql.toString() );
+			PreparedStatement ps = Aplicativo.getInstance().getConexao().prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
 
@@ -270,7 +270,7 @@ public class TipoMov implements java.io.Serializable {
 			StringBuilder sql = new StringBuilder();
 			sql.append( "select serie from eqtipomov where codemp=? and codfilial=? and codtipomov=? " );
 
-			PreparedStatement ps = Aplicativo.getInstace().getConexao().prepareStatement( sql.toString() );
+			PreparedStatement ps = Aplicativo.getInstance().getConexao().prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "EQTIPOMOV" ) );
 			ps.setInt( 3, codtipomov );
@@ -303,7 +303,7 @@ public class TipoMov implements java.io.Serializable {
 			sql.append( "codemp=? and codfilial=? and serie=? and " );
 			sql.append( "codempss=? and codfilialss=? and ativserie='S'" );
 			
-			PreparedStatement ps = Aplicativo.getInstace().getConexao().prepareStatement( sql.toString() );
+			PreparedStatement ps = Aplicativo.getInstance().getConexao().prepareStatement( sql.toString() );
 			
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "LFSERIE" ) );			

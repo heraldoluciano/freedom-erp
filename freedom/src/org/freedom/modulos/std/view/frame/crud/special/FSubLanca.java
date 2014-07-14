@@ -240,7 +240,7 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener, FocusList
 		setTitulo( "Sub-Lançamentos" );
 		setAtribos( 20, 1, 655, 500 );
 
-		prefere = getPrefere( Aplicativo.getInstace().getConexao() );
+		prefere = getPrefere( Aplicativo.getInstance().getConexao() );
 
 		txtVlrAtualLanca.setAtivo( false );
 

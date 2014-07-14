@@ -1529,7 +1529,7 @@ public class FAgenda extends FFilho implements ActionListener, RadioGroupListene
 	}
 
 	public void eventDoubleClick(Object arg0, Event event, MouseEvent mevent) {
-		editaAgd(( String ) event.getId(), 0, "", Aplicativo.getInstace().getConexao(), mevent.getComponent());
+		editaAgd(( String ) event.getId(), 0, "", Aplicativo.getInstance().getConexao(), mevent.getComponent());
 	}
 
 	public void moved(Event arg0, Object arg1, Date arg2, Object arg3, Date arg4) throws Exception {

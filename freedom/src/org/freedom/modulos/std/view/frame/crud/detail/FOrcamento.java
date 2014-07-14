@@ -2632,7 +2632,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		permusu = getPermissaoUsu();
 		try {
 			oPrefs = getDaoorcamento().getPrefere(ListaCampos.getMasterFilial( "SGPREFERE1" )
-				, ListaCampos.getMasterFilial( "SGESTACAOIMP" ), Aplicativo.iNumEst); // Carrega as preferências
+				, ListaCampos.getMasterFilial( "SGESTACAOIMP" ), Aplicativo.getInstance().getCodest()); // Carrega as preferências
 		} catch (Exception err) {
 			Funcoes.mensagemErro( null, err.getMessage() );
 			dispose();

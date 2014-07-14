@@ -326,7 +326,7 @@ public class MonthView extends CalendarView {
 				if (mevent.getClickCount() == 2)
 					// listener.showEvent(calId, event);[
 
-					tela.editaAgd(( String ) event.getId(), 0, "", Aplicativo.getInstace().getConexao(), mevent.getComponent());
+					tela.editaAgd(( String ) event.getId(), 0, "", Aplicativo.getInstance().getConexao(), mevent.getComponent());
 			}
 			catch (Exception e) {
 				ErrorHandler.handleError(e);

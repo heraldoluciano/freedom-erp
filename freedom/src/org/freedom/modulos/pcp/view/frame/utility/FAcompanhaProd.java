@@ -326,7 +326,7 @@ public class FAcompanhaProd extends FFilho implements ActionListener, MouseListe
 		
 		try {
 			
-			ps = Aplicativo.getInstace().getConexao().prepareStatement( sSQL );
+			ps = Aplicativo.getInstance().getConexao().prepareStatement( sSQL );
 			
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );

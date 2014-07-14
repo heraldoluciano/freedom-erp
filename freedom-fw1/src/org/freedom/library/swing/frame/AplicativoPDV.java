@@ -289,7 +289,7 @@ public class AplicativoPDV extends AplicativoPD {
 			PreparedStatement ps = con.prepareStatement("SELECT CODCAIXA FROM PVCAIXA WHERE CODEMP=? AND CODFILIAL=? AND CODEST=?");
 			ps.setInt(1, iCodEmp);
 			ps.setInt(2, ListaCampos.getMasterFilial("PVCAIXA"));
-			ps.setInt(3, iNumEst);
+			ps.setInt(3, getCodest());
 			ResultSet rs = ps.executeQuery();
 
 			if (rs.next()) {

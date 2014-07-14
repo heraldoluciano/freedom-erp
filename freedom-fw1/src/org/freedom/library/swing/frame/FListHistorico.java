@@ -136,7 +136,7 @@ public class FListHistorico extends FFilho implements MouseListener {
 		tabMensagens.addMouseListener(this);
 		tabHistorico.addMouseListener(this);
 
-		// ns = ( (AplicationSPED)Aplicativo.getInstace()
+		// ns = ( (AplicationSPED)Aplicativo.getInstance()
 		// ).getNota_eletronica();
 
 		listHistorico();

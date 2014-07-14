@@ -479,7 +479,7 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 		String sSQL = "SELECT USAREFPROD FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		ps = Aplicativo.getInstace().getConexao().prepareStatement( sSQL );
+		ps = Aplicativo.getInstance().getConexao().prepareStatement( sSQL );
 		ps.setInt( 1, Aplicativo.iCodEmp );
 		ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
 
@@ -1345,7 +1345,7 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 						geraOp.setSeqest( (Integer) tabAgrup.getValor( i, AGRUPAMENTO.SEQEST.ordinal() ) );
 						geraOp.setCodempet( Aplicativo.iCodEmp );
 						geraOp.setCodfilialet( Aplicativo.iCodFilial );
-						geraOp.setCodest( Aplicativo.iNumEst );
+						geraOp.setCodest( Aplicativo.getInstance().getCodest() );
 
 						if ( "S".equals( cbAgrupDataAprov ) ) {
 							geraOp.setAgrupdataaprov( "S" );
@@ -1430,7 +1430,7 @@ public class FPMP_Pull extends FFilho implements ActionListener, TabelaSelListen
 					ps.setBigDecimal( 7, (BigDecimal) tabDet.getValor( i, DETALHAMENTO.QTDAPROD.ordinal() ) );
 					ps.setInt( 8, Aplicativo.iCodEmp );
 					ps.setInt( 9, Aplicativo.iCodFilial );
-					ps.setInt( 10, Aplicativo.iNumEst );
+					ps.setInt( 10, Aplicativo.getInstance().getCodest() );
 
 					ps.execute();
 

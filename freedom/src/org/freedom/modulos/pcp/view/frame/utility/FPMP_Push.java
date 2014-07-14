@@ -663,7 +663,7 @@ public class FPMP_Push extends FFilho implements ActionListener, TabelaSelListen
 		
 		try {
 			
-			ps = Aplicativo.getInstace().getConexao().prepareStatement( sSQL );
+			ps = Aplicativo.getInstance().getConexao().prepareStatement( sSQL );
 			
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
@@ -813,7 +813,7 @@ public class FPMP_Push extends FFilho implements ActionListener, TabelaSelListen
 						( (BigDecimal) tabDet.getValor( i, DETALHAMENTO.QTDAPROD.ordinal() ) ).floatValue() > 0) {
 					
 					daopush.insertPPProcessaOpTmp( Funcoes.strDateToDate( (String) tabDet.getValor( i, DETALHAMENTO.DTFABROP.ordinal() ) ), 
-							 (BigDecimal) tabDet.getValor( i, DETALHAMENTO.QTDAPROD.ordinal()), Aplicativo.iCodEmp, Aplicativo.iCodFilial, Aplicativo.iNumEst );
+							 (BigDecimal) tabDet.getValor( i, DETALHAMENTO.QTDAPROD.ordinal()), Aplicativo.iCodEmp, Aplicativo.iCodFilial, Aplicativo.getInstance().getCodest() );
 				}
 			}
 			con.commit();

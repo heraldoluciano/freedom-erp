@@ -814,7 +814,7 @@ public class FOrdemCompra extends FDetalhe implements PostListener, CarregaListe
 			sql.append( "WHERE " );
 			sql.append( "P1.CODEMP=? AND P1.CODFILIAL=? " );
 
-			ps = Aplicativo.getInstace().getConexao().prepareStatement( sql.toString() );
+			ps = Aplicativo.getInstance().getConexao().prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
 			rs = ps.executeQuery();
@@ -826,7 +826,7 @@ public class FOrdemCompra extends FDetalhe implements PostListener, CarregaListe
 				obspadc = rs.getString( "obspadoc" );
 			}
 
-			Aplicativo.getInstace().getConexao().commit();
+			Aplicativo.getInstance().getConexao().commit();
 
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao carregar a tabela PREFERERENCIAS!\n" + err.getMessage(), true, con, err );

@@ -447,7 +447,7 @@ public class FRomaneio extends FDetalhe implements InsertListener, ActionListene
 
 		try {
 			
-			DbConnection con = Aplicativo.getInstace().getConexao();
+			DbConnection con = Aplicativo.getInstance().getConexao();
 			
 			ps = con.prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
@@ -462,7 +462,7 @@ public class FRomaneio extends FDetalhe implements InsertListener, ActionListene
 			dl.dispose();
 
 		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( owner, "Erro consulta do relatório\n!" + err.getMessage(), true, Aplicativo.getInstace().getConexao(), err );
+			Funcoes.mensagemErro( owner, "Erro consulta do relatório\n!" + err.getMessage(), true, Aplicativo.getInstance().getConexao(), err );
 		}
 	}
 
@@ -479,7 +479,7 @@ public class FRomaneio extends FDetalhe implements InsertListener, ActionListene
 			try {
 				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
 			} catch ( Exception err ) {
-				Funcoes.mensagemErro( owner, "Erro na impressão de Romaneio!" + err.getMessage(), true, Aplicativo.getInstace().getConexao(), err );
+				Funcoes.mensagemErro( owner, "Erro na impressão de Romaneio!" + err.getMessage(), true, Aplicativo.getInstance().getConexao(), err );
 			}
 		}
 	}

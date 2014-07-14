@@ -1100,7 +1100,7 @@ public class FLanca extends FFilho implements ActionListener, ChangeListener, Mo
 			else if ( evt.getSource() == menu_cadastra_cor ) {
 
 				if ( Funcoes.verificaAcessoClasse( FSinalizadores.class.getCanonicalName() ) ) {
-					FSinalizadores sinal = (FSinalizadores) Aplicativo.getInstace().abreTela( "Sinalizadores", FSinalizadores.class );
+					FSinalizadores sinal = (FSinalizadores) Aplicativo.getInstance().abreTela( "Sinalizadores", FSinalizadores.class );
 					if ( sinal != null ) {
 						sinal.setOwner( this );
 					}

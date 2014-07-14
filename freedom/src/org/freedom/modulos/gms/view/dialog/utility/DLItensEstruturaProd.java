@@ -83,7 +83,7 @@ public class DLItensEstruturaProd extends FFDialogo implements MouseListener, Ta
 		}
 		
 		if(con==null) {
-			con = Aplicativo.getInstace().getConexao();
+			con = Aplicativo.getInstance().getConexao();
 		}
 		
 		setAtribos( 520, 520 );

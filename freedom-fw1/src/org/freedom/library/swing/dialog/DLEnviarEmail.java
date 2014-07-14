@@ -202,7 +202,7 @@ public class DLEnviarEmail extends FFDialogo {
 	 * 
 	 * if ( mail != null ) {
 	 * 
-	 * Aplicativo.getInstace().updateEmailBean( mail ); }
+	 * Aplicativo.getInstance().updateEmailBean( mail ); }
 	 * 
 	 * return mail; }
 	 */

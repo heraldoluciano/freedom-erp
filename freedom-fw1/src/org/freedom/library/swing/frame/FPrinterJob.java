@@ -773,7 +773,7 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 		try {
 
 			if (con == null) {
-				con = Aplicativo.getInstace().getConexao();
+				con = Aplicativo.getInstance().getConexao();
 			}
 
 			sql.append("select coalesce(fontetxt,'Courier New'),coalesce(tamfontetxt,12) ");
@@ -784,7 +784,7 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 			PreparedStatement ps = con.prepareStatement(sql.toString());
 			ps.setInt(1, Aplicativo.iCodEmp);
 			ps.setInt(2, ListaCampos.getMasterFilial("SGESTACAO"));
-			ps.setInt(3, Aplicativo.iNumEst);
+			ps.setInt(3, Aplicativo.getInstance().getCodest());
 
 			ResultSet rs = ps.executeQuery();
 
@@ -815,7 +815,7 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 		
 		try {
 			if (con == null) {
-				con = Aplicativo.getInstace().getConexao();
+				con = Aplicativo.getInstance().getConexao();
 			}
 			ps = con.prepareStatement( "SELECT FOTOEMP FROM SGEMPRESA WHERE CODEMP=? " );
 			ps.setInt( 1, Aplicativo.iCodEmp );
