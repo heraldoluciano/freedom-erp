@@ -322,7 +322,7 @@ public class NFEConnectionFactory implements NFEListener {
 			PreparedStatement ps = con.prepareStatement( "SELECT NFEEST FROM SGESTACAO WHERE CODEMP=? AND CODFILIAL=? AND CODEST=?" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGESTACAO" ) );
-			ps.setInt( 3, Aplicativo.iNumEst );
+			ps.setInt( 3, Aplicativo.getInstance().getCodest() );
 			ResultSet rs = ps.executeQuery();
 
 			if ( rs.next() ) {

@@ -889,7 +889,7 @@ public class Funcoes {
 
 	public synchronized static void mensagemErro(Component frame,
 			String sMensagem, boolean bEnviar, Exception err) {
-		mensagemErro(frame, sMensagem, bEnviar, Aplicativo.getInstace()
+		mensagemErro(frame, sMensagem, bEnviar, Aplicativo.getInstance()
 				.getConexao(), err);
 	}
 
@@ -3491,7 +3491,7 @@ public class Funcoes {
 			System.out.println("sql para verificação de acesso:"
 					+ sql.toString());
 
-			ps = Aplicativo.getInstace().getConexao()
+			ps = Aplicativo.getInstance().getConexao()
 					.prepareStatement(sql.toString());
 
 			ps.setInt(1, Aplicativo.iCodEmp);

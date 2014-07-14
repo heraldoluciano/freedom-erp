@@ -491,7 +491,7 @@ public class DAOPull extends AbstractDAO {
 
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, Aplicativo.iCodFilial );
-			ps.setInt( 3, Aplicativo.iNumEst );
+			ps.setInt( 3, Aplicativo.getInstance().getCodest() );
 
 			ps.execute();
 			ps.close();

@@ -1681,7 +1681,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		try {
 
 			PreparedStatement ps = con.prepareStatement( "SELECT DESCEST FROM SGESTACAO WHERE CODEST=? AND CODEMP=? AND CODFILIAL=?" );
-			ps.setInt( 1, Aplicativo.iNumEst );
+			ps.setInt( 1, Aplicativo.getInstance().getCodest() );
 			ps.setInt( 2, Aplicativo.iCodEmp );
 			ps.setInt( 3, Aplicativo.iCodFilial );
 
@@ -2004,7 +2004,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		sbVenda.setUsuario( Aplicativo.getUsuario().getIdusu() );
 		sbVenda.setCodFilial( Aplicativo.iCodFilial );
 		sbVenda.setNomeFilial( Aplicativo.sNomeFilial );
-		sbVenda.setNumEst( Aplicativo.iNumEst );
+		sbVenda.setNumEst( Aplicativo.getInstance().getCodest() );
 		sbVenda.setDescEst( getDescEst() );
 	}
 

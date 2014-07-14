@@ -84,7 +84,7 @@ public class DLTipoProdServOrc extends FFDialogo implements CarregaListener {
 
 		super( orig );
 
-		setConexao( Aplicativo.getInstace().con );
+		setConexao( Aplicativo.getInstance().con );
 		
 		// Tipo fiscal do cliente
 		lcTipoFiscCli.add( new GuardaCampo( txtCodFiscCli, "CodFiscCli", "Cod.Fisc.Cli.", ListaCampos.DB_PK, false ) );

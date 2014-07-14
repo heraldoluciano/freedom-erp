@@ -4210,7 +4210,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		super.setConexao( cn );
 		getPrefere();
 
-		setNfecf( new NFEConnectionFactory( cn, Aplicativo.getInstace().getConexaoNFE(), AbstractNFEFactory.TP_NF_IN
+		setNfecf( new NFEConnectionFactory( cn, Aplicativo.getInstance().getConexaoNFE(), AbstractNFEFactory.TP_NF_IN
 				, false, proceminfe, ambientenfe, Aplicativo.strTemp, TYPE_PROC.NFE, cnpjfilial, siglauffilial, tipoemissao ) );
 
 		lcTipoMov.setConexao( cn );

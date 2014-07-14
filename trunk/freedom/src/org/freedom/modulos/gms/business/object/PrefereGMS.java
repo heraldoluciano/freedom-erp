@@ -45,7 +45,7 @@ public class PrefereGMS {
 
 		try {
 
-			PreparedStatement ps = Aplicativo.getInstace().con.prepareStatement( sql.toString() );
+			PreparedStatement ps = Aplicativo.getInstance().con.prepareStatement( sql.toString() );
 
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, Aplicativo.iCodFilial );

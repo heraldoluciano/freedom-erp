@@ -73,7 +73,7 @@ public class ComissaoEspecial {
 
 	public ComissaoEspecial( Integer codvendap, String tipovendap, BigDecimal vlrvendacomip, Date datacomip, Date dtvenccomip ) {
 
-		setCon( Aplicativo.getInstace().getConexao() );
+		setCon( Aplicativo.getInstance().getConexao() );
 		setCodvenda( codvendap );
 		setTipovenda( tipovendap );
 		setVlrvendacomi( vlrvendacomip );

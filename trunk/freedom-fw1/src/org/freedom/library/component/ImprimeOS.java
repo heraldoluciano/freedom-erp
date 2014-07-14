@@ -831,7 +831,7 @@ public class ImprimeOS implements ActionListener {
 
 		try {
 			ps = con.prepareStatement(sSQL);
-			ps.setInt(1, Aplicativo.iNumEst);
+			ps.setInt(1, Aplicativo.getInstance().getCodest());
 			ps.setInt(2, Aplicativo.iCodEmp);
 			ps.setInt(3, ListaCampos.getMasterFilial("SGESTACAOIMP"));
 			rs = ps.executeQuery();
@@ -889,7 +889,7 @@ public class ImprimeOS implements ActionListener {
 			}
 			try {
 				ps = con.prepareStatement(sSQL);
-				ps.setInt(1, Aplicativo.iNumEst);
+				ps.setInt(1, Aplicativo.getInstance().getCodest());
 				ps.setInt(2, Aplicativo.iCodEmp);
 				ps.setInt(3, ListaCampos.getMasterFilial("SGESTACAOIMP"));
 				rs = ps.executeQuery();
@@ -1201,7 +1201,7 @@ public class ImprimeOS implements ActionListener {
 		ResultSet rs = null;
 		try {
 			ps = con.prepareStatement(sSQL);
-			ps.setInt(1, Aplicativo.iNumEst);
+			ps.setInt(1, Aplicativo.getInstance().getCodest());
 			ps.setInt(2, Aplicativo.iCodEmp);
 			ps.setInt(3, ListaCampos.getMasterFilial("SGESTACAOIMP"));
 			rs = ps.executeQuery();

@@ -18,7 +18,7 @@ public class FTesteJava extends FFilho {
 		
 		setAtribos( 10, 10, 500, 500 );
 		
-		con = Aplicativo.getInstace().getConexao();
+		con = Aplicativo.getInstance().getConexao();
 		
 		adicBotaoSair();
 		

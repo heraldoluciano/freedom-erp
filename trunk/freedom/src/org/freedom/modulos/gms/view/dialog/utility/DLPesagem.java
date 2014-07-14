@@ -354,7 +354,7 @@ public class DLPesagem extends FFDialogo implements CarregaListener, FocusListen
 
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, Aplicativo.iCodFilial );
-			ps.setInt( 3, Aplicativo.iNumEst );
+			ps.setInt( 3, Aplicativo.getInstance().getCodest() );
 			ps.setString( 4, tipoprocrecmerc );
 
 			rs = ps.executeQuery();

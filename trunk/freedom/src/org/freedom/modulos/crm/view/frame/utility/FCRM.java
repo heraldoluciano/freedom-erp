@@ -524,7 +524,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 	 * 
 	 * pnCabCli.setPreferredSize( new Dimension( 500, 150 ) );
 	 * 
-	 * setConexao( Aplicativo.getInstace().getConexao() );
+	 * setConexao( Aplicativo.getInstance().getConexao() );
 	 * 
 	 * montaListaCamposAtend();
 	 * 
@@ -2462,7 +2462,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 
 		try {
 
-			con = Aplicativo.getInstace().getConexao();
+			con = Aplicativo.getInstance().getConexao();
 			ps = con.prepareStatement( sSQL );
 
 			ps.setInt( 1, Aplicativo.iCodEmp );

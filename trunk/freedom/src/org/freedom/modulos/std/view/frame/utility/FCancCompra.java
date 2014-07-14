@@ -210,7 +210,7 @@ public class FCancCompra extends FFilho implements ActionListener {
 		lcTipomov.setConexao( cn );
 		oPrefs = prefs();
 		
-		setNfecf( new NFEConnectionFactory( con, Aplicativo.getInstace().getConexaoNFE()
+		setNfecf( new NFEConnectionFactory( con, Aplicativo.getInstance().getConexaoNFE()
 				, AbstractNFEFactory.TP_NF_IN, false
 				, (String) oPrefs[POS_PREFS.PROCEMINFE.ordinal()]
 				, (String) oPrefs[POS_PREFS.AMBIENTENFE.ordinal()]

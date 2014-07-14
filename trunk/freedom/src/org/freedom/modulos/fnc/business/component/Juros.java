@@ -98,7 +98,7 @@ public class Juros {
 			sql.append( "and p.codemp=? and p.codfilial=? " );
 			sql.append( "order by it.anoittbj desc, it.mesittbj desc " );
 
-			ps = Aplicativo.getInstace().con.prepareStatement( sql.toString() );
+			ps = Aplicativo.getInstance().con.prepareStatement( sql.toString() );
 			cal = new GregorianCalendar();
 
 			ps.setInt( 1, cal.get( Calendar.YEAR ) );
@@ -115,7 +115,7 @@ public class Juros {
 
 			rs.close();
 			ps.close();
-			// Aplicativo.getInstace().con.commit();
+			// Aplicativo.getInstance().con.commit();
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( null, "Erro ao buscar tabela de juros do sistema!\n" + err.getMessage(), true, null, err );
 			err.printStackTrace();
@@ -169,7 +169,7 @@ public class Juros {
 		ResultSet rs = null;
 		String sSQL = "SELECT JUROSPOSCALC FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
 		try {
-			ps = Aplicativo.getInstace().con.prepareStatement( sSQL );
+			ps = Aplicativo.getInstance().con.prepareStatement( sSQL );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
 			rs = ps.executeQuery();
@@ -178,7 +178,7 @@ public class Juros {
 			}
 			rs.close();
 			ps.close();
-			// Aplicativo.getInstace().con.commit();
+			// Aplicativo.getInstance().con.commit();
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( null, "Erro ao buscar juros pos calculados.\n" + err.getMessage(), true, null, err );
 		} finally {

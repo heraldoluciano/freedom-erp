@@ -195,7 +195,7 @@ public class DAOPush extends AbstractDAO {
 
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, Aplicativo.iCodFilial );
-			ps.setInt( 3, Aplicativo.iNumEst );
+			ps.setInt( 3, Aplicativo.getInstance().getCodest() );
 
 			ps.execute();
 			ps.close();
@@ -214,7 +214,7 @@ public class DAOPush extends AbstractDAO {
 		ResultSet rs = null;
 
 
-		ps = Aplicativo.getInstace().getConexao().prepareStatement( sSQL );
+		ps = Aplicativo.getInstance().getConexao().prepareStatement( sSQL );
 
 		ps.setInt( 1, Aplicativo.iCodEmp );
 		ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );

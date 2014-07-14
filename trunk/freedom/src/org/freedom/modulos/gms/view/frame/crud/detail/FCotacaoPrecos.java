@@ -1425,7 +1425,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener, CarregaLis
 		
 		ResultSet rs = null;
 
-		DbConnection con = Aplicativo.getInstace().getConexao();
+		DbConnection con = Aplicativo.getInstance().getConexao();
 
 		try {
 	

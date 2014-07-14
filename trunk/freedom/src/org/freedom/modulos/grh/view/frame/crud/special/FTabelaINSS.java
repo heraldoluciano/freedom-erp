@@ -132,7 +132,7 @@ public class FTabelaINSS extends FDados implements ActionListener, PostListener,
 			
 			sql.append( "SELECT CODTABINSS, TETO, ALIQUOTA FROM RHTABELAINSS ORDER BY CODTABINSS" );
 			
-			ps = Aplicativo.getInstace().con.prepareStatement( sql.toString() );
+			ps = Aplicativo.getInstance().con.prepareStatement( sql.toString() );
 			
 			rs = ps.executeQuery();
 			

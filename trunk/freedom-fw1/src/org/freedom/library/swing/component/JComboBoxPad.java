@@ -504,7 +504,7 @@ public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemLi
 
 		try {
 
-			con = Aplicativo.getInstace().getConexao();
+			con = Aplicativo.getInstance().getConexao();
 
 			if (con != null) {
 

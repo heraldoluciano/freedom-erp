@@ -1285,7 +1285,7 @@ public class FPagCheque extends FFilho implements ActionListener, TabelaEditList
 				ps = con.prepareStatement( sql.toString() );
 				ps.setInt( 1, Aplicativo.iCodEmp );
 				ps.setInt( 2, ListaCampos.getMasterFilial( "SGESTACAOIMP" ) );
-				ps.setInt( 3, Aplicativo.iNumEst );
+				ps.setInt( 3, Aplicativo.getInstance().getCodest() );
 				ps.setString( 4, "CH");
 				rs = ps.executeQuery();
 				if ( rs.next() ) {

@@ -79,7 +79,7 @@ public class JTextFieldPlan extends JTextFieldPad {
 		
 		try {   
 			 
-			con = Aplicativo.getInstace().getConexao();
+			con = Aplicativo.getInstance().getConexao();
 			
 			sql.append("select codplan from fnplanejamento where codemp=? and codfilial=? and codredplan=? ");
 			

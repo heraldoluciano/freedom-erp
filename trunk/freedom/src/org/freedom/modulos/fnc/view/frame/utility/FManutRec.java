@@ -3270,7 +3270,7 @@ public class FManutRec extends FFilho implements ActionListener, CarregaListener
 			else if (evt.getSource() == menucadastracor){
 
 				if (Funcoes.verificaAcessoClasse(FSinalizadores.class.getCanonicalName())) {
-					Aplicativo.getInstace().abreTela("Sinalizadores", FSinalizadores.class);
+					Aplicativo.getInstance().abreTela("Sinalizadores", FSinalizadores.class);
 				}
 				else {
 					Funcoes.mensagemInforma(null, "O usuário " + Aplicativo.getUsuario().getIdusu() + " não possui acesso a tela solicitada (" + FSinalizadores.class.getName()

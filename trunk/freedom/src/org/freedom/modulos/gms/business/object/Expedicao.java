@@ -437,7 +437,7 @@ public class Expedicao implements java.io.Serializable {
 
 		try {
 
-			ps = Aplicativo.getInstace().getConexao().prepareStatement( sql.toString() );
+			ps = Aplicativo.getInstance().getConexao().prepareStatement( sql.toString() );
 
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "EXPEDICAO" ) );
@@ -710,7 +710,7 @@ public class Expedicao implements java.io.Serializable {
 			
 			sql.append( "ir.codemp=? and ir.codfilial=? and ir.codroma=? " );
 
-			PreparedStatement ps = Aplicativo.getInstace().getConexao().prepareStatement( sql.toString() );
+			PreparedStatement ps = Aplicativo.getInstance().getConexao().prepareStatement( sql.toString() );
 
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "CPCOMPRA" ) );
@@ -753,7 +753,7 @@ public class Expedicao implements java.io.Serializable {
 			sql.append( "ro.codemp=ex.codempro and ro.codfilial=ex.codfilialro and ro.codroma=ex.codroma and ");
 			sql.append( "ex.codemp=? and ex.codfilial=? and ex.ticket=?" );
 
-			PreparedStatement ps = Aplicativo.getInstace().getConexao().prepareStatement( sql.toString() );
+			PreparedStatement ps = Aplicativo.getInstance().getConexao().prepareStatement( sql.toString() );
 
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "EQEXPEDICAO" ) );
@@ -795,7 +795,7 @@ public class Expedicao implements java.io.Serializable {
 
 			
 			// Apagando itens de orçamento
-			PreparedStatement ps = Aplicativo.getInstace().getConexao().prepareStatement( sql_item.toString() );
+			PreparedStatement ps = Aplicativo.getInstance().getConexao().prepareStatement( sql_item.toString() );
 
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "VDITORCAMENTO" ) );
@@ -807,7 +807,7 @@ public class Expedicao implements java.io.Serializable {
 			con.commit();
 
 			// Apagando cabeçalho do orçamento
-			ps = Aplicativo.getInstace().getConexao().prepareStatement( sql_orc.toString() );
+			ps = Aplicativo.getInstance().getConexao().prepareStatement( sql_orc.toString() );
 
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "VDITORCAMENTO" ) );

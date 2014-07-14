@@ -38,7 +38,7 @@ public class SeqSerie {
 
 		try {
 
-			DbConnection con = Aplicativo.getInstace().getConexao();
+			DbConnection con = Aplicativo.getInstance().getConexao();
 
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 
