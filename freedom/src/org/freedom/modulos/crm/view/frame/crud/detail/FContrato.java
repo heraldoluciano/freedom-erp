@@ -540,7 +540,7 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 		}
 		else {
 			try {
-				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+				dlGr.print(true);
 			} catch ( Exception err ) {
 				Funcoes.mensagemErro( this, "Erro na impressão do balancete!\n" + err.getMessage(), true, con, err );
 			}
