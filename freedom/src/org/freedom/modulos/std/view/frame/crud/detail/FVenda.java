@@ -3293,7 +3293,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 							}
 							else {
 								try {
-									JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+									dlGr.print(true);
 								} catch ( Exception err ) {
 									Funcoes.mensagemErro( this, "Erro na impressão do pedido!" + err.getMessage(), true, con, err );
 									err.printStackTrace();
@@ -3324,7 +3324,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 							}
 							else {
 								try {
-									JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+									dlGr.print(true);
 								} catch ( Exception err ) {
 									Funcoes.mensagemErro( this, "Erro na impressão do pedido!" + err.getMessage(), true, con, err );
 									err.printStackTrace();
@@ -3542,7 +3542,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 					}
 					else {
 						try {
-							JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+							dlGr.print(true);
 						} catch ( Exception err ) {
 							Funcoes.mensagemErro( this, "Erro na impressão de pedido!" + err.getMessage(), true, con, err );
 						}
