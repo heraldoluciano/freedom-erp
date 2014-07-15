@@ -1927,7 +1927,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				if ( bVisualizar==TYPE_PRINT.VIEW ) {
 					dlGr.preview();
 				} else {
-					JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+					dlGr.print(true);
 				}
 			} else {
 				leiorc = (LeiauteGR) Class.forName( "org.freedom.layout.orc." + classorc[ResultClassOrc.CLASSORC.ordinal()] ).newInstance();
@@ -1973,7 +1973,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			dlGr.preview();
 		} else {
 			try {
-				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+				dlGr.print(true);
 			} catch ( Exception err ) {
 				Funcoes.mensagemErro( this, "Erro na impressão de Orçamento!" + err.getMessage(), true, con, err );
 			}
