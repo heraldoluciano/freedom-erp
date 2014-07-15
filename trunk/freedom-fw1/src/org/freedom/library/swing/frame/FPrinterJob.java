@@ -55,6 +55,7 @@ import net.sf.jasperreports.engine.JRResultSetDataSource;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperPrintManager;
 import net.sf.jasperreports.engine.data.JRXmlDataSource;
 import net.sf.jasperreports.view.JasperViewer;
 
@@ -295,6 +296,23 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 			executePDF(sgestacao.getPathpdfreader(), filename);
 		} catch (Exception err) {
 			Funcoes.mensagemErro(this, "Erro exportando realtório !\n"+err.getMessage());
+		}
+	}
+
+	private void printReport(boolean withPrintDialog) {
+		try {
+			JasperPrintManager.printReport( getRelatorio(), withPrintDialog );
+		} catch ( Exception err ) {
+			Funcoes.mensagemErro( this, "Erro na impressão de relatório!" + err.getMessage(), true, con, err );
+		}
+	}
+
+	public void print(boolean withPrintDialog) {
+		Sgestacao sgestacao = Aplicativo.getInstance().getSgestacao(); 
+		if (sgestacao==null || !"S".equalsIgnoreCase(sgestacao.getPrintpdf())) {
+			printReport(withPrintDialog);
+		} else {
+			preview();
 		}
 	}
 
