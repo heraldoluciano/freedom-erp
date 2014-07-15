@@ -2145,7 +2145,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		}
 		else {
 			try {
-				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+				dlGr.print(true);
 			} catch ( Exception err ) {
 				err.printStackTrace();
 			}
