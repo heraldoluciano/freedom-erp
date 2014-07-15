@@ -546,7 +546,7 @@ public class FEmpregado extends FTabDados implements KeyListener, CarregaListene
 				}
 				else {
 					try {
-						JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+						dlGr.print(true);
 					} catch ( Exception e ) {
 						e.printStackTrace();
 						Funcoes.mensagemErro( this, "Erro ao abrir relátorio!" + e.getMessage(), true, con, e );
