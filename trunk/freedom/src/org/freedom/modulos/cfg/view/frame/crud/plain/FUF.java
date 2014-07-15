@@ -262,7 +262,7 @@ public class FUF extends FDados {
 		}
 		else {
 			try {
-				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+				dlGr.print(true);
 			} catch ( Exception err ) {
 				Funcoes.mensagemErro( this, "Erro na impressão de relatório de UF!" + err.getMessage(), true, con, err );
 			}
