@@ -40,8 +40,6 @@ import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
 
-import net.sf.jasperreports.engine.JasperPrintManager;
-
 import org.freedom.bmps.Icone;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
@@ -631,11 +629,7 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 			dlGr.preview();
 		}
 		else {
-			try {
-				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
-			} catch ( Exception err ) {
-				Funcoes.mensagemErro( this, "Erro na impressão de relatório Orçãmentos por periodo!" + err.getMessage(), true, con, err );
-			}
+			dlGr.print(true);
 		}
 	}
 
