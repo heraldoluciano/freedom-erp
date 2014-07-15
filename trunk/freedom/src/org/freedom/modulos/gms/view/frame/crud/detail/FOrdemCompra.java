@@ -1019,7 +1019,7 @@ public class FOrdemCompra extends FDetalhe implements PostListener, CarregaListe
 			}
 			else {
 				try {
-					JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+					dlGr.print(true);
 				} catch ( Exception err ) {
 					Funcoes.mensagemErro( this, "Erro na impressão da ordem de compra!" + err.getMessage(), true, con, err );
 				}
