@@ -773,7 +773,7 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 		}
 		else {
 			try {
-				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+				dlGr.print(true);
 			} catch ( Exception err ) {
 				Funcoes.mensagemErro( this, "Erro na impressão de relatório de itens de RMA!" + err.getMessage(), true, con, err );
 			}

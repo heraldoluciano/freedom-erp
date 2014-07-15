@@ -401,7 +401,7 @@ public class FMovSerie extends FRelatorio implements MouseListener  {
 			}
 			else {
 				try {
-					JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+					dlGr.print(true);
 				} catch ( Exception err ) {
 					Funcoes.mensagemErro( this, "Erro na impressão de relatório Compras Geral!" + err.getMessage(), true, con, err );
 				}
