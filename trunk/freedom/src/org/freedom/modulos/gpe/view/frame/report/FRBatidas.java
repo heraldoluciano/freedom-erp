@@ -191,7 +191,7 @@ public class FRBatidas extends FRelatorio {
 		}
 		else {
 			try {
-				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+				dlGr.print(true);
 			} catch ( Exception err ) {
 				Funcoes.mensagemErro( this, "Erro na impressão de Relatório de Batidas/Ponto !" + err.getMessage(), true, con, err );
 			}

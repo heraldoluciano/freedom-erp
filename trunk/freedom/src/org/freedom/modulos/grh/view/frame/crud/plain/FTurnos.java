@@ -150,7 +150,7 @@ public class FTurnos extends FDados implements ActionListener {
 		}
 		else {
 			try {
-				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+				dlGr.print(true);
 			} catch ( Exception e ) {
 				e.printStackTrace();
 				Funcoes.mensagemErro( this, "Erro na geração do relátorio!" + e.getMessage(), true, con, e );
