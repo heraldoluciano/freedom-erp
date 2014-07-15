@@ -30,8 +30,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import net.sf.jasperreports.engine.JasperPrintManager;
-
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.library.component.ImprimeOS;
 import org.freedom.library.functions.Funcoes;
@@ -263,18 +261,12 @@ public class FTipoCli extends FDados implements ActionListener {
 	}
 
 	public void imprimirGrafico( final TYPE_PRINT bVisualizar, final ResultSet rs ) {
-
 		FPrinterJob dlGr = new FPrinterJob( "relatorios/TipoCli.jasper", "Tipo de Cliente", null, rs, null, this );
-
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.preview();
 		}
 		else {
-			try {
-				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
-			} catch ( Exception err ) {
-				Funcoes.mensagemErro( this, "Erro na impressão de relatório de vendas por cliente!" + err.getMessage(), true, con, err );
-			}
+			dlGr.print(true);
 		}
 	}
 }

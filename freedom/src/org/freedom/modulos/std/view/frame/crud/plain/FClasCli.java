@@ -170,7 +170,7 @@ public class FClasCli extends FDados implements ActionListener {
 		else {
 			try {
 
-				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+				dlGr.print(true);
 			} catch ( Exception err ) {
 				err.printStackTrace();
 				Funcoes.mensagemErro( this, "Erro ao montar relatorio!\n" + err.getMessage(), true, con, err );
