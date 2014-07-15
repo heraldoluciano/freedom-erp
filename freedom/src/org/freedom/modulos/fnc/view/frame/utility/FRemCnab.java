@@ -997,7 +997,7 @@ public class FRemCnab extends FRemFBN {
 				dlGr.preview();
 			}
 			else {
-				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+				dlGr.print(true);
 			}
 
 			rs.close();
