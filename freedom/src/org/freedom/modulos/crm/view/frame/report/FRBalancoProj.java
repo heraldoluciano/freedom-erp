@@ -312,7 +312,7 @@ public class FRBalancoProj extends FRelatorio implements CheckBoxListener {
 		}
 		else {
 			try {
-				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+				dlGr.print(true);
 			} catch ( Exception err ) {
 				Funcoes.mensagemErro( tela, "Erro na impressão de relatório de balanço de projeto/contrato !" + err.getMessage(), true, con, err );
 			}

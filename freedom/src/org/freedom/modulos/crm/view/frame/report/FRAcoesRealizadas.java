@@ -328,7 +328,7 @@ public class FRAcoesRealizadas extends FRelatorio implements CarregaListener{
 			dlGr.preview();
 		} else {
 			try {
-				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+				dlGr.print(true);
 			} catch ( Exception err ) {
 				Funcoes.mensagemErro( this, "Erro na impressão do relatório de Ações realizadas!" + err.getMessage(), true, con, err );
 			}
