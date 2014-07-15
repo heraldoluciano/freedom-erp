@@ -147,7 +147,7 @@ public class FRRegitroInventario extends FRelatorio {
 				dlGr.preview();
 			}
 			else {
-				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+				dlGr.print(true);
 			}
 
 			rs.close();
