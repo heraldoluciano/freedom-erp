@@ -510,7 +510,7 @@ public class FRMovProd extends FRelatorio {
 			dlGr.preview();
 		} else {
 			try {
-				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+				dlGr.print(true);
 			} catch ( Exception err ) {
 				Funcoes.mensagemErro( this, "Erro na impressão do relatório Produto/Movimento!" + err.getMessage(), true, con, err );
 			}

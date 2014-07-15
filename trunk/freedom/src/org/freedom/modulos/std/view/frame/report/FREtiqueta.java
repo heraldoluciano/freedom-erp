@@ -33,9 +33,6 @@ import java.util.Vector;
 
 import javax.swing.JScrollPane;
 
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperPrintManager;
-
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.RadioGroupEvent;
@@ -603,13 +600,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 						dlGr.preview();
 					}
 					else {
-						try {
-							JasperPrintManager.printReport( dlGr.getRelatorio(), true );
-						} catch ( JRException e ) {
-							Funcoes.mensagemErro( this, "Erro ao montar etiquetas\n" + e.getMessage() );
-							e.printStackTrace();
-						}
-
+						dlGr.print(true);
 					}
 					try {
 						con.commit();

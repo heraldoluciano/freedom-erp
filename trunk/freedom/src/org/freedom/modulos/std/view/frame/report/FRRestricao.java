@@ -139,7 +139,7 @@ public class FRRestricao extends FRelatorio {
 
 			try {
 
-				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+				dlGr.print(true);
 
 			} catch ( Exception err ) {
 
