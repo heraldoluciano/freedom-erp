@@ -310,7 +310,7 @@ public class FRInventario extends FRelatorio  {
 		else {
 			try {
 
-				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+				dlGr.print(true);
 
 			} catch ( Exception err ) {
 

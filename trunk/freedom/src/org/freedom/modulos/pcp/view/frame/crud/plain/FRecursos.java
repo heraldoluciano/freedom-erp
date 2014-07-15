@@ -163,7 +163,7 @@ public class FRecursos extends FDados implements ActionListener {
 				dlGr.preview();
 			else {
 				try {
-					JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+					dlGr.print(true);
 				} catch ( Exception err ) {
 					Funcoes.mensagemErro( this, "Erro na impressão de recursos de produção!" + err.getMessage(), true, con, err );
 				}
