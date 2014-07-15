@@ -37,8 +37,6 @@ import java.util.Vector;
 
 import javax.swing.SwingConstants;
 
-import net.sf.jasperreports.engine.JasperPrintManager;
-
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.InsertEvent;
@@ -524,26 +522,17 @@ public class FContrato extends FDetalhe implements ActionListener, InsertListene
 			Funcoes.mensagemErro( this, "Erro executando consulta: \n" + e.getMessage() );
 			e.printStackTrace();
 		}
-		
-
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
-
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "FNLANCA" ) );
 		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
-		
 		dlGr = new FPrinterJob( txtLayoutModContr.getVlrString(), "Modelo de Contrato", "", rs, hParam, this );
-
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.preview();
 		}
 		else {
-			try {
-				dlGr.print(true);
-			} catch ( Exception err ) {
-				Funcoes.mensagemErro( this, "Erro na impressão do balancete!\n" + err.getMessage(), true, con, err );
-			}
+			dlGr.print(true);
 		}
 	}
 
