@@ -121,6 +121,14 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
 	private JTextFieldPad txtHAlt = new JTextFieldPad(JTextFieldPad.TP_TIME, 8, 0);
 
 	private JTextFieldPad txtUsuAlt = new JTextFieldPad(JTextFieldPad.TP_STRING, 20, 0);
+	
+	private static String TEXTOIMP01 = "Imprimir (Ctrl+P)";
+
+	private static String TEXTOIMP02 = 	"Visualizar impressão (Ctrl+P)";
+	
+	private static String TEXTOPREVIMP01 = "Visualizar impressão (Ctrl+R)";
+ 
+	private static String TEXTOPREVIMP02 = "Visualizar impressão em aplicativo externo de PDF (Ctrl+R)";
 
 	private Sgestacao sgestacao = null;
 			
@@ -139,8 +147,8 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
 		navSeq = nav;
 
 		btSair.setToolTipText("Fecha a Tela (Shift + F4)");
-		btImp.setToolTipText("Imprimir (Ctrl+P)");
-		btPrevimp.setToolTipText("Visualizar Impressão (Ctrl+R)");
+		btImp.setToolTipText(TEXTOIMP01);
+		btPrevimp.setToolTipText(TEXTOPREVIMP01);
 		btInfo.setToolTipText("Informações sobre o registro");
 
 		pnGImp.setLayout(glImp);
@@ -199,9 +207,13 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
 	}
 
 	public void setImprimir(boolean bImp) {
-		if (getSgestacao()==null || !"S".equalsIgnoreCase(getSgestacao().getPrintpdf())) {
-			btImp.setVisible(bImp);
+		if (getSgestacao()!=null && "S".equalsIgnoreCase(getSgestacao().getPrintpdf())) {
+			btImp.setIcon(Icone.novo("btPrevimp.png"));
+			btPrevimp.setIcon(Icone.novo("btPdf.gif"));
+			btImp.setToolTipText(TEXTOIMP02);
+			btPrevimp.setToolTipText(TEXTOPREVIMP02);
 		}
+		btImp.setVisible(bImp);
 		btPrevimp.setVisible(bImp);
 	}
 
