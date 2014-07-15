@@ -312,7 +312,7 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 		if (sgestacao==null || !"S".equalsIgnoreCase(sgestacao.getPrintpdf())) {
 			printReport(withPrintDialog);
 		} else {
-			preview();
+			setVisible(true);
 		}
 	}
 
