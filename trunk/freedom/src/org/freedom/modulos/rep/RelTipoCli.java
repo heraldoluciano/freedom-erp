@@ -96,7 +96,7 @@ public class RelTipoCli extends FRelatorio {
 				dlGr.preview();
 			}
 			else {
-				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+				dlGr.print(true);
 			}
 		} catch ( Exception e ) {
 			Funcoes.mensagemErro( this, "Erro ao montar relatorio!\n" + e.getMessage() );
