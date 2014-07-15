@@ -35,8 +35,6 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 
-import net.sf.jasperreports.engine.JasperPrintManager;
-
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.infra.model.jdbc.DbConnection;
@@ -246,7 +244,6 @@ public class FRCronograma extends FRelatorio implements CarregaListener{
 		hParam.put( "CODFILIAL", new Integer(ListaCampos.getMasterFilial( "VDCONTRATO" )) );
 		hParam.put( "CODCONTR", txtCodContr.getVlrInteger() );
 		hParam.put( "TITULO", sTitle );
-		
 	    try {
 			hParam.put( "LOGOEMP",  new ImageIcon(fotoemp.getBytes(1, ( int ) fotoemp.length())).getImage() );
 	
@@ -254,17 +251,11 @@ public class FRCronograma extends FRelatorio implements CarregaListener{
 			Funcoes.mensagemErro( this, "Erro carregando logotipo !\n" + e.getMessage()  );
 			e.printStackTrace();
 		}
-		
 		FPrinterJob dlGr = new FPrinterJob( report, label, sCab, rs, hParam , this );
-
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.preview();
 		} else {
-			try {
-				dlGr.print(true);
-			} catch ( Exception err ) {
-				Funcoes.mensagemErro( this, "Erro na impressão do Cronograma Sintético!" + err.getMessage(), true, con, err );
-			}
+			dlGr.print(true);
 		}
 	}
 

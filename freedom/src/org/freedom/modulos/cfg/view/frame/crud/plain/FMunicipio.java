@@ -28,8 +28,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import net.sf.jasperreports.engine.JasperPrintManager;
-
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.component.ImprimeOS;
@@ -269,11 +267,7 @@ public class FMunicipio extends FDados {
 			dlGr.preview();
 		}
 		else {
-			try {
-				dlGr.print(true);
-			} catch ( Exception err ) {
-				Funcoes.mensagemErro( this, "Erro na impressão de relatório de Município!" + err.getMessage(), true, con, err );
-			}
+			dlGr.print(true);
 		}
 	}
 

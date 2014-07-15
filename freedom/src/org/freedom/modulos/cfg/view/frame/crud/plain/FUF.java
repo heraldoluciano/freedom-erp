@@ -261,11 +261,7 @@ public class FUF extends FDados {
 			dlGr.preview();
 		}
 		else {
-			try {
-				dlGr.print(true);
-			} catch ( Exception err ) {
-				Funcoes.mensagemErro( this, "Erro na impressão de relatório de UF!" + err.getMessage(), true, con, err );
-			}
+			dlGr.print(true);
 		}
 	}
 

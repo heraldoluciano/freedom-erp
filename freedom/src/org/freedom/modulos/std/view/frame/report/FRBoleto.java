@@ -47,8 +47,6 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
-import net.sf.jasperreports.engine.JasperPrintManager;
-
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.InsertEvent;
@@ -1517,18 +1515,12 @@ public class FRBoleto extends FRelatorio implements CarregaListener {
 	}
 
 	private void imprimeGrafico( final TYPE_PRINT bVisualizar, final ResultSet rs, final String classe, JInternalFrame orig ) {
-
 		FPrinterJob dlGr = new FPrinterJob( classe, "Boleto", null, rs, getParametros(), orig == null ? this : orig );
-
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.preview();
 		}
 		else {
-			try {
-				dlGr.print(true);
-			} catch ( Exception err ) {
-				Funcoes.mensagemErro( this, "Erro ao tentar imprimir boleto!" + err.getMessage(), true, con, err );
-			}
+			dlGr.print(true);
 		}
 	}
 

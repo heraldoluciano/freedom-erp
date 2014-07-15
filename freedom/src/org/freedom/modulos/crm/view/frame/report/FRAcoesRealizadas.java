@@ -37,8 +37,6 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 
-import net.sf.jasperreports.engine.JasperPrintManager;
-
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.infra.model.jdbc.DbConnection;
@@ -327,11 +325,7 @@ public class FRAcoesRealizadas extends FRelatorio implements CarregaListener{
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.preview();
 		} else {
-			try {
-				dlGr.print(true);
-			} catch ( Exception err ) {
-				Funcoes.mensagemErro( this, "Erro na impressão do relatório de Ações realizadas!" + err.getMessage(), true, con, err );
-			}
+			dlGr.print(true);
 		}
 	}
 

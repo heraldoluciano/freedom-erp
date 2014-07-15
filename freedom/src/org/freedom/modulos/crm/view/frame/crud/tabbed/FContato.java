@@ -27,8 +27,6 @@ import javax.swing.JScrollPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import net.sf.jasperreports.engine.JasperPrintManager;
-
 import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
 import org.freedom.acao.PostEvent;
@@ -758,7 +756,6 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 		}
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
-		
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "TKCONTATO" ) );
 		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
@@ -767,42 +764,12 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 		} catch ( SQLException e ) {
 			e.printStackTrace();
 		}
-		
-	
 		dlGr = new FPrinterJob( "relatorios/contato.jasper", "Listagem de contatos", "", rs, hParam, this );
 		if (bVisualizar==TYPE_PRINT.VIEW) {
 			dlGr.preview();
 		} else {
-			try {
-				dlGr.print(true);
-			} catch ( Exception err ) {
-				Funcoes.mensagemErro( this, "Erro na impressão da listagem de contatos !" + err.getMessage(), true, con, err );
-			}
+			dlGr.print(true);
 		}
-		/*		FPrinterJob dlGr = null;
-
-		if ( "D".equals( rgFormato.getVlrString() ) ) {
-			String fileRelDetalhado = "relatorios/ResumoDiarioDetalhado.jasper";
-			if ("S".equals( cbAgruparVendedor.getVlrString())) {
-				fileRelDetalhado = "relatorios/ResumoDiarioDetalhado_02.jasper";
-			}
-			dlGr = new FPrinterJob( fileRelDetalhado, "Resumo de Vendas diario - detalhado", sCab, rs, null, this );
-		}
-		else if ( "R".equals( rgFormato.getVlrString() ) ) {
-			dlGr = new FPrinterJob( "relatorios/ResumoDiarioResumido.jasper", "Resumo de Vendas diario - resumido", sCab, rs, null, this );
-		}
-
-		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.preview();
-		}
-		else {
-			try {
-				dlGr.print(true);
-			} catch ( Exception err ) {
-				Funcoes.mensagemErro( this, "Erro na impressão de relatório de resumo diario!" + err.getMessage(), true, con, err );
-			}
-		}
-*/
 	}
 	
 	private void imprimirTexto( TYPE_PRINT bVisualizar, String[] sValores ) {

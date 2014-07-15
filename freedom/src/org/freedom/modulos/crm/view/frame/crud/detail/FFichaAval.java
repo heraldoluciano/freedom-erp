@@ -1012,11 +1012,8 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 			Funcoes.mensagemErro( this, "Erro executando consulta: \n" + e.getMessage() );
 			e.printStackTrace();
 		}
-		
-
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
-
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "SGFILIAL" ) );
 		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
@@ -1028,17 +1025,12 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		hParam.put( "CODFILIALFA", ListaCampos.getMasterFilial( "CRFICHAAVAL" ) );
 		hParam.put( "SEQFICHAAVAL", seqficha );
 		hParam.put( "CONEXAO", con.getConnection() );
-		
-		
 		try {
 			hParam.put( "LOGOEMP", new ImageIcon(fotoemp.getBytes(1, ( int ) fotoemp.length())).getImage() );
 		} catch ( SQLException e ) {
 			e.printStackTrace();
 		}
-		
-		
 		dlGr = new FPrinterJob( layoutfichaaval, "Ficha avaliativa", "", rs, hParam, this );
-		
 		dlGr.preview();
 		
 	}

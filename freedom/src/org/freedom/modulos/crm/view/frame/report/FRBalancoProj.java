@@ -49,8 +49,6 @@ import java.util.HashMap;
 
 import javax.swing.BorderFactory;
 
-import net.sf.jasperreports.engine.JasperPrintManager;
-
 public class FRBalancoProj extends FRelatorio implements CheckBoxListener {
 
 	private static final long serialVersionUID = 1L;
@@ -311,11 +309,7 @@ public class FRBalancoProj extends FRelatorio implements CheckBoxListener {
 			dlGr.preview();
 		}
 		else {
-			try {
-				dlGr.print(true);
-			} catch ( Exception err ) {
-				Funcoes.mensagemErro( tela, "Erro na impressão de relatório de balanço de projeto/contrato !" + err.getMessage(), true, con, err );
-			}
+			dlGr.print(true);
 		}
 	}
 

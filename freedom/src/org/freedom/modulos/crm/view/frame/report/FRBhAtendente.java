@@ -33,8 +33,6 @@ import java.util.HashMap;
 import javax.swing.BorderFactory;
 import javax.swing.SwingConstants;
 
-import net.sf.jasperreports.engine.JasperPrintManager;
-
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
@@ -193,11 +191,7 @@ public class FRBhAtendente extends FRelatorio {
 			dlGr.preview();
 		}
 		else {
-			try {
-				dlGr.print(true);
-			} catch ( Exception err ) {
-				Funcoes.mensagemErro( this, "Erro na impressão de relatório resumo de atendimentos!" + err.getMessage(), true, con, err );
-			}
+			dlGr.print(true);
 		}
 	}
 

@@ -617,14 +617,11 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 
 		FPrinterJob dlGr = null;
 		HashMap<String, Object> hParam = new HashMap<String, Object>();
-
 		hParam.put( "CODEMP", Aplicativo.iCodEmp );
 		hParam.put( "CODFILIAL", ListaCampos.getMasterFilial( "CPCOMPRA" ) );
 		hParam.put( "RAZAOEMP", Aplicativo.getMantenedor() );
 		hParam.put( "FILTROS", sCab );
-
 		dlGr = new FPrinterJob( "relatorios/FRConsAutoriz.jasper", "Relatório de Orçamentos por período", sCab, rs, hParam, this );
-
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.preview();
 		}

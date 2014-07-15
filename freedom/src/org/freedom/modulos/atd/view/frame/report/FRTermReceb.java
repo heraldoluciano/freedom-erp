@@ -40,8 +40,6 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
 
-import net.sf.jasperreports.engine.JasperPrintManager;
-
 public class FRTermReceb extends FRelatorio {
 
 	private static final long serialVersionUID = 1L;
@@ -146,18 +144,12 @@ public class FRTermReceb extends FRelatorio {
 			Funcoes.mensagemErro( this, "Ocorreu um erro executando a consulta.\n" + e.getMessage() );
 			return;
 		}
-
 		FPrinterJob dlGr = new FPrinterJob( "relatorios/TermReceb.jasper", "TERMO DE RECEBIMENTO", null, rs, hParam, this );
-
 		if ( b == TYPE_PRINT.VIEW ) {
 			dlGr.preview();
 		}
 		else {
-			try {
-				dlGr.print(true);
-			} catch ( Exception err ) {
-				Funcoes.mensagemErro( this, "Erro na impressão de relatório de vendas por cliente!" + err.getMessage(), true, con, err );
-			}
+			dlGr.print(true);
 		}
 
 	}
