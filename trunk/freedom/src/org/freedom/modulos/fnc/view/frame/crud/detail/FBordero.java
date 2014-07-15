@@ -349,7 +349,7 @@ public class FBordero extends FDetalhe implements CarregaListener, InsertListene
 			}
 			else {
 				try {
-					JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+					dlGr.print(true);
 				} catch ( Exception e ) {
 					e.printStackTrace();
 					Funcoes.mensagemErro( this, "Erro na impressão!" + e.getMessage(), true, con, e );
