@@ -350,7 +350,7 @@ public class FSetor extends FDetalhe implements ActionListener {
 		}
 		else {
 			try {
-				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+				dlGr.print(true);
 			} catch ( Exception err ) {
 				Funcoes.mensagemErro( this, "Erro na impressão do relatorio por Setor!" + err.getMessage(), true, con, err );
 			}

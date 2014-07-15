@@ -220,7 +220,7 @@ public class FEntrega extends FDados {
 			}
 			else {
 				try {
-					JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+					dlGr.print(true);
 				} catch ( Exception err ) {
 					Funcoes.mensagemErro( this, "Erro na impressão de relatório de entregas" + err.getMessage(), true, con, err );
 				}

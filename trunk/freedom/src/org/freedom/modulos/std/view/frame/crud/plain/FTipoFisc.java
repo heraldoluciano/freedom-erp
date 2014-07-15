@@ -293,7 +293,7 @@ public class FTipoFisc extends FDados implements ActionListener, InsertListener 
 		}
 		else {
 			try {
-				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+				dlGr.print(true);
 			} catch ( Exception err ) {
 				Funcoes.mensagemErro( this, "Erro na impressão do relatorio do tipo fiscal de clientes!" + err.getMessage(), true, con, err );
 			}
