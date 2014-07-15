@@ -261,7 +261,7 @@ public class FRCronograma extends FRelatorio implements CarregaListener{
 			dlGr.preview();
 		} else {
 			try {
-				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+				dlGr.print(true);
 			} catch ( Exception err ) {
 				Funcoes.mensagemErro( this, "Erro na impressão do Cronograma Sintético!" + err.getMessage(), true, con, err );
 			}

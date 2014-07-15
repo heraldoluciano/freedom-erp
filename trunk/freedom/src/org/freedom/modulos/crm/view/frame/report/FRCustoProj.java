@@ -241,7 +241,7 @@ public class FRCustoProj extends FRelatorio {
 		}
 		else {
 			try {
-				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+				dlGr.print(true);
 			} catch ( Exception err ) {
 				Funcoes.mensagemErro( tela, "Erro na impressão de relatório custos de projetos/contratos!" + err.getMessage(), true, con, err );
 			}

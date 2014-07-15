@@ -774,7 +774,7 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 			dlGr.preview();
 		} else {
 			try {
-				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+				dlGr.print(true);
 			} catch ( Exception err ) {
 				Funcoes.mensagemErro( this, "Erro na impressão da listagem de contatos !" + err.getMessage(), true, con, err );
 			}
@@ -797,7 +797,7 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 		}
 		else {
 			try {
-				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+				dlGr.print(true);
 			} catch ( Exception err ) {
 				Funcoes.mensagemErro( this, "Erro na impressão de relatório de resumo diario!" + err.getMessage(), true, con, err );
 			}
