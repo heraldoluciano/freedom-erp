@@ -436,7 +436,7 @@ public class RPComissao extends FFilho implements ActionListener, MouseListener 
 				dlGr.preview();
 			}
 			else {
-				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+				dlGr.print(true);
 			}
 		} catch ( Exception e ) {
 			Funcoes.mensagemErro( this, "Erro ao montar relatorio!\n" + e.getMessage() );
