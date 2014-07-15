@@ -562,7 +562,7 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 							FPrinterJob dlGr = null;
 							hParam.put( "MOSTRAPRECO", cbPreco.getVlrString() );
 							dlGr = new FPrinterJob( etiqueta.local, "Etiquetas", null, getEtiquetas(), hParam, this );
-							JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+							dlGr.print(true);
 						} catch ( Exception err ) {
 							Funcoes.mensagemErro( this, "Erro na impressão de Etiquetas!" + err.getMessage(), true, con, err );
 						}

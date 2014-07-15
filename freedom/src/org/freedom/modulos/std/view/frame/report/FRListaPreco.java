@@ -905,7 +905,7 @@ public class FRListaPreco extends FRelatorio implements CheckBoxListener {
 			if ( bVisualizar==TYPE_PRINT.VIEW )
 				dlGr.preview();
 			else
-				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+				dlGr.print(true);
 
 		} catch ( Exception e ) {
 			e.printStackTrace();

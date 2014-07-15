@@ -1015,7 +1015,7 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
 		}*/
 		else {
 			try {
-				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+				dlGr.print(true);
 			} catch ( Exception err ) {
 				Funcoes.mensagemErro( this, "Erro na impressão de relatório de vendas detalhadas!" + err.getMessage(), true, con, err );
 			}

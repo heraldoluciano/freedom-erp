@@ -433,7 +433,7 @@ public class FRVendasGrupo extends FRelatorio {
 		else {
 			try {
 
-				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+				dlGr.print(true);
 
 			} catch ( Exception err ) {
 

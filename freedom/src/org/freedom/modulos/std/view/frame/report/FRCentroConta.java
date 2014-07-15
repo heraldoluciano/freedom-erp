@@ -284,7 +284,7 @@ public class FRCentroConta extends FRelatorio implements ActionListener, Carrega
 		else {
 
 			try {
-				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+				dlGr.print(true);
 			} catch ( Exception err ) {
 				Funcoes.mensagemErro( this, "erro na impressão do relatório!" + err.getMessage(), true, con, err );
 			}

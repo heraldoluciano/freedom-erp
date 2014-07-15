@@ -477,7 +477,7 @@ public class FRomaneio extends FDetalhe implements InsertListener, ActionListene
 		}
 		else {
 			try {
-				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+				dlGr.print(true);
 			} catch ( Exception err ) {
 				Funcoes.mensagemErro( owner, "Erro na impressão de Romaneio!" + err.getMessage(), true, Aplicativo.getInstance().getConexao(), err );
 			}
