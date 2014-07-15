@@ -297,22 +297,7 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 			Funcoes.mensagemErro(this, "Erro exportando realtório !\n"+err.getMessage());
 		}
 	}
-	/*				JasperPrint report = JasperFillManager.fillReport(FPrinterJob.class.getResourceAsStream("/com/setpoint/sped/layout/nfe/danfe1.jasper"), hParam, xml);
-				String filename = dir + danfe.getChaveNfe()+"_"+Calendar.getInstance().getTimeInMillis()+".pdf";
-				File file = new File(filename);
-				if (file.exists()) {
-					file.delete();
-				}
-				
-				if (file.exists()) {
-					danfe.setPdffile(file);
-				} else {
-					Funcoes.mensagemErro(this, "Não foi possível criar PDF para impressão multipla.");
-					break;
-				}
-			}
-*/
-	
+
 	/**
 	 * Construção do FPrinterJob utilizando JasperReports através de arquivo PDF.
 	 * 
