@@ -1455,7 +1455,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 		}
 		else {
 			try {
-				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+				dlGr.print(true);
 			} catch ( Exception err ) {
 				Funcoes.mensagemErro( this, "Erro na impressão de Requisição de material!" + err.getMessage(), true, con, err );
 			}
