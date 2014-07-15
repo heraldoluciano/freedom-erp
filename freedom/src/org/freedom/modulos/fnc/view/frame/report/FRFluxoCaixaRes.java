@@ -94,7 +94,7 @@ public class FRFluxoCaixaRes extends FRelatorio {
 				dlGr.preview();
 			}
 			else {
-				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+				dlGr.print(true);
 			}
 
 		} catch ( Exception err ) {

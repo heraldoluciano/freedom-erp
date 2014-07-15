@@ -188,7 +188,7 @@ public class FRFluxoCaixaReal extends FRelatorio {
 		}
 		else {
 			try {
-				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+				dlGr.print(true);
 			} catch ( Exception err ) {
 				Funcoes.mensagemErro( tela, "Erro na impressão de relatório de fluxo de caixa realizado!" + err.getMessage(), true, con, err );
 			}

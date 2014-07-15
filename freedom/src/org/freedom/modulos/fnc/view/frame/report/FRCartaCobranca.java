@@ -200,7 +200,7 @@ public class FRCartaCobranca extends FRelatorio implements RadioGroupListener {
 		}
 		else {
 			try {
-				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+				dlGr.print(true);
 			} catch ( Exception err ) {
 				Funcoes.mensagemErro( this, "Erro na impressão do relatório de carta de cobrança!" + err.getMessage(), true, con, err );				
 			}
