@@ -267,7 +267,7 @@ public class FTipoCli extends FDados implements ActionListener {
 		FPrinterJob dlGr = new FPrinterJob( "relatorios/TipoCli.jasper", "Tipo de Cliente", null, rs, null, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

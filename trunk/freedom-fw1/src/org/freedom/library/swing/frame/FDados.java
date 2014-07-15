@@ -42,6 +42,7 @@ import javax.swing.event.InternalFrameListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.bmps.Icone;
+import org.freedom.infra.beans.Sgestacao;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.business.exceptions.ExceptionSetConexao;
 import org.freedom.library.functions.Funcoes;
@@ -121,8 +122,11 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
 
 	private JTextFieldPad txtUsuAlt = new JTextFieldPad(JTextFieldPad.TP_STRING, 20, 0);
 
+	private Sgestacao sgestacao = null;
+			
 	public FDados() {
 		this(true);
+		setSgestacao(Aplicativo.getInstance().getSgestacao());
 	}
 
 	public FDados(boolean comScroll) {
@@ -195,7 +199,9 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
 	}
 
 	public void setImprimir(boolean bImp) {
-		btImp.setVisible(bImp);
+		if (getSgestacao()==null || !"S".equalsIgnoreCase(getSgestacao().getPrintpdf())) {
+			btImp.setVisible(bImp);
+		}
 		btPrevimp.setVisible(bImp);
 	}
 
@@ -561,7 +567,6 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
 		// {
 		try {
 			super.setConexao(cn);
-
 			lcCampos.setConexao(con);
 			lcSeq.setConexao(con);
 			setPKFoco();
@@ -577,6 +582,14 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
 	}
 
 	public void afterPost(PostEvent pevt) {
+	}
+
+	public Sgestacao getSgestacao() {
+		return sgestacao;
+	}
+
+	public void setSgestacao(Sgestacao sgestacao) {
+		this.sgestacao = sgestacao;
 	}
 
 	public void internalFrameDeactivated(InternalFrameEvent ifevt) {
