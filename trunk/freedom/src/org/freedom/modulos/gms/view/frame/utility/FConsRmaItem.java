@@ -769,7 +769,7 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 		FPrinterJob dlGr = new FPrinterJob( "layout/rel/REL_RMA_ITEM.jasper", "Expedição de RMA", null, rs, hParam, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

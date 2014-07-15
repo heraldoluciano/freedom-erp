@@ -90,7 +90,7 @@ public class FRReceberMes extends FRelatorio {
 		FPrinterJob dlGr = new FPrinterJob( "relatorios/graficoReceberPeriodo.jasper", null, null, this, hParam, con );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

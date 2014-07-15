@@ -325,7 +325,7 @@ public class FRAcompMensalVendas extends FRelatorio implements FocusListener {
 		dlGr = new FPrinterJob( "relatorios/acompmensalvendas.jasper", "Acompanhamento mensal de vendas", filtros.toString(), rs, params, this );
 
 		if ( bVisualizar == TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

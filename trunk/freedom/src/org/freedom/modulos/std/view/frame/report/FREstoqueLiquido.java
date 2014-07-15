@@ -170,7 +170,7 @@ public class FREstoqueLiquido extends FRelatorio {
 		dlGr = new FPrinterJob( "relatorios/saldoprod.jasper", "Relatório de Estoque liquido", null, rs, null, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

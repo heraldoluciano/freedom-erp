@@ -148,7 +148,7 @@ public class RelVendedorProd extends FRelatorio {
 			FPrinterJob dlGr = new FPrinterJob( "modulos/rep/relatorios/rpvendedorprod.jasper", "TABELA VENDAS", null, rs, hParam, this );
 
 			if ( visualizar == TYPE_PRINT.VIEW ) {
-				dlGr.setVisible( true );
+				dlGr.preview();
 			}
 			else {
 				JasperPrintManager.printReport( dlGr.getRelatorio(), true );

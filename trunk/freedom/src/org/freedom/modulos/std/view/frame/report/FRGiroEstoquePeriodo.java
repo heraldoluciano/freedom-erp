@@ -185,7 +185,7 @@ public class FRGiroEstoquePeriodo extends FRelatorio{
 			FPrinterJob dlGr = new FPrinterJob( "layout/rel/REL_GIRO_ESTOQUE_PERIODO.jasper", "Relatório de Giro de estoque por período", "", rs, hParam, this );
 
 			if ( bVisualizar==TYPE_PRINT.VIEW ) {
-				dlGr.setVisible( true );
+				dlGr.preview();
 			}
 			else {
 				JasperPrintManager.printReport( dlGr.getRelatorio(), true );

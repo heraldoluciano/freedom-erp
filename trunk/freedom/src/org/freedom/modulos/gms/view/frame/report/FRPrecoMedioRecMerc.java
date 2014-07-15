@@ -305,7 +305,7 @@ public class FRPrecoMedioRecMerc extends FRelatorio {
 		dlGr = new FPrinterJob( "layout/rel/REL_RECMERC_02.jasper", "Relatório de preço médio/diário", sCab, rs, hParam, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

@@ -473,7 +473,7 @@ public class FRomaneio extends FDetalhe implements InsertListener, ActionListene
 		dlGr = new FPrinterJob( "P".equals( tiporel ) ? "relatorios/Romaneio.jasper" : "relatorios/RomaneioCliente.jasper", "Romaneio", null, rs, null, (JInternalFrame) owner );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

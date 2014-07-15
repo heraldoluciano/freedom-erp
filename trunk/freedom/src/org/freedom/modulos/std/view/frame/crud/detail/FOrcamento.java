@@ -1925,7 +1925,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 				}
 				FPrinterJob dlGr = new FPrinterJob( "layout/orc/" + classorc[ResultClassOrc.CLASSORC.ordinal()], null, null, this, hParam, con, mail, bImprimir, bImprimir );
 				if ( bVisualizar==TYPE_PRINT.VIEW ) {
-					dlGr.setVisible( true );
+					dlGr.preview();
 				} else {
 					JasperPrintManager.printReport( dlGr.getRelatorio(), true );
 				}
@@ -1970,7 +1970,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		dlGr = new FPrinterJob( layoutorc, null, null, this, hParam, con, mail );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		} else {
 			try {
 				JasperPrintManager.printReport( dlGr.getRelatorio(), true );

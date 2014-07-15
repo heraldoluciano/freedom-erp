@@ -93,7 +93,7 @@ public class FRAtividade extends FRelatorio {
 		dlGr = new FPrinterJob( "relatorios/grhAtividadeCand.jasper", "Resumo de atividades", "", this, hParam, con, null, false );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

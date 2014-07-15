@@ -226,7 +226,7 @@ public class FROrcamento extends FRelatorio {
 			FPrinterJob dlGr = new FPrinterJob( reportFileName, "Relatório de orçamentos", "", rs, hParam, this );
 
 			if ( bVisualizar == TYPE_PRINT.VIEW ) {
-				dlGr.setVisible( true );
+				dlGr.preview();
 			}
 			else {
 				JasperPrintManager.printReport( dlGr.getRelatorio(), true );

@@ -301,7 +301,7 @@ public class FRExtratoPrevisto extends FRelatorio {
 		dlGr = new FPrinterJob( "layout/rel/REL_EXTRATO_PREV.jasper", "Extrato com previsionamento", sCab, rs, hParam, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

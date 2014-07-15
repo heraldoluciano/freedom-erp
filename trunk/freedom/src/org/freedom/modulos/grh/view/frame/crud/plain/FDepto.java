@@ -93,7 +93,7 @@ public class FDepto extends FDados implements ActionListener {
 		dlGr = new FPrinterJob( "relatorios/grhDepartamento.jasper", "Lista de Departamentos", "", this, hParam, con, null, false );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

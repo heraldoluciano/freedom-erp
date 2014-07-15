@@ -161,7 +161,7 @@ public class FRIcmsNcm extends FRelatorio {
 		dlGr = new FPrinterJob( "layout/rel/REL_ICMS_01.jasper", "Relatório de ICMS por NCM", sCab, rs, hParam, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

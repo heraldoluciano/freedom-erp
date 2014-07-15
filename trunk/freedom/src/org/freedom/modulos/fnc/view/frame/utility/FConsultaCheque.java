@@ -926,7 +926,7 @@ public class FConsultaCheque extends FFilho implements ActionListener, TabelaSel
 		dlGr = new FPrinterJob( "layout/rel/REL_CHEQUES_01.jasper", "Relatório de Cheques ", "filtros", rs, hParam, this );
 	
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

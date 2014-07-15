@@ -903,7 +903,7 @@ public class FRListaPreco extends FRelatorio implements CheckBoxListener {
 			dlGr = new FPrinterJob( "relatorios/" + srel, "LISTA DE PREÇOS", "", rs, hParam, this );
 
 			if ( bVisualizar==TYPE_PRINT.VIEW )
-				dlGr.setVisible( true );
+				dlGr.preview();
 			else
 				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
 

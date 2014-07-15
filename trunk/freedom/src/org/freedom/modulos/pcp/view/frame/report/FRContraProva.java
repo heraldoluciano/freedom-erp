@@ -208,7 +208,7 @@ public class FRContraProva extends FRelatorio {
 		dlGr = new FPrinterJob( "relatorios/RelContraProva.jasper", "Relatório de Contra-Provas", sCab, rs, hParam, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

@@ -227,7 +227,7 @@ public class FCLComis extends FDados implements PostListener {
 		FPrinterJob dlGr = new FPrinterJob( "relatorios/CLComis.jasper", "Classificação de Comissões", null, rs, null, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

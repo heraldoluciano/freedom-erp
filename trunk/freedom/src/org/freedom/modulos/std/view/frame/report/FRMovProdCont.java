@@ -149,7 +149,7 @@ public class FRMovProdCont extends FRelatorio {
 						, "Relatório de Movimentação Produto Controlado"
 						, sCab, rs, hParam, this );
 				if ( bVisualizar==TYPE_PRINT.VIEW ) {
-					dlGr.setVisible( true );
+					dlGr.preview();
 				}
 				else {
 					JasperPrintManager.printReport( dlGr.getRelatorio(), true );

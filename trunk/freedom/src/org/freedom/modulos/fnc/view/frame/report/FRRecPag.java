@@ -269,7 +269,7 @@ public class FRRecPag extends FRelatorio implements RadioGroupListener {
 		}
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

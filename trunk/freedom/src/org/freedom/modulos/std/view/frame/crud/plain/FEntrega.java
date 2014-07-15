@@ -216,7 +216,7 @@ public class FEntrega extends FDados {
 			FPrinterJob dlGr = new FPrinterJob( "layout/rel/REL_ENTREGAS_01.jasper" , "Relatório de entregas", "", rs, hParam, this );
 
 			if ( bVisualizar==TYPE_PRINT.VIEW ) {
-				dlGr.setVisible( true );
+				dlGr.preview();
 			}
 			else {
 				try {

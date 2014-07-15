@@ -1000,7 +1000,7 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
 		FPrinterJob dlGr = new FPrinterJob( filereport, "Vendas por Item", sCab, rs, hParam, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		/*if (bVisualizar==TYPE_PRINT.EXPORT) {
 			if (btExportXLS.execute(rs, getTitle())) {

@@ -524,7 +524,7 @@ public class FRCobranca extends FRelatorio implements RadioGroupListener {
 		dlGr = new FPrinterJob( "layout/rel/REL_COB_01.jasper", "Relatório de cobrança", sCab, rs, hParam, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

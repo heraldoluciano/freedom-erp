@@ -2711,7 +2711,7 @@ public class FCompra extends FDetalhe implements InterCompra, PostListener, Carr
 		}
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

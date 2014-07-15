@@ -96,7 +96,7 @@ public class FFuncao extends FDados implements ActionListener {
 		dlGr = new FPrinterJob( "relatorios/grhFuncao.jasper", "Lista de Funções", "", this, hParam, con, null, false );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

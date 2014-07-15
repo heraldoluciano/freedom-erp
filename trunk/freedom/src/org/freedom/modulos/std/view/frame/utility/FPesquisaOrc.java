@@ -676,7 +676,7 @@ public class FPesquisaOrc extends FFilho implements ActionListener {
 			FPrinterJob dlGr = new FPrinterJob( "relatorios/FRPesquisaOrcamentos.jasper", "Orçamentos", "", rs, null, this );
 			
 			if ( bVisualizar==TYPE_PRINT.VIEW ) {
-				dlGr.setVisible( true );
+				dlGr.preview();
 			}
 			else {
 				try {

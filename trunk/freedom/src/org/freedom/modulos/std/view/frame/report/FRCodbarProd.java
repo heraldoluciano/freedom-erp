@@ -551,7 +551,7 @@ public class FRCodbarProd extends FRelatorio implements ActionListener, CarregaL
 
 							hParam.put( "MOSTRAPRECO", cbPreco.getVlrString() );
 							dlGr = new FPrinterJob( etiqueta.local, "Etiquetas", null, getEtiquetas(), hParam, this );
-							dlGr.setVisible( true );
+							dlGr.preview();
 						}
 					}
 				}

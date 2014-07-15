@@ -190,7 +190,7 @@ public class FRSobrHorario extends FRelatorio {
 		dlGr = new FPrinterJob( "layout/rel/REL_CRM_HORARIOS_SOBR.jasper", "Relatório de Horários de Atendimentos Sobrepostos", "", rs, hParam, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

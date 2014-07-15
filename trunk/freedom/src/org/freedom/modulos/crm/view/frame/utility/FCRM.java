@@ -2141,7 +2141,7 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 		dlGr = new FPrinterJob( "relatorios/chamados.jasper", "RELATÓRIO DE CHAMADOS", "", rs, hParam, this );
 
 		if ( bVisualizar == TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

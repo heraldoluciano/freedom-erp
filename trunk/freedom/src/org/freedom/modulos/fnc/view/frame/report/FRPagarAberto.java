@@ -153,7 +153,7 @@ public class FRPagarAberto extends FRelatorio implements FocusListener {
 		dlGr = new FPrinterJob( "relatorios/FRPagarAberto.jasper", "Relatório de pagamentos em aberto", sCab, rs, hParam, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

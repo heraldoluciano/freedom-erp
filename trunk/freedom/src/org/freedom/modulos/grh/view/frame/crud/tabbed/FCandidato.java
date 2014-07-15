@@ -661,7 +661,7 @@ public class FCandidato extends FTabDados implements CarregaListener, PostListen
 				FPrinterJob dlGr = new FPrinterJob( "relatorios/grhCandidato.jasper", "Lista de Candidatos", null, rs, hParam, this );
 
 				if ( bVisualizar==TYPE_PRINT.VIEW ) {
-					dlGr.setVisible( true );
+					dlGr.preview();
 				}
 				else {
 					try {

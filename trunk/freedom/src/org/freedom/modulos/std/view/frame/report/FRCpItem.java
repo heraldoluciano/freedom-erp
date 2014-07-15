@@ -253,7 +253,7 @@ public class FRCpItem extends FRelatorio {
 		dlGr = new FPrinterJob( "relatorios/CpItem.jasper", "Relatorio de compras por ítem", sCab, rs, hParam, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

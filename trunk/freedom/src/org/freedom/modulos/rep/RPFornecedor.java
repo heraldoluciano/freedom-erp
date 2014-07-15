@@ -176,7 +176,7 @@ public class RPFornecedor extends FDados implements ActionListener {
 			FPrinterJob dlGr = new FPrinterJob( "modulos/rep/relatorios/rpfornecedor.jasper", "FORNECEDOR - " + txtCodFor.getVlrInteger() + " - " + txtNomeFor.getVlrString(), null, rs, hParam, this );
 
 			if ( view==TYPE_PRINT.VIEW ) {
-				dlGr.setVisible( true );
+				dlGr.preview();
 			}
 			else {
 				JasperPrintManager.printReport( dlGr.getRelatorio(), true );

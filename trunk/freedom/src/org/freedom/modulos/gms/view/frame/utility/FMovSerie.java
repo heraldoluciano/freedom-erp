@@ -397,7 +397,7 @@ public class FMovSerie extends FRelatorio implements MouseListener  {
 			dlGr = new FPrinterJob( "relatorios/RelMovNumSerie.jasper", "Relatório acompanhamento de numero de Série", filtros.toString(), rs, hParam, this );
 
 			if ( bVisualizar==TYPE_PRINT.VIEW ) {
-				dlGr.setVisible( true );
+				dlGr.preview();
 			}
 			else {
 				try {

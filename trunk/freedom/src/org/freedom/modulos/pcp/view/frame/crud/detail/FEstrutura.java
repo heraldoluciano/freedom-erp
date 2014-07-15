@@ -1086,7 +1086,7 @@ private void montaTela() {
 		dlGr = new FPrinterJob( "layout/rel/REL_ESTRUTURA_01.jasper", "Relação de componentes do produto", "", rs, hParam, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

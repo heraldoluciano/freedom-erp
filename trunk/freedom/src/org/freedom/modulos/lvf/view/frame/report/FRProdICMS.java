@@ -241,7 +241,7 @@ public class FRProdICMS extends FRelatorio {
 			dlGr = new FPrinterJob( pathReportFile, "Relatório de PRODUTOS/ICMS ", filtros.toString(), rs, hParam, this );
 
 			if ( visualizar==TYPE_PRINT.VIEW ) {
-				dlGr.setVisible( true );
+				dlGr.preview();
 			}
 			else {
 				try {

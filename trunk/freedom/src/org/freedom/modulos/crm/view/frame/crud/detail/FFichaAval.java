@@ -1039,7 +1039,7 @@ public class FFichaAval extends FDetalhe implements InsertListener, CarregaListe
 		
 		dlGr = new FPrinterJob( layoutfichaaval, "Ficha avaliativa", "", rs, hParam, this );
 		
-		dlGr.setVisible( true );
+		dlGr.preview();
 		
 	}
 	

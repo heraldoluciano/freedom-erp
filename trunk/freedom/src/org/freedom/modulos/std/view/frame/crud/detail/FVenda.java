@@ -3289,7 +3289,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 							FPrinterJob dlGr = new FPrinterJob( "layout/pd/" + layoutPed , "PEDIDO", "", rs, hParam, this, null );
 
 							if ( bVisualizar==TYPE_PRINT.VIEW ) {
-								dlGr.setVisible( true );
+								dlGr.preview();
 							}
 							else {
 								try {
@@ -3320,7 +3320,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 							//FPrinterJob dlGr = new FPrinterJob( "layout/pd/PED_PD.jasper", "PEDIDO", filtro, rs, hParam, this, null );
 
 							if ( bVisualizar==TYPE_PRINT.VIEW ) {
-								dlGr.setVisible( true );
+								dlGr.preview();
 							}
 							else {
 								try {
@@ -3538,7 +3538,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 					FPrinterJob dlGr = new FPrinterJob( "layout/pd/PED_PD.jasper", "PEDIDO", filtro, rs, hParam, this, null );
 
 					if ( bVisualizar==TYPE_PRINT.VIEW ) {
-						dlGr.setVisible( true );
+						dlGr.preview();
 					}
 					else {
 						try {

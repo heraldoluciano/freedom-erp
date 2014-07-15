@@ -184,7 +184,7 @@ public class FRFluxoCaixaReal extends FRelatorio {
 		dlGr = new FPrinterJob( "relatorios/fnc/fluxocaixareal.jasper", "FLUXO DE CAIXA REALIZADO", "", rs, hParam, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

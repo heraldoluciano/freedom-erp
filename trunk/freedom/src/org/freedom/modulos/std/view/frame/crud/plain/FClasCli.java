@@ -165,7 +165,7 @@ public class FClasCli extends FDados implements ActionListener {
 		FPrinterJob dlGr = new FPrinterJob( "relatorios/ClasCli.jasper", "Classificação Cliente", null, rs, null, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

@@ -605,7 +605,7 @@ public class FRComprasMedia extends FRelatorio implements FocusListener {
 		dlGr = new FPrinterJob( "relatorios/compras_media.jasper", "Relatório de média de compras por item", sCab, rs, hParam, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

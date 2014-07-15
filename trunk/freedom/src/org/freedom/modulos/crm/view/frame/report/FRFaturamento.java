@@ -305,7 +305,7 @@ public class FRFaturamento extends FRelatorio {
 		dlGr = new FPrinterJob( "relatorios/prev_faturamento.jasper", "RELATÓRIO DE PREVISÂO DE FATURAMENTO", "", rs, hParam, this );
 	
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

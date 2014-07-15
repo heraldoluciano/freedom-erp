@@ -217,7 +217,7 @@ public class FRProdGrup extends FRelatorio {
 			} else {
 				FPrinterJob dlGr = new FPrinterJob(  rgTipoDeRelatorio.getVlrString(), "Produtos por Grupo", sCab, rs, params, this );
 				if ( bVisualizar==TYPE_PRINT.VIEW ) {
-					dlGr.setVisible( true );
+					dlGr.preview();
 				}
 				else {
 					try {

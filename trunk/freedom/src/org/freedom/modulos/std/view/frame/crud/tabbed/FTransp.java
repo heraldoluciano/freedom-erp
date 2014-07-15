@@ -873,7 +873,7 @@ public class FTransp extends FTabDados implements PostListener, RadioGroupListen
 		}
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}else {
 			try {
 				JasperPrintManager.printReport( dlGr.getRelatorio(), true );

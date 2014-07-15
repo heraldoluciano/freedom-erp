@@ -292,7 +292,7 @@ public class FRVolVendasProd extends FRelatorio {
 		dlGr = new FPrinterJob( "layout/rel/REL_VENDAS_PROD_01.jasper", "Volume de vendas por produto", sCab, rs, hParam, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

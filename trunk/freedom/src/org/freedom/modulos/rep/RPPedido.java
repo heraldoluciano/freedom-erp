@@ -936,7 +936,7 @@ public class RPPedido extends FDetalhe implements CarregaListener, InsertListene
 				FPrinterJob dlGr = getPedido( txtCodPed.getVlrInteger() );
 
 				if ( visualizar == TYPE_PRINT.VIEW ) {
-					dlGr.setVisible( true );
+					dlGr.preview();
 				}
 				else {
 					JasperPrintManager.printReport( dlGr.getRelatorio(), true );

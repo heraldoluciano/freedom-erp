@@ -147,7 +147,7 @@ public final class FMapa extends FFilho implements ActionListener, KeyListener {
 			 * FPrinterJob dlGr = new FPrinterJob( "relatorios/Mapa.jasper",
 			 * "Mapa", null, this, hParam, con );
 			 * 
-			 * if ( visualizar == TYPE_PRINT.VIEW ) { dlGr.setVisible( true ); } else {
+			 * if ( visualizar == TYPE_PRINT.VIEW ) { dlGr.preview(); } else {
 			 * JasperPrintManager.printReport( dlGr.getRelatorio(), true ); }
 			 */
 		}

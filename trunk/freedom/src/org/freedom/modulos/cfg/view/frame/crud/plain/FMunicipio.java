@@ -266,7 +266,7 @@ public class FMunicipio extends FDados {
 		FPrinterJob dlGr = new FPrinterJob( "relatorios/RelMunicipio.jasper", "Municipio", null, rs, null, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

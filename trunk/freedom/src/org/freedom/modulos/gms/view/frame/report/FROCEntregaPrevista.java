@@ -164,7 +164,7 @@ public class FROCEntregaPrevista extends FRelatorio {
 		dlGr = new FPrinterJob( "layout/rel/REL_OC_PEND_ENT.jasper", "Relação de Previsão de entregas", sCab, rs, hParam, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW )
-			dlGr.setVisible( true );
+			dlGr.preview();
 		else
 			try {
 				JasperPrintManager.printReport( dlGr.getRelatorio(), true );

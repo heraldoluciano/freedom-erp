@@ -228,7 +228,7 @@ public class FRCodficProd extends FRelatorio {
 			FPrinterJob dlGr = new FPrinterJob( "relatorios/CodficProdGrup.jasper", "Codificação de produto", null, rs, hParam, this );
 
 			if ( bVisualizar==TYPE_PRINT.VIEW ) {
-				dlGr.setVisible( true );
+				dlGr.preview();
 			}
 			else {
 				try {
@@ -243,7 +243,7 @@ public class FRCodficProd extends FRelatorio {
 			FPrinterJob dlGr = new FPrinterJob( "relatorios/CodficProd.jasper", "Codificação de produto", null, rs, hParam, this );
 
 			if ( bVisualizar==TYPE_PRINT.VIEW ) {
-				dlGr.setVisible( true );
+				dlGr.preview();
 			}
 			else {
 				try {

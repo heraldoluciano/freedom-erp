@@ -682,7 +682,7 @@ public class FModBoleto extends FTabDados implements ActionListener, JComboBoxLi
 		/*
 		 * FPrinterJob dlGr = new FPrinterJob( "relatorios/TipoCli.jasper", "Vendas por Cliente", null, rs, null, this );
 		 * 
-		 * if ( bVisualizar==TYPE_PRINT.VIEW ) { dlGr.setVisible( true ); } else { try { JasperPrintManager.printReport( dlGr.getRelatorio(), true ); } catch ( Exception err ) { Funcoes.mensagemErro( this, "Erro na impressão de relatório de vendas por cliente!" + err.getMessage(), true, con, err ); } }
+		 * if ( bVisualizar==TYPE_PRINT.VIEW ) { dlGr.preview(); } else { try { JasperPrintManager.printReport( dlGr.getRelatorio(), true ); } catch ( Exception err ) { Funcoes.mensagemErro( this, "Erro na impressão de relatório de vendas por cliente!" + err.getMessage(), true, con, err ); } }
 		 */
 	}
 

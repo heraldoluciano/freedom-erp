@@ -308,7 +308,7 @@ public class FRBalancoProj extends FRelatorio implements CheckBoxListener {
 		dlGr = new FPrinterJob( "layout/rel/REL_BAL_PROJ.jasper", "Balanço de projeto/contrato", "", rs, hParam, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

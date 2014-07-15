@@ -222,7 +222,7 @@ public class FRRazaoFin extends FRelatorio {
 			rs = getResultSet();
 			FPrinterJob dlGr = new FPrinterJob( "relatorios/FRRazFin.jasper", "Relatório razão financeiro", cab.toString(), rs, hParam, this );
 			if ( bVisualizar == TYPE_PRINT.VIEW ) {
-				dlGr.setVisible( true );
+				dlGr.preview();
 			}
 			else {
 				try {

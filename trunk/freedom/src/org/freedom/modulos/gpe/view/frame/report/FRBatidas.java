@@ -187,7 +187,7 @@ public class FRBatidas extends FRelatorio {
 		dlGr = new FPrinterJob( "layout/rel/REL_GPE_BATIDAS.jasper", "Relatório de Batidas/Ponto", "", rs, hParam, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

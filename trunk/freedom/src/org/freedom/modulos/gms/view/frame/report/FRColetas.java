@@ -543,7 +543,7 @@ public class FRColetas extends FRelatorio {
 		
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

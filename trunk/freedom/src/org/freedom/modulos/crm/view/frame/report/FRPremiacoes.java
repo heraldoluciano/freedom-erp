@@ -274,7 +274,7 @@ public class FRPremiacoes extends FRelatorio {
 		FPrinterJob dlGr = new FPrinterJob( report, label, sCab, rs, hParam , this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		} else {
 			try {
 				JasperPrintManager.printReport( dlGr.getRelatorio(), true );

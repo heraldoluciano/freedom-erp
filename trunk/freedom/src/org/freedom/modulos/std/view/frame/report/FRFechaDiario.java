@@ -360,7 +360,7 @@ public class FRFechaDiario extends FRelatorio {
 			FPrinterJob dlGr = new FPrinterJob( sRelatorio, "Fechamento Diário", sCab.toString(), rs, hParam, this );
 
 			if ( bVisualizar==TYPE_PRINT.VIEW ) {
-				dlGr.setVisible( true );
+				dlGr.preview();
 			}
 			else {
 				try {

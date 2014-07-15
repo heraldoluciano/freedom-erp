@@ -404,7 +404,7 @@ public class FRExtrato extends FRelatorio {
 		dlGr = new FPrinterJob( "relatorios/Extrato.jasper", "Extrato de contas", sCab, rs, hParam, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

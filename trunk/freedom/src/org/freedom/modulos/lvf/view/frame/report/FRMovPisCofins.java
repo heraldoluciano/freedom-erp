@@ -224,7 +224,7 @@ public class FRMovPisCofins extends FRelatorio implements RadioGroupListener  {
 			dlGr = new FPrinterJob( pathReportFile, "Relatório de PIS/COFINS ", filtros.toString(), rs, hParam, this );
 
 			if ( visualizar==TYPE_PRINT.VIEW ) {
-				dlGr.setVisible( true );
+				dlGr.preview();
 			}
 			else {
 				try {

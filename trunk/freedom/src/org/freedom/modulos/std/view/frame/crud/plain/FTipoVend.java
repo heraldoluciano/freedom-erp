@@ -166,7 +166,7 @@ public class FTipoVend extends FDados {
 		FPrinterJob dlGr = new FPrinterJob( "relatorios/TipoVend.jasper", "Classificação tipo de comissionado ", null, rs, null, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

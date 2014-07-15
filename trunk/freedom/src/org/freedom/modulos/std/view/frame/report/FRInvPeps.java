@@ -300,7 +300,7 @@ public class FRInvPeps extends FRelatorio {
 		dlGr = new FPrinterJob( "layout/rel/FRInvPeps.jasper", "Relatório de inventário", filtros.toString(), rs, hParam, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {
