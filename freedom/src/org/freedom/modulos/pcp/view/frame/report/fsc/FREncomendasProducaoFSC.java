@@ -275,7 +275,7 @@ public class FREncomendasProducaoFSC extends FRelatorio {
 		}
 		else {
 			try {
-				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+				dlGr.print(true);
 			} catch ( Exception err ) {
 				Funcoes.mensagemErro( this, "Erro na impressão de relatório de ordens de produção!" + err.getMessage(), true, con, err );
 			}
