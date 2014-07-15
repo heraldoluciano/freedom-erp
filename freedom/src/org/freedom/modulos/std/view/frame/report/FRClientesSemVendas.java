@@ -185,7 +185,7 @@ public class FRClientesSemVendas extends FRelatorio {
 		dlGr = new FPrinterJob( "layout/rel/REL_CLI_SEM_VD_01.jasper", "Relatório de clientes sem movimento", sCab, rs, hParam, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

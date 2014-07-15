@@ -138,7 +138,7 @@ public class FRRegitroSaida extends FRelatorio {
 			FPrinterJob dlGr = new FPrinterJob( "relatorios/RegistroSaida.jasper", "REGISTRO DE SAIDAS", null, rs, hParam, this );
 
 			if ( visualizar == TYPE_PRINT.VIEW ) {
-				dlGr.setVisible( true );
+				dlGr.preview();
 			}
 			else {
 				JasperPrintManager.printReport( dlGr.getRelatorio(), true );

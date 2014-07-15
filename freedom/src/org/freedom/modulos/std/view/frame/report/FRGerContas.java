@@ -706,7 +706,7 @@ public class FRGerContas extends FRelatorio {
 		dlGr = new FPrinterJob( "relatorios/gercontas.jasper", "Gerenciamento de contas", "", rsRel, hParam, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW )
-			dlGr.setVisible( true );
+			dlGr.preview();
 		else {
 			try {
 				JasperPrintManager.printReport( dlGr.getRelatorio(), true );

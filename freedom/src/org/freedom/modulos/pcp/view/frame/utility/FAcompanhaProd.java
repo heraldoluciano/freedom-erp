@@ -662,7 +662,7 @@ public class FAcompanhaProd extends FFilho implements ActionListener, MouseListe
 
 				dlGr = new FPrinterJob( "layout/rel/REL_ACOMP_PROD_01.jasper", "Relatório de acompanhamento da produção", "", execConsulta(), hParam, this );
 
-				dlGr.setVisible( true );
+				dlGr.preview();
 				
 			}
 			

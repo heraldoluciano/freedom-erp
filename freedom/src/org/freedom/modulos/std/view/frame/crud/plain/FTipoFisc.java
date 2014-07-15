@@ -289,7 +289,7 @@ public class FTipoFisc extends FDados implements ActionListener, InsertListener 
 		FPrinterJob dlGr = new FPrinterJob( "relatorios/TipoCli.jasper", "Vendas por Cliente", null, rs, null, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

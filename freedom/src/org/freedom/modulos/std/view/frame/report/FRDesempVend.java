@@ -271,7 +271,7 @@ public class FRDesempVend extends FRelatorio {
 		FPrinterJob dlGr = new FPrinterJob( "relatorios/FRDesempVend.jasper", "Desempenho por vendedor", sCab, rs, null, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

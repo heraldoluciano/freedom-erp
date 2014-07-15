@@ -277,7 +277,7 @@ public class FRRazCli extends FRelatorio {
 		dlGr = new FPrinterJob( "relatorios/FRRazCli.jasper", "Relatório de Razão por Cliente", cab, rs, hParam, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

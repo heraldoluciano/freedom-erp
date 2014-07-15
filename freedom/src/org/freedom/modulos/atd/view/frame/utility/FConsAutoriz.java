@@ -628,7 +628,7 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 		dlGr = new FPrinterJob( "relatorios/FRConsAutoriz.jasper", "Relatório de Orçamentos por período", sCab, rs, hParam, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

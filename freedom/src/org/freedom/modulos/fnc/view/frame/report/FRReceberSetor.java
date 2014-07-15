@@ -318,7 +318,7 @@ public class FRReceberSetor extends FRelatorio implements ActionListener {
 			dlGr = new FPrinterJob( "relatorios/receberSetor.jasper", "RELATORIO DE DESCONTOS POR SETOR", sFiltros.toString(), rs, hParam, this );
 
 			if ( bVisualizar==TYPE_PRINT.VIEW ) {
-				dlGr.setVisible( true );
+				dlGr.preview();
 			}
 			else {
 				try {

@@ -196,7 +196,7 @@ public class FRCartaCobranca extends FRelatorio implements RadioGroupListener {
 		dlGr = new FPrinterJob( "layout/rel/REL_CARTA_COB_01.jasper", "Carta de cobrança", sCab, rs, hParam, this, mail );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

@@ -267,7 +267,7 @@ public class RelCurvaABCClientes extends FRelatorio {
 			FPrinterJob dlGr = new FPrinterJob( "modulos/rep/relatorios/rpcurvaABCCli.jasper", "CURVA ABC DE CLIENTES", null, rs, hParam, this );
 
 			if ( visualizar == TYPE_PRINT.VIEW ) {
-				dlGr.setVisible( true );
+				dlGr.preview();
 			}
 			else {
 				JasperPrintManager.printReport( dlGr.getRelatorio(), true );

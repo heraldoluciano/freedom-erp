@@ -431,7 +431,7 @@ public class FRVendasVend extends FRelatorio {
 		FPrinterJob dlGr = new FPrinterJob( "layout/rel/REL_VENDAS_VEND_01.jasper", "Vendas por Vendedor", sCab, rs, hparam, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

@@ -258,7 +258,7 @@ public class FUF extends FDados {
 		FPrinterJob dlGr = new FPrinterJob( "relatorios/RelUF.jasper", "UF", null, rs, null, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

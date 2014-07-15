@@ -357,7 +357,7 @@ public class FRNecesProducao extends FRelatorio {
 		dlGr = new FPrinterJob( "relatorios/NecesProducao.jasper", "Relatório de necessidade de produção", sCab, rs, hParam, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

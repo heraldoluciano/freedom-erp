@@ -91,7 +91,7 @@ public class FArea extends FDados {
 		dlGr = new FPrinterJob( "relatorios/grhArea.jasper", "Lista de Áreas", "", this, hParam, con, null, false );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

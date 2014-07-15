@@ -155,7 +155,7 @@ public class RelSaldosProd extends FRelatorio {
 			FPrinterJob dlGr = new FPrinterJob( "modulos/rep/relatorios/rpsaldoprod.jasper", "TABELA", null, rs, hParam, this );
 
 			if ( visualizar == TYPE_PRINT.VIEW ) {
-				dlGr.setVisible( true );
+				dlGr.preview();
 			}
 			else {
 				JasperPrintManager.printReport( dlGr.getRelatorio(), true );

@@ -278,7 +278,7 @@ public class FRCentroConta extends FRelatorio implements ActionListener, Carrega
 		dlGr = new FPrinterJob( "relatorios/FRCentroConta.jasper", "Centro de custo/Conta", sCab, rs, hParam, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 
 		else {

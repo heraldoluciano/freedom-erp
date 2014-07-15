@@ -214,7 +214,7 @@ public class FRInadimplentes extends FRelatorio {
 		dlGr = new FPrinterJob( "relatorios/FRInadimplentes.jasper", "Relatório de Inadimplentes", sCab, rs, hParam, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

@@ -434,7 +434,7 @@ public class FRCpTipoMov extends FRelatorio {
 		dlGr = new FPrinterJob( "relatorios/CpTipoMov.jasper", "Relatorio de compras por tipo de movimento", sCab, rs, hParam, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

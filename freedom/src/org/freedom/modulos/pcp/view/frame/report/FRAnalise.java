@@ -209,7 +209,7 @@ public class FRAnalise extends FRelatorio {
 		dlGr = new FPrinterJob( "relatorios/RelAnalise.jasper", "Relatório de Análises", sCab, rs, hParam, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

@@ -210,7 +210,7 @@ public class FRVendasCanc extends FRelatorio {
 		FPrinterJob dlGr = new FPrinterJob( "layout/rel/REL_VENDAS_CANC.jasper", "Vendas Canceladas e Denegadas", sCab, rs, null, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

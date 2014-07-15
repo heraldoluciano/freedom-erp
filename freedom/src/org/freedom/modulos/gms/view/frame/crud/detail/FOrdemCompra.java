@@ -1015,7 +1015,7 @@ public class FOrdemCompra extends FDetalhe implements PostListener, CarregaListe
 		if ( dlGr != null ) {
 
 			if ( bVisualizar==TYPE_PRINT.VIEW ) {
-				dlGr.setVisible( true );
+				dlGr.preview();
 			}
 			else {
 				try {

@@ -846,7 +846,7 @@ public class FRVendasFisico extends FRelatorio {
 		dlGr = new FPrinterJob( "relatorios/VendasFisico.jasper", "Vendas Fisico - resumido", sCab, rs, null, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

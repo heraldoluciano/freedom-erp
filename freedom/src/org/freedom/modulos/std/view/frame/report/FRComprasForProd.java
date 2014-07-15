@@ -223,7 +223,7 @@ public class FRComprasForProd extends FRelatorio {
 		hParam.put( "FILTROS", cab );
 		dlGr = new FPrinterJob( rgTipoDeRelatorio.getVlrString(), "Últimas compras por fornecedor/produto", cab, rs, hParam, this );
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

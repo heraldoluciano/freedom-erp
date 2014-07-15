@@ -549,7 +549,7 @@ public class FRVendasCFOP extends FRelatorio {
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 
-			dlGr.setVisible( true );
+			dlGr.preview();
 
 		}
 		else {

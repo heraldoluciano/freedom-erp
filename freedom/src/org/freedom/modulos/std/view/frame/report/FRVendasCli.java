@@ -394,7 +394,7 @@ public class FRVendasCli extends FRelatorio {
 		FPrinterJob dlGr = new FPrinterJob( "relatorios/VendasCliente.jasper", "Vendas por Cliente", sCab, rs, null, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

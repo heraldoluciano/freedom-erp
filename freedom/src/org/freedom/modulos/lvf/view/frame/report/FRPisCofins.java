@@ -324,7 +324,7 @@ public class FRPisCofins extends FRelatorio {
 		dlGr = new FPrinterJob( pathReportFile, "Relatório de PIS/COFINS ", sCab, rs, hParam, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

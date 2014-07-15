@@ -488,7 +488,7 @@ public class FRVendasGeral extends FRelatorio {
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 
-			dlGr.setVisible( true );
+			dlGr.preview();
 
 		}
 		else {

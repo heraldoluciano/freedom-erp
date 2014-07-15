@@ -529,7 +529,7 @@ public class FRFreteRecMerc extends FRelatorio {
 		dlGr = new FPrinterJob( txtCodTran.getVlrInteger() > 0 ? "layout/rel/REL_FRETE_RECMERC.jasper" : "layout/rel/REL_FRETE_RECMERC_AGRUPADO.jasper" , "Relatório de fretes", sCab, rs, hParam, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

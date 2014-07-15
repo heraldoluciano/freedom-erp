@@ -1521,7 +1521,7 @@ public class FRBoleto extends FRelatorio implements CarregaListener {
 		FPrinterJob dlGr = new FPrinterJob( classe, "Boleto", null, rs, getParametros(), orig == null ? this : orig );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

@@ -237,7 +237,7 @@ public class FRCustoProj extends FRelatorio {
 		dlGr = new FPrinterJob( "layout/rel/REL_FIN_PROJ_01.jasper", "Relatório de custos de projeto/contrato", "", rs, hParam, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

@@ -771,7 +771,7 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 	
 		dlGr = new FPrinterJob( "relatorios/contato.jasper", "Listagem de contatos", "", rs, hParam, this );
 		if (bVisualizar==TYPE_PRINT.VIEW) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		} else {
 			try {
 				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
@@ -793,7 +793,7 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 		}
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {
@@ -1114,7 +1114,7 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 		}
 		
 		dlGr = new FPrinterJob( daocontato.getPrefs()[CONT_PREFS.LAYOUTFICHAAVAL.ordinal()].toString(), "Ficha avaliativa", "", rs, hParam, this );
-		dlGr.setVisible( true );
+		dlGr.preview();
 		*/
 		
 	}

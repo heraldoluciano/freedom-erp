@@ -2176,7 +2176,7 @@ public class FOP extends FDetalhe implements ChangeListener, CancelListener, Ins
 					dlGr = new FPrinterJob( "layout/op/" + sClassOP, "Ordem de produção", "", this, hParam, con );
 
 					if ( bVisualizar == TYPE_PRINT.VIEW ) {
-						dlGr.setVisible( true );
+						dlGr.preview();
 					}
 					else {
 						try {

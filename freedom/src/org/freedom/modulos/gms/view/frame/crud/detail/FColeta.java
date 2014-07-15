@@ -922,7 +922,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 		dlGr = new FPrinterJob( "layout/col/COL_PD.jasper", "Coleta", "", rs, hParam, this, email );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

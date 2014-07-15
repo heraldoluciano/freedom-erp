@@ -258,7 +258,7 @@ public class FRVendasPlanoPag extends FRelatorio {
 		FPrinterJob dlGr = new FPrinterJob( "relatorios/VendasPlanoPag.jasper", "Vendas por plano de pagamento", sCab, rs, null, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

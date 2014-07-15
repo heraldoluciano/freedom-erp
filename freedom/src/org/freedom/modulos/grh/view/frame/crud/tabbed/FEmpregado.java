@@ -542,7 +542,7 @@ public class FEmpregado extends FTabDados implements KeyListener, CarregaListene
 				dlGr = new FPrinterJob( "relatorios/EmprResumido.jasper","Relação de Empregados","",rs,hParam,this,null); 
 
 				if ( bVisualizar==TYPE_PRINT.VIEW ) {
-					dlGr.setVisible( true );
+					dlGr.preview();
 				}
 				else {
 					try {

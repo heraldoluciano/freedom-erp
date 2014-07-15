@@ -265,7 +265,7 @@ public class FRProducao extends FRelatorio {
 		dlGr = new FPrinterJob( "layout/rel/REL_PROD_01.jasper", "Relatório de Produção", sCab, rs, hParam, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

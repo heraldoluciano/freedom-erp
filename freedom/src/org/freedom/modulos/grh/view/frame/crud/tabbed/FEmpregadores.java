@@ -190,7 +190,7 @@ public class FEmpregadores extends FTabDados {
 		dlGr = new FPrinterJob( "relatorios/grhEmpregador.jasper", "Lista de Empregadores", "", this, hParam, con, null, false );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

@@ -277,7 +277,7 @@ public class FRBalancete extends FRelatorio {
 		dlGr = new FPrinterJob( "relatorios/balancete.jasper", "Balancete", filtros.toString(), rs, hParam, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

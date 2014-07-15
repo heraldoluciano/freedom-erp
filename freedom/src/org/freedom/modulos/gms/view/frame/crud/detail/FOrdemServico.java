@@ -1402,7 +1402,7 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 		dlGr = new FPrinterJob( "layout/os/OS_PD.jasper", "Ordem de Serviço", "", rs, hParam, this, email );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

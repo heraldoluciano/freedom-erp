@@ -160,7 +160,7 @@ public class FRecursos extends FDados implements ActionListener {
 			dlGr = new FPrinterJob( "relatorios/recursos.jasper", "RELATORIO DE RECURSOS DE PRODUÇÃO", "Código\nDescrição", rs, null, this );
 
 			if ( bVisualizar==TYPE_PRINT.VIEW )
-				dlGr.setVisible( true );
+				dlGr.preview();
 			else {
 				try {
 					JasperPrintManager.printReport( dlGr.getRelatorio(), true );

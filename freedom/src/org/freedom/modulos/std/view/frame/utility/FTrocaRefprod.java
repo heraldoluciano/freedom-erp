@@ -269,7 +269,7 @@ public class FTrocaRefprod extends FDetalhe implements InsertListener, PostListe
 			FPrinterJob dlGr = new FPrinterJob( "layout/rel/trocarefprod.jasper", "Relatório de troca de referências", filtros.toString(), rs, hParam, this );
 
 			if ( bVisualizar == TYPE_PRINT.VIEW ) {
-				dlGr.setVisible( true );
+				dlGr.preview();
 			}
 			else {
 				try {

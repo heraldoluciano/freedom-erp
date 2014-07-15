@@ -389,7 +389,7 @@ public class FRComprasFor extends FRelatorio {
 		dlGr = new FPrinterJob( "relatorios/" + relatorio, "Relatório de Compras por fornecedor", sCab, rs, hParam, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

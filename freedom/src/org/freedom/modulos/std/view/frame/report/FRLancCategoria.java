@@ -468,7 +468,7 @@ public class FRLancCategoria extends FRelatorio implements ActionListener, Carre
 		dlGr = new FPrinterJob( "relatorios/FRLancamentos.jasper", "Lançamentos por categoria", cab, rs, hParam, this );
 
 		if ( bVisualizar == TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 
 		else {

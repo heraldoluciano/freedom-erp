@@ -191,7 +191,7 @@ public class FRIpi extends FRelatorio {
 		dlGr = new FPrinterJob( "layout/rel/REL_VENDAS_IPI.jasper", "Relatório de IPI ", sCab, rs, hParam, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

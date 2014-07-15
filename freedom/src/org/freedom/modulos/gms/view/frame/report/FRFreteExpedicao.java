@@ -465,7 +465,7 @@ public class FRFreteExpedicao extends FRelatorio {
 		dlGr = new FPrinterJob( "layout/rel/REL_FRETE_EXPEDICAO.jasper", "Relatório de fretes", sCab, rs, hParam, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

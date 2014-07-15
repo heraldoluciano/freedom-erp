@@ -318,6 +318,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 
 	public FRma() {
 
+		super();
 		setTitulo( "RMA" );
 		setAtribos( 15, 10, 772, 580 );
 
@@ -1450,7 +1451,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 		dlGr = new FPrinterJob( "relatorios/FRRma.jasper", "Requisição de material", sCab, rs, hParam, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

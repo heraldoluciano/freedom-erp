@@ -153,7 +153,7 @@ public class FRRecebAberto extends FRelatorio implements FocusListener {
 		dlGr = new FPrinterJob( "relatorios/FRRecebAberto.jasper", "Relatório de Recebimentos em aberto", sCab, rs, hParam, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

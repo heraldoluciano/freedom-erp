@@ -92,7 +92,7 @@ public class RelContato extends FRelatorio {
 			FPrinterJob dlGr = new FPrinterJob( "modulos/rep/relatorios/rpcontato.jasper", "CONTATOS", null, rs, hParam, this );
 
 			if ( visualizar == TYPE_PRINT.VIEW ) {
-				dlGr.setVisible( true );
+				dlGr.preview();
 			}
 			else {
 				JasperPrintManager.printReport( dlGr.getRelatorio(), true );

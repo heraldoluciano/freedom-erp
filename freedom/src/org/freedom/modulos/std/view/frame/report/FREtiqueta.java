@@ -600,7 +600,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener, RadioGrou
 					dlGr = new FPrinterJob( "relatorios/etiquetas/clientes/" + txtModEtiq.getVlrString(), "Etiquetas", null, rs1, null, this );
 
 					if ( bVisualizar==TYPE_PRINT.VIEW ) {
-						dlGr.setVisible( true );
+						dlGr.preview();
 					}
 					else {
 						try {

@@ -367,7 +367,7 @@ public class FKardex extends FRelatorio implements ActionListener {
 				dlGr = new FPrinterJob( "relatorios/kardex.jasper", "Kardex de Produtos", sFiltros, rs, null, this );
 
 				if ( bVisualizar==TYPE_PRINT.VIEW ) {
-					dlGr.setVisible( true );
+					dlGr.preview();
 				}
 				else {
 					try {

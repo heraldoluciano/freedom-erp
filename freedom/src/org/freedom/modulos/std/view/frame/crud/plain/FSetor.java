@@ -346,7 +346,7 @@ public class FSetor extends FDetalhe implements ActionListener {
 		}
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

@@ -91,7 +91,7 @@ public class FRFluxoCaixaRes extends FRelatorio {
 			FPrinterJob dlGr = new FPrinterJob( "layout/rel/REL_FLUXO_CAIXA_02.jasper", "Relatório de Fluxo de Caixa Resumido", "", this, hParam, con );
 
 			if ( bVisualizar==TYPE_PRINT.VIEW ) {
-				dlGr.setVisible( true );
+				dlGr.preview();
 			}
 			else {
 				JasperPrintManager.printReport( dlGr.getRelatorio(), true );

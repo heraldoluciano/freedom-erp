@@ -315,7 +315,7 @@ public class FRContaEstoque extends FRelatorio {
 			FPrinterJob dlGr = new FPrinterJob( "layout/rel/REL_CONTA_ESTOQUE.jasper", "Relatório de Contagem de estoque", scab.toString(), rs, hParam, this );
 
 			if ( bVisualizar==TYPE_PRINT.VIEW ) {
-				dlGr.setVisible( true );
+				dlGr.preview();
 			}
 			else {
 				JasperPrintManager.printReport( dlGr.getRelatorio(), true );

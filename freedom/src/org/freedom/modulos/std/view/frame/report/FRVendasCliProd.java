@@ -389,7 +389,7 @@ public class FRVendasCliProd extends FRelatorio {
 		dlGr = new FPrinterJob( rgTipoDeRelatorio.getVlrString(), "Ultimas Vendas por Cliente/Produto", sCab, rs, hParam, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

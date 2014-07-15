@@ -267,7 +267,7 @@ public class FROrcamentoProduto extends FRelatorio implements CheckBoxListener {
 			FPrinterJob dlGr = new FPrinterJob( "layout/rel/REL_ORC_QTD_PRODUTOS.jasper", "Relatório de orçamentos", "", rs, hParam, this );
 
 			if ( bVisualizar==TYPE_PRINT.VIEW ) {
-				dlGr.setVisible( true );
+				dlGr.preview();
 			}
 			else {
 				JasperPrintManager.printReport( dlGr.getRelatorio(), true );

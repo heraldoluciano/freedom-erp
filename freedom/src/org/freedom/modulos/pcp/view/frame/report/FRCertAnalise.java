@@ -276,7 +276,7 @@ public class FRCertAnalise extends FRelatorio implements KeyListener {
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

@@ -449,7 +449,7 @@ public class FRValorEstoque extends FRelatorio {
 			FPrinterJob dlGr = new FPrinterJob( "layout/rel/REL_VALOR_ESTOQUE.jasper", "Relatório de Valores em estoque", "", rs, hParam, this );
 
 			if ( bVisualizar==TYPE_PRINT.VIEW ) {
-				dlGr.setVisible( true );
+				dlGr.preview();
 			}
 			else {
 				JasperPrintManager.printReport( dlGr.getRelatorio(), true );

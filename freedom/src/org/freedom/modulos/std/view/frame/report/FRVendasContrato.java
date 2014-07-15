@@ -184,7 +184,7 @@ public class FRVendasContrato extends FRelatorio {
 		dlGr = new FPrinterJob( "layout/rel/REL_VENDAS_CONTRATO.jasper", "Vendas x Contratos", filtros, rs, hParam, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

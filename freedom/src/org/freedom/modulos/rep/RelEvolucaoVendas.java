@@ -324,7 +324,7 @@ public class RelEvolucaoVendas extends FRelatorio {
 			FPrinterJob dlGr = new FPrinterJob( "modulos/rep/relatorios/" + relatorio, "EVOLUÇÃO DE VENDAS", null, this, hParam, con );
 
 			if ( visualizar == TYPE_PRINT.VIEW ) {
-				dlGr.setVisible( true );
+				dlGr.preview();
 			}
 			else {
 				JasperPrintManager.printReport( dlGr.getRelatorio(), true );

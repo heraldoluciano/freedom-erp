@@ -349,7 +349,7 @@ public class FRFichaAvaliativa extends FRelatorio implements CarregaListener{
 		FPrinterJob dlGr = new FPrinterJob( report, label, "", rs, hParam , this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		} else {
 			try {
 				JasperPrintManager.printReport( dlGr.getRelatorio(), true );

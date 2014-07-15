@@ -300,7 +300,7 @@ public class FRPesoRecMerc extends FRelatorio {
 		dlGr = new FPrinterJob( "layout/rel/REL_RECMERC_01.jasper", "Relatório de entradas", sCab, rs, hParam, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

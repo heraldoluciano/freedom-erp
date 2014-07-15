@@ -357,7 +357,7 @@ public class FRAtendimentos extends FRelatorio {
 		}
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

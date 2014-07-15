@@ -150,7 +150,7 @@ public class FRTermReceb extends FRelatorio {
 		FPrinterJob dlGr = new FPrinterJob( "relatorios/TermReceb.jasper", "TERMO DE RECEBIMENTO", null, rs, hParam, this );
 
 		if ( b == TYPE_PRINT.VIEW ) {
-			dlGr.setVisible( true );
+			dlGr.preview();
 		}
 		else {
 			try {

@@ -126,11 +126,11 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
 			
 	public FDados() {
 		this(true);
-		setSgestacao(Aplicativo.getInstance().getSgestacao());
 	}
 
 	public FDados(boolean comScroll) {
 		super(comScroll);
+		setSgestacao(Aplicativo.getInstance().getSgestacao());
 		btImp.setVisible(false);
 		btPrevimp.setVisible(false);
 		// setTitulo("Formulário de dados", this.getClass().getName());
