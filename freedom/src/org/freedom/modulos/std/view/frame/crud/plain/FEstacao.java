@@ -27,6 +27,7 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Vector;
@@ -459,7 +460,6 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 		adicCampo( txtTamFonteTxt, 280, 60, 65, 20, "TamFonteTxt", "Tamanho", ListaCampos.DB_SI, false );
 		adicDB( cbNfeEst, 350, 60, 150, 20, "NfeEst", "NFE", true );
 		adicCampo( txtPathCacerts, 7, 100, 350, 20, "PathCacerts", "Caminho para arquivo de armazenamento de certificados", ListaCampos.DB_SI, false);
-		adicDB( cbPrintPdf, 7, 140, 350, 20, "printpdf", "", true);
 		adic(btDirCacerts, 360, 100, 20, 20);
 		adicCampo( txtCodProxy, 7, 140, 80, 20, "CodProxy", "Cód.proxy", ListaCampos.DB_FK,txtDescProxy, false );
 		adicDescFK( txtDescProxy, 90, 140, 250, 20, "DescProxy", "Descrição do proxy" );
@@ -475,6 +475,7 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 		adicCampo( txtEmailEst, 210, 60, 197, 20, "EmailEst", "E-mail da pessoa de contato", ListaCampos.DB_SI, false );
 		setPainel(pinCabApp);
 		adicCampo( txtPathPDFReader, 7, 20, 350, 20, "PathPDFReader", "Aplicativo leitor de PDF", ListaCampos.DB_SI, false);
+		adicDB( cbPrintPdf, 7, 40, 350, 20, "printpdf", "", true);
 		
 		adic(btDirPDFReader, 360, 20, 20, 20);
 		setListaCampos( true, "ESTACAO", "SG" );
@@ -555,6 +556,23 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener, 
 
 	}
 
+	public void beforePost( PostEvent pevt) {
+		if (pevt.getListaCampos()==lcCampos) {
+			if ("S".equalsIgnoreCase( cbPrintPdf.getVlrString() ) && "".equals(txtPathPDFReader.getVlrString().trim())) {
+				pevt.cancela();
+				Funcoes.mensagemInforma( this, "Selecione o aplicativo leitor de PDF !" );
+				return;
+			} else if (!"".equals(txtPathPDFReader.getVlrString().trim()) ) {
+				File file = new File(txtPathPDFReader.getVlrString().trim());
+				if (!file.exists()) {
+					pevt.cancela();
+					Funcoes.mensagemInforma( this, "Aplicativo leitor de PDF não encontrado !" );
+					return;
+				}
+			}
+		}
+	} 
+	
 	public void afterPost( PostEvent pevt ) {
 
 		PreparedStatement ps = null;

@@ -38,9 +38,11 @@ import java.awt.event.MouseEvent;
 import java.awt.print.PageFormat;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.Blob;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Calendar;
 import java.util.HashMap;
 
 import javax.swing.JInternalFrame;
@@ -50,6 +52,7 @@ import javax.swing.SwingConstants;
 
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRResultSetDataSource;
+import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRXmlDataSource;
@@ -57,6 +60,7 @@ import net.sf.jasperreports.view.JasperViewer;
 
 import org.freedom.bmps.Icone;
 import org.freedom.bmps.Imagem;
+import org.freedom.infra.beans.Sgestacao;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.business.object.EmailBean;
 import org.freedom.library.component.ImprimeOS;
@@ -251,10 +255,64 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 
 	}
 
-	public FPrinterJob(String sLayout, String sTituloRel, String sFiltros, ResultSet rs, HashMap<String, Object> hParamRel, JInternalFrame ifOrig) {
+	public FPrinterJob(String sLayout, String sTituloRel, String sFiltros
+			, ResultSet rs, HashMap<String, Object> hParamRel, JInternalFrame ifOrig ) {
 		this(sLayout, sTituloRel, sFiltros, rs, hParamRel, ifOrig, null);
 	}
+	
+	public void preview() {
+		Sgestacao sgestacao = Aplicativo.getInstance().getSgestacao(); 
+		if (sgestacao==null || !"S".equalsIgnoreCase(sgestacao.getPrintpdf())) {
+			setVisible( true );
+		} else {
+			previewPdf(sgestacao);
+		}
+	}
 
+	public boolean executePDF(String pathpdfreader, String filename) throws Exception {
+		boolean result = false;
+		String[] command = { pathpdfreader, filename };
+		try {
+			Runtime.getRuntime().exec(command);
+			result = true;
+		}
+		catch (IOException ioerr) {
+			ioerr.printStackTrace();
+			result = false;
+			throw new Exception("Erro executando a leitura do arquivo !\n"+ioerr.getMessage());
+		}
+		return result;
+	}
+	
+	private void previewPdf(Sgestacao sgestacao) {
+		String filename = Aplicativo.strTemp+Calendar.getInstance().getTimeInMillis()+".pdf";
+		File file = new File(filename);
+		if (file.exists()) {
+			file.delete();
+		}
+		try {
+			JasperExportManager.exportReportToPdfFile(relJasper, filename);
+			executePDF(sgestacao.getPathpdfreader(), filename);
+		} catch (Exception err) {
+			Funcoes.mensagemErro(this, "Erro exportando realtório !\n"+err.getMessage());
+		}
+	}
+	/*				JasperPrint report = JasperFillManager.fillReport(FPrinterJob.class.getResourceAsStream("/com/setpoint/sped/layout/nfe/danfe1.jasper"), hParam, xml);
+				String filename = dir + danfe.getChaveNfe()+"_"+Calendar.getInstance().getTimeInMillis()+".pdf";
+				File file = new File(filename);
+				if (file.exists()) {
+					file.delete();
+				}
+				
+				if (file.exists()) {
+					danfe.setPdffile(file);
+				} else {
+					Funcoes.mensagemErro(this, "Não foi possível criar PDF para impressão multipla.");
+					break;
+				}
+			}
+*/
+	
 	/**
 	 * Construção do FPrinterJob utilizando JasperReports através de arquivo PDF.
 	 * 
@@ -292,38 +350,27 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 	 * @param rs
 	 * @param ifOrig
 	 */
-	public FPrinterJob(String sLayout, String sTituloRel, String sFiltros, ResultSet rs, HashMap<String, Object> hParamRel, JInternalFrame ifOrig, EmailBean mail) {
-
+	public FPrinterJob(String sLayout, String sTituloRel, String sFiltros, ResultSet rs
+			, HashMap<String, Object> hParamRel, JInternalFrame ifOrig, EmailBean mail) {
 		super(false);
 		setTitulo(sTituloRel, this.getClass().getName());
 		setBounds(50, 50, 500, 400);
-
 		ifOrig.getDesktopPane().add(this);
-			
 		try {
-
 			HashMap<String, Object> hParam = Aplicativo.empresa.getAll();
-
 			hParam.put("USUARIO", Aplicativo.getUsuario().getIdusu());
 			hParam.put("FILTROS", sFiltros);
 			hParam.put("TITULO", sTituloRel);
-			
 			if (hParamRel != null) {
 				hParam.putAll(hParamRel);
 			}
-			
 			JRResultSetDataSource jrRS = new JRResultSetDataSource(rs);
-
 			String root_dir = "";
-			
 			if(sLayout.indexOf("/")!=0) {
 				root_dir = "/org/freedom/";
 			}
-			
 			System.out.println(FPrinterJob.class.getResourceAsStream( root_dir + sLayout));
-
 			Object SUBREPORT_DIR = hParam.get("SUBREPORT_DIR");
-			
 			if(SUBREPORT_DIR == null) {
 				String subreport_dir = "";
 				if(sLayout.lastIndexOf("/")>0){
@@ -333,20 +380,15 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 						subreport_dir = root_dir.substring(1) + sLayout.substring(0, sLayout.lastIndexOf("/"));
 					}
 				}
-				
 				hParam.put("SUBREPORT_DIR", subreport_dir + "/");
 			}
-			
 			relJasper = JasperFillManager.fillReport(FPrinterJob.class.getResourceAsStream(root_dir + sLayout), hParam, jrRS);
-
 			JRViewerPad viewer = new JRViewerPad(relJasper, mail);
 			this.setContentPane(viewer);
 		}
 		catch (JRException err) {
 			err.printStackTrace();
 		}
-
-
 		try {
 			setMaximum(true);
 		}
@@ -356,7 +398,8 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 	}
 	
 	
-	public FPrinterJob(String sLayout, String sTituloRel, String sFiltros, String caminhoXml, String xPath, HashMap<String, Object> hParamRel, JInternalFrame ifOrig, EmailBean mail) {
+	public FPrinterJob(String sLayout, String sTituloRel, String sFiltros, String caminhoXml
+			, String xPath, HashMap<String, Object> hParamRel, JInternalFrame ifOrig, EmailBean mail) {
 
 		super(false);
 		setTitulo(sTituloRel, this.getClass().getName());
