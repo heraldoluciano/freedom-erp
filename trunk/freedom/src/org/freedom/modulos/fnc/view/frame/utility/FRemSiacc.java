@@ -228,7 +228,7 @@ public class FRemSiacc extends FRemFBN {
 				dlGr.preview();
 			}
 			else {
-				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+				dlGr.print(true);
 			}
 
 			rs.close();
