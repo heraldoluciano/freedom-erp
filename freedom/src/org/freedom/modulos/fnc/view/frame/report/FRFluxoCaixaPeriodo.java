@@ -13,8 +13,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-import net.sf.jasperreports.engine.JasperPrintManager;
-
 import org.freedom.acao.RadioGroupEvent;
 import org.freedom.acao.RadioGroupListener;
 import org.freedom.library.functions.Funcoes;
@@ -263,11 +261,7 @@ public class FRFluxoCaixaPeriodo extends FRelatorio implements RadioGroupListene
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.preview();
 		} else {
-			try {
-				dlGr.print(true);
-			} catch ( Exception err ) {
-				Funcoes.mensagemErro( this, "Erro na impressão de relatório de Fluxo de Caixa por Período!" + err.getMessage(), true, con, err );
-			}
+			dlGr.print(true);
 		}
 		
 	}
