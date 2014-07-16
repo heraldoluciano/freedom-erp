@@ -159,17 +159,11 @@ public class DLEnviarEmail extends FFDialogo {
 
 	public void preparar() {
 
-		while (!validaEmailBean(mail)) {
-
-			// mail = getEmailBean( mail );
-
-			if (mail == null) {
-				break;
-			}
+		if (!validaEmailBean(mail)) {
+			Funcoes.mensagemInforma(null, "Não foi encontrada configuração de e-mail para o usuário atual !");
+			return;
 		}
-
 		if (mail != null) {
-
 			txtHost.setVlrString(mail.getHost());
 			txtPort.setVlrInteger(mail.getPorta());
 			txtUser.setVlrString(mail.getUsuario());
@@ -177,9 +171,7 @@ public class DLEnviarEmail extends FFDialogo {
 			txtFrom.setVlrString(mail.getDe());
 			txtTo.setVlrString(mail.getPara());
 			txtAssunto.setVlrString(mail.getAssunto());
-
 			StringBuilder msg = new StringBuilder();
-
 			if (mail.getCorpo() != null) {
 				msg.append(mail.getCorpo());
 			}
@@ -187,9 +179,7 @@ public class DLEnviarEmail extends FFDialogo {
 				msg.append("\n");
 				msg.append(mail.getAssinatura());
 			}
-
 			txtMessage.setVlrString(msg.toString());
-
 			preparado = true;
 		}
 	}
