@@ -295,6 +295,7 @@ public class FPrinterJob extends FFilho implements ActionListener, KeyListener {
 			JasperExportManager.exportReportToPdfFile(relJasper, filename);
 			executePDF(sgestacao.getPathpdfreader(), filename);
 		} catch (Exception err) {
+			err.printStackTrace();
 			Funcoes.mensagemErro(this, "Erro exportando realtório !\n"+err.getMessage());
 		}
 	}
