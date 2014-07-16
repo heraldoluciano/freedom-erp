@@ -879,7 +879,7 @@ $F{CNPJCLI}.substring(12, 14)]]></textFieldExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" lineSpacing="Single">
-					<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{ENDFILIAL}.trim() + ", "
 + $P{NUMFILIAL}.trim() + " - "
@@ -1303,7 +1303,7 @@ $F{CNPJCLI}.substring(12, 14)]]></textFieldExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" lineSpacing="Single">
-					<font fontName="SansSerif" size="6" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<font fontName="SansSerif" size="6" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["Emitido por: "+$P{USUARIO}.trim() + " em "]]></textFieldExpression>
 			</textField>
