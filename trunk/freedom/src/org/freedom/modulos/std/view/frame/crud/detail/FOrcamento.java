@@ -55,8 +55,6 @@ import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
-import net.sf.jasperreports.engine.JasperPrintManager;
-
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.DeleteEvent;
@@ -1972,11 +1970,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.preview();
 		} else {
-			try {
-				dlGr.print(true);
-			} catch ( Exception err ) {
-				Funcoes.mensagemErro( this, "Erro na impressão de Orçamento!" + err.getMessage(), true, con, err );
-			}
+			dlGr.print(true);
 		}
 	}
 

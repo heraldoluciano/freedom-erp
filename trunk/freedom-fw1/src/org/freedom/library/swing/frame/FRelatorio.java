@@ -34,6 +34,8 @@ import java.awt.event.KeyListener;
 import javax.swing.BorderFactory;
 
 import org.freedom.bmps.Icone;
+import org.freedom.infra.beans.Sgestacao;
+import org.freedom.library.business.component.PrintConstant;
 import org.freedom.library.swing.component.JButtonPad;
 import org.freedom.library.swing.component.JButtonXLS;
 import org.freedom.library.swing.component.JLabelPad;
@@ -69,12 +71,15 @@ public abstract class FRelatorio extends FFilho implements ActionListener, KeyLi
 
 	Container c = null;
 
+	private Sgestacao sgestacao = null;
+
 	public FRelatorio() {
 		this(true);
 	}
 
 	public FRelatorio(boolean comScroll) {
 		super(comScroll);
+		setSgestacao(Aplicativo.getInstance().getSgestacao());
 		setTitulo("Requisiçao de Relatório", this.getClass().getName());
 		setAtribos(100, 100, 350, 200);
 		c = super.getTela();
@@ -89,13 +94,17 @@ public abstract class FRelatorio extends FFilho implements ActionListener, KeyLi
 		pnBotoes.add(btImp);
 		pnBotoes.add(btPrevimp);
 		pnBotoes.add(btExportXLS);
-
 		btExportXLS.addActionListener( this );
-		
-		btImp.setToolTipText("Imprimir (Ctrl + I)");
-		btPrevimp.setToolTipText("Visualizar Impressão (Ctrl + P)");
+		if (getSgestacao()==null || !"S".equalsIgnoreCase(getSgestacao().getPrintpdf())) {
+			btImp.setToolTipText(PrintConstant.TEXTOIMP01);
+			btPrevimp.setToolTipText(PrintConstant.TEXTOPREVIMP01);
+		} else  {
+			btImp.setIcon(Icone.novo("btPrevimp.png"));
+			btPrevimp.setIcon(Icone.novo("btPdf.gif"));
+			btImp.setToolTipText(PrintConstant.TEXTOIMP02);
+			btPrevimp.setToolTipText(PrintConstant.TEXTOPREVIMP02);
+		}
 		btSair.setToolTipText("Sair (ESC)");
-
 		btImp.addActionListener(this);
 		btPrevimp.addActionListener(this);
 		btSair.addActionListener(this);
@@ -160,6 +169,14 @@ public abstract class FRelatorio extends FFilho implements ActionListener, KeyLi
 		return c;
 	}
 
+	public Sgestacao getSgestacao() {
+		return sgestacao;
+	}
+
+	public void setSgestacao(Sgestacao sgestacao) {
+		this.sgestacao = sgestacao;
+	}
+
 	public abstract void imprimir(TYPE_PRINT typeprint);
 
 	public void actionPerformed(ActionEvent evt) {
@@ -198,11 +215,11 @@ public abstract class FRelatorio extends FFilho implements ActionListener, KeyLi
 		if (kevt.getKeyCode() == KeyEvent.VK_CONTROL) {
 			bCtrl = true;
 		}
-		else if (kevt.getKeyCode() == KeyEvent.VK_I) {
+		else if (kevt.getKeyCode() == KeyEvent.VK_P) {
 			if (bCtrl)
 				btImp.doClick();
 		}
-		else if (kevt.getKeyCode() == KeyEvent.VK_P) {
+		else if (kevt.getKeyCode() == KeyEvent.VK_R) {
 			if (bCtrl)
 				btPrevimp.doClick();
 		}

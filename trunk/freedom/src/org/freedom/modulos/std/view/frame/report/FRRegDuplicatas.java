@@ -34,8 +34,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-import net.sf.jasperreports.engine.JasperPrintManager;
-
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.ListaCampos;
@@ -202,11 +200,7 @@ public class FRRegDuplicatas extends FRelatorio {
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.preview();
 		} else {
-			try {
-				dlGr.print(true);
-			} catch ( Exception err ) {
-				Funcoes.mensagemErro( this, "Erro na impressão de relatório de Registro de duplicatas!" + err.getMessage(), true, con, err );
-			}
+			dlGr.print(true);
 		}
 	}
 	

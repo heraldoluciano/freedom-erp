@@ -34,8 +34,6 @@ import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.SwingConstants;
 
-import net.sf.jasperreports.engine.JasperPrintManager;
-
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.component.ImprimeOS;
@@ -559,11 +557,7 @@ public class FRCompras extends FRelatorio {
 			dlGr.preview();
 		}
 		else {
-			try {
-				dlGr.print(true);
-			} catch ( Exception err ) {
-				Funcoes.mensagemErro( this, "Erro na impressão de relatório Compras Geral!" + err.getMessage(), true, con, err );
-			}
+			dlGr.print(true);
 		}
 	}
 }
