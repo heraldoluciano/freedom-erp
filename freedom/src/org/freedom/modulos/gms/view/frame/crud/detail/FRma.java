@@ -38,8 +38,6 @@ import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
-import net.sf.jasperreports.engine.JasperPrintManager;
-
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.InsertEvent;
@@ -1448,7 +1446,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener, Foc
 		}
 		
 
-		dlGr = new FPrinterJob( "relatorios/FRRma.jasper", "Requisição de material", sCab, rs, hParam, this );
+		dlGr = new FPrinterJob( "relatorios/rma.jasper", "Requisição de material", sCab, rs, hParam, this );
 
 		if ( bVisualizar==TYPE_PRINT.VIEW ) {
 			dlGr.preview();
