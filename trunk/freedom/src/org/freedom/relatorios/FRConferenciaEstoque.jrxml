@@ -364,7 +364,7 @@
 			<staticText>
 				<reportElement key="textField" mode="Transparent" x="3" y="6" width="216" height="12" forecolor="#0000FF" backcolor="#FFFFFF"/>
 				<textElement verticalAlignment="Middle" rotation="None" lineSpacing="Single" markup="none">
-					<font fontName="SansSerif" size="7" isBold="true" isItalic="true" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="CP1252" isPdfEmbedded="false"/>
+					<font fontName="SansSerif" size="7" isBold="true" isItalic="true" isUnderline="false" isStrikeThrough="false"/>
 				</textElement>
 				<text><![CDATA[Powered by Freedom-ERP - www.freedom.org.br]]></text>
 			</staticText>
