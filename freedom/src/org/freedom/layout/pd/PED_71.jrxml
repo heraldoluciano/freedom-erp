@@ -1194,8 +1194,7 @@ $F{CNPJCLI}.substring(12, 14)]]></textFieldExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
-					<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
-					<paragraph lineSpacing="Single"/>
+					<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{RAZEMP}]]></textFieldExpression>
 			</textField>
@@ -1208,8 +1207,7 @@ $F{CNPJCLI}.substring(12, 14)]]></textFieldExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
-					<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
-					<paragraph lineSpacing="Single"/>
+					<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["Relatório emitido por: "+$P{USUARIO}]]></textFieldExpression>
 			</textField>
@@ -1222,8 +1220,7 @@ $F{CNPJCLI}.substring(12, 14)]]></textFieldExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None">
-					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Times-Roman" pdfEncoding="CP1252" isPdfEmbedded="false"/>
-					<paragraph lineSpacing="Single"/>
+					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
 				</textElement>
 				<textFieldExpression class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
 			</textField>
@@ -1236,8 +1233,7 @@ $F{CNPJCLI}.substring(12, 14)]]></textFieldExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None">
-					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
-					<paragraph lineSpacing="Single"/>
+					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{FILTROS}]]></textFieldExpression>
 			</textField>
