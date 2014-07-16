@@ -91,7 +91,7 @@ AND V.DTEMITVENDA BETWEEN '2011-03-02' AND '2011-03-02']]>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None">
 						<font fontName="SansSerif" size="9" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Courier-Bold" pdfEncoding="Cp1250" isPdfEmbedded="false"/>
-						<paragraph lineSpacing="Single"/>
+						
 					</textElement>
 					<text><![CDATA[Totais gerais do periodo]]></text>
 				</staticText>
@@ -104,8 +104,8 @@ AND V.DTEMITVENDA BETWEEN '2011-03-02' AND '2011-03-02']]>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None">
-						<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="CP1252" isPdfEmbedded="false"/>
-						<paragraph lineSpacing="Single"/>
+						<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+						
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TOTGERVLRPROD}]]></textFieldExpression>
 				</textField>
@@ -118,8 +118,8 @@ AND V.DTEMITVENDA BETWEEN '2011-03-02' AND '2011-03-02']]>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None">
-						<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="CP1252" isPdfEmbedded="false"/>
-						<paragraph lineSpacing="Single"/>
+						<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+						
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TOTGERVLRDESC}]]></textFieldExpression>
 				</textField>
@@ -132,8 +132,8 @@ AND V.DTEMITVENDA BETWEEN '2011-03-02' AND '2011-03-02']]>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None">
-						<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="CP1252" isPdfEmbedded="false"/>
-						<paragraph lineSpacing="Single"/>
+						<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+						
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TOTGERVLRLIQ}]]></textFieldExpression>
 				</textField>
@@ -160,7 +160,7 @@ AND V.DTEMITVENDA BETWEEN '2011-03-02' AND '2011-03-02']]>
 					</box>
 					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None">
 						<font fontName="SansSerif" size="9" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Courier" pdfEncoding="Cp1250" isPdfEmbedded="false"/>
-						<paragraph lineSpacing="Single"/>
+						
 					</textElement>
 					<text><![CDATA[Vendedor]]></text>
 				</staticText>
@@ -173,8 +173,8 @@ AND V.DTEMITVENDA BETWEEN '2011-03-02' AND '2011-03-02']]>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
-						<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="CP1252" isPdfEmbedded="false"/>
-						<paragraph lineSpacing="Single"/>
+						<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+						
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMEVEND}]]></textFieldExpression>
 				</textField>
@@ -197,8 +197,8 @@ AND V.DTEMITVENDA BETWEEN '2011-03-02' AND '2011-03-02']]>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None">
-						<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="CP1252" isPdfEmbedded="false"/>
-						<paragraph lineSpacing="Single"/>
+						<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+						
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TOTVLRDESC}]]></textFieldExpression>
 				</textField>
@@ -211,8 +211,8 @@ AND V.DTEMITVENDA BETWEEN '2011-03-02' AND '2011-03-02']]>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None">
-						<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="CP1252" isPdfEmbedded="false"/>
-						<paragraph lineSpacing="Single"/>
+						<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+						
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TOTVLRLIQ}]]></textFieldExpression>
 				</textField>
@@ -226,7 +226,7 @@ AND V.DTEMITVENDA BETWEEN '2011-03-02' AND '2011-03-02']]>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None">
 						<font fontName="SansSerif" size="9" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Courier-Bold" pdfEncoding="Cp1250" isPdfEmbedded="false"/>
-						<paragraph lineSpacing="Single"/>
+						
 					</textElement>
 					<text><![CDATA[Sub-Totais]]></text>
 				</staticText>
@@ -239,8 +239,8 @@ AND V.DTEMITVENDA BETWEEN '2011-03-02' AND '2011-03-02']]>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None">
-						<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="CP1252" isPdfEmbedded="false"/>
-						<paragraph lineSpacing="Single"/>
+						<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+						
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TOTVLRPROD}]]></textFieldExpression>
 				</textField>
@@ -274,7 +274,7 @@ AND V.DTEMITVENDA BETWEEN '2011-03-02' AND '2011-03-02']]>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None">
 					<font fontName="SansSerif" size="9" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Courier" pdfEncoding="Cp1250" isPdfEmbedded="false"/>
-					<paragraph lineSpacing="Single"/>
+					
 				</textElement>
 				<text><![CDATA[Nf / Pedido]]></text>
 			</staticText>
@@ -300,8 +300,8 @@ AND V.DTEMITVENDA BETWEEN '2011-03-02' AND '2011-03-02']]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
-					<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
-					<paragraph lineSpacing="Single"/>
+					<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+					
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{RAZEMP}]]></textFieldExpression>
 			</textField>
@@ -326,8 +326,8 @@ AND V.DTEMITVENDA BETWEEN '2011-03-02' AND '2011-03-02']]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
-					<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
-					<paragraph lineSpacing="Single"/>
+					<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+					
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["Relatório emitido por: "+$P{USUARIO}]]></textFieldExpression>
 			</textField>
@@ -341,7 +341,7 @@ AND V.DTEMITVENDA BETWEEN '2011-03-02' AND '2011-03-02']]>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None">
 					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
-					<paragraph lineSpacing="Single"/>
+					
 				</textElement>
 				<textFieldExpression class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
 			</textField>
@@ -354,8 +354,8 @@ AND V.DTEMITVENDA BETWEEN '2011-03-02' AND '2011-03-02']]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None">
-					<font fontName="SansSerif" size="10" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
-					<paragraph lineSpacing="Single"/>
+					<font fontName="SansSerif" size="10" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+					
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{TITULO}]]></textFieldExpression>
 			</textField>
@@ -368,8 +368,8 @@ AND V.DTEMITVENDA BETWEEN '2011-03-02' AND '2011-03-02']]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None">
-					<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
-					<paragraph lineSpacing="Single"/>
+					<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+					
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{FILTROS}]]></textFieldExpression>
 			</textField>
@@ -383,7 +383,7 @@ AND V.DTEMITVENDA BETWEEN '2011-03-02' AND '2011-03-02']]>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None">
 					<font fontName="SansSerif" size="9" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Courier" pdfEncoding="Cp1250" isPdfEmbedded="false"/>
-					<paragraph lineSpacing="Single"/>
+					
 				</textElement>
 				<text><![CDATA[Cliente]]></text>
 			</staticText>
@@ -397,7 +397,7 @@ AND V.DTEMITVENDA BETWEEN '2011-03-02' AND '2011-03-02']]>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None">
 					<font fontName="SansSerif" size="9" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Courier" pdfEncoding="Cp1250" isPdfEmbedded="false"/>
-					<paragraph lineSpacing="Single"/>
+					
 				</textElement>
 				<text><![CDATA[F. de Pagamento]]></text>
 			</staticText>
@@ -411,7 +411,7 @@ AND V.DTEMITVENDA BETWEEN '2011-03-02' AND '2011-03-02']]>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None">
 					<font fontName="SansSerif" size="9" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Courier" pdfEncoding="Cp1250" isPdfEmbedded="false"/>
-					<paragraph lineSpacing="Single"/>
+					
 				</textElement>
 				<text><![CDATA[Valor]]></text>
 			</staticText>
@@ -425,7 +425,7 @@ AND V.DTEMITVENDA BETWEEN '2011-03-02' AND '2011-03-02']]>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None">
 					<font fontName="SansSerif" size="9" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Courier" pdfEncoding="Cp1250" isPdfEmbedded="false"/>
-					<paragraph lineSpacing="Single"/>
+					
 				</textElement>
 				<text><![CDATA[Liquido]]></text>
 			</staticText>
@@ -439,7 +439,7 @@ AND V.DTEMITVENDA BETWEEN '2011-03-02' AND '2011-03-02']]>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None">
 					<font fontName="SansSerif" size="9" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Courier" pdfEncoding="Cp1250" isPdfEmbedded="false"/>
-					<paragraph lineSpacing="Single"/>
+					
 				</textElement>
 				<text><![CDATA[Desconto]]></text>
 			</staticText>
@@ -459,8 +459,8 @@ AND V.DTEMITVENDA BETWEEN '2011-03-02' AND '2011-03-02']]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None">
-					<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="CP1252" isPdfEmbedded="false"/>
-					<paragraph lineSpacing="Single"/>
+					<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+					
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["P".equals($F{STATUSVENDA}.substring(0,1)) ? "P-" + $F{CODVENDA} : "V-" + $F{DOCVENDA}]]></textFieldExpression>
 			</textField>
@@ -473,8 +473,8 @@ AND V.DTEMITVENDA BETWEEN '2011-03-02' AND '2011-03-02']]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None">
-					<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="CP1252" isPdfEmbedded="false"/>
-					<paragraph lineSpacing="Single"/>
+					<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+					
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{RAZCLI}]]></textFieldExpression>
 			</textField>
@@ -487,8 +487,8 @@ AND V.DTEMITVENDA BETWEEN '2011-03-02' AND '2011-03-02']]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None">
-					<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="CP1252" isPdfEmbedded="false"/>
-					<paragraph lineSpacing="Single"/>
+					<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+					
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRPRODVENDA}]]></textFieldExpression>
 			</textField>
@@ -501,8 +501,8 @@ AND V.DTEMITVENDA BETWEEN '2011-03-02' AND '2011-03-02']]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None">
-					<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="CP1252" isPdfEmbedded="false"/>
-					<paragraph lineSpacing="Single"/>
+					<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+					
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRLIQVENDA}]]></textFieldExpression>
 			</textField>
@@ -515,8 +515,8 @@ AND V.DTEMITVENDA BETWEEN '2011-03-02' AND '2011-03-02']]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None">
-					<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="CP1252" isPdfEmbedded="false"/>
-					<paragraph lineSpacing="Single"/>
+					<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+					
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRDESCITVENDA}]]></textFieldExpression>
 			</textField>
@@ -529,8 +529,8 @@ AND V.DTEMITVENDA BETWEEN '2011-03-02' AND '2011-03-02']]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Justified" verticalAlignment="Middle" rotation="None">
-					<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="CP1252" isPdfEmbedded="false"/>
-					<paragraph lineSpacing="Single"/>
+					<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+					
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCPLANOPAG}]]></textFieldExpression>
 			</textField>
@@ -543,8 +543,8 @@ AND V.DTEMITVENDA BETWEEN '2011-03-02' AND '2011-03-02']]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None">
-					<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="CP1252" isPdfEmbedded="false"/>
-					<paragraph lineSpacing="Single"/>
+					<font fontName="SansSerif" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+					
 				</textElement>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{CODCLI}]]></textFieldExpression>
 			</textField>
@@ -564,8 +564,8 @@ AND V.DTEMITVENDA BETWEEN '2011-03-02' AND '2011-03-02']]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None">
-					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="CP1252" isPdfEmbedded="false"/>
-					<paragraph lineSpacing="Single"/>
+					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+					
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
 			</textField>
@@ -578,8 +578,8 @@ AND V.DTEMITVENDA BETWEEN '2011-03-02' AND '2011-03-02']]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
-					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="CP1252" isPdfEmbedded="false"/>
-					<paragraph lineSpacing="Single"/>
+					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+					
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["" + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
