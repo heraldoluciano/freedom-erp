@@ -24974,23 +24974,12 @@ CODVENDA INTEGER,
 CODEMPCP INTEGER,
 CODFILIALCP SMALLINT,
 CODCOMPRA INTEGER)
+RETURNS (CNF BIGINT)
 AS 
 
-declare variable icnf bigint;
 begin
    --execute procedure sgdebugsp 'sggeracnfsp', 'Entrou na procedure geracnf';
-   SELECT BISEQ FROM SGSEQUENCE_IDSP('NCF') INTO :ICNF;
-    
-   if(TIPO='CP') THEN
-   BEGIN
-      --execute procedure sgdebugsp 'sggeracnfsp', 'PEGOU tipo CP e O ICNF: '||:ICNF;
-      UPDATE CPCOMPRA set CNF=:ICNF WHERE CODEMP=:codempcp AND CODFILIAL=:codfilialcp AND CODCOMPRA=:CODCOMPRA;
-   END
-   ELSE IF(TIPO='VD') THEN
-   BEGIN
-      UPDATE VDVENDA set CNF=:ICNF WHERE CODEMP=:CODEMP AND CODFILIAL=:CODFILIAL AND
-                        CODVENDA=:CODVENDA AND TIPOVENDA=:TIPOVENDA;
-   END
+   SELECT BISEQ FROM SGSEQUENCE_IDSP('NCF') INTO :CNF;
    suspend;
 end ^
 
@@ -28747,6 +28736,7 @@ AS
   DECLARE VARIABLE IFILIALTIPOMOV INTEGER;
   DECLARE VARIABLE IFILIALPAG INTEGER;
   DECLARE VARIABLE CSEQNFTIPOMOV CHAR(1);
+  DECLARE VARIABLE TIPOMODNOTA CHAR(1);
 BEGIN
   IF (new.EMMANUT IS NULL) THEN
      new.EMMANUT='N';
@@ -28821,6 +28811,17 @@ BEGIN
            new.vlrliqcompra = 0;
            new.vlripicompra = 0;
       END
+      if (coalesce(new.cnf,0)=0) then
+      begin
+         select mn.tipomodnota from eqtipomov tm, lfmodnota mn
+			where mn.codemp=tm.codempmn and mn.codfilial=tm.codfilialmn and mn.codmodnota=tm.codmodnota
+			and tm.codemp=new.codemptm and tm.codfilial=new.codfilialtm and tm.codtipomov=new.codtipomov
+			into :tipomodnota;
+		 if (coalesce(tipomodnota,'')='E') then
+		 begin 
+         	select cnf from sggeracnfsp('CP', null,null,null,null,new.codemp, new.codfilial,new.codcompra) into new.cnf;
+         end
+      end
 
   END
     -- Atualizando o status do documento fiscal para 02 - Documento cancelado, quando nota for cancelado pelo sistema.
@@ -28853,7 +28854,7 @@ AS
   DECLARE VARIABLE SCODFILIALP1 SMALLINT;
   DECLARE VARIABLE GERAPAGEMIS CHAR(1);
   DECLARE VARIABLE DTBASE DATE;
-  DECLARE VARIABLE ICODMODNOTA INTEGER;
+  --DECLARE VARIABLE ICODMODNOTA INTEGER;
 BEGIN
   IF ( not ( (new.EMMANUT='S') or ( (old.EMMANUT='S') and (old.EMMANUT IS NOT NULL) )) ) THEN
   BEGIN
@@ -28898,13 +28899,13 @@ BEGIN
                new.FLAG,new.CODEMP,new.CODFILIAL, new.CODEMPTC, new.CODFILIALTC, new.CODTIPOCOB,
                new.codempct, new.codfilialct, new.numconta, new.codempcc,  new.codfilialcc, new.anocc, new.codcc, new.codemppn, new.codfilialpn, new.codplan, new.obspag );
                
-          SELECT CODMODNOTA FROM EQTIPOMOV m WHERE m.codemp=new.codemptm and m.codfilial=new.codfilialtm and m.codtipomov=new.codtipomov INTO ICODMODNOTA;
+          --SELECT CODMODNOTA FROM EQTIPOMOV m WHERE m.codemp=new.codemptm and m.codfilial=new.codfilialtm and m.codtipomov=new.codtipomov INTO ICODMODNOTA;
           --execute procedure sgdebugsp 'cpcompratgbu', 'PEGOU O MODELO DE NOTA:'||:ICODMODNOTA;
-          IF(:ICODMODNOTA=55) THEN
-          BEGIN
+          --IF(:ICODMODNOTA=55) THEN
+         -- BEGIN
               --execute procedure sgdebugsp 'cpcompratgbu', 'ENTROU O MODELO DA NOTA É IGUAL A 55:';
-              execute procedure sggeracnfsp('CP', null,null,null,null,new.codemp, new.codfilial,new.codcompra);
-          END
+           --   execute procedure sggeracnfsp('CP', null,null,null,null,new.codemp, new.codfilial,new.codcompra);
+          --END
         END
         ELSE IF ((new.STATUSCOMPRA IN ('P2','C2')) AND (old.STATUSCOMPRA IN ('P2','C2'))) THEN
         BEGIN
@@ -41020,7 +41021,7 @@ AS
   DECLARE VARIABLE CADICFRETEVD CHAR(1);
   DECLARE VARIABLE PERCIT NUMERIC(9,2);
   DECLARE VARIABLE RETENSAOIMP CHAR(1);
-
+  DECLARE VARIABLE TIPOMODNOTA CHAR(1);
   --DECLARE VARIABLE V_CHAVE VARCHAR(500);
   --DECLARE VARIABLE V_RECURSIVO INTEGER;
 BEGIN
@@ -41276,6 +41277,18 @@ BEGIN
       BEGIN
         new.DOCVENDA = old.DOCVENDA;
       END
+      if (coalesce(new.cnf,0)=0) then
+      begin
+         select mn.tipomodnota from eqtipomov tm, lfmodnota mn
+			where mn.codemp=tm.codempmn and mn.codfilial=tm.codfilialmn and mn.codmodnota=tm.codmodnota
+			and tm.codemp=new.codemptm and tm.codfilial=new.codfilialtm and tm.codtipomov=new.codtipomov
+			into :tipomodnota;
+		 if (coalesce(tipomodnota,'')='E') then
+		 begin 
+         	select cnf from sggeracnfsp('VD', new.codemp, new.codfilial, new.tipovenda, new.codvenda,null,null,null) into new.cnf;
+         end
+      end
+      
     END
 
     -- Atualizando o status do documento fiscal para 02 - Documento cancelado, quando nota for cancelado pelo sistema.
@@ -41331,7 +41344,7 @@ as
     declare variable tpredicms char(1);
     declare variable redbasefrete char(1);
     declare variable vlrretensaoiss numeric(15, 5);
-    declare variable icodmodnota integer;
+    --declare variable icodmodnota integer;
 
   --DECLARE VARIABLE V_CHAVE VARCHAR(500);
   --DECLARE VARIABLE V_RECURSIVO INTEGER;
@@ -41591,13 +41604,13 @@ BEGIN
                delete from fnreceber where codvenda = new.codvenda and tipovenda=new.tipovenda and codemp=new.codemp and codfilialva = new.codfilial;
            end
            
-           SELECT CODMODNOTA FROM EQTIPOMOV m WHERE m.codemp=new.codemptm and m.codfilial=new.codfilialtm and m.codtipomov=new.codtipomov INTO ICODMODNOTA;
+           --SELECT CODMODNOTA FROM EQTIPOMOV m WHERE m.codemp=new.codemptm and m.codfilial=new.codfilialtm and m.codtipomov=new.codtipomov INTO ICODMODNOTA;
            --execute procedure sgdebugsp 'vdvendatgbu', 'PEGOU O MODELO DE NOTA:'||:ICODMODNOTA;
-           IF(:ICODMODNOTA=55) THEN
-           BEGIN
+           --IF(:ICODMODNOTA=55) THEN
+           --BEGIN
              --execute procedure sgdebugsp 'vdvendatgbu', 'ENTROU NO IF MODELO DA NOTA É IGUAL A 55:';
-             execute procedure sggeracnfsp('VD', new.codemp, new.codfilial, new.tipovenda, new.codvenda,null,null,null);
-           END
+             --execute procedure sggeracnfsp('VD', new.codemp, new.codfilial, new.tipovenda, new.codvenda,null,null,null);
+           --END
         end
         -- De pedido ou venda aberto mudou para finalizado
         if ((new.statusvenda in ('P2','V2')) and (old.statusvenda in ('P1','V1'))) then
