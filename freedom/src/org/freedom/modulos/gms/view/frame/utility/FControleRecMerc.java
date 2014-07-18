@@ -159,7 +159,7 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 	// Enums
 
 	private enum DETALHAMENTO {
-		STATUS, STATUSTXT, TICKET, CODTIPORECMERC, DATA, HORA, PLACA, CODTRAN, NOMETRAN, CODFOR, NOMEFOR, PESOLIQUIDO, RENDA, CODCOMPRA;
+		STATUS, STATUSTXT, TICKET, CODTIPORECMERC, DATA, HORA, PLACA, CODTRAN, NOMETRAN, CODFOR, NOMEFOR, PESOLIQUIDO, RENDA, CODCOMPRA, CODVENDA;
 	}
 
 	public FControleRecMerc() {
@@ -375,7 +375,6 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 		tabDet.adicColuna( "" );
 		tabDet.adicColuna( "Ticket" );
 		tabDet.adicColuna( "Cód.Tipo.Rec.Merc." );
-
 		tabDet.adicColuna( "Data" );
 		tabDet.adicColuna( "Hora" );
 		tabDet.adicColuna( "Placa" );
@@ -385,7 +384,8 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 		tabDet.adicColuna( "Fornecedor" );
 		tabDet.adicColuna( "Peso Liquido" );
 		tabDet.adicColuna( "Renda" );
-		tabDet.adicColuna( "Cód.ped." );
+		tabDet.adicColuna( "Cód.ped.cp." );
+		tabDet.adicColuna( "Cód.ped.dv." );
 
 		tabDet.setTamColuna( 21, DETALHAMENTO.STATUS.ordinal() );
 		tabDet.setColunaInvisivel( DETALHAMENTO.STATUSTXT.ordinal() );
@@ -400,7 +400,9 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 		tabDet.setTamColuna( 200, DETALHAMENTO.NOMEFOR.ordinal() );
 		tabDet.setTamColuna( 100, DETALHAMENTO.PESOLIQUIDO.ordinal() );
 		tabDet.setTamColuna( 50, DETALHAMENTO.RENDA.ordinal() );
-		tabDet.setTamColuna( 50, DETALHAMENTO.CODCOMPRA.ordinal() );
+		tabDet.setTamColuna( 70, DETALHAMENTO.CODCOMPRA.ordinal() );
+		tabDet.setTamColuna( 70, DETALHAMENTO.CODVENDA.ordinal() );
+		
 //		tabDet.setColunaInvisivel( DETALHAMENTO.CODCOMPRA.ordinal() );
 		// tabDet.setColunaInvisivel( 2 );
 
@@ -415,7 +417,7 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 			sql.append(", rm.placaveiculo placa, rm.codtran, tr.nometran, rm.codfor, fr.nomefor " );
 			sql.append( ", rm.rendaamostragem renda ");
 			sql.append( ", cast(ic.qtditcompra as decimal(15,0)) qtditcompra ");
-			sql.append( ", cp.codcompra " );
+			sql.append( ", cp.codcompra, dv.codvenda " );
 			sql.append( "from eqrecmerc rm ");
 			sql.append( "left outer join cpforneced fr ");
 			sql.append( "on fr.codemp=rm.codempfr and fr.codfilial=rm.codfilialfr and fr.codfor=rm.codfor ");
@@ -431,6 +433,9 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 			sql.append( "left outer join cpitcompra ic ");
 			sql.append( "on ic.codemp=irc.codempcp and ic.codfilial=irc.codfilialcp and ic.codcompra=irc.codcompra ");
 			sql.append( "and ic.coditcompra=irc.coditcompra ");
+			sql.append( "left outer join cpdevolucao dv ");
+			sql.append( "on dv.codemp=ic.codemp and dv.codfilial=ic.codfilial and dv.codcompra=ic.codcompra ");
+			sql.append(" and dv.coditcompra=ic.coditcompra ");
 			sql.append( "where irc.codemp=rm.codemp and irc.codfilial=rm.codfilial and irc.ticket=rm.ticket ");
 			sql.append( "and ic.codemp=irc.codempcp and ic.codfilial=irc.codfilialcp and ic.codcompra=irc.codcompra ");
 			sql.append( "and ic.coditcompra=irc.coditcompra ");
@@ -538,6 +543,7 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 				tabDet.setValor( pesoliquido, row, DETALHAMENTO.PESOLIQUIDO.ordinal() );
 				tabDet.setValor( renda > 0 ? renda : 0, row, DETALHAMENTO.RENDA.ordinal() );
 				tabDet.setValor( new Integer(rs.getInt( DETALHAMENTO.CODCOMPRA.toString() )), row, DETALHAMENTO.CODCOMPRA.ordinal() );
+				tabDet.setValor( new Integer(rs.getInt( DETALHAMENTO.CODVENDA.toString() )), row, DETALHAMENTO.CODVENDA.ordinal() );
 				row++;
 			}
 			rs.close();
