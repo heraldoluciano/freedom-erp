@@ -3,6 +3,7 @@ package org.freedom.library.component;
 import org.apache.commons.lang.exception.NestableException;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.usermodel.contrib.HSSFCellUtil;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
@@ -15,7 +16,8 @@ public class ResultSetToExcel {
   private HSSFWorkbook workbook;
   private HSSFSheet sheet;
   private HSSFFont boldFont;
-  private HSSFDataFormat format;
+  @SuppressWarnings("unused")
+private HSSFDataFormat format;
   private ResultSet resultSet;
   private FormatType[] formatTypes;
   public ResultSetToExcel(ResultSet resultSet, FormatType[] formatTypes, String sheetName) {
@@ -30,7 +32,7 @@ public class ResultSetToExcel {
   public ResultSetToExcel(ResultSet resultSet, String sheetName) {
     this(resultSet, null, sheetName);
   }
-  private FormatType getFormatType(Class _class) {
+  private FormatType getFormatType(@SuppressWarnings("rawtypes") Class _class) {
     if (_class == Integer.class || _class == Long.class) {
       return FormatType.INTEGER;
     } else if (_class == Float.class || _class == Double.class || _class == BigDecimal.class) {
@@ -59,7 +61,7 @@ public class ResultSetToExcel {
         String title = resultSetMetaData.getColumnName(i + 1);
         writeCell(row, i, title, FormatType.TEXT, boldFont);
         if (isAutoDecideFormatTypes) {
-          Class _class = Class.forName(resultSetMetaData.getColumnClassName(i + 1));
+          Class<?> _class = Class.forName(resultSetMetaData.getColumnClassName(i + 1));
           formatTypes[i] = getFormatType(_class);
         }
       }
@@ -91,7 +93,8 @@ public class ResultSetToExcel {
   private void writeCell(HSSFRow row, int col, Object value, FormatType formatType, HSSFFont font) throws NestableException {
     writeCell(row, col, value, formatType, null, font);
   }
-  private void writeCell(HSSFRow row, int col, Object value, FormatType formatType,
+  @SuppressWarnings("incomplete-switch")
+private void writeCell(HSSFRow row, int col, Object value, FormatType formatType,
                          Short bgColor, HSSFFont font) throws NestableException {
     HSSFCell cell = HSSFCellUtil.createCell(row, col, null);
     if (value == null) {
