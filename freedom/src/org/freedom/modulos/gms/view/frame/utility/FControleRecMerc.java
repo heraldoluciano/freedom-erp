@@ -21,6 +21,7 @@ import java.awt.event.MouseListener;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Vector;
@@ -189,36 +190,26 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 	}
 
 	private void carregaStatus() {
-
 		Vector<Object> valores = DAORecMerc.getValores();
 		Vector<String> labels = DAORecMerc.getLabels();
 		Vector<ImageIcon> icones = new Vector<ImageIcon>();
-
 		Vector<Object> item = null;
-
 		for ( int i = 0; i < valores.size(); i++ ) {
-
 			item = new Vector<Object>();
-
 			String valor = valores.elementAt( i ).toString();
 			String label = labels.elementAt( i );
 			ImageIcon icon = DAORecMerc.getImagem( valor, DAORecMerc.IMG_TAMANHO_P );
-
 			if ( DAORecMerc.STATUS_NOTA_ENTRADA_EMITIDA.getValue().equals( valor ) || DAORecMerc.STATUS_PEDIDO_COMPRA_EMITIDO.getValue().equals( valor ) ) {
 				item.addElement( new Boolean( false ) );
 			}
 			else {
 				item.addElement( new Boolean( true ) );
 			}
-
 			item.addElement( valor );
 			item.addElement( icon );
 			item.addElement( label );
-
 			tabstatus.adicLinha( item );
-
 		}
-
 	}
 
 	private void montaGridStatus() {
@@ -418,78 +409,57 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 	public void montaGrid() {
 
 		try {
-
 			StringBuilder sql = new StringBuilder();
-
 			sql.append( "select " );
 			sql.append( "rm.ticket, rm.codtiporecmerc, rm.status, rm.dtins data, rm.hins hora, rm.placaveiculo placa, rm.codtran, tr.nometran, rm.codfor, fr.nomefor, " );
-
 			sql.append( "(select first 1 cast(ic.qtditcompra as decimal(15,0)) from eqitrecmercitcp irc, cpitcompra ic ");
 			sql.append( "where irc.codemp=rm.codemp and irc.codfilial=rm.codfilial and irc.ticket=rm.ticket ");
 			sql.append( "and ic.codemp=irc.codempcp and ic.codfilial=irc.codfilialcp and ic.codcompra=irc.codcompra and ic.coditcompra=irc.coditcompra) qtditcompra, ");
-					
 			sql.append( "rm.rendaamostragem renda, ");
-			
 			sql.append( "(select first 1 irc.codcompra from eqitrecmercitcp irc ");
 			sql.append( "where irc.codemp=rm.codemp and irc.codfilial=rm.codfilial and irc.ticket=rm.ticket) codcompra ");
-
-			sql.append( "from eqrecmerc rm, vdtransp tr, cpforneced fr " );
-			sql.append( "where tr.codemp=rm.codemptr and tr.codfilial=rm.codfilialtr and tr.codtran=rm.codtran " );
-			sql.append( "and fr.codemp=rm.codempfr and fr.codfilial=rm.codfilialfr and fr.codfor=rm.codfor ");
-			sql.append( "and rm.codemp=? and rm.codfilial=? " );
+			sql.append( "from eqrecmerc rm ");
+			sql.append( "left outer join cpforneced fr ");
+			sql.append( "on fr.codemp=rm.codempfr and fr.codfilial=rm.codfilialfr and fr.codfor=rm.codfor ");
+			sql.append( "left outer join vdtransp tr ");
+			sql.append( "on tr.codemp=rm.codemptr and tr.codfilial=rm.codfilialtr and tr.codtran=rm.codtran " );
+			sql.append( "where rm.codemp=? and rm.codfilial=? " );
 			sql.append( "and rm.dtins between ? and ? " );
-
 			StringBuffer status = new StringBuffer( "" );
-
 			boolean primeiro = true;
-
 			for ( int i = 0; i < tabstatus.getNumLinhas(); i++ ) {
-
 				if ( (Boolean) tabstatus.getValor( i, 0 ) ) {
-
 					if ( primeiro ) {
 						sql.append( " and rm.status in (" );
 					}
 					else {
 						sql.append( "," );
 					}
-
 					sql.append( "'" + tabstatus.getValor( i, 1 ) + "'" );
-
 					primeiro = false;
 				}
-
 				if ( i == tabstatus.getNumLinhas() - 1 && !primeiro ) {
 					sql.append( " ) " );
 				}
-
 			}
-
 			if ( status.length() > 0 ) {
 				sql.append( " and rm.status in (" );
 				sql.append( status );
 				sql.append( ") " );
 			}
-
 			if ( txtCodFor.getVlrInteger() > 0 ) {
 				sql.append( " and rm.codempfr=? and rm.codfilialfr=? and rm.codfor=? " );
 			}
-			
 			if ( txtCodProd.getVlrInteger() > 0 ) {
 				sql.append( " and rm.codemppd=? and rm.codfilialpd=? and rm.codprod=? " );
 			}
-
 			System.out.println( "SQL:" + sql.toString() );
-
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
-
 			int iparam = 1;
-
 			ps.setInt( iparam++, Aplicativo.iCodEmp );
 			ps.setInt( iparam++, ListaCampos.getMasterFilial( "EQRECMERC" ) );
 			ps.setDate( iparam++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
 			ps.setDate( iparam++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
-
 			if ( txtCodFor.getVlrInteger() > 0 ) {
 				ps.setInt( iparam++, lcForneced.getCodEmp() );
 				ps.setInt( iparam++, lcForneced.getCodFilial() );
@@ -501,69 +471,46 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 				ps.setInt( iparam++, lcProduto.getCodFilial() );
 				ps.setInt( iparam++, txtCodProd.getVlrInteger() );				
 			}
-
 			ResultSet rs = ps.executeQuery();
-
 			tabDet.limpa();
-
 			int row = 0;
-			
 			DAORecMerc recmerc = null;
 			BigDecimal peso1 = new BigDecimal(0);
 			BigDecimal peso2 = new BigDecimal(0);
 			BigDecimal pesoliquido = new BigDecimal(0);
 			String status_recmerc = null;
-
 			while ( rs.next() ) {
-
 				tabDet.adicLinha();
-				
 				peso1 = new BigDecimal(0);
 				peso2 = new BigDecimal(0);
 				pesoliquido = new BigDecimal(0);
-
 				status_recmerc = rs.getString( "status" );
-				
 				imgColuna = DAORecMerc.getImagem( rs.getString( "status" ), DAORecMerc.IMG_TAMANHO_M );
-
 				tabDet.setValor( imgColuna, row, DETALHAMENTO.STATUS.ordinal() );
-				
 				tabDet.setValor( status_recmerc, row, DETALHAMENTO.STATUSTXT.ordinal() );
-				tabDet.setValor( rs.getInt( DETALHAMENTO.TICKET.toString().trim() ), row, DETALHAMENTO.TICKET.ordinal() );
-				tabDet.setValor( rs.getInt( DETALHAMENTO.CODTIPORECMERC.toString().trim() ), row, DETALHAMENTO.CODTIPORECMERC.ordinal() );
+				tabDet.setValor( rs.getInt( DETALHAMENTO.TICKET.toString() ), row, DETALHAMENTO.TICKET.ordinal() );
+				tabDet.setValor( rs.getInt( DETALHAMENTO.CODTIPORECMERC.toString() ), row, DETALHAMENTO.CODTIPORECMERC.ordinal() );
 				tabDet.setValor( Funcoes.dateToStrDate( rs.getDate( DETALHAMENTO.DATA.toString() ) ), row, DETALHAMENTO.DATA.ordinal() );
-				tabDet.setValor( rs.getString( DETALHAMENTO.HORA.toString().trim() ), row, DETALHAMENTO.HORA.ordinal() );
-				tabDet.setValor( rs.getString( DETALHAMENTO.PLACA.toString().trim() ), row, DETALHAMENTO.PLACA.ordinal() );
-				tabDet.setValor( rs.getInt( DETALHAMENTO.CODTRAN.toString().trim() ), row, DETALHAMENTO.CODTRAN.ordinal() );
-				tabDet.setValor( rs.getString( DETALHAMENTO.NOMETRAN.toString().trim() ), row, DETALHAMENTO.NOMETRAN.ordinal() );
-				tabDet.setValor( rs.getInt( DETALHAMENTO.CODFOR.toString().trim() ), row, DETALHAMENTO.CODFOR.ordinal() );
-				tabDet.setValor( rs.getString( DETALHAMENTO.NOMEFOR.toString().trim() ), row, DETALHAMENTO.NOMEFOR.ordinal() );
-				
+				tabDet.setValor( getString(rs.getString( DETALHAMENTO.HORA.toString())), row, DETALHAMENTO.HORA.ordinal() );
+				tabDet.setValor( getString(rs.getString( DETALHAMENTO.PLACA.toString())), row, DETALHAMENTO.PLACA.ordinal() );
+				tabDet.setValor( new Integer(rs.getInt( DETALHAMENTO.CODTRAN.toString() )), row, DETALHAMENTO.CODTRAN.ordinal() );
+				tabDet.setValor( getString(rs.getString( DETALHAMENTO.NOMETRAN.toString())).trim(), row, DETALHAMENTO.NOMETRAN.ordinal() );
+				tabDet.setValor( new Integer( rs.getInt( DETALHAMENTO.CODFOR.toString())), row, DETALHAMENTO.CODFOR.ordinal() );
+				tabDet.setValor( getString(rs.getString( DETALHAMENTO.NOMEFOR.toString())).trim() , row, DETALHAMENTO.NOMEFOR.ordinal() );
 				if(status_recmerc.equals( DAORecMerc.STATUS_PEDIDO_COMPRA_EMITIDO.getValue() )) {
-					
 					pesoliquido = rs.getBigDecimal( "qtditcompra" );
-					
 				}
 				else if(status_recmerc.equals( DAORecMerc.STATUS_RECEBIMENTO_FINALIZADO.getValue() )){
-				
-				
 					recmerc = new DAORecMerc( null, Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "EQRECMERC" )
 							, rs.getInt( DETALHAMENTO.TICKET.toString().trim() ), con 
 							, ListaCampos.getMasterFilial( "LFSEQSERIE" ), false );
-					
 					HashMap<String, Object> p1 = recmerc.getPrimeirapesagem();
-	
 					peso1 = (BigDecimal) p1.get( "peso" );
-	
 					HashMap<String, Object> p2 = recmerc.getSegundapesagem();
-	
 					peso2 = (BigDecimal) p2.get( "peso" );
-	
 					if(peso2!=null && peso1!=null) {
-						
 						pesoliquido = peso1.subtract( peso2 ).setScale( 0 );
 						BigDecimal desconto = recmerc.getDesconto();
-						 
 						if(desconto!=null && desconto.floatValue()>0) {
 							BigDecimal pesodesc = pesoliquido.multiply( desconto.divide( new BigDecimal(100) ) );
 							pesoliquido = pesoliquido.subtract( pesodesc );
@@ -573,31 +520,42 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 					}
 										
 				}
-				
-				Integer renda = rs.getInt( DETALHAMENTO.RENDA.toString().trim() );
-				
+				if (pesoliquido==null) {
+					pesoliquido = BigDecimal.ZERO;
+				}
+				Integer renda = rs.getInt( DETALHAMENTO.RENDA.toString() );
 				tabDet.setValor( pesoliquido, row, DETALHAMENTO.PESOLIQUIDO.ordinal() );
 				tabDet.setValor( renda > 0 ? renda : 0, row, DETALHAMENTO.RENDA.ordinal() );
-				
-				tabDet.setValor( rs.getInt( DETALHAMENTO.CODCOMPRA.toString().trim() ), row, DETALHAMENTO.CODCOMPRA.ordinal() );
-
+				tabDet.setValor( new Integer(rs.getInt( DETALHAMENTO.CODCOMPRA.toString() )), row, DETALHAMENTO.CODCOMPRA.ordinal() );
 				row++;
-
 			}
-
 			rs.close();
 			ps.close();
 			con.commit();
 			if ( tabDet.getRowCount() > 0 ) {
 				tabDet.setLinhaSel( 0 );
 			}
-
-		} catch ( Exception e ) {
-			e.printStackTrace();
+		} catch ( Exception err ) {
+			String mensagemErr = err.getMessage();
+			err.printStackTrace();
+			try {
+				con.rollback();
+			} catch (SQLException errroll) {
+				errroll.printStackTrace();
+			}
+			Funcoes.mensagemErro( this, "Erro carregando grade !\n "+err.getMessage());
 		}
 
 	}
 
+	private String getString(String value) {
+		if (value==null) {
+			return "";
+		} else {
+			return value;
+		}
+	}
+	
 	public void actionPerformed( ActionEvent e ) {
 
 		if ( e.getSource() == btAtualiza ) {
@@ -911,42 +869,26 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 	private void geraCotacao() {
 
 		StringBuilder sql = new StringBuilder();
-
-		Integer forneced = null;
-
+		Integer codfor = null;
 		DAORecMerc recmerc = null;
-		
 		Integer renda = null;
 
 		try {
-
 			if ( tabDet.getLinhaSel() > -1 ) {
-
-				
-
 				if ( tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.STATUSTXT.ordinal() ).equals( DAORecMerc.STATUS_RECEBIMENTO_FINALIZADO.getValue() ) ) {
-
-					forneced = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.CODFOR.ordinal() );
-					
-					if ( Funcoes.mensagemConfirma( this, "Confirma a geração de cotação para o ticket nro.:" + forneced.toString() + " ?" ) == JOptionPane.YES_OPTION ) {
-
+					codfor = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.CODFOR.ordinal() );
+					if ( Funcoes.mensagemConfirma( this, "Confirma a geração de cotação para o ticket nro.:" + codfor.toString() + " ?" ) == JOptionPane.YES_OPTION ) {
 						Integer codsolicitacao = DAORecMerc.getSolicitacao(this, con, Aplicativo.iCodEmp
 								, ListaCampos.getMasterFilial( "CPSOLICITACAO" ) );
-						
 						renda = (Integer) tabDet.getValor( tabDet.getLinhaSel(), DETALHAMENTO.RENDA.ordinal() );
-						
 						if ( codsolicitacao != null && codsolicitacao > 0 ) {
-
-							abreSolicitacao( codsolicitacao, forneced, renda );
-
+							abreSolicitacao( codsolicitacao, codfor, renda );
 						}
 					}
-
 				}
 				else {
 					Funcoes.mensagemInforma( this, "O recebimento selecionado ainda não foi finalizado!" );
 				}
-
 			}
 			else {
 				Funcoes.mensagemInforma( this, "Selecione um ticket no grid!" );

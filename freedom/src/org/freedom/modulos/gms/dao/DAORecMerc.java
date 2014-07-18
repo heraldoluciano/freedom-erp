@@ -45,6 +45,10 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 	public static final Color COR_PENDENTE = Color.ORANGE;
 
+	public static final Constant STATUS_PRONTO = new Constant( "OS Concluída", "PT" );
+
+	public static final Color COR_PRONTO = Color.GREEN;
+
 	public static final Constant STATUS_PESAGEM_1 = new Constant( "1a Pesagem", "E1" );
 
 	public static final Color COR_PESAGEM_1 = Color.BLUE;
@@ -153,6 +157,8 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 		ImageIcon IMG_PENDENTE = Icone.novo( "blAzul0_" + tamanho + ".png" );
 
+		ImageIcon IMG_PRONTO = Icone.novo( "blVerde0_" + tamanho + ".png" );
+
 		ImageIcon IMG_PESAGEM1 = Icone.novo( "blAzul1_" + tamanho + ".png" );
 
 		ImageIcon IMG_DESCARREGAMENTO = Icone.novo( "blAzul2_" + tamanho + ".png" );
@@ -164,9 +170,11 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 		ImageIcon IMG_NOTA = Icone.novo( "os_finalizada_" + tamanho + ".png" );
 
 		try {
-
 			if ( status.equals( STATUS_PENDENTE.getValue() ) ) {
 				return IMG_PENDENTE;
+			}
+			else if ( status.equals( STATUS_PRONTO.getValue() ) ) {
+				return IMG_PRONTO;
 			}
 			else if ( status.equals( STATUS_PESAGEM_1.getValue() ) ) {
 				return IMG_PESAGEM1;
@@ -273,6 +281,7 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 		Vector<String> ret = new Vector<String>();
 
 		ret.add( STATUS_PENDENTE.getName() );
+		ret.add( STATUS_PRONTO.getName() );
 		ret.add( STATUS_PESAGEM_1.getName() );
 		ret.add( STATUS_DESCARREGAMENTO.getName() );
 		ret.add( STATUS_RECEBIMENTO_FINALIZADO.getName() );
@@ -288,6 +297,7 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 		Vector<Object> ret = new Vector<Object>();
 
 		ret.add( STATUS_PENDENTE.getValue() );
+		ret.add( STATUS_PRONTO.getValue() );
 		ret.add( STATUS_PESAGEM_1.getValue() );
 		ret.add( STATUS_DESCARREGAMENTO.getValue() );
 		ret.add( STATUS_RECEBIMENTO_FINALIZADO.getValue() );
