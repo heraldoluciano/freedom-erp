@@ -3,8 +3,8 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.4200000000000004"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="545"/>
+	<property name="ireport.x" value="282"/>
+	<property name="ireport.y" value="416"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -694,7 +694,7 @@ $V{LINHADIG}.substring(32,33)+" "+$V{LINHADIG}.substring(33)
 				<textElement verticalAlignment="Bottom">
 					<font fontName="SansSerif" size="7"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{RAZEMP}.trim() + " - " + " CNPJ: " + ( $P{CNPJFILIAL} != null ? $P{CNPJFILIAL}.substring(0,2) + "." + $P{CNPJFILIAL}.substring(2,5) + "." + $P{CNPJFILIAL}.substring(5,8) + "/" + $P{CNPJFILIAL}.substring(8,12) + "-" + $P{CNPJFILIAL}.substring(12) : "" )]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA["VIDE CAMPO SACADOR/AVALISTA ABAIXO"]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
 				<reportElement key="textField-5" x="5" y="186" width="66" height="9"/>
