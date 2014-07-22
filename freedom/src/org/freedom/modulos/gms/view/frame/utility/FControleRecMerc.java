@@ -436,10 +436,7 @@ public class FControleRecMerc extends FFilho implements ActionListener, TabelaSe
 			sql.append( "left outer join cpdevolucao dv ");
 			sql.append( "on dv.codemp=ic.codemp and dv.codfilial=ic.codfilial and dv.codcompra=ic.codcompra ");
 			sql.append(" and dv.coditcompra=ic.coditcompra ");
-			sql.append( "where irc.codemp=rm.codemp and irc.codfilial=rm.codfilial and irc.ticket=rm.ticket ");
-			sql.append( "and ic.codemp=irc.codempcp and ic.codfilial=irc.codfilialcp and ic.codcompra=irc.codcompra ");
-			sql.append( "and ic.coditcompra=irc.coditcompra ");
-			sql.append( "and rm.codemp=? and rm.codfilial=? " );
+			sql.append( "where rm.codemp=? and rm.codfilial=? " );
 			sql.append( "and rm.dtins between ? and ? " );
 			StringBuffer status = new StringBuffer( "" );
 			boolean primeiro = true;
