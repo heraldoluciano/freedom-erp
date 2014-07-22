@@ -4,7 +4,7 @@
     <options buildIfNeeded="true" compress="true" descriptionLocation="/freedom/lib/jardesc/freedomgms.jardesc" exportErrors="false" exportWarnings="true" includeDirectoryEntries="true" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
     <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
     <selectedProjects/>
-    <manifest generateManifest="false" mainClassHandleIdentifier="=freedom/src&lt;org.freedom.modulos.gms{FreedomGMS.java[FreedomGMS" manifestLocation="/freedom/META-INF/MANIFEST.MF" manifestVersion="1.0" reuseManifest="false" saveManifest="true" usesManifest="true">
+    <manifest generateManifest="false" mainClassHandleIdentifier="=freedom/src&lt;org.freedom.modulos.gms{FreedomGMS.java[FreedomGMS" manifestLocation="/freedom/META-INF/gms/MANIFEST.MF" manifestVersion="1.0" reuseManifest="false" saveManifest="true" usesManifest="true">
         <sealing sealJar="true">
             <packagesToSeal/>
             <packagesToUnSeal/>
@@ -23,7 +23,7 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.gms.view.frame.crud.detail"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.gms.view.frame.utility"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.gms.view.frame.crud.tabbed"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.gms.view.frame.crud.plain"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.gms.view.dialog.utility"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.gms.view.frame.crud.plain"/>
     </selectedElements>
 </jardesc>

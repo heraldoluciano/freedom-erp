@@ -4,7 +4,7 @@
     <options buildIfNeeded="true" compress="true" descriptionLocation="/freedom/lib/jardesc/freedomcfg.jardesc" exportErrors="false" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
     <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
     <selectedProjects/>
-    <manifest generateManifest="false" mainClassHandleIdentifier="=freedom/src&lt;org.freedom.modulos.cfg{FreedomCFG.java[FreedomCFG" manifestLocation="/freedom/META-INF/MANIFEST.MF" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
+    <manifest generateManifest="false" mainClassHandleIdentifier="=freedom/src&lt;org.freedom.modulos.cfg{FreedomCFG.java[FreedomCFG" manifestLocation="/freedom/META-INF/cfg/MANIFEST.MF" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
         <sealing sealJar="false">
             <packagesToSeal/>
             <packagesToUnSeal/>
@@ -13,13 +13,13 @@
     <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.cfg"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.cfg.view.frame.report"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.cfg.view.frame.crud.tabbed"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.cfg.view.frame.crud.detail"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.cfg.view.frame.crud.tabbed"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.cfg.view.frame.crud.special"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.cfg.view.dialog.report"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.doc.release_notes"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.cfg.view.frame.utility"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.cfg.view.frame.crud.plain"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.cfg.view.dialog.utility"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.cfg.view.frame.crud.plain"/>
     </selectedElements>
 </jardesc>

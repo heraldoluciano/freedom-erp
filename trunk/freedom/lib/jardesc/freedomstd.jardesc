@@ -4,7 +4,7 @@
     <options buildIfNeeded="true" compress="true" descriptionLocation="/freedom/lib/jardesc/freedomstd.jardesc" exportErrors="false" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
     <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
     <selectedProjects/>
-    <manifest generateManifest="false" manifestLocation="/freedom/META-INF/MANIFEST.MF" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
+    <manifest generateManifest="false" manifestLocation="/freedom/META-INF/std/MANIFEST.MF" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
         <sealing sealJar="false">
             <packagesToSeal/>
             <packagesToUnSeal/>
@@ -20,8 +20,8 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std.view.frame.crud.special"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std.view.background"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std.business.object"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std.view.frame.crud.detail"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std.view.frame.special"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std.view.frame.crud.detail"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std.view.dialog.utility"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std.business.component"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std.view.frame.crud.plain"/>

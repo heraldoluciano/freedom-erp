@@ -4,7 +4,7 @@
     <options buildIfNeeded="true" compress="true" descriptionLocation="/freedom/lib/jardesc/freedompdv.jardesc" exportErrors="false" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
     <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
     <selectedProjects/>
-    <manifest generateManifest="false" mainClassHandleIdentifier="=freedom/src&lt;org.freedom.modulos.pdv{FreedomPDV.java[FreedomPDV" manifestLocation="/freedom/META-INF/MANIFEST.MF" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
+    <manifest generateManifest="false" mainClassHandleIdentifier="=freedom/src&lt;org.freedom.modulos.pdv{FreedomPDV.java[FreedomPDV" manifestLocation="/freedom/META-INF/pdv/MANIFEST.MF" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
         <sealing sealJar="false">
             <packagesToSeal/>
             <packagesToUnSeal/>
@@ -22,8 +22,8 @@
         <file path="/freedom-ecf/jCliSiTefI.dll"/>
         <file path="/freedom-ecf/.classpath"/>
         <file path="/freedom-ecf/.project"/>
-        <file path="/freedom-ecf/CliSiTef32.dll"/>
         <file path="/freedom-ecf/leiturax.txt"/>
+        <file path="/freedom-ecf/CliSiTef32.dll"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.pdv"/>
     </selectedElements>
 </jardesc>
