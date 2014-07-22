@@ -4,7 +4,7 @@
     <options buildIfNeeded="true" compress="true" descriptionLocation="/freedom/lib/jardesc/freedomlvf.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
     <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
     <selectedProjects/>
-    <manifest generateManifest="false" mainClassHandleIdentifier="=freedom/src&lt;org.freedom.modulos.lvf{FreedomLVF.java[FreedomLVF" manifestLocation="/freedom/META-INF/MANIFEST.MF" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
+    <manifest generateManifest="false" mainClassHandleIdentifier="=freedom/src&lt;org.freedom.modulos.lvf{FreedomLVF.java[FreedomLVF" manifestLocation="/freedom/META-INF/lvf/MANIFEST.MF" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
         <sealing sealJar="false">
             <packagesToSeal/>
             <packagesToUnSeal/>
@@ -15,12 +15,12 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.lvf.view.dialog.utility"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.lvf.view.frame.crud.plain"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.lvf"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.doc.release_notes"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.lvf.dao"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.doc.release_notes"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.lvf.business.object"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.lvf.view.frame.utility"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.lvf.view.frame.report"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.lvf.business.component"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.lvf.view.frame.utility"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.lvf.view.frame.crud.detail"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.lvf.business.component"/>
     </selectedElements>
 </jardesc>
