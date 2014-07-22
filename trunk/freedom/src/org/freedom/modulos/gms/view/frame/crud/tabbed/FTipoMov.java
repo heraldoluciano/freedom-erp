@@ -80,6 +80,8 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 	
 	private JPanelPad pnComplementar = new JPanelPad();
 
+	private JPanelPad pnOutrasPermissoes = new JPanelPad();
+
 	private JPanelPad pinRestricoes = new JPanelPad( 430, 460 );
 
 	private JPanelPad pnRegrasVenda = new JPanelPad( "Regras para fechamento de venda", Color.BLUE );
@@ -191,6 +193,8 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 	private JCheckBoxPad cbEmitNFCPMov = new JCheckBoxPad( "Emite nota de compra ?", "S", "N" );
 	
 	private JCheckBoxPad cbDesBloqCV = new JCheckBoxPad( "Desabilita Bloqueio Compra/Venda ?", "S", "N" );
+
+	private JCheckBoxPad cbPermitDigIpi = new JCheckBoxPad( "Permite digitação do IPI ?", "S", "N" );
 
 	private Navegador navRestricoes = new Navegador( true );
 
@@ -464,6 +468,12 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 		adicCampo( txtCodMens, 7, 60, 80, 20, "CodMens", "Cód.mens.Compl", ListaCampos.DB_FK, txtMens, false );
 		adicDescFK( txtMens, 90, 60, 250, 20, "Mens", "Mensagem" );
 		adicCampo( txtDescNatCompl, 7, 100, 333, 20, "DescNatCompl", "Descrição de natureza de operação", ListaCampos.DB_SI, false );
+
+		setPainel( pnOutrasPermissoes );
+		adicTab( "Outras permissões", pnOutrasPermissoes );
+		adicDB( cbPermitDigIpi, 5, 0, 300, 20, "PermitDigIpi", "", true );
+		
+
 		
 		setListaCampos( true, "TIPOMOV", "EQ" );
 		lcCampos.setQueryInsert( false );

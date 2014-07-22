@@ -60,8 +60,6 @@ import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
-import net.sf.jasperreports.engine.JasperPrintManager;
-
 import org.freedom.acao.CancelEvent;
 import org.freedom.acao.CancelListener;
 import org.freedom.acao.CarregaEvent;
@@ -216,6 +214,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	private JTextFieldPad txtSubtipoVenda = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
 	private JTextFieldPad txtSitComplVenda = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+	
+	private JTextFieldPad txtPermitDigIpi = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
 	//private JTextFieldPad txtOperTipoMov = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
@@ -960,9 +960,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 		txtCodNat.setAtivo( (Boolean) oPrefs[ POS_PREFS.NATVENDA.ordinal() ] );
 
-		txtPercIPIItVenda.setAtivo( (Boolean) oPrefs[ POS_PREFS.IPIVENDA.ordinal() ] );
-		txtVlrIPIItVenda.setAtivo( (Boolean) oPrefs[ POS_PREFS.IPIVENDA.ordinal() ] );
-
+		habilitaIpi();
+		
 		// Desativa as os TextFields para que os usuários não possam mexer
 		// ALTERADO PARA BUSCA DO PREEFERENCIAS.
 		txtVlrBaseICMSItVenda.setAtivo( (Boolean) oPrefs[ POS_PREFS.ICMSVENDA.ordinal() ] );
@@ -1045,6 +1044,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcTipoMov.add( new GuardaCampo( txtCodTranTipoMov, "CodTran", "Cód.transp.", ListaCampos.DB_SI, false ) );
 		lcTipoMov.add( new GuardaCampo( txtTipoFrete, "CTipoFrete", "Tp.Frete", ListaCampos.DB_SI, false ) );
 		lcTipoMov.add( new GuardaCampo( txtDesBloqCV, "DesBloqCV", "Desabilita Bloqueio Compra/Venda", ListaCampos.DB_SI, false ) );
+		lcTipoMov.add( new GuardaCampo( txtPermitDigIpi, "PermitDigIpi", "Permite digitação do IPI", ListaCampos.DB_SI, false ) );
 
 		//lcTipoMov.add( new GuardaCampo( txtOperTipoMov, "OperTipoMov", "Operação", ListaCampos.DB_SI, false ) );
 
@@ -1405,6 +1405,17 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		}
 		
 		bloqueiaComissao( (Boolean) oPrefs[POS_PREFS.BLOQCOMISSVD.ordinal()] );
+	}
+	
+	private void habilitaIpi() {
+		// Verifica o IPI no preferências
+		Boolean habilitaIPI = (Boolean) oPrefs[ POS_PREFS.IPIVENDA.ordinal() ];
+		if (!habilitaIPI) {
+			// Verifica o IPI conforme o tipo de movimento
+			habilitaIPI = "S".equals(txtPermitDigIpi.getVlrString());
+		}
+		txtPercIPIItVenda.setAtivo( habilitaIPI );
+		txtVlrIPIItVenda.setAtivo( habilitaIPI );
 	}
 
 	private void initPinCabOrcamento() {
@@ -4110,7 +4121,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			}
 			else if ( cevt.getListaCampos() == lcTipoMov ) {
 				habilitaMultiComis();
-
+				habilitaIpi();
 				if( "S".equals( txtDesBloqCV.getVlrString() ))	{
 					txtAceitaCompra.setVlrString("C");
 				} else {
