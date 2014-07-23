@@ -185,17 +185,12 @@ public class DAOBuscaOrc extends AbstractDAO {
 	
 	
 	public void atualizaLoteItVenda( String codlote, int irow, int codorc, int coditorc ) throws SQLException {
-
 		PreparedStatement ps = null;
 		StringBuilder sql = new StringBuilder();
 		int param = 1;
-
-
-		sql.append( "UPDATE VDITORCAMENTO SET CODEMPLE=?, CODFILIALLE=?, CODLOTE=? " );
-		sql.append( "WHERE CODEMP=? AND CODFILIAL=? AND CODORC=? AND CODITORC=?" );
-
+		sql.append( "update vditorcamento set codemple=?, codfilialle=?, codlote=? " );
+		sql.append( "where codemp=? and codfilial=? and codorc=? and coditorc=?" );
 		ps = getConn().prepareStatement( sql.toString() );
-
 		ps.setInt( param++, Aplicativo.iCodEmp);
 		ps.setInt( param++, ListaCampos.getMasterFilial("EQLOTE"));
 		ps.setString( param++, codlote);
@@ -203,24 +198,9 @@ public class DAOBuscaOrc extends AbstractDAO {
 		ps.setInt( param++, ListaCampos.getMasterFilial("VDORCAMENTO"));
 		ps.setInt( param++, (Integer) codorc);
 		ps.setInt( param++, (Integer) coditorc);
-
 		ps.execute();
-
-
 		getConn().commit();
-		
 	}
-	
-/*
- *     codemp integer,
-    codfilial smallint,
-    codorc integer,
-    codfilialvd integer,
-    tipovenda char(1),
-    codvenda integer,
-    dtsaidavenda date)
-
- * */
 	
 	public int executaVDAdicVendaORCSP(Integer codemp,  Integer codfilialoc, Integer codorc
 			, Integer codfilialvd, String tipovenda, Integer codvenda, Date datasaida) throws SQLException {
@@ -366,32 +346,23 @@ public class DAOBuscaOrc extends AbstractDAO {
 
 
 	public String testaPgto(String tipomov, int codcli, int codempcl, int codfilialcl ) throws Exception {
-
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		String result = "";
-
 		try {
-
 			// Se for devolução não deve verificar parcelas em aberto...
-
 			if ( ( ! TipoMov.TM_DEVOLUCAO_VENDA.getValue().equals( tipomov ) ) && ( ! TipoMov.TM_DEVOLUCAO_REMESSA.getValue().equals( tipomov ) ) ) {
-
-				String sSQL = "SELECT RETORNO FROM FNCHECAPGTOSP(?,?,?,?,?)";
-				
+				StringBuilder sql = new StringBuilder( "select retorno from fnchecapgtosp(?,?,?,?,?)" );
 				int numdiasbloqvd = (Integer) getPrefs().get( COL_PREFS.NUMDIASBLOQVD.name() );
 				String bloqvdporatraso = (String) getPrefs().get( COL_PREFS.BLOQVDPORATRASO.name() );
-
 				int param = 1;
-				ps = getConn().prepareStatement( sSQL );
+				ps = getConn().prepareStatement( sql.toString() );
 				ps.setInt( param++, codcli );
 				ps.setInt( param++, codempcl );
 				ps.setInt( param++, codfilialcl );
 				ps.setString( param++, bloqvdporatraso );
 				ps.setInt( param++, numdiasbloqvd );
-				
 				rs = ps.executeQuery();
-
 				if ( rs.next() ) {
 					result = rs.getString( "RETORNO" );
 					if (result==null) {
@@ -407,11 +378,9 @@ public class DAOBuscaOrc extends AbstractDAO {
 				else {
 					throw new Exception( "Não foi possível checar os pagamentos do cliente !" );
 				}
-
 				rs.close();
 				ps.close();
 				getConn().commit();
-				
 				if ( ( !"".equals( result ) ) && ( "N".equals( result.substring( 0, 1 ) ) ) ) {
 					if (result.length()>2) {
 						int numreg = Integer.parseInt(result.substring(2));
@@ -422,97 +391,89 @@ public class DAOBuscaOrc extends AbstractDAO {
 				}
 			}
 		} catch ( SQLException err ) {
+			String mensagemErr = err.getMessage();
+			err.printStackTrace();
 			try {
 				getConn().rollback();
 			} catch (SQLException err2) {
 				err2.printStackTrace();
 			}
-			err.printStackTrace();
-			throw new Exception( "Não foi possível verificar os pagamentos do cliente !\n"+err.getMessage() );
+			throw new Exception( "Não foi possível verificar os pagamentos do cliente !\n"+mensagemErr );
 		}
-
 		return result;
-
 	}
 
 	public Vector<Vector<Object>> buscar(Integer codorc, Integer codcli, Integer codconv, String busca, boolean proj) throws ExceptionCarregaDados{
-
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		String mensagemErro = "";
 		StringBuilder sql = new StringBuilder();
-		String sWhere = null;
+		StringBuilder where = new StringBuilder();
 		Vector<Object> vVals = null;
-		boolean bOrc = false;
-		boolean bConv = false;
-		int iCod = -1;
+		boolean orc = false;
+		boolean conv = false;
 		Vector<Vector<Object>> vector = null;
-
 		if (codorc.intValue() > 0) {
-			iCod = codorc.intValue();
-			sWhere = ", VDCLIENTE C WHERE O.CODORC = ? AND O.CODFILIAL = ? AND O.CODEMP = ? AND C.CODEMP=O.CODEMPCL AND C.CODFILIAL=O.CODFILIALCL AND C.CODCLI=O.CODCLI ";
-			bOrc = true;
+			where.delete( 0, where.length() );
+			where.append(", vdcliente c where o.codorc = ? and o.codfilial = ? and o.codemp = ? and c.codemp=o.codempcl and c.codfilial=o.codfilialcl and c.codcli=o.codcli ");
+			orc = true;
 		}
 		else {
 			if (busca.equals("L") &&  codcli > 0) {
-				iCod = codcli.intValue();
-				if (iCod == 0) {
+				if (codcli.intValue() == 0) {
 					mensagemErro = "Código do cliente inválido!";
 					vector = null;
 					throw new ExceptionCarregaDados(mensagemErro);
 				}
-				sWhere = ", VDCLIENTE C WHERE C.CODCLI=? AND C.CODFILIAL=? AND C.CODEMP=? AND O.CODCLI=C.CODCLI AND" +
-						" O.CODFILIALCL=C.CODFILIAL AND O.CODEMPCL=C.CODEMP AND O.STATUSORC IN ('OL','FP','OP') ";
+				where.delete( 0, where.length() );
+				where.append(", vdcliente c where c.codcli=? and c.codfilial=? and c.codemp=? and o.codcli=c.codcli ");
+				where.append("and o.codfilialcl=c.codfilial and o.codempcl=c.codemp and o.statusorc in ('OL','FP','OP') ");
 
 			}
 			else if (busca.equals( "O" ) && codconv > 0) {
-				iCod = codconv.intValue();
-				if (iCod == 0) {
+				if (codconv.intValue() == 0) {
 					mensagemErro = "Código do conveniado inválido!";
 					vector = null;
 					throw new ExceptionCarregaDados(mensagemErro);
 				}
-				sWhere = ", ATCONVENIADO C WHERE C.CODCONV=? AND C.CODFILIAL=? AND C.CODEMP=? AND O.CODCONV=C.CODCONV AND" +
-						" O.CODFILIALCV=C.CODFILIAL AND O.CODEMPCV=C.CODEMP AND O.STATUSORC IN ('OL','FP') ";
+				where.delete( 0, where.length() );
+				where.append(", atconveniado c where c.codconv=? and c.codfilial=? and c.codemp=? and o.codconv=c.codconv and ");
+				where.append(" o.codfilialcv=c.codfilial and o.codempcv=c.codemp and o.statusorc in ('OL','FP') ");
 
-				bConv = true;
+				orc = true;
 			}
-			else if (iCod == -1) {
+			else if (codorc.intValue() == -1) {
 				mensagemErro = "Número do orçamento inválido!";
 				vector = null;
 				throw new ExceptionCarregaDados(mensagemErro);
 			}
 
 		}
-
 		try {
-
-			sql.append( "SELECT O.CODORC," + ( bConv ? "O.CODCONV,C.NOMECONV," : "O.CODCLI,C.NOMECLI," ));
-			sql.append( "(SELECT COUNT(IT.CODITORC) FROM VDITORCAMENTO IT WHERE IT.CODORC=O.CODORC ");
-			sql.append( "AND IT.CODFILIAL=O.CODFILIAL AND IT.CODEMP=O.CODEMP)," );
-			sql.append( "(SELECT COUNT(IT.CODITORC) FROM VDITORCAMENTO IT WHERE IT.CODORC=O.CODORC " ); 
-			sql.append( "AND IT.CODFILIAL=O.CODFILIAL AND IT.CODEMP=O.CODEMP " ); 
-			sql.append( "AND IT.ACEITEITORC='S' AND IT.APROVITORC='S')," );
-			sql.append( "(SELECT SUM(IT.VLRLIQITORC) FROM VDITORCAMENTO IT WHERE IT.CODORC=O.CODORC " );
-			sql.append( "AND IT.CODFILIAL=O.CODFILIAL AND IT.CODEMP=O.CODEMP)," );
-			sql.append( "(SELECT SUM(IT.VLRLIQITORC) FROM VDITORCAMENTO IT WHERE IT.CODORC=O.CODORC " ); 
-			sql.append( "AND IT.CODFILIAL=O.CODFILIAL AND IT.CODEMP=O.CODEMP " );
-			sql.append( "AND IT.ACEITEITORC='S' AND IT.APROVITORC='S'), O.STATUSORC, COALESCE(O.OBSORC,'') OBSORC " ); 
-			sql.append( "FROM VDORCAMENTO O"  );
-			sql.append( sWhere );
-			sql.append( " ORDER BY O.CODORC" );
-
+			sql.append( "select o.codorc," + ( conv ? "o.codconv,c.nomeconv," : "o.codcli,c.nomecli," ));
+			sql.append( "(select count(it.coditorc) from vditorcamento it where it.codorc=o.codorc ");
+			sql.append( "and it.codfilial=o.codfilial and it.codemp=o.codemp)," );
+			sql.append( "(select count(it.coditorc) from vditorcamento it where it.codorc=o.codorc " ); 
+			sql.append( "and it.codfilial=o.codfilial and it.codemp=o.codemp " ); 
+			sql.append( "and it.aceiteitorc='S' and it.aprovitorc='S')," );
+			sql.append( "(select sum(it.vlrliqitorc) from vditorcamento it where it.codorc=o.codorc " );
+			sql.append( "and it.codfilial=o.codfilial and it.codemp=o.codemp)," );
+			sql.append( "(select sum(it.vlrliqitorc) from vditorcamento it where it.codorc=o.codorc " ); 
+			sql.append( "and it.codfilial=o.codfilial and it.codemp=o.codemp " );
+			sql.append( "and it.aceiteitorc='S' and it.aprovitorc='S'), o.statusorc, coalesce(o.obsorc,'') obsorc " ); 
+			sql.append( "from vdorcamento o"  );
+			sql.append( where );
+			sql.append( " order by o.codorc" );
 			ps = getConn().prepareStatement( sql.toString() );
-			ps.setInt( 1, iCod );
-			ps.setInt( 2, ListaCampos.getMasterFilial( bOrc ? "VDORCAMENTO" : ( bConv ? "ATCONVENIADO" : "VDCLIENTE" ) ) );
-			ps.setInt( 3, Aplicativo.iCodEmp );
+			int param = 1;
+			ps.setInt( param++, codorc );
+			ps.setInt( param++, ListaCampos.getMasterFilial( orc ? "VDORCAMENTO" : ( conv ? "ATCONVENIADO" : "VDCLIENTE" ) ) );
+			ps.setInt( param++, Aplicativo.iCodEmp );
 			rs = ps.executeQuery();
 			vector =  new Vector<Vector<Object>>();
-
 			while (rs.next()) {
 				String statusorc=rs.getString( "statusorc" );
 				if ("OL".equals( statusorc ) || "OP".equals( statusorc ) || "FP".equals( statusorc ) || (proj && "OV".equals( statusorc ))) {
-
 					vVals = new Vector<Object>();
 					vVals.addElement( new Boolean( true ) );
 					vVals.addElement( new Integer( rs.getInt( "CodOrc" ) ) );
@@ -524,7 +485,6 @@ public class DAOBuscaOrc extends AbstractDAO {
 					vVals.addElement( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( 7 ) != null ? rs.getString( 7 ) : "0" ) );
 					vVals.addElement( rs.getString( "OBSORC" ) );
 					vector.add(vVals);
-
 				}
 				else {
 					mensagemErro =  "ORÇAMENTO NÃO ESTÁ LIBERADO!";
@@ -532,7 +492,6 @@ public class DAOBuscaOrc extends AbstractDAO {
 					throw new ExceptionCarregaDados(mensagemErro);
 				}
 			}
-
 			rs.close();
 			ps.close();
 		} catch ( SQLException err ) {
@@ -540,156 +499,163 @@ public class DAOBuscaOrc extends AbstractDAO {
 			vector = null;
 			throw new ExceptionCarregaDados(mensagemErro);
 		}
-
 		ps = null;
 		rs = null;
 		sql = null;
-		sWhere = null;
+		where = null;
 		vVals = null;
-
 		return vector;
 	}
 
 
 	public Vector<Vector<Object>>  carregar( Vector<Vector<Object>> tabOrc, boolean aprovorcfatparc, String origem ) throws SQLException {
-
 		boolean proj = "Contrato".equalsIgnoreCase( origem );
 		Vector<Object> vVals = null;
 		Vector<Vector<Object>> vector = new Vector<Vector<Object>>();
-
 		Vector<String> vcodorcs = new Vector<String>();
 		Vector<Vector<String>> vorcs = new Vector<Vector<String>>();
 		vorcs.add( vcodorcs );
-		
-
 		int count = 0;
-
 		for (int i = 0; i < tabOrc.size(); i++) {
-
 			if (!((Boolean) tabOrc.elementAt(i).get(0)).booleanValue()) {
 				continue;
 			}
-
 			vcodorcs.add(String.valueOf(tabOrc.elementAt(i).get(1)));
 			count++;
-
 			if (count == 1000) {
 				vcodorcs = new Vector<String>();
 				vorcs.add(vcodorcs);
 				count = 0;
 			}
 		}
-
-
 		for (Vector<String> v : vorcs) {
-
 			String scodorcs = "";
-
 			for (int i = 0; i < v.size(); i++) {
 				if (scodorcs.length() > 0) {
 					scodorcs += ",";
 				}
 				scodorcs += v.get( i );
 			}
-
 			StringBuilder sql = new StringBuilder();
-
-			sql.append( "SELECT IT.CODORC,IT.CODITORC,IT.CODPROD,P.DESCPROD," );
-			sql.append( "IT.QTDITORC,IT.QTDFATITORC,IT.QTDAFATITORC,IT.PRECOITORC,IT.VLRDESCITORC,IT.VLRLIQITORC," );
-			sql.append( "IT.VLRPRODITORC, P.CLOTEPROD, IT.CODLOTE, coalesce(ip.qtdfinalproditorc,0) qtdfinalproditorc, ip.codop, it.codalmox ");
-
-			sql.append( "FROM EQPRODUTO P, VDORCAMENTO O, VDITORCAMENTO IT  " );
-			sql.append( "LEFT OUTER JOIN PPOPITORC IP ON IP.CODEMPOC=IT.CODEMP AND IP.CODFILIALOC=IT.CODFILIAL AND IP.TIPOORC=IT.TIPOORC AND IP.CODORC=IT.CODORC AND IP.CODITORC=IT.CODITORC ");
-
-			sql.append( "WHERE O.CODEMP=IT.CODEMP AND O.CODFILIAL=IT.CODFILIAL AND O.TIPOORC=IT.TIPOORC AND O.CODORC=IT.CODORC AND ");
-			sql.append( "P.CODPROD=IT.CODPROD AND P.CODFILIAL=IT.CODFILIALPD AND " );
-			sql.append( "P.CODEMP=IT.CODEMPPD AND ");
-			sql.append( "((IT.ACEITEITORC='S' ");
+			sql.append( "select it.codorc,it.coditorc,it.codprod,p.descprod," );
+			sql.append( "it.qtditorc,it.qtdfatitorc,it.qtdafatitorc,it.precoitorc,it.vlrdescitorc,it.vlrliqitorc," );
+			sql.append( "it.vlrproditorc, p.cloteprod, it.codlote, coalesce(ip.qtdfinalproditorc,0) qtdfinalproditorc, ip.codop, it.codalmox ");
+			sql.append( "from eqproduto p, vdorcamento o, vditorcamento it  " );
+			sql.append( "left outer join ppopitorc ip on ip.codempoc=it.codemp and ip.codfilialoc=it.codfilial and ip.tipoorc=it.tipoorc and ip.codorc=it.codorc and ip.coditorc=it.coditorc ");
+			sql.append( "where o.codemp=it.codemp and o.codfilial=it.codfilial and o.tipoorc=it.tipoorc and o.codorc=it.codorc and ");
+			sql.append( "p.codprod=it.codprod and p.codfilial=it.codfilialpd and " );
+			sql.append( "p.codemp=it.codemppd and ");
+			sql.append( "((it.aceiteitorc='S' ");
 			if (!proj) {
-				sql.append( "AND IT.FATITORC IN ('N','P') ");
+				sql.append( "and it.fatitorc in ('N','P') ");
 			}
-			sql.append( "AND IT.APROVITORC='S' AND IT.SITPRODITORC='NP') OR ");
-			sql.append( "(IT.SITPRODITORC='PD' AND IT.APROVITORC='S' AND IT.FATITORC IN ('N','P') )) ");
+			sql.append( "and it.aprovitorc='S' and it.sitproditorc='NP') or ");
+			sql.append( "(it.sitproditorc='PD' and it.aprovitorc='S' and it.fatitorc in ('N','P') )) ");
 			if ( aprovorcfatparc && !proj ) {
-				sql.append( " AND O.STATUSORC NOT IN ('OV','FP') " ); 
+				sql.append( " and o.statusorc not in ('OV','FP') " ); 
 			}
-			sql.append( " AND IT.CODEMP=? AND IT.CODFILIAL=? AND IT.CODORC IN " );
+			sql.append( " and it.codemp=? and it.codfilial=? and it.codorc in " );
 			sql.append( "(" + scodorcs + ") " );
-
 			//Caso a origem for a tela de Contrato busca apenas produtos com o tipo Serviço.
 			if ( proj ) {
-				sql.append( " AND P.TIPOPROD = 'S' " );
-				sql.append( " AND NOT EXISTS( SELECT * FROM VDCONTRORC CO WHERE CO.CODEMPOR=IT.CODEMP AND CO.CODFILIALOR=IT.CODFILIAL AND CO.TIPOORC=IT.TIPOORC ");
-				sql.append( " AND CO.CODORC=IT.CODORC AND CO.CODITORC=IT.CODITORC) " );
+				sql.append( " and p.tipoprod = 'S' " );
+				sql.append( " and not exists( select * from vdcontrorc co where co.codempor=it.codemp and co.codfilialor=it.codfilial and co.tipoorc=it.tipoorc ");
+				sql.append( " and co.codorc=it.codorc and co.coditorc=it.coditorc) " );
 			}
-
-
-			sql.append( " ORDER BY IT.CODORC,IT.CODITORC " );
-
+			sql.append( " order by it.codorc,it.coditorc " );
 			PreparedStatement ps = getConn().prepareStatement( sql.toString() );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
+			int param = 1;
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
 			ResultSet rs = ps.executeQuery();
-
 			while ( rs.next() ) {
 				// vVals = new Vector<Object>();
-
-				vVals = new Vector<Object>();
-				vVals.addElement( new Boolean( true ));
-				vVals.addElement( new Integer( rs.getInt( "CodItOrc" )));
-				vVals.addElement( new Integer( rs.getInt( "CodProd" )));
-				vVals.addElement( rs.getString( "DescProd" ).trim());
-				vVals.addElement( Funcoes.strDecimalToStrCurrencyd( Aplicativo.casasDec, rs.getString( DLBuscaOrc.GRID_ITENS.QTDITORC.toString() ) != null ? rs.getString( DLBuscaOrc.GRID_ITENS.QTDITORC.toString() ) : "0" ));
-				vVals.addElement( Funcoes.strDecimalToStrCurrencyd( Aplicativo.casasDec, rs.getString( DLBuscaOrc.GRID_ITENS.QTDAFATITORC.toString()) != null ? rs.getString(DLBuscaOrc.GRID_ITENS.QTDAFATITORC.toString() ) : "0" ));
-				vVals.addElement( Funcoes.strDecimalToStrCurrencyd( Aplicativo.casasDec, rs.getString( DLBuscaOrc.GRID_ITENS.QTDFATITORC.toString() ) != null ? rs.getString( DLBuscaOrc.GRID_ITENS.QTDFATITORC.toString() ) : "0" ));
-				vVals.addElement( Funcoes.strDecimalToStrCurrencyd( Aplicativo.casasDec, rs.getString( DLBuscaOrc.GRID_ITENS.QTDFINALPRODITORC.toString() ) != null ? rs.getString( DLBuscaOrc.GRID_ITENS.QTDFINALPRODITORC.toString() ) : "0" ));
-				vVals.addElement( Funcoes.strDecimalToStrCurrencyd( Aplicativo.casasDecPre, rs.getString( "PrecoItOrc" ) != null ? rs.getString( "PrecoItOrc" ) : "0" ));
-				vVals.addElement( Funcoes.strDecimalToStrCurrencyd( Aplicativo.casasDecPre, rs.getString( "VlrDescItOrc" ) != null ? rs.getString( "VlrDescItOrc" ) : "0" ));
-				vVals.addElement( Funcoes.strDecimalToStrCurrencyd( Aplicativo.casasDecPre, rs.getString( "VlrLiqItOrc" ) != null ? rs.getString( "VlrLiqItOrc" ) : "0" ));
-				vVals.addElement( "");
-				vVals.addElement( "");
-				vVals.addElement( "0,00");
-				vVals.addElement( rs.getInt( "CodOrc" ));
-				// 	private enum GRID_ITENS { SEL, CODITORC, CODPROD, DESCPROD, QTD, QTDAFAT, QTDFAT, QTD_PROD, PRECO, DESC, VLRLIQ, TPAGR, PAI, VLRAGRP, CODORC, USALOTE, CODLOTE };	
-				vVals.addElement( rs.getString( "CLOTEPROD" ));
-				vVals.addElement( rs.getString( "CODLOTE" ) == null ? "" : rs.getString( "CODLOTE" ));
-				vVals.addElement( rs.getString( "CODALMOX" ) == null ? "" : rs.getString( "CODALMOX" ));
-				vVals.addElement( rs.getString( "CODOP" ) == null ? "" : rs.getString( "CODOP" ));
-
-				vValidos.addElement( new int[] { rs.getInt( "CodOrc" ), rs.getInt( "CodItOrc" ) } );
-
-				vector.add( vVals );
+				boolean completasaldo = false;
+				BigDecimal qtditorc = rs.getBigDecimal( DLBuscaOrc.GRID_ITENS.QTDITORC.toString() );
+				if (qtditorc==null) {
+					qtditorc = BigDecimal.ZERO;
+				}
+				BigDecimal qtdafatitorc = rs.getBigDecimal( DLBuscaOrc.GRID_ITENS.QTDAFATITORC.toString() );
+				if (qtdafatitorc==null) {
+					qtdafatitorc = BigDecimal.ZERO;
+				}
+				BigDecimal qtdfatitorc =  rs.getBigDecimal( DLBuscaOrc.GRID_ITENS.QTDFATITORC.toString() );
+				if (qtdfatitorc==null) {
+					qtdfatitorc = BigDecimal.ZERO;
+				}
+				BigDecimal qtdfinalproditorc = rs.getBigDecimal( DLBuscaOrc.GRID_ITENS.QTDFINALPRODITORC.toString() );
+				if (qtdfinalproditorc==null) {
+					qtdfinalproditorc = BigDecimal.ZERO;
+				}
+				BigDecimal precoitorc = rs.getBigDecimal( "precoitorc" );
+				if (precoitorc==null) {
+					precoitorc = BigDecimal.ZERO;
+				}
+				BigDecimal vlrdescitorc =  rs.getBigDecimal( "vlrdescitorc" );
+				if (vlrdescitorc==null) {
+					vlrdescitorc = BigDecimal.ZERO;
+				}
+				BigDecimal vlrliqitorc = rs.getBigDecimal( "vlrliqitorc" );
+				if (vlrliqitorc==null) {
+					vlrliqitorc = BigDecimal.ZERO;
+				}
+				String cloteprod = rs.getString( "cloteprod" );
+				while (!completasaldo) {
+					Integer coditorc = new Integer( rs.getInt( "coditorc" ));
+					Integer codprod = new Integer( rs.getInt( "codprod" ));
+					String descprod = rs.getString( "descprod" ).trim();
+					vVals = new Vector<Object>();
+					// 	private enum GRID_ITENS { SEL, CODITORC, CODPROD, DESCPROD, QTD, QTDAFAT, QTDFAT, QTD_PROD, PRECO, DESC, VLRLIQ, TPAGR, PAI, VLRAGRP, CODORC, USALOTE, CODLOTE };	
+					vVals.addElement( new Boolean( true ));
+					vVals.addElement( coditorc );
+					vVals.addElement( codprod );
+					vVals.addElement( descprod );
+					vVals.addElement( Funcoes.strDecimalToStrCurrencyd( Aplicativo.casasDec, String.valueOf( qtditorc) ) );
+					vVals.addElement( Funcoes.strDecimalToStrCurrencyd( Aplicativo.casasDec, String.valueOf( qtdafatitorc ) ) );
+					vVals.addElement( Funcoes.strDecimalToStrCurrencyd( Aplicativo.casasDec, String.valueOf( qtdfatitorc ) ) );
+					vVals.addElement( Funcoes.strDecimalToStrCurrencyd( Aplicativo.casasDec,  String.valueOf( qtdfinalproditorc ) ) );
+					vVals.addElement( Funcoes.strDecimalToStrCurrencyd( Aplicativo.casasDecPre, String.valueOf( precoitorc ) ) );
+					vVals.addElement( Funcoes.strDecimalToStrCurrencyd( Aplicativo.casasDecPre, String.valueOf( vlrdescitorc ) ) );
+					vVals.addElement( Funcoes.strDecimalToStrCurrencyd( Aplicativo.casasDecPre, String.valueOf( vlrliqitorc ) ) );
+					vVals.addElement( "");
+					vVals.addElement( "");
+					vVals.addElement( "0,00");
+					vVals.addElement( rs.getInt( "CodOrc" ));
+					vVals.addElement( cloteprod );
+					vVals.addElement( rs.getString( "CODLOTE" ) == null ? "" : rs.getString( "CODLOTE" ));
+					vVals.addElement( rs.getString( "CODALMOX" ) == null ? "" : rs.getString( "CODALMOX" ));
+					vVals.addElement( rs.getString( "CODOP" ) == null ? "" : rs.getString( "CODOP" ));
+					vValidos.addElement( new int[] { rs.getInt( "CodOrc" ), rs.getInt( "CodItOrc" ) } );
+					vector.add( vVals );
+					completasaldo = true;
+					if (! "S".equals( cloteprod) ) {
+						
+					}
+				}
 			}
-
 			getConn().commit();
 		}
-
 		return vector;
 	}
 
 
 	public Map<String, Object> getPrefs() throws SQLException {
 		Map<String, Object> result = null;
-
 		if (prefs==null) {
 			PreparedStatement ps = null;
 			ResultSet rs = null;
 			StringBuilder sql = null;
 			result = new HashMap<String, Object>();
-	
-			sql = new StringBuilder("SELECT P1.USAPEDSEQ, P4.AUTOFECHAVENDA, P1.ADICORCOBSPED, P1.ADICOBSORCPED, P1.FATORCPARC, P1.APROVORCFATPARC, P1.SOLDTSAIDA " );
-			sql.append( ", P1.BLOQVDPORATRASO, P1.NUMDIASBLOQVD ");
-			sql.append( "FROM SGPREFERE1 P1, SGPREFERE4 P4 " );
-			sql.append( "WHERE P1.CODEMP=? AND P1.CODFILIAL=? " );
-			sql.append( "AND P4.CODEMP=P1.CODEMP AND P4.CODFILIAL=P4.CODFILIAL");
-	
+			sql = new StringBuilder("select p1.usapedseq, p4.autofechavenda, p1.adicorcobsped, p1.adicobsorcped, p1.fatorcparc, p1.aprovorcfatparc, p1.soldtsaida " );
+			sql.append( ", p1.bloqvdporatraso, p1.numdiasbloqvd ");
+			sql.append( "from sgprefere1 p1, sgprefere4 p4 " );
+			sql.append( "where p1.codemp=? and p1.codfilial=? " );
+			sql.append( "and p4.codemp=p1.codemp and p4.codfilial=p4.codfilial");
 			ps = getConn().prepareStatement( sql.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
 			rs = ps.executeQuery();
-	
 			if ( rs.next() ) { 
-	
 				result.put( COL_PREFS.USAPEDSEQ.name(), new Boolean("S".equals( rs.getString( COL_PREFS.USAPEDSEQ.name()))));
 				result.put( COL_PREFS.AUTOFECHAVENDA.name(), new Boolean("S".equals( rs.getString( COL_PREFS.AUTOFECHAVENDA.name()))));
 				result.put( COL_PREFS.ADICORCOBSPED.name(), new Boolean("S".equals( rs.getString( COL_PREFS.ADICORCOBSPED.name()))));
@@ -705,21 +671,16 @@ public class DAOBuscaOrc extends AbstractDAO {
 				result.put( COL_PREFS.NUMDIASBLOQVD.name(), new Integer(rs.getInt( COL_PREFS.NUMDIASBLOQVD.name())));
 	
 			}
-	
 			rs.close();
 			ps.close();
 		}
 		else {
 			result = prefs;
 		}
-			
 		return result;
 	}
 
-
-
 	public Vector<Object> getvValidos() {
-
 		return vValidos;
 	}
 
