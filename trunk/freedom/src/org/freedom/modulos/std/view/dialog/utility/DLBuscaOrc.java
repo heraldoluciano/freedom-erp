@@ -520,14 +520,11 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 		txtVlrLiq.setVlrBigDecimal(  new BigDecimal(0) );
 	}
 
-
 	public void CarregaOrcamento(Integer codorc) {
-
 		txtCodOrc.setVlrInteger( codorc );
 		lcOrc.carregaDados();
 		btBusca.doClick();
 		btExec.doClick();
-
 	}
 
 	private boolean gerarContrato() {
@@ -535,7 +532,6 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 		DLCriaContrato dlContato = null;
 		Integer codcontr = null;
 		String descContr = null;
-		
 		if ( tabitorc.getNumLinhas() > 0 ) {
 			try {
 				codcontr = daobusca.getMaxCodContr( Aplicativo.iCodEmp, ListaCampos.getMasterFilial("VDCONTRATO") );	
@@ -543,12 +539,9 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 				Funcoes.mensagemErro( null, "Erro ao buscar código do contrato!!!" );
 				 e.printStackTrace();
 			}
-			
 			dlContato = new DLCriaContrato(codcontr,  txtCodCli.getVlrInteger(), txtNomeCli.getVlrString() );
 			dlContato.setNewCodigo( codcontr );
-			
 			dlContato.setVisible( true );
-
 			if ( dlContato.OK ) {
 				codcontr = dlContato.getNewCodigo();
 				descContr = dlContato.getDescContr();
@@ -575,14 +568,10 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 
 	private boolean criarContrato(int codcontr, String descContr)  throws SQLException {
 		boolean result = false;
-
 		Date dataInicio = new Date();
 		Date dataFim = Funcoes.getDataFimMes( Funcoes.getMes( dataInicio ) - 1, Funcoes.getAno( dataInicio ) );
-	
-
 		Integer index = 1;
 		Integer codemp = Aplicativo.iCodEmp;
-
 		VDContrato contrato = new VDContrato();
 		contrato.setCodEmp(codemp);
 		contrato.setCodFilial( ListaCampos.getMasterFilial("VDCONTRATO") );
@@ -600,12 +589,8 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 		contrato.setTpcontr("P");
 		contrato.setDtPrevFin( dataFim );
 		contrato.setAtivo( "S" );
-
-
 		daobusca.insertVDContrato( contrato );
-
 		for ( int i = 0; i < tabitorc.getNumLinhas(); i++ ) {
-			
 			VDItContrato itemContrato = new VDItContrato();
 			itemContrato.setCodEmp( codemp );
 			itemContrato.setCodFilial(ListaCampos.getMasterFilial("VDITCONTRATO")); 
@@ -624,9 +609,7 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 			itemContrato.setIndexItContr( index++ );
 			itemContrato.setAcumuloItContr( 0 ); 
 			itemContrato.setFranquiaItContr( "N" );
-
 			daobusca.insertVDItContrato( itemContrato );
-
 			VDContrOrc contrOrc = new VDContrOrc();
 			contrOrc.setCodEmp( codemp );
 			contrOrc.setCodFilial( ListaCampos.getMasterFilial("VDCONTRATO") );
@@ -637,25 +620,19 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 			contrOrc.setTipoOrc( "O" );
 			contrOrc.setCodOrc( new Integer( tabitorc.getValor( i, GRID_ITENS.CODORC.ordinal() ).toString())); 
 			contrOrc.setCodItOrc( new Integer( tabitorc.getValor( i, GRID_ITENS.CODITORC.ordinal() ).toString() ) );
-
 			daobusca.insertVDContrOrc( contrOrc );
 		}
-	
 	daobusca.commit();
 	result = true;
-	
 	if ( Funcoes.mensagemConfirma( null, "Contrato '" + codcontr + "' gerado com sucesso!!!\n\n" + "Deseja edita-lo?" ) == JOptionPane.YES_OPTION ) {
 			FContrato contr = new FContrato( con, codcontr );
 			Aplicativo.telaPrincipal.criatela( "Projetos/Contratos", contr , con );
 			this.dispose();
 	}
-
 	return  result;
 }
 
-
 private boolean gerarVenda() {
-
 	PreparedStatement ps = null;
 	PreparedStatement ps2 = null;
 	PreparedStatement ps3 = null;
@@ -665,15 +642,11 @@ private boolean gerarVenda() {
 	int iCodVenda = 0;
 	Date dataSaida = null;
 	int[] iValsVec = null;
-
 	StringBuffer obs = new StringBuffer();
 	DLCriaVendaCompra diag = null;
 	Vector<Integer> vOrcAdicObs = new Vector<Integer>();
-
 	try {
-
 		if ( tabitorc.getNumLinhas() > 0 ) {
-
 			boolean usaPedSeq = (Boolean) prefs.get(COL_PREFS.USAPEDSEQ.name());
 			//Boolean que determina se data de saida/entrega aparecerá na dialog de Confirmação.
 			boolean solDtSaida = ( Boolean) prefs.get(COL_PREFS.SOLDTSAIDA.name());
@@ -701,24 +674,17 @@ private boolean gerarVenda() {
 			}
 			else
 				return false;
-
 			// STD
-
 			if ( sTipoVenda.equals( "V" ) ) {
-
 				for ( int i = 0; i < tabitorc.getNumLinhas(); i++ ) {
-
 					if ( ! ( (Boolean) tabitorc.getValor( i, GRID_ITENS.SEL.ordinal() ) ).booleanValue() ) {
 						continue;
 					}
-
 					iValsVec = (int[]) vValidos.elementAt( i );
-
 					// Informa na observação da venda a mesma observação do orçamento (primeiro do grid)
 					if ( (Boolean) prefs.get(COL_PREFS.ADICOBSORCPED.name()) && bPrim ) {
 						obs.append( tabOrc.getValor( 0, 8 ) );
 					}
-
 					// Informa na observação da venda os orçamentos que compoe a venda.
 					if ( (Boolean) prefs.get(COL_PREFS.ADICORCOBSPED.name())) {
 						int codorc =  iValsVec[ 0 ];
@@ -737,27 +703,9 @@ private boolean gerarVenda() {
 						if ( vValidos.size() > 1 && vValidos.size() == i+1 ){
 							obs.append( " . " );
 						}
-
 					}
-
 					if ( bPrim ) {
 						try {
-							/*sSQL = "SELECT IRET FROM VDADICVENDAORCSP(?,?,?,?,?,?)";
-								ps = con.prepareStatement( sSQL );
-								ps.setInt( 1, new Integer( tabitorc.getValor( i, GRID_ITENS.CODORC.ordinal() ).toString() ) );
-								ps.setInt( 2, ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
-								ps.setInt( 3, Aplicativo.iCodEmp );
-								ps.setString( 4, sTipoVenda );
-								ps.setInt( 5, iCodVenda );
-								ps.setDate( 6, Funcoes.dateToSQLDate( dataSaida == null ? new Date() : dataSaida ));
-								rs = ps.executeQuery();
-
-								if ( rs.next() )
-									iCodVenda = rs.getInt( 1 );
-
-								rs.close();
-								ps.close();*/
-
 							iCodVenda = daobusca.executaVDAdicVendaORCSP(  Aplicativo.iCodEmp
 									, ListaCampos.getMasterFilial( "VDORCAMENTO" )
 									, new Integer( tabitorc.getValor( i, GRID_ITENS.CODORC.ordinal() ).toString() )
@@ -765,7 +713,6 @@ private boolean gerarVenda() {
 									, sTipoVenda 
 									, iCodVenda 
 									, dataSaida );
-
 						} catch ( SQLException err ) {
 							con.rollback();
 							if ( err.getErrorCode() == 335544665 ) {
@@ -783,13 +730,11 @@ private boolean gerarVenda() {
 						bPrim = false;
 					}
 					try {
-						
 						Integer icodorc = new Integer( tabitorc.getValor( i, GRID_ITENS.CODORC.ordinal() ).toString());
 						Integer coditorc = new Integer( tabitorc.getValor( i, GRID_ITENS.CODITORC.ordinal() ).toString() );
 						BigDecimal qtdprod	= new BigDecimal( Funcoes.strCurrencyToDouble( tabitorc.getValor( i,GRID_ITENS.QTDFINALPRODITORC.ordinal() ).toString() ) ) ;
 						BigDecimal qtdafatitorc	= new BigDecimal( Funcoes.strCurrencyToDouble( tabitorc.getValor( i, GRID_ITENS.QTDAFATITORC.ordinal() ).toString() ) ) ;
 						BigDecimal desc = new BigDecimal( Funcoes.strCurrencyToDouble( tabitorc.getValor( i, GRID_ITENS.DESC.ordinal() ).toString() ) );
-						
 						daobusca.executaVDAdicItVendaORCSP( 
 								Aplicativo.iCodFilial, 
 								iCodVenda, 
@@ -802,51 +747,6 @@ private boolean gerarVenda() {
 								qtdprod, 
 								qtdafatitorc, 
 								desc);
-
-						/*	sSQL = "EXECUTE PROCEDURE VDADICITVENDAORCSP(?,?,?,?,?,?,?,?,?,?)";
-
-							ps2 = con.prepareStatement( sSQL );
-
-							BigDecimal qtdprod	= new BigDecimal( Funcoes.strCurrencyToDouble( tabitorc.getValor( i,GRID_ITENS.QTDFINALPRODITORC.ordinal() ).toString() ) ) ;
-							BigDecimal qtdafatitorc	= new BigDecimal( Funcoes.strCurrencyToDouble( tabitorc.getValor( i, GRID_ITENS.QTDAFATITORC.ordinal() ).toString() ) ) ;
-
-							ps2.setInt( 1, Aplicativo.iCodFilial );
-							ps2.setInt( 2, iCodVenda );
-							ps2.setInt( 3, new Integer( tabitorc.getValor( i, GRID_ITENS.CODORC.ordinal() ).toString() ) );
-							ps2.setInt( 4, new Integer( tabitorc.getValor( i, GRID_ITENS.CODITORC.ordinal() ).toString() ) );
-							ps2.setInt( 5, ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
-							ps2.setInt( 6, Aplicativo.iCodEmp );
-
-							ps2.setString( 7, sTipoVenda );
-							ps2.setString( 8, tabitorc.getValor( i, GRID_ITENS.TPAGR.ordinal() ).toString() );
-
-							// Verificação dos excessos de produção
-
-							if( qtdprod.compareTo( qtdafatitorc ) > 0 
-								&& 
-							  ( Funcoes.mensagemConfirma( null,  
-
-								"A quantidade produzida do ítem \n" + tabitorc.getValor( i, GRID_ITENS.DESCPROD.ordinal() ).toString().trim() + " \n" +
-								"excede a quantidade solicitada pelo cliente.\n" +
-								"Deseja faturar a quantidade produzida?\n\n" +
-								"Quantidade solicitada: " + Funcoes.bdToStrd( qtdafatitorc ) + "\n" +
-								"Quantidade produzida : " + Funcoes.bdToStrd( qtdprod ) + "\n\n"
-
-							  ) == JOptionPane.YES_OPTION ) ) {
-
-								ps2.setBigDecimal( 9, qtdprod );
-
-							}
-							else {
-								ps2.setBigDecimal( 9, qtdafatitorc );	
-							}
-
-
-							ps2.setBigDecimal( 10, new BigDecimal( Funcoes.strCurrencyToDouble( tabitorc.getValor( i, GRID_ITENS.DESC.ordinal() ).toString() ) ) );
-
-							ps2.execute();
-							ps2.close();*/
-
 					} 
 					catch ( SQLException err ) {
 						try {
@@ -861,22 +761,6 @@ private boolean gerarVenda() {
 
 				}
 				try {
-
-
-
-					/*						// Atualiza o desconto na venda de acordo com o desconto dado no orçamento.
-						sSQL = "EXECUTE PROCEDURE VDATUDESCVENDAORCSP(?,?,?,?)";
-						ps3 = con.prepareStatement( sSQL );
-						ps3.setInt( 1, Aplicativo.iCodEmp );
-						ps3.setInt( 2, ListaCampos.getMasterFilial( "VDVENDA" ) );
-						ps3.setString( 3, "V" );
-						ps3.setInt( 4, iCodVenda );
-
-						ps3.execute();
-						ps3.close();
-					 */
-
-
 					try {
 						daobusca.executaVDAtuDescVendaORCSP( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDVENDA" ), "V", iCodVenda );
 					} catch ( SQLException err ) {
@@ -884,7 +768,6 @@ private boolean gerarVenda() {
 						Funcoes.mensagemErro( null, "Erro ao atualizar desconto da venda!\n" + err.getMessage(), true, con, err );
 						return false;
 					}
-
 					try {
 						daobusca.atualizaObsPed( obs, iCodVenda );
 					} catch ( SQLException err ) {
@@ -892,7 +775,6 @@ private boolean gerarVenda() {
 						Funcoes.mensagemErro( null, "Erro ao atualizar observações da venda!\n" + err.getMessage(), true, con, err );
 						return false;
 					}
-
 					con.commit();
 					carregar();
 
@@ -951,7 +833,6 @@ private boolean gerarVenda() {
 	return true;
 }
 
-
 private void buscar(boolean proj) {
 	int codcli = -1;
 	try {
@@ -976,157 +857,6 @@ private void buscar(boolean proj) {
 
 }
 
-/*	private void buscar() {
-
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		String sSQL = null;
-		String sWhere = null;
-		Vector<Object> vVals = null;
-		boolean bOrc = false;
-		boolean bConv = false;
-		int iCod = -1;
-		try {
-
-			if ( txtCodOrc.getVlrInteger().intValue() > 0 ) {
-				iCod = txtCodOrc.getVlrInteger().intValue();
-				sWhere = ", VDCLIENTE C WHERE O.CODORC = ? AND O.CODFILIAL = ? AND O.CODEMP = ? AND C.CODEMP=O.CODEMPCL AND C.CODFILIAL=O.CODFILIALCL AND C.CODCLI=O.CODCLI ";
-				bOrc = true;
-			}
-			else {
-				if ( rgBusca.getVlrString().equals( "L" ) && txtCodCli.getText().trim().length() > 0 ) {
-					iCod = txtCodCli.getVlrInteger().intValue();
-					if ( iCod == 0 ) {
-						Funcoes.mensagemInforma( this, "Código do cliente inválido!" );
-						txtCodCli.requestFocus();
-						return;
-					}
-					sWhere = ", VDCLIENTE C WHERE C.CODCLI=? AND C.CODFILIAL=? AND C.CODEMP=? AND O.CODCLI=C.CODCLI AND O.CODFILIALCL=C.CODFILIAL AND O.CODEMPCL=C.CODEMP AND O.STATUSORC IN ('OL','FP','OP') ";
-				}
-				else if ( rgBusca.getVlrString().equals( "O" ) && txtCodConv.getText().trim().length() > 0 ) {
-					iCod = txtCodConv.getVlrInteger().intValue();
-					if ( iCod == 0 ) {
-						Funcoes.mensagemInforma( this, "Código do conveniado inválido!" );
-						txtCodConv.requestFocus();
-						return;
-					}
-					sWhere = ", ATCONVENIADO C WHERE C.CODCONV=? AND C.CODFILIAL=? AND C.CODEMP=? AND O.CODCONV=C.CODCONV AND O.CODFILIALCV=C.CODFILIAL AND O.CODEMPCV=C.CODEMP AND O.STATUSORC IN ('OL','FP') ";
-					bConv = true;
-				}
-				else if ( iCod == -1 ) {
-					txtCodOrc.requestFocus();
-					Funcoes.mensagemInforma( this, "Número do orçamento inválido!" );
-					return;
-				}
-
-			}
-
-			try {
-
-				sSQL = "SELECT O.CODORC," + ( bConv ? "O.CODCONV,C.NOMECONV," : "O.CODCLI,C.NOMECLI," ) 
-				+ "(SELECT COUNT(IT.CODITORC) FROM VDITORCAMENTO IT WHERE IT.CODORC=O.CODORC "
-				+ "AND IT.CODFILIAL=O.CODFILIAL AND IT.CODEMP=O.CODEMP),"
-				+ "(SELECT COUNT(IT.CODITORC) FROM VDITORCAMENTO IT WHERE IT.CODORC=O.CODORC " 
-				+ "AND IT.CODFILIAL=O.CODFILIAL AND IT.CODEMP=O.CODEMP " 
-				+ "AND IT.ACEITEITORC='S' AND IT.APROVITORC='S'),"
-				+ "(SELECT SUM(IT.VLRLIQITORC) FROM VDITORCAMENTO IT WHERE IT.CODORC=O.CODORC "
-				+ "AND IT.CODFILIAL=O.CODFILIAL AND IT.CODEMP=O.CODEMP),"
-				+ "(SELECT SUM(IT.VLRLIQITORC) FROM VDITORCAMENTO IT WHERE IT.CODORC=O.CODORC " 
-				+ "AND IT.CODFILIAL=O.CODFILIAL AND IT.CODEMP=O.CODEMP "
-				+ "AND IT.ACEITEITORC='S' AND IT.APROVITORC='S'), O.STATUSORC, COALESCE(O.OBSORC,'') OBSORC " 
-				+ "FROM VDORCAMENTO O" 
-				+ sWhere + " ORDER BY O.CODORC";
-
-				ps = con.prepareStatement( sSQL );
-				ps.setInt( 1, iCod );
-				ps.setInt( 2, ListaCampos.getMasterFilial( bOrc ? "VDORCAMENTO" : ( bConv ? "ATCONVENIADO" : "VDCLIENTE" ) ) );
-				ps.setInt( 3, Aplicativo.iCodEmp );
-				rs = ps.executeQuery();
-				tabOrc.limpa();
-				while ( rs.next() ) {
-					if ( rs.getString( 8 ).equals( "OL" ) || rs.getString( 8 ).equals( "OP" ) || rs.getString( 8 ).equals( "FP" )) {
-						vVals = new Vector<Object>();
-						vVals.addElement( new Boolean( true ) );
-						vVals.addElement( new Integer( rs.getInt( "CodOrc" ) ) );
-						vVals.addElement( new Integer( rs.getInt( 2 ) ) );
-						vVals.addElement( rs.getString( 3 ).trim() );
-						vVals.addElement( new Integer( rs.getInt( 4 ) ) );
-						vVals.addElement( new Integer( rs.getInt( 5 ) ) );
-						vVals.addElement( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( 6 ) != null ? rs.getString( 6 ) : "0" ) );
-						vVals.addElement( Funcoes.strDecimalToStrCurrencyd( 2, rs.getString( 7 ) != null ? rs.getString( 7 ) : "0" ) );
-						vVals.addElement( rs.getString( "OBSORC" ) );
-						tabOrc.adicLinha( vVals );
-					}
-					else {
-						txtCodOrc.requestFocus();
-						Funcoes.mensagemInforma( this, "ORÇAMENTO NÃO ESTÁ LIBERADO!" );
-						return;
-					}
-				}
-				rs.close();
-				ps.close();
-			} catch ( SQLException err ) {
-				Funcoes.mensagemErro( this, "Erro ao buscar orçamentos!\n" + err.getMessage(), true, con, err );
-				err.printStackTrace();
-			}
-			txtCodOrc.setAtivo( true );
-		} catch ( Exception e ) {
-			e.printStackTrace();
-		} finally {
-			ps = null;
-			rs = null;
-			sSQL = null;
-			sWhere = null;
-			vVals = null;
-		}
-	}*/
-
-/*	private boolean[] getPrefs() {
-
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		StringBuilder sql = null;
-		boolean[] ret = new boolean[ COL_PREFS.values().length];
-		try {
-			sql = new StringBuilder("SELECT P1.USAPEDSEQ, P4.AUTOFECHAVENDA, P1.ADICORCOBSPED, P1.ADICOBSORCPED, P1.FATORCPARC, P1.APROVORCFATPARC, P1.SOLDTSAIDA " );
-			sql.append(  "FROM SGPREFERE1 P1, SGPREFERE4 P4 " );
-			sql.append( "WHERE P1.CODEMP=? AND P1.CODFILIAL=? " );
-			sql.append( "AND P4.CODEMP=P1.CODEMP AND P4.CODFILIAL=P4.CODFILIAL");
-
-			ps = con.prepareStatement( sql.toString() );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
-			rs = ps.executeQuery();
-			if ( rs.next() ) {
-				if ( "S".equals( rs.getString( COL_PREFS.USAPEDSEQ.toString() ) ) ) 
-					ret[ COL_PREFS.USAPEDSEQ.ordinal() ] = true;
-				if ( "S".equals(rs.getString( COL_PREFS.AUTOFECHAVENDA.toString() ) ) )
-					ret[ COL_PREFS.AUTOFECHAVENDA.ordinal() ] = true;
-				if ( "S".equals( rs.getString(COL_PREFS.ADICORCOBSPED.toString() ) ) )
-					ret[ COL_PREFS.ADICORCOBSPED.ordinal() ] = true;
-				if ( "S".equals( rs.getString(COL_PREFS.ADICOBSORCPED.toString() ) ) )
-					ret[ COL_PREFS.ADICOBSORCPED.ordinal() ] = true;
-				if ( "S".equals( rs.getString(COL_PREFS.FATORCPARC.toString() ) ) )
-					ret[ COL_PREFS.FATORCPARC.ordinal() ] = true;
-				if ( "S".equals( rs.getString(COL_PREFS.APROVORCFATPARC.toString() ) ) )
-					ret[ COL_PREFS.APROVORCFATPARC.ordinal() ] = true;
-				if ( "S".equals( rs.getString(COL_PREFS.SOLDTSAIDA.toString() ) ) )
-					ret[ COL_PREFS.SOLDTSAIDA.ordinal() ] = true;
-			}
-			rs.close();
-			ps.close();
-		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro ao buscar orçamentos!\n" + err.getMessage(), true, con, err );
-			err.printStackTrace();
-		} finally {
-
-			ps = null;
-			rs = null;
-			sql = null;
-		}
-		return ret;
-	}
- */
 private void limpaNaoSelecionados( JTablePad ltab ) {
 
 	int linhas = ltab.getNumLinhas();
@@ -1498,44 +1228,31 @@ public void setConexao( DbConnection cn ) {
 	lcCli.setConexao( cn );
 	lcConv.setConexao( cn );
 	lcOrc.setConexao( cn );
-
 	daobusca = new DAOBuscaOrc( cn );
-
 	try {
 		prefs =	daobusca.getPrefs();
 	} catch (SQLException err) {
 		Funcoes.mensagemErro( null, "Erro ao buscar preferências gerais!\n" + err.getMessage(), true, con, err );
 		err.printStackTrace();
 	}
-
 	montaListaCampos();
 	montaTela();
 	montaListener();
-
 	txtCodOrc.setFocusable( true );
 	setFirstFocus( txtCodOrc );
-
-
 }
 
-
-
 public void mouseClicked( MouseEvent e ) {
-
 	if ( e.getSource() == tabitorc ) {
 		if ( tabitorc.getLinhaSel() > -1 ) {
 			if ( e.getClickCount() == 2 ) {
-
 				String cloteprod 	= (String) 	tabitorc.getValor( tabitorc.getLinhaSel(), GRID_ITENS.USALOTE.ordinal() );
 				String codlote 		= (String) 	tabitorc.getValor( tabitorc.getLinhaSel(), GRID_ITENS.CODLOTE.ordinal() );
 				Integer codprod 	= (Integer) tabitorc.getValor( tabitorc.getLinhaSel(), GRID_ITENS.CODPROD.ordinal() );
 				String descprod 	= (String) 	tabitorc.getValor( tabitorc.getLinhaSel(), GRID_ITENS.DESCPROD.ordinal() );
-
 				if ( "S".equals( cloteprod ) ) {
-
 					DLSelecionaLote dl = new DLSelecionaLote( this, codprod.toString(), descprod, con );
 					dl.setVisible( true );
-
 					if ( dl.OK ) {
 						try {
 							daobusca.atualizaLoteItVenda( dl.getValor(), tabitorc.getLinhaSel(),
@@ -1548,14 +1265,11 @@ public void mouseClicked( MouseEvent e ) {
 						} finally {
 							dl.dispose();
 						}
-
 					}
 					else {
 						dl.dispose();
 					}
-
 				}
-
 			}
 		}
 	}
