@@ -139,8 +139,9 @@ public class DAOBuscaOrc extends AbstractDAO {
 		
 		StringBuilder sql = new StringBuilder();
 		
-		sql.append( "insert into vditcontrato (codemp, codfilial, codcontr, coditcontr, descitcontr, codemppd, codfilialpd, codprod, qtditcontr, vlritcontr, "); 
-		sql.append("codemppe, codfilialpe, codprodpe, vlritcontrexced, indexitcontr, acumuloitcontr, franquiaitcontr ");
+		sql.append( "insert into vditcontrato (codemp, codfilial, codcontr, coditcontr, descitcontr, codemppd, codfilialpd");
+		sql.append( ", codprod, qtditcontr, vlritcontr, "); 
+		sql.append( "codemppe, codfilialpe, codprodpe, vlritcontrexced, indexitcontr, acumuloitcontr, franquiaitcontr ");
 		sql.append( ") values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,  ?, ?, ?) ");
 		
 		int param = 1;
