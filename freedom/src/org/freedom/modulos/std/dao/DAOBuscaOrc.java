@@ -271,7 +271,7 @@ public class DAOBuscaOrc extends AbstractDAO {
 	public void executaVDAdicItVendaORCSP(Integer codfilial, Integer codvenda, Integer codorc, Integer coditorc, Integer codfilialoc, Integer codempoc, 
 			String tipovenda, String tpagr, BigDecimal qtdprod, BigDecimal qtdafatitorc, BigDecimal desc) throws SQLException {
 
-		String sql = "EXECUTE PROCEDURE VDADICITVENDAORCSP(?,?,?,?,?,?,?,?,?,?)";
+		String sql = "execute procedure vdadicitvendaorcsp(?,?,?,?,?,?,?,?,?,?)";
 		int param = 1;
 
 		PreparedStatement ps = getConn().prepareStatement( sql );
