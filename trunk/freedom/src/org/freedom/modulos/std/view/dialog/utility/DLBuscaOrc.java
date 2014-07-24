@@ -73,7 +73,7 @@ import org.freedom.modulos.std.view.frame.utility.FPesquisaOrc;
 public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupListener, CarregaListener, MouseListener {
 
 	public enum GRID_ITENS { SEL, CODITORC, CODPROD, DESCPROD, QTDITORC, QTDAFATITORC, QTDFATITORC
-		, QTDFINALPRODITORC, PRECO, DESC, VLRLIQ, TPAGR, PAI, VLRAGRP, CODORC, USALOTE, CODLOTE, CODALMOX, CODOP };
+		, QTDFINALPRODITORC, CODALMOX, CODLOTE, SALDOPROD, PRECO, DESC, VLRLIQ, TPAGR, PAI, VLRAGRP, CODORC, USALOTE, CODOP };
 
 	private static final long serialVersionUID = 1L;
 
@@ -450,6 +450,9 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 		tabitorc.adicColuna( "Qtd.a fat.");
 		tabitorc.adicColuna( "Qtd.fat." );
 		tabitorc.adicColuna( "Qtd.OP" );
+		tabitorc.adicColuna( "Almox." );
+		tabitorc.adicColuna( "Lote" );
+		tabitorc.adicColuna( "Saldo" );
 		tabitorc.adicColuna( "Preço" );
 		tabitorc.adicColuna( "Vlr.desc." );
 		tabitorc.adicColuna( "Vlr.liq." );
@@ -458,8 +461,6 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 		tabitorc.adicColuna( "Vlr.Agr." );
 		tabitorc.adicColuna( "Orc." );
 		tabitorc.adicColuna( "Usa Lote" );
-		tabitorc.adicColuna( "Lote" );
-		tabitorc.adicColuna( "Cod.Almx." );
 		tabitorc.adicColuna( "Cod.OP." );
 
 		tabitorc.setTamColuna( 20, GRID_ITENS.SEL.ordinal() );
@@ -470,6 +471,9 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 		tabitorc.setTamColuna( 75, GRID_ITENS.QTDAFATITORC.ordinal() );
 		tabitorc.setTamColuna( 75, GRID_ITENS.QTDFATITORC.ordinal() );
 		tabitorc.setTamColuna( 75, GRID_ITENS.QTDFINALPRODITORC.ordinal() );
+		tabitorc.setTamColuna( 50, GRID_ITENS.CODALMOX.ordinal() );
+		tabitorc.setTamColuna( 80, GRID_ITENS.CODLOTE.ordinal() );
+		tabitorc.setTamColuna( 75, GRID_ITENS.SALDOPROD.ordinal() );
 		tabitorc.setTamColuna( 60, GRID_ITENS.PRECO.ordinal() );
 		tabitorc.setTamColuna( 75, GRID_ITENS.DESC.ordinal() );
 		tabitorc.setTamColuna( 75, GRID_ITENS.VLRLIQ.ordinal() );
@@ -478,8 +482,6 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 		tabitorc.setTamColuna( 75, GRID_ITENS.VLRAGRP.ordinal() );
 		tabitorc.setTamColuna( 35, GRID_ITENS.CODORC.ordinal() );
 		tabitorc.setColunaInvisivel( GRID_ITENS.USALOTE.ordinal() );
-		tabitorc.setTamColuna( 80, GRID_ITENS.CODLOTE.ordinal() );
-		tabitorc.setTamColuna( 80, GRID_ITENS.CODALMOX.ordinal() );
 		tabitorc.setTamColuna( 80, GRID_ITENS.CODOP.ordinal() );
 
 		tabitorc.setColunaEditavel( 0, true );
@@ -487,15 +489,15 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 
 	private void carregar() {
 		try {
-			tabitorc.setDataVector(daobusca.carregar( tabOrc.getDataVector(), (Boolean) prefs.get(COL_PREFS.APROVORCFATPARC.name()), origem));
+			tabitorc.setDataVector(daobusca.carregar(  ListaCampos.getMasterFilial( "EQALMOX" )
+					, tabOrc.getDataVector(), (Boolean) prefs.get(COL_PREFS.APROVORCFATPARC.name()), origem));
 			calcTotalizadores();
 			vValidos = daobusca.getvValidos();
 		} catch (SQLException e) {
-			Funcoes.mensagemErro( null, "Erro ao carregar Itens do orçamento!!!" );
+			Funcoes.mensagemErro( null, "Erro ao carregar Itens do orçamento!\n"+e.getMessage() );
 			e.printStackTrace();
 		}
 	}
-
 
 	private void calcTotalizadores() {
 		float fValProd = 0;
@@ -1228,7 +1230,7 @@ public void setConexao( DbConnection cn ) {
 	lcCli.setConexao( cn );
 	lcConv.setConexao( cn );
 	lcOrc.setConexao( cn );
-	daobusca = new DAOBuscaOrc( cn );
+	daobusca = new DAOBuscaOrc( Aplicativo.iCodEmp, ListaCampos.getMasterFilial( "VDORCAMENTO" ), cn );
 	try {
 		prefs =	daobusca.getPrefs();
 	} catch (SQLException err) {
