@@ -710,6 +710,7 @@ public class DAOBuscaOrc extends AbstractDAO {
 			sql.append( "select sl.codalmox, sl.codlote, sl.sldliqlote saldo ");
 			sql.append( "from eqsaldolote sl, eqlote lt ");
 			sql.append( "where lt.codemp=? and lt.codfilial=? and lt.codprod=? and sl.codempax=? and sl.codfilialax=? ");
+			sql.append( "and sl.codemp=lt.codemp and sl.codfilial=lt.codfilial and sl.codprod=lt.codprod and sl.codlote=lt.codlote ");
 			sql.append( "and sl.sldliqlote>0 and lt.venctolote<cast('now' as date) ");
 			sql.append( "order by lt.venctolote ");
 		} else {
