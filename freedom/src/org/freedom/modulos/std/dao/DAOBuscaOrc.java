@@ -38,6 +38,12 @@ public class DAOBuscaOrc extends AbstractDAO {
 
 	}
 	
+	public DAOBuscaOrc( Integer codemp, Integer codfilial, DbConnection connection) {
+		this( connection );
+		setCodemp( codemp );
+		setCodfilial( codfilial );
+	}
+	
 	public void commit() throws SQLException {
 		getConn().commit();
 	}
@@ -508,7 +514,8 @@ public class DAOBuscaOrc extends AbstractDAO {
 	}
 
 
-	public Vector<Vector<Object>>  carregar( Vector<Vector<Object>> tabOrc, boolean aprovorcfatparc, String origem ) throws SQLException {
+	public Vector<Vector<Object>>  carregar( Integer codfilialax
+			, Vector<Vector<Object>> tabOrc, boolean aprovorcfatparc, String origem ) throws SQLException {
 		boolean proj = "Contrato".equalsIgnoreCase( origem );
 		Vector<Object> vVals = null;
 		Vector<Vector<Object>> vector = new Vector<Vector<Object>>();
@@ -565,8 +572,8 @@ public class DAOBuscaOrc extends AbstractDAO {
 			sql.append( " order by it.codorc,it.coditorc " );
 			PreparedStatement ps = getConn().prepareStatement( sql.toString() );
 			int param = 1;
-			ps.setInt( param++, Aplicativo.iCodEmp );
-			ps.setInt( param++, ListaCampos.getMasterFilial( "VDORCAMENTO" ) );
+			ps.setInt( param++, getCodemp() );
+			ps.setInt( param++, getCodfilial() );
 			ResultSet rs = ps.executeQuery();
 			while ( rs.next() ) {
 				// vVals = new Vector<Object>();
@@ -600,10 +607,26 @@ public class DAOBuscaOrc extends AbstractDAO {
 					vlrliqitorc = BigDecimal.ZERO;
 				}
 				String cloteprod = rs.getString( "cloteprod" );
-				while (!completasaldo) {
-					Integer coditorc = new Integer( rs.getInt( "coditorc" ));
-					Integer codprod = new Integer( rs.getInt( "codprod" ));
-					String descprod = rs.getString( "descprod" ).trim();
+				Integer codorc = new Integer( rs.getInt("codorc") );
+				Integer coditorc = new Integer( rs.getInt( "coditorc" ));
+				Integer codprod = new Integer( rs.getInt( "codprod" ));
+				String descprod = rs.getString( "descprod" ).trim();
+				String codop = rs.getString( "codop" );
+				if (codop==null) {
+					codop = "";
+				}
+				Vector<SaldoProd> listsaldo = getSaldoProd( "S".equals( cloteprod )
+						, codfilialax, codprod, qtditorc
+						, precoitorc, vlrdescitorc, qtdafatitorc );
+				for (SaldoProd saldoprod: listsaldo) {
+					String codlote = saldoprod.getCodlote();
+					if (codlote==null) {
+						codlote = "";
+					}
+					String codalmox = "";
+					if (saldoprod.getCodalmox().intValue()>0) {
+						codalmox = String.valueOf( saldoprod.getCodalmox() );
+					}
 					vVals = new Vector<Object>();
 					// 	private enum GRID_ITENS { SEL, CODITORC, CODPROD, DESCPROD, QTD, QTDAFAT, QTDFAT, QTD_PROD, PRECO, DESC, VLRLIQ, TPAGR, PAI, VLRAGRP, CODORC, USALOTE, CODLOTE };	
 					vVals.addElement( new Boolean( true ));
@@ -611,33 +634,29 @@ public class DAOBuscaOrc extends AbstractDAO {
 					vVals.addElement( codprod );
 					vVals.addElement( descprod );
 					vVals.addElement( Funcoes.strDecimalToStrCurrencyd( Aplicativo.casasDec, String.valueOf( qtditorc) ) );
-					vVals.addElement( Funcoes.strDecimalToStrCurrencyd( Aplicativo.casasDec, String.valueOf( qtdafatitorc ) ) );
+					vVals.addElement( Funcoes.strDecimalToStrCurrencyd( Aplicativo.casasDec, String.valueOf( saldoprod.getQtdafat() ) ) );
 					vVals.addElement( Funcoes.strDecimalToStrCurrencyd( Aplicativo.casasDec, String.valueOf( qtdfatitorc ) ) );
 					vVals.addElement( Funcoes.strDecimalToStrCurrencyd( Aplicativo.casasDec,  String.valueOf( qtdfinalproditorc ) ) );
+					vVals.addElement( codalmox );
+					vVals.addElement( codlote );
+					vVals.addElement( Funcoes.strDecimalToStrCurrencyd( Aplicativo.casasDec,  String.valueOf( saldoprod.getSaldoprod() ) ) );
 					vVals.addElement( Funcoes.strDecimalToStrCurrencyd( Aplicativo.casasDecPre, String.valueOf( precoitorc ) ) );
-					vVals.addElement( Funcoes.strDecimalToStrCurrencyd( Aplicativo.casasDecPre, String.valueOf( vlrdescitorc ) ) );
-					vVals.addElement( Funcoes.strDecimalToStrCurrencyd( Aplicativo.casasDecPre, String.valueOf( vlrliqitorc ) ) );
+					vVals.addElement( Funcoes.strDecimalToStrCurrencyd( Aplicativo.casasDecPre, String.valueOf( saldoprod.getVlrDescCalc() ) ) );
+					vVals.addElement( Funcoes.strDecimalToStrCurrencyd( Aplicativo.casasDecPre, String.valueOf( saldoprod.getVlrLiqCalc() ) ) );
 					vVals.addElement( "");
 					vVals.addElement( "");
 					vVals.addElement( "0,00");
-					vVals.addElement( rs.getInt( "CodOrc" ));
+					vVals.addElement( codorc);
 					vVals.addElement( cloteprod );
-					vVals.addElement( rs.getString( "CODLOTE" ) == null ? "" : rs.getString( "CODLOTE" ));
-					vVals.addElement( rs.getString( "CODALMOX" ) == null ? "" : rs.getString( "CODALMOX" ));
-					vVals.addElement( rs.getString( "CODOP" ) == null ? "" : rs.getString( "CODOP" ));
-					vValidos.addElement( new int[] { rs.getInt( "CodOrc" ), rs.getInt( "CodItOrc" ) } );
+					vVals.addElement( codop );
+					vValidos.addElement( new int[] { codorc, coditorc } );
 					vector.add( vVals );
-					completasaldo = true;
-					if (! "S".equals( cloteprod) ) {
-						
-					}
 				}
 			}
 			getConn().commit();
 		}
 		return vector;
 	}
-
 
 	public Map<String, Object> getPrefs() throws SQLException {
 		Map<String, Object> result = null;
@@ -673,6 +692,7 @@ public class DAOBuscaOrc extends AbstractDAO {
 			}
 			rs.close();
 			ps.close();
+			getConn().commit();
 		}
 		else {
 			result = prefs;
@@ -680,8 +700,217 @@ public class DAOBuscaOrc extends AbstractDAO {
 		return result;
 	}
 
+	private Vector<SaldoProd> getSaldoProd(Boolean clote, Integer codfilialax, Integer codprod
+			, BigDecimal qtd, BigDecimal preco
+			, BigDecimal vlrdesc, BigDecimal qtdafat) throws SQLException {
+		Vector<SaldoProd> result = new Vector<SaldoProd>();
+		StringBuilder sql = new StringBuilder();
+		if (clote) {
+			sql.append( "select sl.codalmox, sl.codlote, sl.sldliqlote saldo ");
+			sql.append( "from eqsaldolote sl, eqlote lt ");
+			sql.append( "where lt.codemp=? and lt.codfilial=? and lt.codprod=? and sl.codempax=? and sl.codfilialax=? ");
+			sql.append( "and sl.sldliqlote>0 and lt.venctolote<cast('now' as date) ");
+			sql.append( "order by lt.venctolote ");
+		} else {
+			sql.append( "select sl.codalmox, sl.sldliqprod saldo ");
+			sql.append( "from eqsaldprod sl ");
+			sql.append( "where sl.codemp=? and sl.codfilial=? and sl.codprod=? and sl.codempax=? and sl.codfilialax=? ");
+			sql.append( "and sl.sldliqprod>0 ");
+			sql.append( "order sl.sldliqprod desc ");
+		}
+		PreparedStatement ps = getConn().prepareStatement( sql.toString() );
+		int param = 1;
+		ps.setInt( param++, getCodemp() );
+		ps.setInt( param++, getCodfilial() );
+		ps.setInt( param++, codprod );
+		ps.setInt( param++, getCodemp() );
+		ps.setInt( param++, codfilialax );
+		ResultSet rs = ps.executeQuery();
+		BigDecimal qtdafatcalc = qtdafat;
+		while (rs.next()) {
+			SaldoProd saldoprod = new SaldoProd();
+			saldoprod.setCodemp( getCodemp() );
+			saldoprod.setCodfilial( getCodfilial() );
+			saldoprod.setCodfilialax( codfilialax );
+			saldoprod.setCodalmox( rs.getInt( "codalmox" ));
+			saldoprod.setCodprod( codprod );
+			saldoprod.setVlrdesc( vlrdesc );
+			saldoprod.setQtd( qtd );
+			saldoprod.setPreco( preco );
+			BigDecimal saldo = rs.getBigDecimal( "saldo" );
+			saldoprod.setSaldoprod( saldo );
+			if (saldo.compareTo( qtdafatcalc )>=0) {
+				saldoprod.setQtdafat( qtdafatcalc );
+				qtdafatcalc = BigDecimal.ZERO;
+			} else {
+				saldoprod.setQtdafat( saldo );
+				qtdafatcalc = qtdafatcalc.subtract( saldo );
+			}
+			if (clote) {
+				saldoprod.setCodlote( rs.getString( "codlote" ) );
+			}
+			result.addElement( saldoprod );
+			if (qtdafatcalc.compareTo( BigDecimal.ZERO )<=0) {
+				break;
+			}
+		}
+		rs.close();
+		ps.close();
+		return result;
+	}
+	
 	public Vector<Object> getvValidos() {
 		return vValidos;
 	}
 
+	public class SaldoProd {
+		private Integer codemp;
+		private Integer codfilial;
+		private Integer codprod;
+		private String codlote;
+		private Integer codfilialax;
+		private Integer codalmox;
+		private BigDecimal saldoprod;
+		private BigDecimal qtdafat;
+		private BigDecimal preco;
+		private BigDecimal vlrdesc;
+		private BigDecimal qtd;
+		
+		public Integer getCodemp() {
+		
+			return codemp;
+		}
+		
+		public void setCodemp( Integer codemp ) {
+		
+			this.codemp = codemp;
+		}
+		
+		public Integer getCodfilial() {
+		
+			return codfilial;
+		}
+		
+		public void setCodfilial( Integer codfilial ) {
+		
+			this.codfilial = codfilial;
+		}
+		
+		public Integer getCodprod() {
+		
+			return codprod;
+		}
+		
+		public void setCodprod( Integer codprod ) {
+		
+			this.codprod = codprod;
+		}
+		
+		public Integer getCodfilialax() {
+		
+			return codfilialax;
+		}
+		
+		public void setCodfilialax( Integer codfilialax ) {
+		
+			this.codfilialax = codfilialax;
+		}
+		
+		public BigDecimal getSaldoprod() {
+		
+			return saldoprod;
+		}
+		
+		public void setSaldoprod( BigDecimal saldoprod ) {
+		
+			this.saldoprod = saldoprod;
+		}
+
+		
+		public BigDecimal getQtdafat() {
+		
+			return qtdafat;
+		}
+
+		
+		public void setQtdafat( BigDecimal qtdafat ) {
+		
+			this.qtdafat = qtdafat;
+		}
+
+		
+		public Integer getCodalmox() {
+		
+			return codalmox;
+		}
+
+		
+		public void setCodalmox( Integer codalmox ) {
+		
+			this.codalmox = codalmox;
+		}
+
+		
+		public void setCodlote( String codlote ) {
+		
+			this.codlote = codlote;
+		}
+		
+		public String getCodlote() {
+			return codlote;
+		}
+
+		
+		public BigDecimal getPreco() {
+		
+			return preco;
+		}
+
+		
+		public void setPreco( BigDecimal preco ) {
+		
+			this.preco = preco;
+		}
+
+		
+		public BigDecimal getVlrdesc() {
+		
+			return vlrdesc;
+		}
+
+		
+		public void setVlrdesc( BigDecimal vlrdesc ) {
+		
+			this.vlrdesc = vlrdesc;
+		}
+
+		
+		public BigDecimal getQtd() {
+		
+			return qtd;
+		}
+
+		
+		public void setQtd( BigDecimal qtd ) {
+		
+			this.qtd = qtd;
+		}
+		
+		public BigDecimal getVlrDescCalc() {
+			BigDecimal result = BigDecimal.ZERO;
+			if (vlrdesc!=null && vlrdesc.compareTo( BigDecimal.ZERO )>0) {
+				BigDecimal vlrdescunit = vlrdesc.divide( qtd );
+				result = qtdafat.multiply( vlrdescunit );
+			}
+			return result;
+		}
+	
+		public BigDecimal getVlrLiqCalc() {
+			BigDecimal result = BigDecimal.ZERO;
+			BigDecimal vlrdesccalc = getVlrDescCalc();
+			BigDecimal vlrtotcalc = qtdafat.multiply( preco );
+			result = vlrtotcalc.subtract( vlrdesccalc );
+			return result;
+		}
+	}
 }
