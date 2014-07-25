@@ -519,6 +519,7 @@ public class DAOBuscaOrc extends AbstractDAO {
 	public Vector<Vector<Object>>  carregar( Integer codfilialax
 			, Vector<Vector<Object>> tabOrc, boolean aprovorcfatparc, String origem ) throws SQLException {
 		boolean proj = "Contrato".equalsIgnoreCase( origem );
+		Boolean almoxpdorc = (Boolean) getPrefs().get( COL_PREFS.ALMOXPDORC.name() );
 		Vector<Object> vVals = null;
 		Vector<Vector<Object>> vector = new Vector<Vector<Object>>();
 		Vector<String> vcodorcs = new Vector<String>();
@@ -549,12 +550,16 @@ public class DAOBuscaOrc extends AbstractDAO {
 			sql.append( "select it.codorc,it.coditorc,it.codprod,p.descprod " );
 			sql.append( ", it.qtditorc,it.qtdfatitorc,it.qtdafatitorc,it.precoitorc,it.vlrdescitorc,it.vlrliqitorc " );
 			sql.append( ", it.vlrproditorc, p.cloteprod, it.codlote, coalesce(ip.qtdfinalproditorc,0) qtdfinalproditorc");
-			sql.append( ", ip.codop, it.codalmox, p.codalmox codalmoxpd ");
-			sql.append( "from eqproduto p, vdorcamento o, vditorcamento it  " );
-			sql.append( "left outer join ppopitorc ip on ip.codempoc=it.codemp and ip.codfilialoc=it.codfilial and ip.tipoorc=it.tipoorc and ip.codorc=it.codorc and ip.coditorc=it.coditorc ");
-			sql.append( "where o.codemp=it.codemp and o.codfilial=it.codfilial and o.tipoorc=it.tipoorc and o.codorc=it.codorc and ");
-			sql.append( "p.codprod=it.codprod and p.codfilial=it.codfilialpd and " );
-			sql.append( "p.codemp=it.codemppd and ");
+			sql.append( ", ip.codop, it.codalmox ");
+			sql.append( ", p.codalmox codalmoxpd ");
+			sql.append( "from vditorcamento it ");
+			sql.append( "inner join eqproduto p on " );
+			sql.append( "p.codprod=it.codprod and p.codfilial=it.codfilialpd and p.codemp=it.codemppd ");
+			sql.append( "inner join vdorcamento o on " );
+			sql.append( "o.codemp=it.codemp and o.codfilial=it.codfilial and o.tipoorc=it.tipoorc and o.codorc=it.codorc ");
+			sql.append( "left outer join ppopitorc ip on ");
+			sql.append( "ip.codempoc=it.codemp and ip.codfilialoc=it.codfilial and ip.tipoorc=it.tipoorc and ip.codorc=it.codorc and ip.coditorc=it.coditorc ");
+			sql.append( "where ");
 			sql.append( "((it.aceiteitorc='S' ");
 			if (!proj) {
 				sql.append( "and it.fatitorc in ('N','P') ");
@@ -617,7 +622,7 @@ public class DAOBuscaOrc extends AbstractDAO {
 				if (codop==null) {
 					codop = "";
 				}
-				Vector<SaldoProd> listsaldo = getSaldoProd( "S".equals( cloteprod )
+				Vector<SaldoProd> listsaldo = getSaldoProd( almoxpdorc, "S".equals( cloteprod )
 						, codfilialax, codprod, codalmoxpd, qtditorc
 						, precoitorc, vlrdescitorc, qtdafatitorc );
 				for (SaldoProd saldoprod: listsaldo) {
@@ -703,11 +708,10 @@ public class DAOBuscaOrc extends AbstractDAO {
 		return result;
 	}
 
-	private Vector<SaldoProd> getSaldoProd(Boolean clote, Integer codfilialax, Integer codprod, Integer codalmox
+	private Vector<SaldoProd> getSaldoProd(Boolean almoxpdorc, Boolean clote, Integer codfilialax, Integer codprod, Integer codalmox
 			, BigDecimal qtd, BigDecimal preco
 			, BigDecimal vlrdesc, BigDecimal qtdafat) throws SQLException {
 		Vector<SaldoProd> result = new Vector<SaldoProd>();
-		Boolean almoxpdorc = (Boolean) getPrefs().get( COL_PREFS.ALMOXPDORC.name() );
 		StringBuilder sql = new StringBuilder();
 		if (clote) {
 			sql.append( "select sl.codalmox, sl.codlote, sl.sldliqlote saldo ");
