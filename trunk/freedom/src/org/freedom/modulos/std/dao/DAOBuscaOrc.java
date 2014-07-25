@@ -549,7 +549,7 @@ public class DAOBuscaOrc extends AbstractDAO {
 			sql.append( "select it.codorc,it.coditorc,it.codprod,p.descprod " );
 			sql.append( ", it.qtditorc,it.qtdfatitorc,it.qtdafatitorc,it.precoitorc,it.vlrdescitorc,it.vlrliqitorc " );
 			sql.append( ", it.vlrproditorc, p.cloteprod, it.codlote, coalesce(ip.qtdfinalproditorc,0) qtdfinalproditorc");
-			sql.append( ", ip.codop, it.codalmox, pd.codalmox codalmoxpd ");
+			sql.append( ", ip.codop, it.codalmox, p.codalmox codalmoxpd ");
 			sql.append( "from eqproduto p, vdorcamento o, vditorcamento it  " );
 			sql.append( "left outer join ppopitorc ip on ip.codempoc=it.codemp and ip.codfilialoc=it.codfilial and ip.tipoorc=it.tipoorc and ip.codorc=it.codorc and ip.coditorc=it.coditorc ");
 			sql.append( "where o.codemp=it.codemp and o.codfilial=it.codfilial and o.tipoorc=it.tipoorc and o.codorc=it.codorc and ");
