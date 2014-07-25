@@ -2061,7 +2061,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB(cbBloqCompra, 7, 40, 250, 20, "BloqCompra", "", true);
 		adicDB(cbBuscaVlrUltCompra, 7, 60, 250, 20, "BuscaVlrUltCompra", "", true);
 		adicDB(cbLancaRMAContr, 7, 80, 300, 20, "LancaRMAContr", "", false);
-		adicDB(cbAlmoxPdOrc, 7, 100, 300, 20, "AlmoxPdOrc", "", false);
+		adicDB(cbAlmoxPdOrc, 7, 100, 350, 20, "AlmoxPdOrc", "", false);
 		
 
 		nav.setAtivo(0, false);
