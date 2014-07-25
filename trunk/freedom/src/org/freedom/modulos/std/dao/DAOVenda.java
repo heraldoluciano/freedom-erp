@@ -408,7 +408,8 @@ public class DAOVenda extends AbstractDAO {
 			sql.append( ", p1.comissaodesconto, p8.codtipomovds, p1.vendaconsum, p1.obsitvendaped, p1.bloqseqivd, p1.localserv ");
 			sql.append( ", p1.vdprodqqclas, p1.consistendentvd, p1.bloqdesccompvd, p1.bloqprecovd, p1.bloqcomissvd ");
 			sql.append( ", p1.bloqpedvd, p1.soldtsaida, coalesce(p1.proceminfe,'3') proceminfe, coalesce(p1.ambientenfe,'2') ambientenfe " );
-			sql.append( ", f.cnpjfilial, f.siglauf, coalesce(p1.tipoemissaonfe,'1') tipoemissaonfe, coalesce(p1.bloqnfevdautoriz,'S') bloqnfevdautoriz " );
+			sql.append( ", f.cnpjfilial, f.siglauf, coalesce(p1.tipoemissaonfe,'1') tipoemissaonfe");
+			sql.append( ", coalesce(p1.bloqnfevdautoriz,'S') bloqnfevdautoriz, coalesce(p1.maxobscli,'N') maxobscli " );
 			sql.append( "from sgprefere1 p1 ");
 			sql.append( "inner join sgfilial f ");
 			sql.append( "on f.codemp=p1.codemp and f.codfilial=p1.codfilial ");
@@ -476,6 +477,7 @@ public class DAOVenda extends AbstractDAO {
 				result[ POS_PREFS.TIPOEMISSAONFE.ordinal()] = rs.getString( POS_PREFS.TIPOEMISSAONFE.toString() );
 				result[ POS_PREFS.BLOQNFEVDAUTORIZ.ordinal()] = rs.getString( POS_PREFS.BLOQNFEVDAUTORIZ.toString() );
 				result[ POS_PREFS.LOCALSERV.ordinal() ] = rs.getString( "LOCALSERV" );
+				result[ POS_PREFS.MAXOBSCLI.ordinal()] = "S".equals( rs.getString( POS_PREFS.MAXOBSCLI.toString() ) );
 			}
 			rs.close();
 			ps.close();

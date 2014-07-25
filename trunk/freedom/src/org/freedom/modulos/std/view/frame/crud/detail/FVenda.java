@@ -4182,7 +4182,10 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				if ( (Boolean) oPrefs[ POS_PREFS.OBSCLIVEND.ordinal() ] ) {
 					if ( iCodCliAnt != txtCodCli.getVlrInteger().intValue() ) {
 						iCodCliAnt = txtCodCli.getVlrInteger().intValue();
-						mostraObsCli( iCodCliAnt, new Point( this.getX(), this.getY() + tpnCab.getHeight() + pnCab.getHeight() ), new Dimension( spTab.getWidth(), spTab.getHeight() ) );
+						Boolean maxobscli = (Boolean) oPrefs[ POS_PREFS.MAXOBSCLI.ordinal() ];
+						mostraObsCli( iCodCliAnt, new Point( this.getX(), this.getY() + tpnCab.getHeight() + pnCab.getHeight() )
+						, new Dimension( spTab.getWidth(), spTab.getHeight() )
+						, this.getContentPane().getWidth(), this.getContentPane().getHeight(), maxobscli );
 					}
 				}
 				if ( (Boolean) oPrefs[ POS_PREFS.RECALCCPVENDA.ordinal() ] ) {

@@ -61,14 +61,15 @@ public class FObsCliVend extends FFDialogo implements KeyListener {
 		addKeyListener( this );
 	}
 
-	public static void showVend( int x, int y, int larg, int alt, String sObsCli ) {
-
+	public static void showVend( int x, int y, int larg, int alt, int maxlarg, int maxalt, String sObsCli, boolean maxobscli ) {
 		if(tela == null) {
 			tela = new FObsCliVend();
-			tela.setAtribos( x, y, larg, alt + 50 );
 		}
-		
-		
+		if (maxobscli) {
+			tela.setAtribos( 0, y, maxlarg, maxalt);
+		} else {
+		   tela.setAtribos( x, y, larg, alt + 50 );
+		}
 		tela.txaObs.setText( sObsCli );
 		tela.setVisible( true );
 		tela.btOK.requestFocus();

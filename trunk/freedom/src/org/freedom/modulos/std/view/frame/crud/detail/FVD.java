@@ -627,12 +627,13 @@ public abstract class FVD extends FDetalhe {
 	 * @param dimensao
 	 *            tamanho da FObsCliVend
 	 */
-	public void mostraObsCli( int iCodCli, Point location, Dimension dimensao ) {
+	public void mostraObsCli( int iCodCli, Point location, Dimension dimensao, int maxlarg, int maxalt, boolean maxobscli ) {
 
 		String sObsCli = getObsCli( iCodCli );
 
 		if ( !sObsCli.equals( "" ) ) {
-			FObsCliVend.showVend( (int) location.getX(), (int) location.getY(), (int) dimensao.getWidth(), (int) dimensao.getHeight(), sObsCli );
+			FObsCliVend.showVend( (int) location.getX(), (int) location.getY(), (int) dimensao.getWidth()
+					, (int) dimensao.getHeight(), maxlarg, maxalt, sObsCli, maxobscli );
 		}
 	}
 
