@@ -731,6 +731,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	private final JCheckBoxPad cbMatricEmpFn = new JCheckBoxPad("Matrícula do empregado nos lançamentos financeiros.", "S", "N");
 
 	private final JCheckBoxPad cbLancaRMAContr = new JCheckBoxPad("Permite lançamento de RMA em contrato.", "S", "N");
+	
+	private final JCheckBoxPad cbAlmoxPdOrc = new JCheckBoxPad("Utilizar almoxarifado padrão na tela de busca orçamento.", "S", "N");
 
 	private final JCheckBoxPad cbInfCPDevolucao = new JCheckBoxPad("Informar compra na devolução ?", "S", "N");
 
@@ -2050,7 +2052,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDescFK(txtDescTipoMov8, 100, 65, 300, 20, "DescTipoMov", "Descrição do tp.mov. para RMA");
 		adicCampo(txtFatorSegEstoq, 7, 105, 90, 20, "FatorSegEstoq", "Fator Seg.", ListaCampos.DB_SI, false);
 		
-		adic(pnEstOpcoes, 7, 145, 393, 130);
+		adic(pnEstOpcoes, 7, 145, 393, 150);
 
 		setPainel(pnEstOpcoes);
 
@@ -2059,6 +2061,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB(cbBloqCompra, 7, 40, 250, 20, "BloqCompra", "", true);
 		adicDB(cbBuscaVlrUltCompra, 7, 60, 250, 20, "BuscaVlrUltCompra", "", true);
 		adicDB(cbLancaRMAContr, 7, 80, 300, 20, "LancaRMAContr", "", false);
+		adicDB(cbAlmoxPdOrc, 7, 100, 300, 20, "AlmoxPdOrc", "", false);
+		
 
 		nav.setAtivo(0, false);
 		lcCampos.setPodeExc(false);
@@ -2435,6 +2439,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 			cbObrigTipoFisc.setVlrString("N");
 			cbMatricEmpFn.setVlrString("N");
 			cbEstoqAlmox.setVlrString("N");
+			cbAlmoxPdOrc.setVlrString("S");
 		}
 	}
 
