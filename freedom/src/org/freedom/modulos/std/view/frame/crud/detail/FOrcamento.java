@@ -2439,7 +2439,11 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener, Fo
 			if ( ( (Boolean) oPrefs[ Orcamento.PrefOrc.OBSCLIVEND.ordinal() ] ).booleanValue() ) {
 				if ( iCodCliAnt != txtCodCli.getVlrInteger().intValue() ) {
 					iCodCliAnt = txtCodCli.getVlrInteger().intValue();
-					mostraObsCli( iCodCliAnt, new Point( this.getX(), this.getY() + pinCab.getHeight() + pnCab.getHeight() + 10 ), new Dimension( spTab.getWidth(), 150 ) );
+					Boolean maxobscli = (Boolean) oPrefs[ Orcamento.PrefOrc.MAXOBSCLI.ordinal() ];
+					mostraObsCli( iCodCliAnt
+							, new Point( this.getX(), this.getY() + pinCab.getHeight() + pnCab.getHeight() + 10 )
+					        , new Dimension( spTab.getWidth(), 150 )
+					, this.getContentPane().getWidth(), this.getContentPane().getHeight(), maxobscli);
 				}
 			}
 

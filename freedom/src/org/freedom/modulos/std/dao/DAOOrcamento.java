@@ -65,7 +65,7 @@ public class DAOOrcamento extends AbstractDAO {
 			sql.append( ",coalesce(p4.codplanopag,0) codplanopag, coalesce(p4.prazo,0) prazo " );
 			sql.append( ",fi.contribipifilial, p1.tipocustoluc, habvlrtotitorc, p1.comissaodesconto, p1.vdprodqqclas " );
 			sql.append( ", p1.bloqdesccomporc, p1.bloqprecoorc, p1.bloqcomissorc, p1.permitimporcantap, p1.bloqeditorcaposap ");
-			sql.append(", p3.codmodelor, p1.replicaorc, p1.sqlreplicaorc ");
+			sql.append(", p3.codmodelor, p1.replicaorc, p1.sqlreplicaorc, coalesce(p1.maxobscli,'N') maxobscli ");
 			sql.append( "from sgprefere1 p1,  sgprefere3 p3, sgprefere4 p4, sgfilial fi " );
 			sql.append( "where p1.codemp=? and p1.codfilial=? and " );
 			sql.append( "p3.codemp=p1.codemp and p3.codfilial=p1.codfilial and " );
@@ -123,6 +123,8 @@ public class DAOOrcamento extends AbstractDAO {
 				result[ Orcamento.PrefOrc.CODMODELOR.ordinal() ] = rs.getInt(  Orcamento.PrefOrc.CODMODELOR.toString() ) ;
 				result[ Orcamento.PrefOrc.REPLICAORC.ordinal() ] = "S".equals( rs.getString( Orcamento.PrefOrc.REPLICAORC.toString() ) );
 				result[ Orcamento.PrefOrc.SQLREPLICAORC.ordinal() ] = rs.getString( Orcamento.PrefOrc.SQLREPLICAORC.toString() );
+				result[ Orcamento.PrefOrc.MAXOBSCLI.ordinal() ] = "S".equals( rs.getString( Orcamento.PrefOrc.MAXOBSCLI.toString() ) );
+				
 			}
 
 			rs.close();
