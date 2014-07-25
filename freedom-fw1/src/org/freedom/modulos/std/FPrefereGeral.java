@@ -642,6 +642,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 	private final JCheckBoxPad cbObsCliVend = new JCheckBoxPad("Mostrar Obs. do cliente na venda e orçamento.", "S", "N");
 
+	private final JCheckBoxPad cbMaxObsCli = new JCheckBoxPad("Maximizar a tela de observações na venda e orçamento.", "S", "N");
+
 	private final JCheckBoxPad cbContEstoq = new JCheckBoxPad("Controla estoque.", "S", "N");
 
 	private final JCheckBoxPad cbReCalcVenda = new JCheckBoxPad("Recalcular preço na venda.", "S", "N");
@@ -1590,7 +1592,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB(rgTipoClass, 7, 410, 250, 30, "TipoClassPed", "Tipo de query", false);
 		adicDB(rgLocalServico, 7, 460, 250, 30, "LocalServ", "Local de prestação de serviço padrão", false);
 
-		adic(pinOpcoesVenda, 348, 5, 560, 440);
+		adic(pinOpcoesVenda, 348, 5, 560, 450);
 		pinOpcoesVenda.setBorder(BorderFactory.createTitledBorder(opcoes));
 		setPainel(pinOpcoesVenda);
 
@@ -1604,17 +1606,18 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 
 		adicDB(cbLayoutPed, 5, 140, 280, 20, "UsaLayoutPed", "", true);
 		adicDB(cbObsCliVend, 5, 160, 288, 20, "ObsCliVend", "", true);
-		adicDB(cbVerifAltParVenda, 5, 180, 288, 20, "VerifAltParcVenda", "", true);
-		adicDB(cbUsaPrecoZero, 5, 200, 288, 20, "UsaPrecoZero", "", true);
+		adicDB(cbMaxObsCli, 5, 180, 288, 20, "MaxObsCli", "", true);
+		adicDB(cbVerifAltParVenda, 5, 200, 288, 20, "VerifAltParcVenda", "", true);
+		adicDB(cbUsaPrecoZero, 5, 220, 288, 20, "UsaPrecoZero", "", true);
 
-		adicDB(cbIcmsFrete, 5, 220, 260, 20, "AdicFreteBaseICM", "", true);
-		adicDB(cbGeraComisVendaOrc, 5, 240, 288, 20, "GeraComisVendaOrc", "", true);
-		adicDB(cbInfVdRemessa, 5, 260, 288, 20, "InfVdRemessa", "", true);
-		adicDB(cbBloqDescCompVD, 5, 280, 288, 20, "BloqDescCompVD", "", true);
-		adicDB(cbBloqComissVD, 5, 300, 288, 20, "BLOQCOMISSVD", "", true);
-		adicDB(cbBloqPedVd, 5, 320, 288, 20, "BloqPedVD", "", true);
-		adicDB(cbBloqvdporatraso, 5, 340, 288, 20, "Bloqvdporatraso", "", true);
-		adicDB(txtNumdiasbloqvd, 5, 380, 70, 20, "Numdiasbloqvd", "Dias bloq.", true);
+		adicDB(cbIcmsFrete, 5, 240, 260, 20, "AdicFreteBaseICM", "", true);
+		adicDB(cbGeraComisVendaOrc, 5, 260, 288, 20, "GeraComisVendaOrc", "", true);
+		adicDB(cbInfVdRemessa, 5, 280, 288, 20, "InfVdRemessa", "", true);
+		adicDB(cbBloqDescCompVD, 5, 300, 288, 20, "BloqDescCompVD", "", true);
+		adicDB(cbBloqComissVD, 5, 320, 288, 20, "BLOQCOMISSVD", "", true);
+		adicDB(cbBloqPedVd, 5, 340, 288, 20, "BloqPedVD", "", true);
+		adicDB(cbBloqvdporatraso, 5, 360, 288, 20, "Bloqvdporatraso", "", true);
+		adicDB(txtNumdiasbloqvd, 5, 400, 70, 20, "Numdiasbloqvd", "Dias bloq.", true);
 		
 		adicDB(cbTabFreteVd, 290, 0, 180, 20, "TabFreteVd", "", true);
 		adicDB(cbTabAdicVd, 290, 20, 180, 20, "TabAdicVd", "", true);
@@ -2440,6 +2443,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 			cbMatricEmpFn.setVlrString("N");
 			cbEstoqAlmox.setVlrString("N");
 			cbAlmoxPdOrc.setVlrString("S");
+			cbMaxObsCli.setVlrString("N");
 		}
 	}
 
