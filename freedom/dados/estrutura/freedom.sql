@@ -7746,7 +7746,7 @@ CREATE TABLE SGPREFERE1 (CODEMP INTEGER NOT NULL,
         CODEMPRS INTEGER,
         CODFILIALRS SMALLINT,
         CODTIPOMOVRS INTEGER,
-       	ESTALMOX CHAR(1) DEFAULT 'N' NOT NULL,
+       	ESTOQALMOX CHAR(1) DEFAULT 'N' NOT NULL,
         DTINS DATE DEFAULT 'now' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
@@ -32794,9 +32794,9 @@ begin
      new.sldconsigprod = 0;
   new.sldliqprod = new.sldprod-new.sldresprod-new.sldconsigprod;
   select icodfilial from sgretfilial(new.codemp,'SGPREFERE1') into :codfilial;
-  select p1.estneg, estneggrup, estoqalmox
+  select p1.estneg, p1.estneggrup, p1.estoqalmox
      from sgprefere1 p1
-     where codemp=new.codemp and codfilial=:codfilial
+     where p1.codemp=new.codemp and p1.codfilial=:codfilial
      into :estneg, :estneggrup, :estoqalmox;
   if (estneg is null) then
       estneg = 'N';
