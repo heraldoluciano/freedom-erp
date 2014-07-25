@@ -208,6 +208,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 	
 	private JCheckBoxPad cbBloqEditOrcAposAp = new JCheckBoxPad("Bloquear edição após aprovação do orçamento.", "S", "N");
 	
+	private JCheckBoxPad cbEstoqAlmox = new JCheckBoxPad("Bloqueio de estoque por almoxarifado.", "S", "N");
+	
 	private JTextFieldPad txtUrlWsCep = new JTextFieldPad(JTextFieldPad.TP_STRING, 150, 0);
 
 	private JTextFieldPad txtCodTabJuros = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
@@ -1529,11 +1531,12 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 		adicDB(cbEstNeg, 7, 20, 160, 20, "EstNeg", "", true);
 		adicDB(cbEstLotNeg, 7, 40, 200, 20, "EstLotNeg", "", true);
 		adicDB(cbEstNegGrupo, 7, 60, 250, 20, "EstNegGrup", "", true);
-		adicDB(cbUsaCliSeq, 7, 80, 250, 20, "UsaCliSeq", "", true);
-		adicDB(cbPermitBaixaParcJDM, 7, 100, 250, 20, "PermitBaixaParcJDM", "", true);
-		adicDB(cbAgendaFPrincipal, 7, 120, 250, 20, "AgendaFPrincipal", "", true);
-		adicDB(cbAtualizaAgenda, 7, 155, 140, 20, "AtualizaAgenda", "", true);
-		adicDB(txtTempoAtuAgenda, 150, 165, 140, 20, "TempoAtuAgenda", "Tempo(em segundos)", false);
+		adicDB(cbEstoqAlmox, 7, 80, 250, 20, "EstoqAlmox", "", true);
+		adicDB(cbUsaCliSeq, 7, 100, 250, 20, "UsaCliSeq", "", true);
+		adicDB(cbPermitBaixaParcJDM, 7, 120, 250, 20, "PermitBaixaParcJDM", "", true);
+		adicDB(cbAgendaFPrincipal, 7, 140, 250, 20, "AgendaFPrincipal", "", true);
+		adicDB(cbAtualizaAgenda, 7, 175, 140, 20, "AtualizaAgenda", "", true);
+		adicDB(txtTempoAtuAgenda, 150, 185, 140, 20, "TempoAtuAgenda", "Tempo(em segundos)", false);
 
 		setPainel(pinConsistenciasGeral);
 
@@ -2431,6 +2434,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, Action
 			cbBloqNfeVdAutoriz.setVlrString("S");
 			cbObrigTipoFisc.setVlrString("N");
 			cbMatricEmpFn.setVlrString("N");
+			cbEstoqAlmox.setVlrString("N");
 		}
 	}
 
