@@ -7746,6 +7746,7 @@ CREATE TABLE SGPREFERE1 (CODEMP INTEGER NOT NULL,
         CODEMPRS INTEGER,
         CODFILIALRS SMALLINT,
         CODTIPOMOVRS INTEGER,
+       	ESTALMOX CHAR(1) DEFAULT 'N' NOT NULL,
         DTINS DATE DEFAULT 'now' NOT NULL,
         HINS TIME DEFAULT 'now' NOT NULL,
         IDUSUINS CHAR(8) DEFAULT USER NOT NULL,
@@ -32708,21 +32709,58 @@ BEGIN
   new.SLDLIQLOTE = new.SLDLOTE-new.SLDRESLOTE-new.SLDCONSIGLOTE;
 END ^
 
-CREATE TRIGGER EQSALDOLOTETGBU FOR EQSALDOLOTE 
-ACTIVE BEFORE UPDATE POSITION 0 
-AS
-BEGIN
-  new.DTALT=cast('now' AS DATE);
-  new.IDUSUALT=USER;
-  new.HALT = cast('now' AS TIME);
-  if (new.SLDLOTE is null) then
-     new.SLDLOTE = 0;
-  if (new.SLDRESLOTE is null) then
-     new.SLDRESLOTE = 0;
-  if (new.SLDCONSIGLOTE is null) then
-     new.SLDCONSIGLOTE = 0;
-  new.SLDLIQLOTE = new.SLDLOTE-new.SLDRESLOTE-new.SLDCONSIGLOTE;
-END ^
+CREATE OR ALTER TRIGGER EQSALDOLOTETGBU FOR EQSALDOLOTE
+ACTIVE BEFORE UPDATE POSITION 0
+as
+declare variable codfilial smallint;
+declare variable estneggrup char(1);
+declare variable estlotneg char(1);
+declare variable estoqalmox char(1);
+begin
+  select icodfilial from sgretfilial(new.codemp,'SGPREFERE1') into :codfilial;
+  select estlotneg, estneggrup, estoqalmox
+     from sgprefere1 where codemp=new.codemp and codfilial=:codfilial
+     into :estlotneg, :estneggrup, :estoqalmox;
+  new.dtalt=cast('now' as date);
+  new.idusualt=user;
+  new.halt = cast('now' as time);
+  if (new.sldlote is null) then
+     new.sldlote = 0;
+  if (new.sldreslote is null) then
+     new.sldreslote = 0;
+  if (new.sldconsiglote is null) then
+     new.sldconsiglote = 0;
+  new.sldliqlote = new.sldlote-new.sldreslote-new.sldconsiglote;
+  if (estneggrup is null) then
+      estneggrup ='N';
+  if (estlotneg is null) then
+      estlotneg = 'N';
+  if (estoqalmox is null) then
+      estoqalmox = 'N';
+  if ( ( new.sldliqlote < 0) and ( estoqalmox='S' ) ) then
+  begin
+     if ( estneggrup = 'S' ) then
+     begin
+        select g.estlotneggrup from eqgrupo g, eqproduto p
+          where p.codemp=new.codemp and p.codfilial=new.codfilial and
+            p.codprod=new.codprod and g.codemp=p.codempgp and
+            g.codfilial=p.codfilialgp and g.codgrup=p.codgrup
+            into :estneggrup;
+        if (estneggrup is null) then
+           estneggrup = 'N';
+        if (estneggrup='N') then
+           exception eqloteex01 'O LOTE '||rtrim(new.codlote)
+              ||' NO ALMOX. '||new.codalmox
+              ||' NÃO POSSUI SALDO P/COMPL. A OPERAÇÃO';
+     end
+     else if (estlotneg='N') then
+           exception eqloteex01 'O LOTE '||rtrim(new.codlote)
+              ||' NO ALMOX. '||new.codalmox
+              ||' NÃO POSSUI SALDO P/COMPL. A OPERAÇÃO';
+  end
+end
+^
+
 
 CREATE TRIGGER EQSALDOPRODTGBI FOR EQSALDOPROD 
 ACTIVE BEFORE INSERT POSITION 0 
@@ -32737,21 +32775,56 @@ BEGIN
   new.SLDLIQPROD = new.SLDPROD-new.SLDRESPROD-new.SLDCONSIGPROD;
 END ^
 
-CREATE TRIGGER EQSALDOPRODTGBU FOR EQSALDOPROD 
-ACTIVE BEFORE UPDATE POSITION 0 
-AS
-BEGIN
-  new.DTALT=cast('now' AS DATE);
-  new.IDUSUALT=USER;
-  new.HALT = cast('now' AS TIME);
-  if (new.SLDPROD is null) then
-     new.SLDPROD = 0;
-  if (new.SLDRESPROD is null) then
-     new.SLDRESPROD = 0;
-  if (new.SLDCONSIGPROD is null) then
-     new.SLDCONSIGPROD = 0;
-  new.SLDLIQPROD = new.SLDPROD-new.SLDRESPROD-new.SLDCONSIGPROD;
-END ^
+CREATE OR ALTER TRIGGER EQSALDOPRODTGBU FOR EQSALDOPROD
+ACTIVE BEFORE UPDATE POSITION 0
+as
+  declare variable codfilial smallint;
+  declare variable estneggrup char(1);
+  declare variable estneg char(1);
+  declare variable estoqalmox char(1);
+begin
+  new.dtalt=cast('now' as date);
+  new.idusualt=user;
+  new.halt = cast('now' as time);
+  if (new.sldprod is null) then
+     new.sldprod = 0;
+  if (new.sldresprod is null) then
+     new.sldresprod = 0;
+  if (new.sldconsigprod is null) then
+     new.sldconsigprod = 0;
+  new.sldliqprod = new.sldprod-new.sldresprod-new.sldconsigprod;
+  select icodfilial from sgretfilial(new.codemp,'SGPREFERE1') into :codfilial;
+  select p1.estneg, estneggrup, estoqalmox
+     from sgprefere1 p1
+     where codemp=new.codemp and codfilial=:codfilial
+     into :estneg, :estneggrup, :estoqalmox;
+  if (estneg is null) then
+      estneg = 'N';
+  if (estneggrup is null) then
+      estneggrup = 'N';
+  if (estoqalmox is null) then
+      estoqalmox = 'N';
+  if ( ( new.sldliqprod < 0) and ( estoqalmox='S' ) ) then
+  begin
+     if ( estneggrup = 'S' ) then
+     begin
+        select g.estneggrup from eqgrupo g, eqproduto p
+          where p.codemp=new.codemp and p.codfilial=new.codfilial and
+            p.codprod=new.codprod and g.codemp=p.codempgp and
+            g.codfilial=p.codfilialgp and g.codgrup=p.codgrup
+            into :estneggrup;
+        if (estneggrup is null) then
+           estneggrup = 'N';
+        if (estneggrup='N') then
+           exception eqprodutoex01 'O ALMOXARIFADO '||new.codalmox
+              ||' NÃO POSSUI SALDO P/COMPL. A OPERAÇÃO';
+     end
+     else if (estneg='N') then
+           exception eqprodutoex01 'O ALMOXARIFADO '||new.codalmox||
+              ' NÃO POSSUI SALDO P/COMPL. A OPERAÇÃO';
+  end
+end
+^
 
 CREATE TRIGGER EQSECAOTGBU FOR EQSECAO 
 ACTIVE BEFORE UPDATE POSITION 0 
