@@ -717,52 +717,66 @@ public class DAOBuscaOrc extends AbstractDAO {
 		Vector<SaldoProd> result = new Vector<SaldoProd>();
 		StringBuilder sql = new StringBuilder();
 		if (clote) {
-			sql.append( "select lt.venctolote, sl.codlote, " );
+			sql.append( "select lt.venctolote, lt.codlote, " );
 			if (estoqalmox) {
 				sql.append( "sl.codalmox, sl.sldliqlote " );
 			} else {
-				sql.append( "sum(sl.sldliqlote) ");
+				sql.append( "lt.sldliqlote ");
 			}
 			sql.append( "saldo ");
-			sql.append( "from eqsaldolote sl, eqlote lt ");
-			sql.append( "where lt.codemp=? and lt.codfilial=? and lt.codprod=? and sl.codempax=? and sl.codfilialax=? ");
-			if (almoxpdorc && codalmox!=null) {
-				sql.append("and sl.codalmox=? ");
+			sql.append( "from ");
+			if (estoqalmox) {
+			   sql.append( "eqsaldolote sl, ");
 			}
-			sql.append( "and sl.codemp=lt.codemp and sl.codfilial=lt.codfilial and sl.codprod=lt.codprod and sl.codlote=lt.codlote ");
-			sql.append( "and sl.sldliqlote>0 and lt.venctolote>cast('now' as date) ");
-			if (!estoqalmox) {
-				sql.append( "group by 1,2 ");
+			sql.append( "eqlote lt ");
+			sql.append( "where lt.codemp=? and lt.codfilial=? and lt.codprod=? ");
+			if (estoqalmox) {
+				sql.append( "and sl.codempax=? and sl.codfilialax=? ");
+				if (almoxpdorc && codalmox!=null) {
+					sql.append("and sl.codalmox=? ");
+				}
+				sql.append( "and sl.codemp=lt.codemp and sl.codfilial=lt.codfilial and sl.codprod=lt.codprod and sl.codlote=lt.codlote ");
+				sql.append( "and sl.sldliqlote>0 ");
+			} else {
+				sql.append( "and lt.sldliqlote>0 ");
 			}
+			sql.append( "and lt.venctolote>cast('now' as date) ");
 			sql.append( "order by lt.venctolote ");
 		} else {
 			sql.append( "select ");
 			if (estoqalmox) {
 				sql.append( "sl.codalmox, sl.sldliqprod ");
 			} else {
-				sql.append( "sum(sl.sldliqprod) ");
+				sql.append( "pd.sldliqprod ");
 			}
 			sql.append( "saldo ");
-			sql.append( "from eqsaldprod sl ");
-			sql.append( "where sl.codemp=? and sl.codfilial=? and sl.codprod=? and sl.codempax=? and sl.codfilialax=? ");
-			if (almoxpdorc && codalmox!=null) {
-				sql.append("and sl.codalmox=? ");
+			sql.append( "from ");
+			if (estoqalmox) {
+			   sql.append( "eqsaldoprod sl, ");
 			}
-			sql.append( "and sl.sldliqprod>0 ");
-			if (!estoqalmox) {
-				sql.append( "group by 1 ");
+			sql.append( "eqproduto pd ");
+			sql.append( "where pd.codemp=? and pd.codfilial=? and pd.codprod=? ");
+			if (estoqalmox) {
+				sql.append( "and sl.codemp=pd.codemp and sl.codfilial=pd.codfilial and sl.codprod=pd.codprod ");
+				sql.append( "and sl.codempax=? and sl.codfilialax=? ");
+				if (almoxpdorc && codalmox!=null) {
+					sql.append("and sl.codalmox=? ");
+				}
+				sql.append( "and sl.sldliqprod>0 ");
+				sql.append( "order sl.sldliqprod desc ");
 			}
-			sql.append( "order sl.sldliqprod desc ");
 		}
 		PreparedStatement ps = getConn().prepareStatement( sql.toString() );
 		int param = 1;
 		ps.setInt( param++, getCodemp() );
 		ps.setInt( param++, getCodfilial() );
 		ps.setInt( param++, codprod );
-		ps.setInt( param++, getCodemp() );
-		ps.setInt( param++, codfilialax );
-		if (almoxpdorc && codalmox!=null) {
-			ps.setInt( param++, codalmox );;
+		if (estoqalmox) {
+			ps.setInt( param++, getCodemp() );
+			ps.setInt( param++, codfilialax );
+			if (almoxpdorc && codalmox!=null) {
+				ps.setInt( param++, codalmox );;
+			}
 		}
 		ResultSet rs = ps.executeQuery();
 		BigDecimal qtdafatcalc = qtdafat;
