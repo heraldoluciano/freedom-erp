@@ -708,7 +708,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 			imp.setTitulo( "Relatorio de Vendas por Setor" );
 			imp.montaCab();
 			imp.addSubTitulo( "VENDAS POR SETOR" );
-			imp.addSubTitulo( "PERIODO DE: " + txtDataini.getVlrString() + " ATE: " + txtDatafim.getVlrString() );
+			//imp.addSubTitulo( "PERIODO DE: " + txtDataini.getVlrString() + " ATE: " + txtDatafim.getVlrString() );
 			imp.limpaPags();
 
 			vItens = new Vector<Vector<Object>>();
@@ -1541,10 +1541,10 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 						imp.impCab( 136, true );
 
 						imp.say( 0, imp.comprimido() );
-						imp.say( 1, "|" );
+						/*imp.say( 1, "|" );
 						imp.say( 50, "PERIODO DE: " + txtDataini.getVlrString() + " ATE: " + txtDatafim.getVlrString() );
 						imp.say( 136, "|" );
-						imp.pulaLinha( 1, imp.comprimido() );
+						imp.pulaLinha( 1, imp.comprimido() );*/
 						imp.say( imp.pRow(), 1, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
 						imp.pulaLinha( 1, imp.comprimido() );
 						imp.say( 1, "| DESCRICAO DO PRODUTO" );
@@ -1931,10 +1931,10 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 						imp.impCab( 136, true );
 
 						imp.say( 0, imp.comprimido() );
-						imp.say( 1, "|" );
+						/*imp.say( 1, "|" );
 						imp.say( 50, "PERIODO DE: " + txtDataini.getVlrString() + " ATE: " + txtDatafim.getVlrString() );
 						imp.say( 136, "|" );
-						imp.pulaLinha( 1, imp.comprimido() );
+						imp.pulaLinha( 1, imp.comprimido() );*/
 						imp.say( imp.pRow(), 1, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
 						imp.pulaLinha( 1, imp.comprimido() );
 						imp.say( 1, "| DESCRICAO DO PRODUTO" );
@@ -2401,10 +2401,10 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 
 						imp.impCab( 136, true );
 						imp.say( 0, imp.comprimido() );
-						imp.say( 1, "|" );
+						/*imp.say( 1, "|" );
 						imp.say( 40, "PERIODO DE: " + txtDataini.getVlrString() + " ATE: " + txtDatafim.getVlrString() + " - Ordem: " + sDescOrdemRel );
 						imp.say( 136, "|" );
-						imp.pulaLinha( 1, imp.comprimido() );
+						imp.pulaLinha( 1, imp.comprimido() );*/
 						imp.say( 1, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
 						imp.pulaLinha( 1, imp.comprimido() );
 						imp.say( 1, "| RAZAO SOCIAL" );
