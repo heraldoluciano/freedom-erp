@@ -35,8 +35,6 @@ import java.util.Vector;
 
 import javax.swing.ImageIcon;
 
-import net.sf.jasperreports.engine.JasperPrintManager;
-
 import org.freedom.acao.RadioGroupEvent;
 import org.freedom.acao.RadioGroupListener;
 import org.freedom.infra.functions.StringFunctions;
@@ -672,8 +670,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		String sWhereTM = "";
 		String sCab = "";
 		String sFrom = "";
-		StringBuffer sFiltros1 = new StringBuffer();
-		StringBuffer sFiltros2 = new StringBuffer();
+		StringBuffer filtros = new StringBuffer();
 		String sCodMarca = null;
 		String sCodGrup1 = null;
 		String sCodGrup2 = null;
@@ -744,15 +741,15 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 			
 			if ( txtCodCFOP.getVlrInteger().intValue() > 0 ) {
 				sWhere1 += " AND IV.CODNAT=" + txtCodCFOP.getVlrInteger().intValue();
-				sFiltros1.append( !sFiltros1.equals( "" ) ? " / " : "" );
-				sFiltros1.append( " CFOP.: " );
-				sFiltros1.append( txtDescCFOP.getText().trim() );
+				filtros.append( filtros.length()==0 ? "" :" / " );
+				filtros.append( " CFOP.: " );
+				filtros.append( txtDescCFOP.getText().trim() );
 			}
 			if ( txtCodTipoMov.getVlrInteger().intValue() > 0 ) {
 				sWhere1 += " AND V.CODTIPOMOV=" + txtCodTipoMov.getVlrInteger().intValue();
-				sFiltros1.append( !sFiltros1.equals( "" ) ? " / " : "" );
-				sFiltros1.append( " TipoMov.: " );
-				sFiltros1.append( txtDescTipoMov.getText().trim() );
+				filtros.append( filtros.length()==0 ? "" :" / " );
+				filtros.append( " TipoMov.: " );
+				filtros.append( txtDescTipoMov.getText().trim() );
 			}
 
 			if ( rgFinanceiro.getVlrString().equals( "S" ) ) {
@@ -768,32 +765,34 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 			}
 
 			if ( cbMovEstoque.getVlrString().equals( "S" ) ) {
-				sFiltros1.append( "SO MOV.ESTOQUE" );
+				filtros.append( filtros.length()==0 ? "" :" / " );
+				filtros.append( "SO MOV.ESTOQUE" );
 				sWhereTM = cbMovEstoque.getVlrString().equals( "S" ) ? " AND TM.ESTOQTIPOMOV='S' " : "";
 			}
 			
 			if ( rgEmitidos.getVlrString().equals( "S" ) ) {
 				sWhere4 = " AND V.STATUSVENDA IN ('V2','V3','P3') " ;
-				sFiltros1.append( " EMITIDOS " );
+				filtros.append( filtros.length()==0 ? "" :" / " );
+				filtros.append( " EMITIDOS " );
 			}
 
 			if ( !sCodMarca.equals( "" ) ) {
 				sWhere.append( "AND P.CODEMPMC=? AND P.CODFILIALMC=? AND P.CODMARCA=? " );
-				sFiltros1.append( sFiltros1.length() > 0 ? " / " : "" );
-				sFiltros1.append( "M.: " );
-				sFiltros1.append( txtDescMarca.getText().trim() );
+				filtros.append( filtros.length()==0 ? "" :" / " );
+				filtros.append( "M.: " );
+				filtros.append( txtDescMarca.getText().trim() );
 			}
 			if ( !sCodGrup1.equals( "" ) ) {
 				sWhere.append( "AND G.CODEMP=? AND G.CODFILIAL=? AND G.CODGRUP LIKE ? " );
-				sFiltros1.append( sFiltros1.length() > 0 ? " / " : "" );
-				sFiltros1.append( "G.: " );
-				sFiltros1.append( txtDescGrup1.getText().trim() );
+				filtros.append( filtros.length()==0 ? "" :" / "  );
+				filtros.append( "G.: " );
+				filtros.append( txtDescGrup1.getText().trim() );
 			}
 			if ( !sCodGrup2.equals( "" ) ) {
 				sWhere.append( "AND ( NOT P.CODGRUP=? ) " );
-				sFiltros1.append( sFiltros1.length() > 0 ? " / " : "" );
-				sFiltros1.append( " EXCL. G.: " );
-				sFiltros1.append( txtDescGrup2.getText().trim() );
+				filtros.append( filtros.length() > 0 ? " / " : "" );
+				filtros.append( " EXCL. G.: " );
+				filtros.append( txtDescGrup2.getText().trim() );
 			}
 			if ( iCodSetor != 0 ) {
 	
@@ -805,24 +804,24 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 				}
 
 //				sWhere.append( "AND VD.CODSETOR=? " );
-				sFiltros2.append( sFiltros2.length() > 0 ? " / " : "" );
-				sFiltros2.append( " SETOR: " );
-				sFiltros2.append( iCodSetor );
-				sFiltros2.append( "-" );
-				sFiltros2.append( txtDescSetor.getVlrString().trim() );
+				filtros.append( filtros.length() > 0 ? " / " : "" );
+				filtros.append( " SETOR: " );
+				filtros.append( iCodSetor );
+				filtros.append( "-" );
+				filtros.append( txtDescSetor.getVlrString().trim() );
 			}
 			if ( iCodVend != 0 ) {
 				sWhere.append( "AND VD.CODVEND=? " );
-				sFiltros2.append( sFiltros2.length() > 0 ? " / " : "" );
-				sFiltros2.append( " REPR.: " );
-				sFiltros2.append( iCodVend );
-				sFiltros2.append( "-" );
-				sFiltros2.append( txtNomeVend.getVlrString().trim() );
+				filtros.append( filtros.length() > 0 ? " / " : "" );
+				filtros.append( " REPR.: " );
+				filtros.append( iCodVend );
+				filtros.append( "-" );
+				filtros.append( txtNomeVend.getVlrString().trim() );
 			}
 			if ( iCodCli != 0 ) {
 				if ( cbCliPrinc.getVlrString().equals( "S" ) ) {
-					sFiltros2.append( sFiltros2.length() > 0 ? " / " : "" );
-					sFiltros2.append( "AGRUP. CLI. PRINC." );
+					filtros.append( filtros.length() > 0 ? " / " : "" );
+					filtros.append( "AGRUP. CLI. PRINC." );
 					sWhere.append( "AND C2.CODCLI=V.CODCLI AND C2.CODEMP=V.CODEMPCL AND C2.CODFILIAL=V.CODFILIALCL AND " );
 					sWhere.append( "C2.CODPESQ=C1.CODPESQ AND C2.CODEMPPQ=C1.CODEMPPQ AND C2.CODFILIALPQ=C1.CODFILIALPQ AND C1.CODCLI=? " );
 					sFrom = ", VDCLIENTE C1, VDCLIENTE C2 ";
@@ -831,11 +830,11 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 					sWhere.append( " and CODCLI=? " );
 				}
 				
-				sFiltros2.append( sFiltros2.length() > 0 ? " / " : "" );
-				sFiltros2.append( " CLI.: " );
-				sFiltros2.append( iCodCli );
-				sFiltros2.append( "-" );
-				sFiltros2.append( Funcoes.copy( txtRazCli.getVlrString(), 30 ) );
+				filtros.append( filtros.length() > 0 ? " / " : "" );
+				filtros.append( " CLI.: " );
+				filtros.append( iCodCli );
+				filtros.append( "-" );
+				filtros.append( Funcoes.copy( txtRazCli.getVlrString(), 30 ) );
 			}
 			else {
 				sFrom = ",VDCLIENTE C1 ";
@@ -849,7 +848,8 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 					sWhere.append( "C2.CODPESQ=C1.CODPESQ AND C2.CODEMPPQ=C1.CODEMPPQ AND " );
 					sWhere.append( "C2.CODFILIALPQ=C1.CODFILIALPQ " );
 					sFrom = ",VDCLIENTE C1, VDCLIENTE C2 ";
-					sFiltros2.append( "AGRUP. CLI. PRINC." );
+					filtros.append( filtros.length()==0 ? "" :" / " );
+					filtros.append( "AGRUP. CLI. PRINC." );
 				}
 
 				if ( sFrom.equals( "" ) ) {
@@ -863,22 +863,22 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 					sWhere.append( "AND TC.CODTIPOCLI=? " );
 					sFrom = ", VDTIPOCLI TC " + sFrom;
 				}
-				sFiltros2.append( sFiltros2.length() > 0 ? " / " : "" );
-				sFiltros2.append( " TP.CLI.: " );
-				sFiltros2.append( iCodTipoCli );
-				sFiltros2.append( "-" );
-				sFiltros2.append( txtDescTipoCli.getVlrString().trim() );
+				filtros.append( filtros.length() > 0 ? " / " : "" );
+				filtros.append( " TP.CLI.: " );
+				filtros.append( iCodTipoCli );
+				filtros.append( "-" );
+				filtros.append( txtDescTipoCli.getVlrString().trim() );
 			}
 
 			if ( cbVendaCanc.getVlrString().equals( "N" ) ) {
 				sWhere3 = " AND NOT SUBSTR(V.STATUSVENDA,1,1)='C' ";
 			}
 
-			if ( sFiltros1.length() > 0 ) {
-				imp.addSubTitulo( sFiltros1.toString() );
+			if ( filtros.length() > 0 ) {
+				imp.addSubTitulo( filtros.toString() );
 			}
-			if ( sFiltros2.length() > 0 ) {
-				imp.addSubTitulo( sFiltros2.toString() );
+			if ( filtros.length() > 0 ) {
+				imp.addSubTitulo( filtros.toString() );
 			}
 			if ( sCab.length() > 0 ) {
 				imp.addSubTitulo( sCab );
@@ -1240,8 +1240,8 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 			sCodGrup1 = null;
 			sCodGrup2 = null;
 			sCodGrupAnt = null;
-			sFiltros1 = null;
-			sFiltros2 = null;
+			filtros = null;
+			filtros = null;
 			sFrom = null;
 			iCodSetor = 0;
 			iCodVend = 0;
@@ -1293,9 +1293,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		String sCodMarca = null;
 		String sCodGrup1 = null;
 		String sCodGrup2 = null;
-		StringBuffer sFiltros1 = new StringBuffer();
-		StringBuffer sFiltros2 = new StringBuffer();
-		;
+		StringBuffer filtros = new StringBuffer();
 		ImprimeOS imp = null;
 		int iCodSetor = 0;
 		int iCodVend = 0;
@@ -1347,32 +1345,34 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 			}
 
 			if ( cbMovEstoque.getVlrString().equals( "S" ) ) {
-				sFiltros1.append( "SO MOV.ESTOQUE" );
+				filtros.append( filtros.length()==0 ? "" :" / " );
+				filtros.append( "SO MOV.ESTOQUE" );
 				sWhereTM = ( cbMovEstoque.getVlrString().equals( "S" ) ? " AND TM.ESTOQTIPOMOV='S' " : "" );
 			}
 			
 			if ( rgEmitidos.getVlrString().equals( "S" ) ) {
 				sWhere4 = " AND V.STATUSVENDA IN ('V2','V3','P3') " ;
-				sFiltros1.append( " EMITIDOS " );
+				filtros.append( filtros.length()==0 ? "" :" / " );
+				filtros.append( " EMITIDOS " );
 			}
 
 			if ( !sCodMarca.equals( "" ) ) {
 				sWhere.append( "AND P.CODEMPMC=? AND P.CODFILIALMC=? AND P.CODMARCA=? " );
-				sFiltros1.append( !sFiltros1.equals( "" ) ? " / " : "" );
-				sFiltros1.append( "M.: " );
-				sFiltros1.append( txtDescMarca.getText().trim() );
+				filtros.append( !filtros.equals( "" ) ? " / " : "" );
+				filtros.append( "M.: " );
+				filtros.append( txtDescMarca.getText().trim() );
 			}
 			if ( !sCodGrup1.equals( "" ) ) {
 				sWhere.append( "AND G.CODEMP=? AND G.CODFILIAL=? AND G.CODGRUP LIKE ? " );
-				sFiltros1.append( !sFiltros1.equals( "" ) ? " / " : "" );
-				sFiltros1.append( "G.: " );
-				sFiltros1.append( txtDescGrup1.getText().trim() );
+				filtros.append( !filtros.equals( "" ) ? " / " : "" );
+				filtros.append( "G.: " );
+				filtros.append( txtDescGrup1.getText().trim() );
 			}
 			if ( !sCodGrup2.equals( "" ) ) {
 				sWhere.append( "AND ( NOT P.CODGRUP=? ) " );
-				sFiltros1.append( !sFiltros1.equals( "" ) ? " / " : "" );
-				sFiltros1.append( " EXCL. G.: " );
-				sFiltros1.append( txtDescGrup2.getText().trim() );
+				filtros.append( !filtros.equals( "" ) ? " / " : "" );
+				filtros.append( " EXCL. G.: " );
+				filtros.append( txtDescGrup2.getText().trim() );
 			}
 			if ( iCodSetor != 0 ) {
 				
@@ -1383,19 +1383,19 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 					sWhere.append( "AND VD.CODSETOR=? " );
 				}
 				
-				sFiltros2.append( !sFiltros2.equals( "" ) ? " / " : "" );
-				sFiltros2.append( " SETOR: " );
-				sFiltros2.append( iCodSetor );
-				sFiltros2.append( "-" );
-				sFiltros2.append( txtDescSetor.getVlrString().trim() );
+				filtros.append( !filtros.equals( "" ) ? " / " : "" );
+				filtros.append( " SETOR: " );
+				filtros.append( iCodSetor );
+				filtros.append( "-" );
+				filtros.append( txtDescSetor.getVlrString().trim() );
 			}
 			if ( iCodVend != 0 ) {
 				sWhere.append( "AND V.CODVEND=? " );
-				sFiltros2.append( !sFiltros2.equals( "" ) ? " / " : "" );
-				sFiltros2.append( " REPR.: " );
-				sFiltros2.append( iCodVend );
-				sFiltros2.append( "-" );
-				sFiltros2.append( txtNomeVend.getVlrString().trim() );
+				filtros.append( !filtros.equals( "" ) ? " / " : "" );
+				filtros.append( " REPR.: " );
+				filtros.append( iCodVend );
+				filtros.append( "-" );
+				filtros.append( txtNomeVend.getVlrString().trim() );
 			}
 			if ( iCodCli != 0 ) {
 				if ( iCodCli != 0 ) {
@@ -1404,17 +1404,17 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 						sWhere.append( "C2.CODPESQ=C1.CODPESQ AND C2.CODEMPPQ=C1.CODEMPPQ AND " );
 						sWhere.append( "C2.CODFILIALPQ=C1.CODFILIALPQ AND C1.CODCLI=? " );
 						sFrom = ",VDCLIENTE C1, VDCLIENTE C2 ";
-						sFiltros2.append( !sFiltros2.equals( "" ) ? " / " : "" );
-						sFiltros2.append( "AGRUP. CLI. PRINC." );
+						filtros.append( !filtros.equals( "" ) ? " / " : "" );
+						filtros.append( "AGRUP. CLI. PRINC." );
 					}
 					else {
 						sWhere.append( "AND V.CODCLI=? " );
 					}
-					sFiltros2.append( !sFiltros2.equals( "" ) ? " / " : "" );
-					sFiltros2.append( " CLI.: " );
-					sFiltros2.append( iCodCli );
-					sFiltros2.append( "-" );
-					sFiltros2.append( Funcoes.copy( txtRazCli.getVlrString(), 30 ) );
+					filtros.append( !filtros.equals( "" ) ? " / " : "" );
+					filtros.append( " CLI.: " );
+					filtros.append( iCodCli );
+					filtros.append( "-" );
+					filtros.append( Funcoes.copy( txtRazCli.getVlrString(), 30 ) );
 				}
 			}
 			else {
@@ -1427,7 +1427,8 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 					sWhere.append( "C2.CODPESQ=C1.CODPESQ AND C2.CODEMPPQ=C1.CODEMPPQ AND " );
 					sWhere.append( "C2.CODFILIALPQ=C1.CODFILIALPQ " );
 					sFrom = ",VDCLIENTE C1, VDCLIENTE C2 ";
-					sFiltros2.append( "AGRUP. CLI. PRINC." );
+					filtros.append( filtros.length()==0 ? "" :" / " );
+					filtros.append( "AGRUP. CLI. PRINC." );
 				}
 				else {
 					if ( sFrom.equals( "" ) ) {
@@ -1442,35 +1443,35 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 						sFrom = ", VDTIPOCLI TC " + sFrom;
 					}
 				}
-				sFiltros2.append( sFiltros2.length() > 0 ? " / " : "" );
-				sFiltros2.append( " TP.CLI.: " );
-				sFiltros2.append( iCodTipoCli );
-				sFiltros2.append( "-" );
-				sFiltros2.append( txtDescTipoCli.getVlrString().trim() );
+				filtros.append( filtros.length() > 0 ? " / " : "" );
+				filtros.append( " TP.CLI.: " );
+				filtros.append( iCodTipoCli );
+				filtros.append( "-" );
+				filtros.append( txtDescTipoCli.getVlrString().trim() );
 			}
 
 			if ( txtCodCFOP.getVlrInteger().intValue() > 0 ) {
 				sWhere1 += " AND IV.CODNAT='" + txtCodCFOP.getVlrString()+"'";
-				sFiltros1.append( !sFiltros1.equals( "" ) ? " / " : "" );
-				sFiltros1.append( " CFOP.: " );
-				sFiltros1.append( txtDescCFOP.getText().trim() );
+				filtros.append( !filtros.equals( "" ) ? " / " : "" );
+				filtros.append( " CFOP.: " );
+				filtros.append( txtDescCFOP.getText().trim() );
 			}
 			if ( txtCodTipoMov.getVlrInteger().intValue() > 0 ) {
 				sWhere1 += " AND V.CODTIPOMOV=" + txtCodTipoMov.getVlrInteger().intValue();
-				sFiltros1.append( !sFiltros1.equals( "" ) ? " / " : "" );
-				sFiltros1.append( " TipoMov.: " );
-				sFiltros1.append( txtDescTipoMov.getText().trim() );
+				filtros.append( !filtros.equals( "" ) ? " / " : "" );
+				filtros.append( " TipoMov.: " );
+				filtros.append( txtDescTipoMov.getText().trim() );
 			}
 			
 			if ( cbVendaCanc.getVlrString().equals( "N" ) ) {
 				sWhere3 = " AND NOT SUBSTR(V.STATUSVENDA,1,1)='C' ";
 			}
 
-			if ( sFiltros1.length() > 0 ) {
-				imp.addSubTitulo( sFiltros1.toString() );
+			if ( filtros.length() > 0 ) {
+				imp.addSubTitulo( filtros.toString() );
 			}
-			if ( sFiltros2.length() > 0 ) {
-				imp.addSubTitulo( sFiltros2.toString() );
+			if ( filtros.length() > 0 ) {
+				imp.addSubTitulo( filtros.toString() );
 			}
 			if ( sCab.length() > 0 ) {
 				imp.addSubTitulo( sCab );
@@ -1636,8 +1637,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 			sCodMarca = null;
 			sCodGrup1 = null;
 			sCodGrup2 = null;
-			sFiltros1 = null;
-			sFiltros2 = null;
+			filtros = null;
 			imp = null;
 			System.gc();
 		}
@@ -1669,9 +1669,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		String sCodMarca = null;
 		String sCodGrup1 = null;
 		String sCodGrup2 = null;
-		StringBuffer sFiltros1 = new StringBuffer();
-		StringBuffer sFiltros2 = new StringBuffer();
-		;
+		StringBuffer filtros = new StringBuffer();
 		ImprimeOS imp = null;
 		int iCodSetor = 0;
 		int iCodVend = 0;
@@ -1712,15 +1710,15 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 			
 			if ( txtCodCFOP.getVlrInteger().intValue() > 0 ) {
 				sWhere1 += " AND IV.CODNAT=" + txtCodCFOP.getVlrInteger().intValue();
-				sFiltros1.append( !sFiltros1.equals( "" ) ? " / " : "" );
-				sFiltros1.append( " CFOP.: " );
-				sFiltros1.append( txtDescCFOP.getText().trim() );
+				filtros.append( !filtros.equals( "" ) ? " / " : "" );
+				filtros.append( " CFOP.: " );
+				filtros.append( txtDescCFOP.getText().trim() );
 			}
 			if ( txtCodTipoMov.getVlrInteger().intValue() > 0 ) {
 				sWhere1 += " AND V.CODTIPOMOV=" + txtCodTipoMov.getVlrInteger().intValue();
-				sFiltros1.append( !sFiltros1.equals( "" ) ? " / " : "" );
-				sFiltros1.append( " TipoMov.: " );
-				sFiltros1.append( txtDescTipoMov.getText().trim() );
+				filtros.append( !filtros.equals( "" ) ? " / " : "" );
+				filtros.append( " TipoMov.: " );
+				filtros.append( txtDescTipoMov.getText().trim() );
 			}
 
 
@@ -1737,32 +1735,34 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 			}
 
 			if ( cbMovEstoque.getVlrString().equals( "S" ) ) {
-				sFiltros1.append( "SO MOV.ESTOQUE" );
+				filtros.append( filtros.length()==0 ? "" :" / " );
+				filtros.append( "SO MOV.ESTOQUE" );
 				sWhereTM = ( cbMovEstoque.getVlrString().equals( "S" ) ? " AND TM.ESTOQTIPOMOV='S' " : "" );
 			}
 			
 			if ( rgEmitidos.getVlrString().equals( "S" ) ) {
 				sWhere4 = " AND V.STATUSVENDA IN ('V2','V3','P3') " ;
-				sFiltros1.append( " EMITIDOS " );
+				filtros.append( filtros.length()==0 ? "" :" / " );
+				filtros.append( " EMITIDOS " );
 			}
 
 			if ( !sCodMarca.equals( "" ) ) {
 				sWhere.append( "AND P.CODEMPMC=? AND P.CODFILIALMC=? AND P.CODMARCA=? " );
-				sFiltros1.append( !sFiltros1.equals( "" ) ? " / " : "" );
-				sFiltros1.append( "M.: " );
-				sFiltros1.append( txtDescMarca.getText().trim() );
+				filtros.append( !filtros.equals( "" ) ? " / " : "" );
+				filtros.append( "M.: " );
+				filtros.append( txtDescMarca.getText().trim() );
 			}
 			if ( !sCodGrup1.equals( "" ) ) {
 				sWhere.append( "AND G.CODEMP=? AND G.CODFILIAL=? AND G.CODGRUP LIKE ? " );
-				sFiltros1.append( !sFiltros1.equals( "" ) ? " / " : "" );
-				sFiltros1.append( "G.: " );
-				sFiltros1.append( txtDescGrup1.getText().trim() );
+				filtros.append( !filtros.equals( "" ) ? " / " : "" );
+				filtros.append( "G.: " );
+				filtros.append( txtDescGrup1.getText().trim() );
 			}
 			if ( !sCodGrup2.equals( "" ) ) {
 				sWhere.append( "AND ( NOT P.CODGRUP=? ) " );
-				sFiltros1.append( !sFiltros1.equals( "" ) ? " / " : "" );
-				sFiltros1.append( " EXCL. G.: " );
-				sFiltros1.append( txtDescGrup2.getText().trim() );
+				filtros.append( !filtros.equals( "" ) ? " / " : "" );
+				filtros.append( " EXCL. G.: " );
+				filtros.append( txtDescGrup2.getText().trim() );
 			}
 			if ( iCodSetor != 0 ) {
 				
@@ -1773,19 +1773,19 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 					sWhere.append( "AND VD.CODSETOR=? " );
 				}
 				
-				sFiltros2.append( !sFiltros2.equals( "" ) ? " / " : "" );
-				sFiltros2.append( " SETOR: " );
-				sFiltros2.append( iCodSetor );
-				sFiltros2.append( "-" );
-				sFiltros2.append( txtDescSetor.getVlrString().trim() );
+				filtros.append( !filtros.equals( "" ) ? " / " : "" );
+				filtros.append( " SETOR: " );
+				filtros.append( iCodSetor );
+				filtros.append( "-" );
+				filtros.append( txtDescSetor.getVlrString().trim() );
 			}
 			if ( iCodVend != 0 ) {
 				sWhere.append( "AND V.CODVEND=? " );
-				sFiltros2.append( !sFiltros2.equals( "" ) ? " / " : "" );
-				sFiltros2.append( " REPR.: " );
-				sFiltros2.append( iCodVend );
-				sFiltros2.append( "-" );
-				sFiltros2.append( txtNomeVend.getVlrString().trim() );
+				filtros.append( !filtros.equals( "" ) ? " / " : "" );
+				filtros.append( " REPR.: " );
+				filtros.append( iCodVend );
+				filtros.append( "-" );
+				filtros.append( txtNomeVend.getVlrString().trim() );
 			}
 			if ( iCodCli != 0 ) {
 				if ( iCodCli != 0 ) {
@@ -1794,17 +1794,17 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 						sWhere.append( "C2.CODPESQ=C1.CODPESQ AND C2.CODEMPPQ=C1.CODEMPPQ AND " );
 						sWhere.append( "C2.CODFILIALPQ=C1.CODFILIALPQ AND C1.CODCLI=? " );
 						sFrom = ",VDCLIENTE C1, VDCLIENTE C2 ";
-						sFiltros2.append( !sFiltros2.equals( "" ) ? " / " : "" );
-						sFiltros2.append( "AGRUP. CLI. PRINC." );
+						filtros.append( !filtros.equals( "" ) ? " / " : "" );
+						filtros.append( "AGRUP. CLI. PRINC." );
 					}
 					else {
 						sWhere.append( "AND V.CODCLI=? " );
 					}
-					sFiltros2.append( !sFiltros2.equals( "" ) ? " / " : "" );
-					sFiltros2.append( " CLI.: " );
-					sFiltros2.append( iCodCli );
-					sFiltros2.append( "-" );
-					sFiltros2.append( Funcoes.copy( txtRazCli.getVlrString(), 30 ) );
+					filtros.append( !filtros.equals( "" ) ? " / " : "" );
+					filtros.append( " CLI.: " );
+					filtros.append( iCodCli );
+					filtros.append( "-" );
+					filtros.append( Funcoes.copy( txtRazCli.getVlrString(), 30 ) );
 				}
 			}
 			else {
@@ -1817,7 +1817,8 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 					sWhere.append( "C2.CODPESQ=C1.CODPESQ AND C2.CODEMPPQ=C1.CODEMPPQ AND " );
 					sWhere.append( "C2.CODFILIALPQ=C1.CODFILIALPQ " );
 					sFrom = ",VDCLIENTE C1, VDCLIENTE C2 ";
-					sFiltros2.append( "AGRUP. CLI. PRINC." );
+					filtros.append( filtros.length()==0 ? "" :" / " );
+					filtros.append( "AGRUP. CLI. PRINC." );
 				}
 				else {
 					if ( sFrom.equals( "" ) ) {
@@ -1832,22 +1833,22 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 						sFrom = ", VDTIPOCLI TC " + sFrom;
 					}
 				}
-				sFiltros2.append( sFiltros2.length() > 0 ? " / " : "" );
-				sFiltros2.append( " TP.CLI.: " );
-				sFiltros2.append( iCodTipoCli );
-				sFiltros2.append( "-" );
-				sFiltros2.append( txtDescTipoCli.getVlrString().trim() );
+				filtros.append( filtros.length() > 0 ? " / " : "" );
+				filtros.append( " TP.CLI.: " );
+				filtros.append( iCodTipoCli );
+				filtros.append( "-" );
+				filtros.append( txtDescTipoCli.getVlrString().trim() );
 			}
 
 			if ( cbVendaCanc.getVlrString().equals( "N" ) ) {
 				sWhere3 = " AND NOT SUBSTR(V.STATUSVENDA,1,1)='C' ";
 			}
 
-			if ( sFiltros1.length() > 0 ) {
-				imp.addSubTitulo( sFiltros1.toString() );
+			if ( filtros.length() > 0 ) {
+				imp.addSubTitulo( filtros.toString() );
 			}
-			if ( sFiltros2.length() > 0 ) {
-				imp.addSubTitulo( sFiltros2.toString() );
+			if ( filtros.length() > 0 ) {
+				imp.addSubTitulo( filtros.toString() );
 			}
 			if ( sCab.length() > 0 ) {
 				imp.addSubTitulo( sCab );
@@ -2040,8 +2041,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 			sCodMarca = null;
 			sCodGrup1 = null;
 			sCodGrup2 = null;
-			sFiltros1 = null;
-			sFiltros2 = null;
+			filtros = null;
 			imp = null;
 			System.gc();
 		}
@@ -2094,9 +2094,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		String sOrdemRel = null;
 		String sOrderBy = null;
 		String sDescOrdemRel = null;
-		StringBuffer sFiltros1 = new StringBuffer();
-		StringBuffer sFiltros2 = new StringBuffer();
-
+		StringBuffer filtros = new StringBuffer();
 		int iCodSetor = 0;
 		int iCodCli = 0;
 		int iCodTipoCli = 0;
@@ -2140,43 +2138,45 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		
 		if ( rgEmitidos.getVlrString().equals( "S" ) ) {
 			sWhere4 = " AND V.STATUSVENDA IN ('V2','V3','P3') " ;
-			sFiltros1.append( " EMITIDOS " );
+			filtros.append( filtros.length()==0 ? "" :" / " );
+			filtros.append( " EMITIDOS " );
 		}
 
 		if ( cbMovEstoque.getVlrString().equals( "S" ) ) {
-			sFiltros1.append( "SO MOV.ESTOQUE" );
+			filtros.append( filtros.length()==0 ? "" :" / " );
+			filtros.append( "SO MOV.ESTOQUE" );
 			sWhereTM = ( cbMovEstoque.getVlrString().equals( "S" ) ? " AND TM.ESTOQTIPOMOV='S' " : "" );
 		}
 
 		if ( !sCodMarca.equals( "" ) ) {
 			sWhere.append( "AND P.CODEMPMC=? AND P.CODFILIALMC=? AND P.CODMARCA=? " );
-			sFiltros1.append( !sFiltros1.equals( "" ) ? " / " : "" );
-			sFiltros1.append( "M.: " );
-			sFiltros1.append( txtDescMarca.getText().trim() );
+			filtros.append( !filtros.equals( "" ) ? " / " : "" );
+			filtros.append( "M.: " );
+			filtros.append( txtDescMarca.getText().trim() );
 		}
 		if ( !sCodGrup1.equals( "" ) ) {
 			sWhere.append( "AND G.CODEMP=? AND G.CODFILIAL=? AND G.CODGRUP LIKE ? " );
-			sFiltros1.append( !sFiltros1.equals( "" ) ? " / " : "" );
-			sFiltros1.append( "G.: " );
-			sFiltros1.append( txtDescGrup1.getText().trim() );
+			filtros.append( !filtros.equals( "" ) ? " / " : "" );
+			filtros.append( "G.: " );
+			filtros.append( txtDescGrup1.getText().trim() );
 		}
 		if ( !sCodGrup2.equals( "" ) ) {
 			sWhere.append( "AND ( NOT P.CODGRUP=? ) " );
-			sFiltros1.append( !sFiltros1.equals( "" ) ? " / " : "" );
-			sFiltros1.append( " EXCL. G.: " );
-			sFiltros1.append( txtDescGrup2.getText().trim() );
+			filtros.append( !filtros.equals( "" ) ? " / " : "" );
+			filtros.append( " EXCL. G.: " );
+			filtros.append( txtDescGrup2.getText().trim() );
 		}
 		if ( txtCodCFOP.getVlrInteger().intValue() > 0 ) {
 			sWhere1 += " AND IV.CODNAT=" + txtCodCFOP.getVlrInteger().intValue();
-			sFiltros1.append( !sFiltros1.equals( "" ) ? " / " : "" );
-			sFiltros1.append( " CFOP.: " );
-			sFiltros1.append( txtDescCFOP.getText().trim() );
+			filtros.append( !filtros.equals( "" ) ? " / " : "" );
+			filtros.append( " CFOP.: " );
+			filtros.append( txtDescCFOP.getText().trim() );
 		}
 		if ( txtCodTipoMov.getVlrInteger().intValue() > 0 ) {
 			sWhere1 += " AND V.CODTIPOMOV=" + txtCodTipoMov.getVlrInteger().intValue();
-			sFiltros1.append( !sFiltros1.equals( "" ) ? " / " : "" );
-			sFiltros1.append( " TipoMov.: " );
-			sFiltros1.append( txtDescTipoMov.getText().trim() );
+			filtros.append( !filtros.equals( "" ) ? " / " : "" );
+			filtros.append( " TipoMov.: " );
+			filtros.append( txtDescTipoMov.getText().trim() );
 		}
 
 		
@@ -2189,37 +2189,37 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 				sWhere.append( "AND VD.CODSETOR=? " );
 			}
 			
-			sFiltros2.append( !sFiltros2.equals( "" ) ? " / " : "" );
-			sFiltros2.append( " SETOR: " );
-			sFiltros2.append( iCodSetor );
-			sFiltros2.append( "-" );
-			sFiltros2.append( txtDescSetor.getVlrString().trim() );
+			filtros.append( !filtros.equals( "" ) ? " / " : "" );
+			filtros.append( " SETOR: " );
+			filtros.append( iCodSetor );
+			filtros.append( "-" );
+			filtros.append( txtDescSetor.getVlrString().trim() );
 		}
 		if ( iCodVend != 0 ) {
 			sWhere.append( "AND V.CODVEND=? " );
-			sFiltros2.append( !sFiltros2.equals( "" ) ? " / " : "" );
-			sFiltros2.append( " REPR.: " );
-			sFiltros2.append( iCodVend );
-			sFiltros2.append( "-" );
-			sFiltros2.append( txtNomeVend.getVlrString().trim() );
+			filtros.append( !filtros.equals( "" ) ? " / " : "" );
+			filtros.append( " REPR.: " );
+			filtros.append( iCodVend );
+			filtros.append( "-" );
+			filtros.append( txtNomeVend.getVlrString().trim() );
 		}
 		if ( iCodCli != 0 ) {
 			sWhere.append( "AND C2.CODCLI=? " );
-			sFiltros2.append( !sFiltros2.equals( "" ) ? " / " : "" );
-			sFiltros2.append( " CLI.: " );
-			sFiltros2.append( iCodCli );
-			sFiltros2.append( "-" );
-			sFiltros2.append( Funcoes.copy( txtRazCli.getVlrString(), 30 ) );
+			filtros.append( !filtros.equals( "" ) ? " / " : "" );
+			filtros.append( " CLI.: " );
+			filtros.append( iCodCli );
+			filtros.append( "-" );
+			filtros.append( Funcoes.copy( txtRazCli.getVlrString(), 30 ) );
 		}
 		if ( iCodTipoCli != 0 ) {
 			sWhere.append( "AND C2.CODTIPOCLI=TC.CODTIPOCLI AND C2.CODEMPTI=TC.CODEMP AND C2.CODFILIALTI=TC.CODFILIAL " );
 			sWhere.append( "AND TC.CODTIPOCLI=? " );
 			sFrom = ", VDTIPOCLI TC ";
-			sFiltros2.append( sFiltros2.length() > 0 ? " / " : "" );
-			sFiltros2.append( " TP.CLI.: " );
-			sFiltros2.append( iCodTipoCli );
-			sFiltros2.append( "-" );
-			sFiltros2.append( txtDescTipoCli.getVlrString().trim() );
+			filtros.append( filtros.length() > 0 ? " / " : "" );
+			filtros.append( " TP.CLI.: " );
+			filtros.append( iCodTipoCli );
+			filtros.append( "-" );
+			filtros.append( txtDescTipoCli.getVlrString().trim() );
 		}
 
 		if ( cbVendaCanc.getVlrString().equals( "N" ) ) {
@@ -2227,8 +2227,8 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		}
 
 		if ( cbCliPrinc.getVlrString().equals( "S" ) ) {
-			sFiltros2.append( !sFiltros2.equals( "" ) ? " / " : "" );
-			sFiltros2.append( "ADIC. CLIENTES PRINCIPAIS" );
+			filtros.append( !filtros.equals( "" ) ? " / " : "" );
+			filtros.append( "ADIC. CLIENTES PRINCIPAIS" );
 		}
 
 		if ( sOrdemRel.equals( "V" ) ) {
@@ -2327,9 +2327,9 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 			rs = ps.executeQuery();
 			
 			if (postscript) {
-				impClienteGrafico( bVisualizar, sFiltros1, sFiltros2, sCab, rs, sDescOrdemRel, fotoemp );
+				impClienteGrafico( bVisualizar, filtros, sCab, rs, sDescOrdemRel, fotoemp );
 			} else {
-				impClienteTexto( bVisualizar, sFiltros1, sFiltros2, sCab, rs, sDescOrdemRel);
+				impClienteTexto( bVisualizar, filtros, sCab, rs, sDescOrdemRel);
 				rs.close();
 				ps.close();
 				con.commit();			
@@ -2353,21 +2353,20 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 			sOrdemRel = null;
 			sOrderBy = null;
 			sDescOrdemRel = null;
-			sFiltros1 = null;
-			sFiltros2 = null;
+			filtros = null;
 			System.gc();
 		}
 		
 		
 	}
 
-	private void impClienteGrafico( TYPE_PRINT bVisualizar, StringBuffer sFiltros1, StringBuffer sFiltros2, 
+	private void impClienteGrafico( TYPE_PRINT bVisualizar, StringBuffer filtros, 
 		String sCab, ResultSet rs, String sDescOrdemRel, Blob fotoemp ) {
 		String report = "relatorios/VendasSetor.jasper";
 		String label = "Vendas por Setor";
 		
 	    HashMap<String, Object> hParam = new HashMap<String, Object>();
-		//hParam.put( "FILTROS", sFiltros1 + "FILTROS "+ sFiltros2 );
+		hParam.put( "FILTROS", filtros.toString() );
 		try {
 			hParam.put( "LOGOEMP",  new ImageIcon(fotoemp.getBytes(1, ( int ) fotoemp.length())).getImage() );
 		} catch ( SQLException e ) {
@@ -2393,7 +2392,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 				
 	}
 
-	private void impClienteTexto( TYPE_PRINT bVisualizar, StringBuffer sFiltros1, StringBuffer sFiltros2, String sCab, ResultSet rs, String sDescOrdemRel ) {
+	private void impClienteTexto( TYPE_PRINT bVisualizar, StringBuffer filtros, String sCab, ResultSet rs, String sDescOrdemRel ) {
 
 		if ("D".equals(rgTipoDet.getVlrString() )) {
 			Funcoes.mensagemInforma( this, "Relatório Detalhado não disponível para modo texto !" );
@@ -2418,11 +2417,11 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 			imp.montaCab();
 			imp.limpaPags();
 			imp.setTitulo( "Relatorio de Vendas por Setor x Clientes" );
-			if ( sFiltros1.length() > 0 ) {
-				imp.addSubTitulo( sFiltros1.toString() );
+			if ( filtros.length() > 0 ) {
+				imp.addSubTitulo( filtros.toString() );
 			}
-			if ( sFiltros2.length() > 0 ) {
-				imp.addSubTitulo( sFiltros2.toString() );
+			if ( filtros.length() > 0 ) {
+				imp.addSubTitulo( filtros.toString() );
 			}
 			if ( sCab.length() > 0 ) {
 				imp.addSubTitulo( sCab );
@@ -2554,8 +2553,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 			rs = null;
 			sCab = null;
 			sDescOrdemRel = null;
-			sFiltros1 = null;
-			sFiltros2 = null;
+			filtros = null;
 			sCodTipoCli = null;
 			sDescTipoCli = null;
 			sCodTipoCliAnt = null;
