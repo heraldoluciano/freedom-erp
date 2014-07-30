@@ -1542,17 +1542,86 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 
 	}
 	
+	private void impConsertoTexto( TYPE_PRINT bVisualizar, StringBuffer filtros, ResultSet rs ) throws SQLException {
+		double deVlrTotal = 0;
+		double deQtdTotal = 0;
+		ImprimeOS imp = null;
+		imp = new ImprimeOS( "", con );
+		int linPag = imp.verifLinPag() - 1;
+		imp.montaCab();
+		imp.setTitulo( "Relatorio de Vendas por Setor x Produto" );
+		imp.limpaPags();
+		if ( filtros.length() > 0 ) {
+			imp.addSubTitulo( filtros.toString() );
+		}
+		while ( rs.next() ) {
+			if ( imp.pRow() >= ( linPag - 1 ) ) {
+				imp.pulaLinha( 1, imp.comprimido() );
+				imp.say( imp.pRow(), 0, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
+				imp.incPags();
+				imp.eject();
+			}
+
+			if ( imp.pRow() == 0 ) {
+
+				imp.impCab( 136, true );
+
+				imp.say( 0, imp.comprimido() );
+				/*imp.say( 1, "|" );
+				imp.say( 50, "PERIODO DE: " + txtDataini.getVlrString() + " ATE: " + txtDatafim.getVlrString() );
+				imp.say( 136, "|" );
+				imp.pulaLinha( 1, imp.comprimido() );*/
+				imp.say( imp.pRow(), 1, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
+				imp.pulaLinha( 1, imp.comprimido() );
+				imp.say( 1, "| DESCRICAO DO PRODUTO" );
+				imp.say( 55, "| CODIGO" );
+				imp.say( 67, "| QUANTIDADE" );
+				imp.say( 81, "|     VALOR" );
+				imp.say( 99, "|" );
+				imp.say( 136, "|" );
+				imp.pulaLinha( 1, imp.comprimido() );
+				imp.say( imp.pRow(), 1, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
+
+			}
+
+			imp.pulaLinha( 1, imp.comprimido() );
+			imp.say( 1, "|" );
+			imp.say( 4, Funcoes.adicionaEspacos( rs.getString( 1 ), 50 ) + " |" );
+			imp.say( 56, Funcoes.adicEspacosEsquerda( rs.getString( 2 ), 10 ) + " |" );
+			imp.say( 70, Funcoes.adicEspacosEsquerda( String.valueOf( rs.getDouble( 4 ) ), 10 ) + " |" );
+			imp.say( 83, Funcoes.strDecimalToStrCurrency( 15, 2, rs.getString( 5 ) ) + " |" );
+			imp.say( 136, "|" );
+
+			deQtdTotal += rs.getDouble( 4 );
+			deVlrTotal += rs.getDouble( 5 );
+
+		}
+		// Fim da impressão do total por setor
+		imp.pulaLinha( 1, imp.comprimido() );
+		imp.say( 1, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
+		imp.pulaLinha( 1, imp.comprimido() );
+		imp.say( 1, "| TOTAL" );
+		imp.say( 67, "| " + Funcoes.strDecimalToStrCurrency( 11, 2, String.valueOf( deQtdTotal ) ) );
+		imp.say( 81, "| " + Funcoes.strDecimalToStrCurrency( 15, 2, String.valueOf( deVlrTotal ) ) + " |" );
+		imp.say( 136, "|" );
+		imp.pulaLinha( 1, imp.comprimido() );
+		imp.say( 1, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
+		imp.eject();
+		imp.fechaGravacao();
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
+			imp.preview( this );
+		}
+		else {
+			imp.print();
+		}
+	}
+
 	private void impConserto( TYPE_PRINT bVisualizar, boolean postscript ) {
 
-		if (postscript) {
-			Funcoes.mensagemInforma( this, "Relatório gráfico não disponível para modo de impressão produto !" );
-			return;
-		}
 		if ("D".equals(rgTipoDet.getVlrString() )) {
 			Funcoes.mensagemInforma( this, "Relatório Detalhado não disponível para modo texto !" );
 			return;
 		}
-		
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		StringBuffer sSql = new StringBuffer();
@@ -1567,23 +1636,12 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		String sCodGrup1 = null;
 		String sCodGrup2 = null;
 		StringBuffer filtros = new StringBuffer();
-		ImprimeOS imp = null;
 		int iCodSetor = 0;
 		int iCodVend = 0;
 		int iCodCli = 0;
 		int iCodTipoCli = 0;
-		int linPag = 0;
 		int iParam = 1;
-		double deVlrTotal = 0;
-		double deQtdTotal = 0;
-
 		try {
-
-			imp = new ImprimeOS( "", con );
-			linPag = imp.verifLinPag() - 1;
-			imp.montaCab();
-			imp.setTitulo( "Relatorio de Vendas por Setor x Produto" );
-			imp.limpaPags();
 
 			sCodMarca = txtCodMarca.getVlrString().trim();
 			sCodGrup1 = txtCodGrup1.getVlrString().trim();
@@ -1741,13 +1799,8 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 				filtros.append( "-" );
 				filtros.append( txtDescTipoCli.getVlrString().trim() );
 			}
-
 			if ( cbVendaCanc.getVlrString().equals( "N" ) ) {
 				sWhere3 = " AND NOT SUBSTR(V.STATUSVENDA,1,1)='C' ";
-			}
-
-			if ( filtros.length() > 0 ) {
-				imp.addSubTitulo( filtros.toString() );
 			}
 			try {
 				sSql.append( "SELECT coalesce(pd2.descprod,pd1.descprod) descprod,coalesce(pd2.codprod,pd1.codprod) codprod, coalesce(Pd2.REFPROD, pd1.refprod) refprod,SUM(IV.QTDITVENDA) QTDVENDA ,SUM(IV.VLRLIQITVENDA) VLRVENDA " );
@@ -1829,87 +1882,20 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 				if ( iCodTipoCli != 0 ) {
 					ps.setInt( iParam++, iCodTipoCli );
 				}
-
-				
-				
 				rs = ps.executeQuery();
-
-				while ( rs.next() ) {
-
-					if ( imp.pRow() >= ( linPag - 1 ) ) {
-						imp.pulaLinha( 1, imp.comprimido() );
-						imp.say( imp.pRow(), 0, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
-						imp.incPags();
-						imp.eject();
-					}
-
-					if ( imp.pRow() == 0 ) {
-
-						imp.impCab( 136, true );
-
-						imp.say( 0, imp.comprimido() );
-						/*imp.say( 1, "|" );
-						imp.say( 50, "PERIODO DE: " + txtDataini.getVlrString() + " ATE: " + txtDatafim.getVlrString() );
-						imp.say( 136, "|" );
-						imp.pulaLinha( 1, imp.comprimido() );*/
-						imp.say( imp.pRow(), 1, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
-						imp.pulaLinha( 1, imp.comprimido() );
-						imp.say( 1, "| DESCRICAO DO PRODUTO" );
-						imp.say( 55, "| CODIGO" );
-						imp.say( 67, "| QUANTIDADE" );
-						imp.say( 81, "|     VALOR" );
-						imp.say( 99, "|" );
-						imp.say( 136, "|" );
-						imp.pulaLinha( 1, imp.comprimido() );
-						imp.say( imp.pRow(), 1, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
-
-					}
-
-					imp.pulaLinha( 1, imp.comprimido() );
-					imp.say( 1, "|" );
-					imp.say( 4, Funcoes.adicionaEspacos( rs.getString( 1 ), 50 ) + " |" );
-					imp.say( 56, Funcoes.adicEspacosEsquerda( rs.getString( 2 ), 10 ) + " |" );
-					imp.say( 70, Funcoes.adicEspacosEsquerda( String.valueOf( rs.getDouble( 4 ) ), 10 ) + " |" );
-					imp.say( 83, Funcoes.strDecimalToStrCurrency( 15, 2, rs.getString( 5 ) ) + " |" );
-					imp.say( 136, "|" );
-
-					deQtdTotal += rs.getDouble( 4 );
-					deVlrTotal += rs.getDouble( 5 );
-
+				if (postscript) {
+					impProdutoGrafico( bVisualizar, filtros, rs);
+				} else {
+					impConsertoTexto( bVisualizar, filtros, rs);
 				}
-
-				// Fim da impressão do total por setor
-
-				imp.pulaLinha( 1, imp.comprimido() );
-				imp.say( 1, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
-				imp.pulaLinha( 1, imp.comprimido() );
-				imp.say( 1, "| TOTAL" );
-				imp.say( 67, "| " + Funcoes.strDecimalToStrCurrency( 11, 2, String.valueOf( deQtdTotal ) ) );
-				imp.say( 81, "| " + Funcoes.strDecimalToStrCurrency( 15, 2, String.valueOf( deVlrTotal ) ) + " |" );
-				imp.say( 136, "|" );
-				imp.pulaLinha( 1, imp.comprimido() );
-				imp.say( 1, "+" + StringFunctions.replicate( "-", 133 ) + "+" );
-
-				imp.eject();
-				imp.fechaGravacao();
-
 				rs.close();
 				ps.close();
-
 				con.commit();
 
 			} catch ( SQLException err ) {
 				Funcoes.mensagemErro( this, "Erro executando a consulta.\n" + err.getMessage(), true, con, err );
 				err.printStackTrace();
 			}
-
-			if ( bVisualizar==TYPE_PRINT.VIEW ) {
-				imp.preview( this );
-			}
-			else {
-				imp.print();
-			}
-
 		} catch ( Exception e ) {
 			e.printStackTrace();
 		} finally {
@@ -1926,7 +1912,6 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 			sCodGrup1 = null;
 			sCodGrup2 = null;
 			filtros = null;
-			imp = null;
 			System.gc();
 		}
 
@@ -2209,7 +2194,6 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 				ps.setInt( iParam++, iCodTipoCli );
 			}
 			rs = ps.executeQuery();
-			
 			if (postscript) {
 				impClienteGrafico( bVisualizar, filtros, rs, sDescOrdemRel, fotoemp );
 			} else {
@@ -2441,24 +2425,41 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 
 	}
 
+	/*private void impConsertoGrafico( TYPE_PRINT bVisualizar, StringBuffer filtros, 
+			ResultSet rs ) {
+		String report = "relatorios/VendasSetorProd.jasper";
+		String label = "Vendas por Setor x Produto";
+	    HashMap<String, Object> hParam = new HashMap<String, Object>();
+		hParam.put( "FILTROS", filtros.toString() );
+		FPrinterJob dlGr = new FPrinterJob( report, label, "", rs, hParam , this );
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
+			dlGr.preview();
+		} else {
+			try {
+				dlGr.print(true);
+			} catch ( Exception err ) {
+				Funcoes.mensagemErro( this, "Erro na impressão de relatório de vendas por Setor!" + err.getMessage(), true, con, err );
+			}
+		}
+	}
+*/
 	private void impProdutoGrafico( TYPE_PRINT bVisualizar, StringBuffer filtros, 
 			ResultSet rs ) {
-			String report = "relatorios/VendasSetorProd.jasper";
-			String label = "Vendas por Setor x Produto";
-		    HashMap<String, Object> hParam = new HashMap<String, Object>();
-			hParam.put( "FILTROS", filtros.toString() );
-			FPrinterJob dlGr = new FPrinterJob( report, label, "", rs, hParam , this );
-			if ( bVisualizar==TYPE_PRINT.VIEW ) {
-				dlGr.preview();
-			} else {
-				try {
-					dlGr.print(true);
-				} catch ( Exception err ) {
-					Funcoes.mensagemErro( this, "Erro na impressão de relatório de vendas por Setor!" + err.getMessage(), true, con, err );
-				}
+		String report = "relatorios/VendasSetorProd.jasper";
+		String label = "Vendas por Setor x Produto";
+	    HashMap<String, Object> hParam = new HashMap<String, Object>();
+		hParam.put( "FILTROS", filtros.toString() );
+		FPrinterJob dlGr = new FPrinterJob( report, label, "", rs, hParam , this );
+		if ( bVisualizar==TYPE_PRINT.VIEW ) {
+			dlGr.preview();
+		} else {
+			try {
+				dlGr.print(true);
+			} catch ( Exception err ) {
+				Funcoes.mensagemErro( this, "Erro na impressão de relatório de vendas por Setor!" + err.getMessage(), true, con, err );
 			}
-					
 		}
+	}
 
 	private void impProdutoTexto( TYPE_PRINT bVisualizar, StringBuffer filtros, ResultSet rs ) {
 		
