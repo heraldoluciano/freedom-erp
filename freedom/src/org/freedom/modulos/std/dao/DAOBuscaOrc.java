@@ -31,7 +31,7 @@ public class DAOBuscaOrc extends AbstractDAO {
 	private Map<String, Object> prefs = null;
 
 	public enum COL_PREFS { USAPEDSEQ, AUTOFECHAVENDA, ADICORCOBSPED, ADICOBSORCPED, FATORCPARC, APROVORCFATPARC
-		, SOLDTSAIDA, BLOQVDPORATRASO, NUMDIASBLOQVD, ALMOXPDORC, ESTOQALMOX };
+		, SOLDTSAIDA, BLOQVDPORATRASO, NUMDIASBLOQVD, ALMOXPDORC, ESTOQALMOX, RATEIOESTBUSCAORC };
 
 	public DAOBuscaOrc( DbConnection connection ) {
 
@@ -521,6 +521,7 @@ public class DAOBuscaOrc extends AbstractDAO {
 		boolean proj = "Contrato".equalsIgnoreCase( origem );
 		Boolean almoxpdorc = (Boolean) getPrefs().get( COL_PREFS.ALMOXPDORC.name() );
 		Boolean estoqalmox = (Boolean) getPrefs().get( COL_PREFS.ESTOQALMOX.name() );
+		Boolean rateioestbuscaorc = (Boolean) getPrefs().get( COL_PREFS.RATEIOESTBUSCAORC.name() );
 		Vector<Object> vVals = null;
 		Vector<Vector<Object>> vector = new Vector<Vector<Object>>();
 		Vector<String> vcodorcs = new Vector<String>();
@@ -625,7 +626,7 @@ public class DAOBuscaOrc extends AbstractDAO {
 				}
 				Vector<SaldoProd> listsaldo = getSaldoProd( almoxpdorc, estoqalmox
 						, "S".equals( cloteprod ), codfilialax, codprod, codalmoxpd, qtditorc
-						, precoitorc, vlrdescitorc, qtdafatitorc );
+						, precoitorc, vlrdescitorc, qtdafatitorc, rateioestbuscaorc );
 				for (SaldoProd saldoprod: listsaldo) {
 					String codlote = saldoprod.getCodlote();
 					if (codlote==null) {
@@ -676,7 +677,8 @@ public class DAOBuscaOrc extends AbstractDAO {
 			sql = new StringBuilder("select p1.usapedseq, p4.autofechavenda, p1.adicorcobsped, p1.adicobsorcped");
 			sql.append( ", p1.fatorcparc, p1.aprovorcfatparc, p1.soldtsaida " );
 			sql.append( ", p1.bloqvdporatraso, p1.numdiasbloqvd ");
-			sql.append(", coalesce(p1.almoxpdorc,'S') almoxpdorc, coalesce(p1.estoqalmox,'N') estoqalmox ");
+			sql.append( ", coalesce(p1.almoxpdorc,'S') almoxpdorc, coalesce(p1.estoqalmox,'N') estoqalmox ");
+			sql.append( ", coalesce(p1.rateioestbuscaorc,'N') rateioestbuscaorc ");
 			sql.append( "from sgprefere1 p1, sgprefere4 p4 " );
 			sql.append( "where p1.codemp=? and p1.codfilial=? " );
 			sql.append( "and p4.codemp=p1.codemp and p4.codfilial=p4.codfilial");
@@ -700,6 +702,7 @@ public class DAOBuscaOrc extends AbstractDAO {
 				result.put( COL_PREFS.NUMDIASBLOQVD.name(), new Integer(rs.getInt( COL_PREFS.NUMDIASBLOQVD.name())));
 				result.put( COL_PREFS.ALMOXPDORC.name(), new Boolean("S".equals( rs.getString( COL_PREFS.ALMOXPDORC.name()))));
 				result.put( COL_PREFS.ESTOQALMOX.name(), new Boolean("S".equals( rs.getString( COL_PREFS.ESTOQALMOX.name()))));
+				result.put( COL_PREFS.RATEIOESTBUSCAORC.name(), new Boolean("S".equals( rs.getString( COL_PREFS.RATEIOESTBUSCAORC.name()))));
 			}
 			rs.close();
 			ps.close();
@@ -713,103 +716,109 @@ public class DAOBuscaOrc extends AbstractDAO {
 
 	private Vector<SaldoProd> getSaldoProd(Boolean almoxpdorc, Boolean estoqalmox, Boolean clote, Integer codfilialax
 			, Integer codprod, Integer codalmox	, BigDecimal qtd, BigDecimal preco
-			, BigDecimal vlrdesc, BigDecimal qtdafat) throws SQLException {
+			, BigDecimal vlrdesc, BigDecimal qtdafat, Boolean rateioestbuscaorc) throws SQLException {
 		Vector<SaldoProd> result = new Vector<SaldoProd>();
-		StringBuilder sql = new StringBuilder();
-		if (clote) {
-			sql.append( "select lt.venctolote, lt.codlote, " );
-			if (estoqalmox) {
-				sql.append( "sl.codalmox, sl.sldliqlote " );
-			} else {
-				sql.append( "lt.sldliqlote ");
-			}
-			sql.append( "saldo ");
-			sql.append( "from ");
-			if (estoqalmox) {
-			   sql.append( "eqsaldolote sl, ");
-			}
-			sql.append( "eqlote lt ");
-			sql.append( "where lt.codemp=? and lt.codfilial=? and lt.codprod=? ");
-			if (estoqalmox) {
-				sql.append( "and sl.codempax=? and sl.codfilialax=? ");
-				if (almoxpdorc && codalmox!=null) {
-					sql.append("and sl.codalmox=? ");
-				}
-				sql.append( "and sl.codemp=lt.codemp and sl.codfilial=lt.codfilial and sl.codprod=lt.codprod and sl.codlote=lt.codlote ");
-				sql.append( "and sl.sldliqlote>0 ");
-			} else {
-				sql.append( "and lt.sldliqlote>0 ");
-			}
-			sql.append( "and lt.venctolote>cast('now' as date) ");
-			sql.append( "order by lt.venctolote ");
-		} else {
-			sql.append( "select ");
-			if (estoqalmox) {
-				sql.append( "sl.codalmox, sl.sldliqprod ");
-			} else {
-				sql.append( "pd.sldliqprod ");
-			}
-			sql.append( "saldo ");
-			sql.append( "from ");
-			if (estoqalmox) {
-			   sql.append( "eqsaldoprod sl, ");
-			}
-			sql.append( "eqproduto pd ");
-			sql.append( "where pd.codemp=? and pd.codfilial=? and pd.codprod=? ");
-			if (estoqalmox) {
-				sql.append( "and sl.codemp=pd.codemp and sl.codfilial=pd.codfilial and sl.codprod=pd.codprod ");
-				sql.append( "and sl.codempax=? and sl.codfilialax=? ");
-				if (almoxpdorc && codalmox!=null) {
-					sql.append("and sl.codalmox=? ");
-				}
-				sql.append( "and sl.sldliqprod>0 ");
-				sql.append( "order sl.sldliqprod desc ");
-			}
-		}
-		PreparedStatement ps = getConn().prepareStatement( sql.toString() );
-		int param = 1;
-		ps.setInt( param++, getCodemp() );
-		ps.setInt( param++, getCodfilial() );
-		ps.setInt( param++, codprod );
-		if (estoqalmox) {
-			ps.setInt( param++, getCodemp() );
-			ps.setInt( param++, codfilialax );
-			if (almoxpdorc && codalmox!=null) {
-				ps.setInt( param++, codalmox );;
-			}
-		}
-		ResultSet rs = ps.executeQuery();
-		BigDecimal qtdafatcalc = qtdafat;
-		while (rs.next()) {
-			SaldoProd saldoprod = new SaldoProd();
-			saldoprod.setCodemp( getCodemp() );
-			saldoprod.setCodfilial( getCodfilial() );
-			saldoprod.setCodfilialax( codfilialax );
-			if (!estoqalmox) {
-				saldoprod.setCodalmox( codalmox );
-			} else {
-				saldoprod.setCodalmox( rs.getInt( "codalmox" ));
-			}
-			saldoprod.setCodprod( codprod );
-			saldoprod.setVlrdesc( vlrdesc );
-			saldoprod.setQtd( qtd );
-			saldoprod.setPreco( preco );
-			BigDecimal saldo = rs.getBigDecimal( "saldo" );
-			saldoprod.setSaldoprod( saldo );
-			if (saldo.compareTo( qtdafatcalc )>=0) {
-				saldoprod.setQtdafat( qtdafatcalc );
-				qtdafatcalc = BigDecimal.ZERO;
-			} else {
-				saldoprod.setQtdafat( saldo );
-				qtdafatcalc = qtdafatcalc.subtract( saldo );
-			}
+		if (rateioestbuscaorc) {
+			StringBuilder sql = new StringBuilder();
 			if (clote) {
-				saldoprod.setCodlote( rs.getString( "codlote" ) );
+				sql.append( "select lt.venctolote, lt.codlote, " );
+				if (estoqalmox) {
+					sql.append( "sl.codalmox, sl.sldliqlote " );
+				} else {
+					sql.append( "lt.sldliqlote ");
+				}
+				sql.append( "saldo ");
+				sql.append( "from ");
+				if (estoqalmox) {
+				   sql.append( "eqsaldolote sl, ");
+				}
+				sql.append( "eqlote lt ");
+				sql.append( "where lt.codemp=? and lt.codfilial=? and lt.codprod=? ");
+				if (estoqalmox) {
+					sql.append( "and sl.codempax=? and sl.codfilialax=? ");
+					if (almoxpdorc && codalmox!=null) {
+						sql.append("and sl.codalmox=? ");
+					}
+					sql.append( "and sl.codemp=lt.codemp and sl.codfilial=lt.codfilial and sl.codprod=lt.codprod and sl.codlote=lt.codlote ");
+					sql.append( "and sl.sldliqlote>0 ");
+				} else {
+					sql.append( "and lt.sldliqlote>0 ");
+				}
+				sql.append( "and lt.venctolote>cast('now' as date) ");
+				sql.append( "order by lt.venctolote ");
+			} else {
+				sql.append( "select ");
+				if (estoqalmox) {
+					sql.append( "sl.codalmox, sl.sldliqprod ");
+				} else {
+					sql.append( "pd.sldliqprod ");
+				}
+				sql.append( "saldo ");
+				sql.append( "from ");
+				if (estoqalmox) {
+				   sql.append( "eqsaldoprod sl, ");
+				}
+				sql.append( "eqproduto pd ");
+				sql.append( "where pd.codemp=? and pd.codfilial=? and pd.codprod=? ");
+				if (estoqalmox) {
+					sql.append( "and sl.codemp=pd.codemp and sl.codfilial=pd.codfilial and sl.codprod=pd.codprod ");
+					sql.append( "and sl.codempax=? and sl.codfilialax=? ");
+					if (almoxpdorc && codalmox!=null) {
+						sql.append("and sl.codalmox=? ");
+					}
+					sql.append( "and sl.sldliqprod>0 ");
+					sql.append( "order sl.sldliqprod desc ");
+				} else {
+					sql.append( "and pd.sldliqprod>0 ");
+				}
 			}
-			result.addElement( saldoprod );
-			if (qtdafatcalc.compareTo( BigDecimal.ZERO )<=0) {
-				break;
+			PreparedStatement ps = getConn().prepareStatement( sql.toString() );
+			int param = 1;
+			ps.setInt( param++, getCodemp() );
+			ps.setInt( param++, getCodfilial() );
+			ps.setInt( param++, codprod );
+			if (estoqalmox) {
+				ps.setInt( param++, getCodemp() );
+				ps.setInt( param++, codfilialax );
+				if (almoxpdorc && codalmox!=null) {
+					ps.setInt( param++, codalmox );;
+				}
 			}
+			ResultSet rs = ps.executeQuery();
+			BigDecimal qtdafatcalc = qtdafat;
+			while (rs.next()) {
+				SaldoProd saldoprod = new SaldoProd();
+				saldoprod.setCodemp( getCodemp() );
+				saldoprod.setCodfilial( getCodfilial() );
+				saldoprod.setCodfilialax( codfilialax );
+				if (!estoqalmox) {
+					saldoprod.setCodalmox( codalmox );
+				} else {
+					saldoprod.setCodalmox( rs.getInt( "codalmox" ));
+				}
+				saldoprod.setCodprod( codprod );
+				saldoprod.setVlrdesc( vlrdesc );
+				saldoprod.setQtd( qtd );
+				saldoprod.setPreco( preco );
+				BigDecimal saldo = rs.getBigDecimal( "saldo" );
+				saldoprod.setSaldoprod( saldo );
+				if (saldo.compareTo( qtdafatcalc )>=0) {
+					saldoprod.setQtdafat( qtdafatcalc );
+					qtdafatcalc = BigDecimal.ZERO;
+				} else {
+					saldoprod.setQtdafat( saldo );
+					qtdafatcalc = qtdafatcalc.subtract( saldo );
+				}
+				if (clote) {
+					saldoprod.setCodlote( rs.getString( "codlote" ) );
+				}
+				result.addElement( saldoprod );
+				if (qtdafatcalc.compareTo( BigDecimal.ZERO )<=0) {
+					break;
+				}
+			}
+			rs.close();
+			ps.close();
 		}
 		// Caso o ResultSet não retorne saldo do produto.
 		if (result.size()==0) {
@@ -825,9 +834,8 @@ public class DAOBuscaOrc extends AbstractDAO {
 			saldoprod.setSaldoprod( BigDecimal.ZERO );
 			saldoprod.setQtdafat(qtdafat);
 			saldoprod.setCodlote( "" );
+			result.addElement( saldoprod );
 		}
-		rs.close();
-		ps.close();
 		return result;
 	}
 	
