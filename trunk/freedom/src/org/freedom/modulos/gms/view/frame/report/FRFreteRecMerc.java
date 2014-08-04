@@ -35,8 +35,6 @@ import java.util.Vector;
 
 import javax.swing.border.TitledBorder;
 
-import net.sf.jasperreports.engine.JasperPrintManager;
-
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
