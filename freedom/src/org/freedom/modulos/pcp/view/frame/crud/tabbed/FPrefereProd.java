@@ -280,6 +280,7 @@ public class FPrefereProd extends FTabDados  implements InsertListener {
 		/**************************************************************/
 
 		adicTab( "Ficha Técnica", pinFichaTecnica );
+		setPainel( pinFichaTecnica );
 		adicCampo( txtLayoutFT, 7, 20, 333, 20, "LAYOUTFT", "Layout para ficha técnica", ListaCampos.DB_SI, false );
 		
 		
