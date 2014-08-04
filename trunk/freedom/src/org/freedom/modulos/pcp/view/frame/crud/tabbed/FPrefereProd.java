@@ -61,6 +61,10 @@ public class FPrefereProd extends FTabDados  implements InsertListener {
 
 	private final JPanelPad pinAss = new JPanelPad( 470, 300 );
 
+	private final JPanelPad pinFichaTecnica = new JPanelPad();
+
+	private final JTextFieldPad txtLayoutFT = new JTextFieldPad( JTextFieldPad.TP_STRING, 60, 0 );
+	
 	private final JTextFieldPad txtClass = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
 	private final JTextFieldPad txtNomeResp = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
@@ -273,6 +277,12 @@ public class FPrefereProd extends FTabDados  implements InsertListener {
 		adicCampo( txtIdentProfResp, 7, 60, 333, 20, "IDENTPROFRESP", "Indentificação do profissional", ListaCampos.DB_SI, false );
 		adicCampo( txtCargoResp, 7, 100, 333, 20, "CARGORESP", "Cargo", ListaCampos.DB_SI, false );
 
+		/**************************************************************/
+
+		adicTab( "Ficha Técnica", pinFichaTecnica );
+		adicCampo( txtLayoutFT, 7, 20, 333, 20, "LAYOUTFT", "Layout para ficha técnica", ListaCampos.DB_SI, false );
+		
+		
 		/**************************************************************/
 
 		setListaCampos( false, "PREFERE5", "SG" );
