@@ -270,5 +270,12 @@ public class FDetalhe extends FDados {
 		
 	}
 
+	public JPanelPad getPnBtInfo() {
+		return pnBtInfo;
+	}
+
+	public void setPnBtInfo(JPanelPad pnBtInfo) {
+		this.pnBtInfo = pnBtInfo;
+	}
 	
 }

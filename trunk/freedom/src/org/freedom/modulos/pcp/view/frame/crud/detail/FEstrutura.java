@@ -41,8 +41,6 @@ import javax.swing.JScrollPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import net.sf.jasperreports.engine.JasperPrintManager;
-
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.InsertEvent;
@@ -87,6 +85,8 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 
 	private int casasDec = Aplicativo.casasDec;
 
+	//private JPanelPad pnAdicionalCab = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );
+
 	private JPanelPad pinCab = new JPanelPad( new BorderLayout() );
 
 	private JPanelPad pinCabCampos = new JPanelPad();
@@ -110,7 +110,9 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 	private JPanelPad pinCabGeral = new JPanelPad();
 	
 	private JPanelPad pinCabConf = new JPanelPad();
-	
+
+	private JPanelPad pinCabFichaTecnica = new JPanelPad();
+
 	private JTabbedPanePad tpnCab = new JTabbedPanePad();
 	
 	private JTabbedPanePad tpnAbas = new JTabbedPanePad();
@@ -206,6 +208,10 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 	private JTextFieldPad txtCodUnid = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
 	private JTextFieldFK txtCasasDec = new JTextFieldFK( JTextFieldPad.TP_INTEGER, 5, 0 );
+
+	private JTextFieldPad txtNumeroFT = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	
+	private JTextFieldPad txtDtRevisaoFT = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JCheckBoxPad cbFinaliza = new JCheckBoxPad( "Finaliza", "S", "N" );
 
@@ -319,7 +325,10 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 
 	private DAOEstrutura daoestru = null;
 	
-	
+	public JButtonPad btPrevimpFT = new JButtonPad(Icone.novo("btPrevimp.png"));
+
+	public JButtonPad btImprimeFT = new JButtonPad(Icone.novo("btImprime.png"));
+
 	public FEstrutura() {
 		setTitulo( "Estrutura de produtos" );
 		setAtribos( 380, 20, 680, 650 );
@@ -334,8 +343,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		pnCliCab.add( tpnCab );
 		tpnCab.addTab( "Geral", pinCab );
 		tpnCab.addTab( "Configurações", pinCabConf );
-		
-	
+		tpnCab.addTab( "Ficha Técnica", pinCabFichaTecnica );
 		
 		//Detalhe
 		
@@ -373,6 +381,14 @@ private void montaTela() {
 		pnGImp.add( btPrevimp );
 		pnGImp.add( btImp );
 
+		//pnAdicionalCab.setPreferredSize( new Dimension(30,30) );
+		//pnAdicionalCab.add( btPrevimpFT );
+		//pnNavCab.add( pnAdicionalCab, BorderLayout.WEST );
+		
+		btPrevimpFT.setPreferredSize( new Dimension(26,26) );
+		btImprimeFT.setPreferredSize( new Dimension(26,26) );
+		getPnBtInfo().add( btPrevimpFT );
+		
 		cbAtiva.setVlrString( "N" );
 		
 		vTipoExternoLab.addElement( "Envio" );
@@ -531,6 +547,9 @@ private void montaTela() {
 		adicDB( cbGeraOp, 7, 50, 270, 20, "GerarOp", "", true );
 		adicDB( rgBloqQtdProd, 7, 95, 230, 30, "BLOQQTDPROD", "Bloquear produção maior que consumo", true );
 		
+		setPainel( pinCabFichaTecnica );
+		adicCampo( txtNumeroFT, 7, 20, 80, 20, "NumeroFT", "F.T. Nro.", ListaCampos.DB_SI, false );
+		adicCampo( txtDtRevisaoFT, 90, 20, 80, 20, "DtRevisaoFT", "Dt.revisão", ListaCampos.DB_SI, false );
 		
 		setListaCampos( false, "ESTRUTURA", "PP" );
 		lcCampos.setQueryInsert( false );
@@ -751,13 +770,12 @@ private void montaTela() {
 
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
+		btImprimeFT.addActionListener( this );
+		btPrevimpFT.addActionListener( this );
 		btCopiar.addActionListener( this );
-
 		setImprimir( true );
 		tpnAbas.addChangeListener( this );
-
 		lcCampos.addInsertListener( this );
-		
 		lcCampos.addCarregaListener( this );
 		lcDet.addCarregaListener( this );
 		lcDet.addPostListener( this );
@@ -983,6 +1001,14 @@ private void montaTela() {
 
 	}
 
+	private void imprimirFT( TYPE_PRINT bVisualizar ) {
+		String layoutft = (String) prefere.get("layoutft");
+		if (layoutft==null || "".equals(layoutft)) {
+			Funcoes.mensagemInforma( this, "Layout de ficha técnica não foi definido nos parâmetros preferenciais !" );
+			return;
+		}
+	}
+
 	private void imprimir( TYPE_PRINT bVisualizar ) {
 
 		PreparedStatement ps = null;
@@ -1105,6 +1131,10 @@ private void montaTela() {
 			imprimir( TYPE_PRINT.VIEW );
 		else if ( evt.getSource() == btImp )
 			imprimir( TYPE_PRINT.PRINT);
+		else if ( evt.getSource() == btPrevimpFT )
+			imprimirFT( TYPE_PRINT.VIEW );
+		else if ( evt.getSource() == btImprimeFT )
+			imprimirFT( TYPE_PRINT.PRINT);
 		super.actionPerformed( evt );
 	}
 
@@ -1309,7 +1339,8 @@ private void montaTela() {
 
 			prefere = new HashMap<String, Object>();
 
-			sql.append( "select pf1.usarefprod, pf5.expedirrma from sgprefere1 pf1 , SGPREFERE5 pf5 " );
+			sql.append( "select pf1.usarefprod, pf5.expedirrma, coalesce(pf5.layoutft,'') layoutft " );
+			sql.append( "from sgprefere1 pf1 , sgprefere5 pf5 ");
 			sql.append( "where pf1.codemp=? and pf1.codfilial=? and pf5.codemp= pf1.codemp and pf5.codfilial=pf1.codfilial" );
 			
 			ps = con.prepareStatement( sql.toString() );
@@ -1322,8 +1353,10 @@ private void montaTela() {
 			if ( rs.next() ) {
 				prefere.put( "usarefprod", new Boolean( "S".equals( rs.getString( "usarefprod" ) ) ) );
 				prefere.put( "expedirrma",  rs.getString( "expedirrma" ) );
+				prefere.put( "layoutft", rs.getString( "layoutft" ));
 			}
-
+			rs.close();
+			ps.close();
 			con.commit();
 
 		} catch ( Exception e ) {
