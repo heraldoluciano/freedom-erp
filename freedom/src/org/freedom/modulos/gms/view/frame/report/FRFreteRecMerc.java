@@ -346,9 +346,9 @@ public class FRFreteRecMerc extends FRelatorio {
 
 			sql.append( "select ");
 			sql.append( "fr.codtran, tr.nometran, rm.placaveiculo, rm.dtent, rm.codbairro, br.nomebairro, rm.ticket, br.vlrfrete preco, ");
-			sql.append( "fr.pesoliquido, fr.vlrfrete, 0.00 vlrretinss, 0.00 vlrretirrf, ");
+			sql.append( "fr.pesoliquido, fr.vlrfrete vlrfretetot, 0.00 vlrretinss, 0.00 vlrretirrf, ");
 
-			sql.append( "(select p.vlrpagopag from FNPAGAR p ");
+			sql.append( "(select p.vlrpagopag from fnpagar p ");
 			sql.append( "where p.codemp=fr.codemppa and p.codfilial=fr.codfilialpa and p.codpag=fr.codpag and ");
 			sql.append( "(select sum(ip1.nparcpag) from fnitpagar ip1 ");
 			sql.append( "where ip1.codemp=p.codemp and ip1.codfilial=p.codfilial and ip1.codpag=p.codpag) = ");
