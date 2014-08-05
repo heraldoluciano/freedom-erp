@@ -70,6 +70,8 @@ import org.freedom.modulos.pcp.view.frame.utility.FBaixaRMACodBar;
 import org.freedom.modulos.pcp.view.frame.utility.FPMP_Pull;
 import org.freedom.modulos.pcp.view.frame.utility.FPMP_Push;
 import org.freedom.modulos.std.view.frame.crud.plain.FAlmox;
+import org.freedom.modulos.std.view.frame.crud.plain.FCategoriaImg;
+import org.freedom.modulos.std.view.frame.crud.plain.FImagem;
 import org.freedom.modulos.std.view.frame.crud.plain.FInventario;
 import org.freedom.modulos.std.view.frame.crud.plain.FMarca;
 import org.freedom.modulos.std.view.frame.crud.plain.FUnidade;
@@ -109,6 +111,11 @@ public class FreedomPCP extends AplicativoPD implements ActionListener {
 		addOpcao( 100102000, TP_OPCAO_ITEM, "Modelos de Lote", "Modelo de lote", 'M', 100102050, 2, true, FModLote.class );
 		addOpcao( 100102000, TP_OPCAO_ITEM, "Tipo de Analise", "Tipo de Analise", 'I', 100102060, 2, true, FTipoAnalise.class );
 		addOpcao( 100102000, TP_OPCAO_ITEM, "Método Analitico", "Método Analitico", 'O', 100102070, 2, true, FMetodoAnalitico.class );
+		
+		addSeparador( 100100000 );
+		addOpcao( 100100000, TP_OPCAO_MENU, "Imagem", "", 'g', 100103000, 2, false, null );
+		addOpcao( 100103000, TP_OPCAO_ITEM, "Categoria", "Categoria de Imagens", 'C', 100103010, 2, true, FCategoriaImg.class );
+		addOpcao( 100103000, TP_OPCAO_ITEM, "Imagem", "Imagens", 'a', 100103020, 2, true, FImagem.class );
 
 		addOpcao( 100000000, TP_OPCAO_MENU, "Preferências", "", 'P', 110100000, 1, false, null );
 		addOpcao( 110100000, TP_OPCAO_ITEM, "Preferências de Produção", "Preferências de Produção", 'P', 110105000, 2, true, FPrefereProd.class );

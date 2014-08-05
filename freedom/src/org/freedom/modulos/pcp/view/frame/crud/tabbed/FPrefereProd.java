@@ -120,6 +120,12 @@ public class FPrefereProd extends FTabDados  implements InsertListener {
 	private final JCheckBoxPad cbOpSeq = new JCheckBoxPad( "Ordem de produção sequencial?", "S", "N" );
 	
 	private final JCheckBoxPad cbBloqOpSemSaldo = new JCheckBoxPad( "Bloquear OP S/Saldo de Matéria Prima?", "S", "N" );
+	
+	private JTextFieldPad txtCodImgFT01 = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
+	
+	private JTextFieldFK txtDescImgFT01 = new JTextFieldFK(JTextFieldPad.TP_STRING, 80, 0);
+
+	private ListaCampos lcImgFT01 = new ListaCampos( this, "I1" );
 
 	private final PainelImagem imgAssOrc = new PainelImagem( 65000 );
 
@@ -282,7 +288,9 @@ public class FPrefereProd extends FTabDados  implements InsertListener {
 		adicTab( "Ficha Técnica", pinFichaTecnica );
 		setPainel( pinFichaTecnica );
 		adicCampo( txtLayoutFT, 7, 20, 333, 20, "LAYOUTFT", "Layout para ficha técnica", ListaCampos.DB_SI, false );
-		
+		adicCampo(txtCodImgFT01, 7, 60, 50, 20, "CODIMGFT01", "Cod.img", ListaCampos.DB_FK, txtDescImgFT01 , false);
+		adicDescFK(txtDescImgFT01, 60, 60, 322, 20, "DESCIMG", "Imagem para cabeçalho/título de Orçamento");
+
 		
 		/**************************************************************/
 
@@ -335,6 +343,15 @@ public class FPrefereProd extends FTabDados  implements InsertListener {
 		txtCodTipoMovRE.setFK( true );
 		lcCampos.setMensInserir( false );
 		
+		lcImgFT01.add(new GuardaCampo(txtCodImgFT01, "CODIMG", "Cód.Img", ListaCampos.DB_PK, null, false));
+		lcImgFT01.add(new GuardaCampo(txtDescImgFT01, "DESCIMG", "Descrição da Imagem", ListaCampos.DB_SI, null, false));
+		lcImgFT01.montaSql(false, "IMAGEM", "SG");
+		lcImgFT01.setQueryCommit(false);
+		lcImgFT01.setReadOnly(true);
+		txtCodImgFT01.setTabelaExterna(lcImgFT01, null);
+		txtCodImgFT01.setFK(true);
+		txtDescImgFT01.setListaCampos(lcImgFT01);
+
 	}
 
 	public void setConexao( DbConnection cn ) {
@@ -344,6 +361,7 @@ public class FPrefereProd extends FTabDados  implements InsertListener {
 		lcTipoMovSP.setConexao( cn );
 		lcTipoMovEN.setConexao( cn );
 		lcTipoMovRE.setConexao( cn );
+		lcImgFT01.setConexao(cn);
 		lcCampos.carregaDados();
 	}
 
