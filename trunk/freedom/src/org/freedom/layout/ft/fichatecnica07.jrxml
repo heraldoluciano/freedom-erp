@@ -29,9 +29,14 @@
 	<parameter name="IMG02" class="java.lang.Object" isForPrompting="false"/>
 	<queryString>
 		<![CDATA[select pd.codprod, pd.descprod, et.numeroft, et.dtrevisaoft
+,img01.binimg img01
 from eqproduto pd
 inner join ppestrutura et
 on et.codemp=pd.codemp and et.codfilial=pd.codfilial and et.codprod=pd.codprod
+left outer join sgprefere5 p5
+on p5.codemp=$P{CODEMP} and p5.codfilial=$P{CODFILIAL}
+left outer join sgimagem img01
+on img01.codemp=p5.codempi1 and img01.codfilial=p5.codfiliali1 and img01.codimg=p5.codimgft01
 where pd.codemp=$P{CODEMP} and pd.codfilial=$P{CODFILIAL} and pd.codprod=$P{CODPROD}
 and et.seqest=$P{SEQEST}]]>
 	</queryString>
@@ -39,6 +44,7 @@ and et.seqest=$P{SEQEST}]]>
 	<field name="DESCPROD" class="java.lang.String"/>
 	<field name="NUMEROFT" class="java.lang.Integer"/>
 	<field name="DTREVISAOFT" class="java.sql.Date"/>
+	<field name="IMG01" class="java.io.InputStream"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -65,7 +71,7 @@ and et.seqest=$P{SEQEST}]]>
 			</line>
 			<image>
 				<reportElement x="4" y="1" width="157" height="67"/>
-				<imageExpression class="java.io.InputStream"><![CDATA[$P{IMG02}]]></imageExpression>
+				<imageExpression class="java.awt.Image"><![CDATA[$P{IMG02}]]></imageExpression>
 			</image>
 			<textField>
 				<reportElement style="Title" x="4" y="110" width="549" height="62"/>
@@ -94,7 +100,7 @@ and et.seqest=$P{SEQEST}]]>
 			</line>
 			<image>
 				<reportElement x="188" y="4" width="176" height="92"/>
-				<imageExpression class="java.io.InputStream"><![CDATA[$P{IMG01}]]></imageExpression>
+				<imageExpression class="java.io.InputStream"><![CDATA[$F{IMG01}]]></imageExpression>
 			</image>
 			<textField>
 				<reportElement x="391" y="4" width="156" height="12"/>

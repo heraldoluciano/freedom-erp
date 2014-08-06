@@ -1021,13 +1021,20 @@ private void montaTela() {
 		try { 
 			StringBuilder sql = new StringBuilder();
 			sql.append("select pd.codprod, pd.descprod, et.numeroft, et.dtrevisaoft ");
+			sql.append(",img01.binimg img01 ");
 			sql.append("from eqproduto pd ");
 			sql.append("inner join ppestrutura et ");
 			sql.append("on et.codemp=pd.codemp and et.codfilial=pd.codfilial and et.codprod=pd.codprod ");
+			sql.append("left outer join sgprefere5 p5 ");
+			sql.append("on p5.codemp=? and p5.codfilial=? ");
+			sql.append("left outer join sgimagem img01 ");
+			sql.append("on img01.codemp=p5.codempi1 and img01.codfilial=p5.codfiliali1 and img01.codimg=p5.codimgft01 ");
 			sql.append("where pd.codemp=? and pd.codfilial=? and pd.codprod=? ");
-			sql.append("and et.seqest=? ");
+			sql.append("and et.seqest=? "); 
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			int param = 1;
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "SGPREFERE5" ) );
 			ps.setInt( param++, lcCampos.getCodEmp() );
 			ps.setInt( param++, lcCampos.getCodFilial() );
 			ps.setInt( param++, txtCodProdEst.getVlrInteger() );
@@ -1035,7 +1042,7 @@ private void montaTela() {
 			ResultSet rs = ps.executeQuery();
 			HashMap<String, Object> hParam = new HashMap<String, Object>();
 			hParam.put( "IMG01", img01 );
-			hParam.put( "IMG02", img01 );
+			//hParam.put( "IMG02", img01 );
 			
 			FPrinterJob dlGr = null;
 			try {
@@ -1395,10 +1402,11 @@ private void montaTela() {
 			prefere = new HashMap<String, Object>();
 
 			sql.append( "select pf1.usarefprod, pf5.expedirrma, coalesce(pf5.layoutft,'') layoutft " );
-			sql.append( ", img01.binimg img01 ");
-			sql.append( "from sgprefere1 pf1 , sgprefere5 pf5 ");
-			sql.append( "left outer join sgimagem img01 on ");
-			sql.append( "img01.codemp=pf5.codempi1 and img01.codfilial=pf5.codfiliali1 and img01.codimg=pf5.codimgft01 ");
+			//sql.append( ", img01.binimg img01 ");
+			sql.append( "from sgprefere1 pf1 ");
+			sql.append(", sgprefere5 pf5 ");
+			//sql.append( "left outer join sgimagem img01 on ");
+			//sql.append( "img01.codemp=pf5.codempi1 and img01.codfilial=pf5.codfiliali1 and img01.codimg=pf5.codimgft01 ");
 			sql.append( "where pf1.codemp=? and pf1.codfilial=? and pf5.codemp= pf1.codemp and pf5.codfilial=pf1.codfilial" );
 			
 			ps = con.prepareStatement( sql.toString() );
@@ -1412,7 +1420,7 @@ private void montaTela() {
 				prefere.put( "usarefprod", new Boolean( "S".equals( rs.getString( "usarefprod" ) ) ) );
 				prefere.put( "expedirrma",  rs.getString( "expedirrma" ) );
 				prefere.put( "layoutft", rs.getString( "layoutft" ));
-				prefere.put( "img01", rs.getBytes("img01")  );
+				//prefere.put( "img01", rs.getBytes("img01")  );
 			}
 			rs.close();
 			ps.close();
