@@ -1007,6 +1007,56 @@ private void montaTela() {
 			Funcoes.mensagemInforma( this, "Layout de ficha técnica não foi definido nos parâmetros preferenciais !" );
 			return;
 		}
+		if (lcCampos.getStatus()==ListaCampos.LCS_INSERT 
+				|| lcCampos.getStatus()==ListaCampos.LCS_NONE
+				|| "".equals(txtCodProdEst.getVlrString())
+				|| "".equals(txtSeqEst.getVlrString())
+			) {
+			Funcoes.mensagemInforma( this, "Selecione uma estrutura para impressão da ficha técnica !" );
+		}
+		if (layoutft.indexOf( "org." )==-1) {
+			layoutft = "org.freedom.layout.ft."+layoutft;
+		}
+		try { 
+			StringBuilder sql = new StringBuilder();
+			sql.append("select pd.codprod, pd.descprod, et.numeroft, et.dtrevisaoft ");
+			sql.append("from eqproduto pd ");
+			sql.append("inner join ppestrutura et ");
+			sql.append("on et.codemp=pd.codemp and et.codfilial=pd.codfilial and et.codprod=pd.codprod ");
+			sql.append("where pd.codemp=? and pd.codfilial=? and pd.codprod=? ");
+			sql.append("and et.seqest=? ");
+			PreparedStatement ps = con.prepareStatement( sql.toString() );
+			int param = 1;
+			ps.setInt( param++, lcCampos.getCodEmp() );
+			ps.setInt( param++, lcCampos.getCodFilial() );
+			ps.setInt( param++, txtCodProdEst.getVlrInteger() );
+			ps.setInt( param++, txtSeqEst.getVlrInteger() );
+			ResultSet rs = ps.executeQuery();
+			HashMap<String, Object> hParam = new HashMap<String, Object>();
+			FPrinterJob dlGr = null;
+			dlGr = new FPrinterJob( layoutft, "Ficha técnica do produto", "", rs, hParam, this );
+			if ( bVisualizar==TYPE_PRINT.VIEW ) {
+				dlGr.preview();
+			}
+			else {
+				try {
+					dlGr.print(true);
+				} catch ( Exception err ) {
+					Funcoes.mensagemErro( this, "Erro na impressão de relatório de extruturas!" + err.getMessage(), true, con, err );
+				}
+			}
+			rs.close();
+			ps.close();
+			con.commit();
+		} catch (SQLException err) {
+			String mensagemErr = err.getMessage();
+			try {
+				con.rollback();
+			} catch (SQLException errroll) {
+				errroll.printStackTrace();
+			}
+			Funcoes.mensagemErro( this, "Erro imprimindo ficha técnica !\n"+mensagemErr );
+		}
 	}
 
 	private void imprimir( TYPE_PRINT bVisualizar ) {
@@ -1340,7 +1390,10 @@ private void montaTela() {
 			prefere = new HashMap<String, Object>();
 
 			sql.append( "select pf1.usarefprod, pf5.expedirrma, coalesce(pf5.layoutft,'') layoutft " );
+			sql.append( ", img01.binimg img01 ");
 			sql.append( "from sgprefere1 pf1 , sgprefere5 pf5 ");
+			sql.append( "left outer join sgimagem img01 on ");
+			sql.append( "img01.codemp=pf5.codempi1 and img01.codfilial=pf5.codfiliali1 and img01.codimg=pf5.codimgft01 ");
 			sql.append( "where pf1.codemp=? and pf1.codfilial=? and pf5.codemp= pf1.codemp and pf5.codfilial=pf1.codfilial" );
 			
 			ps = con.prepareStatement( sql.toString() );
@@ -1354,6 +1407,7 @@ private void montaTela() {
 				prefere.put( "usarefprod", new Boolean( "S".equals( rs.getString( "usarefprod" ) ) ) );
 				prefere.put( "expedirrma",  rs.getString( "expedirrma" ) );
 				prefere.put( "layoutft", rs.getString( "layoutft" ));
+				prefere.put( "img01", rs.getBytes("img01")  );
 			}
 			rs.close();
 			ps.close();
