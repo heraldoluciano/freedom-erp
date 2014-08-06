@@ -26,6 +26,7 @@
 		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="IMG01" class="java.lang.Object" isForPrompting="false"/>
+	<parameter name="IMG02" class="java.lang.Object" isForPrompting="false"/>
 	<queryString>
 		<![CDATA[select pd.codprod, pd.descprod, et.numeroft, et.dtrevisaoft
 from eqproduto pd
@@ -64,7 +65,7 @@ and et.seqest=$P{SEQEST}]]>
 			</line>
 			<image>
 				<reportElement x="4" y="1" width="157" height="67"/>
-				<imageExpression class="java.awt.Image"><![CDATA["logo_reforce.jpg"]]></imageExpression>
+				<imageExpression class="java.io.InputStream"><![CDATA[$P{IMG02}]]></imageExpression>
 			</image>
 			<textField>
 				<reportElement style="Title" x="4" y="110" width="549" height="62"/>
