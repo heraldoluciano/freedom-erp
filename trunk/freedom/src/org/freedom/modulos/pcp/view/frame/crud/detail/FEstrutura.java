@@ -1003,6 +1003,7 @@ private void montaTela() {
 
 	private void imprimirFT( TYPE_PRINT bVisualizar ) {
 		String layoutft = (String) prefere.get("layoutft");
+		byte[] img01 = (byte[]) prefere.get("img01");
 		if (layoutft==null || "".equals(layoutft)) {
 			Funcoes.mensagemInforma( this, "Layout de ficha técnica não foi definido nos parâmetros preferenciais !" );
 			return;
@@ -1014,8 +1015,8 @@ private void montaTela() {
 			) {
 			Funcoes.mensagemInforma( this, "Selecione uma estrutura para impressão da ficha técnica !" );
 		}
-		if (layoutft.indexOf( "org." )==-1) {
-			layoutft = "org.freedom.layout.ft."+layoutft;
+		if (layoutft.indexOf( "org" )==-1) {
+			layoutft = "layout/ft/"+layoutft;
 		}
 		try { 
 			StringBuilder sql = new StringBuilder();
@@ -1033,17 +1034,21 @@ private void montaTela() {
 			ps.setInt( param++, txtSeqEst.getVlrInteger() );
 			ResultSet rs = ps.executeQuery();
 			HashMap<String, Object> hParam = new HashMap<String, Object>();
+			hParam.put( "IMG01", img01 );
+			hParam.put( "IMG02", img01 );
+			
 			FPrinterJob dlGr = null;
-			dlGr = new FPrinterJob( layoutft, "Ficha técnica do produto", "", rs, hParam, this );
-			if ( bVisualizar==TYPE_PRINT.VIEW ) {
-				dlGr.preview();
-			}
-			else {
-				try {
-					dlGr.print(true);
-				} catch ( Exception err ) {
-					Funcoes.mensagemErro( this, "Erro na impressão de relatório de extruturas!" + err.getMessage(), true, con, err );
+			try {
+				dlGr = new FPrinterJob( layoutft, "Ficha técnica do produto", "", rs, hParam, this );
+				if ( bVisualizar==TYPE_PRINT.VIEW ) {
+					dlGr.preview();
 				}
+				else {
+						dlGr.print(true);
+				}
+			} catch ( Exception err ) {
+				err.printStackTrace();
+				Funcoes.mensagemErro( this, "Erro na impressão de ficha técnica !" + err.getMessage(), true, con, err );
 			}
 			rs.close();
 			ps.close();
