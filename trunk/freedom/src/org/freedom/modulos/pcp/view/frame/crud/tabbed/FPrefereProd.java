@@ -127,6 +127,24 @@ public class FPrefereProd extends FTabDados  implements InsertListener {
 
 	private ListaCampos lcImgFT01 = new ListaCampos( this, "I1" );
 
+	private JTextFieldPad txtCodImgFT02 = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
+	
+	private JTextFieldFK txtDescImgFT02 = new JTextFieldFK(JTextFieldPad.TP_STRING, 80, 0);
+
+	private ListaCampos lcImgFT02 = new ListaCampos( this, "I2" );
+
+	private JTextFieldPad txtCodImgFT03 = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
+	
+	private JTextFieldFK txtDescImgFT03 = new JTextFieldFK(JTextFieldPad.TP_STRING, 80, 0);
+
+	private ListaCampos lcImgFT03 = new ListaCampos( this, "I3" );
+
+	private JTextFieldPad txtCodImgFT04 = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
+	
+	private JTextFieldFK txtDescImgFT04 = new JTextFieldFK(JTextFieldPad.TP_STRING, 80, 0);
+
+	private ListaCampos lcImgFT04 = new ListaCampos( this, "I4" );
+
 	private final PainelImagem imgAssOrc = new PainelImagem( 65000 );
 
 	private final ListaCampos lcTipoMov = new ListaCampos( this, "TM" );
@@ -288,8 +306,14 @@ public class FPrefereProd extends FTabDados  implements InsertListener {
 		adicTab( "Ficha Técnica", pinFichaTecnica );
 		setPainel( pinFichaTecnica );
 		adicCampo( txtLayoutFT, 7, 20, 333, 20, "LAYOUTFT", "Layout para ficha técnica", ListaCampos.DB_SI, false );
-		adicCampo(txtCodImgFT01, 7, 60, 50, 20, "CODIMGFT01", "Cod.img", ListaCampos.DB_FK, txtDescImgFT01 , false);
-		adicDescFK(txtDescImgFT01, 60, 60, 322, 20, "DESCIMG", "Imagem para cabeçalho/título de Orçamento");
+		adicCampo(txtCodImgFT01, 7, 60, 70, 20, "CODIMGFT01", "Cod.img.01", ListaCampos.DB_FK, txtDescImgFT01 , false);
+		adicDescFK(txtDescImgFT01, 80, 60, 322, 20, "DESCIMG", "Imagem 01 para ficha técnica");
+		adicCampo(txtCodImgFT02, 7, 100, 70, 20, "CODIMGFT02", "Cod.img.02", ListaCampos.DB_FK, txtDescImgFT02 , false);
+		adicDescFK(txtDescImgFT02, 80, 100, 322, 20, "DESCIMG", "Imagem 02 para ficha técnica");
+		adicCampo(txtCodImgFT03, 7, 140, 70, 20, "CODIMGFT03", "Cod.img.03", ListaCampos.DB_FK, txtDescImgFT03 , false);
+		adicDescFK(txtDescImgFT03, 80, 140, 322, 20, "DESCIMG", "Imagem 03 para ficha técnica");
+		adicCampo(txtCodImgFT04, 7, 180, 70, 20, "CODIMGFT04", "Cod.img.04", ListaCampos.DB_FK, txtDescImgFT04 , false);
+		adicDescFK(txtDescImgFT04, 80, 180, 322, 20, "DESCIMG", "Imagem 04 para ficha técnica");
 
 		
 		/**************************************************************/
@@ -352,6 +376,33 @@ public class FPrefereProd extends FTabDados  implements InsertListener {
 		txtCodImgFT01.setFK(true);
 		txtDescImgFT01.setListaCampos(lcImgFT01);
 
+		lcImgFT02.add(new GuardaCampo(txtCodImgFT02, "CODIMG", "Cód.Img", ListaCampos.DB_PK, null, false));
+		lcImgFT02.add(new GuardaCampo(txtDescImgFT02, "DESCIMG", "Descrição da Imagem", ListaCampos.DB_SI, null, false));
+		lcImgFT02.montaSql(false, "IMAGEM", "SG");
+		lcImgFT02.setQueryCommit(false);
+		lcImgFT02.setReadOnly(true);
+		txtCodImgFT02.setTabelaExterna(lcImgFT02, null);
+		txtCodImgFT02.setFK(true);
+		txtDescImgFT02.setListaCampos(lcImgFT02);
+
+		lcImgFT03.add(new GuardaCampo(txtCodImgFT03, "CODIMG", "Cód.Img", ListaCampos.DB_PK, null, false));
+		lcImgFT03.add(new GuardaCampo(txtDescImgFT03, "DESCIMG", "Descrição da Imagem", ListaCampos.DB_SI, null, false));
+		lcImgFT03.montaSql(false, "IMAGEM", "SG");
+		lcImgFT03.setQueryCommit(false);
+		lcImgFT03.setReadOnly(true);
+		txtCodImgFT03.setTabelaExterna(lcImgFT03, null);
+		txtCodImgFT03.setFK(true);
+		txtDescImgFT03.setListaCampos(lcImgFT03);
+
+		lcImgFT04.add(new GuardaCampo(txtCodImgFT04, "CODIMG", "Cód.Img", ListaCampos.DB_PK, null, false));
+		lcImgFT04.add(new GuardaCampo(txtDescImgFT04, "DESCIMG", "Descrição da Imagem", ListaCampos.DB_SI, null, false));
+		lcImgFT04.montaSql(false, "IMAGEM", "SG");
+		lcImgFT04.setQueryCommit(false);
+		lcImgFT04.setReadOnly(true);
+		txtCodImgFT04.setTabelaExterna(lcImgFT04, null);
+		txtCodImgFT04.setFK(true);
+		txtDescImgFT04.setListaCampos(lcImgFT04);
+
 	}
 
 	public void setConexao( DbConnection cn ) {
@@ -362,6 +413,9 @@ public class FPrefereProd extends FTabDados  implements InsertListener {
 		lcTipoMovEN.setConexao( cn );
 		lcTipoMovRE.setConexao( cn );
 		lcImgFT01.setConexao(cn);
+		lcImgFT02.setConexao(cn);
+		lcImgFT03.setConexao(cn);
+		lcImgFT04.setConexao(cn);
 		lcCampos.carregaDados();
 	}
 

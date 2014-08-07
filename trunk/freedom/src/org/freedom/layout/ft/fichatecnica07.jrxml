@@ -29,22 +29,30 @@
 	<parameter name="IMG02" class="java.lang.Object" isForPrompting="false"/>
 	<queryString>
 		<![CDATA[select pd.codprod, pd.descprod, et.numeroft, et.dtrevisaoft
-,img01.binimg img01
-from eqproduto pd
-inner join ppestrutura et
-on et.codemp=pd.codemp and et.codfilial=pd.codfilial and et.codprod=pd.codprod
-left outer join sgprefere5 p5
-on p5.codemp=$P{CODEMP} and p5.codfilial=$P{CODFILIAL}
-left outer join sgimagem img01
-on img01.codemp=p5.codempi1 and img01.codfilial=p5.codfiliali1 and img01.codimg=p5.codimgft01
-where pd.codemp=$P{CODEMP} and pd.codfilial=$P{CODFILIAL} and pd.codprod=$P{CODPROD}
-and et.seqest=$P{SEQEST}]]>
+,img01.binimg img01 ,img02.binimg img02 ,img03.binimg img03 ,img04.binimg img04
+ from eqproduto pd
+ inner join ppestrutura et on et.codemp=pd.codemp and et.codfilial=pd.codfilial and et.codprod=pd.codprod
+ left outer join sgprefere5 p5 on p5.codemp=$P{CODEMP} and p5.codfilial=$P{CODFILIAL}
+ left outer join sgimagem img01 on img01.codemp=p5.codempi1 and img01.codfilial=p5.codfiliali1
+ and img01.codimg=p5.codimgft01
+ left outer join sgimagem img02 on img02.codemp=p5.codempi2 and img02.codfilial=p5.codfiliali2
+   and img02.codimg=p5.codimgft02
+ left outer join sgimagem img03 on img03.codemp=p5.codempi3 and img03.codfilial=p5.codfiliali3
+  and img03.codimg=p5.codimgft03
+ left outer join sgimagem img04 on img04.codemp=p5.codempi4 and img04.codfilial=p5.codfiliali4
+ and img04.codimg=p5.codimgft04
+ where pd.codemp=$P{CODEMP} and pd.codfilial=$P{CODFILIAL} and pd.codprod=$P{CODPROD}
+and et.seqest=$P{SEQEST}
+]]>
 	</queryString>
 	<field name="CODPROD" class="java.lang.Integer"/>
 	<field name="DESCPROD" class="java.lang.String"/>
 	<field name="NUMEROFT" class="java.lang.Integer"/>
 	<field name="DTREVISAOFT" class="java.sql.Date"/>
 	<field name="IMG01" class="java.io.InputStream"/>
+	<field name="IMG02" class="java.io.InputStream"/>
+	<field name="IMG03" class="java.io.InputStream"/>
+	<field name="IMG04" class="java.io.InputStream"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>

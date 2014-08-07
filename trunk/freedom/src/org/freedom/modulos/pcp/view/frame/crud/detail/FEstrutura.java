@@ -1022,6 +1022,9 @@ private void montaTela() {
 			StringBuilder sql = new StringBuilder();
 			sql.append("select pd.codprod, pd.descprod, et.numeroft, et.dtrevisaoft ");
 			sql.append(",img01.binimg img01 ");
+			sql.append(",img02.binimg img02 ");
+			sql.append(",img03.binimg img03 ");
+			sql.append(",img04.binimg img04 ");
 			sql.append("from eqproduto pd ");
 			sql.append("inner join ppestrutura et ");
 			sql.append("on et.codemp=pd.codemp and et.codfilial=pd.codfilial and et.codprod=pd.codprod ");
@@ -1029,9 +1032,16 @@ private void montaTela() {
 			sql.append("on p5.codemp=? and p5.codfilial=? ");
 			sql.append("left outer join sgimagem img01 ");
 			sql.append("on img01.codemp=p5.codempi1 and img01.codfilial=p5.codfiliali1 and img01.codimg=p5.codimgft01 ");
+			sql.append("left outer join sgimagem img02 ");
+			sql.append("on img02.codemp=p5.codempi2 and img02.codfilial=p5.codfiliali2 and img02.codimg=p5.codimgft02 ");
+			sql.append("left outer join sgimagem img03 ");
+			sql.append("on img03.codemp=p5.codempi3 and img03.codfilial=p5.codfiliali3 and img03.codimg=p5.codimgft03 ");
+			sql.append("left outer join sgimagem img04 ");
+			sql.append("on img04.codemp=p5.codempi4 and img04.codfilial=p5.codfiliali4 and img04.codimg=p5.codimgft04 ");
 			sql.append("where pd.codemp=? and pd.codfilial=? and pd.codprod=? ");
 			sql.append("and et.seqest=? "); 
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
+			System.out.println(sql);
 			int param = 1;
 			ps.setInt( param++, Aplicativo.iCodEmp );
 			ps.setInt( param++, ListaCampos.getMasterFilial( "SGPREFERE5" ) );
