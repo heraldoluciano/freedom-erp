@@ -112,6 +112,8 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 	private JPanelPad pinCabConf = new JPanelPad();
 
 	private JPanelPad pinCabFichaTecnica = new JPanelPad();
+	
+	private JPanelPad pinCabDesccompl = new JPanelPad();
 
 	private JTabbedPanePad tpnCab = new JTabbedPanePad();
 	
@@ -186,7 +188,41 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 	private JTextFieldPad txtSeqEst = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
 	private JTextFieldPad txtSeqEstDistrib = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
+	
+    /*MANIPULACAO VARCHAR(100),    SEGUIMENTO VARCHAR(100),     CATEGORIA VARCHAR(100),     ANVISA VARCHAR(300),     MINISTERIOAGRI VARCHAR(300),
+    PRINCIPIOATIVO VARCHAR(300),     DESCCOMPL VARCHAR(1000),
+    FINALIDADEUSO VARCHAR(1000),
+    MODOUSAR VARCHAR(1000),
+    RESTRICAOUSO VARCHAR(1000),
+    COMPOSICAO VARCHAR(1000),
+    MECANISMOACAO VARCHAR(1000),
+    CARACTERISTICA01 VARCHAR(100),
+    CARACTERISTICA02 VARCHAR(100),
+    CARACTERISTICA03 VARCHAR(100),
+*/
+	
+	private JTextFieldPad txtManipulacao = new JTextFieldPad( JTextFieldPad.TP_STRING, 100, 0 );
 
+	private JTextFieldPad txtSeguimento = new JTextFieldPad( JTextFieldPad.TP_STRING, 100, 0 );
+	
+	private JTextFieldPad txtCategoria = new JTextFieldPad( JTextFieldPad.TP_STRING, 100, 0 );
+	
+	private JTextAreaPad txaAnvisa = new JTextAreaPad( 300 );
+	
+	private JScrollPane spnAnvisa = new JScrollPane( txaAnvisa );
+
+	private JTextAreaPad txaMinisterioagri = new JTextAreaPad( 300 );
+	
+	private JScrollPane spnMinisterioagri = new JScrollPane( txaMinisterioagri );
+
+	private JTextAreaPad txaPrincipioativo = new JTextAreaPad( 300 );
+	
+	private JScrollPane spnPrincipioativo = new JScrollPane( txaPrincipioativo );
+	
+	private JTextAreaPad txaDesccompl = new JTextAreaPad( 1000 );
+	
+	private JScrollPane spnDesccompl = new JScrollPane( txaDesccompl );
+	
 	private JTextFieldFK txtDescModLote = new JTextFieldFK( JTextFieldPad.TP_STRING, 30, 0 );
 
 	private JTextFieldPad txtSeqEfEst = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -342,6 +378,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		//Cab
 		pnCliCab.add( tpnCab );
 		tpnCab.addTab( "Geral", pinCab );
+		tpnCab.addTab( "Descrição completa", pinCabDesccompl);
 		tpnCab.addTab( "Configurações", pinCabConf );
 		tpnCab.addTab( "Ficha Técnica", pinCabFichaTecnica );
 		
@@ -533,6 +570,9 @@ private void montaTela() {
 		adicDBLiv( txaObservacao, "Observacao", "Observação", false );
 		pinCabObservacao.add( spnObservacao );
 		
+		setPainel( pinCabDesccompl);
+		adicDBLiv( txaDesccompl, "Desccompl", "Desccompl", false );
+		pinCabDesccompl.add( spnDesccompl );
 		setPainel( pinCabConf );
 		
 		vBloqQtdLab.addElement( "Sim" );
@@ -1054,7 +1094,7 @@ private void montaTela() {
 			ps.setInt( param++, txtSeqEst.getVlrInteger() );
 			ResultSet rs = ps.executeQuery();
 			HashMap<String, Object> hParam = new HashMap<String, Object>();
-			hParam.put( "IMG01", img01 );
+			//hParam.put( "IMG01", img01 );
 			//hParam.put( "IMG02", img01 );
 			
 			FPrinterJob dlGr = null;
