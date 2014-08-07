@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="fichatecnica07" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7cef5cc9-8905-422b-a59d-b80e049467b8">
 	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="661"/>
+	<property name="ireport.x" value="194"/>
+	<property name="ireport.y" value="604"/>
 	<style name="Title" fontName="Times New Roman" fontSize="50" isBold="true" pdfFontName="Times-Bold"/>
 	<style name="SubTitle" forecolor="#736343" fontName="Arial" fontSize="18"/>
 	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
@@ -29,30 +29,36 @@
 	<parameter name="IMG02" class="java.lang.Object" isForPrompting="false"/>
 	<queryString>
 		<![CDATA[select pd.codprod, pd.descprod, et.numeroft, et.dtrevisaoft
-,img01.binimg img01 ,img02.binimg img02 , img02.binimg img02a, img03.binimg img03 ,img04.binimg img04
- from eqproduto pd
- inner join ppestrutura et on et.codemp=pd.codemp and et.codfilial=pd.codfilial and et.codprod=pd.codprod
- left outer join sgprefere5 p5 on p5.codemp=$P{CODEMP} and p5.codfilial=$P{CODFILIAL}
- left outer join sgimagem img01 on img01.codemp=p5.codempi1 and img01.codfilial=p5.codfiliali1
- and img01.codimg=p5.codimgft01
- left outer join sgimagem img02 on img02.codemp=p5.codempi2 and img02.codfilial=p5.codfiliali2
-   and img02.codimg=p5.codimgft02
- left outer join sgimagem img02a on img02a.codemp=p5.codempi2 and img02a.codfilial=p5.codfiliali2
-   and img02a.codimg=p5.codimgft02
- left outer join sgimagem img03 on img03.codemp=p5.codempi3 and img03.codfilial=p5.codfiliali3
-  and img03.codimg=p5.codimgft03
- left outer join sgimagem img04 on img04.codemp=p5.codempi4 and img04.codfilial=p5.codfiliali4
- and img04.codimg=p5.codimgft04
- where pd.codemp=$P{CODEMP} and pd.codfilial=$P{CODFILIAL} and pd.codprod=$P{CODPROD}
-and et.seqest=$P{SEQEST}]]>
+, et.desccompl, et.finalidadeuso, et.modousar, et.mecanismoacao
+ ,img01.binimg img01
+ ,img02.binimg img02 ,img02b.binimg img02b ,img03.binimg img03
+ ,img04.binimg img04 from eqproduto pd
+ inner join ppestrutura et on et.codemp=pd.codemp
+ and et.codfilial=pd.codfilial and et.codprod=pd.codprod
+ left outer join sgprefere5 p5 on p5.codemp=7 and p5.codfilial=1
+ left outer join sgimagem img01 on img01.codemp=p5.codempi1
+ and img01.codfilial=p5.codfiliali1 and img01.codimg=p5.codimgft01
+ left outer join sgimagem img02 on img02.codemp=p5.codempi2
+ and img02.codfilial=p5.codfiliali2 and img02.codimg=p5.codimgft02
+ left outer join sgimagem img02b on img02b.codemp=p5.codempi2
+ and img02b.codfilial=p5.codfiliali2 and img02b.codimg=p5.codimgft02
+ left outer join sgimagem img03 on img03.codemp=p5.codempi3
+ and img03.codfilial=p5.codfiliali3 and img03.codimg=p5.codimgft03
+ left outer join sgimagem img04 on img04.codemp=p5.codempi4
+ and img04.codfilial=p5.codfiliali4 and img04.codimg=p5.codimgft04
+  where pd.codemp=7 and pd.codfilial=1 and pd.codprod=715 and et.seqest=1]]>
 	</queryString>
 	<field name="CODPROD" class="java.lang.Integer"/>
 	<field name="DESCPROD" class="java.lang.String"/>
 	<field name="NUMEROFT" class="java.lang.Integer"/>
 	<field name="DTREVISAOFT" class="java.sql.Date"/>
+	<field name="DESCCOMPL" class="java.lang.String"/>
+	<field name="FINALIDADEUSO" class="java.lang.String"/>
+	<field name="MODOUSAR" class="java.lang.String"/>
+	<field name="MECANISMOACAO" class="java.lang.String"/>
 	<field name="IMG01" class="java.io.InputStream"/>
 	<field name="IMG02" class="java.io.InputStream"/>
-	<field name="IMG02A" class="java.io.InputStream"/>
+	<field name="IMG02B" class="java.io.InputStream"/>
 	<field name="IMG03" class="java.io.InputStream"/>
 	<field name="IMG04" class="java.io.InputStream"/>
 	<background>
@@ -151,21 +157,21 @@ and et.seqest=$P{SEQEST}]]>
 				<textElement textAlignment="Justified" verticalAlignment="Top" markup="none">
 					<font fontName="Arial" size="10" pdfFontName="Times-Roman"/>
 				</textElement>
-				<textFieldExpression><![CDATA["FORCE CLORIGEL, apresenta-se na forma gel transparente de odor característico a matéria prima que compõe a formulação, e coloração amarelado podendo chegar a incolor durante sua validade, devido a característica natural da reação do produto. Trata-se de um detergente desincrustante alcalino clorado desenvolvido para a lavagem manual ou através de gerador de espuma em superfícies inanimadas."]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{DESCCOMPL}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement uuid="d777fa98-2fb9-400a-8559-5962d1712c8a" style="Title" x="337" y="321" width="210" height="92"/>
 				<textElement textAlignment="Justified" verticalAlignment="Top" markup="none">
 					<font fontName="Arial" size="10" pdfFontName="Times-Roman"/>
 				</textElement>
-				<textFieldExpression><![CDATA["D&A FORCE CLORIGEL atua com eficiência na limpeza de equipamentos e superfícies de inox, bem como em pisos paredes revestidas com azulejos, bancada de trabalho, máquinas, equipamentos e tanques, em indústrias alimentícias, Laticínios, cozinhas industriais, frigoríficos, industrias de bebida, açougue e afins."]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{FINALIDADEUSO}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement uuid="4c1475ce-c9bf-4e4b-a430-afd8cb3f6190" style="Title" x="11" y="441" width="316" height="92"/>
 				<textElement textAlignment="Justified" verticalAlignment="Top" markup="none">
 					<font fontName="Arial" size="10" pdfFontName="Times-Roman"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Se necessário, pré-enxaguar para remover a sujidade solta. Aplicar  ESPUMA CLOR na concentração de 1% a 5% dependendo do grau de sujidade. Aplicar o produto através de GERADOR DE ESPUMA ou manualmente e deixar agir de 5 a 15 minutos. Não deixar a espuma secar. Enxaguar completamente com água. Em caso de limpeza de equipamento, sanitizar antes de colocá-lo em operação novamente."]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{MODOUSAR}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement uuid="75d2978d-d31d-47bd-a13a-c4b71750728c" mode="Opaque" x="10" y="423" width="317" height="14" forecolor="#FFFFFF" backcolor="#364678"/>
@@ -179,7 +185,7 @@ and et.seqest=$P{SEQEST}]]>
 				<textElement textAlignment="Justified" verticalAlignment="Top" markup="none">
 					<font fontName="Arial" size="7" isBold="false" pdfFontName="Times-Roman"/>
 				</textElement>
-				<textFieldExpression><![CDATA["ESPUMA CLOR é um produto tecnologicamente produzido a partir do aprisionamento de substâncias tenso ativas em um meio fortemente alcalino, dotado de 5% de cloro ativo  estabilizado. Esta reação resulta num poderoso detergente gel de alta espuma, que adere às superfícies verticais e horizontais, oferecendo um maior tempo de contato do produto na superfície, permitindo que os agentes peptizantes presente na formulação dispersem e suspendam a matéria coloidal, dividindo a sujidade de natureza oleosas ou gordurosas, imicíveis na água em gotículas microscópicas, tornando- as miscíveis em meio aquoso, desta forma, gorduras, sangue e resíduos protéicos são eliminados com um rápido enxágüe."]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{MECANISMOACAO}]]></textFieldExpression>
 			</textField>
 			<image>
 				<reportElement uuid="44183e6f-c6bd-4b52-97be-15300d0159dd" x="11" y="218" width="172" height="41"/>
@@ -187,7 +193,7 @@ and et.seqest=$P{SEQEST}]]>
 			</image>
 			<image>
 				<reportElement uuid="44183e6f-c6bd-4b52-97be-15300d0159dd" x="372" y="218" width="172" height="41"/>
-				<imageExpression><![CDATA[$F{IMG02A}]]></imageExpression>
+				<imageExpression><![CDATA[$F{IMG02B}]]></imageExpression>
 			</image>
 		</band>
 	</columnHeader>
