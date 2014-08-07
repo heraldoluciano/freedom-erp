@@ -119,6 +119,8 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 
 	private JPanelPad pinCabModousar = new JPanelPad();
 
+	private JPanelPad pinCabMecanismoacao = new JPanelPad();
+
 	private JTabbedPanePad tpnCab = new JTabbedPanePad();
 	
 	private JTabbedPanePad tpnAbas = new JTabbedPanePad();
@@ -234,6 +236,10 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 	private JTextAreaPad txaModousar = new JTextAreaPad( 1000 );
 	
 	private JScrollPane spnModousar = new JScrollPane( txaModousar );
+
+	private JTextAreaPad txaMecanismoacao = new JTextAreaPad( 1000 );
+	
+	private JScrollPane spnMecanismoacao = new JScrollPane( txaMecanismoacao );
 
 	private JTextFieldFK txtDescModLote = new JTextFieldFK( JTextFieldPad.TP_STRING, 30, 0 );
 
@@ -393,6 +399,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		tpnCab.addTab( "Descrição completa", pinCabDesccompl);
 		tpnCab.addTab( "Finalidade de uso", pinCabFinalidadeuso);
 		tpnCab.addTab( "Modo de usar", pinCabModousar);
+		tpnCab.addTab( "Mecanismo de ação", pinCabMecanismoacao);
 		tpnCab.addTab( "Ficha Técnica", pinCabFichaTecnica );
 		tpnCab.addTab( "Configurações", pinCabConf );
 		
@@ -592,6 +599,9 @@ private void montaTela() {
 		setPainel( pinCabModousar);
 		adicDB(txaModousar, 7, 20, 500, 130, "Modousar", "Modo de usar", false );
 
+		setPainel( pinCabMecanismoacao);
+		adicDB(txaMecanismoacao, 7, 20, 500, 130, "Mecanismoacao", "Mecanismo de ação", false );
+
 		setPainel( pinCabFichaTecnica );
 		adicCampo( txtNumeroFT, 7, 20, 80, 20, "NumeroFT", "F.T. Nro.", ListaCampos.DB_SI, false );
 		adicCampo( txtDtRevisaoFT, 90, 20, 80, 20, "DtRevisaoFT", "Dt.revisão", ListaCampos.DB_SI, false );
@@ -779,7 +789,7 @@ private void montaTela() {
 		lcDetEstrAnalise.setTabela( tabQuali );
 		lcDetEstrAnalise.montaTab();
 
-		lcDetEstrAnalise.setSQLMax( "SELECT MAX(CODESTANALISE) FROM PPESTRUANALISE WHERE CODEMP=? AND CODFILIAL=? " );
+		lcDetEstrAnalise.setSQLMax( "select max(codestanalise) from ppestruanalise where codemp=? and codfilial=? " );
 
 		// lcDetEstrAnalise.add( new GuardaCampo( txtCodProdEst, "CodProd", "Cód.prod.", ListaCampos.DB_FK, false ));
 
@@ -1080,7 +1090,7 @@ private void montaTela() {
 		try { 
 			StringBuilder sql = new StringBuilder();
 			sql.append("select pd.codprod, pd.descprod, et.numeroft, et.dtrevisaoft ");
-			sql.append(", et.desccompl, et.finalidadeuso, et.modousar ");
+			sql.append(", et.desccompl, et.finalidadeuso, et.modousar, et.mecanismoacao ");
 			sql.append(",img01.binimg img01 ");
 			sql.append(",img02.binimg img02 ");
 			sql.append(",img02b.binimg img02b ");
