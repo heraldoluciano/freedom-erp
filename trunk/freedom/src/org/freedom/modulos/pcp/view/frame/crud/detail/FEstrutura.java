@@ -115,6 +115,10 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 	
 	private JPanelPad pinCabDesccompl = new JPanelPad();
 
+	private JPanelPad pinCabFinalidadeuso = new JPanelPad();
+
+	private JPanelPad pinCabModousar = new JPanelPad();
+
 	private JTabbedPanePad tpnCab = new JTabbedPanePad();
 	
 	private JTabbedPanePad tpnAbas = new JTabbedPanePad();
@@ -222,7 +226,15 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 	private JTextAreaPad txaDesccompl = new JTextAreaPad( 1000 );
 	
 	private JScrollPane spnDesccompl = new JScrollPane( txaDesccompl );
+
+	private JTextAreaPad txaFinalidadeuso = new JTextAreaPad( 1000 );
 	
+	private JScrollPane spnFinalidadeuso = new JScrollPane( txaFinalidadeuso );
+
+	private JTextAreaPad txaModousar = new JTextAreaPad( 1000 );
+	
+	private JScrollPane spnModousar = new JScrollPane( txaModousar );
+
 	private JTextFieldFK txtDescModLote = new JTextFieldFK( JTextFieldPad.TP_STRING, 30, 0 );
 
 	private JTextFieldPad txtSeqEfEst = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
@@ -379,8 +391,10 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
 		pnCliCab.add( tpnCab );
 		tpnCab.addTab( "Geral", pinCab );
 		tpnCab.addTab( "Descrição completa", pinCabDesccompl);
-		tpnCab.addTab( "Configurações", pinCabConf );
+		tpnCab.addTab( "Finalidade de uso", pinCabFinalidadeuso);
+		tpnCab.addTab( "Modo de usar", pinCabModousar);
 		tpnCab.addTab( "Ficha Técnica", pinCabFichaTecnica );
+		tpnCab.addTab( "Configurações", pinCabConf );
 		
 		//Detalhe
 		
@@ -565,14 +579,23 @@ private void montaTela() {
 		GridLayout go = (GridLayout) pinCabObservacao.getLayout();
 		go.setHgap( 10 );
 		go.setVgap( 10 );
-
 		pinCabObservacao.setBorder( BorderFactory.createTitledBorder( BorderFactory.createEtchedBorder(), "Observação" ) );
 		adicDBLiv( txaObservacao, "Observacao", "Observação", false );
 		pinCabObservacao.add( spnObservacao );
 		
 		setPainel( pinCabDesccompl);
-		adicDBLiv( txaDesccompl, "Desccompl", "Desccompl", false );
-		pinCabDesccompl.add( spnDesccompl );
+		adicDB(txaDesccompl, 7, 20, 500, 130, "Desccompl", "Descrição", false );
+		
+		setPainel( pinCabFinalidadeuso);
+		adicDB(txaFinalidadeuso, 7, 20, 500, 130, "Finalidadeuso", "Finalidade de uso", false );
+
+		setPainel( pinCabModousar);
+		adicDB(txaModousar, 7, 20, 500, 130, "Modousar", "Modo de usar", false );
+
+		setPainel( pinCabFichaTecnica );
+		adicCampo( txtNumeroFT, 7, 20, 80, 20, "NumeroFT", "F.T. Nro.", ListaCampos.DB_SI, false );
+		adicCampo( txtDtRevisaoFT, 90, 20, 80, 20, "DtRevisaoFT", "Dt.revisão", ListaCampos.DB_SI, false );
+
 		setPainel( pinCabConf );
 		
 		vBloqQtdLab.addElement( "Sim" );
@@ -586,11 +609,7 @@ private void montaTela() {
 		adicDB( cbExpedirRMA, 7, 30, 400, 20, "EXPEDIRRMA", "", true );
 		adicDB( cbGeraOp, 7, 50, 270, 20, "GerarOp", "", true );
 		adicDB( rgBloqQtdProd, 7, 95, 230, 30, "BLOQQTDPROD", "Bloquear produção maior que consumo", true );
-		
-		setPainel( pinCabFichaTecnica );
-		adicCampo( txtNumeroFT, 7, 20, 80, 20, "NumeroFT", "F.T. Nro.", ListaCampos.DB_SI, false );
-		adicCampo( txtDtRevisaoFT, 90, 20, 80, 20, "DtRevisaoFT", "Dt.revisão", ListaCampos.DB_SI, false );
-		
+
 		setListaCampos( false, "ESTRUTURA", "PP" );
 		lcCampos.setQueryInsert( false );
 
@@ -1061,6 +1080,7 @@ private void montaTela() {
 		try { 
 			StringBuilder sql = new StringBuilder();
 			sql.append("select pd.codprod, pd.descprod, et.numeroft, et.dtrevisaoft ");
+			sql.append(", et.desccompl, et.finalidadeuso, et.modousar ");
 			sql.append(",img01.binimg img01 ");
 			sql.append(",img02.binimg img02 ");
 			sql.append(",img02b.binimg img02b ");
