@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="fichatecnica07" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="fichatecnica07" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7cef5cc9-8905-422b-a59d-b80e049467b8">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="661"/>
 	<style name="Title" fontName="Times New Roman" fontSize="50" isBold="true" pdfFontName="Times-Bold"/>
 	<style name="SubTitle" forecolor="#736343" fontName="Arial" fontSize="18"/>
 	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
@@ -29,7 +29,7 @@
 	<parameter name="IMG02" class="java.lang.Object" isForPrompting="false"/>
 	<queryString>
 		<![CDATA[select pd.codprod, pd.descprod, et.numeroft, et.dtrevisaoft
-,img01.binimg img01 ,img02.binimg img02 ,img03.binimg img03 ,img04.binimg img04
+,img01.binimg img01 ,img02.binimg img02 , img02.binimg img02a, img03.binimg img03 ,img04.binimg img04
  from eqproduto pd
  inner join ppestrutura et on et.codemp=pd.codemp and et.codfilial=pd.codfilial and et.codprod=pd.codprod
  left outer join sgprefere5 p5 on p5.codemp=$P{CODEMP} and p5.codfilial=$P{CODFILIAL}
@@ -37,13 +37,14 @@
  and img01.codimg=p5.codimgft01
  left outer join sgimagem img02 on img02.codemp=p5.codempi2 and img02.codfilial=p5.codfiliali2
    and img02.codimg=p5.codimgft02
+ left outer join sgimagem img02a on img02a.codemp=p5.codempi2 and img02a.codfilial=p5.codfiliali2
+   and img02a.codimg=p5.codimgft02
  left outer join sgimagem img03 on img03.codemp=p5.codempi3 and img03.codfilial=p5.codfiliali3
   and img03.codimg=p5.codimgft03
  left outer join sgimagem img04 on img04.codemp=p5.codempi4 and img04.codfilial=p5.codfiliali4
  and img04.codimg=p5.codimgft04
  where pd.codemp=$P{CODEMP} and pd.codfilial=$P{CODFILIAL} and pd.codprod=$P{CODPROD}
-and et.seqest=$P{SEQEST}
-]]>
+and et.seqest=$P{SEQEST}]]>
 	</queryString>
 	<field name="CODPROD" class="java.lang.Integer"/>
 	<field name="DESCPROD" class="java.lang.String"/>
@@ -51,6 +52,7 @@ and et.seqest=$P{SEQEST}
 	<field name="DTREVISAOFT" class="java.sql.Date"/>
 	<field name="IMG01" class="java.io.InputStream"/>
 	<field name="IMG02" class="java.io.InputStream"/>
+	<field name="IMG02A" class="java.io.InputStream"/>
 	<field name="IMG03" class="java.io.InputStream"/>
 	<field name="IMG04" class="java.io.InputStream"/>
 	<background>
@@ -64,117 +66,129 @@ and et.seqest=$P{SEQEST}
 	</pageHeader>
 	<columnHeader>
 		<band height="802" splitType="Stretch">
+			<image>
+				<reportElement uuid="44183e6f-c6bd-4b52-97be-15300d0159dd" x="337" y="423" width="209" height="168"/>
+				<imageExpression><![CDATA[$F{IMG03}]]></imageExpression>
+			</image>
 			<textField>
-				<reportElement mode="Opaque" x="9" y="215" width="317" height="14" forecolor="#FFFFFF" backcolor="#364678"/>
+				<reportElement uuid="34f8e1f7-7da6-4243-a7cb-f8741187245f" mode="Opaque" x="9" y="303" width="317" height="14" forecolor="#FFFFFF" backcolor="#364678"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="10" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["DESCRIÇÃO"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["DESCRIÇÃO"]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement positionType="FixRelativeToBottom" x="0" y="0" width="1" height="802" forecolor="#0000FF"/>
+				<reportElement uuid="5b911006-f3b2-479a-b7ab-78c6ac4f5761" positionType="FixRelativeToBottom" x="0" y="0" width="1" height="802" forecolor="#0000FF"/>
 				<graphicElement>
 					<pen lineWidth="7.0" lineColor="#364678"/>
 				</graphicElement>
 			</line>
 			<image>
-				<reportElement x="4" y="1" width="157" height="67"/>
-				<imageExpression class="java.awt.Image"><![CDATA[$P{IMG02}]]></imageExpression>
+				<reportElement uuid="44183e6f-c6bd-4b52-97be-15300d0159dd" x="4" y="1" width="157" height="67"/>
+				<imageExpression><![CDATA[$P{IMG02}]]></imageExpression>
 			</image>
 			<textField>
-				<reportElement style="Title" x="4" y="110" width="549" height="62"/>
+				<reportElement uuid="940ccc01-95d4-4131-a719-354a6b71bfec" style="Title" x="4" y="110" width="549" height="62"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font fontName="Arial" size="40" pdfFontName="Times-Roman"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCPROD}.trim()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{DESCPROD}.trim()]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement positionType="FixRelativeToBottom" x="553" y="0" width="1" height="802" forecolor="#0000FF"/>
+				<reportElement uuid="b940d662-9b61-4700-8975-9f7d23713f5e" positionType="FixRelativeToBottom" x="553" y="0" width="1" height="802" forecolor="#0000FF"/>
 				<graphicElement>
 					<pen lineWidth="2.0" lineColor="#364678"/>
 				</graphicElement>
 			</line>
 			<line>
-				<reportElement positionType="FixRelativeToBottom" x="0" y="0" width="553" height="1" forecolor="#0000FF"/>
+				<reportElement uuid="fd9b9b67-6aa1-42fd-95db-d131c6d01c9c" positionType="FixRelativeToBottom" x="0" y="0" width="553" height="1" forecolor="#0000FF"/>
 				<graphicElement>
 					<pen lineWidth="2.0" lineColor="#364678"/>
 				</graphicElement>
 			</line>
 			<line>
-				<reportElement positionType="FixRelativeToBottom" x="0" y="801" width="553" height="1" forecolor="#0000FF"/>
+				<reportElement uuid="e0812908-4eec-49df-b86d-c716eb8fa8c5" positionType="FixRelativeToBottom" x="0" y="801" width="553" height="1" forecolor="#0000FF"/>
 				<graphicElement>
 					<pen lineWidth="0.5" lineColor="#364678"/>
 				</graphicElement>
 			</line>
 			<image>
-				<reportElement x="188" y="4" width="176" height="92"/>
-				<imageExpression class="java.io.InputStream"><![CDATA[$F{IMG01}]]></imageExpression>
+				<reportElement uuid="9d0e330a-114f-4cf8-862d-3dd8779d92d0" x="188" y="4" width="176" height="92"/>
+				<imageExpression><![CDATA[$F{IMG01}]]></imageExpression>
 			</image>
 			<textField>
-				<reportElement x="391" y="4" width="156" height="12"/>
+				<reportElement uuid="0dc80dd2-ddda-4029-bc21-64b7e30ca47d" x="391" y="4" width="156" height="12"/>
 				<textElement textAlignment="Right">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["FICHA TÉCNICA N. "+$F{NUMEROFT}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["FICHA TÉCNICA N. "+$F{NUMEROFT}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="391" y="18" width="156" height="12"/>
+				<reportElement uuid="8243a524-1dbd-4f46-99f9-ec7fc1e94fa8" x="391" y="18" width="156" height="12"/>
 				<textElement textAlignment="Right">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["REVISÃO: "+$F{DTREVISAOFT}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["REVISÃO: "+$F{DTREVISAOFT}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement style="Title" x="4" y="173" width="549" height="39"/>
+				<reportElement uuid="f9ff4ddd-7faa-49bf-bc1b-47f6b271c8e5" style="Title" x="4" y="173" width="549" height="39"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font fontName="Arial" size="8" pdfFontName="Times-Roman"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["MANIPULAÇÃO:PRODUTO EXCLUSIVAMENTE DE USO PROFISSIONAL\n"
+				<textFieldExpression><![CDATA["MANIPULAÇÃO:PRODUTO EXCLUSIVAMENTE DE USO PROFISSIONAL\n"
 +"SEGUIMENTO:INDÚSTRIA ALIMENTÍCIA, BEBIDAS E AFINS\n"
 +"CATEGORIA:DESENCRUSTRANTE ALCALINO CLORADO"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="337" y="215" width="210" height="14" forecolor="#FFFFFF" backcolor="#364678"/>
+				<reportElement uuid="d628c54e-a950-49d2-ae7c-a037b22404be" mode="Opaque" x="337" y="303" width="210" height="14" forecolor="#FFFFFF" backcolor="#364678"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="10" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["FINALIDADE DE USO"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["FINALIDADE DE USO"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement style="Title" x="10" y="233" width="316" height="92"/>
+				<reportElement uuid="dcaff969-6421-42d9-a166-a10d8a385477" style="Title" x="10" y="321" width="316" height="92"/>
 				<textElement textAlignment="Justified" verticalAlignment="Top" markup="none">
 					<font fontName="Arial" size="10" pdfFontName="Times-Roman"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["FORCE CLORIGEL, apresenta-se na forma gel transparente de odor característico a matéria prima que compõe a formulação, e coloração amarelado podendo chegar a incolor durante sua validade, devido a característica natural da reação do produto. Trata-se de um detergente desincrustante alcalino clorado desenvolvido para a lavagem manual ou através de gerador de espuma em superfícies inanimadas."]]></textFieldExpression>
+				<textFieldExpression><![CDATA["FORCE CLORIGEL, apresenta-se na forma gel transparente de odor característico a matéria prima que compõe a formulação, e coloração amarelado podendo chegar a incolor durante sua validade, devido a característica natural da reação do produto. Trata-se de um detergente desincrustante alcalino clorado desenvolvido para a lavagem manual ou através de gerador de espuma em superfícies inanimadas."]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement style="Title" x="337" y="233" width="210" height="92"/>
+				<reportElement uuid="d777fa98-2fb9-400a-8559-5962d1712c8a" style="Title" x="337" y="321" width="210" height="92"/>
 				<textElement textAlignment="Justified" verticalAlignment="Top" markup="none">
 					<font fontName="Arial" size="10" pdfFontName="Times-Roman"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["D&A FORCE CLORIGEL atua com eficiência na limpeza de equipamentos e superfícies de inox, bem como em pisos paredes revestidas com azulejos, bancada de trabalho, máquinas, equipamentos e tanques, em indústrias alimentícias, Laticínios, cozinhas industriais, frigoríficos, industrias de bebida, açougue e afins."]]></textFieldExpression>
+				<textFieldExpression><![CDATA["D&A FORCE CLORIGEL atua com eficiência na limpeza de equipamentos e superfícies de inox, bem como em pisos paredes revestidas com azulejos, bancada de trabalho, máquinas, equipamentos e tanques, em indústrias alimentícias, Laticínios, cozinhas industriais, frigoríficos, industrias de bebida, açougue e afins."]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement style="Title" x="11" y="353" width="316" height="92"/>
+				<reportElement uuid="4c1475ce-c9bf-4e4b-a430-afd8cb3f6190" style="Title" x="11" y="441" width="316" height="92"/>
 				<textElement textAlignment="Justified" verticalAlignment="Top" markup="none">
 					<font fontName="Arial" size="10" pdfFontName="Times-Roman"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["Se necessário, pré-enxaguar para remover a sujidade solta. Aplicar  ESPUMA CLOR na concentração de 1% a 5% dependendo do grau de sujidade. Aplicar o produto através de GERADOR DE ESPUMA ou manualmente e deixar agir de 5 a 15 minutos. Não deixar a espuma secar. Enxaguar completamente com água. Em caso de limpeza de equipamento, sanitizar antes de colocá-lo em operação novamente."]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Se necessário, pré-enxaguar para remover a sujidade solta. Aplicar  ESPUMA CLOR na concentração de 1% a 5% dependendo do grau de sujidade. Aplicar o produto através de GERADOR DE ESPUMA ou manualmente e deixar agir de 5 a 15 minutos. Não deixar a espuma secar. Enxaguar completamente com água. Em caso de limpeza de equipamento, sanitizar antes de colocá-lo em operação novamente."]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="10" y="335" width="317" height="14" forecolor="#FFFFFF" backcolor="#364678"/>
+				<reportElement uuid="75d2978d-d31d-47bd-a13a-c4b71750728c" mode="Opaque" x="10" y="423" width="317" height="14" forecolor="#FFFFFF" backcolor="#364678"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="10" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["MODO DE USAR"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["MODO DE USAR"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement style="Title" mode="Opaque" x="337" y="353" width="210" height="153" backcolor="#D9B980"/>
+				<reportElement uuid="c36d0965-d890-44d0-b0cb-90ea29b3ef59" style="Title" mode="Transparent" x="354" y="451" width="184" height="133" backcolor="#D9B980"/>
 				<textElement textAlignment="Justified" verticalAlignment="Top" markup="none">
-					<font fontName="Arial" size="8" isBold="false" pdfFontName="Times-Roman"/>
+					<font fontName="Arial" size="7" isBold="false" pdfFontName="Times-Roman"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["ESPUMA CLOR é um produto tecnologicamente produzido a partir do aprisionamento de substâncias tenso ativas em um meio fortemente alcalino, dotado de 5% de cloro ativo  estabilizado. Esta reação resulta num poderoso detergente gel de alta espuma, que adere às superfícies verticais e horizontais, oferecendo um maior tempo de contato do produto na superfície, permitindo que os agentes peptizantes presente na formulação dispersem e suspendam a matéria coloidal, dividindo a sujidade de natureza oleosas ou gordurosas, imicíveis na água em gotículas microscópicas, tornando- as miscíveis em meio aquoso, desta forma, gorduras, sangue e resíduos protéicos são eliminados com um rápido enxágüe."]]></textFieldExpression>
+				<textFieldExpression><![CDATA["ESPUMA CLOR é um produto tecnologicamente produzido a partir do aprisionamento de substâncias tenso ativas em um meio fortemente alcalino, dotado de 5% de cloro ativo  estabilizado. Esta reação resulta num poderoso detergente gel de alta espuma, que adere às superfícies verticais e horizontais, oferecendo um maior tempo de contato do produto na superfície, permitindo que os agentes peptizantes presente na formulação dispersem e suspendam a matéria coloidal, dividindo a sujidade de natureza oleosas ou gordurosas, imicíveis na água em gotículas microscópicas, tornando- as miscíveis em meio aquoso, desta forma, gorduras, sangue e resíduos protéicos são eliminados com um rápido enxágüe."]]></textFieldExpression>
 			</textField>
+			<image>
+				<reportElement uuid="44183e6f-c6bd-4b52-97be-15300d0159dd" x="11" y="218" width="172" height="41"/>
+				<imageExpression><![CDATA[$F{IMG02}]]></imageExpression>
+			</image>
+			<image>
+				<reportElement uuid="44183e6f-c6bd-4b52-97be-15300d0159dd" x="372" y="218" width="172" height="41"/>
+				<imageExpression><![CDATA[$F{IMG02A}]]></imageExpression>
+			</image>
 		</band>
 	</columnHeader>
 	<detail>
