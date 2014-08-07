@@ -1023,6 +1023,7 @@ private void montaTela() {
 			sql.append("select pd.codprod, pd.descprod, et.numeroft, et.dtrevisaoft ");
 			sql.append(",img01.binimg img01 ");
 			sql.append(",img02.binimg img02 ");
+			sql.append(",img02b.binimg img02b ");
 			sql.append(",img03.binimg img03 ");
 			sql.append(",img04.binimg img04 ");
 			sql.append("from eqproduto pd ");
@@ -1034,6 +1035,8 @@ private void montaTela() {
 			sql.append("on img01.codemp=p5.codempi1 and img01.codfilial=p5.codfiliali1 and img01.codimg=p5.codimgft01 ");
 			sql.append("left outer join sgimagem img02 ");
 			sql.append("on img02.codemp=p5.codempi2 and img02.codfilial=p5.codfiliali2 and img02.codimg=p5.codimgft02 ");
+			sql.append("left outer join sgimagem img02b ");
+			sql.append("on img02b.codemp=p5.codempi2 and img02b.codfilial=p5.codfiliali2 and img02b.codimg=p5.codimgft02 ");
 			sql.append("left outer join sgimagem img03 ");
 			sql.append("on img03.codemp=p5.codempi3 and img03.codfilial=p5.codfiliali3 and img03.codimg=p5.codimgft03 ");
 			sql.append("left outer join sgimagem img04 ");
