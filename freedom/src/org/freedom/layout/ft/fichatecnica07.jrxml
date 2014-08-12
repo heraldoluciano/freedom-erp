@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="fichatecnica07" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7cef5cc9-8905-422b-a59d-b80e049467b8">
 	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="194"/>
-	<property name="ireport.y" value="604"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="734"/>
 	<style name="Title" fontName="Times New Roman" fontSize="50" isBold="true" pdfFontName="Times-Bold"/>
 	<style name="SubTitle" forecolor="#736343" fontName="Arial" fontSize="18"/>
 	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
@@ -31,8 +31,10 @@
 		<![CDATA[select pd.codprod, pd.descprod, et.numeroft, et.dtrevisaoft
 , et.desccompl, et.finalidadeuso, et.modousar, et.mecanismoacao
  ,img01.binimg img01
- ,img02.binimg img02 ,img02b.binimg img02b ,img03.binimg img03
- ,img04.binimg img04 from eqproduto pd
+ ,img02.binimg img02 ,img03.binimg img03
+ ,img04.binimg img04, img05.binimg img05
+, img06.binimg img06
+ from eqproduto pd
  inner join ppestrutura et on et.codemp=pd.codemp
  and et.codfilial=pd.codfilial and et.codprod=pd.codprod
  left outer join sgprefere5 p5 on p5.codemp=7 and p5.codfilial=1
@@ -40,12 +42,14 @@
  and img01.codfilial=p5.codfiliali1 and img01.codimg=p5.codimgft01
  left outer join sgimagem img02 on img02.codemp=p5.codempi2
  and img02.codfilial=p5.codfiliali2 and img02.codimg=p5.codimgft02
- left outer join sgimagem img02b on img02b.codemp=p5.codempi2
- and img02b.codfilial=p5.codfiliali2 and img02b.codimg=p5.codimgft02
  left outer join sgimagem img03 on img03.codemp=p5.codempi3
  and img03.codfilial=p5.codfiliali3 and img03.codimg=p5.codimgft03
  left outer join sgimagem img04 on img04.codemp=p5.codempi4
  and img04.codfilial=p5.codfiliali4 and img04.codimg=p5.codimgft04
+ left outer join sgimagem img05 on img05.codemp=p5.codempi5
+ and img05.codfilial=p5.codfiliali5 and img05.codimg=p5.codimgft05
+ left outer join sgimagem img06 on img06.codemp=p5.codempi6
+ and img06.codfilial=p5.codfiliali6 and img06.codimg=p5.codimgft06
   where pd.codemp=7 and pd.codfilial=1 and pd.codprod=715 and et.seqest=1]]>
 	</queryString>
 	<field name="CODPROD" class="java.lang.Integer"/>
@@ -58,9 +62,10 @@
 	<field name="MECANISMOACAO" class="java.lang.String"/>
 	<field name="IMG01" class="java.io.InputStream"/>
 	<field name="IMG02" class="java.io.InputStream"/>
-	<field name="IMG02B" class="java.io.InputStream"/>
 	<field name="IMG03" class="java.io.InputStream"/>
 	<field name="IMG04" class="java.io.InputStream"/>
+	<field name="IMG05" class="java.io.InputStream"/>
+	<field name="IMG06" class="java.io.InputStream"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -74,7 +79,7 @@
 		<band height="802" splitType="Stretch">
 			<image>
 				<reportElement uuid="44183e6f-c6bd-4b52-97be-15300d0159dd" x="337" y="423" width="209" height="168"/>
-				<imageExpression><![CDATA[$F{IMG03}]]></imageExpression>
+				<imageExpression><![CDATA[$F{IMG04}]]></imageExpression>
 			</image>
 			<textField>
 				<reportElement uuid="34f8e1f7-7da6-4243-a7cb-f8741187245f" mode="Opaque" x="9" y="303" width="317" height="14" forecolor="#FFFFFF" backcolor="#364678"/>
@@ -90,7 +95,7 @@
 				</graphicElement>
 			</line>
 			<image>
-				<reportElement uuid="44183e6f-c6bd-4b52-97be-15300d0159dd" x="4" y="1" width="157" height="67"/>
+				<reportElement uuid="44183e6f-c6bd-4b52-97be-15300d0159dd" x="4" y="6" width="157" height="67"/>
 				<imageExpression><![CDATA[$P{IMG02}]]></imageExpression>
 			</image>
 			<textField>
@@ -103,34 +108,34 @@
 			<line>
 				<reportElement uuid="b940d662-9b61-4700-8975-9f7d23713f5e" positionType="FixRelativeToBottom" x="553" y="0" width="1" height="802" forecolor="#0000FF"/>
 				<graphicElement>
-					<pen lineWidth="2.0" lineColor="#364678"/>
+					<pen lineWidth="7.0" lineColor="#364678"/>
 				</graphicElement>
 			</line>
 			<line>
 				<reportElement uuid="fd9b9b67-6aa1-42fd-95db-d131c6d01c9c" positionType="FixRelativeToBottom" x="0" y="0" width="553" height="1" forecolor="#0000FF"/>
 				<graphicElement>
-					<pen lineWidth="2.0" lineColor="#364678"/>
+					<pen lineWidth="7.0" lineColor="#364678"/>
 				</graphicElement>
 			</line>
 			<line>
-				<reportElement uuid="e0812908-4eec-49df-b86d-c716eb8fa8c5" positionType="FixRelativeToBottom" x="0" y="801" width="553" height="1" forecolor="#0000FF"/>
+				<reportElement uuid="e0812908-4eec-49df-b86d-c716eb8fa8c5" positionType="FixRelativeToBottom" x="0" y="799" width="553" height="1" forecolor="#0000FF"/>
 				<graphicElement>
-					<pen lineWidth="0.5" lineColor="#364678"/>
+					<pen lineWidth="7.0" lineColor="#364678"/>
 				</graphicElement>
 			</line>
 			<image>
-				<reportElement uuid="9d0e330a-114f-4cf8-862d-3dd8779d92d0" x="188" y="4" width="176" height="92"/>
+				<reportElement uuid="9d0e330a-114f-4cf8-862d-3dd8779d92d0" x="188" y="6" width="176" height="92"/>
 				<imageExpression><![CDATA[$F{IMG01}]]></imageExpression>
 			</image>
 			<textField>
-				<reportElement uuid="0dc80dd2-ddda-4029-bc21-64b7e30ca47d" x="391" y="4" width="156" height="12"/>
+				<reportElement uuid="0dc80dd2-ddda-4029-bc21-64b7e30ca47d" x="391" y="6" width="156" height="12"/>
 				<textElement textAlignment="Right">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA["FICHA TÉCNICA N. "+$F{NUMEROFT}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="8243a524-1dbd-4f46-99f9-ec7fc1e94fa8" x="391" y="18" width="156" height="12"/>
+				<reportElement uuid="8243a524-1dbd-4f46-99f9-ec7fc1e94fa8" x="391" y="19" width="156" height="12"/>
 				<textElement textAlignment="Right">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
@@ -193,7 +198,15 @@
 			</image>
 			<image>
 				<reportElement uuid="44183e6f-c6bd-4b52-97be-15300d0159dd" x="372" y="218" width="172" height="41"/>
-				<imageExpression><![CDATA[$F{IMG02B}]]></imageExpression>
+				<imageExpression><![CDATA[$F{IMG03}]]></imageExpression>
+			</image>
+			<image>
+				<reportElement uuid="44183e6f-c6bd-4b52-97be-15300d0159dd" x="40" y="714" width="216" height="51"/>
+				<imageExpression><![CDATA[$F{IMG05}]]></imageExpression>
+			</image>
+			<image>
+				<reportElement uuid="44183e6f-c6bd-4b52-97be-15300d0159dd" x="294" y="714" width="216" height="51"/>
+				<imageExpression><![CDATA[$F{IMG06}]]></imageExpression>
 			</image>
 		</band>
 	</columnHeader>
