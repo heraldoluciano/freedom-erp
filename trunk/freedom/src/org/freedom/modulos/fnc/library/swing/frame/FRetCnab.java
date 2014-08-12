@@ -391,7 +391,7 @@ public class FRetCnab extends FRetFBN {
 							tab.setValor( rec.getVencimento() != null ? Funcoes.dateToStrDate( rec.getVencimento() ) : "", row, EColTab.DTVENC.ordinal() ); // Vencimento
 							tab.setValor( Funcoes.bdToStr( reg3U.getVlrPago() ), row, EColTab.VLRPAG.ordinal() ); // Valor pago
 							tab.setValor( reg3U.getDataEfetvCred() != null ? Funcoes.dateToStrDate( reg3U.getDataEfetvCred() ) : "", row, EColTab.DTPAG.ordinal() ); // Data pgto.
-							tab.setValor( reg3U.getDataEfetvCred() != null ? Funcoes.dateToStrDate( reg3U.getDataEfetvCred() ) : "", row, EColTab.DTLIQITREC.ordinal() ); // Data pgto.
+							tab.setValor( reg3U.getDataOcorr()!= null ? Funcoes.dateToStrDate( reg3U.getDataOcorr() ) : "", row, EColTab.DTLIQITREC.ordinal() ); // Data liquidação.
 							tab.setValor( rec.getConta(), row, EColTab.NUMCONTA.ordinal() ); // Conta
 							tab.setValor( rec.getPlanejamento(), row, EColTab.CODPLAN.ordinal() ); // Planejamento
 							tab.setValor( reg3U.getVlrDesc(), row, EColTab.VLRDESC.ordinal() ); // VLRDESC
