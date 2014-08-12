@@ -6,11 +6,11 @@
 
 ISC_USER="SYSDBA"
 ISC_PASSWORD="masterkey"
-CMD_ISQL="/opt/firebird/bin/isql"
+CMD_ISQL="/opt/firebird/bin/isql -charset ISO8859_1"
 ARQ_DEST="trocaemp.sql"
 #ARQ_LOG="gera_query_troca_emp.log"
 ARQ_SQL="gera_query_trocaemp.sql"
-ARQ_DADOS="localhost:/opt/firebird/dados/desenv/freedom.fdb"
+ARQ_DADOS="localhost:/opt/firebird/dados/desenv/freedom25.fdb"
 LINHA_COMENTARIO="----------------------------------------------"
 RESULT=0
 
