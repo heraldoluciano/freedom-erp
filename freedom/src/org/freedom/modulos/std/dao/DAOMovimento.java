@@ -404,8 +404,9 @@ public class DAOMovimento extends AbstractDAO {
 		sql.append( "select coalesce(sum(ir.vlritrec),0) vlritrec, coalesce(sum(ir.vlrpagoitrec),0) vlrpagoitrec, coalesce(sum(ir.vlrparcitrec),0) vlrparcitrec, ");
 		sql.append( "coalesce(sum(ir.vlrapagitrec),0) vlrapagitrec, min(datarec) dataprim, max(datarec) datault " );
 		sql.append( "from fnreceber rc, fnitreceber ir " );
-		sql.append( "where rc.codemp=ir.codemp and rc.codfilial=ir.codfilial and rc.codrec=ir.codrec and " );
-		sql.append( "ir.CODEMP=? AND ir.CODFILIAL=? AND rc.CODEMPCL=? and rc.codfilialcl=? and CODCLI=? " );
+		sql.append( "where rc.codemp=ir.codemp and rc.codfilial=ir.codfilial and rc.codrec=ir.codrec " );
+		sql.append( "and statusitrec not in('RN') ");
+		sql.append( "and ir.codemp=? and ir.codfilial=? and rc.codempcl=? and rc.codfilialcl=? and codcli=? " );
 
 		ps = getConn().prepareStatement( sql.toString() );
 		ps.setInt( 1, codemp );
