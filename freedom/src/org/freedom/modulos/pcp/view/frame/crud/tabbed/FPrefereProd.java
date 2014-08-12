@@ -145,6 +145,12 @@ public class FPrefereProd extends FTabDados  implements InsertListener {
 
 	private ListaCampos lcImgFT04 = new ListaCampos( this, "I4" );
 
+	private JTextFieldPad txtCodImgFT05 = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
+	
+	private JTextFieldFK txtDescImgFT05 = new JTextFieldFK(JTextFieldPad.TP_STRING, 80, 0);
+
+	private ListaCampos lcImgFT05 = new ListaCampos( this, "I5" );
+
 	private final PainelImagem imgAssOrc = new PainelImagem( 65000 );
 
 	private final ListaCampos lcTipoMov = new ListaCampos( this, "TM" );
@@ -314,6 +320,8 @@ public class FPrefereProd extends FTabDados  implements InsertListener {
 		adicDescFK(txtDescImgFT03, 80, 140, 322, 20, "DESCIMG", "Imagem 03 para ficha técnica");
 		adicCampo(txtCodImgFT04, 7, 180, 70, 20, "CODIMGFT04", "Cod.img.04", ListaCampos.DB_FK, txtDescImgFT04 , false);
 		adicDescFK(txtDescImgFT04, 80, 180, 322, 20, "DESCIMG", "Imagem 04 para ficha técnica");
+		adicCampo(txtCodImgFT05, 7, 220, 70, 20, "CODIMGFT05", "Cod.img.05", ListaCampos.DB_FK, txtDescImgFT05 , false);
+		adicDescFK(txtDescImgFT05, 80, 220, 322, 20, "DESCIMG", "Imagem 05 para ficha técnica");
 
 		
 		/**************************************************************/
@@ -403,6 +411,15 @@ public class FPrefereProd extends FTabDados  implements InsertListener {
 		txtCodImgFT04.setFK(true);
 		txtDescImgFT04.setListaCampos(lcImgFT04);
 
+		lcImgFT05.add(new GuardaCampo(txtCodImgFT05, "CODIMG", "Cód.Img", ListaCampos.DB_PK, null, false));
+		lcImgFT05.add(new GuardaCampo(txtDescImgFT05, "DESCIMG", "Descrição da Imagem", ListaCampos.DB_SI, null, false));
+		lcImgFT05.montaSql(false, "IMAGEM", "SG");
+		lcImgFT05.setQueryCommit(false);
+		lcImgFT05.setReadOnly(true);
+		txtCodImgFT05.setTabelaExterna(lcImgFT05, null);
+		txtCodImgFT05.setFK(true);
+		txtDescImgFT05.setListaCampos(lcImgFT05);
+
 	}
 
 	public void setConexao( DbConnection cn ) {
@@ -416,6 +433,7 @@ public class FPrefereProd extends FTabDados  implements InsertListener {
 		lcImgFT02.setConexao(cn);
 		lcImgFT03.setConexao(cn);
 		lcImgFT04.setConexao(cn);
+		lcImgFT05.setConexao(cn);
 		lcCampos.carregaDados();
 	}
 
