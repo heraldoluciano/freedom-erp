@@ -6,7 +6,7 @@
  * 
  *         Pacote: org.freedom.modulos.std <BR>
  *         Classe:
- * @(#)FGrupo.java <BR>
+ * @(#)FGrupoProd.java <BR>
  * 
  *                 Este arquivo é parte do sistema Freedom-ERP, o Freedom-ERP é um software livre; você pode redistribui-lo e/ou <BR>
  *                 modifica-lo dentro dos termos da Licença Pública Geral GNU como publicada pela Fundação do Software Livre (FSF); <BR>
@@ -493,10 +493,17 @@ public class FGrupoProd extends FFilho implements ActionListener, MouseListener,
 			return;
 		}
 		String titulo_tela = "Imagens de grupo de produtos";
+		if (fPrim==null) {
+			System.out.println("FPrincipal nula");
+		}
 		if ( !fPrim.temTela( titulo_tela ) ) {
-			FGrupoImg tela = new FGrupoImg();
-			fPrim.criatela( titulo_tela, tela, con );
-			tela.carregaGrupo( codgrup );
+			try {
+				FGrupoImg tela = new FGrupoImg();
+				fPrim.criatela( titulo_tela, tela, con );
+				tela.carregaGrupo( codgrup );
+			} catch (Exception err) {
+				Funcoes.mensagemErro( this, "Erro carregando tela de imagens !\n" + err.getMessage() );
+			}
 		}
 	}
 	

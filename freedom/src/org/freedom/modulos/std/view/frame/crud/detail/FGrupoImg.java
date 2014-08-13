@@ -31,7 +31,6 @@ import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JPanelPad;
 import org.freedom.library.swing.component.JTextFieldFK;
 import org.freedom.library.swing.component.JTextFieldPad;
-import org.freedom.library.swing.component.Navegador;
 import org.freedom.library.swing.frame.FDetalhe;
 import org.freedom.modulos.std.view.frame.crud.plain.FImagem;
 
@@ -75,9 +74,6 @@ public class FGrupoImg extends FDetalhe implements ActionListener {
 		adicCampo( txtCodGrup, 7, 20, 70, 20, "CodGrup", "Cód.grupo", ListaCampos.DB_PK, true );
 		adicCampo( txtDescGrup, 80, 20, 230, 20, "DescGrup", "Descrição do grupo/sub-grupo", ListaCampos.DB_SI, true );
 		setListaCampos( true, "GRUPO", "EQ" );
-		nav.setAtivo( Navegador.BT_EDITAR, false );
-		nav.setAtivo( Navegador.BT_EXCLUIR, false );
-		nav.setAtivo( Navegador.BT_NOVO, false );
 		setAltDet( 60 );
 		setPainel( pinDet, pnDet );
 		setListaCampos( lcDet );
