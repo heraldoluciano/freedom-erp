@@ -54,9 +54,9 @@ import org.freedom.library.swing.component.JTablePad;
 import org.freedom.library.swing.frame.Aplicativo;
 import org.freedom.library.swing.frame.FFilho;
 import org.freedom.library.type.TYPE_PRINT;
+import org.freedom.modulos.gms.view.frame.crud.detail.FGrupoImg;
 import org.freedom.modulos.std.view.dialog.utility.DLGrupo;
 import org.freedom.modulos.std.view.dialog.utility.DLSubGrupo;
-import org.freedom.modulos.std.view.frame.crud.detail.FGrupoImg;
 
 public class FGrupoProd extends FFilho implements ActionListener, MouseListener, KeyListener {
 

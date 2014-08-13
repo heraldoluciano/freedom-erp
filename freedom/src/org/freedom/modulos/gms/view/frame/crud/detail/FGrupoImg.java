@@ -21,7 +21,7 @@
  * 
  */
 
-package org.freedom.modulos.std.view.frame.crud.detail;
+package org.freedom.modulos.gms.view.frame.crud.detail;
 
 import java.awt.event.ActionListener;
 
