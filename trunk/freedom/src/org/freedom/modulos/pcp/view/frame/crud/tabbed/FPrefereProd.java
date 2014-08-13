@@ -42,6 +42,7 @@ import org.freedom.library.swing.component.PainelImagem;
 import org.freedom.library.swing.frame.FTabDados;
 import org.freedom.modulos.gms.business.object.TipoMov;
 import org.freedom.modulos.gms.view.frame.crud.tabbed.FTipoMov;
+import org.freedom.modulos.std.view.frame.crud.plain.FCategoriaImg;
 
 public class FPrefereProd extends FTabDados  implements InsertListener {
 
@@ -155,6 +156,10 @@ public class FPrefereProd extends FTabDados  implements InsertListener {
 	
 	private JTextFieldFK txtDescImgFT06 = new JTextFieldFK(JTextFieldPad.TP_STRING, 80, 0);
 
+	private JTextFieldPad txtCodCatImg= new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
+	
+	private JTextFieldFK txtDescCatImg = new JTextFieldFK( JTextFieldPad.TP_STRING, 100, 0 );
+
 	private ListaCampos lcImgFT06 = new ListaCampos( this, "I6" );
 
 	private final PainelImagem imgAssOrc = new PainelImagem( 65000 );
@@ -166,6 +171,8 @@ public class FPrefereProd extends FTabDados  implements InsertListener {
 	private final ListaCampos lcTipoMovEN = new ListaCampos( this, "EN" );
 	
 	private final ListaCampos lcTipoMovRE = new ListaCampos( this, "RE" );
+
+	private final ListaCampos lcCatImg = new ListaCampos( this, "CI" );
 
 	public FPrefereProd() {
 
@@ -330,6 +337,8 @@ public class FPrefereProd extends FTabDados  implements InsertListener {
 		adicDescFK(txtDescImgFT05, 80, 220, 322, 20, "DESCIMG", "Imagem 05 para ficha técnica");
 		adicCampo(txtCodImgFT06, 7, 260, 70, 20, "CODIMGFT06", "Cod.img.06", ListaCampos.DB_FK, txtDescImgFT06 , false);
 		adicDescFK(txtDescImgFT06, 80, 260, 322, 20, "DESCIMG", "Imagem 06 para ficha técnica");
+		adicCampo( txtCodCatImg, 7, 300, 70, 20, "CODCATIMG", "Cod.cat.img.", ListaCampos.DB_FK, txtDescCatImg, false );		
+		adicDescFK( txtDescCatImg, 80, 300, 322, 20, "DESCCATIMG", "Descrição da categoria de imagens para linha de produtos" );
 
 		
 		/**************************************************************/
@@ -436,6 +445,13 @@ public class FPrefereProd extends FTabDados  implements InsertListener {
 		txtCodImgFT06.setTabelaExterna(lcImgFT06, null);
 		txtCodImgFT06.setFK(true);
 		txtDescImgFT06.setListaCampos(lcImgFT06);
+		
+		lcCatImg.add( new GuardaCampo( txtCodCatImg, "CODCATIMG", "Cod.cat.img.", ListaCampos.DB_PK, false ) );
+		lcCatImg.add( new GuardaCampo( txtDescCatImg, "DESCCATIMG", "Descrição da Imagem", ListaCampos.DB_SI, false ) );
+		lcCatImg.montaSql( false, "CATIMG", "SG" );
+		lcCatImg.setQueryCommit( false );
+		lcCatImg.setReadOnly( true );
+		txtCodCatImg.setTabelaExterna( lcCatImg, FCategoriaImg.class.getCanonicalName() );
 
 	}
 
@@ -452,6 +468,7 @@ public class FPrefereProd extends FTabDados  implements InsertListener {
 		lcImgFT04.setConexao(cn);
 		lcImgFT05.setConexao(cn);
 		lcImgFT06.setConexao(cn);
+		lcCatImg.setConexao(cn);
 		lcCampos.carregaDados();
 	}
 
