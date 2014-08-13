@@ -1120,7 +1120,7 @@ private void montaTela() {
 			sql.append("and gimg.seqimg=(select first 1 gimg1.seqimg from eqgrupoimg gimg1, sgimagem imgc ");
 			sql.append("where gimg1.codemp=pd.codempgp and gimg1.codfilial=pd.codfilialgp and gimg1.codgrup=pd.codgrup ");
 			sql.append("and imgc.codemp=gimg1.codemp and imgc.codfilial=gimg1.codfilial and imgc.codimg=gimg1.codimg ");
-			sql.append("and imgc.codempci=p5.codempci and imgc.codfilialci=p5.codfilialci and imgc=codcatimg=p5.codcatimg ");
+			sql.append("and imgc.codempci=p5.codempci and imgc.codfilialci=p5.codfilialci and imgc.codcatimg=p5.codcatimg ");
 			sql.append(")");
 			sql.append("left outer join sgimagem imgpd ");
 			sql.append("on imgpd.codemp=gimg.codempim and imgpd.codfilial=gimg.codfilialim and imgpd.codimg=gimg.codimg ");
