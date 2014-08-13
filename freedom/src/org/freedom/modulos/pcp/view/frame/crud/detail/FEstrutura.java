@@ -1097,6 +1097,7 @@ private void montaTela() {
 			sql.append(",img04.binimg img04 ");
 			sql.append(",img05.binimg img05 ");
 			sql.append(",img06.binimg img06 ");
+			sql.append(",imgpd.binimg imgpd ");
 			sql.append("from eqproduto pd ");
 			sql.append("inner join ppestrutura et ");
 			sql.append("on et.codemp=pd.codemp and et.codfilial=pd.codfilial and et.codprod=pd.codprod ");
@@ -1114,6 +1115,15 @@ private void montaTela() {
 			sql.append("on img05.codemp=p5.codempi5 and img05.codfilial=p5.codfiliali5 and img05.codimg=p5.codimgft05 ");
 			sql.append("left outer join sgimagem img06 ");
 			sql.append("on img06.codemp=p5.codempi6 and img06.codfilial=p5.codfiliali6 and img06.codimg=p5.codimgft06 ");
+			sql.append("left outer join eqgrupoimg gimg ");
+			sql.append("on gimg.codemp=pd.codempgp and gimg.codfilial=pd.codfilialgp and gimg.codgrup=pd.codgrup ");
+			sql.append("and gimg.seqimg=(select first 1 gimg1.seqimg from eqgrupoimg gimg1, sgimagem imgc ");
+			sql.append("where gimg1.codemp=pd.codempgp and gimg1.codfilial=pd.codfilialgp and gimg1.codgrup=pd.codgrup ");
+			sql.append("and imgc.codemp=gimg1.codemp and imgc.codfilial=gimg1.codfilial and imgc.codimg=gimg1.codimg ");
+			sql.append("and imgc.codempci=p5.codempci and imgc.codfilialci=p5.codfilialci and imgc=codcatimg=p5.codcatimg ");
+			sql.append(")");
+			sql.append("left outer join sgimagem imgpd ");
+			sql.append("on imgpd.codemp=gimg.codempim and imgpd.codfilial=gimg.codfilialim and imgpd.codimg=gimg.codimg ");
 			sql.append("where pd.codemp=? and pd.codfilial=? and pd.codprod=? ");
 			sql.append("and et.seqest=? "); 
 			PreparedStatement ps = con.prepareStatement( sql.toString() );

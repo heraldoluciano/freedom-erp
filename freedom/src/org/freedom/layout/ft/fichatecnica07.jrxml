@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="fichatecnica07" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7cef5cc9-8905-422b-a59d-b80e049467b8">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="734"/>
+	<property name="ireport.y" value="0"/>
 	<style name="Title" fontName="Times New Roman" fontSize="50" isBold="true" pdfFontName="Times-Bold"/>
 	<style name="SubTitle" forecolor="#736343" fontName="Arial" fontSize="18"/>
 	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
@@ -29,28 +29,43 @@
 	<parameter name="IMG02" class="java.lang.Object" isForPrompting="false"/>
 	<queryString>
 		<![CDATA[select pd.codprod, pd.descprod, et.numeroft, et.dtrevisaoft
-, et.desccompl, et.finalidadeuso, et.modousar, et.mecanismoacao
- ,img01.binimg img01
- ,img02.binimg img02 ,img03.binimg img03
- ,img04.binimg img04, img05.binimg img05
-, img06.binimg img06
- from eqproduto pd
- inner join ppestrutura et on et.codemp=pd.codemp
- and et.codfilial=pd.codfilial and et.codprod=pd.codprod
- left outer join sgprefere5 p5 on p5.codemp=7 and p5.codfilial=1
- left outer join sgimagem img01 on img01.codemp=p5.codempi1
- and img01.codfilial=p5.codfiliali1 and img01.codimg=p5.codimgft01
- left outer join sgimagem img02 on img02.codemp=p5.codempi2
- and img02.codfilial=p5.codfiliali2 and img02.codimg=p5.codimgft02
- left outer join sgimagem img03 on img03.codemp=p5.codempi3
- and img03.codfilial=p5.codfiliali3 and img03.codimg=p5.codimgft03
- left outer join sgimagem img04 on img04.codemp=p5.codempi4
- and img04.codfilial=p5.codfiliali4 and img04.codimg=p5.codimgft04
- left outer join sgimagem img05 on img05.codemp=p5.codempi5
- and img05.codfilial=p5.codfiliali5 and img05.codimg=p5.codimgft05
- left outer join sgimagem img06 on img06.codemp=p5.codempi6
- and img06.codfilial=p5.codfiliali6 and img06.codimg=p5.codimgft06
-  where pd.codemp=7 and pd.codfilial=1 and pd.codprod=715 and et.seqest=1]]>
+            , et.desccompl, et.finalidadeuso, et.modousar, et.mecanismoacao
+            ,img01.binimg img01
+            ,img02.binimg img02
+            ,img03.binimg img03
+            ,img04.binimg img04
+            ,img05.binimg img05
+            ,img06.binimg img06
+            ,imgpd.binimg imgpd
+            from eqproduto pd
+            inner join ppestrutura et
+            on et.codemp=pd.codemp and et.codfilial=pd.codfilial and et.codprod=pd.codprod
+            left outer join sgprefere5 p5
+            on p5.codemp=7 and p5.codfilial=1
+            left outer join sgimagem img01
+            on img01.codemp=p5.codempi1 and img01.codfilial=p5.codfiliali1 and img01.codimg=p5.codimgft01
+            left outer join sgimagem img02
+            on img02.codemp=p5.codempi2 and img02.codfilial=p5.codfiliali2 and img02.codimg=p5.codimgft02
+            left outer join sgimagem img03
+            on img03.codemp=p5.codempi3 and img03.codfilial=p5.codfiliali3 and img03.codimg=p5.codimgft03
+            left outer join sgimagem img04
+            on img04.codemp=p5.codempi4 and img04.codfilial=p5.codfiliali4 and img04.codimg=p5.codimgft04
+            left outer join sgimagem img05
+            on img05.codemp=p5.codempi5 and img05.codfilial=p5.codfiliali5 and img05.codimg=p5.codimgft05
+            left outer join sgimagem img06
+            on img06.codemp=p5.codempi6 and img06.codfilial=p5.codfiliali6 and img06.codimg=p5.codimgft06
+            left outer join eqgrupoimg gimg
+            on gimg.codemp=pd.codemp and gimg.codfilial=pd.codfilial and gimg.codgrup=pd.codgrup
+            and gimg.seqimg=(select first 1 gimg1.seqimg from eqgrupoimg gimg1, sgimagem imgc
+            where gimg1.codemp=pd.codempgp and gimg1.codfilial=pd.codfilialgp and gimg1.codgrup=pd.codgrup
+            and imgc.codemp=gimg1.codemp and imgc.codfilial=gimg1.codfilial and imgc.codimg=gimg1.codimg
+            and imgc.codempci=p5.codempci and imgc.codfilialci=p5.codfilialci and imgc.codcatimg=p5.codcatimg
+            )
+            left outer join sgimagem imgpd
+            on imgpd.codemp=gimg.codempim and imgpd.codfilial=gimg.codfilialim and imgpd.codimg=gimg.codimg
+
+            where pd.codemp=7 and pd.codfilial=1 and pd.codprod=715
+            and et.seqest=1]]>
 	</queryString>
 	<field name="CODPROD" class="java.lang.Integer"/>
 	<field name="DESCPROD" class="java.lang.String"/>
@@ -66,6 +81,7 @@
 	<field name="IMG04" class="java.io.InputStream"/>
 	<field name="IMG05" class="java.io.InputStream"/>
 	<field name="IMG06" class="java.io.InputStream"/>
+	<field name="IMGPD" class="java.io.InputStream"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -95,8 +111,8 @@
 				</graphicElement>
 			</line>
 			<image>
-				<reportElement uuid="44183e6f-c6bd-4b52-97be-15300d0159dd" x="4" y="6" width="157" height="67"/>
-				<imageExpression><![CDATA[$P{IMG02}]]></imageExpression>
+				<reportElement uuid="44183e6f-c6bd-4b52-97be-15300d0159dd" x="5" y="5" width="157" height="67"/>
+				<imageExpression><![CDATA[$F{IMGPD}]]></imageExpression>
 			</image>
 			<textField>
 				<reportElement uuid="940ccc01-95d4-4131-a719-354a6b71bfec" style="Title" x="4" y="110" width="549" height="62"/>
