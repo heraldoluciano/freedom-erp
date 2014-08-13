@@ -56,6 +56,7 @@ import org.freedom.library.swing.frame.FFilho;
 import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.std.view.dialog.utility.DLGrupo;
 import org.freedom.modulos.std.view.dialog.utility.DLSubGrupo;
+import org.freedom.modulos.std.view.frame.crud.detail.FGrupoImg;
 
 public class FGrupoProd extends FFilho implements ActionListener, MouseListener, KeyListener {
 
@@ -87,6 +88,8 @@ public class FGrupoProd extends FFilho implements ActionListener, MouseListener,
 
 	private JButtonPad btPrevimp = new JButtonPad( Icone.novo( "btPrevimp.png" ) );
 
+	private JButtonPad btAdicImagem = new JButtonPad( Icone.novo( "btImagem.png" ) );
+
 	private boolean bEstNeg = false;
 
 	int iCodFilial = 0;
@@ -116,6 +119,7 @@ public class FGrupoProd extends FFilho implements ActionListener, MouseListener,
 		pnBotoes.add( btGrupo );
 		pnBotoes.add( btSubGrupo );
 		pnBotoes.add( pnImp );
+		pnBotoes.add( btAdicImagem );
 
 		c.add( pnRodape, BorderLayout.SOUTH );
 
@@ -141,6 +145,8 @@ public class FGrupoProd extends FFilho implements ActionListener, MouseListener,
 		btSubGrupo.addActionListener( this );
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
+		btAdicImagem.addActionListener( this );
+		btAdicImagem.setToolTipText( "Vincula imagens ao grupo/sub-grupo." );
 		tab.addMouseListener( this );
 		tab.addKeyListener( this );
 
@@ -470,9 +476,30 @@ public class FGrupoProd extends FFilho implements ActionListener, MouseListener,
 		}
 		else if ( evt.getSource() == btImp )
 			imprimir( TYPE_PRINT.PRINT);
+		else if (evt.getSource() == btAdicImagem )
+			adicImagem();
 
 	}
 
+	private void adicImagem() {
+		int linhasel = tab.getLinhaSel();
+		if (linhasel==-1) {
+			Funcoes.mensagemInforma( this, "Selecione um grupo ou sub-grupo" );
+			return;
+		}
+		String codgrup = (String) tab.getValor( linhasel, 0 );
+		if (codgrup==null || "".equals( codgrup.trim() )) {
+			Funcoes.mensagemInforma( this, "Selecione um grupo ou sub-grupo" );
+			return;
+		}
+		String titulo_tela = "Imagens de grupo de produtos";
+		if ( !fPrim.temTela( titulo_tela ) ) {
+			FGrupoImg tela = new FGrupoImg();
+			fPrim.criatela( titulo_tela, tela, con );
+			tela.carregaGrupo( codgrup );
+		}
+	}
+	
 	public void mouseClicked( MouseEvent mevt ) {
 
 		if ( ( mevt.getSource() == tab ) & ( mevt.getClickCount() == 2 ) & ( tab.getLinhaSel() >= 0 ) ) {
