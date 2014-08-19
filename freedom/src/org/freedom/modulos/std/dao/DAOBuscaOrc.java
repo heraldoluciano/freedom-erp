@@ -474,7 +474,11 @@ public class DAOBuscaOrc extends AbstractDAO {
 			sql.append( " order by o.codorc" );
 			ps = getConn().prepareStatement( sql.toString() );
 			int param = 1;
-			ps.setInt( param++, codorc );
+			if (codorc>0) {
+				ps.setInt( param++, codorc );
+			} else {
+				ps.setInt( param++, codcli );
+			}
 			ps.setInt( param++, ListaCampos.getMasterFilial( orc ? "VDORCAMENTO" : ( conv ? "ATCONVENIADO" : "VDCLIENTE" ) ) );
 			ps.setInt( param++, Aplicativo.iCodEmp );
 			rs = ps.executeQuery();
