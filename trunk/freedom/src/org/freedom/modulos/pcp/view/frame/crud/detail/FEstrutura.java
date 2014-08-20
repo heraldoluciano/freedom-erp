@@ -202,11 +202,15 @@ public class FEstrutura extends FDetalhe implements ChangeListener, ActionListen
     RESTRICAOUSO VARCHAR(1000),
     COMPOSICAO VARCHAR(1000),
     MECANISMOACAO VARCHAR(1000),
-    CARACTERISTICA01 VARCHAR(100),
-    CARACTERISTICA02 VARCHAR(100),
-    CARACTERISTICA03 VARCHAR(100),
+
 */
+
+	private JTextFieldPad txtCaracteristica01 = new JTextFieldPad( JTextFieldPad.TP_STRING, 100, 0 );
+
+	private JTextFieldPad txtCaracteristica02 = new JTextFieldPad( JTextFieldPad.TP_STRING, 100, 0 );
 	
+	private JTextFieldPad txtCaracteristica03 = new JTextFieldPad( JTextFieldPad.TP_STRING, 100, 0 );
+
 	private JTextFieldPad txtManipulacao = new JTextFieldPad( JTextFieldPad.TP_STRING, 100, 0 );
 
 	private JTextFieldPad txtSeguimento = new JTextFieldPad( JTextFieldPad.TP_STRING, 100, 0 );
@@ -605,6 +609,15 @@ private void montaTela() {
 		setPainel( pinCabFichaTecnica );
 		adicCampo( txtNumeroFT, 7, 20, 80, 20, "NumeroFT", "F.T. Nro.", ListaCampos.DB_SI, false );
 		adicCampo( txtDtRevisaoFT, 90, 20, 80, 20, "DtRevisaoFT", "Dt.revisão", ListaCampos.DB_SI, false );
+		adicCampo( txtManipulacao, 173, 20, 150, 20, "Manipulacao", "Manipulação", ListaCampos.DB_SI, false );
+		adicCampo( txtSeguimento, 326, 20, 150, 20, "Seguimento", "Seguimento", ListaCampos.DB_SI, false );
+		adicCampo( txtCategoria, 479, 20, 150, 20, "Categoria", "Categoria", ListaCampos.DB_SI, false );
+		adicCampo( txtCaracteristica01, 7, 60, 200, 20, "Caracteristica01", "Característica 01", ListaCampos.DB_SI, false );
+		adicCampo( txtCaracteristica02, 210, 60, 200, 20, "Caracteristica02", "Característica 02", ListaCampos.DB_SI, false );
+		adicCampo( txtCaracteristica03, 413, 60, 200, 20, "Caracteristica03", "Característica 03", ListaCampos.DB_SI, false );
+		adicDB( txaAnvisa, 7, 100, 310, 40, "Anvisa", "Anvisa", ListaCampos.DB_SI, false );
+		adicDB( txaMinisterioagri, 320, 100, 310, 40, "Ministerioagri", "Ministério da agricultura", ListaCampos.DB_SI, false );
+		
 
 		setPainel( pinCabConf );
 		
@@ -1091,6 +1104,8 @@ private void montaTela() {
 			StringBuilder sql = new StringBuilder();
 			sql.append("select pd.codprod, pd.descprod, et.numeroft, et.dtrevisaoft ");
 			sql.append(", et.desccompl, et.finalidadeuso, et.modousar, et.mecanismoacao ");
+			sql.append(", et.caracteristica01, et.caracteristica02, et.caracteristica03 ");
+			sql.append(", et.anvisa, et.ministerioagri, et.manipulacao, et.seguimento, et.categoria ");
 			sql.append(",img01.binimg img01 ");
 			sql.append(",img02.binimg img02 ");
 			sql.append(",img03.binimg img03 ");
