@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="fichatecnica07" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7cef5cc9-8905-422b-a59d-b80e049467b8">
-	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="145"/>
 	<style name="Title" fontName="Times New Roman" fontSize="50" isBold="true" pdfFontName="Times-Bold"/>
 	<style name="SubTitle" forecolor="#736343" fontName="Arial" fontSize="18"/>
 	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
@@ -30,6 +30,8 @@
 	<queryString>
 		<![CDATA[select pd.codprod, pd.descprod, et.numeroft, et.dtrevisaoft
             , et.desccompl, et.finalidadeuso, et.modousar, et.mecanismoacao
+            , et.caracteristica01, et.caracteristica02, et.caracteristica03
+	, et.anvisa, et.ministerioagri, et.manipulacao, et.seguimento, et.categoria
             ,img01.binimg img01
             ,img02.binimg img02
             ,img03.binimg img03
@@ -75,6 +77,14 @@
 	<field name="FINALIDADEUSO" class="java.lang.String"/>
 	<field name="MODOUSAR" class="java.lang.String"/>
 	<field name="MECANISMOACAO" class="java.lang.String"/>
+	<field name="CARACTERISTICA01" class="java.lang.String"/>
+	<field name="CARACTERISTICA02" class="java.lang.String"/>
+	<field name="CARACTERISTICA03" class="java.lang.String"/>
+	<field name="ANVISA" class="java.lang.String"/>
+	<field name="MINISTERIOAGRI" class="java.lang.String"/>
+	<field name="MANIPULACAO" class="java.lang.String"/>
+	<field name="SEGUIMENTO" class="java.lang.String"/>
+	<field name="CATEGORIA" class="java.lang.String"/>
 	<field name="IMG01" class="java.io.InputStream"/>
 	<field name="IMG02" class="java.io.InputStream"/>
 	<field name="IMG03" class="java.io.InputStream"/>
@@ -162,9 +172,10 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font fontName="Arial" size="8" pdfFontName="Times-Roman"/>
 				</textElement>
-				<textFieldExpression><![CDATA["MANIPULAÇÃO:PRODUTO EXCLUSIVAMENTE DE USO PROFISSIONAL\n"
-+"SEGUIMENTO:INDÚSTRIA ALIMENTÍCIA, BEBIDAS E AFINS\n"
-+"CATEGORIA:DESENCRUSTRANTE ALCALINO CLORADO"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{MANIPULACAO}==null?"":"MANIPULAÇÃO: "+$F{MANIPULACAO}+"\n")
++($F{SEGUIMENTO}==null?"":"SEGUIMENTO: "+$F{SEGUIMENTO}+"\n")
++($F{CATEGORIA}==null?"":"CATEGORIA: "+$F{CATEGORIA}+"\n")
+]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement uuid="d628c54e-a950-49d2-ae7c-a037b22404be" mode="Opaque" x="337" y="303" width="210" height="14" forecolor="#FFFFFF" backcolor="#364678"/>
@@ -224,6 +235,30 @@
 				<reportElement uuid="44183e6f-c6bd-4b52-97be-15300d0159dd" x="294" y="714" width="216" height="51"/>
 				<imageExpression><![CDATA[$F{IMG06}]]></imageExpression>
 			</image>
+			<textField>
+				<reportElement uuid="c36d0965-d890-44d0-b0cb-90ea29b3ef59" style="Title" mode="Transparent" x="40" y="738" width="216" height="27" backcolor="#D9B980"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" markup="none">
+					<font fontName="Arial" size="7" isBold="false" pdfFontName="Times-Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ANVISA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="c36d0965-d890-44d0-b0cb-90ea29b3ef59" style="Title" mode="Transparent" x="294" y="738" width="216" height="27" backcolor="#D9B980"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" markup="none">
+					<font fontName="Arial" size="7" isBold="false" pdfFontName="Times-Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MINISTERIOAGRI}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="f9ff4ddd-7faa-49bf-bc1b-47f6b271c8e5" style="Title" x="183" y="219" width="189" height="39" forecolor="#4A735C"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="Arial" size="7" isItalic="true" pdfFontName="Times-Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{CARACTERISTICA01}==null?"":$F{CARACTERISTICA01}+"\n")
++($F{CARACTERISTICA02}==null?"":$F{CARACTERISTICA02}+"\n")
++($F{CARACTERISTICA03}==null?"":$F{CARACTERISTICA03}+"\n")
+]]></textFieldExpression>
+			</textField>
 		</band>
 	</columnHeader>
 	<detail>
