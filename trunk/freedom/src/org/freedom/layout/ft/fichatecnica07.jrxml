@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="fichatecnica07" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7cef5cc9-8905-422b-a59d-b80e049467b8">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="145"/>
+	<property name="ireport.y" value="114"/>
 	<style name="Title" fontName="Times New Roman" fontSize="50" isBold="true" pdfFontName="Times-Bold"/>
 	<style name="SubTitle" forecolor="#736343" fontName="Arial" fontSize="18"/>
 	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
@@ -32,6 +32,7 @@
             , et.desccompl, et.finalidadeuso, et.modousar, et.mecanismoacao
             , et.caracteristica01, et.caracteristica02, et.caracteristica03
 	, et.anvisa, et.ministerioagri, et.manipulacao, et.seguimento, et.categoria
+	, et.principioativo
             ,img01.binimg img01
             ,img02.binimg img02
             ,img03.binimg img03
@@ -85,6 +86,7 @@
 	<field name="MANIPULACAO" class="java.lang.String"/>
 	<field name="SEGUIMENTO" class="java.lang.String"/>
 	<field name="CATEGORIA" class="java.lang.String"/>
+	<field name="PRINCIPIOATIVO" class="java.lang.String"/>
 	<field name="IMG01" class="java.io.InputStream"/>
 	<field name="IMG02" class="java.io.InputStream"/>
 	<field name="IMG03" class="java.io.InputStream"/>
@@ -174,8 +176,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[($F{MANIPULACAO}==null?"":"MANIPULAÇÃO: "+$F{MANIPULACAO}+"\n")
 +($F{SEGUIMENTO}==null?"":"SEGUIMENTO: "+$F{SEGUIMENTO}+"\n")
-+($F{CATEGORIA}==null?"":"CATEGORIA: "+$F{CATEGORIA}+"\n")
-]]></textFieldExpression>
++($F{CATEGORIA}==null?"":"CATEGORIA: "+$F{CATEGORIA}+"\n")]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement uuid="d628c54e-a950-49d2-ae7c-a037b22404be" mode="Opaque" x="337" y="303" width="210" height="14" forecolor="#FFFFFF" backcolor="#364678"/>
@@ -256,8 +257,14 @@
 				</textElement>
 				<textFieldExpression><![CDATA[($F{CARACTERISTICA01}==null?"":$F{CARACTERISTICA01}+"\n")
 +($F{CARACTERISTICA02}==null?"":$F{CARACTERISTICA02}+"\n")
-+($F{CARACTERISTICA03}==null?"":$F{CARACTERISTICA03}+"\n")
-]]></textFieldExpression>
++($F{CARACTERISTICA03}==null?"":$F{CARACTERISTICA03}+"\n")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="c36d0965-d890-44d0-b0cb-90ea29b3ef59" style="Title" mode="Transparent" x="11" y="231" width="172" height="27" backcolor="#D9B980"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" markup="none">
+					<font fontName="Arial" size="7" isBold="false" pdfFontName="Times-Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PRINCIPIOATIVO}]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>

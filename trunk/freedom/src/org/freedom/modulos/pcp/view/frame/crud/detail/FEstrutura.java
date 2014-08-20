@@ -615,8 +615,9 @@ private void montaTela() {
 		adicCampo( txtCaracteristica01, 7, 60, 200, 20, "Caracteristica01", "Característica 01", ListaCampos.DB_SI, false );
 		adicCampo( txtCaracteristica02, 210, 60, 200, 20, "Caracteristica02", "Característica 02", ListaCampos.DB_SI, false );
 		adicCampo( txtCaracteristica03, 413, 60, 200, 20, "Caracteristica03", "Característica 03", ListaCampos.DB_SI, false );
-		adicDB( txaAnvisa, 7, 100, 310, 40, "Anvisa", "Anvisa", ListaCampos.DB_SI, false );
-		adicDB( txaMinisterioagri, 320, 100, 310, 40, "Ministerioagri", "Ministério da agricultura", ListaCampos.DB_SI, false );
+		adicDB( txaAnvisa, 7, 100, 200, 40, "Anvisa", "Anvisa", ListaCampos.DB_SI, false );
+		adicDB( txaMinisterioagri, 210, 100, 200, 40, "Ministerioagri", "Ministério da agricultura", ListaCampos.DB_SI, false );
+		adicDB( txaPrincipioativo, 413, 100, 200, 40, "Principioativo", "Princípio ativo", ListaCampos.DB_SI, false );
 		
 
 		setPainel( pinCabConf );
@@ -1106,6 +1107,7 @@ private void montaTela() {
 			sql.append(", et.desccompl, et.finalidadeuso, et.modousar, et.mecanismoacao ");
 			sql.append(", et.caracteristica01, et.caracteristica02, et.caracteristica03 ");
 			sql.append(", et.anvisa, et.ministerioagri, et.manipulacao, et.seguimento, et.categoria ");
+			sql.append(", et.principioativo ");
 			sql.append(",img01.binimg img01 ");
 			sql.append(",img02.binimg img02 ");
 			sql.append(",img03.binimg img03 ");
