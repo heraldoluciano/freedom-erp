@@ -1435,7 +1435,7 @@ public class FSintegra extends FFilho implements ActionListener {
 
 		try {
 
-			if ( "S".equals( cbConsumidor.getVlrString() ) && "1".equals( sConvenio ) ) {
+			if ( "S".equals( cbConsumidor.getVlrString() ) && ("1".equals( sConvenio ) || "3".equals( sConvenio ) ) ) {
 
 				// REGISTRO 61 LIVROS FISCAIS DE SAIDA
 
@@ -1650,7 +1650,7 @@ public class FSintegra extends FFilho implements ActionListener {
 					// Amarrado com o ítem padrão da classificação fiscal pois não deve repetir de acordo com as vendas as alíquotas
 					// Informadas devem ser as correspondetes a vendas / ou compras dentro do estado.
 				}
-				if ( cbConsumidor.getVlrString().equals( "S" ) && ( sConvenio.equals( "1" ) ) ) { // IV.PERCICMSITVENDA
+				if ( cbConsumidor.getVlrString().equals( "S" ) && ("1".equals( sConvenio ) || "3".equals( sConvenio ) ) ) { // IV.PERCICMSITVENDA
 					sqlconsumidor.append( "select iv.codprod,p.refprod,p.descprod,coalesce(cf.aliqipifisc,0) " ); 
 					sqlconsumidor.append( ", coalesce(cf.aliqlfisc,0),p.codunid,cf.origfisc,cf.codtrattrib,p.codfisc " ); 
 					sqlconsumidor.append( "from vdvenda v,vditvenda iv,eqtipomov tm,eqproduto p,vdcliente c,lfitclfiscal cf " );
