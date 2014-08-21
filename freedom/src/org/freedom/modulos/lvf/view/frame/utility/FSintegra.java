@@ -576,12 +576,14 @@ public class FSintegra extends FFilho implements ActionListener {
 				sql.append( "where lf.dtemitlf between ? and ? " );
 				sql.append( "and lf.codemp=? and lf.codfilial=? " );
 				sql.append( "and c.codcli=lf.codemitlf and c.codemp=lf.codempet " );
-				sql.append( "and c.codfilial=lf.codfilialet and c.pessoacli in ('J'" );
+				sql.append( "and c.codfilial=lf.codfilialet ");
+				//c.pessoacli in ('J'" );
 				//if ("S".equals( cbConsumidor.getVlrString() )) {
 				//	sql.append(",'F'");
 				//}
-				sql.append( ") ");
-				sql.append( "and lf.tipolf='S' and lf.serielf<>? " );
+				//sql.append( ") ");
+				sql.append( "and lf.tipolf='S' ");
+				sql.append( "and lf.serielf<>? " );
 				sql.append( "group by 1,2,3,4,5,6,7,8,9,10,13,17,18,19,20,21,22,23 " );
 				sql.append( "order by lf.dtemitlf,lf.docinilf" );
 
@@ -598,7 +600,7 @@ public class FSintegra extends FFilho implements ActionListener {
 				while ( rs.next() ) {
 					buffer.delete( 0, buffer.length() );
 					if ( "F".equals( rs.getString( "PESSOACLI" ) ) ) {
-						cnpjcli = rs.getString( "CPFCLI" );// 
+						cnpjcli = StringFunctions.strZero( rs.getString( "CPFCLI" ), 14); // 
 					}
 					else {
 						cnpjcli = rs.getString( "CNPJCLI" );
@@ -1150,11 +1152,12 @@ public class FSintegra extends FFilho implements ActionListener {
 				sql.append( "and iv.codemp=v.codemp and iv.codfilial=v.codfilial and iv.tipovenda=v.tipovenda " );
 				sql.append( "and iv.codvenda=v.codvenda ");
 				sql.append( "and tm.codemp=v.codemptm and tm.codfilial=v.codfilialtm and tm.codtipomov=v.codtipomov and tm.fiscaltipomov='S' " );
-				sql.append( "and c.codemp=v.codempcl and c.codfilial=v.codfilialcl and c.codcli=v.codcli and c.pessoacli in ('J'");
+				sql.append( "and c.codemp=v.codempcl and c.codfilial=v.codfilialcl and c.codcli=v.codcli ");
+				//and c.pessoacli in ('J'");
 				//if ("S".equals( cbConsumidor.getVlrString() )) {
 					//sql.append(",'F'");
 				//}
-				sql.append(") ");
+				//sql.append(") ");
 				sql.append( "and p.codemp=iv.codemppd and p.codfilial=iv.codfilialpd and p.codprod=iv.codprod ");
 				sql.append( "and cf.codfisc=iv.codfisc and cf.codemp=iv.codempif and cf.codfilial=iv.codfilialif and cf.coditfisc=iv.coditfisc " );
 				sql.append( " and p.tipoprod<>'O' ");
@@ -1441,7 +1444,7 @@ public class FSintegra extends FFilho implements ActionListener {
 		try {
 
 			if ( "S".equals( cbConsumidor.getVlrString() ) && ("1".equals( sConvenio ) 
-					|| "3".equals( sConvenio ) 
+					//|| "3".equals( sConvenio ) 
 					) ) {
 
 				// REGISTRO 61 LIVROS FISCAIS DE SAIDA
