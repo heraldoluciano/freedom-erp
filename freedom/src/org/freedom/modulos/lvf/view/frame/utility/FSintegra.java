@@ -1185,7 +1185,7 @@ public class FSintegra extends FFilho implements ActionListener {
 					buffer.delete( 0, buffer.length() );
 
 					if ( "F".equals( rs.getString( "PESSOACLI" ) ) ) {
-						cnpjcli = StringFunctions.replicate( "0", 14 );// rs.getString( "CPFCLI" );
+						cnpjcli = StringFunctions.replicate( rs.getString( "CPFCLI" ), 14);
 					}
 					else {
 						cnpjcli = rs.getString( "CNPJCLI" );
