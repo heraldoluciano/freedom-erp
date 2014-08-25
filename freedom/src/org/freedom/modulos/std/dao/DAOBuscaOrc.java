@@ -211,7 +211,7 @@ public class DAOBuscaOrc extends AbstractDAO {
 	}
 	
 	public int executaVDAdicVendaORCSP(Integer codemp,  Integer codfilialoc, Integer codorc
-			, Integer codfilialvd, String tipovenda, Integer codvenda, Date datasaida) throws SQLException {
+			, Integer codfilialvd, String tipovenda, Integer codvenda, Date datasaida, Integer codfilialpf) throws SQLException {
 		StringBuilder sql = new StringBuilder();
 		StringBuilder sqlseq = new StringBuilder();
 
@@ -250,7 +250,8 @@ public class DAOBuscaOrc extends AbstractDAO {
 				}
 			}
 		}
-		param = 1;
+		
+		/*param = 1;
 		sql.append( "select iret from vdadicvendaorcsp(?,?,?,?,?,?,?)" );
 		PreparedStatement ps = getConn().prepareStatement( sql.toString() );
 		ps.setInt( param++, codemp );
@@ -264,10 +265,197 @@ public class DAOBuscaOrc extends AbstractDAO {
 		if ( rs.next() )
 			icodvenda = rs.getInt( "iret" );
 		rs.close();
-		ps.close();
-		return icodvenda;
+		ps.close();*/
+		codvenda = vdadicvendaorcsp( codorc, codfilialvd, tipovenda, codvenda
+				, Funcoes.dateToSQLDate( datasaida == null ? new Date() : datasaida )
+				, codfilialpf );
+		return codvenda;
 	}
 
+	public Integer vdadicvendaorcsp ( Integer codorc, Integer codfilialvd, String tipovenda, Integer codvenda
+			, Date dtsaidavenda, Integer codfilialpf) throws SQLException {
+		 Integer result = null;
+		 Integer codtipomov=null;
+		 String serie=null;
+		 String statusvenda=null;
+		 BigDecimal perccomvend=null;
+		 Integer codvend=null;
+		 Integer codcli=null;
+		 Integer codplanopag=null;
+		 Integer conta = null;
+		 Integer codclcomis=null;
+		 Integer codfilialcm=null;
+		 BigDecimal vlrfreteorc=null;
+		 Integer codtran=null;
+		 String tipofrete=null;
+		 String adicfrete=null;
+		 Integer codfilialtm=null;
+		 Integer codfilialse=null;
+		 Integer codfilialcl=null;
+		 Integer codfilialtn=null;
+		 Integer codfilialpg=null;
+		 StringBuilder sql = new StringBuilder();
+		 sql.append("select count(p.tipoprod) conta from eqproduto p, vditorcamento i ");
+		 sql.append("where p.codprod=i.codprod and p.codfilial=i.codfilialpd and p.codemp=i.codemppd ");
+		 sql.append("and p.tipoprod='S' and i.codemp=? and i.codfilial=? and i.codorc=? ");
+		 PreparedStatement ps = getConn().prepareStatement( sql.toString() );
+		 int param = 1;
+		 ps.setInt( param++, getCodemp() );
+		 ps.setInt( param++, getCodfilial() );
+		 ps.setInt( param++, codorc );
+		 ResultSet rs = ps.executeQuery();
+		 if (rs.next()) {
+			 conta = rs.getInt( "conta" );
+		 }
+		 rs.close();
+		 ps.close();
+		 sql.delete( 0, sql.length() );
+		 if (conta!=null && conta.intValue()>0) {
+			 sql.append("select p1.codfilialt4, p1.codtipomov4 ");
+			 sql.append(", tm.codfilialse, tm.serie ");
+			 sql.append("from sgprefere1 p1 ");
+			 sql.append("left outer join eqtipomov tm ");
+			 sql.append("on tm.codemp=p1.codempt4 and tm.codfilial=p1.codfilialt4 and tm.codtipomov=p1.codtipomov4 ");
+			 sql.append("where p1.codemp=? and p1.codfilial=?");
+			 ps = getConn().prepareStatement( sql.toString() );
+			 param = 1;
+			 ps.setInt( param++, getCodemp() );
+			 ps.setInt( param++, codfilialpf );
+			 rs = ps.executeQuery();
+			 if (rs.next()) {
+				  codfilialtm = rs.getInt( "codfilialt4" );
+				  codtipomov = rs.getInt( "codtipomov4" );
+				  codfilialse = rs.getInt( "codfilialse" );
+				  serie = rs.getString( "serie" );
+			 }
+			 rs.close();
+			 ps.close();
+			 sql.delete( 0, sql.length() );
+		 }
+		 if ((codtipomov==null) || (codtipomov==0)) {
+			 sql.append("select p1.codfilialt3, p1.codtipomov3 ");
+			 sql.append(", tm.codfilialse, tm.serie ");
+			 sql.append("from sgprefere1 p1 ");
+			 sql.append("left outer join eqtipomov tm ");
+			 sql.append("on tm.codemp=p1.codempt3 and tm.codfilial=p1.codfilialt3 and tm.codtipomov=p1.codtipomov3 ");
+			 sql.append("where p1.codemp=? and p1.codfilial=?");
+			 ps = getConn().prepareStatement( sql.toString() );
+			 param = 1;
+			 ps.setInt( param++, getCodemp() );
+			 ps.setInt( param++, codfilialpf );
+			 rs = ps.executeQuery();
+			 if (rs.next()) {
+				  codfilialtm = rs.getInt( "codfilialt3" );
+				  codtipomov = rs.getInt( "codtipomov3" );
+				  codfilialse = rs.getInt( "codfilialse" );
+				  serie = rs.getString( "serie" );
+			 }
+			 rs.close();
+			 ps.close();
+			 sql.delete( 0, sql.length() );
+		 }
+		 statusvenda = "P1";
+		 sql.append( "select o.codfilialvd,o.codvend,o.codfilialcl,o.codcli,o.codfilialpg " );
+		 sql.append( ", o.codplanopag,ve.perccomvend,o.codclcomis,o.codfilialcm ");
+		 sql.append( ", coalesce(o.vlrfreteorc,0) vlrfreteorc, o.codemptn, o.codfilialtn, o.codtran ");
+		 sql.append( ", o.tipofrete, o.adicfrete ");
+		 sql.append( "from vdorcamento o, vdvendedor ve ");
+		 sql.append( "where o.codemp=? and o.codfilial=? and o.codorc=? ");
+		 sql.append( "and ve.codemp=o.codemp and ve.codfilial=o.codfilialvd ");
+		 sql.append( "and ve.codvend=o.codvend ");
+		 ps = getConn().prepareStatement( sql.toString() );
+		 param = 1;
+		 ps.setInt( param++, getCodemp() );
+		 ps.setInt( param++, getCodfilial() );
+		 ps.setInt( param++, codorc );
+		 rs = ps.executeQuery();
+		 if (rs.next()) {
+			 codfilialvd = rs.getInt( "codfilialvd" );
+			 codvend = rs.getInt( "codvend" );
+			 codfilialcl = rs.getInt( "codfilialcl" );
+			 codcli = rs.getInt( "codcli" );
+			 codfilialpg = rs.getInt( "codfilialpg" );
+			 codplanopag = rs.getInt( "codplanopag" );
+			 perccomvend = rs.getBigDecimal( "perccomvend" );
+			 codclcomis = rs.getInt( "codclcomis" );
+			 codfilialcm = rs.getInt( "codfilialcm" );
+			 vlrfreteorc = rs.getBigDecimal( "vlrfreteorc" );
+			 codfilialtn = rs.getInt( "codfilialtn" );
+			 codtran = rs.getInt( "codtran" );
+			 tipofrete = rs.getString( "tipofrete" );
+			 adicfrete = rs.getString( "adicfrete" );
+		 }
+		 rs.close();
+		 ps.close();
+		 sql.delete( 0, sql.length() );
+		 sql.append( "insert into vdvenda ( ");
+		 sql.append( "codemp,codfilial,codvenda,tipovenda,codempvd,codfilialvd,codvend,codempcl,codfilialcl,codcli, ");
+		 sql.append( "codemppg,codfilialpg,codplanopag,codempse,codfilialse,serie,codemptm,codfilialtm,codtipomov, ");
+		 sql.append( "dtsaidavenda,dtemitvenda,statusvenda,perccomisvenda, codempcm, codfilialcm, codclcomis ) ");
+		 sql.append( "values ( ");
+		 sql.append( "?, ?, ?, ?, ?, ?, ?, ?, ?, ? ");
+		 sql.append( ", ?, ?, ?, ?, ?, ?, ?, ?, ? ");
+		 sql.append( ", ?, cast('today' as date), ?, ?, ?, ?, ? ");
+		 sql.append( ") ");
+		 ps = getConn().prepareStatement( sql.toString() );
+		 param = 1;
+		 ps.setInt( param++, getCodemp() );
+		 ps.setInt( param++, getCodfilial() );
+		 ps.setInt( param++, codvenda );
+		 ps.setString( param++, tipovenda );
+		 ps.setInt( param++, getCodemp() );
+		 ps.setInt( param++, codfilialvd );
+		 ps.setInt( param++, codvend );
+		 ps.setInt( param++, getCodemp() );
+		 ps.setInt( param++, codfilialcl );
+		 ps.setInt( param++, codcli );
+		 ps.setInt( param++, getCodemp() );
+		 ps.setInt( param++, codfilialpg );
+		 ps.setInt( param++, codplanopag );
+		 ps.setInt( param++, getCodemp() );
+		 ps.setInt( param++, codfilialse );
+		 ps.setString( param++, serie );
+		 ps.setInt( param++, getCodemp() );
+		 ps.setInt( param++, codfilialtm );
+		 ps.setInt( param++, codtipomov );
+		 ps.setDate( param++, Funcoes.dateToSQLDate( dtsaidavenda ) );
+		 ps.setString( param++, statusvenda );
+		 ps.setBigDecimal( param++, perccomvend );
+		 ps.setInt( param++, getCodemp() );
+		 ps.setInt( param++, codfilialcm );
+		 ps.setInt( param++, codclcomis );
+		 ps.executeUpdate();
+		 ps.close();
+		 sql.delete( 0, sql.length() );
+		 if ( (codtran!=null && codtran!=0) || (vlrfreteorc!=null && vlrfreteorc.doubleValue()>0) )  {
+			 sql.append( "insert into vdfretevd (codemp, codfilial, tipovenda, codvenda, codemptn ");
+			 sql.append( ", codfilialtn, codtran, tipofretevd, vlrfretevd, adicfretevd ");
+			 sql.append( ", placafretevd, vlrsegfretevd, pesobrutvd, pesoliqvd ");
+			 sql.append( ", espfretevd, marcafretevd, qtdfretevd, uffretevd ");
+			 sql.append( ") ");
+			 sql.append( "values (?, ?, ?, ?, ? ");
+			 sql.append( ", ?, ?, ?, ?, ? ");
+			 sql.append( ", '***-***', 0, 0, 0 ");
+			 sql.append( ", 'Volume', '*', 0, '**' ) ");
+			 ps = getConn().prepareStatement( sql.toString() );
+			 param = 1;
+			 ps.setInt( param++, getCodemp() );
+			 ps.setInt( param++, getCodfilial() );
+			 ps.setString( param++, tipovenda );
+			 ps.setInt( param++, codvenda );
+			 ps.setInt( param++, getCodemp() );
+			 ps.setInt( param++, codfilialtn );
+			 ps.setInt( param++, codtran );
+			 ps.setString( param++, tipofrete );
+			 ps.setBigDecimal( param++, vlrfreteorc );
+			 ps.setString( param++, adicfrete );
+			 ps.executeUpdate();
+			 ps.close();
+			 sql.delete( 0, sql.length() );
+		}
+		result = codvenda;
+		return result;
+	}
 	
 	public void executaVDAdicItVendaORCSP(Integer codfilial, Integer codvenda, Integer codorc, Integer coditorc, Integer codfilialoc, Integer codempoc, 
 			String tipovenda, String tpagr, BigDecimal qtdprod, BigDecimal qtdafatitorc, BigDecimal desc) throws SQLException {
