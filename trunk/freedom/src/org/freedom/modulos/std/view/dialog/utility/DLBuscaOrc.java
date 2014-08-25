@@ -739,17 +739,21 @@ private boolean gerarVenda() {
 						BigDecimal qtdafatitorc	= new BigDecimal( Funcoes.strCurrencyToDouble( tabitorc.getValor( i, GRID_ITENS.QTDAFATITORC.ordinal() ).toString() ) ) ;
 						BigDecimal desc = new BigDecimal( Funcoes.strCurrencyToDouble( tabitorc.getValor( i, GRID_ITENS.DESC.ordinal() ).toString() ) );
 						daobusca.executaVDAdicItVendaORCSP( 
-								Aplicativo.iCodFilial, 
-								iCodVenda, 
-								icodorc,
-								coditorc, 
-								ListaCampos.getMasterFilial( "VDORCAMENTO" ), 
-								Aplicativo.iCodEmp, 
-								sTipoVenda, 
-								tabitorc.getValor( i, GRID_ITENS.TPAGR.ordinal() ).toString(), 
-								qtdprod, 
-								qtdafatitorc, 
-								desc);
+								Aplicativo.iCodFilial 
+								, iCodVenda 
+								, icodorc
+								, coditorc 
+								, ListaCampos.getMasterFilial( "VDORCAMENTO" ) 
+								, Aplicativo.iCodEmp 
+								, sTipoVenda 
+								, tabitorc.getValor( i, GRID_ITENS.TPAGR.ordinal() ).toString() 
+								, qtdprod 
+								, qtdafatitorc 
+								, desc
+								, ListaCampos.getMasterFilial( "LFNATOPER" )
+								, ListaCampos.getMasterFilial( "LFTRATTRIB" )
+								, ListaCampos.getMasterFilial( "LFMENSAGEM" )
+								);
 					} 
 					catch ( SQLException err ) {
 						try {

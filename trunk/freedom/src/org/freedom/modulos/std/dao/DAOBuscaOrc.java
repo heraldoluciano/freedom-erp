@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -457,26 +458,13 @@ public class DAOBuscaOrc extends AbstractDAO {
 		return result;
 	}
 	
-	public void executaVDAdicItVendaORCSP(Integer codfilial, Integer codvenda, Integer codorc, Integer coditorc, Integer codfilialoc, Integer codempoc, 
-			String tipovenda, String tpagr, BigDecimal qtdprod, BigDecimal qtdafatitorc, BigDecimal desc) throws SQLException {
+	public void executaVDAdicItVendaORCSP(Integer codfilial, Integer codvenda, Integer codorc
+			, Integer coditorc, Integer codfilialoc, Integer codempoc
+			, String tipovenda, String tpagr, BigDecimal qtdprod, BigDecimal qtdafatitorc
+			, BigDecimal desc, Integer codfilialnt, Integer codfilialtt, Integer codfilialme) throws SQLException {
 
-		String sql = "execute procedure vdadicitvendaorcsp(?,?,?,?,?,?,?,?,?,?)";
-		int param = 1;
-
-		PreparedStatement ps = getConn().prepareStatement( sql );
-
-		ps.setInt( param++, codfilial);
-		ps.setInt( param++, codvenda );
-		ps.setInt( param++, codorc);
-		ps.setInt( param++, coditorc );
-		ps.setInt( param++, codfilialoc);
-		ps.setInt( param++, codempoc);
-
-		ps.setString( param++, tipovenda );
-		ps.setString( param++, tpagr);
-
+		BigDecimal qtditvenda = BigDecimal.ZERO;
 		// Verificação dos excessos de produção
-
 		if( qtdprod.compareTo( qtdafatitorc ) > 0 && 
 				( Funcoes.mensagemConfirma( null,  
 
@@ -487,21 +475,540 @@ public class DAOBuscaOrc extends AbstractDAO {
 								"Quantidade produzida : " + Funcoes.bdToStrd( qtdprod ) + "\n\n"
 
 						) == JOptionPane.YES_OPTION ) ) {
-
-			ps.setBigDecimal( param++, qtdprod );
-
+			qtditvenda = qtdprod;
 		}
 		else {
-			ps.setBigDecimal( param++, qtdafatitorc );	
+			qtditvenda = qtdafatitorc;	
 		}
-
-
-		ps.setBigDecimal( param++, desc );
-
-		ps.execute();
-		ps.close();
+		vdadicitvendaorc( codfilial, codvenda, codorc, coditorc, tipovenda, tpagr, qtditvenda
+				, desc, codfilialnt, codfilialtt, codfilialme );
 	}
 
+	@ SuppressWarnings ( "null" )
+	public void vdadicitvendaorc(Integer codfilial, Integer codvenda, Integer codorc, Integer coditorc
+			, String tipovenda, String tpagrup, BigDecimal qtditvenda, BigDecimal vlrdescitvenda
+			, Integer codfilialnt, Integer codfilialtt, Integer codfilialme
+			) throws SQLException {
+		Integer coditvenda=null;
+		Integer codempax=null;
+		Integer codfilialax=null;
+		Integer codalmox=null;
+		Integer codcli=null;
+		Integer codfilialtm=null;
+		Integer codtipomov=null;
+		Integer codfilialcl=null;
+		String codnat=null;
+		String codlote=null;
+		String tipofisc=null;
+		String origfisc=null;
+		String codtrattrib=null;
+		//Integer codfilialtt=null;
+		//Integer codfilialme=null;
+		Integer codmens=null;
+		BigDecimal percicmsitvenda=null;
+		BigDecimal vlrbaseicmsitvenda=null;
+		BigDecimal vlricmsitvenda=null;
+		BigDecimal percipiitvenda=null;
+		BigDecimal vlrbaseipiitvenda=null;
+		BigDecimal vlripiitvenda=null;
+		Integer codprod=null;
+		Integer codfilialpd=null;
+		BigDecimal vlrprecoitvenda=null;
+		BigDecimal percdescitvenda=null;
+		BigDecimal vlrliqitvenda=null;
+		BigDecimal vlrproditvenda=null;
+		String obsitorc=null;
+		String ufcli=null;
+		String ufflag=null;
+		BigDecimal percred=null;
+		String cloteprod=null;
+		BigDecimal perccomisitvenda=null;
+		String geracomis=null;
+		BigDecimal vlrcomisitvenda=null;
+		Integer codempif=null;
+		Integer codfilialif=null;
+		String codfisc=null;
+		Integer coditfisc=null;
+		BigDecimal percissitvenda=null;
+		BigDecimal vlrbaseissitvenda=null;
+		BigDecimal vlrissitvenda=null;
+		BigDecimal vlrisentasitvenda=null;
+		BigDecimal vlroutrasitvenda=null;
+		String tipost=null;
+		BigDecimal vlrbaseicmsstitvenda=null;
+		BigDecimal vlricmsstitvenda=null;
+		BigDecimal margemvlagritvenda=null;
+		String refprod=null;
+		String tipoprod=null;
+		BigDecimal percicmsst=null;
+		BigDecimal vlrbaseicmsbrutitvenda=null;
+		String tpredicms=null;
+		String redbaseicmsst=null;
+		BigDecimal qtditorc=null;
+		String calcstcm=null;
+		BigDecimal aliqicmsstcm=null;
+		BigDecimal vlricmsstcalc=null;
+		final BigDecimal CEM = new BigDecimal(100);
+		// Inicialização de variaveis
+		calcstcm = "N";
+		ufflag = "N";
+		StringBuilder sql = new StringBuilder();
+		sql.append("select vd.codfilialtm, vd.codtipomov from vdvenda vd ");
+		sql.append("where codemp=? and codfilial=? and tipovenda=? and codvenda=?");
+		PreparedStatement ps = getConn().prepareStatement( sql.toString() );
+		int param = 1;
+		ps.setInt(param++, getCodemp());
+		ps.setInt( param++, getCodfilial() );
+		ps.setString( param++, tipovenda );
+		ps.setInt( param++, codvenda );
+		ResultSet rs = ps.executeQuery();
+		if (rs.next()) {
+			codfilialtm = rs.getInt( "codfilialtm" );
+			codtipomov = rs.getInt( "codtipomov" );
+		}
+		rs.close();
+		ps.close();
+		sql.delete( 0, sql.length() );
+		// Verifica se deve gerar comissão para a venda
+		sql.append( "select geracomisvendaorc from sgprefere1 where codemp=? and codfilial=?" );
+		ps = getConn().prepareStatement( sql.toString() );
+		param = 1;
+		ps.setInt(param++, getCodemp());
+		ps.setInt( param++, getCodfilial() );
+		rs = ps.executeQuery();
+		if (rs.next()) {
+			geracomis = rs.getString( "geracomisvendaorc" );
+		}
+		rs.close();
+		ps.close();
+		sql.delete( 0, sql.length() );
+		// Busca sequencia de numeração do ítem de venda
+		sql.append( "select coalesce(max(coditvenda),0)+1 coditvenda from vditvenda ");
+		sql.append( "where codemp=? and codfilial=? and tipovenda=? and codvenda=?" );
+		ps = getConn().prepareStatement( sql.toString() );
+		param = 1;
+		ps.setInt(param++, getCodemp());
+		ps.setInt( param++, getCodfilial() );
+		ps.setString( param++, tipovenda );
+		ps.setInt( param++, codvenda );
+		rs = ps.executeQuery();
+		if (rs.next()) {
+			coditvenda = rs.getInt( "coditvenda" );
+		}
+		rs.close();
+		ps.close();
+		sql.delete( 0, sql.length() );
+		// Informações do Orcamento
+		sql.append( "select oc.codcli, oc.codfilialcl, coalesce(cl.siglauf,cl.ufcli) siglauf ");
+		sql.append( "from vdorcamento oc ");
+		sql.append( "left outer join vdcliente cl ");
+		sql.append( "on cl.codemp=oc.codempcl and cl.codfilial=oc.codfilialcl and cl.codcli=oc.codcli ");
+		sql.append( "where oc.codemp=? and oc.codfilial=? and oc.codorc=?" );
+		ps = getConn().prepareStatement( sql.toString() );
+		param = 1;
+		ps.setInt(param++, getCodemp());
+		ps.setInt( param++, getCodfilial() );
+		ps.setInt( param++, codorc );
+		rs = ps.executeQuery();
+		if (rs.next()) {
+			codfilialcl = rs.getInt( "codfilialcl" );
+			codcli = rs.getInt( "codcli" );
+			ufcli = rs.getString( "siglauf" );
+		}
+		rs.close();
+		ps.close();
+		sql.delete( 0, sql.length() );
+		sql.append( "select it.codemppd, it.codfilialpd,it.codprod,it.precoitorc,it.percdescitorc ");
+		sql.append( ",it.vlrliqitorc,it.vlrproditorc,it.refprod,it.obsitorc ");
+		sql.append( ",it.codempax,it.codfilialax,it.codalmox,it.codlote,pd.cloteprod ");
+		sql.append( ",pd.comisprod,pd.tipoprod, it.perccomisitorc, it.vlrcomisitorc, it.qtditorc " );
+		sql.append( "from vditorcamento it, eqproduto pd ");
+		sql.append( "where it.codemp=? and it.codfilial=? and it.codorc=? and it.coditorc=? ");
+		sql.append( "and pd.codemp=it.codemppd and pd.codfilial=it.codfilialpd and pd.codprod=it.codprod ");
+		ps = getConn().prepareStatement( sql.toString() );
+		param = 1;
+		ps.setInt(param++, getCodemp());
+		ps.setInt( param++, getCodfilial() );
+		ps.setInt( param++, codorc );
+		ps.setInt( param++, coditorc );
+		rs = ps.executeQuery();
+		if (rs.next()) {
+			codfilialpd = rs.getInt( "codfilialpd" );
+			codprod = rs.getInt( "codprod" );
+			vlrprecoitvenda = rs.getBigDecimal( "precoitorc" );
+			percdescitvenda = rs.getBigDecimal( "percdescitorc" );
+			vlrliqitvenda = rs.getBigDecimal( "vlrliqitorc" );
+			vlrproditvenda = rs.getBigDecimal( "vlrproditorc" );
+			refprod = rs.getString( "refprod" );
+			obsitorc = rs.getString( "obsitorc" );
+			codfilialax = rs.getInt( "codfilialax" );
+			codalmox = rs.getInt( "codalmox" );
+			codlote = rs.getString( "codlote" );
+			cloteprod = rs.getString( "cloteprod" );
+			perccomisitvenda = rs.getBigDecimal( "perccomisitorc" );
+			tipoprod = rs.getString( "tipoprod" );
+			vlrcomisitvenda = rs.getBigDecimal( "vlrcomisitorc" );
+			qtditorc = rs.getBigDecimal( "qtditorc" );
+		}
+		rs.close();
+		ps.close();
+		sql.delete( 0, sql.length() );
+	    // Informações fiscais para a venda
+	    // Busca informações fiscais para o ítem de venda (sem natureza da operação deve retornar apenas o coditfisc)
+		sql.append( "select codfilialif,codfisc,coditfisc ");
+		sql.append( "from lfbuscafiscalsp(?, ?, ?, ?, ?, ?, ?, ?, ?, ? , null, null, null, null, null)");
+		ps = getConn().prepareStatement( sql.toString() );
+		param = 1;
+		ps.setInt( param++, getCodemp());
+		ps.setInt( param++, codfilialpd );
+		ps.setInt( param++, codprod );
+		ps.setInt( param++, getCodemp());
+		ps.setInt( param++, codfilialcl );
+		ps.setInt( param++, codcli );
+		ps.setInt( param++, getCodemp());
+		ps.setInt( param++, codfilialtm );
+		ps.setInt( param++, codtipomov );
+		ps.setString( param++, tipovenda );
+		rs = ps.executeQuery();
+		if (rs.next()) {
+			codfilialif = rs.getInt( "codfilialif" );
+			codfisc = rs.getString( "codfisc" );
+			coditfisc = rs.getInt( "coditfisc" );
+		}
+		rs.close();
+		ps.close();
+		sql.delete( 0, sql.length() );
+		// Verifica se a venda é para outro estado
+		sql.append( "select codnat from lfbuscanatsp(?, ?, ?, ?, ?, ?, ?, null, null, null, ?, ?, ?) ");
+		ps = getConn().prepareStatement( sql.toString() );
+		param = 1;
+		ps.setInt( param++, codfilial);
+		ps.setInt( param++, getCodemp());
+		ps.setInt( param++, codfilialpd );
+		ps.setInt( param++, codprod );
+		ps.setInt( param++, getCodemp());
+		ps.setInt( param++, codfilialcl );
+		ps.setInt( param++, codcli );
+		ps.setInt( param++, codfilialtm );
+		ps.setInt( param++, codtipomov );
+		ps.setInt( param++, coditfisc );
+		rs = ps.executeQuery();
+		if (rs.next()) {
+			codnat = rs.getString( "codnat" );
+		}
+		rs.close();
+		ps.close();
+		sql.delete( 0, sql.length() );
+		if (codnat==null) {
+			new SQLException("Não foi possível encontrar a natureza da operação para o ítem "+codprod);
+		}
+		// Busca informações fiscais para o ítem de venda (já sabe o coditfisc)
+		sql.append( "select tipofisc,redfisc,codtrattrib,origfisc,codmens,aliqfisc,codempif,codfilialif,codfisc,coditfisc,tipost ");
+		sql.append( ", margemvlagr,aliqipifisc,aliqfiscintra,tpredicmsfisc,redbasest, aliqiss, coalesce(calcstcm,'N') calcstcm, aliqicmsstcm ");
+		sql.append( " from lfbuscafiscalsp(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+		ps = getConn().prepareStatement( sql.toString() );
+		param = 1;
+		ps.setInt( param++, getCodemp());
+		ps.setInt( param++, codfilialpd );
+		ps.setInt( param++, codprod );
+		ps.setInt( param++, getCodemp());
+		ps.setInt( param++, codfilialcl );
+		ps.setInt( param++, codcli );
+		ps.setInt( param++, getCodemp());
+		ps.setInt( param++, codfilialtm );
+		ps.setInt( param++, codtipomov );
+		ps.setString( param++, tipovenda );
+		ps.setString( param++, codnat );
+		ps.setInt( param++, getCodemp());
+		ps.setInt( param++, codfilialif );
+		if (codfisc==null) {
+			ps.setNull( param++, Types.CHAR );
+			ps.setNull( param++, Types.INTEGER );
+		} else {
+			ps.setString( param++, codfisc );
+			ps.setInt( param++, coditfisc );
+		}
+		rs = ps.executeQuery();
+		if (rs.next()) {
+			tipofisc = rs.getString( "tipofisc" );
+			percred = rs.getBigDecimal( "redfisc" );
+			codtrattrib = rs.getString( "codtrattrib" );
+			origfisc = rs.getString( "origfisc" );
+			codmens = rs.getInt( "codmens" );
+			percicmsitvenda = rs.getBigDecimal( "aliqfisc" );
+			codfilialif = rs.getInt( "codfilialif" );
+			codfisc = rs.getString( "codfisc" );
+			coditfisc = rs.getInt( "coditfisc" );
+			tipost = rs.getString( "tipost" );
+			margemvlagritvenda = rs.getBigDecimal( "margemvlagr" );
+			percipiitvenda = rs.getBigDecimal( "aliqipifisc" );
+			percicmsst = rs.getBigDecimal( "aliqfiscintra" );
+			tpredicms = rs.getString( "tpredicmsfisc" );
+			redbaseicmsst = rs.getString( "redbasest" );
+			percissitvenda = rs.getBigDecimal( "aliqiss" );
+			calcstcm = rs.getString( "calcstcm" );
+			aliqicmsstcm = rs.getBigDecimal( "aliqicmsstcm" );
+		}
+		rs.close();
+		ps.close();
+		sql.delete( 0, sql.length() );
+		// Busca lote, caso seja necessário
+	    if ("S".equals(cloteprod) && codlote==null) {
+	    	sql.append( "select first 1 l.codlote from eqlote l ");
+	    	sql.append( "where l.codemp=? and l.codfilial=? and l.codprod=? "); 
+	    	sql.append( "and l.venctolote>cast('now' as date) and l.sldliqlote>=? ");
+	    	sql.append( "order by l.venctolote ");
+			ps = getConn().prepareStatement( sql.toString() );
+			param = 1;
+			ps.setInt(param++, getCodemp());
+			ps.setInt( param++, getCodfilial() );
+			ps.setInt( param++, codprod );
+			ps.setBigDecimal( param++, qtditorc );
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				codlote = rs.getString( "codlote" );
+			}
+			rs.close();
+			ps.close();
+			sql.delete( 0, sql.length() );
+	    }
+		// Inicializando valores
+	    vlrproditvenda = vlrprecoitvenda.multiply( qtditvenda );
+	    if ( qtditvenda.compareTo( qtditorc )!=0 ) {
+	    	vlrdescitvenda = vlrdescitvenda.divide( qtditorc ).multiply( qtditvenda ); 
+	    }
+	    vlrliqitvenda = vlrproditvenda.subtract( vlrdescitvenda );
+	    vlrbaseipiitvenda = BigDecimal.ZERO;
+	    vlrbaseicmsitvenda = BigDecimal.ZERO;
+	    vlricmsitvenda = BigDecimal.ZERO;
+	    vlripiitvenda = BigDecimal.ZERO;
+	    if (percicmsitvenda==null || percicmsitvenda.doubleValue()==0) {
+	    	sql.append( "select coalesce(percicms,0) percicms from lfbuscaicmssp (?, ?, ?, ?)");
+			ps = getConn().prepareStatement( sql.toString() );
+			param = 1;
+			ps.setString(param++, codnat);
+			ps.setString( param++, ufcli );
+			ps.setInt( param++, getCodemp() );
+			ps.setInt( param++, getCodfilial() );
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				percicmsst = rs.getBigDecimal( "percicms" );
+			}
+			rs.close();
+			ps.close();
+			sql.delete( 0, sql.length() );
+	    }
+	    if (percred==null) {
+	    	percred = BigDecimal.ZERO;
+	    }
+	    if (percred.doubleValue()>0) {
+	        if ("B".equals( tpredicms ) ) {
+	            vlrbaseicmsitvenda = (vlrproditvenda.subtract( vlrdescitvenda)).subtract( (vlrproditvenda.subtract( vlrdescitvenda))).multiply( percred ).divide( CEM );
+	            vlricmsitvenda = vlrbaseicmsitvenda.multiply(  percicmsitvenda.divide( CEM ) );
+	        } else if( "V".equals( tpredicms ) ) {
+	            vlrbaseicmsitvenda = vlrproditvenda.subtract( vlrdescitvenda );
+	            vlricmsitvenda = vlrbaseicmsitvenda.multiply( percicmsitvenda.divide( CEM )
+	            		.subtract( vlrbaseicmsitvenda.multiply( percicmsitvenda.divide( CEM )
+	            				.multiply( percred.divide( CEM ) ) ) ) ) ;
+	        }
+	    } else {
+	        vlrbaseicmsitvenda = vlrproditvenda.subtract( vlrdescitvenda );
+	        vlricmsitvenda = vlrbaseicmsitvenda.multiply( percicmsitvenda.divide( CEM ) );
+	    }
+	    vlrbaseipiitvenda = vlrproditvenda.subtract( vlrdescitvenda );
+	    vlrbaseicmsbrutitvenda = vlrproditvenda.subtract( vlrdescitvenda );
+	    vlripiitvenda = vlrbaseipiitvenda.multiply( percipiitvenda.divide( CEM ) );
+		// **** Calculo dos tributos ***
+	    // Verifica se é um serviço (Calculo do ISS);			    
+	    if ("S".equals( tipoprod ) ) {
+		    // Carregando aliquota do ISS
+		    // Bloco comentado, pois já buscou o percentual do iss através da procedure.
+		   //     select percissfilial from sgfilial where codemp=:ICODEMP and codfilial=:ICODFILIAL
+		   //     into PERCISSITVENDA;
+		   //-- Calculando e computando base e valor do ISS;
+		    if (percissitvenda !=null || percissitvenda.doubleValue() != 0) {
+	            vlrbaseissitvenda = vlrliqitvenda;
+	            vlrissitvenda = vlrbaseissitvenda.multiply( percissitvenda.divide( CEM) );
+		    }
+	    } else { //-- Se o item vendido não for SERVIÇO zera ISS
+	        vlrbaseissitvenda = BigDecimal.ZERO;
+	    }
+	    //  Se produto for isento de ICMS
+	    if ("II".equals( tipofisc )) {
+	        vlrisentasitvenda = vlrliqitvenda;
+	        vlrbaseicmsitvenda = BigDecimal.ZERO;
+	        percicmsitvenda = BigDecimal.ZERO;
+	        vlricmsitvenda = BigDecimal.ZERO;
+	        vlroutrasitvenda = BigDecimal.ZERO;
+	    } else if ("FF".equals( tipofisc )) { // Se produto for de Substituição Tributária
+	        if ( "SI".equals( tipost ) ) { // Contribuinte Substituído
+	            vlroutrasitvenda = vlrliqitvenda;
+	            vlrbaseicmsitvenda = BigDecimal.ZERO;
+	            percicmsitvenda = BigDecimal.ZERO;
+	            vlricmsitvenda = BigDecimal.ZERO;
+	            vlrisentasitvenda = BigDecimal.ZERO;
+	        }
+	        else if ( "SU".equals(tipost) ) { //- Contribuinte Substituto
+	            if( (percicmsst == null) || (percicmsst.doubleValue()==0) ) {
+	                sql.append("select coalesce(percicmsintra,0) percicmsst from lfbuscaicmssp (?, ?, ?, ?)");
+	                ps = getConn().prepareStatement( sql.toString() );
+	                ps.setString( param++, codnat );
+	                ps.setString( param++, ufcli );
+	                ps.setInt( param++, getCodemp() );
+	                ps.setInt( param++, getCodfilial() );
+	                rs = ps.executeQuery();
+	                if (rs.next()) {
+	                	percicmsst = rs.getBigDecimal( "percicmsst" );
+	                }
+	            }
+	            // Calculo do ICMS ST para fora de mato grosso.
+            	if (margemvlagritvenda==null) { margemvlagritvenda = BigDecimal.ZERO; }
+            	if (vlrbaseicmsitvenda==null) { vlrbaseicmsitvenda = BigDecimal.ZERO; }
+            	if (vlripiitvenda==null) { vlripiitvenda = BigDecimal.ZERO; }
+            	if (vlrbaseicmsbrutitvenda==null) { vlrbaseicmsbrutitvenda = BigDecimal.ZERO; }
+	            if ("N".equals( calcstcm )  ) {
+	                if (percred.doubleValue()>0 && "S".equals( redbaseicmsst )) {
+	                	// Quando há redução na base do icms st , deve usar o valor da base do icms proprio como parametro
+	                    vlrbaseicmsstitvenda = margemvlagritvenda.add( CEM ).divide( CEM ).multiply( vlrbaseicmsitvenda.add(vlripiitvenda) ) ;
+	                }  else {
+	                    // Quando não há redução na base do icms st deve usar o valor da base bruto (rem redução)
+	                    vlrbaseicmsstitvenda = margemvlagritvenda.add( CEM ).divide( CEM ).multiply( vlrbaseicmsbrutitvenda ).add(vlripiitvenda );
+	                }
+	                vlroutrasitvenda = BigDecimal.ZERO;
+	                vlrisentasitvenda = BigDecimal.ZERO;
+	                vlricmsstitvenda = vlrbaseicmsstitvenda.multiply( percicmsst).divide( CEM ).subtract( vlricmsitvenda) ;
+	            } 
+	            // Calculo do ICMS ST para o mato grosso.
+	            else {
+	                if(percred.doubleValue()>0 && "S".equals( redbaseicmsst )) {
+	                   vlricmsstcalc = BigDecimal.ZERO;
+	                   // Quando há redução na base do icms st , deve usar o valor da base do icms proprio como parametro
+	                   vlricmsstcalc = vlrbaseicmsitvenda.add( vlripiitvenda).multiply( aliqicmsstcm.divide( CEM ) );
+	                   vlrbaseicmsstitvenda =  vlricmsitvenda.add(vlricmsstcalc).divide( percicmsst.divide( CEM) );
+	                } else {
+	                    // Quando não há redução na base do icms st deve usar o valor da base bruto (rem redução)
+	                    vlricmsstcalc = ( vlrbaseicmsbrutitvenda.add( vlripiitvenda ).multiply( aliqicmsstcm.divide( CEM ) ) );
+	                    vlrbaseicmsstitvenda = vlricmsitvenda.add( vlricmsstcalc ).divide( percicmsst.divide( CEM) );
+	                }
+	                vlroutrasitvenda = BigDecimal.ZERO;
+	                vlrisentasitvenda = BigDecimal.ZERO;
+	                vlricmsstitvenda = vlrbaseicmsitvenda.add( vlripiitvenda ).multiply( aliqicmsstcm.divide( CEM ) );
+	            }
+	        }
+	    }
+	    // Se produto não for tributado e não isento
+	    else if ("NN".equals(tipofisc ) ) {
+	        vlroutrasitvenda = vlrliqitvenda;
+	        vlrbaseicmsitvenda = BigDecimal.ZERO;
+	        percicmsitvenda = BigDecimal.ZERO;
+	        vlricmsitvenda = BigDecimal.ZERO;
+	        vlrisentasitvenda = BigDecimal.ZERO;
+	    }
+	    // Se produto for tributado integralmente
+	    else if ( "TT".equals( tipofisc ) ) {
+	        vlroutrasitvenda = BigDecimal.ZERO;
+	        vlrisentasitvenda = BigDecimal.ZERO;
+	    }
+	    // Inserindo dados na tabela de ítens de venda
+	    if ( !"F".equals(tpagrup) ) {
+	    	sql.append("insert into vditvenda (codemp,codfilial,codvenda,tipovenda,coditvenda,codempnt,codfilialnt,codnat,codemppd ");
+	    	sql.append(", codfilialpd,codprod,codemple,codfilialle,codlote,qtditvenda,precoitvenda,percdescitvenda,vlrdescitvenda ");
+	    	sql.append(", percicmsitvenda,vlrbaseicmsitvenda,vlricmsitvenda,percipiitvenda,vlrbaseipiitvenda,vlripiitvenda,vlrliqitvenda ");
+	    	sql.append(", vlrproditvenda,refprod,origfisc,codemptt,codfilialtt,codtrattrib,tipofisc,codempme,codfilialme,codmens,obsitvenda ");
+	    	sql.append(", codempax,codfilialax,codalmox,perccomisitvenda,vlrcomisitvenda,codempif,codfilialif,codfisc,coditfisc,percissitvenda ");
+	    	sql.append(", vlrbaseissitvenda,vlrissitvenda,vlrisentasitvenda,vlroutrasitvenda,tipost,vlrbaseicmsstitvenda,vlricmsstitvenda ");
+	    	sql.append(", margemvlagritvenda,vlrbaseicmsbrutitvenda, calcstcm) ");
+	    	sql.append(" values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ");
+	    	sql.append(", ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ");
+	    	sql.append(", ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ");
+	    	sql.append(", ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ");
+	    	sql.append(", ?, ?, ?, ?, ?) ");
+	    	ps = getConn().prepareStatement( sql.toString() );
+	    	param = 1;
+	    	ps.setInt( param++, getCodemp() );
+	    	ps.setInt( param++, codfilial );
+	    	ps.setInt( param++, codvenda );
+	    	ps.setString( param++, tipovenda );
+	    	ps.setInt( param++, coditvenda );
+	    	ps.setInt( param++, getCodemp() );
+	    	ps.setInt( param++, codfilialnt );
+	    	ps.setString( param++, codnat);
+	    	ps.setInt( param++, getCodemp() );
+	    	ps.setInt( param++, codfilialpd );
+	    	ps.setInt( param++, codprod );
+	    	ps.setInt( param++, getCodemp() );
+	    	ps.setInt( param++, codfilialpd );
+	    	ps.setString( param++, codlote);
+	    	ps.setBigDecimal( param++, qtditvenda );
+	    	ps.setBigDecimal( param++, vlrprecoitvenda );
+	    	if (percdescitvenda==null) {
+	    		ps.setNull( param++, Types.DECIMAL );
+	    	} else {
+	    		ps.setBigDecimal( param++, percdescitvenda );
+	    	}
+	    	if (vlrdescitvenda==null) {
+	    		ps.setNull( param++, Types.DECIMAL );
+	    	} else {
+	    		ps.setBigDecimal( param++, vlrdescitvenda );
+	    	}
+	    	ps.setBigDecimal( param++, percicmsitvenda );
+	    	ps.setBigDecimal( param++, vlrbaseicmsitvenda );
+	    	ps.setBigDecimal( param++, vlricmsitvenda );
+	    	ps.setBigDecimal( param++, percipiitvenda );
+	    	ps.setBigDecimal( param++, vlrbaseipiitvenda  );
+	    	ps.setBigDecimal( param++, vlripiitvenda );
+	    	ps.setBigDecimal( param++, vlrliqitvenda );
+	    	ps.setBigDecimal( param++, vlrproditvenda );
+	    	ps.setString( param++, refprod );
+	    	ps.setString( param++, origfisc );
+	    	ps.setInt( param++, getCodemp() );
+	    	ps.setInt( param++, codfilialtt );
+	    	ps.setString( param++, codtrattrib );
+	    	ps.setString( param++, tipofisc );
+	    	ps.setInt( param++, getCodemp() );
+	    	ps.setInt( param++, codfilialme );
+	    	ps.setInt( param++, codmens );
+	    	ps.setString( param++, obsitorc );
+	    	ps.setInt( param++, getCodemp() );
+	    	ps.setInt( param++, codfilialax );
+	    	ps.setInt( param++, codalmox );
+	    	ps.setBigDecimal( param++, perccomisitvenda );
+	    	ps.setBigDecimal( param++, vlrcomisitvenda );
+	    	ps.setInt( param++, getCodemp() );
+	    	ps.setInt( param++, codfilialif );
+	    	ps.setString( param++, codfisc );
+	    	ps.setInt( param++, coditfisc );
+	    	ps.setBigDecimal( param++, percissitvenda );
+	    	ps.setBigDecimal( param++, vlrbaseissitvenda  );
+	    	ps.setBigDecimal( param++, vlrissitvenda  );
+	    	ps.setBigDecimal( param++, vlrisentasitvenda );
+	    	ps.setBigDecimal( param++, vlroutrasitvenda );
+	    	ps.setString( param++, tipost );
+	    	ps.setBigDecimal( param++, vlrbaseicmsstitvenda );
+	    	ps.setBigDecimal( param++, vlricmsstitvenda );
+	    	ps.setBigDecimal( param++, margemvlagritvenda );
+	    	ps.setBigDecimal( param++, vlrbaseicmsbrutitvenda );
+	    	ps.setString( param++, calcstcm );
+	    	ps.executeUpdate();
+	    	ps.close();
+	    	sql.delete( 0, sql.length() );
+	    }
+		// Atualizando informações de vínculo
+	    sql.append( "execute procedure vdupvendaorcsp(?, ?, ?, ?, ?, ?, ?, ?)" );
+	    ps = getConn().prepareStatement( sql.toString() );
+	    param = 1;
+	    ps.setInt( param++, getCodemp() );
+	    ps.setInt( param++, getCodfilial() );
+	    ps.setInt( param++, codorc );
+	    ps.setInt( param++, coditorc );
+	    ps.setInt( param++, codfilial );
+	    ps.setInt( param++, codvenda );
+	    ps.setInt( param++, coditvenda );
+	    ps.setString( param++, tipovenda );
+	    ps.executeUpdate();
+	    ps.close();
+    	sql.delete( 0, sql.length() );
+	}
 
 	public void executaVDAtuDescVendaORCSP(Integer codemp, Integer codfilial, String tipovenda, Integer codvenda) throws SQLException {
 		String sql = null;
