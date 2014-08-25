@@ -714,7 +714,8 @@ private boolean gerarVenda() {
 									, ListaCampos.getMasterFilial( "VDVENDA") 
 									, sTipoVenda 
 									, iCodVenda 
-									, dataSaida );
+									, dataSaida 
+									, ListaCampos.getMasterFilial( "SGPREFERE1"));
 						} catch ( SQLException err ) {
 							con.rollback();
 							if ( err.getErrorCode() == 335544665 ) {
