@@ -638,6 +638,24 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 	return  result;
 }
 
+private void ajustaDescontoGride( int lin, BigDecimal qtdafatitorc, BigDecimal qtdnew ) {
+	BigDecimal vlrdescitorc = new BigDecimal( Funcoes.strCurrencyToDouble( tabitorc.getValor(lin, GRID_ITENS.DESC.ordinal() ).toString() ) ) ;
+	BigDecimal vlrliqitorc = new BigDecimal( Funcoes.strCurrencyToDouble( tabitorc.getValor(lin, GRID_ITENS.VLRLIQ.ordinal() ).toString() ) ) ;
+	BigDecimal preco = new BigDecimal( Funcoes.strCurrencyToDouble( tabitorc.getValor(lin, GRID_ITENS.PRECO.ordinal() ).toString() ) ) ;
+	BigDecimal qtd = qtdafatitorc; // Salvando a quantidade anterior
+	qtdafatitorc = qtdnew; // Ajustando a quantidade a faturar
+	BigDecimal vlrdesc = vlrdescitorc; // Salvando o valor de desconto anterior
+	vlrliqitorc = DAOBuscaOrc.getVlrLiqCalc( vlrdesc, qtd, qtdafatitorc, preco );
+	vlrdescitorc = DAOBuscaOrc.getVlrDescCalc( vlrdesc, qtd, qtdnew );
+	tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 
+			Aplicativo.casasDec, String.valueOf( qtdafatitorc ) ), lin, GRID_ITENS.QTDAFATITORC.ordinal() );
+	tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 
+			Aplicativo.casasDec, String.valueOf( vlrdescitorc ) ), lin, GRID_ITENS.DESC.ordinal() );
+	tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 
+			Aplicativo.casasDec, String.valueOf( vlrliqitorc) ), lin, GRID_ITENS.VLRLIQ.ordinal() );
+	
+}
+
 private boolean testeSaldo() {
 	boolean result = true;
 	BigDecimal totfaturar = BigDecimal.ZERO;
@@ -662,9 +680,7 @@ private boolean testeSaldo() {
 									"Quantidade produzida : " + Funcoes.bdToStrd( qtdprod ) + "\n\n"
 	
 							) == JOptionPane.YES_OPTION ) ) {
-				qtdafatitorc = qtdprod;
-				tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 
-						Aplicativo.casasDec, String.valueOf( qtdafatitorc ) ), i, GRID_ITENS.QTDAFATITORC.ordinal() );
+				ajustaDescontoGride(i, qtdafatitorc, qtdprod );
 			}
 			totfaturar=totfaturar.add( qtdafatitorc );
 			Integer codprod_prox = null;
@@ -716,25 +732,20 @@ private boolean gerarVenda() {
 			boolean usaPedSeq = (Boolean) prefs.get(COL_PREFS.USAPEDSEQ.name());
 			//Boolean que determina se data de saida/entrega aparecerá na dialog de Confirmação.
 			boolean solDtSaida = ( Boolean) prefs.get(COL_PREFS.SOLDTSAIDA.name());
-
 			diag = new DLCriaVendaCompra( !usaPedSeq, sTipoVenda, solDtSaida, contingencia );
-
 			if ( sTipoVenda.equals( "V" ) && !usaPedSeq && vendaSTD!=null) {
 				diag.setNewCodigo( Integer.parseInt( vendaSTD.lcCampos.getNovoCodigo() ) );
 			}
 			else if (vendaSTD == null && sTipoVenda.equals( "V" )) {
 				//xxxdiag.setNewCodigo( Integer.parseInt( vendaSTD.lcCampos.getNovoCodigo() ) );
 			}
-
 			diag.setVisible( true );
-
 			if ( diag.OK ) {
 				if ( !usaPedSeq && sTipoVenda.equals( "V" ) ) {
 					iCodVenda = diag.getNewCodigo();
 				}
 				if (solDtSaida)
 					dataSaida = diag.getDataSaida();
-
 				diag.setVisible( false );
 				diag.dispose();
 			}
@@ -902,7 +913,6 @@ private boolean gerarVenda() {
 		iValsVec = null;
 		diag = null;
 	}
-
 	return true;
 }
 
@@ -1174,11 +1184,7 @@ public void actionPerformed( ActionEvent evt ) {
 	}
 	else if ( evt.getSource() == btEditQtd ) {
 		editItem();
-
-
 	}
-
-
 }
 
 private void editItem() {
@@ -1205,11 +1211,13 @@ private void editItem() {
 				dl.setVisible( true );
 				dl.dispose();
 				if (dl.OK) {
+					BigDecimal qtd = qtdafatitorc;
 					qtdafatitorc = dl.getQtdafatitorc();
 					//qtdfatitorc = dl.getQtdfatitorc();
 					if (qtdafatitorc.compareTo( new BigDecimal(0) )>0) {
 						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( casasDec, qtdafatitorc.toString() ) , 
 								linhasel, GRID_ITENS.QTDAFATITORC.ordinal() );
+						ajustaDescontoGride( linhasel, qtd, qtdafatitorc );
 						/*	
 						 * 	tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( casasDec, qtdfatitorc.toString() ) , 
 									linhasel, GRID_ITENS.QTDFATITORC.ordinal() );
