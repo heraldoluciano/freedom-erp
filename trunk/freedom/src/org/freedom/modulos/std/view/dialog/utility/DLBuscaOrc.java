@@ -1213,15 +1213,10 @@ private void editItem() {
 				if (dl.OK) {
 					BigDecimal qtd = qtdafatitorc;
 					qtdafatitorc = dl.getQtdafatitorc();
-					//qtdfatitorc = dl.getQtdfatitorc();
 					if (qtdafatitorc.compareTo( new BigDecimal(0) )>0) {
 						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( casasDec, qtdafatitorc.toString() ) , 
 								linhasel, GRID_ITENS.QTDAFATITORC.ordinal() );
 						ajustaDescontoGride( linhasel, qtd, qtdafatitorc );
-						/*	
-						 * 	tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( casasDec, qtdfatitorc.toString() ) , 
-									linhasel, GRID_ITENS.QTDFATITORC.ordinal() );
-						 */
 					} 
 				}
 				if ( dl.OK == false ) {
