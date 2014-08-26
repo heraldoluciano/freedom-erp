@@ -213,7 +213,6 @@ public class DAOBuscaOrc extends AbstractDAO {
 			, Integer codfilialvd, String tipovenda, Integer codvenda, Date datasaida, Integer codfilialpf) throws SQLException {
 		StringBuilder sql = new StringBuilder();
 		StringBuilder sqlseq = new StringBuilder();
-
 		int icodvenda = 0;
 		int param = 1;
 		Boolean pedseq = (Boolean) getPrefs().get(COL_PREFS.USAPEDSEQ.name());
@@ -441,19 +440,20 @@ public class DAOBuscaOrc extends AbstractDAO {
 	}
 	
 	public void executaVDAdicItVendaORCSP(Integer codfilial, Integer codvenda, Integer codorc
-			, Integer coditorc, Integer codfilialoc, Integer codempoc
+			, Integer coditorc, String codlote, Integer codfilialoc, Integer codempoc
 			, String tipovenda, String tpagr, BigDecimal qtdprod, BigDecimal qtdafatitorc
 			, BigDecimal desc, Integer codfilialnt, Integer codfilialtt, Integer codfilialme) throws SQLException {
 
 		BigDecimal qtditvenda = BigDecimal.ZERO;
 		qtditvenda = qtdafatitorc;	
-		vdadicitvendaorc( codfilial, codvenda, codorc, coditorc, tipovenda, tpagr, qtditvenda
+		vdadicitvendaorc( codfilial, codvenda, codorc, coditorc
+				, codlote, tipovenda, tpagr, qtditvenda
 				, desc, codfilialnt, codfilialtt, codfilialme );
 	}
 
 	@ SuppressWarnings ( "null" )
 	public void vdadicitvendaorc(Integer codfilial, Integer codvenda, Integer codorc, Integer coditorc
-			, String tipovenda, String tpagrup, BigDecimal qtditvenda, BigDecimal vlrdescitvenda
+			, String codlote, String tipovenda, String tpagrup, BigDecimal qtditvenda, BigDecimal vlrdescitvenda
 			, Integer codfilialnt, Integer codfilialtt, Integer codfilialme
 			) throws SQLException {
 		Integer coditvenda=null;
@@ -465,7 +465,6 @@ public class DAOBuscaOrc extends AbstractDAO {
 		Integer codtipomov=null;
 		Integer codfilialcl=null;
 		String codnat=null;
-		String codlote=null;
 		String tipofisc=null;
 		String origfisc=null;
 		String codtrattrib=null;
@@ -610,7 +609,9 @@ public class DAOBuscaOrc extends AbstractDAO {
 			obsitorc = rs.getString( "obsitorc" );
 			codfilialax = rs.getInt( "codfilialax" );
 			codalmox = rs.getInt( "codalmox" );
-			codlote = rs.getString( "codlote" );
+			if (codlote==null || "".equals(codlote.trim())) {
+				codlote = rs.getString( "codlote" );
+			}
 			cloteprod = rs.getString( "cloteprod" );
 			perccomisitvenda = rs.getBigDecimal( "perccomisitorc" );
 			tipoprod = rs.getString( "tipoprod" );
@@ -722,7 +723,7 @@ public class DAOBuscaOrc extends AbstractDAO {
 		ps.close();
 		sql.delete( 0, sql.length() );
 		// Busca lote, caso seja necessário
-	    if ("S".equals(cloteprod) && codlote==null) {
+	    if ("S".equals(cloteprod) && (codlote==null || "".equals( codlote.trim() ) )) {
 	    	sql.append( "select first 1 l.codlote from eqlote l ");
 	    	sql.append( "where l.codemp=? and l.codfilial=? and l.codprod=? "); 
 	    	sql.append( "and l.venctolote>cast('now' as date) and l.sldliqlote>=? ");
@@ -909,9 +910,15 @@ public class DAOBuscaOrc extends AbstractDAO {
 	    	ps.setInt( param++, getCodemp() );
 	    	ps.setInt( param++, codfilialpd );
 	    	ps.setInt( param++, codprod );
-	    	ps.setInt( param++, getCodemp() );
-	    	ps.setInt( param++, codfilialpd );
-	    	ps.setString( param++, codlote);
+			if (codlote==null || "".equals(codlote.trim())) {
+				ps.setNull( param++, Types.INTEGER );
+				ps.setNull( param++, Types.INTEGER );
+				ps.setNull( param++, Types.CHAR);
+			} else {
+				ps.setInt( param++, getCodemp() );
+				ps.setInt( param++, codfilialpd );
+				ps.setString( param++, codlote);
+			}
 	    	ps.setBigDecimal( param++, qtditvenda );
 	    	ps.setBigDecimal( param++, vlrprecoitvenda );
 	    	if (percdescitvenda==null) {
