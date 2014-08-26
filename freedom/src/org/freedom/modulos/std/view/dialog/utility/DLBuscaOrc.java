@@ -664,7 +664,7 @@ private boolean testeSaldo() {
 			tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 
 					Aplicativo.casasDec, String.valueOf( qtdafatitorc ) ), i, GRID_ITENS.QTDAFATITORC.ordinal() );
 		}
-		totfaturar.add( qtdafatitorc );
+		totfaturar=totfaturar.add( qtdafatitorc );
 		Integer codprod_prox = null;
 		if ( (i+1) < tabitorc.getNumLinhas() ) {
 			codprod_prox = (Integer) tabitorc.getValor( i+1, GRID_ITENS.CODPROD.ordinal() );
