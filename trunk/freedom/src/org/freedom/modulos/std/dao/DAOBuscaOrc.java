@@ -1528,6 +1528,23 @@ public class DAOBuscaOrc extends AbstractDAO {
 		return vValidos;
 	}
 
+	public static BigDecimal getVlrDescCalc(BigDecimal vlrdesc, BigDecimal qtd, BigDecimal qtdafat) {
+		BigDecimal result = BigDecimal.ZERO;
+		if (vlrdesc!=null && vlrdesc.compareTo( BigDecimal.ZERO )>0) {
+			BigDecimal vlrdescunit = vlrdesc.divide( qtd, 5, BigDecimal.ROUND_HALF_UP );
+			result = qtdafat.multiply( vlrdescunit );
+		}
+		return result;
+	}
+
+	public static BigDecimal getVlrLiqCalc(BigDecimal vlrdesc, BigDecimal qtd, BigDecimal qtdafat, BigDecimal preco) {
+		BigDecimal result = BigDecimal.ZERO;
+		BigDecimal vlrdesccalc = getVlrDescCalc(vlrdesc, qtd, qtdafat);
+		BigDecimal vlrtotcalc = qtdafat.multiply( preco );
+		result = vlrtotcalc.subtract( vlrdesccalc );
+		return result;
+	}
+	
 	public class SaldoProd {
 		private Integer codemp;
 		private Integer codfilial;
@@ -1662,20 +1679,11 @@ public class DAOBuscaOrc extends AbstractDAO {
 		}
 		
 		public BigDecimal getVlrDescCalc() {
-			BigDecimal result = BigDecimal.ZERO;
-			if (vlrdesc!=null && vlrdesc.compareTo( BigDecimal.ZERO )>0) {
-				BigDecimal vlrdescunit = vlrdesc.divide( qtd, 5, BigDecimal.ROUND_HALF_UP );
-				result = qtdafat.multiply( vlrdescunit );
-			}
-			return result;
+			return DAOBuscaOrc.getVlrDescCalc(vlrdesc, qtd, qtdafat);
 		}
 	
 		public BigDecimal getVlrLiqCalc() {
-			BigDecimal result = BigDecimal.ZERO;
-			BigDecimal vlrdesccalc = getVlrDescCalc();
-			BigDecimal vlrtotcalc = qtdafat.multiply( preco );
-			result = vlrtotcalc.subtract( vlrdesccalc );
-			return result;
+			return DAOBuscaOrc.getVlrLiqCalc( vlrdesc, qtd, qtdafat, preco );
 		}
 	}
 }
