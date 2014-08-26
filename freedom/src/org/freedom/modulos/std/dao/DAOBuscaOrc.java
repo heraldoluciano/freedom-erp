@@ -717,14 +717,16 @@ public class DAOBuscaOrc extends AbstractDAO {
 		ps.setInt( param++, getCodemp());
 		ps.setInt( param++, codfilialtm );
 		ps.setInt( param++, codtipomov );
-		ps.setString( param++, tipovenda );
+		ps.setString( param++, "VD" ); // tipo de busca VD / CP
 		ps.setString( param++, codnat );
-		ps.setInt( param++, getCodemp());
-		ps.setInt( param++, codfilialif );
 		if (codfisc==null) {
+			ps.setNull( param++, Types.INTEGER );
+			ps.setNull( param++, Types.INTEGER );
 			ps.setNull( param++, Types.CHAR );
 			ps.setNull( param++, Types.INTEGER );
 		} else {
+			ps.setInt( param++, getCodemp());
+			ps.setInt( param++, codfilialif );
 			ps.setString( param++, codfisc );
 			ps.setInt( param++, coditfisc );
 		}
@@ -774,9 +776,9 @@ public class DAOBuscaOrc extends AbstractDAO {
 	    }
 		// Inicializando valores
 	    vlrproditvenda = vlrprecoitvenda.multiply( qtditvenda );
-	    if ( qtditvenda.compareTo( qtditorc )!=0 ) {
-	    	vlrdescitvenda = vlrdescitvenda.divide( qtditorc ).multiply( qtditvenda ); 
-	    }
+//	    if ( qtditvenda.compareTo( qtditorc )!=0 ) {
+	//    	vlrdescitvenda = vlrdescitvenda.divide( qtditorc ).multiply( qtditvenda ); 
+//	    }
 	    vlrliqitvenda = vlrproditvenda.subtract( vlrdescitvenda );
 	    vlrbaseipiitvenda = BigDecimal.ZERO;
 	    vlrbaseicmsitvenda = BigDecimal.ZERO;
@@ -965,9 +967,15 @@ public class DAOBuscaOrc extends AbstractDAO {
 	    	ps.setInt( param++, codfilialtt );
 	    	ps.setString( param++, codtrattrib );
 	    	ps.setString( param++, tipofisc );
-	    	ps.setInt( param++, getCodemp() );
-	    	ps.setInt( param++, codfilialme );
-	    	ps.setInt( param++, codmens );
+	    	if (codmens==null || codmens.intValue()==0 ) {
+	    		ps.setNull( param++, Types.INTEGER );
+	    		ps.setNull( param++, Types.INTEGER );
+	    		ps.setNull( param++, Types.INTEGER );
+	    	} else {
+	    		ps.setInt( param++, getCodemp() );
+	    		ps.setInt( param++, codfilialme );
+	    		ps.setInt( param++, codmens );
+	    	}
 	    	ps.setString( param++, obsitorc );
 	    	ps.setInt( param++, getCodemp() );
 	    	ps.setInt( param++, codfilialax );
