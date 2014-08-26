@@ -772,21 +772,22 @@ public class DAOBuscaOrc extends AbstractDAO {
 	    }
 	    if (percred.doubleValue()>0) {
 	        if ("B".equals( tpredicms ) ) {
-	            vlrbaseicmsitvenda = (vlrproditvenda.subtract( vlrdescitvenda)).subtract( (vlrproditvenda.subtract( vlrdescitvenda))).multiply( percred ).divide( CEM );
-	            vlricmsitvenda = vlrbaseicmsitvenda.multiply(  percicmsitvenda.divide( CEM ) );
+	            vlrbaseicmsitvenda = (vlrproditvenda.subtract( vlrdescitvenda)).subtract( 
+	            		(vlrproditvenda.subtract( vlrdescitvenda))).multiply( percred ).divide( CEM, 5, BigDecimal.ROUND_HALF_UP );
+	            vlricmsitvenda = vlrbaseicmsitvenda.multiply(  percicmsitvenda.divide( CEM, 5, BigDecimal.ROUND_HALF_UP ) );
 	        } else if( "V".equals( tpredicms ) ) {
 	            vlrbaseicmsitvenda = vlrproditvenda.subtract( vlrdescitvenda );
-	            vlricmsitvenda = vlrbaseicmsitvenda.multiply( percicmsitvenda.divide( CEM )
-	            		.subtract( vlrbaseicmsitvenda.multiply( percicmsitvenda.divide( CEM )
-	            				.multiply( percred.divide( CEM ) ) ) ) ) ;
+	            vlricmsitvenda = vlrbaseicmsitvenda.multiply( percicmsitvenda.divide( CEM, 5, BigDecimal.ROUND_HALF_UP )
+	            		.subtract( vlrbaseicmsitvenda.multiply( percicmsitvenda.divide( CEM, 5, BigDecimal.ROUND_HALF_UP )
+	            				.multiply( percred.divide( CEM, 5, BigDecimal.ROUND_HALF_UP ) ) ) ) ) ;
 	        }
 	    } else {
 	        vlrbaseicmsitvenda = vlrproditvenda.subtract( vlrdescitvenda );
-	        vlricmsitvenda = vlrbaseicmsitvenda.multiply( percicmsitvenda.divide( CEM ) );
+	        vlricmsitvenda = vlrbaseicmsitvenda.multiply( percicmsitvenda.divide( CEM, 5, BigDecimal.ROUND_HALF_UP ) );
 	    }
 	    vlrbaseipiitvenda = vlrproditvenda.subtract( vlrdescitvenda );
 	    vlrbaseicmsbrutitvenda = vlrproditvenda.subtract( vlrdescitvenda );
-	    vlripiitvenda = vlrbaseipiitvenda.multiply( percipiitvenda.divide( CEM ) );
+	    vlripiitvenda = vlrbaseipiitvenda.multiply( percipiitvenda.divide( CEM, 5, BigDecimal.ROUND_HALF_UP ) );
 		// **** Calculo dos tributos ***
 	    // Verifica se é um serviço (Calculo do ISS);			    
 	    if ("S".equals( tipoprod ) ) {
@@ -797,7 +798,7 @@ public class DAOBuscaOrc extends AbstractDAO {
 		   //-- Calculando e computando base e valor do ISS;
 		    if (percissitvenda !=null || percissitvenda.doubleValue() != 0) {
 	            vlrbaseissitvenda = vlrliqitvenda;
-	            vlrissitvenda = vlrbaseissitvenda.multiply( percissitvenda.divide( CEM) );
+	            vlrissitvenda = vlrbaseissitvenda.multiply( percissitvenda.divide( CEM, 5, BigDecimal.ROUND_HALF_UP) );
 		    }
 	    } else { //-- Se o item vendido não for SERVIÇO zera ISS
 	        vlrbaseissitvenda = BigDecimal.ZERO;
@@ -838,30 +839,33 @@ public class DAOBuscaOrc extends AbstractDAO {
 	            if ("N".equals( calcstcm )  ) {
 	                if (percred.doubleValue()>0 && "S".equals( redbaseicmsst )) {
 	                	// Quando há redução na base do icms st , deve usar o valor da base do icms proprio como parametro
-	                    vlrbaseicmsstitvenda = margemvlagritvenda.add( CEM ).divide( CEM ).multiply( vlrbaseicmsitvenda.add(vlripiitvenda) ) ;
+	                    vlrbaseicmsstitvenda = margemvlagritvenda.add( CEM ).divide( CEM, 5, BigDecimal.ROUND_HALF_UP )
+	                    		.multiply( vlrbaseicmsitvenda.add(vlripiitvenda) ) ;
 	                }  else {
 	                    // Quando não há redução na base do icms st deve usar o valor da base bruto (rem redução)
-	                    vlrbaseicmsstitvenda = margemvlagritvenda.add( CEM ).divide( CEM ).multiply( vlrbaseicmsbrutitvenda ).add(vlripiitvenda );
+	                    vlrbaseicmsstitvenda = margemvlagritvenda.add( CEM ).divide( CEM, 5, BigDecimal.ROUND_HALF_UP )
+	                    		.multiply( vlrbaseicmsbrutitvenda ).add(vlripiitvenda );
 	                }
 	                vlroutrasitvenda = BigDecimal.ZERO;
 	                vlrisentasitvenda = BigDecimal.ZERO;
-	                vlricmsstitvenda = vlrbaseicmsstitvenda.multiply( percicmsst).divide( CEM ).subtract( vlricmsitvenda) ;
+	                vlricmsstitvenda = vlrbaseicmsstitvenda.multiply( percicmsst)
+	                		.divide( CEM, 5, BigDecimal.ROUND_HALF_UP ).subtract( vlricmsitvenda) ;
 	            } 
 	            // Calculo do ICMS ST para o mato grosso.
 	            else {
 	                if(percred.doubleValue()>0 && "S".equals( redbaseicmsst )) {
 	                   vlricmsstcalc = BigDecimal.ZERO;
 	                   // Quando há redução na base do icms st , deve usar o valor da base do icms proprio como parametro
-	                   vlricmsstcalc = vlrbaseicmsitvenda.add( vlripiitvenda).multiply( aliqicmsstcm.divide( CEM ) );
-	                   vlrbaseicmsstitvenda =  vlricmsitvenda.add(vlricmsstcalc).divide( percicmsst.divide( CEM) );
+	                   vlricmsstcalc = vlrbaseicmsitvenda.add( vlripiitvenda).multiply( aliqicmsstcm.divide( CEM, 5, BigDecimal.ROUND_HALF_UP ) );
+	                   vlrbaseicmsstitvenda =  vlricmsitvenda.add(vlricmsstcalc).divide( percicmsst.divide( CEM, 5, BigDecimal.ROUND_HALF_UP ), 5, BigDecimal.ROUND_HALF_UP );
 	                } else {
 	                    // Quando não há redução na base do icms st deve usar o valor da base bruto (rem redução)
-	                    vlricmsstcalc = ( vlrbaseicmsbrutitvenda.add( vlripiitvenda ).multiply( aliqicmsstcm.divide( CEM ) ) );
-	                    vlrbaseicmsstitvenda = vlricmsitvenda.add( vlricmsstcalc ).divide( percicmsst.divide( CEM) );
+	                    vlricmsstcalc = ( vlrbaseicmsbrutitvenda.add( vlripiitvenda ).multiply( aliqicmsstcm.divide( CEM, 5, BigDecimal.ROUND_HALF_UP ) ) );
+	                    vlrbaseicmsstitvenda = vlricmsitvenda.add( vlricmsstcalc ).divide( percicmsst.divide( CEM, 5, BigDecimal.ROUND_HALF_UP ) );
 	                }
 	                vlroutrasitvenda = BigDecimal.ZERO;
 	                vlrisentasitvenda = BigDecimal.ZERO;
-	                vlricmsstitvenda = vlrbaseicmsitvenda.add( vlripiitvenda ).multiply( aliqicmsstcm.divide( CEM ) );
+	                vlricmsstitvenda = vlrbaseicmsitvenda.add( vlripiitvenda ).multiply( aliqicmsstcm.divide( CEM, 5, BigDecimal.ROUND_HALF_UP ) );
 	            }
 	        }
 	    }
@@ -1653,7 +1657,7 @@ public class DAOBuscaOrc extends AbstractDAO {
 		public BigDecimal getVlrDescCalc() {
 			BigDecimal result = BigDecimal.ZERO;
 			if (vlrdesc!=null && vlrdesc.compareTo( BigDecimal.ZERO )>0) {
-				BigDecimal vlrdescunit = vlrdesc.divide( qtd );
+				BigDecimal vlrdescunit = vlrdesc.divide( qtd, 5, BigDecimal.ROUND_HALF_UP );
 				result = qtdafat.multiply( vlrdescunit );
 			}
 			return result;
