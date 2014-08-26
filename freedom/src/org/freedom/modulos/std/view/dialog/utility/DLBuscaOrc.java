@@ -802,11 +802,13 @@ private boolean gerarVenda() {
 						BigDecimal qtdprod	= new BigDecimal( Funcoes.strCurrencyToDouble( tabitorc.getValor( i,GRID_ITENS.QTDFINALPRODITORC.ordinal() ).toString() ) ) ;
 						BigDecimal qtdafatitorc	= new BigDecimal( Funcoes.strCurrencyToDouble( tabitorc.getValor( i, GRID_ITENS.QTDAFATITORC.ordinal() ).toString() ) ) ;
 						BigDecimal desc = new BigDecimal( Funcoes.strCurrencyToDouble( tabitorc.getValor( i, GRID_ITENS.DESC.ordinal() ).toString() ) );
+						String codlote = (String) tabitorc.getValor( i, GRID_ITENS.CODLOTE.ordinal() );
 						daobusca.executaVDAdicItVendaORCSP( 
 								Aplicativo.iCodFilial 
 								, iCodVenda 
 								, icodorc
 								, coditorc 
+								, codlote
 								, ListaCampos.getMasterFilial( "VDORCAMENTO" ) 
 								, Aplicativo.iCodEmp 
 								, sTipoVenda 
@@ -1185,37 +1187,26 @@ private void editItem() {
 		if ( linhasel < 0 ) {
 			Funcoes.mensagemInforma( null, "Selecione um item para edição !" );
 		} else {
-
 			int coditorc = Integer.parseInt(tabitorc.getValor( linhasel, GRID_ITENS.CODITORC.ordinal() ).toString().trim() );
 			//rs.getInt( "CodItOrc" ) ), irow, GRID_ITENS.CODITORC.ordinal() 
 			int codprod = Integer.parseInt(tabitorc.getValor( linhasel, GRID_ITENS.CODPROD.ordinal() ).toString().trim() );
-
 			String descprod = tabitorc.getValor( linhasel, GRID_ITENS.DESCPROD.ordinal() ).toString().trim();
 			//	tabitorc.setValor( new Integer( rs.getInt( "CodProd" ) ), irow, GRID_ITENS.CODPROD.ordinal() );
-
-
-
 			BigDecimal qtditorc = new BigDecimal( Funcoes.strCurrencyToDouble( 
 					tabitorc.getValor( linhasel, GRID_ITENS.QTDITORC.ordinal() ).toString().trim() ) );
 			BigDecimal qtdafatitorc =  new BigDecimal( Funcoes.strCurrencyToDouble(
 					tabitorc.getValor( linhasel, GRID_ITENS.QTDAFATITORC.ordinal() ).toString().trim() ) );
 			BigDecimal qtdfatitorc =  new BigDecimal( Funcoes.strCurrencyToDouble(
 					tabitorc.getValor( linhasel, GRID_ITENS.QTDFATITORC.ordinal() ).toString().trim() ) );
-
 			if ( qtdafatitorc.compareTo( new BigDecimal(0) ) <= 0 ) {
 				Funcoes.mensagemInforma( null, "Não há quantidade(s) a faturar !" );
 			} else {
-
 				DLEditQtd dl = new DLEditQtd(coditorc, codprod, descprod, qtditorc, qtdafatitorc, qtdfatitorc);
 				dl.setVisible( true );
 				dl.dispose();
-
 				if (dl.OK) {
-
 					qtdafatitorc = dl.getQtdafatitorc();
 					//qtdfatitorc = dl.getQtdfatitorc();
-
-
 					if (qtdafatitorc.compareTo( new BigDecimal(0) )>0) {
 						tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( casasDec, qtdafatitorc.toString() ) , 
 								linhasel, GRID_ITENS.QTDAFATITORC.ordinal() );
@@ -1225,12 +1216,10 @@ private void editItem() {
 						 */
 					} 
 				}
-
 				if ( dl.OK == false ) {
 					dl.dispose();
 					return;
 				}
-
 			}
 		}
 	}
