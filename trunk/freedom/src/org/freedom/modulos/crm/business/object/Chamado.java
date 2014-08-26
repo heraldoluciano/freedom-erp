@@ -27,6 +27,8 @@ public class Chamado {
 
 	public static final Constant CHAMADO_CONCLUIDO = new Constant( "Concluído", "CO" );
 
+	public static final Constant CHAMADO_IMPLANTADO = new Constant( "Implantado", "IM" );
+
 	public static String IMG_TAMANHO_M = "16x16";
 
 	public static String IMG_TAMANHO_P = "10x10";
@@ -67,6 +69,8 @@ public class Chamado {
 
 		ImageIcon IMG_CHAMADO_CONCLUIDO = Icone.novo( "chamado_concluido_" + tamanho + ".png" );
 
+		ImageIcon IMG_CHAMADO_IMPLANTADO = Icone.novo( "chamado_implantado_" + tamanho + ".png" );
+
 		ImageIcon IMG_CHAMADO_CANCELADO = Icone.novo( "chamado_cancelado_" + tamanho + ".png" );
 
 		try {
@@ -85,6 +89,9 @@ public class Chamado {
 			}
 			else if ( status.equals( CHAMADO_CONCLUIDO.getValue() ) ) {
 				return IMG_CHAMADO_CONCLUIDO;
+			}
+			else if ( status.equals( CHAMADO_IMPLANTADO.getValue() ) ) {
+				return IMG_CHAMADO_IMPLANTADO;
 			}
 
 		} catch ( Exception e ) {
@@ -105,6 +112,7 @@ public class Chamado {
 		ret.add( CHAMADO_EM_ANDAMENTO.getName() );
 		ret.add( CHAMADO_CANCELADO.getName() );
 		ret.add( CHAMADO_CONCLUIDO.getName() );
+		ret.add( CHAMADO_IMPLANTADO.getName() );
 
 		return ret;
 
@@ -121,6 +129,7 @@ public class Chamado {
 		ret.add( (String) CHAMADO_EM_ANDAMENTO.getValue() );
 		ret.add( (String) CHAMADO_CANCELADO.getValue() );
 		ret.add( (String) CHAMADO_CONCLUIDO.getValue() );
+		ret.add( (String) CHAMADO_IMPLANTADO.getValue() );
 
 		return ret;
 
