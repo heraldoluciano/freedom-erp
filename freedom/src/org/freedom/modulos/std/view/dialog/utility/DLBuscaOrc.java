@@ -666,6 +666,7 @@ private boolean testeSaldo() {
 			Integer codprod = (Integer) row.elementAt( GRID_ITENS.CODPROD.ordinal() );
 			BigDecimal qtditorc = new BigDecimal( Funcoes.strCurrencyToDouble( row.elementAt( GRID_ITENS.QTDITORC.ordinal() ).toString() ) ) ;
 			BigDecimal qtdprod = new BigDecimal( Funcoes.strCurrencyToDouble( row.elementAt( GRID_ITENS.QTDFINALPRODITORC.ordinal() ).toString() ) ) ;
+			BigDecimal qtdfatitorc = new BigDecimal( Funcoes.strCurrencyToDouble( row.elementAt( GRID_ITENS.QTDFATITORC.ordinal() ).toString() ) ) ;
 			BigDecimal qtdafatitorc = new BigDecimal( Funcoes.strCurrencyToDouble( row.elementAt( GRID_ITENS.QTDAFATITORC.ordinal() ).toString() ) ) ;
 			BigDecimal sldprod = new BigDecimal( Funcoes.strCurrencyToDouble( row.elementAt( GRID_ITENS.SALDOPROD.ordinal() ).toString() ) ) ;
 			String desc = (String ) row.elementAt( GRID_ITENS.DESCPROD.ordinal() );
@@ -693,12 +694,14 @@ private boolean testeSaldo() {
 				}
 			}
 			if ( codprod_prox == null || !codprod_prox.equals( codprod ) ) {
-				if (totfaturar.compareTo( qtditorc )<0 && ( Funcoes.mensagemConfirma( null,  
-							"A quantidade orçada do ítem \n" + desc.toString().trim() + " \n" +
+				// Quantidade solicitada menos a quantidade faturada
+				BigDecimal qtdtemp = qtditorc.subtract( qtdfatitorc );
+				if (totfaturar.compareTo( qtdtemp )<0 && ( Funcoes.mensagemConfirma( null,  
+							"A quantidade a faturar do ítem \n" + desc.toString().trim() + " \n" +
 							"é maior que o saldo disponível.\n" +
 							"Confirma o faturamento parcial?\n\n" +
-							"Quantidade orçada: " + Funcoes.bdToStrd( qtditorc ) + "\n" +
-							"Quantidade a faturar: " + Funcoes.bdToStrd( totfaturar ) + "\n\n"
+							"Quantidade a faturar: " + Funcoes.bdToStrd( qtdtemp ) + "\n" +
+							"Quantidade parcial: " + Funcoes.bdToStrd( totfaturar ) + "\n\n"
 						) != JOptionPane.YES_OPTION ) ) {
 					result = false;
 					break;
