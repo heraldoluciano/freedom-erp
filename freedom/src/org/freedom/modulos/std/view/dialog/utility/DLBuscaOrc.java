@@ -643,44 +643,52 @@ private boolean testeSaldo() {
 	BigDecimal totfaturar = BigDecimal.ZERO;
 	for (int i=0; i< tabitorc.getNumLinhas(); i++) {
 		Vector<Object> row = tabitorc.getLinha( i );
-		Integer codprod = (Integer) row.elementAt( GRID_ITENS.CODPROD.ordinal() );
-		BigDecimal qtditorc = new BigDecimal( Funcoes.strCurrencyToDouble( row.elementAt( GRID_ITENS.QTDITORC.ordinal() ).toString() ) ) ;
-		BigDecimal qtdprod = new BigDecimal( Funcoes.strCurrencyToDouble( row.elementAt( GRID_ITENS.QTDFINALPRODITORC.ordinal() ).toString() ) ) ;
-		BigDecimal qtdafatitorc = new BigDecimal( Funcoes.strCurrencyToDouble( row.elementAt( GRID_ITENS.QTDAFATITORC.ordinal() ).toString() ) ) ;
-		BigDecimal sldprod = new BigDecimal( Funcoes.strCurrencyToDouble( row.elementAt( GRID_ITENS.SALDOPROD.ordinal() ).toString() ) ) ;
-		String desc = (String ) row.elementAt( GRID_ITENS.DESCPROD.ordinal() );
-			// Verificação dos excessos de produção
-		if( qtdprod.compareTo( qtdafatitorc ) > 0
-			&& sldprod.compareTo( qtdprod ) >= 0
-			&& ( Funcoes.mensagemConfirma( null,  
-						"A quantidade produzida do ítem \n" + desc.toString().trim() + " \n" +
-								"excede a quantidade solicitada pelo cliente.\n" +
-								"Deseja faturar a quantidade produzida?\n\n" +
-								"Quantidade solicitada: " + Funcoes.bdToStrd( qtdafatitorc ) + "\n" +
-								"Quantidade produzida : " + Funcoes.bdToStrd( qtdprod ) + "\n\n"
-
-						) == JOptionPane.YES_OPTION ) ) {
-			qtdafatitorc = qtdprod;
-			tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 
-					Aplicativo.casasDec, String.valueOf( qtdafatitorc ) ), i, GRID_ITENS.QTDAFATITORC.ordinal() );
-		}
-		totfaturar=totfaturar.add( qtdafatitorc );
-		Integer codprod_prox = null;
-		if ( (i+1) < tabitorc.getNumLinhas() ) {
-			codprod_prox = (Integer) tabitorc.getValor( i+1, GRID_ITENS.CODPROD.ordinal() );
-		}
-		if ( codprod_prox == null || !codprod_prox.equals( codprod ) ) {
-			if (totfaturar.compareTo( qtditorc )<0 && ( Funcoes.mensagemConfirma( null,  
-						"A quantidade a faturar do ítem \n" + desc.toString().trim() + " \n" +
-						"é menor que o saldo disponível.\n" +
-						"Confirma o faturamento parcial?\n\n" +
-						"Quantidade orçada: " + Funcoes.bdToStrd( qtditorc ) + "\n" +
-						"Quantidade a faturar: " + Funcoes.bdToStrd( totfaturar ) + "\n\n"
-					) != JOptionPane.YES_OPTION ) ) {
-				result = false;
-				break;
+		boolean sel = (Boolean) row.elementAt(GRID_ITENS.SEL.ordinal());
+		if (sel) {
+			Integer codprod = (Integer) row.elementAt( GRID_ITENS.CODPROD.ordinal() );
+			BigDecimal qtditorc = new BigDecimal( Funcoes.strCurrencyToDouble( row.elementAt( GRID_ITENS.QTDITORC.ordinal() ).toString() ) ) ;
+			BigDecimal qtdprod = new BigDecimal( Funcoes.strCurrencyToDouble( row.elementAt( GRID_ITENS.QTDFINALPRODITORC.ordinal() ).toString() ) ) ;
+			BigDecimal qtdafatitorc = new BigDecimal( Funcoes.strCurrencyToDouble( row.elementAt( GRID_ITENS.QTDAFATITORC.ordinal() ).toString() ) ) ;
+			BigDecimal sldprod = new BigDecimal( Funcoes.strCurrencyToDouble( row.elementAt( GRID_ITENS.SALDOPROD.ordinal() ).toString() ) ) ;
+			String desc = (String ) row.elementAt( GRID_ITENS.DESCPROD.ordinal() );
+				// Verificação dos excessos de produção
+			if( qtdprod.compareTo( qtdafatitorc ) > 0
+				&& sldprod.compareTo( qtdprod ) >= 0
+				&& ( Funcoes.mensagemConfirma( null,  
+							"A quantidade produzida do ítem \n" + desc.toString().trim() + " \n" +
+									"excede a quantidade solicitada pelo cliente.\n" +
+									"Deseja faturar a quantidade produzida?\n\n" +
+									"Quantidade solicitada: " + Funcoes.bdToStrd( qtdafatitorc ) + "\n" +
+									"Quantidade produzida : " + Funcoes.bdToStrd( qtdprod ) + "\n\n"
+	
+							) == JOptionPane.YES_OPTION ) ) {
+				qtdafatitorc = qtdprod;
+				tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 
+						Aplicativo.casasDec, String.valueOf( qtdafatitorc ) ), i, GRID_ITENS.QTDAFATITORC.ordinal() );
 			}
-			totfaturar = BigDecimal.ZERO;
+			totfaturar=totfaturar.add( qtdafatitorc );
+			Integer codprod_prox = null;
+			// Econtra o próximo item selecionado
+			for ( int i2=i+1; i2<tabitorc.getNumLinhas(); i2++ ) {
+				Boolean sel2 =  (Boolean) tabitorc.getValor( i2, GRID_ITENS.SEL.ordinal() );
+				if (sel2) {
+					codprod_prox = (Integer) tabitorc.getValor( i2, GRID_ITENS.CODPROD.ordinal() );
+					break;
+				}
+			}
+			if ( codprod_prox == null || !codprod_prox.equals( codprod ) ) {
+				if (totfaturar.compareTo( qtditorc )<0 && ( Funcoes.mensagemConfirma( null,  
+							"A quantidade orçada do ítem \n" + desc.toString().trim() + " \n" +
+							"é maior que o saldo disponível.\n" +
+							"Confirma o faturamento parcial?\n\n" +
+							"Quantidade orçada: " + Funcoes.bdToStrd( qtditorc ) + "\n" +
+							"Quantidade a faturar: " + Funcoes.bdToStrd( totfaturar ) + "\n\n"
+						) != JOptionPane.YES_OPTION ) ) {
+					result = false;
+					break;
+				}
+				totfaturar = BigDecimal.ZERO;
+			}
 		}
 	}
 	return result;
