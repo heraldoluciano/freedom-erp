@@ -844,10 +844,10 @@ public class FCRM extends FFilho implements CarregaListener, ActionListener, Foc
 			String label = labels.elementAt( i );
 			ImageIcon icon = Chamado.getImagem( valor, StatusOS.IMG_TAMANHO_P );
 
-			if ( Chamado.CHAMADO_CONCLUIDO.getValue().equals( valor ) ) {
-				item.addElement( new Boolean( false ) );
-			}
-			else if ( Chamado.CHAMADO_CANCELADO.getValue().equals( valor ) ) {
+			if ( Chamado.CHAMADO_CONCLUIDO.getValue().equals( valor ) 
+					|| Chamado.CHAMADO_CANCELADO.getValue().equals( valor )
+					|| Chamado.CHAMADO_IMPLANTADO.getValue().equals( valor ) 
+					) {
 				item.addElement( new Boolean( false ) );
 			}
 			else {
