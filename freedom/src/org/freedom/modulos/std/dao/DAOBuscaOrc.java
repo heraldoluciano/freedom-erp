@@ -10,8 +10,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
-import javax.swing.JOptionPane;
-
 import org.freedom.infra.dao.AbstractDAO;
 import org.freedom.infra.model.jdbc.DbConnection;
 import org.freedom.library.business.exceptions.ExceptionCarregaDados;
@@ -251,22 +249,6 @@ public class DAOBuscaOrc extends AbstractDAO {
 				}
 			}
 		}
-		
-		/*param = 1;
-		sql.append( "select iret from vdadicvendaorcsp(?,?,?,?,?,?,?)" );
-		PreparedStatement ps = getConn().prepareStatement( sql.toString() );
-		ps.setInt( param++, codemp );
-		ps.setInt( param++, codfilialoc );
-		ps.setInt( param++, codorc);
-		ps.setInt( param++, codfilialvd );
-		ps.setString( param++, tipovenda );
-		ps.setInt( param++, codvenda);
-		ps.setDate( param++, Funcoes.dateToSQLDate( datasaida == null ? new Date() : datasaida ));
-		ResultSet rs = ps.executeQuery();
-		if ( rs.next() )
-			icodvenda = rs.getInt( "iret" );
-		rs.close();
-		ps.close();*/
 		codvenda = vdadicvendaorcsp( codorc, codfilialvd, tipovenda, codvenda
 				, Funcoes.dateToSQLDate( datasaida == null ? new Date() : datasaida )
 				, codfilialpf );
@@ -464,22 +446,7 @@ public class DAOBuscaOrc extends AbstractDAO {
 			, BigDecimal desc, Integer codfilialnt, Integer codfilialtt, Integer codfilialme) throws SQLException {
 
 		BigDecimal qtditvenda = BigDecimal.ZERO;
-		// Verificação dos excessos de produção
-		if( qtdprod.compareTo( qtdafatitorc ) > 0 && 
-				( Funcoes.mensagemConfirma( null,  
-
-						"A quantidade produzida do ítem \n" + desc.toString().trim() + " \n" +
-								"excede a quantidade solicitada pelo cliente.\n" +
-								"Deseja faturar a quantidade produzida?\n\n" +
-								"Quantidade solicitada: " + Funcoes.bdToStrd( qtdafatitorc ) + "\n" +
-								"Quantidade produzida : " + Funcoes.bdToStrd( qtdprod ) + "\n\n"
-
-						) == JOptionPane.YES_OPTION ) ) {
-			qtditvenda = qtdprod;
-		}
-		else {
-			qtditvenda = qtdafatitorc;	
-		}
+		qtditvenda = qtdafatitorc;	
 		vdadicitvendaorc( codfilial, codvenda, codorc, coditorc, tipovenda, tpagr, qtditvenda
 				, desc, codfilialnt, codfilialtt, codfilialme );
 	}

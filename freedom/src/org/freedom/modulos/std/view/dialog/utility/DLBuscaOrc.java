@@ -489,6 +489,10 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 
 	private void carregar() {
 		try {
+			if (tabOrc.getNumLinhas()==0) {
+				Funcoes.mensagemInforma( this, "Não existem orçamentos na lista !" );
+				return;
+			}
 			tabitorc.setDataVector(daobusca.carregar(  ListaCampos.getMasterFilial( "EQALMOX" )
 					, tabOrc.getDataVector(), (Boolean) prefs.get(COL_PREFS.APROVORCFATPARC.name()), origem));
 			calcTotalizadores();
@@ -634,6 +638,54 @@ public class DLBuscaOrc extends FDialogo implements ActionListener, RadioGroupLi
 	return  result;
 }
 
+private boolean testeSaldo() {
+	boolean result = true;
+	BigDecimal totfaturar = BigDecimal.ZERO;
+	for (int i=0; i< tabitorc.getNumLinhas(); i++) {
+		Vector<Object> row = tabitorc.getLinha( i );
+		Integer codprod = (Integer) row.elementAt( GRID_ITENS.CODPROD.ordinal() );
+		BigDecimal qtditorc = new BigDecimal( Funcoes.strCurrencyToDouble( row.elementAt( GRID_ITENS.QTDITORC.ordinal() ).toString() ) ) ;
+		BigDecimal qtdprod = new BigDecimal( Funcoes.strCurrencyToDouble( row.elementAt( GRID_ITENS.QTDFINALPRODITORC.ordinal() ).toString() ) ) ;
+		BigDecimal qtdafatitorc = new BigDecimal( Funcoes.strCurrencyToDouble( row.elementAt( GRID_ITENS.QTDAFATITORC.ordinal() ).toString() ) ) ;
+		BigDecimal sldprod = new BigDecimal( Funcoes.strCurrencyToDouble( row.elementAt( GRID_ITENS.SALDOPROD.ordinal() ).toString() ) ) ;
+		String desc = (String ) row.elementAt( GRID_ITENS.DESCPROD.ordinal() );
+			// Verificação dos excessos de produção
+		if( qtdprod.compareTo( qtdafatitorc ) > 0
+			&& sldprod.compareTo( qtdprod ) >= 0
+			&& ( Funcoes.mensagemConfirma( null,  
+						"A quantidade produzida do ítem \n" + desc.toString().trim() + " \n" +
+								"excede a quantidade solicitada pelo cliente.\n" +
+								"Deseja faturar a quantidade produzida?\n\n" +
+								"Quantidade solicitada: " + Funcoes.bdToStrd( qtdafatitorc ) + "\n" +
+								"Quantidade produzida : " + Funcoes.bdToStrd( qtdprod ) + "\n\n"
+
+						) == JOptionPane.YES_OPTION ) ) {
+			qtdafatitorc = qtdprod;
+			tabitorc.setValor( Funcoes.strDecimalToStrCurrencyd( 
+					Aplicativo.casasDec, String.valueOf( qtdafatitorc ) ), i, GRID_ITENS.QTDAFATITORC.ordinal() );
+		}
+		totfaturar.add( qtdafatitorc );
+		Integer codprod_prox = null;
+		if ( (i+1) < tabitorc.getNumLinhas() ) {
+			codprod_prox = (Integer) tabitorc.getValor( i+1, GRID_ITENS.CODPROD.ordinal() );
+		}
+		if ( codprod_prox == null || !codprod_prox.equals( codprod ) ) {
+			if (totfaturar.compareTo( qtditorc )<0 && ( Funcoes.mensagemConfirma( null,  
+						"A quantidade a faturar do ítem \n" + desc.toString().trim() + " \n" +
+						"é menor que o saldo disponível.\n" +
+						"Confirma o faturamento parcial?\n\n" +
+						"Quantidade orçada: " + Funcoes.bdToStrd( qtditorc ) + "\n" +
+						"Quantidade a faturar: " + Funcoes.bdToStrd( totfaturar ) + "\n\n"
+					) != JOptionPane.YES_OPTION ) ) {
+				result = false;
+				break;
+			}
+			totfaturar = BigDecimal.ZERO;
+		}
+	}
+	return result;
+}
+
 private boolean gerarVenda() {
 	PreparedStatement ps = null;
 	PreparedStatement ps2 = null;
@@ -649,6 +701,10 @@ private boolean gerarVenda() {
 	Vector<Integer> vOrcAdicObs = new Vector<Integer>();
 	try {
 		if ( tabitorc.getNumLinhas() > 0 ) {
+			// Testa saldo dos produtos 
+			if ( ! testeSaldo()) {
+				return false;
+			}
 			boolean usaPedSeq = (Boolean) prefs.get(COL_PREFS.USAPEDSEQ.name());
 			//Boolean que determina se data de saida/entrega aparecerá na dialog de Confirmação.
 			boolean solDtSaida = ( Boolean) prefs.get(COL_PREFS.SOLDTSAIDA.name());
