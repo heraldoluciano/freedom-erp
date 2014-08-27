@@ -476,18 +476,12 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 			adicCampo( txtCodProd, 55, 20, 70, 20, "CodProd", "Cód.prod.", ListaCampos.DB_FK, txtDescProd, false );
 			adicCampoInvisivel( txtRefProd, "RefProd", "Referência", ListaCampos.DB_FK, false );
 		}
-
 		adicDescFK( txtDescProd, 128, 20, 300, 20, "DescProd", "Descrição do Produto" );
 		adicCampo( txtQtdItColeta, 431, 20, 70, 20, "QtdItRecMerc", "Qtd.", ListaCampos.DB_SI, true );
-		
 		adicCampo( txtPlacaVeiculo, 504, 20, 80, 20, "PlacaVeiculo", "Placa veiculo.", ListaCampos.DB_SI, false );
 		adicCampo( txtNroFrota, 587, 20, 80, 20, "NroFrota", "Nro.frota.", ListaCampos.DB_SI, false );
 		adicCampo( txtGaragem, 669, 20, 80, 20, "Garagem", "Garagem.", ListaCampos.DB_SI, false );
-		
-		
-		
-		txtQtdItColeta.setBuscaAdic( new DLBuscaSerie( lcDet, lcNumSerie, lcProd, con, "qtditrecmerc", true ) );
-
+		txtQtdItColeta.setBuscaAdic( new DLBuscaSerie( lcDet, lcNumSerie, lcProd, con, "qtditrecmerc", false ) );
 		lbNumSerie = adicCampo( txtNumSerie, 7, 60, 119, 20, "NumSerie", "Número de série", ListaCampos.DB_FK, txtObsSerie, false );
 		lbDtFabricSerie = adicDescFK( txtDtFabricSerie, 129, 60, 80, 20, "DtFabricSerie", "Fabricação" );
 		lbDtValidSerie = adicDescFK( txtDtValidSerie, 212, 60, 80, 20, "DtFabricSerie", " Validade" );
@@ -508,8 +502,6 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 
 		txtStatusItRecMerc.setSoLeitura( true );
 		adicCampoInvisivel( txtStatusItRecMerc, "StatusItRecMerc", "Status", ListaCampos.DB_SI, false );
-		
-		
 
 		setListaCampos( true, "ITRECMERC", "EQ" );
 		lcDet.setQueryInsert( true );
@@ -1123,44 +1115,32 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 
 		boolean bRetorno = false;
 		boolean bValido = false;
-
 		// Validação e abertura da tela para cadastramento da serie unitária
 		if ( txtNumSerie.isEditable() ) {
-
 			String sSQL = "SELECT COUNT(*) FROM EQSERIE WHERE NUMSERIE=? AND CODPROD=? AND CODEMP=? AND CODFILIAL=?";
-
 			PreparedStatement ps = null;
 			ResultSet rs = null;
-
 			try { 
-
 				ps = con.prepareStatement( sSQL );
 				ps.setString( 1, txtNumSerie.getVlrString() );
 				ps.setInt( 2, txtCodProd.getVlrInteger() );
 				ps.setInt( 3, Aplicativo.iCodEmp );
 				ps.setInt( 4, lcNumSerie.getCodFilial() );
-
 				rs = ps.executeQuery();
-
 				if ( rs.next() ) {
 					if ( rs.getInt( 1 ) > 0 ) {
 						bValido = true;
 					}
 				}
-
 				rs.close();
 				ps.close();
 				con.commit();
-
 			} catch ( SQLException err ) {
 				Funcoes.mensagemErro( this, "Erro ao consultar a tabela EQSERIE!\n" + err.getMessage(), true, con, err );
 			}
 			if ( !bValido ) {
-
 				DLSerie dl = new DLSerie( this, txtNumSerie.getVlrString(), txtCodProd.getVlrInteger(), txtDescProd.getVlrString() );
-
 				dl.setVisible( true );
-
 				if ( dl.OK ) {
 					bRetorno = true;
 					txtNumSerie.setVlrString( dl.getNumSerie() );
@@ -1174,11 +1154,8 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 		}
 		// Tela para cadastramento da série para quantidade maior que 1
 		else {
-
 			// abreDlSerieMuitiplos();
-
 		}
-
 		return bRetorno;
 	}
 	
@@ -1200,6 +1177,7 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 	
 	public void beforePost( PostEvent pevt ) {
 
+		boolean testenumserie = true;
 		if ( pevt.getListaCampos() == lcCampos ) {
 			if (txtDocRecMerc.getVlrInteger().intValue()==0) {
 				Funcoes.mensagemInforma( this, "Campo número do documento é obrigatório !" );
@@ -1211,30 +1189,36 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 			if ( "".equals( txtStatus.getVlrString() ) ) {
 				txtStatus.setVlrString( (String) DAORecMerc.STATUS_PENDENTE.getValue() );
 			}
-
 			if ( pevt.getEstado() == ListaCampos.LCS_INSERT ) {
 				novo = true;
 			}
 			consistDocRecMerc( pevt );
 		}
 		else if ( pevt.getListaCampos() == lcDet ) {
-			txtCodTipoRecMercDet.setVlrInteger( txtCodTipoRecMerc.getVlrInteger() );
-			txtCodProcRecMerc.setVlrInteger( 1 );
-			
-			
-			if ( txtSerieProd.getVlrString().equals( "S" ) && txtQtdItColeta.getVlrBigDecimal().floatValue() == 1 ) {
-				if ( !testaNumSerie() ) {
-					pevt.cancela();
-				}
+			testenumserie = ajusteNumSerie();
+			if (!testenumserie) {
+				pevt.cancela();
 			}
 		}
-		super.beforePost( pevt );
+		if (testenumserie) {
+			super.beforePost( pevt );
+		}
 	}
 
+	private boolean ajusteNumSerie() {
+		boolean result = true;
+		txtCodTipoRecMercDet.setVlrInteger( txtCodTipoRecMerc.getVlrInteger() );
+		txtCodProcRecMerc.setVlrInteger( 1 );
+		if ( txtSerieProd.getVlrString().equals( "S" ) && txtQtdItColeta.getVlrBigDecimal().floatValue() == 1 ) {
+			if ( !testaNumSerie() ) {
+				result = false;
+			}
+		}
+		return result;
+	}
+	
 	public void afterPost( PostEvent pevt ) {
-
 		super.beforePost( pevt );
-
 		if ( pevt.getListaCampos() == lcCampos ) {
 			if ( novo ) {
 				lcDet.insert( true );
@@ -1279,18 +1263,14 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 				if ( lcCampos.getStatus() == ListaCampos.LCS_INSERT || lcCampos.getStatus() == ListaCampos.LCS_EDIT ) {
 					lcCampos.post();
 				}
-				/*
-				 * else if ( lcDet.getStatus() == ListaCampos.LCS_EDIT ) { lcCampos.post(); txtCodItRecMerc.requestFocus(); }
-				 */
 			}
-
-			if ( ( (kevt.getSource() == txtQtdItColeta && !txtNumSerie.isEditable()) || kevt.getSource() == txtNumSerie 
-					|| (kevt.getSource()==txtGaragem ) ) 
-					&& ( ( lcDet.getStatus() == ListaCampos.LCS_INSERT ) || ( lcDet.getStatus() == ListaCampos.LCS_EDIT ) ) ) {
-				boolean insert_mode = lcDet.getStatus()==ListaCampos.LCS_INSERT;
-				if ( kevt.getSource() == txtNumSerie || kevt.getSource() == txtQtdItColeta || kevt.getSource() == txtGaragem ) {
+			if (lcDet.getStatus() == ListaCampos.LCS_INSERT || lcDet.getStatus() == ListaCampos.LCS_EDIT ) {
+				if ( kevt.getSource() == txtQtdItColeta && !txtNumSerie.isEditable() ) {
+					ajusteNumSerie();
+				} else 	if ( kevt.getSource() == txtNumSerie || ( kevt.getSource() == txtGaragem && !txtNumSerie.isVisible() ) ) {
 					lcDet.post();
-					if (insert_mode) {
+					if ( ( kevt.getSource()==txtGaragem && !txtNumSerie.isVisible() ) 
+							|| kevt.getSource()==txtNumSerie ) {
 						lcDet.limpaCampos( true );
 //						lcDet.setState( ListaCampos.LCS_NONE );
 						lcDet.insert( true );
@@ -1300,13 +1280,11 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 						else {
 							txtCodProd.requestFocus();
 						}
-					}
+					} 
 				}
 			}
 		}
-
 		// super.keyPressed( kevt );
-
 	}
 	
 	public static void createColeta( DbConnection cn,  int ticket) {

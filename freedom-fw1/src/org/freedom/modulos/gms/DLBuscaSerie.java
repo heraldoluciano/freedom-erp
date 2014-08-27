@@ -99,6 +99,7 @@ public class DLBuscaSerie extends DLF3 implements TabelaSelListener {
 		im.clear();
 		am.clear();
 		
+		@SuppressWarnings("unused")
 		Action enterKey = new AbstractAction() {
 
 			private static final long serialVersionUID = 1L;
