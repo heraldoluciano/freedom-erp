@@ -557,9 +557,10 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 		btGerar.addActionListener( this );
 		txtNumSerie.addFocusListener( this );
 		txtQtdItColeta.addFocusListener( this );
-		txtCodTran.addKeyListener( this );
+		/*txtCodTran.addKeyListener( this );
 		txtQtdItColeta.addKeyListener( this );
 		txtNumSerie.addKeyListener( this );
+		txtGaragem.addKeyListener( this );*/
 	}
 
 	private void montaListaCampos() {
@@ -1283,38 +1284,23 @@ public class FColeta extends FDetalhe implements FocusListener, JComboBoxListene
 				 */
 			}
 
-			if ( ( (kevt.getSource() == txtQtdItColeta && !txtNumSerie.isEditable()) || kevt.getSource() == txtNumSerie ) && ( ( lcDet.getStatus() == ListaCampos.LCS_INSERT ) || ( lcDet.getStatus() == ListaCampos.LCS_EDIT ) ) ) {
-				if ( "S".equals( txtSerieProd.getVlrString() ) && kevt.getSource() == txtNumSerie ) {
-
+			if ( ( (kevt.getSource() == txtQtdItColeta && !txtNumSerie.isEditable()) || kevt.getSource() == txtNumSerie 
+					|| (kevt.getSource()==txtGaragem ) ) 
+					&& ( ( lcDet.getStatus() == ListaCampos.LCS_INSERT ) || ( lcDet.getStatus() == ListaCampos.LCS_EDIT ) ) ) {
+				boolean insert_mode = lcDet.getStatus()==ListaCampos.LCS_INSERT;
+				if ( kevt.getSource() == txtNumSerie || kevt.getSource() == txtQtdItColeta || kevt.getSource() == txtGaragem ) {
 					lcDet.post();
-
-					lcDet.limpaCampos( true );
-
-					lcDet.setState( ListaCampos.LCS_NONE );
-
-					if ( comRef() ) {
-						txtRefProd.requestFocus();
+					if (insert_mode) {
+						lcDet.limpaCampos( true );
+//						lcDet.setState( ListaCampos.LCS_NONE );
+						lcDet.insert( true );
+						if ( comRef() ) {
+							txtRefProd.requestFocus();
+						}
+						else {
+							txtCodProd.requestFocus();
+						}
 					}
-					else {
-						txtCodProd.requestFocus();
-					}
-
-				}
-				else if ( !"S".equals( txtSerieProd.getVlrString() ) && kevt.getSource() == txtQtdItColeta ) {
-
-					lcDet.post();
-
-					lcDet.limpaCampos( true );
-
-					lcDet.setState( ListaCampos.LCS_NONE );
-
-					if ( comRef() ) {
-						txtRefProd.requestFocus();
-					}
-					else {
-						txtCodProd.requestFocus();
-					}
-
 				}
 			}
 		}
