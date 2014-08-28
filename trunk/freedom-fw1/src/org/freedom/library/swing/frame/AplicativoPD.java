@@ -131,9 +131,11 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 		telaPrincipal.statusBar.setCodFilial(iCodFilial);
 		telaPrincipal.statusBar.setNomeFilial(sNomeFilial);
 		telaPrincipal.statusBar.setNumEst(codest);
-		telaPrincipal.statusBar.setDescEst(getSgestacao().getDescest());
-		
-
+		if (getSgestacao().getDescest()==null) {
+			telaPrincipal.statusBar.setDescEst("Estação de trabalho não cadastrada");
+		} else {
+			telaPrincipal.statusBar.setDescEst(getSgestacao().getDescest());
+		}
 		setaSysdba();
 		infoProxy();
 
@@ -337,8 +339,6 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 				rs.close();
 				ps.close();
 				con.commit();
-				
-				
 			} catch (SQLException err) {
 				String mensagemErr = err.getMessage();
 				err.printStackTrace();
@@ -350,6 +350,9 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 				throw new Exception("Erro carregando estação de trabalho!\n"+mensagemErr);
 			}
 			setSgestacao(sgestacao);
+			if (sgestacao.getCodest()==null) {
+				throw new Exception("Estação de trabalho não cadastrada !");
+			}
 		}
 	}
 	
@@ -506,18 +509,20 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 			Funcoes.mensagemErro(null, err.getMessage());
 		}
 		Sgestacao sgestacao = getSgestacao();
-		this.isAutproxy( "S".equals(sgestacao.getSgproxyweb().getAutproxy()) );
-		if (sgestacao.getSgproxyweb().getHostproxy()!=null) {
-			this.setHttpproxy(sgestacao.getSgproxyweb().getHostproxy());
-		} 
-		if (sgestacao.getSgproxyweb().getPortaproxy()!=null) {
-			this.setPortaproxy(String.valueOf(sgestacao.getSgproxyweb().getPortaproxy()));
-		}
-		if (sgestacao.getSgproxyweb().getUsuproxy()!=null) {
-			this.setUsuarioproxy(sgestacao.getSgproxyweb().getUsuproxy());
-		} 
-		if (sgestacao.getSgproxyweb().getSenhaproxy()!=null) {
-			this.setSenhaproxy(sgestacao.getSgproxyweb().getSenhaproxy());
+		if (sgestacao.getSgproxyweb()!=null) {
+			this.isAutproxy( "S".equals(sgestacao.getSgproxyweb().getAutproxy()) );
+			if (sgestacao.getSgproxyweb().getHostproxy()!=null) {
+				this.setHttpproxy(sgestacao.getSgproxyweb().getHostproxy());
+			} 
+			if (sgestacao.getSgproxyweb().getPortaproxy()!=null) {
+				this.setPortaproxy(String.valueOf(sgestacao.getSgproxyweb().getPortaproxy()));
+			}
+			if (sgestacao.getSgproxyweb().getUsuproxy()!=null) {
+				this.setUsuarioproxy(sgestacao.getSgproxyweb().getUsuproxy());
+			} 
+			if (sgestacao.getSgproxyweb().getSenhaproxy()!=null) {
+				this.setSenhaproxy(sgestacao.getSgproxyweb().getSenhaproxy());
+			}
 		}
 	}
 	
