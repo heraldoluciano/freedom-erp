@@ -45,6 +45,10 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 
 	public static final Color COR_PENDENTE = Color.ORANGE;
 
+	//public static final Constant STATUS_COMPRA_PENDENTE = new Constant( "Compra Pendente", "PC" );
+
+	//public static final Color COR_COMPRA_PENDENTE = Color.ORANGE;
+
 	public static final Constant STATUS_PRONTO = new Constant( "OS Concluída", "PT" );
 
 	public static final Color COR_PRONTO = Color.GREEN;
@@ -173,6 +177,9 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 			if ( status.equals( STATUS_PENDENTE.getValue() ) ) {
 				return IMG_PENDENTE;
 			}
+/*			else if ( status.equals( STATUS_COMPRA_PENDENTE.getValue() ) ) {
+				return IMG_PENDENTE;
+			}*/
 			else if ( status.equals( STATUS_PRONTO.getValue() ) ) {
 				return IMG_PRONTO;
 			}
@@ -253,6 +260,10 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 			lbstatus.setText( STATUS_PENDENTE.getName() );
 			lbstatus.setBackground( COR_PENDENTE );
 		}
+		/*else if ( STATUS_COMPRA_PENDENTE.getValue().equals( status ) ) {
+			lbstatus.setText( STATUS_COMPRA_PENDENTE.getName() );
+			lbstatus.setBackground( COR_PENDENTE );
+		}*/
 		else if ( STATUS_PESAGEM_1.getValue().equals( status ) ) {
 			lbstatus.setText( STATUS_PESAGEM_1.getName() );
 			lbstatus.setBackground( COR_PESAGEM_1 );
@@ -281,6 +292,7 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 		Vector<String> ret = new Vector<String>();
 
 		ret.add( STATUS_PENDENTE.getName() );
+		//ret.add( STATUS_COMPRA_PENDENTE.getName() );
 		ret.add( STATUS_PRONTO.getName() );
 		ret.add( STATUS_PESAGEM_1.getName() );
 		ret.add( STATUS_DESCARREGAMENTO.getName() );
@@ -297,6 +309,7 @@ public class DAORecMerc extends AbstractDAO implements java.io.Serializable {
 		Vector<Object> ret = new Vector<Object>();
 
 		ret.add( STATUS_PENDENTE.getValue() );
+		//ret.add( STATUS_COMPRA_PENDENTE.getValue() );
 		ret.add( STATUS_PRONTO.getValue() );
 		ret.add( STATUS_PESAGEM_1.getValue() );
 		ret.add( STATUS_DESCARREGAMENTO.getValue() );

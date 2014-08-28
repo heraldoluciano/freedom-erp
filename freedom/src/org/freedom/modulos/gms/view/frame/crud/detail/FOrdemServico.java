@@ -2001,7 +2001,8 @@ public class FOrdemServico extends FDetalhe implements FocusListener, JComboBoxL
 	}
 
 	private void trocaProdutoTodos() {
-		if(cbStatus.getVlrString()==DAORecMerc.STATUS_PENDENTE.getValue()) {
+		if(cbStatus.getVlrString()==DAORecMerc.STATUS_PENDENTE.getValue() 
+		 || cbStatus.getVlrString()==DAORecMerc.STATUS_PEDIDO_COMPRA_EMITIDO.getValue()) {
 			for(int i=0; tab.getNumLinhas() >i ; i++ ) {
 				txtCodItRecMerc.setVlrInteger( (Integer) tab.getValor( i, 0 ) );
 				lcDet.carregaDados();
