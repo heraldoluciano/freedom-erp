@@ -52,7 +52,7 @@ import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
 import org.freedom.library.swing.component.JButtonPad;
-import org.freedom.library.swing.component.JCheckBoxPad;
+//import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JComboBoxPad;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JPanelPad;
@@ -170,7 +170,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 
 	// ** Checkbox
 
-	private JCheckBoxPad cbEtapa0 = new JCheckBoxPad( "Pendentes", "S", "N" );
+	/*private JCheckBoxPad cbEtapa0 = new JCheckBoxPad( "Pendentes", "S", "N" );
 
 	private JCheckBoxPad cbEtapa1 = new JCheckBoxPad( "Analise", "S", "N" );
 
@@ -183,7 +183,7 @@ public class FControleServicos extends FFilho implements ActionListener, TabelaS
 	private JCheckBoxPad cbEtapa5 = new JCheckBoxPad( "Faturado", "S", "N" );
 
 	private JCheckBoxPad cbEtapa6 = new JCheckBoxPad( "entregue", "S", "N" );
-	
+*/
 	private JComboBoxPad cbGarantia = null;
 
 	private ImageIcon imgColuna = Icone.novo( "clAgdCanc.png" );
