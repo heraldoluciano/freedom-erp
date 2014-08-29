@@ -17,7 +17,7 @@ public class StatusOS implements java.io.Serializable {
 
 	public static final Constant OS_PENDENTE = new Constant( "Pendente", "PE" );
 
-	public static final Constant OS_COMPRA_PENDENTE = new Constant( "Compra pendente", "PC" );
+	public static final Constant OS_COMPRA_EMITIDA = new Constant( "Compra emitida", "PC" );
 
 	public static final Constant OS_ANALISE = new Constant( "Em analise", "AN" );
 
@@ -63,7 +63,7 @@ public class StatusOS implements java.io.Serializable {
 
 		ImageIcon IMG_OS_PENDENTE = Icone.novo( "os_pendente_" + tamanho + ".png" );
 
-		ImageIcon IMG_OS_COMPRA_PENDENTE = Icone.novo( "os_compra_pendente_" + tamanho + ".png" );
+		ImageIcon IMG_OS_COMPRA_EMITIDA = Icone.novo( "os_compra_emitida_" + tamanho + ".png" );
 
 		ImageIcon IMG_OS_ANDAMENTO = Icone.novo( "os_em_andamento_" + tamanho + ".png" );
 		
@@ -86,8 +86,8 @@ public class StatusOS implements java.io.Serializable {
 			if ( status.equals( OS_PENDENTE.getValue() ) ) {
 				return IMG_OS_PENDENTE;
 			}
-			else if ( status.equals( OS_COMPRA_PENDENTE.getValue() ) ) {
-				return IMG_OS_COMPRA_PENDENTE;
+			else if ( status.equals( OS_COMPRA_EMITIDA.getValue() ) ) {
+				return IMG_OS_COMPRA_EMITIDA;
 			}
 			else if ( status.equals( OS_ANALISE.getValue() ) ) {
 				return IMG_OS_ANALISE;
@@ -126,7 +126,7 @@ public class StatusOS implements java.io.Serializable {
 		Vector<String> ret = new Vector<String>();
 
 		ret.add( OS_PENDENTE.getName() );
-		ret.add( OS_COMPRA_PENDENTE.getName() );
+		ret.add( OS_COMPRA_EMITIDA.getName() );
 		ret.add( OS_ANALISE.getName() );
 		ret.add( OS_ORCAMENTO.getName() );
 		ret.add( OS_APROVADA.getName() );
@@ -145,7 +145,7 @@ public class StatusOS implements java.io.Serializable {
 		Vector<Object> ret = new Vector<Object>();
 
 		ret.add( OS_PENDENTE.getValue() );
-		ret.add( OS_COMPRA_PENDENTE.getValue() );
+		ret.add( OS_COMPRA_EMITIDA.getValue() );
 		ret.add( OS_ANALISE.getValue() );
 		ret.add( OS_ORCAMENTO.getValue() );
 		ret.add( OS_APROVADA.getValue() );
