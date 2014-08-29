@@ -42,8 +42,6 @@ import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.SwingConstants;
 
-import net.sf.jasperreports.engine.JasperPrintManager;
-
 import org.freedom.bmps.Icone;
 import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
@@ -354,102 +352,102 @@ public class FRPagar extends FRelatorio {
 
 		StringBuilder sql = new StringBuilder();
 
-		sql.append( "SELECT IT.CODPAG, IT.DTVENCITPAG,IT.NPARCPAG,P.CODCOMPRA"); 
-		sql.append(",P.CODFOR,F.RAZFOR,IT.VLRPARCITPAG,IT.VLRPAGOITPAG VLRPAGOITPAGTOT," );
+		sql.append( "select it.codpag, it.dtvencitpag,it.nparcpag,p.codcompra"); 
+		sql.append(",p.codfor,f.razfor,it.vlrparcitpag,it.vlrpagoitpag vlrpagoitpagtot," );
 		if ( !bcorrecao ) {
 		//	sql.append( "IT.VLRPAGOITPAG,IT.VLRAPAGITPAG,IT.DTPAGOITPAG" );
-			sql.append( "COALESCE(LA.VLRSUBLANCA, IT.VLRPAGOITPAG) VLRPAGOITPAG");
-			sql.append( ",IT.VLRAPAGITPAG,coalesce(la.datasublanca,IT.DTPAGOITPAG) dtpagoitpag " );
+			sql.append( "coalesce(la.vlrsublanca, it.vlrpagoitpag) vlrpagoitpag");
+			sql.append( ",it.vlrapagitpag,coalesce(la.datasublanca,it.dtpagoitpag) dtpagoitpag " );
 		}
 		else {
 			// Valor pago
-			sql.append( "(COALESCE((SELECT SUM(VLRSUBLANCA) FROM FNSUBLANCA L WHERE L.CODEMPPG=IT.CODEMP" );
-			sql.append( " AND L.CODFILIALPG=IT.CODFILIAL AND L.CODPAG=IT.CODPAG" );
-			sql.append( " AND L.NPARCPAG=IT.NPARCPAG AND L.DATASUBLANCA<=?),0)) VLRPAGOITPAG, " );
+			sql.append( "(coalesce((select sum(vlrsublanca) from fnsublanca l where l.codemppg=it.codemp" );
+			sql.append( " and l.codfilialpg=it.codfilial and l.codpag=it.codpag" );
+			sql.append( " and l.nparcpag=it.nparcpag and l.datasublanca<=?),0)) vlrpagoitpag, " );
 		//	sql.append( " COALESCE(LA.VLRLANCA * -1 , IT.VLRPAGOITPAG) VLRPAGOITPAG, " );
 			// Valor a pagar
-			sql.append( "COALESCE(IT.VLRPARCITPAG,0)-COALESCE((SELECT SUM(VLRSUBLANCA) FROM FNSUBLANCA L WHERE L.CODEMPPG=IT.CODEMP" );
-			sql.append( " AND L.CODFILIALPG=IT.CODFILIAL AND L.CODPAG=IT.CODPAG" );
-			sql.append( " AND L.NPARCPAG=IT.NPARCPAG AND L.DATASUBLANCA<=?),0) VLRAPAGITPAG," );
+			sql.append( "coalesce(it.vlrparcitpag,0)-coalesce((select sum(vlrsublanca) from fnsublanca l where l.codemppg=it.codemp" );
+			sql.append( " and l.codfilialpg=it.codfilial and l.codpag=it.codpag" );
+			sql.append( " and l.nparcpag=it.nparcpag and l.datasublanca<=?),0) vlrapagitpag," );
 			// Data de pagamento
-			sql.append( "(SELECT MAX(L.DATASUBLANCA) FROM FNSUBLANCA L WHERE L.CODEMPPG=IT.CODEMP" );
-			sql.append( " AND L.CODFILIALPG=IT.CODFILIAL AND L.CODPAG=IT.CODPAG" );
-			sql.append( " AND L.NPARCPAG=IT.NPARCPAG AND L.DATASUBLANCA<=?) DTPAGOITPAG " );
+			sql.append( "(select max(l.datasublanca) from fnsublanca l where l.codemppg=it.codemp" );
+			sql.append( " and l.codfilialpg=it.codfilial and l.codpag=it.codpag" );
+			sql.append( " and l.nparcpag=it.nparcpag and l.datasublanca<=?) dtpagoitpag " );
 		}
-		sql.append( ", (SELECT C.STATUSCOMPRA FROM CPCOMPRA C WHERE C.FLAG IN " );
+		sql.append( ", (select c.statuscompra from cpcompra c where c.flag in " );
 		sql.append( AplicativoPD.carregaFiltro( con, org.freedom.library.swing.frame.Aplicativo.iCodEmp ) );
-		sql.append( " AND C.CODEMP=P.CODEMPCP AND C.CODFILIAL=P.CODFILIALCP AND C.CODCOMPRA=P.CODCOMPRA) STATUSCOMPRA," );
-		sql.append( "P.DOCPAG,COALESCE(LA.histsublanca,IT.OBSITPAG) OBSITPAG,	 " );
-		sql.append( "(SELECT C.DTEMITCOMPRA FROM CPCOMPRA C WHERE C.FLAG IN " );
+		sql.append( " and c.codemp=p.codempcp and c.codfilial=p.codfilialcp and c.codcompra=p.codcompra) statuscompra," );
+		sql.append( "p.docpag,coalesce(la.histsublanca,it.obsitpag) obsitpag,	 " );
+		sql.append( "(select c.dtemitcompra from cpcompra c where c.flag in " );
 		sql.append( AplicativoPD.carregaFiltro( con, org.freedom.library.swing.frame.Aplicativo.iCodEmp ) );
-		sql.append( " AND C.CODEMP=P.CODEMPCP AND C.CODFILIAL=P.CODFILIALCP AND C.CODCOMPRA=P.CODCOMPRA) AS DTEMITCOMPRA " );
-		sql.append( "FROM FNPAGAR P,CPFORNECED F, FNITPAGAR IT LEFT OUTER JOIN FNCONTA CT ON " );
-		sql.append( " CT.CODEMP = IT.CODEMPCA AND CT.CODFILIAL=IT.CODFILIALCA AND CT.NUMCONTA=IT.NUMCONTA " );
+		sql.append( " and c.codemp=p.codempcp and c.codfilial=p.codfilialcp and c.codcompra=p.codcompra) as dtemitcompra " );
+		sql.append( "from fnpagar p,cpforneced f, fnitpagar it left outer join fnconta ct on " );
+		sql.append( " ct.codemp = it.codempca and ct.codfilial=it.codfilialca and ct.numconta=it.numconta " );
 		//if ( !bcorrecao ) {
-		sql.append( " LEFT OUTER JOIN fnsublanca LA ON LA.NPARCPAG = IT.NPARCPAG AND LA.CODPAG=IT.codpag AND LA.CODFILIALPG=IT.codfilial AND LA.CODEMPPG=IT.codemp " );
+		sql.append( " left outer join fnsublanca la on la.nparcpag = it.nparcpag and la.codpag=it.codpag and la.codfilialpg=it.codfilial and la.codemppg=it.codemp " );
 		//}
-		sql.append( " WHERE P.FLAG IN " + AplicativoPD.carregaFiltro( con, org.freedom.library.swing.frame.Aplicativo.iCodEmp ) );
-		sql.append( " AND IT.CODEMP = P.CODEMP AND IT.CODFILIAL=P.CODFILIAL " );
+		sql.append( " where p.flag in " + AplicativoPD.carregaFiltro( con, org.freedom.library.swing.frame.Aplicativo.iCodEmp ) );
+		sql.append( " and it.codemp = p.codemp and it.codfilial=p.codfilial " );
 
 		if ( "P".equals( cbOrdem.getVlrString() ) ) {
-			sql.append( " AND IT.DTPAGOITPAG" );
+			sql.append( " and it.dtpagoitpag" );
 		}
 		else if ( "V".equals( cbOrdem.getVlrString() ) ) {
-			sql.append( " AND IT.DTVENCITPAG " );
+			sql.append( " and it.dtvencitpag " );
 		}
 		else {
-			sql.append( " AND IT.DTITPAG " );
+			sql.append( " and it.dtitpag " );
 		}
 
-		sql.append( " BETWEEN ? AND ? AND " );
+		sql.append( " between ? and ? and " );
 		// Se a data de correção não for diferente data data atual, mantém a SQL original
 		if ( !bcorrecao ) {
-			sql.append( "IT.STATUSITPAG IN (?,?,?)" );
+			sql.append( "it.statusitpag in (?,?,?)" );
 		}
 		else {
 			// data de correção diferente da data atual
 			if ( "N".equals( sFiltroPag ) ) {
-				sql.append( "( IT.STATUSITPAG IN (?,?,?) OR " );
-				sql.append( "(NOT EXISTS ( SELECT * FROM FNSUBLANCA L WHERE L.CODEMPPG=IT.CODEMP" );
-				sql.append( " AND L.CODFILIALPG=IT.CODFILIAL AND L.CODPAG=IT.CODPAG" );
-				sql.append( " AND L.NPARCPAG=IT.NPARCPAG AND L.DATASUBLANCA<=? ) ) )" );
+				sql.append( "( it.statusitpag in (?,?,?) or " );
+				sql.append( "(not exists ( select * from fnsublanca l where l.codemppg=it.codemp" );
+				sql.append( " and l.codfilialpg=it.codfilial and l.codpag=it.codpag" );
+				sql.append( " and l.nparcpag=it.nparcpag and l.datasublanca<=? ) ) )" );
 			}
 			else if ( "P".equals( sFiltroPag ) ) {
-				sql.append( "( IT.STATUSITPAG IN (?,?,?) OR " );
-				sql.append( "(EXISTS ( SELECT * FROM FNSUBLANCA L WHERE L.CODEMPPG=IT.CODEMP" );
-				sql.append( " AND L.CODFILIALPG=IT.CODFILIAL AND L.CODPAG=IT.CODPAG" );
-				sql.append( " AND L.NPARCPAG=IT.NPARCPAG AND L.DATASUBLANCA<=? ) ) )" );
+				sql.append( "( it.statusitpag in (?,?,?) or " );
+				sql.append( "(exists ( select * from fnsublanca l where l.codemppg=it.codemp" );
+				sql.append( " and l.codfilialpg=it.codfilial and l.codpag=it.codpag" );
+				sql.append( " and l.nparcpag=it.nparcpag and l.datasublanca<=? ) ) )" );
 			}
 			else if ( "A".equals( sFiltroPag ) ) {
-				sql.append( "IT.STATUSITPAG IN (?,?,?)" );
+				sql.append( "it.statusitpag in (?,?,?)" );
 			}
 		}
-		sql.append( " AND P.CODPAG=IT.CODPAG AND " );
-		sql.append( "F.CODEMP=P.CODEMPFR AND F.CODFILIAL=P.CODFILIALFR AND F.CODFOR=P.CODFOR " );
-		sql.append( "".equals( txtCodFor.getVlrString() ) ? "" : " AND P.CODFOR=" + txtCodFor.getVlrString() );
-		sql.append( "".equals( txtCodPlanoPag.getVlrString() ) ? "" : " AND P.CODPLANOPAG=" + txtCodPlanoPag.getVlrString() );
-		sql.append( " AND P.CODEMP=? AND P.CODFILIAL=? " );
+		sql.append( " and p.codpag=it.codpag and " );
+		sql.append( "f.codemp=p.codempfr and f.codfilial=p.codfilialfr and f.codfor=p.codfor " );
+		sql.append( "".equals( txtCodFor.getVlrString() ) ? "" : " and p.codfor=" + txtCodFor.getVlrString() );
+		sql.append( "".equals( txtCodPlanoPag.getVlrString() ) ? "" : " and p.codplanopag=" + txtCodPlanoPag.getVlrString() );
+		sql.append( " and p.codemp=? and p.codfilial=? " );
 		if ( txtCodBanco.getVlrInteger() > 0 ) {
-			sql.append( " AND COALESCE(CT.CODEMPBO,P.CODEMPBO)=? AND COALESCE(CT.CODFILIALBO,P.CODFILIALBO)=?" );
-			sql.append( " AND COALESCE(CT.CODBANCO,P.CODBANCO)=? " );
+			sql.append( " and coalesce(ct.codempbo,p.codempbo)=? and coalesce(ct.codfilialbo,p.codfilialbo)=?" );
+			sql.append( " and coalesce(ct.codbanco,p.codbanco)=? " );
 		}
 		if ( ! "".equals( txtNumConta.getVlrString() )  ) {
-			sql.append( " AND IT.CODEMPCA=? AND IT.CODFILIALCA=? AND IT.NUMCONTA=? " );
+			sql.append( " and it.codempca=? and it.codfilialca=? and it.numconta=? " );
 		}
 		if ( txtCodTipoCob.getVlrInteger() > 0 ) {
-			sql.append( " AND IT.CODTIPOCOB=? AND IT.CODEMPTC=? AND IT.CODFILIALTC=? " );
+			sql.append( " and it.codtipocob=? and it.codemptc=? and it.codfilialtc=? " );
 		}
-		sql.append( "ORDER BY " );
+		sql.append( "order by " );
 		if ( "P".equals( cbOrdem.getVlrString() ) ) {
-			sql.append( "IT.DTPAGOITPAG" );
+			sql.append( "it.dtpagoitpag" );
 		}
 		else if ( "V".equals( cbOrdem.getVlrString() ) ) {
-			sql.append( "IT.DTVENCITPAG" );
+			sql.append( "it.dtvencitpag" );
 		}
 		else {
-			sql.append( "IT.DTITPAG" );
+			sql.append( "it.dtitpag" );
 		}
-		sql.append( ", F.RAZFOR" );
+		sql.append( ", f.razfor" );
 
 		try {
 
