@@ -27,14 +27,12 @@ package org.freedom.modulos.fnc.view.frame.report;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.SwingConstants;
-
-import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.acao.RadioGroupEvent;
 import org.freedom.acao.RadioGroupListener;
@@ -63,6 +61,8 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 	private JTextFieldPad txtDataini = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldPad txtDatafim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+	
+	private JTextFieldPad txtDatacor = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -130,7 +130,8 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 
 	private JTextFieldFK txtDescConta = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
-
+	private Calendar calAtual = Calendar.getInstance();
+	
 	private boolean bPref = false;
 
 	public FRReceber() {
@@ -138,13 +139,13 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		super( false );
 		setTitulo( "Receber/Recebidas" );
 		setAtribos( 40, 50, 680, 470 );
-
-		txtDataini.setVlrDate( new Date() );
-		txtDatafim.setVlrDate( new Date() );
-
+		txtDatafim.setVlrDate( calAtual.getTime() );
+		txtDatacor.setVlrDate( calAtual.getTime() );
+		Calendar cal = Calendar.getInstance();
+		cal.set( Calendar.DAY_OF_MONTH, 1 );
+		txtDataini.setVlrDate( cal.getTime() );
 		cbObs.setVlrString( "S" );
 		cbImpTotDia.setVlrString( "S" );
-
 		montaListaCampos();
 		montaRadioGroups();
 		montaTela();
@@ -245,7 +246,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		vVals0.addElement( "R" );
 		vVals0.addElement( "P" );
 		vVals0.addElement( "A" );
-		rgTipoRel = new JRadioGroup<String, String>( 3, 1, vLabs0, vVals0 );
+		rgTipoRel = new JRadioGroup<String, String>( 1, 3, vLabs0, vVals0 );
 		rgTipoRel.addRadioGroupListener( this );
 
 		Vector<String> vVals1 = new Vector<String>();
@@ -274,57 +275,50 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		cbRecPar.setVlrString( "S" );
 		JLabelPad lbLinha = new JLabelPad();
 		lbLinha.setBorder( BorderFactory.createEtchedBorder() );
-
-		adic( new JLabelPad( "Periodo:" ), 7, 0, 80, 20 );
-		adic( lbLinha, 7, 20, 247, 40 );
-		adic( new JLabelPad( "De:", SwingConstants.CENTER ), 17, 30, 30, 20 );
-		adic( txtDataini, 47, 30, 80, 20 );
-		adic( new JLabelPad( "Até:", SwingConstants.CENTER ), 127, 30, 30, 20 );
-		adic( txtDatafim, 157, 30, 80, 20 );
-		adic( new JLabelPad( "Modo de exibição:" ), 7, 60, 287, 20 );
-		adic( rgModo, 7, 80, 247, 30 );
-		adic( new JLabelPad( "Modo:" ), 257, 0, 170, 20 );
-		adic( rgTipoRel, 257, 20, 160, 90 );
-
-		adic( cbObs, 420, 15, 180, 20 );
-		adic( cbImpTotDia, 420, 40, 180, 20 );
-		adic( cbRecPar, 420, 65, 250, 20 );
+		adic( new JLabelPad( "Período:" ), 7, 0, 80, 20 );
+		adic( lbLinha, 7, 20, 330, 50 );
+		adic( new JLabelPad( "De:", SwingConstants.LEFT ), 17, 20, 30, 20 );
+		adic( txtDataini, 17, 40, 100, 20 );
+		adic( new JLabelPad( "Até:", SwingConstants.LEFT ), 120, 20, 30, 20 );
+		adic( txtDatafim, 120, 40, 100, 20 );
+		adic( new JLabelPad( "Correção para:", SwingConstants.LEFT ), 223, 20, 100, 20 );
+		adic( txtDatacor, 223, 40, 100, 20 );
+		adic( new JLabelPad( "Exibição:" ), 340, 0, 150, 20 );
+		adic( rgModo, 340, 20, 150, 50 );
+		adic( new JLabelPad( "Modo:" ), 7, 70, 410, 20 );
+		adic( rgTipoRel, 7, 90, 410, 30 );
+		adic( cbObs, 420, 115, 180, 20 );
+		adic( cbImpTotDia, 420, 150, 180, 20 );
+		adic( cbRecPar, 420, 185, 250, 20 );
 		// adic( cbAgrupCli, 420, 90, 250, 20 );
-
-		adic( new JLabelPad( "Primeira ordem:" ), 7, 110, 390, 20 );
-		adic( rgOrdem, 7, 130, 410, 30 );
-		adic( new JLabelPad( "Segunda ordem:" ), 7, 160, 390, 20 );
-		adic( rgOrdem2, 7, 180, 410, 30 );
-
-		adic( new JLabelPad( "Cód.cli." ), 7, 220, 80, 20 );
-		adic( txtCodCli, 7, 240, 80, 20 );
-		adic( new JLabelPad( "Razão social do cliente" ), 90, 220, 210, 20 );
-		adic( txtRazCli, 90, 240, 210, 20 );
-		adic( new JLabelPad( "Cód.setor" ), 7, 260, 80, 20 );
-		adic( txtCodSetor, 7, 280, 80, 20 );
-		adic( new JLabelPad( "Descrição do setor" ), 90, 260, 210, 20 );
-		adic( txtDescSetor, 90, 280, 210, 20 );
-		adic( new JLabelPad( "Cód.comis." ), 7, 300, 80, 20 );
-		adic( txtCodVend, 7, 320, 80, 20 );
-		adic( new JLabelPad( "Nome do comissionado" ), 90, 300, 210, 20 );
-		adic( txtNomeVend, 90, 320, 210, 20 );
-
-		adic( new JLabelPad( "Cod.Tp.Cob" ), 303, 220, 80, 20 );
-		adic( txtCodTpCob, 303, 240, 80, 20 );
-		adic( new JLabelPad( "Descrição do Tipo de Cobrança" ), 386, 220, 220, 20 );
-		adic( txtDescTpCob, 386, 240, 220, 20 );
-
-		adic( txtCodBanco, 303, 280, 80, 20, "Cód.banco" );
-		adic( txtDescBanco, 386, 280, 220, 20, "Descrição do banco" );
-
-		adic( txtNumConta, 303, 320, 80, 20, "Num.Conta" );
-		adic( txtDescConta, 386, 320, 220, 20, "Descrição da conta" );
-		
-		adic( txtCodPlanoPag, 303, 360, 80, 20, "Cód.pl.pag." );
-		adic( txtDescPlanoPag, 386, 360, 220, 20, "Descrição do plano de pagamento" );
-
-		adic( txtCodTipoCli, 7, 360, 80, 20, "Cód.Tipo.Cli" );
-		adic( txtDescTipoCli, 90, 360, 210, 20, "Descrição do tipo de cliente" );
+		adic( new JLabelPad( "Primeira ordem:" ), 7, 120, 390, 20 );
+		adic( rgOrdem, 7, 140, 410, 30 );
+		adic( new JLabelPad( "Segunda ordem:" ), 7, 170, 390, 20 );
+		adic( rgOrdem2, 7, 190, 410, 30 );
+		adic( new JLabelPad( "Cód.cli." ), 7, 230, 80, 20 );
+		adic( txtCodCli, 7, 250, 80, 20 );
+		adic( new JLabelPad( "Razão social do cliente" ), 90, 230, 210, 20 );
+		adic( txtRazCli, 90, 250, 210, 20 );
+		adic( new JLabelPad( "Cód.setor" ), 7, 270, 80, 20 );
+		adic( txtCodSetor, 7, 290, 80, 20 );
+		adic( new JLabelPad( "Descrição do setor" ), 90, 270, 210, 20 );
+		adic( txtDescSetor, 90, 290, 210, 20 );
+		adic( new JLabelPad( "Cód.comis." ), 7, 310, 80, 20 );
+		adic( txtCodVend, 7, 330, 80, 20 );
+		adic( new JLabelPad( "Nome do comissionado" ), 90, 310, 210, 20 );
+		adic( txtNomeVend, 90, 330, 210, 20 );
+		adic( new JLabelPad( "Cod.Tp.Cob" ), 303, 230, 80, 20 );
+		adic( txtCodTpCob, 303, 250, 80, 20 );
+		adic( new JLabelPad( "Descrição do Tipo de Cobrança" ), 386, 230, 220, 20 );
+		adic( txtDescTpCob, 386, 250, 220, 20 );
+		adic( txtCodBanco, 303, 290, 80, 20, "Cód.banco" );
+		adic( txtDescBanco, 386, 290, 220, 20, "Descrição do banco" );
+		adic( txtNumConta, 303, 330, 80, 20, "Num.Conta" );
+		adic( txtDescConta, 386, 330, 220, 20, "Descrição da conta" );
+		adic( txtCodPlanoPag, 303, 370, 80, 20, "Cód.pl.pag." );
+		adic( txtDescPlanoPag, 386, 370, 220, 20, "Descrição do plano de pagamento" );
+		adic( txtCodTipoCli, 7, 370, 80, 20, "Cód.Tipo.Cli" );
+		adic( txtDescTipoCli, 90, 370, 210, 20, "Descrição do tipo de cliente" );
 
 	}
 
@@ -332,31 +326,29 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		StringBuffer sSQL = new StringBuffer();
-		StringBuffer sWhere = new StringBuffer();
-		String sFrom = " ";
-		String sFiltro = "";
-		String sTipoRel = null;
-		String sTitRel = null;
-		String sTitRel1 = null;
-		String sDtTotal = "";
-		String sDtPago = "";
-		String sObs = "";
-		String sImpTotDia = "";
-		String sCodBanco = null;
-		String sNumConta = null;
-		String sCodTpCob = null;
-		String sCodPlanoPag = null;
-		String sCampoTotal = null;
-		String sCampoOrdem = null;
-		String sCampoOrdem2 = null;
-		String sRecParc = cbRecPar.getVlrString();
-		
-		int iCodCli = 0;
-		int iCodSetor = 0;
-		int iCodVend = 0;
-		int iParans = 0;
-
+		StringBuilder sql = new StringBuilder();
+		StringBuilder where = new StringBuilder();
+		StringBuilder from = new StringBuilder(" ");
+		StringBuilder filtro = new StringBuilder("");
+		String tiporel = null;
+		String titrel = null;
+		String titrel1 = null;
+		String dttotal = "";
+		String dtpago = "";
+		String obs = "";
+		String imptotdia = "";
+		String codbanco = null;
+		String numconta = null;
+		String codtpcob = null;
+		String codplanopag = null;
+		String campototal = null;
+		String campoordem = null;
+		String campoordem2 = null;
+		String recparc = cbRecPar.getVlrString();
+		int codcli = 0;
+		int codsetor = 0;
+		int codvend = 0;
+		int param = 0;
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
 			return;
@@ -365,208 +357,208 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 			Funcoes.mensagemInforma( this, "Não pode ser ordenado por data de pagamento!" );
 			return;
 		}
-
-		sTipoRel = rgTipoRel.getVlrString();
-
-		if ( sTipoRel.equals( "R" ) ) {
-			sTitRel = "A RECEBER";
+		boolean bcorrecao = ( !Funcoes.dataAAAAMMDD( txtDatacor.getVlrDate() ).equals( Funcoes.dataAAAAMMDD( calAtual.getTime() ) ) );
+		tiporel = rgTipoRel.getVlrString();
+		if ( tiporel.equals( "R" ) ) {
+			titrel = "A RECEBER";
 		}
-		else if ( sTipoRel.equals( "P" ) ) {
-			sTitRel = "RECEBIDAS";
+		else if ( tiporel.equals( "P" ) ) {
+			titrel = "RECEBIDAS";
 		}
-		else if ( sTipoRel.equals( "A" ) ) {
-			sTitRel = "A RECEBER/RECEBIDAS";
+		else if ( tiporel.equals( "A" ) ) {
+			titrel = "A RECEBER/RECEBIDAS";
 		}
-
 		if ( rgOrdem.getVlrString().equals( "P" ) ) {
-			sTitRel1 = "PAGAMENTO";
-			sCampoOrdem = "IT.DTPAGOITREC";
-			sCampoTotal = "DTPAGOITREC";
+			titrel1 = "PAGAMENTO";
+			campoordem = "it.dtpagoitrec";
+			campototal = "dtpagoitrec";
 		}
 		else if ( rgOrdem.getVlrString().equals( "E" ) ) {
-			sTitRel1 = "EMISSÂO";
-			sCampoOrdem = "IT.DTITREC";
-			sCampoTotal = "DTITREC";
+			titrel1 = "EMISSÂO";
+			campoordem = "it.dtitrec";
+			campototal = "dtitrec";
 		}
 		else {
-			sTitRel1 = "VENCIMENTO";
-			sCampoOrdem = "IT.DTVENCITREC";
-			sCampoTotal = "DTVENCITREC";
+			titrel1 = "VENCIMENTO";
+			campoordem = "it.dtvencitrec";
+			campototal = "dtvencitrec";
 		}
-
 		if ( rgOrdem2.getVlrString().equals( "R" ) ) {
-			sCampoOrdem2 = "C.RAZCLI";
+			campoordem2 = "c.razcli";
 		}
 		else {
-			sCampoOrdem2 = "R.DOCREC";
+			campoordem2 = "r.docrec";
 		}
+		codcli = txtCodCli.getVlrInteger().intValue();
+		codsetor = txtCodSetor.getVlrInteger().intValue();
+		codvend = txtCodVend.getVlrInteger().intValue();
+		codbanco = txtCodBanco.getVlrString();
+		numconta = txtNumConta.getVlrString();
+		codplanopag = txtCodPlanoPag.getVlrString();
+		codtpcob = txtCodTpCob.getVlrString();
 
-		iCodCli = txtCodCli.getVlrInteger().intValue();
-		iCodSetor = txtCodSetor.getVlrInteger().intValue();
-		iCodVend = txtCodVend.getVlrInteger().intValue();
-		sCodBanco = txtCodBanco.getVlrString();
-		sNumConta = txtNumConta.getVlrString();
-		sCodPlanoPag = txtCodPlanoPag.getVlrString();
-		sCodTpCob = txtCodTpCob.getVlrString();
-
-		if ( iCodCli != 0 ) {
-			sWhere.append( " AND R.CODEMPCL=? AND R.CODFILIALCL=? AND R.CODCLI=? " );
-			sFiltro = "Cli.: " + iCodCli + " - " + Funcoes.copy( txtRazCli.getVlrString(), 30 ).trim();
+		if ( codcli != 0 ) {
+			where.append( " AND R.CODEMPCL=? AND R.CODFILIALCL=? AND R.CODCLI=? " );
+			filtro.append( "Cli.: " + codcli + " - " + Funcoes.copy( txtRazCli.getVlrString(), 30 ).trim() );
 		}
-		if ( iCodSetor != 0 ) {
+		if ( codsetor != 0 ) {
 			if ( bPref ) {
-				sWhere.append( " AND C.CODEMPSR=? AND C.CODFILIALSR=? AND C.CODSETOR=?" );
+				where.append( " AND C.CODEMPSR=? AND C.CODFILIALSR=? AND C.CODSETOR=?" );
 			}
 			else {
-				sWhere.append( " AND VD.CODEMPSE=? AND VD.CODFILIALSE=? AND VD.CODSETOR=? ");
+				where.append( " AND VD.CODEMPSE=? AND VD.CODFILIALSE=? AND VD.CODSETOR=? ");
 //				sWhere.append( " AND VD.CODEMPSE=? AND VD.CODFILIALSE=? AND VD.CODSETOR=? AND  VD.CODEMP=R.CODEMPVD AND VD.CODFILIAL=R.CODFILIALVD AND VD.CODVEND=R.CODVEND " );
 //				sFrom = ",VDVENDEDOR VD ";
 			}
-			sFiltro += ( !sFiltro.equals( "" ) ? " / " : "" ) + "Setor: " + iCodSetor + " - " + Funcoes.copy( txtDescSetor.getVlrString(), 30 ).trim();
+			if (filtro.length()!=0)	
+				filtro.append(" / ");
+			filtro.append( "Setor: " + codsetor + " - " + Funcoes.copy( txtDescSetor.getVlrString(), 30 ).trim() );
 		}
-		if ( iCodVend != 0 ) {
-			sWhere.append( " AND R.CODEMPVD=? AND R.CODFILIALVD=? AND R.CODVEND=? " );
-			sFiltro += ( !sFiltro.equals( "" ) ? " / " : "" ) + "Repr.: " + iCodVend + " - " + Funcoes.copy( txtNomeVend.getVlrString(), 30 ).trim();
+		if ( codvend != 0 ) {
+			where.append( " and r.codempvd=? and r.codfilialvd=? and r.codvend=? " );
+			if (filtro.length()!=0) 
+				filtro.append(" / ");
+			filtro.append( "Repr.: " + codvend + " - " + Funcoes.copy( txtNomeVend.getVlrString(), 30 ).trim() );
 		}
-		if ( sCodBanco.length() > 0 ) {
-			sWhere.append( " AND IT.CODEMPBO=? AND IT.CODFILIALBO=? AND IT.CODBANCO=? " );
-			sFiltro += ( !sFiltro.equals( "" ) ? " / " : "" ) + "Repr.: " + sCodBanco + " - " + Funcoes.copy( txtCodBanco.getVlrString(), 30 ).trim();
+		if ( codbanco.length() > 0 ) {
+			where.append( " and it.codempbo=? and it.codfilialbo=? and it.codbanco=? " );
+			if (filtro.length()!=0) 
+				filtro.append(" / ");
+			filtro.append( "Banco.: " + codbanco + " - " + Funcoes.copy( txtCodBanco.getVlrString(), 30 ).trim() );
 		}
-		if ( sNumConta.length() > 0 ) {
-			sWhere.append( " AND IT.CODEMPCA=? AND IT.CODFILIALCA=? AND IT.NUMCONTA=? " );
-			sFiltro += ( !sFiltro.equals( "" ) ? " / " : "" ) + "Conta.: " + sNumConta + " - " + Funcoes.copy( txtDescConta.getVlrString(), 30 ).trim();
+		if ( numconta.length() > 0 ) {
+			where.append( " and it.codempca=? and it.codfilialca=? and it.numconta=? " );
+			if (filtro.length()!=0) 
+				filtro.append(" / ");
+			filtro.append( "Conta.: " + numconta + " - " + Funcoes.copy( txtDescConta.getVlrString(), 30 ).trim() );
 		}
-		if ( sCodPlanoPag.length() > 0 ) {
-			sWhere.append( " AND R.CODEMPPG=? AND R.CODFILIALPG=? AND R.CODPLANOPAG=? " );
-			sFiltro += ( !sFiltro.equals( "" ) ? " / " : "" ) + "Repr.: " + sCodPlanoPag + " - " + Funcoes.copy( txtCodPlanoPag.getVlrString(), 30 ).trim();
+		if ( codplanopag.length() > 0 ) {
+			where.append( " and r.codemppg=? and r.codfilialpg=? and r.codplanopag=? " );
+			if (filtro.length()!=0) 
+				filtro.append(" / ");
+			filtro.append( "Plano.p.: " + codplanopag + " - " + Funcoes.copy( txtCodPlanoPag.getVlrString(), 30 ).trim() );
 		}
-		if ( sCodTpCob.length() > 0 ) {
-			sWhere.append( "AND IT.CODEMPTC=? AND IT.CODFILIALTC=? AND IT.CODTIPOCOB=? " );
-			sFiltro += ( !sFiltro.equals( "" ) ? " / " : "" ) + "Repr.: " + sCodTpCob + " - " + Funcoes.copy( txtCodTpCob.getVlrString(), 30 ).trim();
+		if ( codtpcob.length() > 0 ) {
+			where.append( "and it.codemptc=? and it.codfilialtc=? and it.codtipocob=? " );
+			if (filtro.length()!=0) 
+				filtro.append(" / ");
+			filtro.append( "Tipo cobr.: " + codtpcob + " - " + Funcoes.copy( txtCodTpCob.getVlrString(), 30 ).trim() );
 		}
-
 		if ( txtCodTipoCli.getVlrInteger() > 0 ) {
-			sWhere.append( "AND C.CODEMPTI=? AND C.CODFILIALTI=? AND C.CODTIPOCLI=? " );
-			sFiltro += ( !sFiltro.equals( "" ) ? " / " : "" ) + "Tipo Cli.: " + txtCodTipoCli.getVlrString() + " - " + Funcoes.copy( txtDescTipoCli.getVlrString(), 30 ).trim();
+			where.append( "and c.codempti=? and c.codfilialti=? and c.codtipocli=? " );
+			if (filtro.length()!=0) 
+				filtro.append(" / ");
+			filtro.append( "Tipo Cli.: " + txtCodTipoCli.getVlrString() + " - " + Funcoes.copy( txtDescTipoCli.getVlrString(), 30 ).trim() );
 		}
-		
-		sSQL.append( "SELECT IT.NPARCITREC, IT.CODREC, IT.DTITREC, IT.DTVENCITREC,IT.NPARCITREC,R.CODVENDA,R.CODCLI,C.RAZCLI, IT.DTPAGOITREC, R.DOCREC, " );
-		sSQL.append( "coalesce(L.HISTSUBLANCA,IT.OBSITREC) OBSITREC, V.STATUSVENDA, IT.VLRPARCITREC");
-		sSQL.append( ", (CASE WHEN COALESCE(IT.DESCPONT,'N')='S' ");
-		sSQL.append( " AND IT.DTLIQITREC IS NULL AND (CAST('today' AS DATE)-IT.DTVENCITREC)>0 THEN IT.VLRITREC+COALESCE(IT.VLRDESCITREC,0) " );
-		sSQL.append( "ELSE IT.VLRITREC END ) VLRITREC "); 
-		sSQL.append( ", (CASE WHEN COALESCE(IT.DESCPONT,'N')='S' ");
-		sSQL.append( " AND IT.DTLIQITREC IS NULL AND (CAST('today' AS DATE)-IT.DTVENCITREC)>0 THEN IT.VLRAPAGITREC+COALESCE(IT.VLRDESCITREC,0) " );
-		sSQL.append( "ELSE IT.VLRAPAGITREC END) VLRAPAGITREC, COALESCE(L.VLRSUBLANCA*-1 , IT.VLRPAGOITREC) VLRPAGOITREC, ");
-		sSQL.append( "IT.VLRPAGOITREC AS VLRPAGOITRECTOT, L.DATASUBLANCA DATALANCA FROM FNITRECEBER IT " );
-		sSQL.append( "LEFT OUTER JOIN FNRECEBER R ON (IT.CODEMP = R.CODEMP AND IT.CODFILIAL = R.CODFILIAL AND IT.CODREC = R.CODREC) " );
-		sSQL.append( "LEFT OUTER JOIN VDCLIENTE C ON (C.CODEMP = R.CODEMP AND C.CODFILIAL = R.CODFILIAL AND C.CODCLI = R.CODCLI) " );
-		sSQL.append( "LEFT OUTER JOIN VDVENDA V ON (V.CODEMP = R.CODEMP AND V.CODFILIAL = R.CODFILIALVA AND V.CODVENDA = R.CODVENDA AND V.TIPOVENDA = R.TIPOVENDA ) " );
-		sSQL.append( "LEFT OUTER JOIN FNSUBLANCA L ON (L.CODEMP = R.CODEMP AND L.CODFILIAL = IT.CODFILIAL AND L.CODREC = IT.CODREC AND L.NPARCITREC = IT.NPARCITREC AND L.CODSUBLANCA<>0)" );
-		
-		if(iCodSetor != 0 && !bPref ){
-			sSQL.append( "LEFT OUTER JOIN VDVENDEDOR VD on(VD.CODEMP = R.CODEMPVD AND VD.CODFILIAL = R.CODFILIALVD AND VD.CODVEND = R.CODVEND )" );
+		sql.append( "select it.nparcitrec, it.codrec, it.dtitrec, it.dtvencitrec,it.nparcitrec,r.codvenda,r.codcli,c.razcli, it.dtpagoitrec, r.docrec, " );
+		sql.append( "coalesce(l.histsublanca,it.obsitrec) obsitrec, v.statusvenda, it.vlrparcitrec");
+		sql.append( ", (case when coalesce(it.descpont,'n')='s' ");
+		sql.append( " and it.dtliqitrec is null and (cast('today' as date)-it.dtvencitrec)>0 then it.vlritrec+coalesce(it.vlrdescitrec,0) " );
+		sql.append( "else it.vlritrec end ) vlritrec "); 
+		sql.append( ", (case when coalesce(it.descpont,'n')='s' ");
+		sql.append( " and it.dtliqitrec is null and (cast('today' as date)-it.dtvencitrec)>0 then it.vlrapagitrec+coalesce(it.vlrdescitrec,0) " );
+		sql.append( "else it.vlrapagitrec end) vlrapagitrec, coalesce(l.vlrsublanca*-1 , it.vlrpagoitrec) vlrpagoitrec, ");
+		sql.append( "it.vlrpagoitrec as vlrpagoitrectot, l.datasublanca datalanca from fnitreceber it " );
+		sql.append( "left outer join fnreceber r on (it.codemp = r.codemp and it.codfilial = r.codfilial and it.codrec = r.codrec) " );
+		sql.append( "left outer join vdcliente c on (c.codemp = r.codemp and c.codfilial = r.codfilial and c.codcli = r.codcli) " );
+		sql.append( "left outer join vdvenda v on (v.codemp = r.codemp and v.codfilial = r.codfilialva and v.codvenda = r.codvenda and v.tipovenda = r.tipovenda ) " );
+		sql.append( "left outer join fnsublanca l on (l.codemp = r.codemp and l.codfilial = it.codfilial and l.codrec = it.codrec and l.nparcitrec = it.nparcitrec and l.codsublanca<>0)" );
+		if(codsetor != 0 && !bPref ){
+			sql.append( "left outer join vdvendedor vd on(vd.codemp = r.codempvd and vd.codfilial = r.codfilialvd and vd.codvend = r.codvend )" );
 		}
-		
-		sSQL.append( "WHERE R.CODEMP = ? AND R.CODFILIAL = ? AND "+ sCampoOrdem +" BETWEEN ? AND ? " );
-		sSQL.append( "AND IT.STATUSITREC IN (?,?,?) " );
-		sSQL.append( "AND R.FLAG IN " + AplicativoPD.carregaFiltro( con, org.freedom.library.swing.frame.Aplicativo.iCodEmp ) + " ");
-
-		sSQL.append( sWhere.toString() );
-		sSQL.append( " ORDER BY " + sCampoOrdem + " ," + sCampoOrdem2 );
-
+		sql.append( "where r.codemp = ? and r.codfilial = ? and "+ campoordem +" between ? and ? " );
+		sql.append( "and it.statusitrec in (?,?,?) " );
+		sql.append( "and r.flag in " + AplicativoPD.carregaFiltro( con, org.freedom.library.swing.frame.Aplicativo.iCodEmp ) + " ");
+		sql.append( where );
+		sql.append( " order by " + campoordem + " ," + campoordem2 );
 		try {
-			iParans = 1;
-			ps = con.prepareStatement( sSQL.toString() );
-			ps.setInt( iParans++, Aplicativo.iCodEmp );
-			ps.setInt( iParans++, ListaCampos.getMasterFilial( "FNRECEBER" ) );
-			ps.setDate( iParans++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
-			ps.setDate( iParans++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+			param = 1;
+			ps = con.prepareStatement( sql.toString() );
+			ps.setInt( param++, Aplicativo.iCodEmp );
+			ps.setInt( param++, ListaCampos.getMasterFilial( "FNRECEBER" ) );
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+			ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
 
 			StringBuilder sCab = new StringBuilder();
 			sCab.append( "CONTAS ");
-			sCab.append( sTitRel ); 
+			sCab.append( titrel ); 
 			sCab.append( " DE :" );
 			sCab.append( txtDataini.getVlrString() );
 			sCab.append( " ATE: " );
 			sCab.append( txtDatafim.getVlrString() );
 			sCab.append( " POR: " );
-			sCab.append( sTitRel1 );
-
-			if ( sNumConta.length() > 0 ) {
-				sCab.append( " - CONTA: " + sNumConta );
+			sCab.append( titrel1 );
+			sCab.append( "CORREÇÃO PARA: " );
+			sCab.append(txtDatacor.getVlrString());
+			if ( numconta.length() > 0 ) {
+				sCab.append( " - CONTA: " + numconta );
 			}
-			
-			if ( sTipoRel.equals( "R" ) ) {
-				ps.setString( iParans++, "R1" );
-				if ("S".equals( sRecParc )) {
-					ps.setString( iParans++, "RL" );
-					ps.setString( iParans++, "RL" );
+			if ( tiporel.equals( "R" ) ) {
+				ps.setString( param++, "R1" );
+				if ("S".equals( recparc )) {
+					ps.setString( param++, "RL" );
+					ps.setString( param++, "RL" );
 				} else {
-					ps.setString( iParans++, "R1" );
-					ps.setString( iParans++, "R1" );
+					ps.setString( param++, "R1" );
+					ps.setString( param++, "R1" );
 				}
 			}
-			else if ( sTipoRel.equals( "P" ) ) {
-				ps.setString( iParans++, "RP" );
-				if ("S".equals( sRecParc )) {
-					ps.setString( iParans++, "RL" );
-					ps.setString( iParans++, "RL" );
+			else if ( tiporel.equals( "P" ) ) {
+				ps.setString( param++, "RP" );
+				if ("S".equals( recparc )) {
+					ps.setString( param++, "RL" );
+					ps.setString( param++, "RL" );
 				} else {
-					ps.setString( iParans++, "RP" );
-					ps.setString( iParans++, "RP" );
+					ps.setString( param++, "RP" );
+					ps.setString( param++, "RP" );
 				}
 			}
-			else if ( sTipoRel.equals( "A" ) ) {
-				ps.setString( iParans++, "R1" );
-				ps.setString( iParans++, "RL" );
-				ps.setString( iParans++, "RP" );
+			else if ( tiporel.equals( "A" ) ) {
+				ps.setString( param++, "R1" );
+				ps.setString( param++, "RL" );
+				ps.setString( param++, "RP" );
 			}
-
-			if ( iCodCli != 0 ) {
-				ps.setInt( iParans++, Aplicativo.iCodEmp );
-				ps.setInt( iParans++, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
-				ps.setInt( iParans++, iCodCli );
+			if ( codcli != 0 ) {
+				ps.setInt( param++, Aplicativo.iCodEmp );
+				ps.setInt( param++, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
+				ps.setInt( param++, codcli );
 			}
-			if ( iCodSetor != 0 ) {
-				ps.setInt( iParans++, Aplicativo.iCodEmp );
-				ps.setInt( iParans++, ListaCampos.getMasterFilial( "VDSETOR" ) );
-				ps.setInt( iParans++, iCodSetor );
+			if ( codsetor != 0 ) {
+				ps.setInt( param++, Aplicativo.iCodEmp );
+				ps.setInt( param++, ListaCampos.getMasterFilial( "VDSETOR" ) );
+				ps.setInt( param++, codsetor );
 			}
-			if ( iCodVend != 0 ) {
-				ps.setInt( iParans++, Aplicativo.iCodEmp );
-				ps.setInt( iParans++, ListaCampos.getMasterFilial( "VDVENDEDOR" ) );
-				ps.setInt( iParans++, iCodVend );
+			if ( codvend != 0 ) {
+				ps.setInt( param++, Aplicativo.iCodEmp );
+				ps.setInt( param++, ListaCampos.getMasterFilial( "VDVENDEDOR" ) );
+				ps.setInt( param++, codvend );
 			}
-			if ( sCodBanco.length() > 0 ) {
-				ps.setInt( iParans++, Aplicativo.iCodEmp );
-				ps.setInt( iParans++, ListaCampos.getMasterFilial( "FNBANCO" ) );
-				ps.setString( iParans++, sCodBanco );
+			if ( codbanco.length() > 0 ) {
+				ps.setInt( param++, Aplicativo.iCodEmp );
+				ps.setInt( param++, ListaCampos.getMasterFilial( "FNBANCO" ) );
+				ps.setString( param++, codbanco );
 			}
-			if ( sNumConta.length() > 0 ) {
-				ps.setInt( iParans++, Aplicativo.iCodEmp );
-				ps.setInt( iParans++, ListaCampos.getMasterFilial( "FNCONTA" ) );
-				ps.setString( iParans++, sNumConta );
+			if ( numconta.length() > 0 ) {
+				ps.setInt( param++, Aplicativo.iCodEmp );
+				ps.setInt( param++, ListaCampos.getMasterFilial( "FNCONTA" ) );
+				ps.setString( param++, numconta );
 			}
-
-			if ( sCodPlanoPag.length() > 0 ) {
-				ps.setInt( iParans++, Aplicativo.iCodEmp );
-				ps.setInt( iParans++, ListaCampos.getMasterFilial( "FNPLANOPAG" ) );
-				ps.setString( iParans++, sCodPlanoPag );
+			if ( codplanopag.length() > 0 ) {
+				ps.setInt( param++, Aplicativo.iCodEmp );
+				ps.setInt( param++, ListaCampos.getMasterFilial( "FNPLANOPAG" ) );
+				ps.setString( param++, codplanopag );
 			}
-			if ( sCodTpCob.length() > 0 ) {
-				ps.setInt( iParans++, Aplicativo.iCodEmp );
-				ps.setInt( iParans++, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
-				ps.setString( iParans++, sCodTpCob );
+			if ( codtpcob.length() > 0 ) {
+				ps.setInt( param++, Aplicativo.iCodEmp );
+				ps.setInt( param++, ListaCampos.getMasterFilial( "FNITRECEBER" ) );
+				ps.setString( param++, codtpcob );
 			}
 			if ( txtCodTipoCli.getVlrInteger() > 0 ) {
-				ps.setInt( iParans++, lcTipoCli.getCodEmp() );
-				ps.setInt( iParans++, lcTipoCli.getCodFilial() );
-				ps.setInt( iParans++, txtCodTipoCli.getVlrInteger() );
+				ps.setInt( param++, lcTipoCli.getCodEmp() );
+				ps.setInt( param++, lcTipoCli.getCodFilial() );
+				ps.setInt( param++, txtCodTipoCli.getVlrInteger() );
 			}
-
 			rs = ps.executeQuery();
-
 			if (bVisualizar==TYPE_PRINT.EXPORT) {
 				if (btExportXLS.execute(rs, getTitle())) {
 					Funcoes.mensagemInforma( this, "Arquivo exportado com sucesso !" );
@@ -582,14 +574,12 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 					imprimirGrafico( bVisualizar, rs, sCab.toString() );
 				}
 				else {
-					imprimirTexto( bVisualizar, rs, sCab.toString(), sCampoTotal );
+					imprimirTexto( bVisualizar, rs, sCab.toString(), campototal );
 				}
 			}
-
 			rs.close();
 			ps.close();
 			con.commit();
-
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro consulta tabela de contas a receber!\n" + err.getMessage(), true, con, err );
 			err.printStackTrace();
