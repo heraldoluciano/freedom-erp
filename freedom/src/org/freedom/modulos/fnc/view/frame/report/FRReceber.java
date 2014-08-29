@@ -224,7 +224,6 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		txtNumConta.setFK( true );
 		txtNumConta.setNomeCampo( "numconta" );
 
-
 	}
 
 	private void montaRadioGroups() {
@@ -452,10 +451,10 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		}
 		sql.append( "select it.nparcitrec, it.codrec, it.dtitrec, it.dtvencitrec,it.nparcitrec,r.codvenda,r.codcli,c.razcli, it.dtpagoitrec, r.docrec, " );
 		sql.append( "coalesce(l.histsublanca,it.obsitrec) obsitrec, v.statusvenda, it.vlrparcitrec");
-		sql.append( ", (case when coalesce(it.descpont,'n')='s' ");
+		sql.append( ", (case when coalesce(it.descpont,'N')='S' ");
 		sql.append( " and it.dtliqitrec is null and (cast('today' as date)-it.dtvencitrec)>0 then it.vlritrec+coalesce(it.vlrdescitrec,0) " );
 		sql.append( "else it.vlritrec end ) vlritrec "); 
-		sql.append( ", (case when coalesce(it.descpont,'n')='s' ");
+		sql.append( ", (case when coalesce(it.descpont,'N')='S' ");
 		sql.append( " and it.dtliqitrec is null and (cast('today' as date)-it.dtvencitrec)>0 then it.vlrapagitrec+coalesce(it.vlrdescitrec,0) " );
 		sql.append( "else it.vlrapagitrec end) vlrapagitrec, coalesce(l.vlrsublanca*-1 , it.vlrpagoitrec) vlrpagoitrec, ");
 		sql.append( "it.vlrpagoitrec as vlrpagoitrectot, l.datasublanca datalanca from fnitreceber it " );
@@ -478,20 +477,19 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 			ps.setInt( param++, ListaCampos.getMasterFilial( "FNRECEBER" ) );
 			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
 			ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
-
-			StringBuilder sCab = new StringBuilder();
-			sCab.append( "CONTAS ");
-			sCab.append( titrel ); 
-			sCab.append( " DE :" );
-			sCab.append( txtDataini.getVlrString() );
-			sCab.append( " ATE: " );
-			sCab.append( txtDatafim.getVlrString() );
-			sCab.append( " POR: " );
-			sCab.append( titrel1 );
-			sCab.append( "CORREÇÃO PARA: " );
-			sCab.append(txtDatacor.getVlrString());
+			StringBuilder cab = new StringBuilder();
+			cab.append( "CONTAS ");
+			cab.append( titrel ); 
+			cab.append( " DE :" );
+			cab.append( txtDataini.getVlrString() );
+			cab.append( " ATE: " );
+			cab.append( txtDatafim.getVlrString() );
+			cab.append( " POR: " );
+			cab.append( titrel1 );
+			cab.append( "CORREÇÃO PARA: " );
+			cab.append(txtDatacor.getVlrString());
 			if ( numconta.length() > 0 ) {
-				sCab.append( " - CONTA: " + numconta );
+				cab.append( " - CONTA: " + numconta );
 			}
 			if ( tiporel.equals( "R" ) ) {
 				ps.setString( param++, "R1" );
@@ -571,10 +569,10 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 				}
 			} else {
 				if ( "G".equals( rgModo.getVlrString() ) ) {
-					imprimirGrafico( bVisualizar, rs, sCab.toString() );
+					imprimirGrafico( bVisualizar, rs, cab.toString() );
 				}
 				else {
-					imprimirTexto( bVisualizar, rs, sCab.toString(), campototal );
+					imprimirTexto( bVisualizar, rs, cab.toString(), campototal );
 				}
 			}
 			rs.close();

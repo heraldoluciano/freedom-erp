@@ -342,19 +342,19 @@ public class FRPagar extends FRelatorio {
 
 		PreparedStatement ps = null; 
 		ResultSet rs = null;
-		String sFiltroPag = cbFiltro.getVlrString();
+		String filtropag = cbFiltro.getVlrString();
 		int paramsql = 1;
 
 		// Verifica se a data de correção é diferente da data atual
 		// System.out.println(txtDatacor.getVlrDate());
 		// System.out.println(calAtual.getTime());
-		boolean bcorrecao = ( !Funcoes.dataAAAAMMDD( txtDatacor.getVlrDate() ).equals( Funcoes.dataAAAAMMDD( calAtual.getTime() ) ) );
+		boolean correcao = ( !Funcoes.dataAAAAMMDD( txtDatacor.getVlrDate() ).equals( Funcoes.dataAAAAMMDD( calAtual.getTime() ) ) );
 
 		StringBuilder sql = new StringBuilder();
 
 		sql.append( "select it.codpag, it.dtvencitpag,it.nparcpag,p.codcompra"); 
 		sql.append(",p.codfor,f.razfor,it.vlrparcitpag,it.vlrpagoitpag vlrpagoitpagtot," );
-		if ( !bcorrecao ) {
+		if ( !correcao ) {
 		//	sql.append( "IT.VLRPAGOITPAG,IT.VLRAPAGITPAG,IT.DTPAGOITPAG" );
 			sql.append( "coalesce(la.vlrsublanca, it.vlrpagoitpag) vlrpagoitpag");
 			sql.append( ",it.vlrapagitpag,coalesce(la.datasublanca,it.dtpagoitpag) dtpagoitpag " );
@@ -383,12 +383,9 @@ public class FRPagar extends FRelatorio {
 		sql.append( " and c.codemp=p.codempcp and c.codfilial=p.codfilialcp and c.codcompra=p.codcompra) as dtemitcompra " );
 		sql.append( "from fnpagar p,cpforneced f, fnitpagar it left outer join fnconta ct on " );
 		sql.append( " ct.codemp = it.codempca and ct.codfilial=it.codfilialca and ct.numconta=it.numconta " );
-		//if ( !bcorrecao ) {
 		sql.append( " left outer join fnsublanca la on la.nparcpag = it.nparcpag and la.codpag=it.codpag and la.codfilialpg=it.codfilial and la.codemppg=it.codemp " );
-		//}
 		sql.append( " where p.flag in " + AplicativoPD.carregaFiltro( con, org.freedom.library.swing.frame.Aplicativo.iCodEmp ) );
 		sql.append( " and it.codemp = p.codemp and it.codfilial=p.codfilial " );
-
 		if ( "P".equals( cbOrdem.getVlrString() ) ) {
 			sql.append( " and it.dtpagoitpag" );
 		}
@@ -398,29 +395,28 @@ public class FRPagar extends FRelatorio {
 		else {
 			sql.append( " and it.dtitpag " );
 		}
-
 		sql.append( " between ? and ? and " );
-		// Se a data de correção não for diferente data data atual, mantém a SQL original
-		if ( !bcorrecao ) {
-			sql.append( "it.statusitpag in (?,?,?)" );
-		}
-		else {
+		if ( correcao ) {
 			// data de correção diferente da data atual
-			if ( "N".equals( sFiltroPag ) ) {
+			if ( "N".equals( filtropag ) ) {
 				sql.append( "( it.statusitpag in (?,?,?) or " );
 				sql.append( "(not exists ( select * from fnsublanca l where l.codemppg=it.codemp" );
 				sql.append( " and l.codfilialpg=it.codfilial and l.codpag=it.codpag" );
 				sql.append( " and l.nparcpag=it.nparcpag and l.datasublanca<=? ) ) )" );
 			}
-			else if ( "P".equals( sFiltroPag ) ) {
+			else if ( "P".equals( filtropag ) ) {
 				sql.append( "( it.statusitpag in (?,?,?) or " );
 				sql.append( "(exists ( select * from fnsublanca l where l.codemppg=it.codemp" );
 				sql.append( " and l.codfilialpg=it.codfilial and l.codpag=it.codpag" );
 				sql.append( " and l.nparcpag=it.nparcpag and l.datasublanca<=? ) ) )" );
 			}
-			else if ( "A".equals( sFiltroPag ) ) {
+			else if ( "A".equals( filtropag ) ) {
 				sql.append( "it.statusitpag in (?,?,?)" );
 			}
+		}
+		// Se a data de correção não for diferente data data atual, mantém a SQL original
+		else {
+			sql.append( "it.statusitpag in (?,?,?)" );
 		}
 		sql.append( " and p.codpag=it.codpag and " );
 		sql.append( "f.codemp=p.codempfr and f.codfilial=p.codfilialfr and f.codfor=p.codfor " );
@@ -448,93 +444,73 @@ public class FRPagar extends FRelatorio {
 			sql.append( "it.dtitpag" );
 		}
 		sql.append( ", f.razfor" );
-
 		try {
-
 			System.out.println( sql.toString() );
-
 			ps = con.prepareStatement( sql.toString() );
-			if ( bcorrecao ) {
+			if ( correcao ) {
 				ps.setDate( paramsql++, Funcoes.dateToSQLDate( txtDatacor.getVlrDate() ) );
 				ps.setDate( paramsql++, Funcoes.dateToSQLDate( txtDatacor.getVlrDate() ) );
 				ps.setDate( paramsql++, Funcoes.dateToSQLDate( txtDatacor.getVlrDate() ) );
 			}
-			
 			ps.setDate( paramsql++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
 			ps.setDate( paramsql++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
-			
-			if ( sFiltroPag.equals( "N" ) ) {
+			if ( filtropag.equals( "N" ) ) {
 				ps.setString( paramsql++, "P1" );
 				ps.setString( paramsql++, "P1" );
-				
 				if( cbParPar.getVlrString().equals( "S" ) ) {
 					ps.setString( paramsql++, "PL" );
 				}
 				else {
 					ps.setString( paramsql++, "P1" );
 				}
-
-				if ( bcorrecao ) {
+				if ( correcao ) {
 					ps.setDate( paramsql++, Funcoes.dateToSQLDate( txtDatacor.getVlrDate() ) );
 				}
 			}
-			else if ( sFiltroPag.equals( "P" ) ) {
+			else if ( filtropag.equals( "P" ) ) {
 				ps.setString( paramsql++, "PP" );
 				ps.setString( paramsql++, "PP" );
-				
 				if( cbParPar.getVlrString().equals( "S" ) ) {
 					ps.setString( paramsql++, "PL" );
 				}
 				else {
 					ps.setString( paramsql++, "PP" );
 				}
-
-				if ( bcorrecao ) {
+				if ( correcao ) {
 					ps.setDate( paramsql++, Funcoes.dateToSQLDate( txtDatacor.getVlrDate() ) );
 				}
 			}
-			else if ( sFiltroPag.equals( "A" ) ) {
+			else if ( filtropag.equals( "A" ) ) {
 				ps.setString( paramsql++, "P1" );
 				ps.setString( paramsql++, "PP" );
-				
 				if( cbParPar.getVlrString().equals( "S" ) ) {
 					ps.setString( paramsql++, "PL" );
 				}
 				else {
 					ps.setString( paramsql++, "P1" );
 				}
-				
 			}
-		
-
 			ps.setInt( paramsql++, Aplicativo.iCodEmp );
 			ps.setInt( paramsql++, ListaCampos.getMasterFilial( "FNPAGAR" ) );
-
 			if ( txtCodBanco.getVlrInteger() > 0 ) {
 				ps.setInt( paramsql++, lcBanco.getCodEmp() );
 				ps.setInt( paramsql++, lcBanco.getCodFilial() );
 				ps.setInt( paramsql++, txtCodBanco.getVlrInteger() );
 			}
-
 			if ( ! "".equals( txtNumConta.getVlrString() )  ) {
 				ps.setInt( paramsql++, lcConta.getCodEmp() );
 				ps.setInt( paramsql++, lcConta.getCodFilial() );
 				ps.setString( paramsql++, txtNumConta.getVlrString() );
 			}
-			
-			
 			if ( txtCodTipoCob.getVlrInteger() > 0 ) {
 				ps.setInt( paramsql++, txtCodTipoCob.getVlrInteger() );
 				ps.setInt( paramsql++, lcTipoCob.getCodEmp() );
 				ps.setInt( paramsql++, lcTipoCob.getCodFilial() );
 			}
-
 			rs = ps.executeQuery();
-
 		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
-
 		return rs;
 	}
 
