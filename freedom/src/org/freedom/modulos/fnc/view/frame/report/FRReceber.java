@@ -352,11 +352,20 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
 			return;
 		}
+		if ("".equals(txtDatacor.getVlrString().trim())) {
+			Funcoes.mensagemInforma( this, "Preencha a data de correção!" );
+			return;
+		}
+		if ( txtDatacor.getVlrDate().compareTo( txtDatafim.getVlrDate() ) > 0 
+				|| txtDatacor.getVlrDate().compareTo( txtDataini.getVlrDate() ) < 0) {
+			Funcoes.mensagemInforma( this, "Data de correção fora do período selecionado!" );
+			return;
+		}
 		if ( ( ( rgTipoRel.getVlrString().equals( "R" ) ) || ( rgTipoRel.getVlrString().equals( "A" ) ) ) && ( rgOrdem.getVlrString().equals( "P" ) ) ) {
 			Funcoes.mensagemInforma( this, "Não pode ser ordenado por data de pagamento!" );
 			return;
 		}
-		boolean bcorrecao = ( !Funcoes.dataAAAAMMDD( txtDatacor.getVlrDate() ).equals( Funcoes.dataAAAAMMDD( calAtual.getTime() ) ) );
+		boolean correcao = ( !Funcoes.dataAAAAMMDD( txtDatacor.getVlrDate() ).equals( Funcoes.dataAAAAMMDD( calAtual.getTime() ) ) );
 		tiporel = rgTipoRel.getVlrString();
 		if ( tiporel.equals( "R" ) ) {
 			titrel = "A RECEBER";
@@ -395,19 +404,16 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		numconta = txtNumConta.getVlrString();
 		codplanopag = txtCodPlanoPag.getVlrString();
 		codtpcob = txtCodTpCob.getVlrString();
-
 		if ( codcli != 0 ) {
-			where.append( " AND R.CODEMPCL=? AND R.CODFILIALCL=? AND R.CODCLI=? " );
+			where.append( " and r.codempcl=? and r.codfilialcl=? and r.codcli=? " );
 			filtro.append( "Cli.: " + codcli + " - " + Funcoes.copy( txtRazCli.getVlrString(), 30 ).trim() );
 		}
 		if ( codsetor != 0 ) {
 			if ( bPref ) {
-				where.append( " AND C.CODEMPSR=? AND C.CODFILIALSR=? AND C.CODSETOR=?" );
+				where.append( " and c.codempsr=? and c.codfilialsr=? and c.codsetor=?" );
 			}
 			else {
-				where.append( " AND VD.CODEMPSE=? AND VD.CODFILIALSE=? AND VD.CODSETOR=? ");
-//				sWhere.append( " AND VD.CODEMPSE=? AND VD.CODFILIALSE=? AND VD.CODSETOR=? AND  VD.CODEMP=R.CODEMPVD AND VD.CODFILIAL=R.CODFILIALVD AND VD.CODVEND=R.CODVEND " );
-//				sFrom = ",VDVENDEDOR VD ";
+				where.append( " and vd.codempse=? and vd.codfilialse=? and vd.codsetor=? ");
 			}
 			if (filtro.length()!=0)	
 				filtro.append(" / ");
@@ -449,48 +455,78 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 				filtro.append(" / ");
 			filtro.append( "Tipo Cli.: " + txtCodTipoCli.getVlrString() + " - " + Funcoes.copy( txtDescTipoCli.getVlrString(), 30 ).trim() );
 		}
-		sql.append( "select it.nparcitrec, it.codrec, it.dtitrec, it.dtvencitrec,it.nparcitrec,r.codvenda,r.codcli,c.razcli, it.dtpagoitrec, r.docrec, " );
-		sql.append( "coalesce(l.histsublanca,it.obsitrec) obsitrec, v.statusvenda, it.vlrparcitrec");
+		sql.append( "select it.nparcitrec, it.codrec, it.dtitrec, it.dtvencitrec, it.nparcitrec, r.codvenda, r.codcli, c.razcli, r.docrec ");
+		sql.append( ", coalesce(l.histsublanca,it.obsitrec) obsitrec, v.statusvenda, it.vlrparcitrec");
 		sql.append( ", (case when coalesce(it.descpont,'N')='S' ");
 		sql.append( " and it.dtliqitrec is null and (cast('today' as date)-it.dtvencitrec)>0 then it.vlritrec+coalesce(it.vlrdescitrec,0) " );
 		sql.append( "else it.vlritrec end ) vlritrec "); 
 		sql.append( ", (case when coalesce(it.descpont,'N')='S' ");
 		sql.append( " and it.dtliqitrec is null and (cast('today' as date)-it.dtvencitrec)>0 then it.vlrapagitrec+coalesce(it.vlrdescitrec,0) " );
-		sql.append( "else it.vlrapagitrec end) vlrapagitrec, coalesce(l.vlrsublanca*-1 , it.vlrpagoitrec) vlrpagoitrec, ");
-		sql.append( "it.vlrpagoitrec as vlrpagoitrectot, l.datasublanca datalanca from fnitreceber it " );
+		sql.append( "else it.vlrapagitrec end) vlrapagitrec ");
+		sql.append( ", coalesce(l.vlrsublanca*-1 , it.vlrpagoitrec) vlrpagoitrec ");
+		sql.append( ", it.dtpagoitrec" );
+		sql.append( ", it.vlrpagoitrec vlrpagoitrectot ");
+		sql.append( ", l.datasublanca datalanca ");
+		sql.append( "from fnitreceber it " );
 		sql.append( "left outer join fnreceber r on (it.codemp = r.codemp and it.codfilial = r.codfilial and it.codrec = r.codrec) " );
 		sql.append( "left outer join vdcliente c on (c.codemp = r.codemp and c.codfilial = r.codfilial and c.codcli = r.codcli) " );
 		sql.append( "left outer join vdvenda v on (v.codemp = r.codemp and v.codfilial = r.codfilialva and v.codvenda = r.codvenda and v.tipovenda = r.tipovenda ) " );
-		sql.append( "left outer join fnsublanca l on (l.codemp = r.codemp and l.codfilial = it.codfilial and l.codrec = it.codrec and l.nparcitrec = it.nparcitrec and l.codsublanca<>0)" );
+		sql.append( "left outer join fnsublanca l on (l.codemp = r.codemp and l.codfilial = it.codfilial and l.codrec = it.codrec and l.nparcitrec = it.nparcitrec and l.codsublanca<>0 "); 
+		if (correcao) {
+			sql.append(" and l.datasublanca<=? ");
+		}
+		sql.append(")" );
 		if(codsetor != 0 && !bPref ){
-			sql.append( "left outer join vdvendedor vd on(vd.codemp = r.codempvd and vd.codfilial = r.codfilialvd and vd.codvend = r.codvend )" );
+			sql.append( "left outer join vdvendedor vd on (vd.codemp = r.codempvd and vd.codfilial = r.codfilialvd and vd.codvend = r.codvend )" );
 		}
 		sql.append( "where r.codemp = ? and r.codfilial = ? and "+ campoordem +" between ? and ? " );
-		sql.append( "and it.statusitrec in (?,?,?) " );
+		if (correcao) {
+			// data de correção diferente da data atual
+			if ( "R".equals( tiporel ) ) {
+				sql.append( "and ( it.statusitrec in (?,?,?) or " );
+				sql.append( "(not exists ( select * from fnsublanca l where l.codemprc=it.codemp" );
+				sql.append( " and l.codfilialrc=it.codfilial and l.codrec=it.codrec" );
+				sql.append( " and l.nparcitrec=it.nparcitrec and l.datasublanca<=? ) ) )" );
+			}
+			else if ( "P".equals( tiporel ) ) {
+				sql.append( "and ( it.statusitrec in (?,?,?) or " );
+				sql.append( "(exists ( select * from fnsublanca l where l.codemprc=it.codemp" );
+				sql.append( " and l.codfilialrc=it.codfilial and l.codrec=it.codrec" );
+				sql.append( " and l.nparcitrec=it.nparcitrec and l.datasublanca<=? ) ) )" );
+			}
+			else if ( "A".equals( tiporel ) ) {
+				sql.append( "and it.statusitrec in (?,?,?)" );
+			}			
+		} else { // Se a data de correção for igual a atual, permanecerá a query original.
+			sql.append( "and it.statusitrec in (?,?,?) " );
+		}
 		sql.append( "and r.flag in " + AplicativoPD.carregaFiltro( con, org.freedom.library.swing.frame.Aplicativo.iCodEmp ) + " ");
 		sql.append( where );
 		sql.append( " order by " + campoordem + " ," + campoordem2 );
+		StringBuilder cab = new StringBuilder();
+		cab.append( "CONTAS ");
+		cab.append( titrel ); 
+		cab.append( " DE :" );
+		cab.append( txtDataini.getVlrString() );
+		cab.append( " ATE: " );
+		cab.append( txtDatafim.getVlrString() );
+		cab.append( " POR: " );
+		cab.append( titrel1 );
+		cab.append( "CORREÇÃO PARA: " );
+		cab.append(txtDatacor.getVlrString());
+		if ( numconta.length() > 0 ) {
+			cab.append( " - CONTA: " + numconta );
+		}
 		try {
 			param = 1;
 			ps = con.prepareStatement( sql.toString() );
+			if ( correcao ) {
+				ps.setDate( param++, Funcoes.dateToSQLDate( txtDatacor.getVlrDate() ) );
+			}
 			ps.setInt( param++, Aplicativo.iCodEmp );
 			ps.setInt( param++, ListaCampos.getMasterFilial( "FNRECEBER" ) );
 			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
 			ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
-			StringBuilder cab = new StringBuilder();
-			cab.append( "CONTAS ");
-			cab.append( titrel ); 
-			cab.append( " DE :" );
-			cab.append( txtDataini.getVlrString() );
-			cab.append( " ATE: " );
-			cab.append( txtDatafim.getVlrString() );
-			cab.append( " POR: " );
-			cab.append( titrel1 );
-			cab.append( "CORREÇÃO PARA: " );
-			cab.append(txtDatacor.getVlrString());
-			if ( numconta.length() > 0 ) {
-				cab.append( " - CONTA: " + numconta );
-			}
 			if ( tiporel.equals( "R" ) ) {
 				ps.setString( param++, "R1" );
 				if ("S".equals( recparc )) {
@@ -515,6 +551,9 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 				ps.setString( param++, "R1" );
 				ps.setString( param++, "RL" );
 				ps.setString( param++, "RP" );
+			}
+			if ( correcao ) {
+				ps.setDate( param++, Funcoes.dateToSQLDate( txtDatacor.getVlrDate() ) );
 			}
 			if ( codcli != 0 ) {
 				ps.setInt( param++, Aplicativo.iCodEmp );
@@ -799,27 +838,21 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 	private boolean getPrefere() {
 
 		boolean retorno = false;
-
 		try {
-
-			PreparedStatement ps = con.prepareStatement( "SELECT SETORVENDA FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
+			PreparedStatement ps = con.prepareStatement( "select setorvenda from sgprefere1 where codemp=? and codfilial=?" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, Aplicativo.iCodFilial );
 			ResultSet rs = ps.executeQuery();
-
 			if ( rs.next() ) {
 				retorno = rs.getString( "SETORVENDA" ) != null && "CA".indexOf( rs.getString( "SETORVENDA" ) ) >= 0;
 			}
-
 			rs.close();
 			ps.close();
-
 			con.commit();
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( null, "Erro ao verificar preferências!\n" + err.getMessage(), true, con, err );
 			err.printStackTrace();
 		}
-
 		return retorno;
 	}
 
