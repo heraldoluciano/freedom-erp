@@ -512,7 +512,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		cab.append( txtDatafim.getVlrString() );
 		cab.append( " POR: " );
 		cab.append( titrel1 );
-		cab.append( "CORREÇÃO PARA: " );
+		cab.append( " - CORREÇÃO PARA: " );
 		cab.append(txtDatacor.getVlrString());
 		if ( numconta.length() > 0 ) {
 			cab.append( " - CONTA: " + numconta );
