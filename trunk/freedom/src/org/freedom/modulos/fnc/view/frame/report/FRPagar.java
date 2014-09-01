@@ -354,17 +354,11 @@ public class FRPagar extends FRelatorio {
 
 		sql.append( "select it.codpag, it.dtvencitpag,it.nparcpag,p.codcompra"); 
 		sql.append(",p.codfor,f.razfor,it.vlrparcitpag,it.vlrpagoitpag vlrpagoitpagtot," );
-		if ( !correcao ) {
-		//	sql.append( "IT.VLRPAGOITPAG,IT.VLRAPAGITPAG,IT.DTPAGOITPAG" );
-			sql.append( "coalesce(la.vlrsublanca, it.vlrpagoitpag) vlrpagoitpag");
-			sql.append( ",it.vlrapagitpag,coalesce(la.datasublanca,it.dtpagoitpag) dtpagoitpag " );
-		}
-		else {
+		if ( correcao ) {
 			// Valor pago
 			sql.append( "(coalesce((select sum(vlrsublanca) from fnsublanca l where l.codemppg=it.codemp" );
 			sql.append( " and l.codfilialpg=it.codfilial and l.codpag=it.codpag" );
 			sql.append( " and l.nparcpag=it.nparcpag and l.datasublanca<=?),0)) vlrpagoitpag, " );
-		//	sql.append( " COALESCE(LA.VLRLANCA * -1 , IT.VLRPAGOITPAG) VLRPAGOITPAG, " );
 			// Valor a pagar
 			sql.append( "coalesce(it.vlrparcitpag,0)-coalesce((select sum(vlrsublanca) from fnsublanca l where l.codemppg=it.codemp" );
 			sql.append( " and l.codfilialpg=it.codfilial and l.codpag=it.codpag" );
@@ -373,6 +367,11 @@ public class FRPagar extends FRelatorio {
 			sql.append( "(select max(l.datasublanca) from fnsublanca l where l.codemppg=it.codemp" );
 			sql.append( " and l.codfilialpg=it.codfilial and l.codpag=it.codpag" );
 			sql.append( " and l.nparcpag=it.nparcpag and l.datasublanca<=?) dtpagoitpag " );
+		}
+		else {
+			//	sql.append( "IT.VLRPAGOITPAG,IT.VLRAPAGITPAG,IT.DTPAGOITPAG" );
+			sql.append( "coalesce(la.vlrsublanca, it.vlrpagoitpag) vlrpagoitpag");
+			sql.append( ",it.vlrapagitpag,coalesce(la.datasublanca,it.dtpagoitpag) dtpagoitpag " );
 		}
 		sql.append( ", (select c.statuscompra from cpcompra c where c.flag in " );
 		sql.append( AplicativoPD.carregaFiltro( con, org.freedom.library.swing.frame.Aplicativo.iCodEmp ) );
