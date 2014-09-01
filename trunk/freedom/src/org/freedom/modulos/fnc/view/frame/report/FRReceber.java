@@ -90,6 +90,8 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 
 	private JTextFieldFK txtDescPlanoPag = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
+	private JCheckBoxPad cbAgrupCli = new JCheckBoxPad( "Agrupar por cliente?", "S", "N" );
+
 	private JCheckBoxPad cbObs = new JCheckBoxPad( "Imprimir observações?", "S", "N" );
 
 	private JCheckBoxPad cbImpTotDia = new JCheckBoxPad( "Imprimir totalizador diário?", "S", "N" );
@@ -144,6 +146,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		Calendar cal = Calendar.getInstance();
 		cal.set( Calendar.DAY_OF_MONTH, 1 );
 		txtDataini.setVlrDate( cal.getTime() );
+		cbAgrupCli.setVlrString( "N" );
 		cbObs.setVlrString( "S" );
 		cbImpTotDia.setVlrString( "S" );
 		montaListaCampos();
@@ -286,9 +289,10 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		adic( rgModo, 340, 20, 150, 50 );
 		adic( new JLabelPad( "Modo:" ), 7, 70, 410, 20 );
 		adic( rgTipoRel, 7, 90, 410, 30 );
+		adic( cbAgrupCli, 420, 95, 180, 20 );
 		adic( cbObs, 420, 115, 180, 20 );
-		adic( cbImpTotDia, 420, 150, 180, 20 );
-		adic( cbRecPar, 420, 185, 250, 20 );
+		adic( cbImpTotDia, 420, 135, 180, 20 );
+		adic( cbRecPar, 420, 155, 250, 20 );
 		// adic( cbAgrupCli, 420, 90, 250, 20 );
 		adic( new JLabelPad( "Primeira ordem:" ), 7, 120, 390, 20 );
 		adic( rgOrdem, 7, 140, 410, 30 );
@@ -502,7 +506,13 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		}
 		sql.append( "and r.flag in " + AplicativoPD.carregaFiltro( con, org.freedom.library.swing.frame.Aplicativo.iCodEmp ) + " ");
 		sql.append( where );
-		sql.append( " order by " + campoordem + " ," + campoordem2 );
+		sql.append( " order by " );
+		if ("S".equals( cbAgrupCli.getVlrString() )) {
+			sql.append( "c.razcli, c.codcli, ");
+		}
+		sql.append( campoordem );
+		sql.append( " ," );
+		sql.append( campoordem2 );
 		StringBuilder cab = new StringBuilder();
 		cab.append( "CONTAS ");
 		cab.append( titrel ); 
@@ -633,7 +643,7 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		hParam.put( "RAZAOEMP", Aplicativo.empresa.toString() );
 		hParam.put( "FILTROS", sCab );
 		hParam.put( "TOTDIARIO", cbImpTotDia.getVlrString() );
-
+		hParam.put( "AGRUPCLI", new Boolean("S".equals(cbAgrupCli.getVlrString())));
 		
 		dlGr = new FPrinterJob( "relatorios/ReceberRecebidas.jasper", "Relatório de contas", sCab, rs, hParam, this );
 
