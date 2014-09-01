@@ -94,6 +94,8 @@ public class FRPagar extends FRelatorio {
 
 	private JCheckBoxPad cbParPar = new JCheckBoxPad( "Imprimir pagamentos parciais?", "S", "N" );
 
+	private JCheckBoxPad cbAgrupFor = new JCheckBoxPad( "Agrupar fornecedores?", "S", "N" );
+
 	private ListaCampos lcFor = new ListaCampos( this );
 
 	private ListaCampos lcPlanoPag = new ListaCampos( this );
@@ -183,6 +185,7 @@ public class FRPagar extends FRelatorio {
 
 		adic( cbObs, 7, 410, 385, 20 );
 		adic( cbParPar, 7, 430, 360, 20 );
+		adic( cbAgrupFor, 7, 450, 360, 20 );
 
 		btExp.setToolTipText( "Exporta para arquivo no formato csv." );
 		btExp.setPreferredSize( new Dimension( 40, 28 ) );
@@ -433,6 +436,9 @@ public class FRPagar extends FRelatorio {
 			sql.append( " and it.codtipocob=? and it.codemptc=? and it.codfilialtc=? " );
 		}
 		sql.append( "order by " );
+		if ("S".equals(cbAgrupFor.getVlrString())) {
+			sql.append("f.razfor, f.codfor, ");
+		}
 		if ( "P".equals( cbOrdem.getVlrString() ) ) {
 			sql.append( "it.dtpagoitpag" );
 		}
