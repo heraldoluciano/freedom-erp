@@ -123,7 +123,7 @@ public class FRPagar extends FRelatorio {
 	public FRPagar() {
 
 		setTitulo( "Contas a Pagar" );
-		setAtribos( 80, 80, 410, 530 );
+		setAtribos( 80, 80, 410, 550 );
 
 		montaListaCampos();
 		montaCheckBox();
