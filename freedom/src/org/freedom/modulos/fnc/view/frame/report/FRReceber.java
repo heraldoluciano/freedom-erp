@@ -475,15 +475,15 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		sql.append( "left outer join vdcliente c on (c.codemp = r.codemp and c.codfilial = r.codfilial and c.codcli = r.codcli) " );
 		sql.append( "left outer join vdvenda v on (v.codemp = r.codemp and v.codfilial = r.codfilialva and v.codvenda = r.codvenda and v.tipovenda = r.tipovenda ) " );
 		sql.append( "left outer join fnsublanca l on (l.codemp = r.codemp and l.codfilial = it.codfilial and l.codrec = it.codrec and l.nparcitrec = it.nparcitrec and l.codsublanca<>0 "); 
-		if (correcao) {
+		//if (correcao) {
 			sql.append(" and l.datasublanca<=? ");
-		}
+		//}
 		sql.append(")" );
 		if(codsetor != 0 && !bPref ){
 			sql.append( "left outer join vdvendedor vd on (vd.codemp = r.codempvd and vd.codfilial = r.codfilialvd and vd.codvend = r.codvend )" );
 		}
 		sql.append( "where r.codemp = ? and r.codfilial = ? and "+ campoordem +" between ? and ? " );
-		if (correcao) {
+		//if (correcao) {
 			// data de correção diferente da data atual
 			if ( "R".equals( tiporel ) ) {
 				sql.append( "and ( it.statusitrec in (?,?,?) or " );
@@ -500,9 +500,9 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 			else if ( "A".equals( tiporel ) ) {
 				sql.append( "and it.statusitrec in (?,?,?)" );
 			}			
-		} else { // Se a data de correção for igual a atual, permanecerá a query original.
-			sql.append( "and it.statusitrec in (?,?,?) " );
-		}
+		//} else { // Se a data de correção for igual a atual, permanecerá a query original.
+			//sql.append( "and it.statusitrec in (?,?,?) " );
+		//}
 		sql.append( "and r.flag in " + AplicativoPD.carregaFiltro( con, org.freedom.library.swing.frame.Aplicativo.iCodEmp ) + " ");
 		sql.append( where );
 		sql.append( " order by " );
@@ -529,9 +529,9 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 		try {
 			param = 1;
 			ps = con.prepareStatement( sql.toString() );
-			if ( correcao ) {
+			//if ( correcao ) {
 				ps.setDate( param++, Funcoes.dateToSQLDate( txtDatacor.getVlrDate() ) );
-			}
+			//}
 			ps.setInt( param++, Aplicativo.iCodEmp );
 			ps.setInt( param++, ListaCampos.getMasterFilial( "FNRECEBER" ) );
 			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
@@ -561,9 +561,9 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 				ps.setString( param++, "RL" );
 				ps.setString( param++, "RP" );
 			}
-			if ( correcao ) {
+			//if ( correcao ) {
 				ps.setDate( param++, Funcoes.dateToSQLDate( txtDatacor.getVlrDate() ) );
-			}
+			//}
 			if ( codcli != 0 ) {
 				ps.setInt( param++, Aplicativo.iCodEmp );
 				ps.setInt( param++, ListaCampos.getMasterFilial( "VDCLIENTE" ) );

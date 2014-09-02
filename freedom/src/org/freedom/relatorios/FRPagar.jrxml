@@ -2,8 +2,8 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="FRPagar" pageWidth="595" pageHeight="842" columnWidth="567" leftMargin="14" rightMargin="14" topMargin="14" bottomMargin="14" uuid="02ceed41-f76b-4a80-a5e0-35d09e6abedc">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="2.9282000000000044"/>
-	<property name="ireport.x" value="570"/>
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="265"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -27,7 +27,7 @@
 	<parameter name="FILTROS" class="java.lang.String" isForPrompting="false">
 		<parameterDescription><![CDATA[Filtros utilizados no relatório]]></parameterDescription>
 	</parameter>
-	<parameter name="ORDEM" class="java.lang.String">
+	<parameter name="ORDEM" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["V"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="IMPOBS" class="java.lang.Boolean" isForPrompting="false"/>
@@ -35,16 +35,24 @@
 		<defaultValueExpression><![CDATA[new Boolean(false)]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[SELECT IT.CODPAG, 0.00 VLRPAGOITPAGTOT, IT.DTVENCITPAG,IT.NPARCPAG,P.CODCOMPRA,P.CODFOR,F.RAZFOR,IT.VLRPARCITPAG,
-IT.VLRPAGOITPAG,IT.VLRAPAGITPAG,IT.DTPAGOITPAG,(SELECT C.STATUSCOMPRA FROM CPCOMPRA C WHERE
-C.FLAG IN ('S','N') AND C.CODEMP=P.CODEMPCP AND C.CODFILIAL=P.CODFILIALCP AND
-C.CODCOMPRA=P.CODCOMPRA) STATUSCOMPRA ,P.DOCPAG,IT.OBSITPAG, (SELECT C.DTEMITCOMPRA FROM CPCOMPRA C WHERE
-C.FLAG IN ('S','N') AND C.CODEMP=P.CODEMPCP AND C.CODFILIAL=P.CODFILIALCP AND
-C.CODCOMPRA=P.CODCOMPRA) AS DTEMITCOMPRA FROM FNITPAGAR IT,FNPAGAR P,CPFORNECED F WHERE
-P.FLAG IN ('S','N') AND IT.CODEMP = P.CODEMP AND IT.CODFILIAL=P.CODFILIAL AND
-IT.DTVENCITPAG BETWEEN '01.01.2006' AND '31.01.2008' AND IT.STATUSITPAG IN ('P1','PP') AND P.CODPAG=IT.CODPAG AND
-F.CODEMP=P.CODEMPFR AND F.CODFILIAL=P.CODFILIALFR AND F.CODFOR=P.CODFOR  AND P.CODEMP=4 AND
-P.CODFILIAL=1 ORDER BY IT.DTVENCITPAG,F.RAZFOR]]>
+		<![CDATA[select it.codpag, it.dtvencitpag,it.nparcpag,p.codcompra,p.codfor,f.razfor,it.vlrparcitpag
+, coalesce(la.vlrsublanca,0) vlrpagoitpag , la.datasublanca dtpagoitpag
+, (select c.statuscompra from cpcompra c
+ where c.flag in ('S','N')
+and c.codemp=p.codempcp and c.codfilial=p.codfilialcp and c.codcompra=p.codcompra) statuscompra
+,p.docpag,coalesce(la.histsublanca,it.obsitpag) obsitpag
+, (select c.dtemitcompra from cpcompra c where c.flag in ('S','N')
+and c.codemp=p.codempcp and c.codfilial=p.codfilialcp
+and c.codcompra=p.codcompra) as dtemitcompra  from fnpagar p
+inner join cpforneced f  on f.codemp=p.codempfr and f.codfilial=p.codfilialfr and f.codfor=p.codfor
+ inner join fnitpagar it  on it.codemp = p.codemp and it.codfilial=p.codfilial and p.codpag=it.codpag
+ and it.dtitpag  between '01.08.2014' and '01.08.2014'
+ left outer join fnconta ct on  ct.codemp = it.codempca and ct.codfilial=it.codfilialca
+ and ct.numconta=it.numconta  left outer join fnsublanca la on la.nparcpag = it.nparcpag
+ and la.codpag=it.codpag  and la.codfilialpg=it.codfilial and la.codemppg=it.codemp and la.datasublanca<='02.09.2014'
+  where p.flag in ('S','N') and it.statusitpag in ('P1','PP','PL')
+  and p.codemp=4 and p.codfilial=1 and f.codfor=69
+ order by it.dtitpag, f.razfor]]>
 	</queryString>
 	<field name="CODPAG" class="java.lang.Integer"/>
 	<field name="DTVENCITPAG" class="java.sql.Date"/>
@@ -54,23 +62,43 @@ P.CODFILIAL=1 ORDER BY IT.DTVENCITPAG,F.RAZFOR]]>
 	<field name="RAZFOR" class="java.lang.String"/>
 	<field name="VLRPARCITPAG" class="java.math.BigDecimal"/>
 	<field name="VLRPAGOITPAG" class="java.math.BigDecimal"/>
-	<field name="VLRAPAGITPAG" class="java.math.BigDecimal"/>
 	<field name="DTPAGOITPAG" class="java.sql.Date"/>
 	<field name="STATUSCOMPRA" class="java.lang.String"/>
 	<field name="DOCPAG" class="java.lang.Integer"/>
 	<field name="OBSITPAG" class="java.lang.String"/>
 	<field name="DTEMITCOMPRA" class="java.sql.Date"/>
-	<variable name="TOT_VLRPARC" class="java.math.BigDecimal" resetType="Group" resetGroup="COMPRAS" calculation="Sum">
+	<variable name="VLRPARCITPAG" class="java.math.BigDecimal" resetType="Group" resetGroup="itemCompra" incrementType="Group" incrementGroup="GERAL">
 		<variableExpression><![CDATA[$F{VLRPARCITPAG}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{VLRPARCITPAG}]]></initialValueExpression>
+	</variable>
+	<variable name="VLRPAGOITPAG" class="java.math.BigDecimal" resetType="Group" resetGroup="itemCompra" calculation="Sum">
+		<variableExpression><![CDATA[$F{VLRPAGOITPAG}]]></variableExpression>
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	</variable>
+	<variable name="VLRAPAGITPARC" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$V{VLRPARCITPAG}.subtract($V{VLRPAGOITPAG})]]></variableExpression>
+	</variable>
+	<variable name="TOT_VLRPARC" class="java.math.BigDecimal" resetType="Group" resetGroup="DIA" incrementType="Group" incrementGroup="itemCompra" calculation="Sum">
+		<variableExpression><![CDATA[$V{VLRPARCITPAG}]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
-	<variable name="TOT_VLRPAGO" class="java.math.BigDecimal" resetType="Group" resetGroup="COMPRAS" calculation="Sum">
+	<variable name="TOT_VLRPAGO" class="java.math.BigDecimal" resetType="Group" resetGroup="DIA" calculation="Sum">
 		<variableExpression><![CDATA[$F{VLRPAGOITPAG}]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
 	</variable>
-	<variable name="TOT_VLRABERTO" class="java.math.BigDecimal" resetType="Group" resetGroup="COMPRAS" calculation="Sum">
-		<variableExpression><![CDATA[$F{VLRAPAGITPAG}]]></variableExpression>
+	<variable name="TOT_VLRAPAG" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$V{TOT_VLRPARC}.subtract($V{TOT_VLRPAGO})]]></variableExpression>
+	</variable>
+	<variable name="TOT_GER_VLRPARC" class="java.math.BigDecimal" resetType="Group" resetGroup="GERAL" incrementType="Group" incrementGroup="itemCompra" calculation="Sum">
+		<variableExpression><![CDATA[$F{VLRPARCITPAG}]]></variableExpression>
 		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="TOT_GER_VLRPAGO" class="java.math.BigDecimal" resetType="Group" resetGroup="GERAL" calculation="Sum">
+		<variableExpression><![CDATA[$F{VLRPAGOITPAG}]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="TOT_GER_VLRAPAG" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$V{TOT_GER_VLRPARC}.subtract($V{TOT_GER_VLRPAGO})]]></variableExpression>
 	</variable>
 	<variable name="DATAORDEM" class="java.util.Date" resetType="None">
 		<variableExpression><![CDATA[$P{ORDEM}.equals( "V" ) ? $F{DTVENCITPAG} : $F{DTPAGOITPAG}]]></variableExpression>
@@ -84,35 +112,11 @@ P.CODFILIAL=1 ORDER BY IT.DTVENCITPAG,F.RAZFOR]]>
 	<variable name="DATAPAG" class="java.util.Date" resetType="None">
 		<variableExpression><![CDATA[$P{ORDEM}.equals( "V" ) ? $F{DTPAGOITPAG} : $F{DTVENCITPAG}]]></variableExpression>
 	</variable>
-	<variable name="TOT_GER_PARC" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{VLRPARCITPAG}]]></variableExpression>
-		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
-	</variable>
-	<variable name="TOT_GER_VLRPGTO" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{VLRPAGOITPAG}]]></variableExpression>
-		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
-	</variable>
-	<variable name="TOT_GER_ABERTO" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{VLRAPAGITPAG}]]></variableExpression>
-		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
-	</variable>
-	<variable name="VVLRPARCITPAG" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{VLRPARCITPAG}]]></variableExpression>
-	</variable>
-	<variable name="VLRTOTPARCITEM" class="java.math.BigDecimal" resetType="Group" resetGroup="itemCompra">
-		<variableExpression><![CDATA[$F{VLRPARCITPAG}]]></variableExpression>
-	</variable>
-	<variable name="VALORPARCTOTCOMPRAS" class="java.math.BigDecimal" resetType="Group" resetGroup="COMPRAS" incrementType="Group" incrementGroup="itemCompra" calculation="Sum">
-		<variableExpression><![CDATA[$V{VLRTOTPARCITEM}]]></variableExpression>
-	</variable>
-	<variable name="VLRAPAGTEMP" class="java.math.BigDecimal" resetType="Group" resetGroup="itemCompra" calculation="Sum">
-		<variableExpression><![CDATA[$F{VLRPAGOITPAG}]]></variableExpression>
-	</variable>
 	<group name="GERAL">
 		<groupFooter>
 			<band height="21" splitType="Stretch">
 				<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false">
-					<reportElement uuid="3682d7da-4466-4432-bf18-d5426126a330" key="textField-15" x="397" y="2" width="55" height="16"/>
+					<reportElement uuid="3682d7da-4466-4432-bf18-d5426126a330" key="textField-15" x="342" y="2" width="55" height="16"/>
 					<box leftPadding="2" rightPadding="2">
 						<pen lineWidth="0.25"/>
 						<topPen lineWidth="0.25"/>
@@ -123,7 +127,7 @@ P.CODFILIAL=1 ORDER BY IT.DTVENCITPAG,F.RAZFOR]]>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$V{TOT_GER_PARC}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{TOT_GER_VLRPARC}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false">
 					<reportElement uuid="cd3d8e68-ae24-4261-aa0f-e0e130feabb2" key="textField-16" x="452" y="2" width="57" height="16"/>
@@ -137,7 +141,7 @@ P.CODFILIAL=1 ORDER BY IT.DTVENCITPAG,F.RAZFOR]]>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$V{TOT_GER_VLRPGTO}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{TOT_GER_VLRPAGO}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false">
 					<reportElement uuid="0bffa606-8916-44ad-8954-5a93ca93da3a" key="textField-17" x="509" y="2" width="57" height="16"/>
@@ -151,10 +155,10 @@ P.CODFILIAL=1 ORDER BY IT.DTVENCITPAG,F.RAZFOR]]>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$V{TOT_GER_ABERTO}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{TOT_GER_VLRAPAG}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement uuid="99de561d-da4b-4642-b874-bb8e9ac84465" key="staticText-10" x="0" y="2" width="397" height="16"/>
+					<reportElement uuid="99de561d-da4b-4642-b874-bb8e9ac84465" key="staticText-10" x="0" y="2" width="342" height="16"/>
 					<box leftPadding="2" rightPadding="2">
 						<pen lineWidth="0.25"/>
 						<topPen lineWidth="0.25"/>
@@ -170,7 +174,7 @@ P.CODFILIAL=1 ORDER BY IT.DTVENCITPAG,F.RAZFOR]]>
 			</band>
 		</groupFooter>
 	</group>
-	<group name="COMPRAS">
+	<group name="DIA">
 		<groupExpression><![CDATA[$P{AGRUPFOR}?$F{CODFOR}:$P{ORDEM}.equals( "V" ) ? $F{DTVENCITPAG} : $F{DTPAGOITPAG}]]></groupExpression>
 		<groupHeader>
 			<band splitType="Stretch"/>
@@ -178,7 +182,7 @@ P.CODFILIAL=1 ORDER BY IT.DTVENCITPAG,F.RAZFOR]]>
 		<groupFooter>
 			<band height="21" splitType="Stretch">
 				<textField>
-					<reportElement uuid="09e559ab-005c-4169-81a1-c5f4978613bc" key="staticText-8" x="0" y="0" width="341" height="16"/>
+					<reportElement uuid="09e559ab-005c-4169-81a1-c5f4978613bc" key="staticText-8" x="0" y="0" width="286" height="16"/>
 					<box leftPadding="2" rightPadding="2">
 						<pen lineWidth="0.25"/>
 						<topPen lineWidth="0.25"/>
@@ -192,7 +196,7 @@ P.CODFILIAL=1 ORDER BY IT.DTVENCITPAG,F.RAZFOR]]>
 					<textFieldExpression><![CDATA[$P{AGRUPFOR}?"Sub-total do fornecedor:":"Sub-total diário"]]></textFieldExpression>
 				</textField>
 				<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-					<reportElement uuid="8b7d1fd6-6daf-41e3-b3b2-07a16b081828" key="textField-2" x="341" y="0" width="56" height="16"/>
+					<reportElement uuid="8b7d1fd6-6daf-41e3-b3b2-07a16b081828" key="textField-2" x="286" y="0" width="56" height="16"/>
 					<box leftPadding="1" rightPadding="1">
 						<pen lineWidth="0.25"/>
 						<topPen lineWidth="0.25"/>
@@ -204,20 +208,6 @@ P.CODFILIAL=1 ORDER BY IT.DTVENCITPAG,F.RAZFOR]]>
 						<font fontName="SansSerif" size="8" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{DTVENCITPAG}]]></textFieldExpression>
-				</textField>
-				<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false">
-					<reportElement uuid="be850fac-61f7-4311-9575-1e093d424f74" key="textField-10" x="397" y="0" width="55" height="16"/>
-					<box leftPadding="2" rightPadding="2">
-						<pen lineWidth="0.25"/>
-						<topPen lineWidth="0.25"/>
-						<leftPen lineWidth="0.25"/>
-						<bottomPen lineWidth="0.25"/>
-						<rightPen lineWidth="0.25"/>
-					</box>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font fontName="SansSerif" size="8" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$V{VALORPARCTOTCOMPRAS}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false">
 					<reportElement uuid="efeb1b4a-d628-4535-a8c0-7e830a465235" key="textField-11" x="452" y="0" width="57" height="16"/>
@@ -245,7 +235,21 @@ P.CODFILIAL=1 ORDER BY IT.DTVENCITPAG,F.RAZFOR]]>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="SansSerif" size="8" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$V{TOT_VLRABERTO}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{TOT_VLRAPAG}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false">
+					<reportElement uuid="efeb1b4a-d628-4535-a8c0-7e830a465235" key="textField-11" x="342" y="0" width="55" height="16"/>
+					<box leftPadding="2" rightPadding="2">
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{TOT_VLRPARC}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupFooter>
@@ -253,7 +257,78 @@ P.CODFILIAL=1 ORDER BY IT.DTVENCITPAG,F.RAZFOR]]>
 	<group name="itemCompra">
 		<groupExpression><![CDATA[$F{CODPAG}+$F{NPARCPAG}]]></groupExpression>
 		<groupHeader>
-			<band/>
+			<band height="16">
+				<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+					<reportElement uuid="118b8718-b510-454e-a1ad-488314af36bf" key="textField-15" x="0" y="0" width="49" height="16"/>
+					<box leftPadding="1" rightPadding="1">
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{DTEMITCOMPRA}]]></textFieldExpression>
+				</textField>
+				<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+					<reportElement uuid="118b8718-b510-454e-a1ad-488314af36bf" key="textField-15" x="49" y="0" width="55" height="16"/>
+					<box leftPadding="1" rightPadding="1">
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{DTVENCITPAG}]]></textFieldExpression>
+				</textField>
+				<textField pattern="" isBlankWhenNull="false">
+					<reportElement uuid="797924fe-ccff-4508-9c7e-9682b9b32ad6" key="textField-3" x="104" y="0" width="182" height="16"/>
+					<box leftPadding="2" rightPadding="2">
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{CODFOR}+"-"+$F{RAZFOR}.trim()]]></textFieldExpression>
+				</textField>
+				<textField pattern="" isBlankWhenNull="false">
+					<reportElement uuid="edef3c38-cd6c-4c70-b2a1-20c80529bffa" key="textField-4" x="286" y="0" width="56" height="16"/>
+					<box leftPadding="1" rightPadding="1">
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{DOCPAG}.toString() + "/" + $F{NPARCPAG}.toString()]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false">
+					<reportElement uuid="b2d2b0fb-728c-480b-937d-83e7f467d267" key="textField-6" x="342" y="0" width="55" height="16"/>
+					<box leftPadding="2" rightPadding="2">
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{VLRPARCITPAG}]]></textFieldExpression>
+				</textField>
+			</band>
 		</groupHeader>
 		<groupFooter>
 			<band/>
@@ -351,7 +426,7 @@ P.CODFILIAL=1 ORDER BY IT.DTVENCITPAG,F.RAZFOR]]>
 				<textFieldExpression><![CDATA[$P{FILTROS}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="dbe4cd73-1fb6-4248-998a-06fe5f6f83a6" key="staticText-2" x="159" y="85" width="182" height="16"/>
+				<reportElement uuid="dbe4cd73-1fb6-4248-998a-06fe5f6f83a6" key="staticText-2" x="104" y="85" width="182" height="16"/>
 				<box leftPadding="2" rightPadding="2">
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -363,34 +438,6 @@ P.CODFILIAL=1 ORDER BY IT.DTVENCITPAG,F.RAZFOR]]>
 					<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Fornecedor]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="97416184-0f49-4e34-9cd9-28c9648c9b02" key="staticText-3" x="341" y="85" width="56" height="16"/>
-				<box leftPadding="2" rightPadding="2">
-					<pen lineWidth="0.25"/>
-					<topPen lineWidth="0.25"/>
-					<leftPen lineWidth="0.25"/>
-					<bottomPen lineWidth="0.25"/>
-					<rightPen lineWidth="0.25"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
-				</textElement>
-				<text><![CDATA[Doc.]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="2b9e1fd0-81cc-4de4-818d-2c5902c7a175" key="staticText-4" x="397" y="85" width="55" height="16"/>
-				<box leftPadding="2" rightPadding="2">
-					<pen lineWidth="0.25"/>
-					<topPen lineWidth="0.25"/>
-					<leftPen lineWidth="0.25"/>
-					<bottomPen lineWidth="0.25"/>
-					<rightPen lineWidth="0.25"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
-				</textElement>
-				<text><![CDATA[Vlr.Parc.]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="dc2c8244-a15c-4934-b679-e7649185d8bc" key="staticText-5" x="452" y="85" width="57" height="16"/>
@@ -449,7 +496,7 @@ P.CODFILIAL=1 ORDER BY IT.DTVENCITPAG,F.RAZFOR]]>
 				<text><![CDATA[Vencimento]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="97416184-0f49-4e34-9cd9-28c9648c9b02" key="staticText-3" x="104" y="85" width="55" height="16"/>
+				<reportElement uuid="97416184-0f49-4e34-9cd9-28c9648c9b02" key="staticText-3" x="397" y="85" width="55" height="16"/>
 				<box leftPadding="0" rightPadding="0">
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -462,29 +509,8 @@ P.CODFILIAL=1 ORDER BY IT.DTVENCITPAG,F.RAZFOR]]>
 				</textElement>
 				<text><![CDATA[Pagamento]]></text>
 			</staticText>
-		</band>
-	</pageHeader>
-	<columnHeader>
-		<band splitType="Stretch"/>
-	</columnHeader>
-	<detail>
-		<band height="16" splitType="Stretch">
-			<textField pattern="" isBlankWhenNull="false">
-				<reportElement uuid="edef3c38-cd6c-4c70-b2a1-20c80529bffa" key="textField-4" x="341" y="0" width="56" height="16"/>
-				<box leftPadding="1" rightPadding="1">
-					<pen lineWidth="0.25"/>
-					<topPen lineWidth="0.25"/>
-					<leftPen lineWidth="0.25"/>
-					<bottomPen lineWidth="0.25"/>
-					<rightPen lineWidth="0.25"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica-Bold"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{DOCPAG}.toString() + "/" + $F{NPARCPAG}.toString()]]></textFieldExpression>
-			</textField>
-			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false">
-				<reportElement uuid="b2d2b0fb-728c-480b-937d-83e7f467d267" key="textField-6" x="397" y="0" width="55" height="16"/>
+			<staticText>
+				<reportElement uuid="97416184-0f49-4e34-9cd9-28c9648c9b02" key="staticText-3" x="286" y="85" width="56" height="16"/>
 				<box leftPadding="2" rightPadding="2">
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -492,11 +518,32 @@ P.CODFILIAL=1 ORDER BY IT.DTVENCITPAG,F.RAZFOR]]>
 					<bottomPen lineWidth="0.25"/>
 					<rightPen lineWidth="0.25"/>
 				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica-Bold"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{VLRPARCITPAG}]]></textFieldExpression>
-			</textField>
+				<text><![CDATA[Doc.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2b9e1fd0-81cc-4de4-818d-2c5902c7a175" key="staticText-4" x="342" y="85" width="55" height="16"/>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Vlr.Parc.]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="16" splitType="Stretch">
 			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false">
 				<reportElement uuid="1c0754f0-1c3c-4158-bacf-01a204af77df" key="textField-19" x="452" y="0" width="57" height="16"/>
 				<box leftPadding="2" rightPadding="2">
@@ -511,20 +558,6 @@ P.CODFILIAL=1 ORDER BY IT.DTVENCITPAG,F.RAZFOR]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{VLRPAGOITPAG}]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="false">
-				<reportElement uuid="797924fe-ccff-4508-9c7e-9682b9b32ad6" key="textField-3" x="159" y="0" width="182" height="16"/>
-				<box leftPadding="2" rightPadding="2">
-					<pen lineWidth="0.25"/>
-					<topPen lineWidth="0.25"/>
-					<leftPen lineWidth="0.25"/>
-					<bottomPen lineWidth="0.25"/>
-					<rightPen lineWidth="0.25"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica-Bold"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{CODFOR}+"-"+$F{RAZFOR}.trim()]]></textFieldExpression>
-			</textField>
 			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
 				<reportElement uuid="2117adca-fcc9-4609-96a1-196ec8aa2058" key="textField-19" x="509" y="0" width="57" height="16"/>
 				<box leftPadding="2" rightPadding="2">
@@ -537,38 +570,10 @@ P.CODFILIAL=1 ORDER BY IT.DTVENCITPAG,F.RAZFOR]]>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{VLRAPAGITPAG}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{VLRAPAGITPARC}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement uuid="118b8718-b510-454e-a1ad-488314af36bf" key="textField-15" x="0" y="0" width="49" height="16"/>
-				<box leftPadding="1" rightPadding="1">
-					<pen lineWidth="0.25"/>
-					<topPen lineWidth="0.25"/>
-					<leftPen lineWidth="0.25"/>
-					<bottomPen lineWidth="0.25"/>
-					<rightPen lineWidth="0.25"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{DTEMITCOMPRA}]]></textFieldExpression>
-			</textField>
-			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement uuid="118b8718-b510-454e-a1ad-488314af36bf" key="textField-15" x="49" y="0" width="55" height="16"/>
-				<box leftPadding="1" rightPadding="1">
-					<pen lineWidth="0.25"/>
-					<topPen lineWidth="0.25"/>
-					<leftPen lineWidth="0.25"/>
-					<bottomPen lineWidth="0.25"/>
-					<rightPen lineWidth="0.25"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{DTVENCITPAG}]]></textFieldExpression>
-			</textField>
-			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement uuid="118b8718-b510-454e-a1ad-488314af36bf" key="textField-15" x="104" y="0" width="55" height="16"/>
+				<reportElement uuid="118b8718-b510-454e-a1ad-488314af36bf" key="textField-15" x="397" y="0" width="55" height="16"/>
 				<box leftPadding="1" rightPadding="1">
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
