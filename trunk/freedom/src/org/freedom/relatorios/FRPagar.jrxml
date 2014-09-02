@@ -3,7 +3,7 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.9282000000000044"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="773"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -252,7 +252,7 @@ P.CODFILIAL=1 ORDER BY IT.DTVENCITPAG,F.RAZFOR]]>
 		</groupFooter>
 	</group>
 	<group name="itemCompra">
-		<groupExpression><![CDATA[$F{CODPAG}]]></groupExpression>
+		<groupExpression><![CDATA[$F{CODPAG}+$F{NPARCPAG}]]></groupExpression>
 		<groupHeader>
 			<band/>
 		</groupHeader>
