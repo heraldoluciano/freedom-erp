@@ -3,7 +3,7 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.9282000000000044"/>
-	<property name="ireport.x" value="773"/>
+	<property name="ireport.x" value="570"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -47,7 +47,6 @@ F.CODEMP=P.CODEMPFR AND F.CODFILIAL=P.CODFILIALFR AND F.CODFOR=P.CODFOR  AND P.C
 P.CODFILIAL=1 ORDER BY IT.DTVENCITPAG,F.RAZFOR]]>
 	</queryString>
 	<field name="CODPAG" class="java.lang.Integer"/>
-	<field name="VLRPAGOITPAGTOT" class="java.math.BigDecimal"/>
 	<field name="DTVENCITPAG" class="java.sql.Date"/>
 	<field name="NPARCPAG" class="java.lang.Integer"/>
 	<field name="CODCOMPRA" class="java.lang.Integer"/>
@@ -524,9 +523,9 @@ P.CODFILIAL=1 ORDER BY IT.DTVENCITPAG,F.RAZFOR]]>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{RAZFOR}.trim()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{CODFOR}+"-"+$F{RAZFOR}.trim()]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false">
+			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
 				<reportElement uuid="2117adca-fcc9-4609-96a1-196ec8aa2058" key="textField-19" x="509" y="0" width="57" height="16"/>
 				<box leftPadding="2" rightPadding="2">
 					<pen lineWidth="0.25"/>
@@ -538,7 +537,7 @@ P.CODFILIAL=1 ORDER BY IT.DTVENCITPAG,F.RAZFOR]]>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{VLRPARCITPAG}.subtract($V{VLRAPAGTEMP})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{VLRAPAGITPAG}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
 				<reportElement uuid="118b8718-b510-454e-a1ad-488314af36bf" key="textField-15" x="0" y="0" width="49" height="16"/>
