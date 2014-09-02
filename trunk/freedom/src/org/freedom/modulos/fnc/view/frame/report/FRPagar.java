@@ -278,70 +278,62 @@ public class FRPagar extends FRelatorio {
 	public void exportaTXT() {
 
 		Vector<String> vLinhas = new Vector<String>();
-		ResultSet rs = getResultSet();
-		String sVencto = null;
-		String sDuplic = null;
-		String sPedido = null;
-		String sDtCompra = null;
-		String sDocPag = null;
-		String sNParcPag = null;
-		String sForneced = null;
-		String sObs = null;
-		String sLinha = null;
-		String sAtraso = null;
 		try {
-
-			vLinhas.addElement( "Vencimento;Duplicata;Pedido;Data da compra;Fornecedor;Parcela;Atraso;Observação" );
-
-			while ( rs.next() ) {
-				sVencto = rs.getString( "DTVENCITPAG" ) != null ? StringFunctions.sqlDateToStrDate( rs.getDate( "DTVENCITPAG" ) ) : "";
-				sDocPag = rs.getString( "DOCPAG" ) != null ? rs.getString( "DOCPAG" ).trim() : "";
-				sNParcPag = rs.getString( "NPARCPAG" ) != null ? rs.getString( "NPARCPAG" ).trim() : "";
-				sPedido = rs.getString( "CODCOMPRA" ) != null ? rs.getString( "CODCOMPRA" ).trim() : "";
-				sDuplic = sDocPag + "/" + sNParcPag;
-				sForneced = rs.getString( "RAZFOR" ) != null ? rs.getString( "RAZFOR" ).trim() : "";
-				sDtCompra = rs.getString( "DTEMITCOMPRA" ) != null ? StringFunctions.sqlDateToStrDate( rs.getDate( "DTEMITCOMPRA" ) ) : "";
-				sObs = rs.getString( "OBSITPAG" ) != null ? rs.getString( "OBSITPAG" ).trim() : "";
-				sAtraso = String.valueOf( Funcoes.getNumDias( Funcoes.sqlDateToDate( rs.getDate( "DTVENCITPAG" ) ), new Date() ) );
-				sLinha = sVencto + ";" + sDuplic + ";" + sPedido + ";" + sDtCompra + ";" + sForneced + ";" + sNParcPag + ";" + sAtraso + ";" + sObs;
-				vLinhas.addElement( sLinha );
-			}
-
-		} catch ( SQLException e ) {
-			e.printStackTrace();
-		}
-
-		if ( vLinhas.size() > 1 ) {
-
-			File fArq = Funcoes.buscaArq( this, "csv" );
-
-			if ( fArq == null )
-				return;
-
+			ResultSet rs = getResultSet();
+			String sVencto = null;
+			String sDuplic = null;
+			String sPedido = null;
+			String sDtCompra = null;
+			String sDocPag = null;
+			String sNParcPag = null;
+			String sForneced = null;
+			String sObs = null;
+			String sLinha = null;
+			String sAtraso = null;
 			try {
-
-				PrintStream ps = new PrintStream( new FileOutputStream( fArq ) );
-
-				for ( int i = 0; vLinhas.size() > i; ++i )
-					ps.println( vLinhas.elementAt( i ).toString() );
-
-				ps.flush();
-				ps.close();
-
-			} catch ( IOException err ) {
-				Funcoes.mensagemErro( this, "Erro ao gravar o arquivo!\n" + err.getMessage(), true, con, err );
-				err.printStackTrace();
+				vLinhas.addElement( "Vencimento;Duplicata;Pedido;Data da compra;Fornecedor;Parcela;Atraso;Observação" );
+				while ( rs.next() ) {
+					sVencto = rs.getString( "DTVENCITPAG" ) != null ? StringFunctions.sqlDateToStrDate( rs.getDate( "DTVENCITPAG" ) ) : "";
+					sDocPag = rs.getString( "DOCPAG" ) != null ? rs.getString( "DOCPAG" ).trim() : "";
+					sNParcPag = rs.getString( "NPARCPAG" ) != null ? rs.getString( "NPARCPAG" ).trim() : "";
+					sPedido = rs.getString( "CODCOMPRA" ) != null ? rs.getString( "CODCOMPRA" ).trim() : "";
+					sDuplic = sDocPag + "/" + sNParcPag;
+					sForneced = rs.getString( "RAZFOR" ) != null ? rs.getString( "RAZFOR" ).trim() : "";
+					sDtCompra = rs.getString( "DTEMITCOMPRA" ) != null ? StringFunctions.sqlDateToStrDate( rs.getDate( "DTEMITCOMPRA" ) ) : "";
+					sObs = rs.getString( "OBSITPAG" ) != null ? rs.getString( "OBSITPAG" ).trim() : "";
+					sAtraso = String.valueOf( Funcoes.getNumDias( Funcoes.sqlDateToDate( rs.getDate( "DTVENCITPAG" ) ), new Date() ) );
+					sLinha = sVencto + ";" + sDuplic + ";" + sPedido + ";" + sDtCompra + ";" + sForneced + ";" + sNParcPag + ";" + sAtraso + ";" + sObs;
+					vLinhas.addElement( sLinha );
+				}
+	
+			} catch ( SQLException e ) {
+				e.printStackTrace();
 			}
-
+			if ( vLinhas.size() > 1 ) {
+				File fArq = Funcoes.buscaArq( this, "csv" );
+				if ( fArq == null )
+					return;
+				try {
+					PrintStream ps = new PrintStream( new FileOutputStream( fArq ) );
+					for ( int i = 0; vLinhas.size() > i; ++i )
+						ps.println( vLinhas.elementAt( i ).toString() );
+	
+					ps.flush();
+					ps.close();
+	
+				} catch ( IOException err ) {
+					Funcoes.mensagemErro( this, "Erro ao gravar o arquivo!\n" + err.getMessage(), true, con, err );
+					err.printStackTrace();
+				}
+			} else {
+				Funcoes.mensagemInforma( this, "Não há informações para exportar!" );
+			}
+		} catch (Exception err) {
+			Funcoes.mensagemErro( this, err.getMessage() );
 		}
-		else {
-			Funcoes.mensagemInforma( this, "Não há informações para exportar!" );
-		}
-		
-		
 	}
 
-	public ResultSet getResultSet() {
+	public ResultSet getResultSet() throws Exception {
 
 		PreparedStatement ps = null; 
 		ResultSet rs = null;
@@ -356,20 +348,16 @@ public class FRPagar extends FRelatorio {
 		StringBuilder sql = new StringBuilder();
 
 		sql.append( "select it.codpag, it.dtvencitpag,it.nparcpag,p.codcompra"); 
-		sql.append(",p.codfor,f.razfor,it.vlrparcitpag," );
+		sql.append(",p.codfor,f.razfor,it.vlrparcitpag " );
 		//if ( correcao ) {
 			// Valor pago
-			sql.append( "(coalesce((select sum(vlrsublanca) from fnsublanca l where l.codemppg=it.codemp" );
-			sql.append( " and l.codfilialpg=it.codfilial and l.codpag=it.codpag" );
-			sql.append( " and l.nparcpag=it.nparcpag and l.datasublanca<=?),0)) vlrpagoitpag, " );
+			sql.append( ", coalesce(la.vlrsublanca,0) vlrpagoitpag " );
 			// Valor a pagar
-			sql.append( "coalesce(it.vlrparcitpag,0)-coalesce((select sum(vlrsublanca) from fnsublanca l where l.codemppg=it.codemp" );
+			/*sql.append( "coalesce(it.vlrparcitpag,0)-coalesce((select sum(vlrsublanca) from fnsublanca l where l.codemppg=it.codemp" );
 			sql.append( " and l.codfilialpg=it.codfilial and l.codpag=it.codpag" );
-			sql.append( " and l.nparcpag=it.nparcpag and l.datasublanca<=?),0) vlrapagitpag," );
+			sql.append( " and l.nparcpag=it.nparcpag and l.datasublanca<=?),0) vlrapagitpag," );*/
 			// Data de pagamento
-			sql.append( "(select max(l.datasublanca) from fnsublanca l where l.codemppg=it.codemp" );
-			sql.append( " and l.codfilialpg=it.codfilial and l.codpag=it.codpag" );
-			sql.append( " and l.nparcpag=it.nparcpag and l.datasublanca<=?) dtpagoitpag " );
+			sql.append( ", la.datasublanca dtpagoitpag " );
 		//}
 		//else {
 			//	sql.append( "IT.VLRPAGOITPAG,IT.VLRAPAGITPAG,IT.DTPAGOITPAG" );
@@ -379,15 +367,15 @@ public class FRPagar extends FRelatorio {
 		sql.append( ", (select c.statuscompra from cpcompra c where c.flag in " );
 		sql.append( AplicativoPD.carregaFiltro( con, org.freedom.library.swing.frame.Aplicativo.iCodEmp ) );
 		sql.append( " and c.codemp=p.codempcp and c.codfilial=p.codfilialcp and c.codcompra=p.codcompra) statuscompra," );
-		sql.append( "p.docpag,coalesce(la.histsublanca,it.obsitpag) obsitpag,	 " );
-		sql.append( "(select c.dtemitcompra from cpcompra c where c.flag in " );
+		sql.append( "p.docpag,coalesce(la.histsublanca,it.obsitpag) obsitpag" );
+		sql.append( ", (select c.dtemitcompra from cpcompra c where c.flag in " );
 		sql.append( AplicativoPD.carregaFiltro( con, org.freedom.library.swing.frame.Aplicativo.iCodEmp ) );
 		sql.append( " and c.codemp=p.codempcp and c.codfilial=p.codfilialcp and c.codcompra=p.codcompra) as dtemitcompra " );
-		sql.append( "from fnpagar p,cpforneced f, fnitpagar it left outer join fnconta ct on " );
-		sql.append( " ct.codemp = it.codempca and ct.codfilial=it.codfilialca and ct.numconta=it.numconta " );
-		sql.append( " left outer join fnsublanca la on la.nparcpag = it.nparcpag and la.codpag=it.codpag and la.codfilialpg=it.codfilial and la.codemppg=it.codemp " );
-		sql.append( " where p.flag in " + AplicativoPD.carregaFiltro( con, org.freedom.library.swing.frame.Aplicativo.iCodEmp ) );
-		sql.append( " and it.codemp = p.codemp and it.codfilial=p.codfilial " );
+		sql.append( " from fnpagar p ");
+		sql.append( " inner join cpforneced f ");
+		sql.append( " on f.codemp=p.codempfr and f.codfilial=p.codfilialfr and f.codfor=p.codfor " );
+		sql.append( " inner join fnitpagar it ");
+		sql.append( " on it.codemp = p.codemp and it.codfilial=p.codfilial and p.codpag=it.codpag " );
 		if ( "P".equals( cbOrdem.getVlrString() ) ) {
 			sql.append( " and it.dtpagoitpag" );
 		}
@@ -397,20 +385,22 @@ public class FRPagar extends FRelatorio {
 		else {
 			sql.append( " and it.dtitpag " );
 		}
-		sql.append( " between ? and ? and " );
+		sql.append( " between ? and ? " );
+		sql.append( " left outer join fnconta ct on " );
+		sql.append( " ct.codemp = it.codempca and ct.codfilial=it.codfilialca and ct.numconta=it.numconta " );
+		sql.append( " left outer join fnsublanca la on la.nparcpag = it.nparcpag and la.codpag=it.codpag ");
+		sql.append( " and la.codfilialpg=it.codfilial and la.codemppg=it.codemp and la.datasublanca<=? " );
+		sql.append( " where p.flag in " + AplicativoPD.carregaFiltro( con, org.freedom.library.swing.frame.Aplicativo.iCodEmp ) );
+		sql.append( " and ");
 		//if ( correcao ) {
 			// data de correção diferente da data atual
 			if ( "N".equals( filtropag ) ) {
 				sql.append( "( it.statusitpag in (?,?,?) or " );
-				sql.append( "(not exists ( select * from fnsublanca l where l.codemppg=it.codemp" );
-				sql.append( " and l.codfilialpg=it.codfilial and l.codpag=it.codpag" );
-				sql.append( " and l.nparcpag=it.nparcpag and l.datasublanca<=? ) ) )" );
+				sql.append( "( la.datasublanca is null ) )" );
 			}
 			else if ( "P".equals( filtropag ) ) {
 				sql.append( "( it.statusitpag in (?,?,?) or " );
-				sql.append( "(exists ( select * from fnsublanca l where l.codemppg=it.codemp" );
-				sql.append( " and l.codfilialpg=it.codfilial and l.codpag=it.codpag" );
-				sql.append( " and l.nparcpag=it.nparcpag and l.datasublanca<=? ) ) )" );
+				sql.append( "( la.datasublanca is not null  ) )" );
 			}
 			else if ( "A".equals( filtropag ) ) {
 				sql.append( "it.statusitpag in (?,?,?)" );
@@ -420,8 +410,6 @@ public class FRPagar extends FRelatorio {
 		//else {
 			//sql.append( "it.statusitpag in (?,?,?)" );
 	//	}
-		sql.append( " and p.codpag=it.codpag and " );
-		sql.append( "f.codemp=p.codempfr and f.codfilial=p.codfilialfr and f.codfor=p.codfor " );
 		sql.append( "".equals( txtCodFor.getVlrString() ) ? "" : " and p.codfor=" + txtCodFor.getVlrString() );
 		sql.append( "".equals( txtCodPlanoPag.getVlrString() ) ? "" : " and p.codplanopag=" + txtCodPlanoPag.getVlrString() );
 		sql.append( " and p.codemp=? and p.codfilial=? " );
@@ -453,12 +441,13 @@ public class FRPagar extends FRelatorio {
 			System.out.println( sql.toString() );
 			ps = con.prepareStatement( sql.toString() );
 			//if ( correcao ) {
+/*				ps.setDate( paramsql++, Funcoes.dateToSQLDate( txtDatacor.getVlrDate() ) );
 				ps.setDate( paramsql++, Funcoes.dateToSQLDate( txtDatacor.getVlrDate() ) );
-				ps.setDate( paramsql++, Funcoes.dateToSQLDate( txtDatacor.getVlrDate() ) );
-				ps.setDate( paramsql++, Funcoes.dateToSQLDate( txtDatacor.getVlrDate() ) );
+				ps.setDate( paramsql++, Funcoes.dateToSQLDate( txtDatacor.getVlrDate() ) );*/
 			//}
 			ps.setDate( paramsql++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
 			ps.setDate( paramsql++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+			ps.setDate( paramsql++, Funcoes.dateToSQLDate( txtDatacor.getVlrDate() ) );
 			if ( filtropag.equals( "N" ) ) {
 				ps.setString( paramsql++, "P1" );
 				ps.setString( paramsql++, "P1" );
@@ -469,7 +458,7 @@ public class FRPagar extends FRelatorio {
 					ps.setString( paramsql++, "P1" );
 				}
 				//if ( correcao ) {
-					ps.setDate( paramsql++, Funcoes.dateToSQLDate( txtDatacor.getVlrDate() ) );
+					//ps.setDate( paramsql++, Funcoes.dateToSQLDate( txtDatacor.getVlrDate() ) );
 				//}
 			}
 			else if ( filtropag.equals( "P" ) ) {
@@ -482,7 +471,7 @@ public class FRPagar extends FRelatorio {
 					ps.setString( paramsql++, "PP" );
 				}
 				//if ( correcao ) {
-					ps.setDate( paramsql++, Funcoes.dateToSQLDate( txtDatacor.getVlrDate() ) );
+					//ps.setDate( paramsql++, Funcoes.dateToSQLDate( txtDatacor.getVlrDate() ) );
 				//}
 			}
 			else if ( filtropag.equals( "A" ) ) {
@@ -513,8 +502,15 @@ public class FRPagar extends FRelatorio {
 				ps.setInt( paramsql++, lcTipoCob.getCodFilial() );
 			}
 			rs = ps.executeQuery();
-		} catch ( Exception e ) {
-			e.printStackTrace();
+		} catch ( SQLException err ) {
+			String mensagemErro = err.getMessage();
+			err.printStackTrace();
+			try {
+				con.rollback(); 
+			} catch (SQLException errroll) {
+				errroll.printStackTrace();
+			}
+			throw new Exception("Erro executando query !\n"+mensagemErro);
 		}
 		return rs;
 	}
@@ -544,19 +540,20 @@ public class FRPagar extends FRelatorio {
 			return;
 		}
 
-		ResultSet rs = getResultSet();
-
-		sCab += "  Periodo de: " + txtDataini.getVlrString() + "  Até:  " + txtDatafim.getVlrString() + "  Correção p/: " + txtDatacor.getVlrString();
-
-		if ( txtCodBanco.getVlrString().length() > 0 ) {
-			sCab += "\n Banco:" + txtCodBanco.getVlrString().trim() + "-" + txtNomeBanco.getVlrString().trim();
+		try {
+			ResultSet rs = getResultSet();
+			sCab += "  Periodo de: " + txtDataini.getVlrString() + "  Até:  " + txtDatafim.getVlrString() + "  Correção p/: " + txtDatacor.getVlrString();
+			if ( txtCodBanco.getVlrString().length() > 0 ) {
+				sCab += "\n Banco:" + txtCodBanco.getVlrString().trim() + "-" + txtNomeBanco.getVlrString().trim();
+			}
+			if ( "T".equals( rgTipoRel.getVlrString() ) ) {
+				imprimiTexto( rs, bVisualizar, sCab );
+			}
+			else {
+				imprimiGrafico( rs, bVisualizar, sCab );
 		}
-
-		if ( "T".equals( rgTipoRel.getVlrString() ) ) {
-			imprimiTexto( rs, bVisualizar, sCab );
-		}
-		else {
-			imprimiGrafico( rs, bVisualizar, sCab );
+		} catch (Exception err) {
+			Funcoes.mensagemErro( this, err.getMessage() );
 		}
 	}
 
