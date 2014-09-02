@@ -360,11 +360,10 @@ public class FRReceber extends FRelatorio implements RadioGroupListener {
 			Funcoes.mensagemInforma( this, "Preencha a data de correção!" );
 			return;
 		}
-/*		if ( txtDatacor.getVlrDate().compareTo( txtDatafim.getVlrDate() ) > 0 
-				|| txtDatacor.getVlrDate().compareTo( txtDataini.getVlrDate() ) < 0) {
-			Funcoes.mensagemInforma( this, "Data de correção fora do período selecionado!" );
+		if ( txtDatacor.getVlrDate().compareTo( txtDataini.getVlrDate() ) < 0 ) {
+			Funcoes.mensagemInforma( this, "Data de correção inválida ou fora do período especificado!" );
 			return;
-		}*/
+		}
 		if ( ( ( rgTipoRel.getVlrString().equals( "R" ) ) || ( rgTipoRel.getVlrString().equals( "A" ) ) ) && ( rgOrdem.getVlrString().equals( "P" ) ) ) {
 			Funcoes.mensagemInforma( this, "Não pode ser ordenado por data de pagamento!" );
 			return;
