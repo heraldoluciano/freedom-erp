@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.9282000000000012"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="163"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -30,7 +30,9 @@
 	<parameter name="ORDEM" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["V"]]></defaultValueExpression>
 	</parameter>
-	<parameter name="IMPOBS" class="java.lang.Boolean" isForPrompting="false"/>
+	<parameter name="IMPOBS" class="java.lang.Boolean" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Boolean(true)]]></defaultValueExpression>
+	</parameter>
 	<parameter name="AGRUPFOR" class="java.lang.Boolean" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Boolean(false)]]></defaultValueExpression>
 	</parameter>
@@ -587,7 +589,7 @@ inner join cpforneced f  on f.codemp=p.codempfr and f.codfilial=p.codfilialfr an
 	<detail>
 		<band height="16" splitType="Stretch">
 			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false">
-				<reportElement uuid="1c0754f0-1c3c-4158-bacf-01a204af77df" key="textField-19" x="452" y="0" width="57" height="16"/>
+				<reportElement uuid="1c0754f0-1c3c-4158-bacf-01a204af77df" key="textField-19" stretchType="RelativeToBandHeight" x="452" y="0" width="57" height="16"/>
 				<box leftPadding="2" rightPadding="2">
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -601,7 +603,7 @@ inner join cpforneced f  on f.codemp=p.codempfr and f.codfilial=p.codfilialfr an
 				<textFieldExpression><![CDATA[$F{VLRPAGOITPAG}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
-				<reportElement uuid="2117adca-fcc9-4609-96a1-196ec8aa2058" key="textField-19" x="509" y="0" width="57" height="16"/>
+				<reportElement uuid="2117adca-fcc9-4609-96a1-196ec8aa2058" key="textField-19" stretchType="RelativeToBandHeight" x="509" y="0" width="57" height="16"/>
 				<box leftPadding="2" rightPadding="2">
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -615,7 +617,7 @@ inner join cpforneced f  on f.codemp=p.codempfr and f.codfilial=p.codfilialfr an
 				<textFieldExpression><![CDATA[$V{VLRAPAGITPARC}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement uuid="118b8718-b510-454e-a1ad-488314af36bf" key="textField-15" x="397" y="0" width="55" height="16"/>
+				<reportElement uuid="118b8718-b510-454e-a1ad-488314af36bf" key="textField-15" stretchType="RelativeToBandHeight" x="397" y="0" width="55" height="16"/>
 				<box leftPadding="1" rightPadding="1">
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -626,6 +628,22 @@ inner join cpforneced f  on f.codemp=p.codempfr and f.codfilial=p.codfilialfr an
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
+			</textField>
+			<textField pattern="" isBlankWhenNull="false">
+				<reportElement uuid="797924fe-ccff-4508-9c7e-9682b9b32ad6" key="textField-3" stretchType="RelativeToBandHeight" x="0" y="0" width="397" height="16">
+					<printWhenExpression><![CDATA[$P{IMPOBS}]]></printWhenExpression>
+				</reportElement>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{OBSITPAG}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
