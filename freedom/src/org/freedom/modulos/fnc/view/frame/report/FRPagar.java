@@ -24,32 +24,33 @@
 
 package org.freedom.modulos.fnc.view.frame.report;
 
-import java.awt.Dimension;
+//import java.awt.Dimension;
 import java.awt.event.ActionEvent;
-import java.io.File;
+/*import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.math.BigDecimal;
+*/
+//import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
-import java.util.Date;
+//import java.util.Date;
 import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.SwingConstants;
 
-import org.freedom.bmps.Icone;
-import org.freedom.infra.functions.StringFunctions;
+//import org.freedom.bmps.Icone;
+//import org.freedom.infra.functions.StringFunctions;
 import org.freedom.infra.model.jdbc.DbConnection;
-import org.freedom.library.component.ImprimeOS;
+//import org.freedom.library.component.ImprimeOS;
 import org.freedom.library.functions.Funcoes;
 import org.freedom.library.persistence.GuardaCampo;
 import org.freedom.library.persistence.ListaCampos;
-import org.freedom.library.swing.component.JButtonPad;
+//import org.freedom.library.swing.component.JButtonPad;
 import org.freedom.library.swing.component.JCheckBoxPad;
 import org.freedom.library.swing.component.JLabelPad;
 import org.freedom.library.swing.component.JRadioGroup;
@@ -76,7 +77,7 @@ public class FRPagar extends FRelatorio {
 
 	private JRadioGroup<?, ?> cbOrdem = null;
 
-	private JRadioGroup<?, ?> rgTipoRel = null;
+	//private JRadioGroup<?, ?> rgTipoRel = null;
 
 	private JTextFieldPad txtCodFor = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -92,7 +93,7 @@ public class FRPagar extends FRelatorio {
 
 	private JCheckBoxPad cbObs = new JCheckBoxPad( "Imprimir observações?", "S", "N" );
 
-	private JCheckBoxPad cbParPar = new JCheckBoxPad( "Imprimir pagamentos parciais?", "S", "N" );
+	private JCheckBoxPad cbPagParc = new JCheckBoxPad( "Imprimir pagamentos parciais?", "S", "N" );
 
 	private JCheckBoxPad cbAgrupFor = new JCheckBoxPad( "Agrupar fornecedores?", "S", "N" );
 
@@ -100,7 +101,7 @@ public class FRPagar extends FRelatorio {
 
 	private ListaCampos lcPlanoPag = new ListaCampos( this );
 
-	private JButtonPad btExp = new JButtonPad( Icone.novo( "btTXT.png" ) );
+	//private JButtonPad btExp = new JButtonPad( Icone.novo( "btTXT.png" ) );
 
 	private ListaCampos lcBanco = new ListaCampos( this );
 
@@ -122,7 +123,7 @@ public class FRPagar extends FRelatorio {
 
 	public FRPagar() {
 
-		setTitulo( "Contas a Pagar" );
+		setTitulo( "Relatório de contas a pagar/pagas" );
 		setAtribos( 80, 80, 410, 550 );
 
 		montaListaCampos();
@@ -157,43 +158,47 @@ public class FRPagar extends FRelatorio {
 		adic( cbFiltro, 7, 85, 360, 30 );
 		adic( new JLabelPad( "Ordem:" ), 7, 115, 360, 20 );
 		adic( cbOrdem, 7, 135, 360, 30 );
-		adic( rgTipoRel, 7, 170, 360, 30 );
-		adic( new JLabelPad( "Cód.for." ), 7, 200, 80, 20 );
-		adic( txtCodFor, 7, 220, 80, 20 );
-		adic( new JLabelPad( "Razão social do fornecedor" ), 90, 200, 300, 20 );
-		adic( txtRazFor, 90, 220, 277, 20 );
+		//adic( rgTipoRel, 7, 170, 360, 30 );
+		adic( new JLabelPad( "Cód.for." ), 7, 170, 80, 20 );
+		adic( txtCodFor, 7, 190, 80, 20 );
+		adic( new JLabelPad( "Razão social do fornecedor" ), 90, 170, 300, 20 );
+		adic( txtRazFor, 90, 190, 277, 20 );
 
-		adic( new JLabelPad( "Cód.pl.pag." ), 7, 243, 80, 20 );
-		adic( txtCodPlanoPag, 7, 265, 80, 20 );
-		adic( new JLabelPad( "Descrição do plano de pagamento" ), 90, 243, 300, 20 );
-		adic( txtDescPlanoPag, 90, 265, 277, 20 );
+		adic( new JLabelPad( "Cód.pl.pag." ), 7, 213, 80, 20 );
+		adic( txtCodPlanoPag, 7, 235, 80, 20 );
+		adic( new JLabelPad( "Descrição do plano de pagamento" ), 90, 213, 300, 20 );
+		adic( txtDescPlanoPag, 90, 235, 277, 20 );
 
-		adic( new JLabelPad( "Cód.Banco" ), 7, 283, 80, 20 );
-		adic( txtCodBanco, 7, 305, 80, 20 );
-		adic( new JLabelPad( "Nome do banco" ), 90, 283, 300, 20 );
-		adic( txtNomeBanco, 90, 305, 277, 20 );
+		adic( new JLabelPad( "Cód.Banco" ), 7, 253, 80, 20 );
+		adic( txtCodBanco, 7, 275, 80, 20 );
+		adic( new JLabelPad( "Nome do banco" ), 90, 253, 300, 20 );
+		adic( txtNomeBanco, 90, 275, 277, 20 );
 
 		//Filtro da conta
 
-		adic( txtNumConta, 7, 343, 80, 20, "Num.Conta" );
-		adic( txtDescConta, 90, 343, 277, 20, "Descrição da conta" );
+		adic( txtNumConta, 7, 313, 80, 20, "Num.Conta" );
+		adic( txtDescConta, 90, 313, 277, 20, "Descrição da conta" );
 
-		adic( new JLabelPad( "Cód.T.Cob." ), 7, 363, 80, 20 );
-		adic( txtCodTipoCob, 7, 383, 80, 20 );
-		adic( new JLabelPad( "Descrição do Tipo de cobrança" ), 90, 363, 300, 20 );
-		adic( txtDescCodCobrança, 90, 383, 277, 20 );
+		adic( new JLabelPad( "Cód.T.Cob." ), 7, 333, 80, 20 );
+		adic( txtCodTipoCob, 7, 353, 80, 20 );
+		adic( new JLabelPad( "Descrição do Tipo de cobrança" ), 90, 333, 300, 20 );
+		adic( txtDescCodCobrança, 90, 353, 277, 20 );
 
-		adic( cbObs, 7, 410, 385, 20 );
-		adic( cbParPar, 7, 430, 360, 20 );
-		adic( cbAgrupFor, 7, 450, 360, 20 );
+		adic( cbObs, 7, 380, 385, 20 );
+		adic( cbPagParc, 7, 400, 360, 20 );
+		adic( cbAgrupFor, 7, 420, 360, 20 );
 
-		btExp.setToolTipText( "Exporta para arquivo no formato csv." );
+		cbPagParc.setVlrString( "S" );
+		cbObs.setVlrString( "S" );
+		
+		btExportXLS.setEnabled( true );
+		/*btExp.setToolTipText( "Exporta para arquivo no formato csv." );
 		btExp.setPreferredSize( new Dimension( 40, 28 ) );
 		pnBotoes.setPreferredSize( new Dimension( 120, 28 ) );
 		pnBotoes.add( btExp );
 
 		btExp.addActionListener( this );
-
+*/
 	}
 
 	public void montaListaCampos() {
@@ -264,7 +269,7 @@ public class FRPagar extends FRelatorio {
 		vVals1.addElement( "P" );
 		vVals1.addElement( "E" );
 		cbOrdem = new JRadioGroup<String, String>( 1, 2, vLabs1, vVals1 );
-
+		/*
 		Vector<String> vVals2 = new Vector<String>();
 		Vector<String> vLabs2 = new Vector<String>();
 		vVals2.addElement( "G" );
@@ -272,10 +277,10 @@ public class FRPagar extends FRelatorio {
 		vLabs2.addElement( "Grafico" );
 		vLabs2.addElement( "Texto" );
 		rgTipoRel = new JRadioGroup<String, String>( 1, 2, vLabs2, vVals2 );
-		rgTipoRel.setVlrString( "G" );
+		rgTipoRel.setVlrString( "G" );*/
 	}
 
-	public void exportaTXT() {
+	/*public void exportaTXT() {
 
 		Vector<String> vLinhas = new Vector<String>();
 		try {
@@ -331,7 +336,7 @@ public class FRPagar extends FRelatorio {
 		} catch (Exception err) {
 			Funcoes.mensagemErro( this, err.getMessage() );
 		}
-	}
+	}*/
 
 	public ResultSet getResultSet() throws Exception {
 
@@ -451,7 +456,7 @@ public class FRPagar extends FRelatorio {
 			if ( filtropag.equals( "N" ) ) {
 				ps.setString( paramsql++, "P1" );
 				ps.setString( paramsql++, "P1" );
-				if( cbParPar.getVlrString().equals( "S" ) ) {
+				if( cbPagParc.getVlrString().equals( "S" ) ) {
 					ps.setString( paramsql++, "PL" );
 				}
 				else {
@@ -464,7 +469,7 @@ public class FRPagar extends FRelatorio {
 			else if ( filtropag.equals( "P" ) ) {
 				ps.setString( paramsql++, "PP" );
 				ps.setString( paramsql++, "PP" );
-				if( cbParPar.getVlrString().equals( "S" ) ) {
+				if( cbPagParc.getVlrString().equals( "S" ) ) {
 					ps.setString( paramsql++, "PL" );
 				}
 				else {
@@ -477,7 +482,7 @@ public class FRPagar extends FRelatorio {
 			else if ( filtropag.equals( "A" ) ) {
 				ps.setString( paramsql++, "P1" );
 				ps.setString( paramsql++, "PP" );
-				if( cbParPar.getVlrString().equals( "S" ) ) {
+				if( cbPagParc.getVlrString().equals( "S" ) ) {
 					ps.setString( paramsql++, "PL" );
 				}
 				else {
@@ -520,7 +525,6 @@ public class FRPagar extends FRelatorio {
 		PreparedStatement ps = null;
 		String sFiltroPag = cbFiltro.getVlrString();
 		String sCab = "";
-
 		if ( sFiltroPag.equals( "N" ) ) {
 			sCab = "CONTAS A PAGAR ";
 		}
@@ -530,34 +534,35 @@ public class FRPagar extends FRelatorio {
 		else if ( sFiltroPag.equals( "A" ) ) {
 			sCab = "CONTAS A PAGAR / PAGAS ";
 		}
-		
 		if ( txtNumConta.getVlrString().length() > 0 ) {
 			sCab = sCab + " - CONTA: " + txtNumConta.getVlrString() ;
 		}
-
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data final maior que a data inicial!" );
 			return;
 		}
-
 		try {
 			ResultSet rs = getResultSet();
 			sCab += "  Periodo de: " + txtDataini.getVlrString() + "  Até:  " + txtDatafim.getVlrString() + "  Correção p/: " + txtDatacor.getVlrString();
 			if ( txtCodBanco.getVlrString().length() > 0 ) {
 				sCab += "\n Banco:" + txtCodBanco.getVlrString().trim() + "-" + txtNomeBanco.getVlrString().trim();
 			}
-			if ( "T".equals( rgTipoRel.getVlrString() ) ) {
+			/*if ( "T".equals( rgTipoRel.getVlrString() ) ) {
 				imprimiTexto( rs, bVisualizar, sCab );
 			}
-			else {
+			else {*/
+			if (bVisualizar==TYPE_PRINT.EXPORT) {
+				btExportXLS.execute( rs, getTitle() );
+			} else {
 				imprimiGrafico( rs, bVisualizar, sCab );
-		}
+			}
+		    //}
 		} catch (Exception err) {
 			Funcoes.mensagemErro( this, err.getMessage() );
 		}
 	}
 
-	public void imprimiTexto( ResultSet rs, TYPE_PRINT bVisualizar, String sCab ) {
+	/*public void imprimiTexto( ResultSet rs, TYPE_PRINT bVisualizar, String sCab ) {
 
 		ImprimeOS imp = new ImprimeOS( "", con );
 		int linPag = imp.verifLinPag() - 1;
@@ -708,7 +713,7 @@ public class FRPagar extends FRelatorio {
 			imp.print();
 		}
 	}
-
+*/
 	private void imprimiGrafico( final ResultSet rs, final TYPE_PRINT bVisualizar, final String sCab ) {
 
 		FPrinterJob dlGr = null;
@@ -738,12 +743,12 @@ public class FRPagar extends FRelatorio {
 
 	public void actionPerformed( ActionEvent evt ) {
 
-		if ( evt.getSource() == btExp ) {
+		/*if ( evt.getSource() == btExp ) {
 			exportaTXT();
 		}
-		else {
+		else {*/
 			super.actionPerformed( evt );
-		}
+		//}
 	}
 
 	public void setConexao( DbConnection cn ) {
