@@ -184,6 +184,7 @@ import org.freedom.modulos.std.view.frame.report.FREstoqueLiquido;
 import org.freedom.modulos.std.view.frame.report.FREstoqueMin;
 import org.freedom.modulos.std.view.frame.report.FREtiqueta;
 import org.freedom.modulos.std.view.frame.report.FREvoluVendas;
+import org.freedom.modulos.std.view.frame.report.FREvolucaoMensalVendas;
 import org.freedom.modulos.std.view.frame.report.FRExtrato;
 import org.freedom.modulos.std.view.frame.report.FRFechaDiario;
 import org.freedom.modulos.std.view.frame.report.FRGerContas;
@@ -442,6 +443,7 @@ public class FreedomSTD extends AplicativoPD {
 		addOpcao( 301000000, TP_OPCAO_ITEM, "Vendas por tipo de cliente", "Vendas por tipo de cliente", 't', 301002500, 2, true, FRVendasTipoCli.class );
 		addOpcao( 301000000, TP_OPCAO_ITEM, "Vendas por grupo / comissionado", "Vendas por grupo / comissionado", 'g', 301002600, 2, true, FRVendasGrupo.class );
 		addOpcao( 301000000, TP_OPCAO_ITEM, "Acompanhamento mensal de vendas", "Acompanhamento mensal de vendas", 'A', 301002700, 2, true, FRAcompMensalVendas.class );
+		addOpcao( 301000000, TP_OPCAO_ITEM, "Evolução mensal de vendas", "Evolução mensal de vendas", 'E', 301002800, 2, true, FREvolucaoMensalVendas.class );
 
 		addOpcao( 300000000, TP_OPCAO_MENU, "Gráficos", "", 'G', 301100000, 1, false, null );
 		addOpcao( 301100000, TP_OPCAO_ITEM, "Evolução de vendas", "Evolução de vendas", 'E', 301100100, 2, true, FREvoluVendas.class );
