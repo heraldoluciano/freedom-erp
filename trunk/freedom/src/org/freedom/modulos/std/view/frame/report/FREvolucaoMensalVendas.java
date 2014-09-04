@@ -49,7 +49,7 @@ import org.freedom.library.swing.frame.FRelatorio;
 import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 
-public class FRAcompMensalVendas extends FRelatorio implements FocusListener {
+public class FREvolucaoMensalVendas extends FRelatorio implements FocusListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -85,9 +85,9 @@ public class FRAcompMensalVendas extends FRelatorio implements FocusListener {
 
 	private Vector<String> vValsEmit = new Vector<String>();
 
-	public FRAcompMensalVendas() {
+	public FREvolucaoMensalVendas() {
 
-		setTitulo( "Acompanhamento mensal de vendas" );
+		setTitulo( "Evolução mensal de vendas" );
 		setAtribos( 80, 80, 333, 400 );
 
 		Vector<String> vLabs2 = new Vector<String>();
@@ -183,7 +183,7 @@ public class FRAcompMensalVendas extends FRelatorio implements FocusListener {
 			, String financeiro, StringBuilder filtros, Vector<String> meses, TYPE_PRINT visualizar  ) {
 
 		StringBuilder sql = new StringBuilder();
-		sql.append( "select c.codcli, c.razcli " );
+		sql.append( "select p.codprod, p.descprod " );
 		for ( int i = 0; i < meses.size(); i++ ) {
 			String anomes = meses.elementAt( i );
 			String ano = anomes.substring( 0, 4 );
@@ -202,15 +202,20 @@ public class FRAcompMensalVendas extends FRelatorio implements FocusListener {
 			}
 		}
 		sql.append( " , sum(v.vlrliqvenda) subtotal " );
-		sql.append( " from vdcliente c " );
+		sql.append( " from eqproduto p " );
+		sql.append( " inner join vditvenda iv on ");
+		sql.append( " iv.codemppd=pd.codemp and iv.codfilialpd=p.codfilial ");
+		sql.append( " and iv.codprod=p.codprod ");
 		sql.append( " inner join vdvenda v on " );
-		sql.append( " v.codempcl=c.codemp and v.codfilialcl=c.codfilial" );
-		sql.append( " and v.codcli=c.codcli" );
+		sql.append( " v.codemp=iv.codemp and v.codfilial=iv.codfilial" );
+		sql.append( " and iv.tipovenda=v.tipovenda and iv.codvenda=v.codvenda ");
+		sql.append( " inner join vdcliente c on ");
+		sql.append( " c.codemp=v.codempcl and c.codfilial=v.codempcl and c.codcli=v.codcli ");
 		sql.append( " inner join eqtipomov tm on" );
 		sql.append( " tm.codemp=v.codemptm and tm.codfilial=v.codfilialtm and tm.codtipomov=v.codtipomov" );
 		sql.append( " inner join fnplanopag pp on " );
 		sql.append( " pp.codemp=v.codemppg and pp.codfilial=v.codfilialpg and pp.codplanopag=v.codplanopag ");
-		sql.append( " where c.codemp=? and c.codfilial=?" );
+		sql.append( " where v.codemp=? and v.codfilial=?" );
 		sql.append( " and v.dtemitvenda between ? and ?" );
 		sql.append( " and substring(v.statusvenda from 1 for 1) not in ('C','N') " );
 		if ( "S".equalsIgnoreCase( faturado ) ) {
@@ -249,6 +254,10 @@ public class FRAcompMensalVendas extends FRelatorio implements FocusListener {
 
 		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data final menor que a data inicial!" );
+			return;
+		}
+		if ( Funcoes.getAno(  txtDatafim.getVlrDate() )!= Funcoes.getAno( txtDataini.getVlrDate() ) ) {
+			Funcoes.mensagemInforma( this, "Período deve ficar dentro do mesmo ano !" );
 			return;
 		}
 		Vector<String> meses = Funcoes.getMeses( txtDataini.getVlrDate(), txtDatafim.getVlrDate() );
@@ -321,7 +330,7 @@ public class FRAcompMensalVendas extends FRelatorio implements FocusListener {
 		
 		FPrinterJob dlGr = null;
 
-		dlGr = new FPrinterJob( "relatorios/acompmensalvendas.jasper", "Acompanhamento mensal de vendas", filtros.toString(), rs, params, this );
+		dlGr = new FPrinterJob( "relatorios/evolucaomensalvendas.jasper", "Evolução mensal de vendas", filtros.toString(), rs, params, this );
 
 		if ( bVisualizar == TYPE_PRINT.VIEW ) {
 			dlGr.preview();
@@ -330,7 +339,7 @@ public class FRAcompMensalVendas extends FRelatorio implements FocusListener {
 			try {
 				dlGr.print(true);
 			} catch ( Exception err ) {
-				Funcoes.mensagemErro( this, "Erro na impressão de relatório de resumo diario!" + err.getMessage(), true, con, err );
+				Funcoes.mensagemErro( this, "Erro na impressão de relatório!" + err.getMessage(), true, con, err );
 			}
 		}
 	}
