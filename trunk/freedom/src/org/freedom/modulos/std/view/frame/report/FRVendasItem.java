@@ -36,8 +36,6 @@ import java.util.Vector;
 
 import javax.swing.BorderFactory;
 
-import net.sf.jasperreports.engine.JasperPrintManager;
-
 import org.freedom.acao.CheckBoxEvent;
 import org.freedom.acao.CheckBoxListener;
 import org.freedom.infra.functions.StringFunctions;

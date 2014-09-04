@@ -61,9 +61,17 @@ public class FREvolucaoAnualVendas extends FRelatorio implements FocusListener {
 
 	private JTextFieldPad txtMesfim = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 2, 0 );
 
-	private JTextFieldPad txtDataini = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+	private JTextFieldPad txtDataini_01 = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
-	private JTextFieldPad txtDatafim = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+	private JTextFieldPad txtDatafim_01 = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+
+	private JTextFieldPad txtDataini_02 = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+
+	private JTextFieldPad txtDatafim_02 = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+
+	private JTextFieldPad txtDataini_03 = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+
+	private JTextFieldPad txtDatafim_03 = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
 	private JTextFieldPad txtCodVend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -122,9 +130,8 @@ public class FREvolucaoAnualVendas extends FRelatorio implements FocusListener {
 		txtCodVend.setNomeCampo( "CodVend" );
 		txtCodVend.setFK( true );
 		txtCodVend.setTabelaExterna( lcVend, null );
-
-		txtDataini.setVlrDate( new Date() );
-		txtDatafim.setVlrDate( new Date() );
+		txtDataini_03.setVlrDate( new Date() );
+		txtDatafim_03.setVlrDate( new Date() );
 		JLabelPad lbLinha = new JLabelPad();
 		lbLinha.setBorder( BorderFactory.createEtchedBorder() );
 
@@ -143,32 +150,37 @@ public class FREvolucaoAnualVendas extends FRelatorio implements FocusListener {
 		adic( new JLabelPad( "/" ), 54, 45, 5, 20 );
 		adic( new JLabelPad( "Ano" ), 64, 25, 40, 20 );
 		adic( txtAnoini, 64, 45, 60, 20 );
-
 		adic( new JLabelPad( "Mês" ), 140, 25, 40, 20 );
 		adic( txtMesfim, 140, 45, 40, 20 );
 		adic( new JLabelPad( "/" ), 184, 45, 5, 20 );
 		adic( new JLabelPad( "Ano" ), 194, 25, 40, 20 );
 		adic( txtAnofim, 194, 45, 60, 20 );
-
 		adic( new JLabelPad( "De:" ), 10, 70, 97, 20 );
-		adic( txtDataini, 32, 70, 97, 20 );
-
+		adic( txtDataini_03, 32, 70, 97, 20 );
 		adic( new JLabelPad( "Até:" ), 140, 70, 100, 20 );
-		adic( txtDatafim, 170, 70, 100, 20 );
-
-		adic( txtCodVend, 7, 110, 70, 20, "Cód.comiss." );
-		adic( txtDescVend, 80, 110, 190, 20, "Nome do comissionado" );
-
-		adic( txtCodCli, 7, 150, 70, 20, "Cód.Cli" );
-		adic( txtNomeCli, 80, 150, 190, 20, "Nome do cliente" );
-
-		adic( rgFaturados, 7, 180, 120, 70 );
-
-		adic( rgFinanceiro, 153, 180, 120, 70 );
+		adic( txtDatafim_03, 170, 70, 100, 20 );
+		adic( new JLabelPad( "De:" ), 10, 110, 97, 20 );
+		adic( txtDataini_02, 32, 110, 97, 20 );
+		adic( new JLabelPad( "Até:" ), 140, 110, 100, 20 );
+		adic( txtDatafim_02, 170, 110, 100, 20 );
+		adic( new JLabelPad( "De:" ), 10, 150, 97, 20 );
+		adic( txtDataini_01, 32, 150, 97, 20 );
+		adic( new JLabelPad( "Até:" ), 140, 150, 100, 20 );
+		adic( txtDatafim_01, 170, 150, 100, 20 );
+		adic( txtCodVend, 7, 190, 70, 20, "Cód.comiss." );
+		adic( txtDescVend, 80, 190, 190, 20, "Nome do comissionado" );
+		adic( txtCodCli, 7, 230, 70, 20, "Cód.Cli" );
+		adic( txtNomeCli, 80, 230, 190, 20, "Nome do cliente" );
+		adic( rgFaturados, 7, 280, 120, 70 );
+		adic( rgFinanceiro, 153, 280, 120, 70 );
 		
 		btExportXLS.setEnabled( true );
-		txtDataini.setEditable( false );
-		txtDatafim.setEditable( false );
+		txtDataini_01.setEditable( false );
+		txtDatafim_01.setEditable( false );
+		txtDataini_02.setEditable( false );
+		txtDatafim_02.setEditable( false );
+		txtDataini_03.setEditable( false );
+		txtDatafim_03.setEditable( false );
 		
 		setParamIni();
 		
@@ -178,46 +190,51 @@ public class FREvolucaoAnualVendas extends FRelatorio implements FocusListener {
 		txtMesfim.addFocusListener( this );
 	}
 
-	private StringBuilder getQuerReport( Integer codemp, Integer codfilialcl, Integer codcli
-			, Integer codfilialva, Integer codvend, Date dataini, Date datafim, String faturado
-			, String financeiro, StringBuilder filtros, Vector<String> meses, TYPE_PRINT visualizar  ) {
-
+	private StringBuilder getQuerReport( Integer codcli, Integer codvend, String faturado
+			, String financeiro, StringBuilder filtros
+			, Integer ano_01, Integer ano_02, Integer ano_03, TYPE_PRINT visualizar  ) {
+        int num_anos = 0;
+        if (ano_01>0) {
+        	num_anos++;
+        }
+        if (ano_02>0) {
+        	num_anos++;
+        }
+        if (ano_03>0) {
+        	num_anos++;
+        }
 		StringBuilder sql = new StringBuilder();
-		sql.append( "select p.codprod, p.descprod " );
-		for ( int i = 0; i < meses.size(); i++ ) {
-			String anomes = meses.elementAt( i );
-			String ano = anomes.substring( 0, 4 );
-			String mes = anomes.substring( 4 );
-			sql.append( ", sum((case when extract(month from v.dtemitvenda)=" );
-			sql.append( mes );
-			sql.append( " and extract(year from v.dtemitvenda)=" );
-			sql.append( ano );
-			sql.append( " then v.vlrliqvenda else 0 end)) vlr_" );
-			if (visualizar==TYPE_PRINT.EXPORT) {
-				sql.append(mes);
-				sql.append("_");
-				sql.append(ano);
-			} else {
-				sql.append( i + 1 );
-			}
-		}
-		sql.append( " , sum(v.vlrliqvenda) subtotal " );
-		sql.append( " from eqproduto p " );
-		sql.append( " inner join vditvenda iv on ");
-		sql.append( " iv.codemppd=pd.codemp and iv.codfilialpd=p.codfilial ");
-		sql.append( " and iv.codprod=p.codprod ");
-		sql.append( " inner join vdvenda v on " );
-		sql.append( " v.codemp=iv.codemp and v.codfilial=iv.codfilial" );
-		sql.append( " and iv.tipovenda=v.tipovenda and iv.codvenda=v.codvenda ");
-		sql.append( " inner join vdcliente c on ");
-		sql.append( " c.codemp=v.codempcl and c.codfilial=v.codempcl and c.codcli=v.codcli ");
-		sql.append( " inner join eqtipomov tm on" );
-		sql.append( " tm.codemp=v.codemptm and tm.codfilial=v.codfilialtm and tm.codtipomov=v.codtipomov" );
-		sql.append( " inner join fnplanopag pp on " );
-		sql.append( " pp.codemp=v.codemppg and pp.codfilial=v.codfilialpg and pp.codplanopag=v.codplanopag ");
-		sql.append( " where v.codemp=? and v.codfilial=?" );
-		sql.append( " and v.dtemitvenda between ? and ?" );
-		sql.append( " and substring(v.statusvenda from 1 for 1) not in ('C','N') " );
+		sql.append( "select p.descprod, p.codprod, p.refprod " );
+		sql.append( ", sum( case when extract(year from v.dtemitvenda)=");
+		sql.append( ano_01 );
+		sql.append( " then iv.qtditvenda else 0 end) ano_01 " );
+		sql.append( ", sum( case when extract(year from v.dtemitvenda)=");
+		sql.append( ano_02 ); 
+		sql.append(" then iv.qtditvenda else 0 end) ano_02 " );
+		sql.append( ", sum( case when extract(year from v.dtemitvenda)=");
+		sql.append( ano_03 );
+		sql.append(" then iv.qtditvenda else 0 end) ano_03 " );
+		sql.append( ", sum(iv.qtditvenda)/");
+		sql.append( num_anos );
+		sql.append( " media " );
+		sql.append( "from eqproduto p " );
+		sql.append( "inner join vditvenda iv on " );
+		sql.append( "iv.codemppd=p.codemp and iv.codfilialpd=p.codfilial and iv.codprod=p.codprod " );
+		sql.append( "inner join vdvenda v on " );
+		sql.append( "v.codemp=iv.codemp and v.codfilial=iv.codfilial and v.tipovenda=iv.tipovenda and v.codvenda=iv.codvenda " );
+		sql.append( "inner join vdcliente c on " );
+		sql.append( "c.codemp=v.codempcl and c.codfilial=v.codfilialcl and c.codcli=v.codcli " );
+		sql.append( "inner join eqtipomov tm on " );
+		sql.append( "tm.codemp=v.codemptm and tm.codfilial=v.codfilialtm and tm.codtipomov=v.codtipomov " );
+		sql.append( "inner join fnplanopag pp on " );
+		sql.append( "pp.codemp=v.codemppg and pp.codfilial=v.codfilialpg and pp.codplanopag=v.codplanopag " );
+		sql.append( "where p.codemp=? and p.codfilial=? " );
+		sql.append( "and v.codemp=? and v.codfilial=? " );
+		sql.append( "and  ( ( v.dtemitvenda between ? and ? ) " );
+		sql.append( "or ( v.dtemitvenda between ? and ? ) " );
+		sql.append( "or ( v.dtemitvenda between ? and ? ) ) " );
+		sql.append( "and substring(v.statusvenda from 1 for 1)<>'C' " );
+		sql.append( "and pp.parcplanopag>0 " );
 		if ( "S".equalsIgnoreCase( faturado ) ) {
 			sql.append( " and tm.fiscaltipomov='S' " );
 			filtros.append( ", faturados" );
@@ -245,52 +262,76 @@ public class FREvolucaoAnualVendas extends FRelatorio implements FocusListener {
 			filtros.append( ", cód.comissioando: " );
 			filtros.append( codvend );
 		}
-		sql.append( " group by c.codcli, c.razcli" );
-		sql.append( " order by c.codcli" );
+		sql.append( "group by 1, 2, 3 " );
+		sql.append( "order by 1, 2, 3 " );
 		return sql;
 	}
 
 	public void imprimir( TYPE_PRINT bVisualizar ) {
 
-		if ( txtDatafim.getVlrDate().before( txtDataini.getVlrDate() ) ) {
+		if ( txtDatafim_03.getVlrDate().before( txtDataini_03.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Data final menor que a data inicial!" );
 			return;
 		}
-		if ( Funcoes.getAno(  txtDatafim.getVlrDate() )!= Funcoes.getAno( txtDataini.getVlrDate() ) ) {
+		if ( Funcoes.getAno(  txtDatafim_03.getVlrDate() )!= Funcoes.getAno( txtDataini_03.getVlrDate() ) ) {
 			Funcoes.mensagemInforma( this, "Período deve ficar dentro do mesmo ano !" );
 			return;
 		}
-		Vector<String> meses = Funcoes.getMeses( txtDataini.getVlrDate(), txtDatafim.getVlrDate() );
+		Vector<String> meses = Funcoes.getMeses( txtDataini_03.getVlrDate(), txtDatafim_03.getVlrDate() );
 		if ( meses.size()>12 && bVisualizar!=TYPE_PRINT.EXPORT ) {
 			Funcoes.mensagemInforma( this
 					, "Não é permitido a visualização ou impressão do relatório com período superior a 12 meses!\n" );
 			return;
 		}
-
 		try {
-
 			StringBuilder filtros = new StringBuilder();
-			filtros.append( "Período de ");
-			filtros.append( txtDataini.getVlrString());
+			filtros.append( "Períodos de ");
+			filtros.append( txtDataini_03.getVlrString());
 			filtros.append( " até " );
-			filtros.append( txtDatafim.getVlrString() );
-
+			filtros.append( txtDatafim_03.getVlrString() );
+			filtros.append( " - de ");
+			filtros.append( txtDataini_02.getVlrString());
+			filtros.append( " até " );
+			filtros.append( txtDatafim_02.getVlrString() );
+			filtros.append( " - de ");
+			filtros.append( txtDataini_01.getVlrString());
+			filtros.append( " até " );
+			filtros.append( txtDatafim_01.getVlrString() );
 			int codemp = Aplicativo.iCodEmp;
+			int codfilialpd = ListaCampos.getMasterFilial( "EQPRODUTO" );
 			int codfilialcl = ListaCampos.getMasterFilial( "VDCLIENTE" );
 			int codcli = txtCodCli.getVlrInteger();
+			int codfilialvd = ListaCampos.getMasterFilial( "VDVENDA" );
 			int codfilialva = ListaCampos.getMasterFilial( "VDVENDEDOR" );
 			int codvend = txtCodVend.getVlrInteger();
-			
-			StringBuilder sql = getQuerReport( codemp, codfilialcl, codcli
-					, codfilialva, codvend	, txtDataini.getVlrDate(), txtDatafim.getVlrDate()
-					, rgFaturados.getVlrString(), rgFinanceiro.getVlrString(), filtros, meses, bVisualizar );
-
+			Date dataini_01 = txtDataini_01.getVlrDate();
+			Date dataini_02 = txtDataini_02.getVlrDate();
+			Date dataini_03 = txtDataini_03.getVlrDate();
+			Date datafim_01 = txtDatafim_01.getVlrDate();
+			Date datafim_02 = txtDatafim_02.getVlrDate();
+			Date datafim_03 = txtDatafim_03.getVlrDate();
+			Integer ano_01 = Funcoes.getAno( dataini_01 );
+			Integer ano_02 = Funcoes.getAno( dataini_02 );
+			Integer ano_03 = Funcoes.getAno( dataini_03 );
+			StringBuilder cabmeses = new StringBuilder();
+			cabmeses.append( "DE ");
+			cabmeses.append( Funcoes.getMesExtenso( dataini_03 ).toUpperCase());
+			cabmeses.append( " ATÉ " );
+			cabmeses.append( Funcoes.getMesExtenso( datafim_03 ).toUpperCase());
+			StringBuilder sql = getQuerReport( codcli , codvend	, rgFaturados.getVlrString(), rgFinanceiro.getVlrString(), filtros
+					, ano_01, ano_02, ano_03, bVisualizar );
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			int param = 1;
 			ps.setInt( param++, codemp );
-			ps.setInt( param++, codfilialcl );
-			ps.setDate( param++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
-			ps.setDate( param++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+			ps.setInt( param++, codfilialpd );
+			ps.setInt( param++, codemp );
+			ps.setInt( param++, codfilialvd );
+			ps.setDate( param++, Funcoes.dateToSQLDate( dataini_01 ) );
+			ps.setDate( param++, Funcoes.dateToSQLDate( datafim_01) );
+			ps.setDate( param++, Funcoes.dateToSQLDate( dataini_02 ) );
+			ps.setDate( param++, Funcoes.dateToSQLDate( datafim_02) );
+			ps.setDate( param++, Funcoes.dateToSQLDate( datafim_03) );
+			ps.setDate( param++, Funcoes.dateToSQLDate( datafim_03) );
 			if ( codcli!=0 ) {
 				ps.setInt( param++, codemp );
 				ps.setInt( param++, codfilialcl );
@@ -309,7 +350,7 @@ public class FREvolucaoAnualVendas extends FRelatorio implements FocusListener {
 					Funcoes.mensagemInforma( this, "Arquivo exportado com sucesso !" );
 				}
 			} else {
-				imprimirGrafico( bVisualizar, rs, filtros, meses );
+				imprimirGrafico( bVisualizar, rs, filtros, ano_01, ano_02, ano_03, cabmeses );
 			}
 			rs.close();
 			ps.close();
@@ -323,24 +364,25 @@ public class FREvolucaoAnualVendas extends FRelatorio implements FocusListener {
 		}
 	}
 
-	private void imprimirGrafico( final TYPE_PRINT bVisualizar, final ResultSet rs, final StringBuilder filtros, Vector<String> meses ) {
-
+	private void imprimirGrafico( final TYPE_PRINT bVisualizar, final ResultSet rs, final StringBuilder filtros
+			, final Integer ano_01, final Integer ano_02, final Integer ano_03, final StringBuilder cabmeses ) {
 		HashMap<String, Object> params = new HashMap<String, Object>();
-		params.put( "MESES", meses );
+		params.put( "ANO_01", ano_01 );
+		params.put( "ANO_02", ano_02 );
+		params.put( "ANO_03", ano_03 );
+		params.put( "CABMESES", cabmeses.toString() );
 		
 		FPrinterJob dlGr = null;
-
-		dlGr = new FPrinterJob( "relatorios/evolucaomensalvendas.jasper", "Evolução mensal de vendas", filtros.toString(), rs, params, this );
-
-		if ( bVisualizar == TYPE_PRINT.VIEW ) {
-			dlGr.preview();
-		}
-		else {
-			try {
-				dlGr.print(true);
-			} catch ( Exception err ) {
-				Funcoes.mensagemErro( this, "Erro na impressão de relatório!" + err.getMessage(), true, con, err );
+		try {
+			dlGr = new FPrinterJob( "relatorios/evolucaoanualvendas.jasper", "Evolução anual de vendas", filtros.toString(), rs, params, this );
+			if ( bVisualizar == TYPE_PRINT.VIEW ) {
+				dlGr.preview();
 			}
+			else {
+				dlGr.print(true);
+			}
+		} catch ( Exception err ) {
+			Funcoes.mensagemErro( this, "Erro na impressão de relatório!" + err.getMessage(), true, con, err );
 		}
 	}
 
@@ -356,17 +398,22 @@ public class FREvolucaoAnualVendas extends FRelatorio implements FocusListener {
 	}
 
 	private void setDataini() {
+		Date dataini_03 = Funcoes.encodeDate( txtAnoini.getVlrInteger(), txtMesini.getVlrInteger(), 1 );
+		txtDataini_03.setVlrDate( dataini_03  );
+		Calendar cal = Calendar.getInstance();
+		cal.setTime( dataini_03 );
+		cal.add( Calendar.YEAR, -1 );
+		txtDataini_02.setVlrDate( cal.getTime() );
+		cal.add( Calendar.YEAR, -1 );
+		txtDataini_01.setVlrDate( cal.getTime() );
 		
-		txtDataini.setVlrDate( Funcoes.encodeDate( txtAnoini.getVlrInteger(), txtMesini.getVlrInteger(), 1 ) );
 	}
 
 	private void setParamIni() {
 		
 		Calendar cal = Calendar.getInstance();
-		cal.add( Calendar.MONTH, -1 );
 		Date datafim = cal.getTime();
-		cal.add( Calendar.MONTH, +1 );
-		cal.add( Calendar.YEAR, -1 );
+		cal.add( Calendar.MONTH, -1 );
 		Date dataini = cal.getTime();
 		txtMesfim.setVlrInteger( Funcoes.getMes( datafim ) );
 		txtAnofim.setVlrInteger( Funcoes.getAno( datafim ) );
@@ -381,7 +428,12 @@ public class FREvolucaoAnualVendas extends FRelatorio implements FocusListener {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime( Funcoes.encodeDate( txtAnofim.getVlrInteger(), txtMesfim.getVlrInteger()+1, 1 ) );
 		cal.add( Calendar.DAY_OF_MONTH, -1 );
-		txtDatafim.setVlrDate( cal.getTime() );
+		txtDatafim_03.setVlrDate( cal.getTime() );
+		cal.add( Calendar.YEAR, -1 );
+		txtDatafim_02.setVlrDate( cal.getTime() );
+		cal.add( Calendar.YEAR, -1 );
+		txtDatafim_01.setVlrDate( cal.getTime() );
+
 	}
 
 	public void focusLost( FocusEvent e ) {
