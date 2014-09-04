@@ -49,7 +49,7 @@ import org.freedom.library.swing.frame.FRelatorio;
 import org.freedom.library.type.TYPE_PRINT;
 import org.freedom.modulos.std.view.frame.crud.tabbed.FCliente;
 
-public class FREvolucaoMensalVendas extends FRelatorio implements FocusListener {
+public class FREvolucaoAnualVendas extends FRelatorio implements FocusListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -85,9 +85,9 @@ public class FREvolucaoMensalVendas extends FRelatorio implements FocusListener 
 
 	private Vector<String> vValsEmit = new Vector<String>();
 
-	public FREvolucaoMensalVendas() {
+	public FREvolucaoAnualVendas() {
 
-		setTitulo( "Evolução mensal de vendas" );
+		setTitulo( "Evolução anual de vendas" );
 		setAtribos( 80, 80, 333, 400 );
 
 		Vector<String> vLabs2 = new Vector<String>();
