@@ -164,7 +164,7 @@ public class FRVendasItem extends FRelatorio implements CheckBoxListener, FocusL
 		Vector<String> vLabs4 = new Vector<String>();
 		Vector<String> vVals4 = new Vector<String>();
 
-		vLabs4.addElement( "Por qtde" );
+		vLabs4.addElement( "Por qtd." );
 		vLabs4.addElement( "Por valor" );
 		vVals4.addElement( "Q" );
 		vVals4.addElement( "V" );
