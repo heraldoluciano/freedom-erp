@@ -80,14 +80,32 @@ public class FREvolucaoAnualVendas extends FRelatorio implements FocusListener {
 	private JTextFieldPad txtCodCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private JTextFieldFK txtNomeCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
+	private JTextFieldPad txtCodGrup = new JTextFieldPad( JTextFieldPad.TP_STRING, 14, 0 );
+
+	private JTextFieldFK txtDescGrup = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+
+	private JTextFieldPad txtCodMarca = new JTextFieldPad( JTextFieldPad.TP_STRING, 6, 0 );
+
+	private JTextFieldFK txtDescMarca = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+
+	private JTextFieldPad txtSiglaMarca = new JTextFieldPad( JTextFieldPad.TP_STRING, 20, 0 );
 
 	private JRadioGroup<?, ?> rgFaturados = null;
 
 	private JRadioGroup<?, ?> rgFinanceiro = null;
+	
+	private JRadioGroup<?, ?> rgQtdVlr = null;
 
+	private JRadioGroup<?, ?> rgOrdem = null;
+	
 	private ListaCampos lcVend = new ListaCampos( this );
 
 	private ListaCampos lcCli = new ListaCampos( this, "CL" );
+	
+	private ListaCampos lcGrup = new ListaCampos( this );
+
+	private ListaCampos lcMarca = new ListaCampos( this );
 
 	private Vector<String> vLabsEmit = new Vector<String>();
 
@@ -96,11 +114,10 @@ public class FREvolucaoAnualVendas extends FRelatorio implements FocusListener {
 	public FREvolucaoAnualVendas() {
 
 		setTitulo( "Evolução anual de vendas" );
-		setAtribos( 80, 80, 333, 400 );
+		setAtribos( 80, 20, 380, 600 );
 
 		Vector<String> vLabs2 = new Vector<String>();
 		Vector<String> vVals2 = new Vector<String>();
-
 		vLabs2.addElement( "Faturado" );
 		vLabs2.addElement( "Não Faturado" );
 		vLabs2.addElement( "Ambos" );
@@ -112,7 +129,6 @@ public class FREvolucaoAnualVendas extends FRelatorio implements FocusListener {
 
 		Vector<String> vLabs3 = new Vector<String>();
 		Vector<String> vVals3 = new Vector<String>();
-
 		vLabs3.addElement( "Financeiro" );
 		vLabs3.addElement( "Não Financeiro" );
 		vLabs3.addElement( "Ambos" );
@@ -121,6 +137,26 @@ public class FREvolucaoAnualVendas extends FRelatorio implements FocusListener {
 		vVals3.addElement( "A" );
 		rgFinanceiro = new JRadioGroup<String, String>( 3, 1, vLabs3, vVals3 );
 		rgFinanceiro.setVlrString( "S" );
+
+		Vector<String> vLabs4 = new Vector<String>();
+		Vector<String> vVals4 = new Vector<String>();
+		vLabs4.addElement( "Quantidade" );
+		vLabs4.addElement( "Valor" );
+		vVals4.addElement( "Q" );
+		vVals4.addElement( "V" );
+		rgQtdVlr = new JRadioGroup<String, String>( 1, 2, vLabs4, vVals4 );
+		rgQtdVlr.setVlrString( "Q" );
+		
+		Vector<String> vLabs5 = new Vector<String>();
+		Vector<String> vVals5 = new Vector<String>();
+		vLabs5.addElement( "Código" );
+		vLabs5.addElement( "Desc." );
+		vLabs5.addElement( "Vlr./Qtd." );
+		vVals5.addElement( "C" );
+		vVals5.addElement( "D" );
+		vVals5.addElement( "V" );
+		rgOrdem = new JRadioGroup<String, String>( 1, 2, vLabs5, vVals5 );
+		rgOrdem.setVlrString( "D" );
 
 		lcVend.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.comiss.", ListaCampos.DB_PK, false ) );
 		lcVend.add( new GuardaCampo( txtDescVend, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, false ) );
@@ -143,6 +179,23 @@ public class FREvolucaoAnualVendas extends FRelatorio implements FocusListener {
 		lcCli.setReadOnly( true );
 		lcCli.montaSql( false, "CLIENTE", "VD" );
 
+		lcGrup.add( new GuardaCampo( txtCodGrup, "CodGrup", "Cód.grupo", ListaCampos.DB_PK, false ) );
+		lcGrup.add( new GuardaCampo( txtDescGrup, "DescGrup", "Descrição do grupo", ListaCampos.DB_SI, false ) );
+		txtCodGrup.setTabelaExterna( lcGrup, null );
+		txtCodGrup.setNomeCampo( "CodGrup" );
+		txtCodGrup.setFK( true );
+		lcGrup.setReadOnly( true );
+		lcGrup.montaSql( false, "GRUPO", "EQ" );
+
+		lcMarca.add( new GuardaCampo( txtCodMarca, "CodMarca", "Cód.marca", ListaCampos.DB_PK, false ) );
+		lcMarca.add( new GuardaCampo( txtDescMarca, "DescMarca", "Descrição da marca", ListaCampos.DB_SI, false ) );
+		lcMarca.add( new GuardaCampo( txtSiglaMarca, "SiglaMarca", "Sigla", ListaCampos.DB_SI, false ) );
+		txtCodMarca.setTabelaExterna( lcMarca, null );
+		txtCodMarca.setNomeCampo( "CodMarca" );
+		txtCodMarca.setFK( true );
+		lcMarca.setReadOnly( true );
+		lcMarca.montaSql( false, "MARCA", "EQ" );
+		
 		adic( new JLabelPad( "Periodo:" ), 7, 5, 100, 20 );
 		adic( lbLinha, 60, 15, 210, 2 );
 		adic( new JLabelPad( "Mês" ), 10, 25, 40, 20 );
@@ -159,21 +212,27 @@ public class FREvolucaoAnualVendas extends FRelatorio implements FocusListener {
 		adic( txtDataini_03, 32, 70, 97, 20 );
 		adic( new JLabelPad( "Até:" ), 140, 70, 100, 20 );
 		adic( txtDatafim_03, 170, 70, 100, 20 );
-		adic( new JLabelPad( "De:" ), 10, 110, 97, 20 );
-		adic( txtDataini_02, 32, 110, 97, 20 );
-		adic( new JLabelPad( "Até:" ), 140, 110, 100, 20 );
-		adic( txtDatafim_02, 170, 110, 100, 20 );
-		adic( new JLabelPad( "De:" ), 10, 150, 97, 20 );
-		adic( txtDataini_01, 32, 150, 97, 20 );
-		adic( new JLabelPad( "Até:" ), 140, 150, 100, 20 );
-		adic( txtDatafim_01, 170, 150, 100, 20 );
-		adic( txtCodVend, 7, 190, 70, 20, "Cód.comiss." );
-		adic( txtDescVend, 80, 190, 190, 20, "Nome do comissionado" );
-		adic( txtCodCli, 7, 230, 70, 20, "Cód.Cli" );
-		adic( txtNomeCli, 80, 230, 190, 20, "Nome do cliente" );
-		adic( rgFaturados, 7, 280, 120, 70 );
-		adic( rgFinanceiro, 153, 280, 120, 70 );
-		
+		adic( new JLabelPad( "De:" ), 10, 100, 97, 20 );
+		adic( txtDataini_02, 32, 100, 97, 20 );
+		adic( new JLabelPad( "Até:" ), 140, 100, 100, 20 );
+		adic( txtDatafim_02, 170, 100, 100, 20 );
+		adic( new JLabelPad( "De:" ), 10, 130, 97, 20 );
+		adic( txtDataini_01, 32, 130, 97, 20 );
+		adic( new JLabelPad( "Até:" ), 140, 130, 100, 20 );
+		adic( txtDatafim_01, 170, 130, 100, 20 );
+		adic( txtCodVend, 7, 170, 70, 20, "Cód.comiss." );
+		adic( txtDescVend, 80, 170, 190, 20, "Nome do comissionado" );
+		adic( txtCodCli, 7, 210, 70, 20, "Cód.Cli" );
+		adic( txtNomeCli, 80, 210, 190, 20, "Nome do cliente" );
+		adic( txtCodGrup, 7, 250, 70, 20, "Cód.grupo" );
+		adic( txtDescGrup, 80, 250, 200, 20, "Descrição do grupo" );
+		adic( txtCodMarca, 7, 290, 70, 20, "Cód.marca" );		
+		adic( txtDescMarca, 80, 290, 200, 20, "Descrição da marca" );
+		adic( rgFaturados, 7, 320, 120, 70 );
+		adic( rgFinanceiro, 153, 320, 120, 70 );
+		adic( rgQtdVlr, 7, 410, 267, 30, "Sumarizar por:" );
+		adic( rgOrdem, 7, 460, 267, 30, "Ordenado por:" );
+	
 		btExportXLS.setEnabled( true );
 		txtDataini_01.setEditable( false );
 		txtDatafim_01.setEditable( false );
@@ -191,7 +250,8 @@ public class FREvolucaoAnualVendas extends FRelatorio implements FocusListener {
 	}
 
 	private StringBuilder getQuerReport( Integer codcli, Integer codvend, String faturado
-			, String financeiro, StringBuilder filtros
+			, String financeiro, String sumarizar, String ordem, String codgrup
+			, String codmarca, StringBuilder filtros
 			, Integer ano_01, Integer ano_02, Integer ano_03, TYPE_PRINT visualizar  ) {
         int num_anos = 0;
         if (ano_01>0) {
@@ -207,14 +267,38 @@ public class FREvolucaoAnualVendas extends FRelatorio implements FocusListener {
 		sql.append( "select p.descprod, p.codprod, p.refprod " );
 		sql.append( ", sum( case when extract(year from v.dtemitvenda)=");
 		sql.append( ano_01 );
-		sql.append( " then iv.qtditvenda else 0 end) ano_01 " );
+		sql.append( " then ");
+		if ("Q".equals(sumarizar)) {
+			sql.append("iv.qtditvenda");
+		} else {
+			sql.append("iv.vlrliqitvenda");
+		}
+		sql.append( " else 0 end) ano_01 " );
 		sql.append( ", sum( case when extract(year from v.dtemitvenda)=");
 		sql.append( ano_02 ); 
-		sql.append(" then iv.qtditvenda else 0 end) ano_02 " );
+		sql.append(" then ");
+		if ("Q".equals(sumarizar)) {
+			sql.append("iv.qtditvenda");
+		} else {
+			sql.append("iv.vlrliqitvenda");
+		}
+		sql.append( " else 0 end) ano_02 " );
 		sql.append( ", sum( case when extract(year from v.dtemitvenda)=");
 		sql.append( ano_03 );
-		sql.append(" then iv.qtditvenda else 0 end) ano_03 " );
-		sql.append( ", sum(iv.qtditvenda)/");
+		sql.append(" then ");
+		if ("Q".equals(sumarizar)) {
+			sql.append("iv.qtditvenda");
+		} else {
+			sql.append("iv.vlrliqitvenda");
+		}
+		sql.append(" else 0 end) ano_03 " );
+		sql.append( ", sum(");
+		if ("Q".equals(sumarizar)) {
+			sql.append("iv.qtditvenda");
+		} else {
+			sql.append("iv.vlrliqitvenda");
+		}
+		sql.append(")/");
 		sql.append( num_anos );
 		sql.append( " media " );
 		sql.append( "from eqproduto p " );
@@ -262,8 +346,26 @@ public class FREvolucaoAnualVendas extends FRelatorio implements FocusListener {
 			filtros.append( ", cód.comissioando: " );
 			filtros.append( codvend );
 		}
+		if ( !"".equals(codgrup) ) {
+			sql.append( " and p.codempgp=? and p.codfilialgp=? and p.codgrup like ? ");
+			filtros.append( ", cód.grupo: " );
+			filtros.append( codgrup );
+		}
+		if ( !"".equals(codmarca) ) {
+			sql.append( " and p.codempmc=? and p.codfilialmc=? and p.codmarca=? ");
+			filtros.append( ", cód.marca: " );
+			filtros.append( codmarca );
+		}
 		sql.append( "group by 1, 2, 3 " );
-		sql.append( "order by 1, 2, 3 " );
+		sql.append( "order by " );
+		if ("C".equals(ordem)) {
+			sql.append( "3, 2, 1" );
+		} else if ("D".equals(ordem)) {
+			sql.append( "1, 2, 3" );
+		} else if ("V".equals(ordem)) {
+			sql.append( "7 desc, 3, 2, 1" );
+		}
+		
 		return sql;
 	}
 
@@ -304,6 +406,10 @@ public class FREvolucaoAnualVendas extends FRelatorio implements FocusListener {
 			int codfilialvd = ListaCampos.getMasterFilial( "VDVENDA" );
 			int codfilialva = ListaCampos.getMasterFilial( "VDVENDEDOR" );
 			int codvend = txtCodVend.getVlrInteger();
+			int codfilialgp = ListaCampos.getMasterFilial( "EQGRUPO" );
+			String codgrup = txtCodGrup.getVlrString().trim();
+			int codfilialmc = ListaCampos.getMasterFilial( "EQMARCA" );
+			String codmarca = txtCodMarca.getVlrString().trim();
 			Date dataini_01 = txtDataini_01.getVlrDate();
 			Date dataini_02 = txtDataini_02.getVlrDate();
 			Date dataini_03 = txtDataini_03.getVlrDate();
@@ -318,8 +424,10 @@ public class FREvolucaoAnualVendas extends FRelatorio implements FocusListener {
 			cabmeses.append( Funcoes.getMesExtenso( dataini_03 ).toUpperCase());
 			cabmeses.append( " ATÉ " );
 			cabmeses.append( Funcoes.getMesExtenso( datafim_03 ).toUpperCase());
-			StringBuilder sql = getQuerReport( codcli , codvend	, rgFaturados.getVlrString(), rgFinanceiro.getVlrString(), filtros
-					, ano_01, ano_02, ano_03, bVisualizar );
+			StringBuilder sql = getQuerReport( codcli , codvend	
+					, rgFaturados.getVlrString(), rgFinanceiro.getVlrString()
+					, rgQtdVlr.getVlrString(), rgOrdem.getVlrString()
+					,codgrup, codmarca, filtros, ano_01, ano_02, ano_03, bVisualizar );
 			PreparedStatement ps = con.prepareStatement( sql.toString() );
 			int param = 1;
 			ps.setInt( param++, codemp );
@@ -342,9 +450,18 @@ public class FREvolucaoAnualVendas extends FRelatorio implements FocusListener {
 				ps.setInt( param++, codfilialva );
 				ps.setInt( param++, codvend );
 			}
-
+			if ( !"".equals(codgrup) ) {
+				codgrup += "%";
+				ps.setInt( param++, codemp );
+				ps.setInt( param++, codfilialgp );
+				ps.setString( param++, codgrup );
+			}
+			if ( !"".equals(codmarca) ) {
+				ps.setInt( param++, codemp );
+				ps.setInt( param++, codfilialmc );
+				ps.setString( param++, codmarca );
+			}
 			ResultSet rs = ps.executeQuery();
-
 			if (bVisualizar==TYPE_PRINT.EXPORT) {
 				if (btExportXLS.execute(rs, getTitle())) {
 					Funcoes.mensagemInforma( this, "Arquivo exportado com sucesso !" );
@@ -389,8 +506,10 @@ public class FREvolucaoAnualVendas extends FRelatorio implements FocusListener {
 	public void setConexao( DbConnection cn ) {
 
 		super.setConexao( cn );
-		lcVend.setConexao( con );
-		lcCli.setConexao( con );
+		lcVend.setConexao( cn );
+		lcCli.setConexao( cn );
+		lcGrup.setConexao( cn );
+		lcMarca.setConexao( cn );
 	}
 
 	public void focusGained( FocusEvent e ) {
